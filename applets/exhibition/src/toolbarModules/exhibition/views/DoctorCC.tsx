@@ -285,21 +285,27 @@ class DoctorCC extends Component<Props, State> {
         //   this.showGuide(true)
         // }
 
-        console.warn("....." + JSON.stringify(this.ARModel))
         if(this.ARModel) {
           await SARMap.setLayerVisible(this.ARModel.layerName, true)
           // 获取校准之后的模型位置信息
           this.positionInfo = await SARMap.getElementPositionInfo(this.ARModel.layerName, this.ARModel.id)
 
-          const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
-          // console.warn("relativePositin: " + JSON.stringify(relativePositin))
-          if(relativePositin) {
-            const timer = setTimeout(async ()=>{
-              await SExhibition.setTrackingTarget(relativePositin)
-              await SExhibition.startTrackingTarget()
-              clearTimeout(timer)
-            }, 2300)
-          }
+          const timer01 = setTimeout(async () => {
+            if(this.ARModel) {
+              const relativePositin = await SARMap.getElementPosition(this.ARModel.layerName, this.ARModel.id)
+              // console.warn("relativePositin: " + JSON.stringify(relativePositin))
+              if(relativePositin) {
+                const timer = setTimeout(async ()=>{
+                  await SExhibition.setTrackingTarget(relativePositin)
+                  await SExhibition.startTrackingTarget()
+                  clearTimeout(timer)
+                }, 2300)
+              }
+            }
+            clearTimeout(timer01)
+          },300)
+
+
         }
       }
     })

@@ -2863,7 +2863,7 @@ class DoctorCC extends Component<Props, State> {
         {this.state.isShowFull && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'action') && this.renderActionSelected()}
         {!this.state.isShowFull && this.state.selectType === 'reloader' && this.renderReloaderSelected()}
         {this.state.isShowFull && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'position') && this.renderPhotoPositionSelected()}
-        {this.state.isShowFull && (this.state.selectType === 'photo' && this.state.photoBtnKey === 'operation') && this.renderOperationSelected()}
+        {this.state.isShowFull && ((this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.photoBtnKey === 'operation') && this.renderOperationSelected()}
 
         {/* 右边按钮 */}
         <View

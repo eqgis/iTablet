@@ -316,6 +316,17 @@ class CoverView extends React.Component<Props, State> {
     if(this.flowEnabled) {
       this.flowEnabled = false
       SExhibition.hidePipeFlow()
+      const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+      if(layer){
+        SExhibition.restorePipeMaterial(
+          layer.name,
+          getRoute1Names()
+        )
+        SExhibition.restorePipeMaterial(
+          layer.name, 
+          getRoute2Names()
+        )
+      }
     }
   }
 
@@ -538,10 +549,19 @@ class CoverView extends React.Component<Props, State> {
     await SExhibition.hidePipeFlow()
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if(layer){
+      await SExhibition.restorePipeMaterial(
+        layer.name,
+        index === 1 ? getRoute2Names() : getRoute1Names()
+      )
       SExhibition.showPipeFlow(
         layer.name, 
         index === 1 ? getFlowRoute1() : getFlowRoute2()
         )
+
+      SExhibition.makePipeMaterialTransparent(
+        layer.name, 
+        index === 1 ? getRoute1Names() : getRoute2Names()
+      )
     }
   }
 
@@ -1227,14 +1247,15 @@ export default CoverView
 
 function getFlowRoute1(): FlowParam[] {
   const speed = 0.7
-  const heightOffset = 0.1
+  const heightOffset = 0
   const pose = 0
+  const scale = 2
   return [
     {
       start: {x: -1.318, y:  -0.141 + heightOffset, z: -11},
       end:  {x: -1.318, y:  -0.141 + heightOffset, z: -0.75},
       speed: speed,
-      segment: 10,
+      segment: 10 * scale,
       runRange: 1,
       pose,
     },
@@ -1242,7 +1263,7 @@ function getFlowRoute1(): FlowParam[] {
       start: {x: -1.135, y:  -0.141 + heightOffset, z: -0.093},
       end:  {x: -0.462, y:  -0.141 + heightOffset, z: -0.093},
       speed: speed,
-      segment: 1,
+      segment: 1* scale,
       runRange: 1,
       pose,
     },
@@ -1250,7 +1271,7 @@ function getFlowRoute1(): FlowParam[] {
       start: {x: -0.332, y: -0.141 + heightOffset, z: 0.3},
       end:  {x: -0.332, y:  -0.141 + heightOffset, z: 1.607},
       speed: speed,
-      segment: 2,
+      segment: 2* scale,
       runRange: 1,
       pose,
     },
@@ -1258,7 +1279,7 @@ function getFlowRoute1(): FlowParam[] {
       start: {x: -0.677, y: -0.141 + heightOffset, z: 1.852},
       end:  {x: -4.338, y:  -0.141 + heightOffset, z: 1.852},
       speed: speed,
-      segment: 5,
+      segment: 5* scale,
       runRange: 1,
       pose,
     },
@@ -1266,7 +1287,7 @@ function getFlowRoute1(): FlowParam[] {
       start: {x: -4.645, y: -0.141 + heightOffset, z: 1.664},
       end:  {x: -4.645, y:  -0.141 + heightOffset, z: 1.191},
       speed: speed,
-      segment: 1,
+      segment: 1* scale,
       runRange: 1,
       pose,
     },
@@ -1274,7 +1295,7 @@ function getFlowRoute1(): FlowParam[] {
       start: {x: -4.324, y: -0.141 + heightOffset, z: 0.976},
       end:  {x: -0.265, y: -0.141 + heightOffset, z: 0.976},
       speed: speed,
-      segment: 5,
+      segment: 5* scale,
       runRange: 1,
       pose,
     },
@@ -1282,7 +1303,7 @@ function getFlowRoute1(): FlowParam[] {
       start: {x: 0.270, y: -0.141 + heightOffset, z: 0.691},
       end:  {x: 0.270, y:  -0.141 + heightOffset, z: -10.982},
       speed: speed,
-      segment: 10,
+      segment: 10* scale,
       runRange: 1,
       pose,
     },
@@ -1292,14 +1313,14 @@ function getFlowRoute1(): FlowParam[] {
 
 function getFlowRoute2(): FlowParam[] {
   const speed = 0.7
-  const offset = 0.1
+  const offset = 0
   const pose = 1
   return [
     {
       start: {x: -5.909 + offset , y: 0.415, z: 9.669},
       end:  {x: -5.909+ offset, y:  0.415 , z: 8.070},
       speed: speed,
-      segment: 2,
+      segment: 4,
       runRange: 1,
       pose,
     },
@@ -1315,7 +1336,7 @@ function getFlowRoute2(): FlowParam[] {
       start: {x: -6.069 + offset , y: 1.072, z: 7.891},
       end:  {x: -6.069+ offset, y:  3.070 , z: 7.891},
       speed: speed,
-      segment: 4,
+      segment: 5,
       runRange: 1,
       pose,
     },
@@ -1348,7 +1369,7 @@ function getFlowRoute2(): FlowParam[] {
       start: {x: -6.467 + offset , y: 4.067, z: 4.918},
       end:  {x: -6.467 + offset, y:  4.067 , z: 2.820},
       speed: speed,
-      segment: 3,
+      segment: 5,
       runRange: 1,
       pose,
     },
@@ -1356,7 +1377,7 @@ function getFlowRoute2(): FlowParam[] {
       start: {x: -5.892 + offset , y: 4.043, z: 2.427},
       end:  {x: -5.892 + offset, y:  4.043 , z: 0.003},
       speed: speed,
-      segment: 3,
+      segment: 6,
       runRange: 1,
       pose,
     },
@@ -1364,23 +1385,39 @@ function getFlowRoute2(): FlowParam[] {
       start: {x: -6.477 + offset , y: 4.043, z: -0.388},
       end:  {x: -6.477+ offset, y:  4.043 , z: -2.89},
       speed: speed,
-      segment: 3,
+      segment: 6,
       runRange: 1,
       pose,
     },
     {
       start: {x: -6.061 + offset , y: 4.043, z: -3.295},
+      end:  {x: -6.061+ offset, y:  4.043 , z: -5.531},
+      speed: speed,
+      segment: 5,
+      runRange: 1,
+      pose,
+    },
+    {
+      start: {x: -6.061 + offset , y: 4.043, z: -6.147},
       end:  {x: -6.061+ offset, y:  4.043 , z: -7.033},
+      speed: speed,
+      segment: 2,
+      runRange: 1,
+      pose,
+    },
+    {
+      start: {x: -6.061 + offset , y: 3.418, z: -7.558},
+      end:  {x: -6.061+ offset, y: 3.418, z: -9.038},
       speed: speed,
       segment: 3,
       runRange: 1,
       pose,
     },
     {
-      start: {x: -6.061 + offset , y: 3.396, z: -7.558},
-      end:  {x: -5.896+ offset, y: 3.419, z: -9.657},
+      start: {x: -5.924 + offset , y: 3.418, z: -9.531},
+      end:  {x: -5.924 + offset, y: 3.418, z: -9.874},
       speed: speed,
-      segment: 3,
+      segment: 1,
       runRange: 1,
       pose,
     },
@@ -1388,7 +1425,7 @@ function getFlowRoute2(): FlowParam[] {
       start: {x: -5.896 + offset , y: 3.730, z: -10.041},
       end:  {x: -5.896+ offset, y:  4.832, z: -10.040},
       speed: speed,
-      segment: 3,
+      segment: 4,
       runRange: 1,
       pose,
     },
@@ -1400,5 +1437,93 @@ function getFlowRoute2(): FlowParam[] {
       runRange: 1,
       pose,
     },
+  ]
+}
+
+
+function getRoute1Names(): string[] {
+  return [
+    '地下冷水管_23',
+    '地下冷水管_弯头14',
+    '地下冷水管_24',
+    '地下冷水管_弯头13',
+    '地下冷水管_25',
+    '地下冷水管_四通05',
+    '地下冷水管_弯头12',
+    '地下冷水管_26',
+    '地下冷水管_27',
+    '地下冷水管_弯头11',
+    '地下冷水管_28',
+    '地下冷水管_弯头10',
+    '地下冷水管_29',
+    '地下冷水管_弯头09',
+    '地下冷水管_30'
+  ]
+}
+
+function getRoute2Names(): string[] {
+  return [
+    '墙面冷水管_122',
+    '墙面冷水管_弯头67',
+    '墙面冷水管_121',
+    '墙面冷水管_弯头68',
+    '墙面冷水管_120',
+    '墙面冷水管_三通19',
+    '墙面冷水管_119',
+    '墙面冷水管_弯头69',
+    '墙面冷水管_118',
+    '墙面冷水管_三通14',
+    '墙面冷水管_139',
+    '墙面冷水管_弯头70',
+    '墙面冷水管_138',
+    '墙面冷水管_弯头71',
+    '墙面冷水管_137',
+    '墙面冷水管_三通13',
+    '墙面冷水管_110',
+    '墙面冷水管_四通06',
+    '墙面冷水管_111',
+    '墙面冷水管_弯头30',
+    '墙面冷水管_112',
+    '墙面冷水管_弯头29',
+    '墙面冷水管_113',
+    '墙面冷水管_弯头28',
+    '墙面冷水管_114',
+    '墙面冷水管_弯头27',
+    '墙面冷水管_115',
+    '墙面冷水管_四通05',
+    '墙面冷水管_116',
+    '墙面冷水管_三通06',
+    '墙面冷水管_27',
+    '墙面冷水管_弯头26',
+    '墙面冷水管_28',
+    '墙面冷水管_弯头25',
+    '墙面冷水管_29',
+    '墙面冷水管_三通04',
+    '墙面冷水管_31',
+    '墙面冷水管_三通05',
+    '墙面冷水管_32',
+    '墙面冷水管_弯头24',
+    '墙面冷水管_33',
+    '墙面冷水管_弯头23',
+    '墙面冷水管_34',
+    '墙面冷水管_弯头22',
+    '墙面冷水管_35',
+    '墙面冷水管_弯头21',
+    '墙面冷水管_36',
+    '墙面冷水管_弯头20',
+    '墙面冷水管_弯头19',
+    '墙面冷水管_38',
+    '墙面冷水管_弯头18',
+    '墙面冷水管_39',
+    '墙面冷水管_弯头17',
+    '墙面冷水管_40',
+    '墙面冷水管_弯头16',
+    '墙面冷水管_41',
+    '墙面冷水管_弯头15',
+    '墙面冷水管_42',
+    '墙面冷水管_弯头14',
+    '墙面冷水管_43',
+    '墙面冷水管_弯头13',
+    '墙面冷水管_44',
   ]
 }

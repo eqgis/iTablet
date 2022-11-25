@@ -907,6 +907,9 @@ class DoctorCC extends Component<Props, State> {
           // 在解说时点击退出按钮
           if(this.state.isRouteSpeak) {
             this.stopRouteAnimation()
+            if(this.isRouteSpeakPlay !== "") {
+              SoundUtil.stop(this.isRouteSpeakPlay)
+            }
             return
           }
 
@@ -964,6 +967,7 @@ class DoctorCC extends Component<Props, State> {
 
           },300)
         } else {
+          console.warn("node: " + JSON.stringify(this.positionInfo?.renderNode))
           if(this.positionInfo?.renderNode) {
             await SARMap.appointEditElement(this.ARModel.id, this.ARModel.layerName)
             await SARMap.setElementPositionInfo(this.ARModel.layerName, this.ARModel.id, this.positionInfo.renderNode)

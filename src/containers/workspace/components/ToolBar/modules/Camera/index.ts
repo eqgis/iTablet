@@ -3,6 +3,11 @@ import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
 import ToolAction from '../toolModule/ToolAction'
+import collectionModule from '../collectionModule'
+import { SCollector, SMCollectorType } from 'imobile_for_reactnative'
+import ToolbarModule from '../ToolbarModule'
+import LayerSelectionAttribute from '@/containers/layerAttribute/pages/layerSelectionAttribute/LayerSelectionAttribute'
+import { AppToolBar } from '@/utils'
 
 class CameraModule extends FunctionModule {
   constructor(props) {
@@ -10,7 +15,18 @@ class CameraModule extends FunctionModule {
   }
 
   action = async () => {
-    console.warn("344542322")
+    // 将点采集图层设为当前图层
+    const _params = ToolbarModule.getParams()
+    const layers = await (_params.getLayers())
+
+    let datasetName = "marker_118081"
+    for(let i = 0; i < layers.length; i ++) {
+      let layerDatasetName = layers[i].datasetName
+      if(layerDatasetName === datasetName) {
+        ToolbarModule.getParams().setCurrentLayer(layers[i])
+      }
+    }
+
     ToolAction.captureImage()
   }
 }

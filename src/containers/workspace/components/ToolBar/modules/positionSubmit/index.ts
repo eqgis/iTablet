@@ -2,7 +2,7 @@ import FunctionModule from '../../../../../../class/FunctionModule'
 import TourAction from 'applets/langchaoDemo/src/mapFunctionModules/Langchao/TourAction'
 import { getImage } from 'applets/langchaoDemo/src/assets'
 import Toast from '@/utils/Toast'
-import { SMap, SMCollectorType } from 'imobile_for_reactnative'
+import { SCollector, SMap, SMCollectorType } from 'imobile_for_reactnative'
 import { getThemeAssets } from '@/assets'
 import collectionModule from '../collectionModule'
 import ToolbarModule from '../ToolbarModule'
@@ -36,7 +36,7 @@ class PositionSubmitModule extends FunctionModule {
       await SMap.toLocationPoint({
         x: position.longitude,
         y: position.latitude,
-      })
+      }, false)
 
       // await SMap.setMapScale(1 / 2785.0)
       // await SMap.setMapCenter(position.longitude, position.latitude)
@@ -63,12 +63,29 @@ class PositionSubmitModule extends FunctionModule {
     AppToolBar.getProps().setCurrentSymbol(data)
 
     const type = SMCollectorType.POINT_GPS
-    collectionModule().actions.showCollection(type)
+    // collectionModule().actions.showCollection(type)
+
+    const position = await SMap.getCurrentLocation()
+    ToolbarModule.addData({
+      lastType: type,
+      lastLayer:undefined,
+    })
+
+    const point = await SCollector.addGPSPoint(type)
+    console.warn(point)
+    await collectionModule().actions.createCollector(type, undefined)
+    await collectionModule().actions.collectionSubmit(type)
+    await SCollector.stopCollect()
+    // 地图定位到指定点位置
+    await SMap.toLocationPoint({
+      x: position.longitude,
+      y: position.latitude,
+    })
     // const merPosition = this.llToMerto(position)
     // await SMap.setMapCenter(merPosition.x, merPosition.y)
     // await SMap.setMapScale(1 / 2785.0)
 
-    await SCollector.stopCollect()
+
 
   }
 }

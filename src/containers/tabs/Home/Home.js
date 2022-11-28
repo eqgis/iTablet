@@ -157,6 +157,7 @@ export default class Home extends Component {
                 "android.permission.READ_CONTACTS",
                 "android.permission.WRITE_CONTACTS",
                 "android.permission.GET_ACCOUNTS",
+                "android.permission.CALL_PHONE",
               ]
               const sdkVesion = Platform.Version
               // android 12 的版本api编号 31 32 android 13的版本api编号 33
@@ -1169,6 +1170,7 @@ export default class Home extends Component {
       'android.permission.RECORD_AUDIO',
       'android.permission.BLUETOOTH',
       'android.permission.BLUETOOTH_ADMIN',
+      "android.permission.CALL_PHONE",
     ]
     if(Platform.OS === 'android') {
       const sdkVesion = Platform.Version

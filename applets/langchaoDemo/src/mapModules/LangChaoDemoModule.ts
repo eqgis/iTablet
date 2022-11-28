@@ -21,9 +21,10 @@ import {
 } from 'react-native'
 import { getThemeAssets } from '@/assets'
 import TourAction from '../mapFunctionModules/Langchao/TourAction'
-import { DatasetType, EngineType, FileTools, SMap, SProcess } from 'imobile_for_reactnative'
+import { DatasetType, EngineType, FileTools, SMap, SProcess, SMCollectorType, SCollector } from 'imobile_for_reactnative'
 import NavigationService from '@/containers/NavigationService'
 import navigators from '../mapFunctionModules/Langchao/views/index'
+import { ToolbarModule } from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
 /**
  * 首页显示的旅行轨迹模块
  */
@@ -42,7 +43,7 @@ export default class LangChaoDemoModule extends Module {
         PositionSubmitModule,
         // collectionModule,
         TrackModule,
-        // CameraModule(),
+        CameraModule(),
         toolModule(),
         changeMapModule(),
         // Tour(),             // 创建轨迹
@@ -78,7 +79,7 @@ export default class LangChaoDemoModule extends Module {
       // 系统自带Tab
       MapTabs.MapView,          // 系统自带Tab-地图
       MapTabs.LayerManager,     // 系统自带Tab-图层
-      // MapTabs.LayerAttribute,   // 系统自带Tab-属性
+      MapTabs.LayerAttribute,   // 系统自带Tab-属性
 
       // todo 用户自定义Tab页面
       {

@@ -23,6 +23,7 @@ import {
   // SCollectSceneFormView,
   ARElementType,
   ARAction,
+  SMCollectorType,
 } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import {
@@ -141,6 +142,9 @@ import { onAddARAnimation } from '@/Toolbar/modules/arAnimation/Actions'
 import { CommonActions } from '@react-navigation/native'
 import { Module } from '@/class'
 import PositionStateView from '../../components/PositionStateView'
+import {
+  collectionModule,
+} from '@/containers/workspace/components/ToolBar/modules'
 
 global.markerTag = 118082
 
@@ -2031,6 +2035,32 @@ export default class MapView extends React.Component {
       if (this.viewEntire) {
         SMap.viewEntire()
       }
+
+      const typeP = SMCollectorType.POINT_GPS
+      const dataP = {name:"destination",type:"marker",id:118081}
+
+      AppToolBar.getProps().setCurrentSymbol(dataP)
+
+      ToolbarModule.addData({
+        lastType: typeP,
+        lastLayer:undefined,
+      })
+
+      await collectionModule().actions.createCollector(typeP, undefined)
+      // await collectionModule().actions.collectionSubmit(typeP)
+
+      const dataL = {"name":"专用公路","type":"line","id":965018}
+
+      AppToolBar.getProps().setCurrentSymbol(dataL)
+      const typeL = SMCollectorType.LINE_GPS_PATH
+      ToolbarModule.addData({
+        lastType: typeL,
+        lastLayer:undefined,
+      })
+      await collectionModule().actions.createCollector(typeL, undefined)
+      // await collectionModule().actions.collectionSubmit(typeL)
+      await SCollector.stopCollect()
+
     }.bind(this)())
   }
 

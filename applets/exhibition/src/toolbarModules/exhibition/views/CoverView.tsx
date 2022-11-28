@@ -208,6 +208,7 @@ class CoverView extends React.Component<Props, State> {
 
   onHolePress = (index: string) => {
     if(this.sideBarIndex === index) {
+      this.stopCover()
       this.setState({
         isSecondaryShow: false,
       })
@@ -236,6 +237,7 @@ class CoverView extends React.Component<Props, State> {
 
   onRollingPress = (index: string) => {
     if(this.sideBarIndex === index) {
+      this.stopRolling()
       this.setState({
         isSecondaryShow: false,
       })
@@ -260,6 +262,7 @@ class CoverView extends React.Component<Props, State> {
   flowEnabled = false
   onFlowPress = async (index: string) => {
     if(this.sideBarIndex === index) {
+      this._disableFlow()
       this.setState({
         isSecondaryShow: false,
       })
@@ -284,8 +287,19 @@ class CoverView extends React.Component<Props, State> {
     })
   }
 
-  onAlertPress = () => {
-    this.timeoutTrigger?.onFirstMenuClick()
+  onAlertPress = (index: string) => {
+    if(this.sideBarIndex === index) {
+      this._disableAlert()
+      this.setState({
+        isSecondaryShow: false,
+      })
+      this.sideBarIndex = ""
+      this.sideBar?.clear()
+      return
+    }
+    this.sideBarIndex = index
+
+    this.timeoutTrigger?.onShowSecondMenu()
     this.stopCover()
     this.stopRolling()
     this._hideSlide()
@@ -301,6 +315,7 @@ class CoverView extends React.Component<Props, State> {
   attribteEanbled = false
   onAttributePres = (index: string) => {
     if(this.sideBarIndex === index) {
+      this._disableAttribte()
       this.sideBarIndex = ""
       this.sideBar?.clear()
       return
@@ -351,7 +366,7 @@ class CoverView extends React.Component<Props, State> {
   onFlowSelect = (index: 1 | 2) => {
     this.flow(index)
   }
-  
+
   onAlertSelect = (index: 1 | 2) => {
     this.alert(index)
   }
@@ -382,7 +397,7 @@ class CoverView extends React.Component<Props, State> {
           getRoute1Names()
         )
         SExhibition.restorePipeMaterial(
-          layer.name, 
+          layer.name,
           getRoute2Names()
         )
       }
@@ -467,7 +482,7 @@ class CoverView extends React.Component<Props, State> {
 
   onSingleClick = () => {
 
-    if(this.holeBarIndex === this.sideBar?.state.currentIndex || this.rollingbarIndex === this.sideBar?.state.currentIndex || this.flowBarIndex === this.sideBar?.state.currentIndex) {
+    if(this.sideBar?.state.currentIndex !== '') {
       this.setState({
         isSecondaryShow: !this.state.isSecondaryShow,
       })
@@ -623,12 +638,12 @@ class CoverView extends React.Component<Props, State> {
         index === 1 ? getRoute2Names() : getRoute1Names()
       )
       SExhibition.showPipeFlow(
-        layer.name, 
+        layer.name,
         index === 1 ? getFlowRoute1() : getFlowRoute2()
-        )
+      )
 
       SExhibition.makePipeMaterialTransparent(
-        layer.name, 
+        layer.name,
         index === 1 ? getRoute1Names() : getRoute2Names()
       )
     }
@@ -639,7 +654,7 @@ class CoverView extends React.Component<Props, State> {
     await this._disableAlert()
     if(layer) {
       SExhibition.showBreakPoint(layer.name, index === 1 ? getAlertPipe1() : getAlertPipe2())
-      SExhibition.makePipeMaterialTransparent(layer.name, 
+      SExhibition.makePipeMaterialTransparent(layer.name,
         index === 1 ? getRoute1Names() : getRoute2Names()
       )
       SExhibition.showPipeFlow(layer.name,

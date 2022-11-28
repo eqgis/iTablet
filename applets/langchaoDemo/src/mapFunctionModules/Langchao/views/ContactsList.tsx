@@ -147,20 +147,20 @@ class ContactsList extends Component<Props, State> {
 
   }
 
-  /**
-   * 底部工具栏
-   * @returns {XML}
-   */
-  renderToolBar = () => {
-    return (
-      <MapToolbar
-        navigation={this.props.navigation}
-        mapModules={this.props.mapModules}
-        initIndex={2}
-        type={"langchao"}
-      />
-    )
-  }
+  // /**
+  //  * 底部工具栏
+  //  * @returns {XML}
+  //  */
+  // renderToolBar = () => {
+  //   return (
+  //     <MapToolbar
+  //       navigation={this.props.navigation}
+  //       mapModules={this.props.mapModules}
+  //       initIndex={2}
+  //       type={"langchao"}
+  //     />
+  //   )
+  // }
   /** 分隔线 */
   renderSeparator = () => {
     return (
@@ -329,12 +329,12 @@ class ContactsList extends Component<Props, State> {
         showFullInMap={true}
         headerProps={{
           title: "通讯录",
-          withoutBack: true,
+          withoutBack: false,
           // headerRight: this.renderHeaderRight(),
           navigation: this.props.navigation,
           headerStyle: { borderBottomWidth: 0 },
         }}
-        bottomBar={this.renderToolBar()}
+        // bottomBar={this.renderToolBar()}
         style={{
           flex: 1,
           backgroundColor: '#fff',

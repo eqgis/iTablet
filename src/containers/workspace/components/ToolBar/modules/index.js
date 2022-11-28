@@ -50,6 +50,7 @@ import arToolbox from './arToolbox'
 import CameraModule from './Camera'
 import PositionSubmitModule from './positionSubmit'
 import TrackModule from './trackModule'
+import CallModule from './Call'
 
 export {
   startModule,
@@ -105,4 +106,5 @@ export {
   CameraModule,
   PositionSubmitModule,
   TrackModule,
+  CallModule,
 }

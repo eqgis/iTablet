@@ -472,7 +472,7 @@ class AR3DMapView extends React.Component<Props, State> {
         name: '科技蓝',
         image: getImage().icon_tool_meterials1,
         action: async () => {
-          SExhibition.changeBuildMaterials(1)
+          SExhibition.changeBuildMaterials(2)
           // this.setState({ showShape: false })
           this.timeoutTrigger?.onBackFromSecondMenu()
         },
@@ -481,7 +481,7 @@ class AR3DMapView extends React.Component<Props, State> {
         name: '复古棕',
         image: getImage().icon_tool_meterials2,
         action: async () => {
-          SExhibition.changeBuildMaterials(2)
+          SExhibition.changeBuildMaterials(1)
           // this.setState({ showShape: false })
           this.timeoutTrigger?.onBackFromSecondMenu()
         },

@@ -12,6 +12,7 @@ import {
   PositionSubmitModule,
   collectionModule,
   TrackModule,
+  CallModule,
 } from '@/containers/workspace/components/ToolBar/modules'
 // import { Tour } from '../mapFunctionModules'
 import { getImage } from '../assets'
@@ -40,6 +41,7 @@ export default class LangChaoDemoModule extends Module {
         // startModule(),      // 开始
         // addModule(),        // 添加
         // markModule(),       // 标注
+        CallModule(),
         PositionSubmitModule,
         // collectionModule,
         TrackModule,
@@ -82,18 +84,18 @@ export default class LangChaoDemoModule extends Module {
       MapTabs.LayerAttribute,   // 系统自带Tab-属性
 
       // todo 用户自定义Tab页面
-      {
-        key: module,
-        title: "呼叫中心",
-        //'属性',
-        image: getImage().telephone1,
-        selectedImage: getImage().telephone2,
-        btnClick: () => {
-          Toast.show("呼叫中心")
-          // Linking.openURL('tel:10086')
-          NavigationService.navigate('ContactsList')
-        },
-      },
+      // {
+      //   key: module,
+      //   title: "呼叫中心",
+      //   //'属性',
+      //   image: getImage().telephone1,
+      //   selectedImage: getImage().telephone2,
+      //   btnClick: () => {
+      //     Toast.show("呼叫中心")
+      //     // Linking.openURL('tel:10086')
+      //     NavigationService.navigate('ContactsList')
+      //   },
+      // },
 
       MapTabs.MapSetting,       // 系统自带Tab-设置
     ]

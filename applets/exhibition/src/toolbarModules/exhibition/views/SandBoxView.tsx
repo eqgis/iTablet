@@ -1055,7 +1055,12 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
     // 退出特效,重置选中
     // if (prevProps.type === 'effects' && this.props.type !== 'effects' && this.state.selectKey) {
     if (prevProps.type === 'effects' && this.props.type === '') {
-      this.effectClose(this.props.type === '')
+      // this.effectClose(this.props.type === '')
+      this.setState({
+        selectKey: '',
+        data: [],
+      })
+      this.currentEffect && this.effectAction(this.currentEffect)
     } else if (prevProps.type === 'mountain_guide' && this.props.type !== 'mountain_guide' && this.state.selectKey) {
       if (this.props.type === 'effects' || this.props.type === 'edit') {
         this.lastFunction = {
@@ -1078,8 +1083,9 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       const items = await this.getEffects()
       const data = []
       for (const item of items) {
-        const name = item.name.lastIndexOf('.') > 0 ? item.name.substring(0, item.name.lastIndexOf('.')) : item.name
+        let name = item.name.lastIndexOf('.') > 0 ? item.name.substring(0, item.name.lastIndexOf('.')) : item.name
         const imagePath = item.path.replace(item.name, name + '.png')
+        name = name.replace(/[0-9]/g, '')
         let image
         if (item.image) {
           image = item.image
@@ -1183,18 +1189,13 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         showBottom: true,
       })
     } else {
-      if (this.currentEffect) {
-        this.effectAction(this.currentEffect)
-      }
       this.setState({
         data: [],
         showBottom: false,
       })
     }
-    if (this.props.type !== 'effects') {
-      if (this.currentEffect) {
-        this.effectAction(this.currentEffect)
-      }
+    if (this.currentEffect) {
+      this.effectAction(this.currentEffect)
     }
   }
 
@@ -1971,7 +1972,6 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
     for (let i = 0; i < effects.length; i++) {
       if (effects[1].name === '艳阳高照') {
         hasSun = true
-        break
       }
     }
     if (!hasSun) {
@@ -1981,6 +1981,11 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         image: getImage().sun,
       })
     }
+    effects.unshift({
+      name: '无',
+      path: '',
+      image: getImage().tool_spot,
+    })
     return effects
   }
 
@@ -2000,7 +2005,15 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
           break
         }
       }
-      if (this.state.selectKey === '艳阳高照') {
+      if (item.key === '无') {
+        SARMap.closeSandBoxLighting()
+        SARMap.setLayerVisible(layerName, false)
+        this.setState({
+          selectKey: item.key,
+        })
+        this.currentEffect = undefined
+        return
+      } else if (this.state.selectKey === '艳阳高照' && item.name !== '艳阳高照') {
         SARMap.closeSandBoxLighting()
         if (item.name === '艳阳高照') {
           this.setState({
@@ -2013,6 +2026,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         this.setState({
           selectKey: item.key,
         })
+        this.currentEffect = item
         return
       }
       if (!item.path) return

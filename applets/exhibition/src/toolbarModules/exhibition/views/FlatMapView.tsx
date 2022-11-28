@@ -526,6 +526,7 @@ class FlatMapVIew extends React.Component<Props, State> {
     AppEvent.removeListener('ar_single_click', this.onSingleClick)
     SExhibition.stopTrackingTarget()
     SExhibition.removeFlatMap()
+    SMap.exitMap()
     AppToolBar.goBack()
   }
 

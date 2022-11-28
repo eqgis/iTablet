@@ -1191,6 +1191,11 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         showBottom: false,
       })
     }
+    if (this.props.type !== 'effects') {
+      if (this.currentEffect) {
+        this.effectAction(this.currentEffect)
+      }
+    }
   }
 
   close = async () => {

@@ -248,6 +248,9 @@ const DefaultLocation ={
     // x: 90,
     // y: -80,
     // z: 2.94,
+    x: 0,
+    y: 0,
+    z: 0,
   },
   scale: {
     x: DefaultScale,
@@ -379,10 +382,20 @@ class SandBoxView extends React.Component<Props, State> {
         showIndicator: false,
         action: async () => {
           if (!this.checkSenceAndToolType()) return
-          if (oraginSandboxStatus) {
+          if (DefaultLocation) {
+            this.toolView?.setCanBeClick(false)
             this.state.toolType === '' && this.timeoutTrigger?.onFirstMenuClick()
             this.toolView?.reset()
-            await SARMap.setSandBoxPosition(currentLayer.name, 1, oraginSandboxStatus)
+            // await SARMap.setSandBoxPosition(currentLayer.name, 1, oraginSandboxStatus)
+            await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
+              ...DefaultLocation,
+              duration: AnimationTime,
+            })
+            setTimeout(async () => {
+              // 等待,防止移动获取位置错误
+              await SARMap.commitSandTableChanges()
+              this.toolView?.setCanBeClick(true)
+            }, AnimationTime)
           }
         }
       },
@@ -1207,6 +1220,14 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
   reset = () => {
     this.scaleBar?.onClear()
     this.rotationBar?.onClear()
+  }
+
+  setCanBeClick = (canBeClick: boolean) => {
+    if (canBeClick !== this.state.canBeClick) {
+      this.setState({
+        canBeClick,
+      })
+    }
   }
 
   beforeFunc = () => {

@@ -19,7 +19,7 @@ class CameraModule extends FunctionModule {
     const _params = ToolbarModule.getParams()
     const layers = await (_params.getLayers())
 
-    let datasetName = "marker_118081"
+    let datasetName = "marker_322"
     for(let i = 0; i < layers.length; i ++) {
       let layerDatasetName = layers[i].datasetName
       if(layerDatasetName === datasetName) {

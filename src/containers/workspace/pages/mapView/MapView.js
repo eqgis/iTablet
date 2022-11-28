@@ -2049,6 +2049,18 @@ export default class MapView extends React.Component {
       await collectionModule().actions.createCollector(typeP, undefined)
       // await collectionModule().actions.collectionSubmit(typeP)
 
+      const typePm = SMCollectorType.POINT
+      const dataPm = {name:"高程点",type:"marker",id:322}
+
+      AppToolBar.getProps().setCurrentSymbol(dataPm)
+
+      ToolbarModule.addData({
+        lastType: typePm,
+        lastLayer:undefined,
+      })
+
+      await collectionModule().actions.createCollector(typePm, undefined)
+
       const dataL = {"name":"专用公路","type":"line","id":965018}
 
       AppToolBar.getProps().setCurrentSymbol(dataL)

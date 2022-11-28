@@ -186,6 +186,13 @@ class CoverView extends React.Component<Props, State> {
     ]
   }
 
+  stopDrawLine = () => {
+    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+    if(layer){
+      SARMap.stopDrawLine(layer.name)
+    }
+  }
+
   onFullScapePress = (index: string) => {
     if(this.sideBarIndex === index) {
       this.sideBarIndex = ""
@@ -201,6 +208,7 @@ class CoverView extends React.Component<Props, State> {
     this.stopCover()
     this.stopRolling()
     this._disableAlert()
+    this.stopDrawLine()
     this.setState({
       secondMenuData: [],
     })
@@ -253,6 +261,7 @@ class CoverView extends React.Component<Props, State> {
     this._disableAttribte()
     this._disableFlow()
     this._disableAlert()
+    this.stopDrawLine()
     this.setState({
       secondMenuData: this.getRollingModeMenu(),
       isSecondaryShow: true,
@@ -279,6 +288,7 @@ class CoverView extends React.Component<Props, State> {
     this._hideSlide()
     this._disableAttribte()
     this._disableAlert()
+    this.stopDrawLine()
     this.flowEnabled = !this.flowEnabled
 
     this.setState({
@@ -305,6 +315,7 @@ class CoverView extends React.Component<Props, State> {
     this._hideSlide()
     this._disableAttribte()
     this._disableFlow()
+    this.stopDrawLine()
 
     this.setState({
       secondMenuData: this.getAlertMenu(),
@@ -328,6 +339,7 @@ class CoverView extends React.Component<Props, State> {
     this._hideSlide()
     this._disableFlow()
     this._disableAlert()
+    this.stopDrawLine()
     this.attribteEanbled = !this.attribteEanbled
     SExhibition.enablePipeAttribute(this.attribteEanbled)
     this.setState({

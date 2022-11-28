@@ -8,6 +8,7 @@ const tool_boat_guide = require('./tool_boat_guide.png')
 const tool_effect = require('./tool_effect.png')
 const tool_mountain_guide = require('./tool_mountain_guide.png')
 const sun = require('./sun.png')
+const img_none = require('./img_none.png')
 
 export {
   tool_guide_selected,
@@ -20,4 +21,5 @@ export {
   tool_effect,
   tool_mountain_guide,
   sun,
+  img_none,
 }

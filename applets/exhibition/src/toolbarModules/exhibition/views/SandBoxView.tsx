@@ -1984,7 +1984,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
     effects.unshift({
       name: '无',
       path: '',
-      image: getImage().tool_spot,
+      image: getImage().img_none,
     })
     return effects
   }

@@ -11,6 +11,11 @@ import { fontSize } from "@/containers/tabs/Mine/Register/Styles"
 import { getImage } from "imobile_for_reactnative/components/ToolbarKit/ToolbarResource"
 import { getLanguage } from "@/language"
 import { getPublicAssets } from "@/assets"
+import { setCurrentSymbol } from "@/redux/models/symbol"
+import { SCollector, SMCollectorType } from "imobile_for_reactnative"
+import NavigationService from "@/containers/NavigationService"
+import { collectionModule } from "@/containers/workspace/components/ToolBar/modules"
+import ToolbarModule from "@/containers/workspace/components/ToolBar/modules/ToolbarModule"
 
 interface contactItemType {
   recordID: string,
@@ -29,6 +34,7 @@ interface Props extends ReduxProps {
 	mapModules: any,
   device: any,
   language: string,
+  setCurrentSymbol: (param: any) => void,
 }
 
 interface State {
@@ -145,9 +151,33 @@ class ContactsList extends Component<Props, State> {
     }
   }
 
-  itemAction = (telephone: string) => {
-    const url = 'tel:' + telephone
-    Linking.openURL(url)
+  itemAction = async (telephone: string) => {
+    try {
+      NavigationService.navigate('MapView',{type: 'langchao'})
+      const data = {"name":"专用公路","type":"line","id":965018}
+      this.props.setCurrentSymbol(data)
+      const type = SMCollectorType.LINE_GPS_PATH
+      // ToolbarModule.addData({
+      //   lastType: type,
+      //   lastLayer:undefined,
+      // })
+      // await collectionModule().actions.createCollector(type, undefined)
+
+      collectionModule().actions.showCollection(type)
+      const timer = setTimeout(async () => {
+        await SCollector.startCollect(type)
+
+        const url = 'tel:' + telephone
+        Linking.openURL(url)
+
+        clearTimeout(timer)
+      }, 1000)
+
+
+    } catch (error) {
+      console.warn("error：" + JSON.stringify(error))
+    }
+
     // Linking.canOpenURL(url).then((supported: boolean) => {
     //   if (!supported) {
     //     Toast.show('您的系统不支持打电话！')
@@ -534,6 +564,7 @@ const mapStateToProp = (state: RootState) => ({
 })
 
 const mapDispatch = {
+  setCurrentSymbol,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

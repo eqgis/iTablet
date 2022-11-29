@@ -1,13 +1,14 @@
 // import React from 'react'
-import { SMap, SMediaCollector } from 'imobile_for_reactnative'
+import { SCollector, SMap, SMediaCollector, SMCollectorType } from 'imobile_for_reactnative'
 import { FileTools } from '@/native'
 import { ConstPath } from '@/constants'
-import { Toast } from '@/utils'
+import { AppToolBar, Toast } from '@/utils'
 import { getLanguage } from '@/language'
 import { ImagePicker } from '@/components'
 import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
 import { MediaData } from 'imobile_for_reactnative/types/interface/collector/SMediaCollector'
 import { SuperMapKnown } from '@/containers/tabs'
+import { collectionModule } from '@/containers/workspace/components/ToolBar/modules'
 
 /**
  * 右侧创建轨迹事件
@@ -81,27 +82,47 @@ const showLoading = (time: number, callback?: () => void) => {
 }
 
 /** 顶上的位置上传按钮 */
-const positionUpload = () => {
+const positionUpload = async () => {
+  // showLoading(2000, async () => {
+  //   // // await SMap.moveToCurrent()
+  //   // // await SMap.removeAllCallout()
+  //   // const position = await SMap.getCurrentLocation()
+  //   // // await SMap.addLocationCallout(position.longitude, position.latitude, '当前位置', "2")
+  //   // await SMap.addCallouts([{
+  //   //   x: position.longitude,
+  //   //   y: position.latitude,
+  //   // }])
+  //   // // 地图定位到指定点位置
+  //   // await SMap.toLocationPoint({
+  //   //   x: position.longitude,
+  //   //   y: position.latitude,
+  //   // })
+
+  //   // await SMap.setMapScale(1 / 2785.0)
+  //   // await SMap.setMapCenter(position.longitude, position.latitude)
+  //   // await SMap.refreshMap()
+  //   Toast.show("上报成功")
+  // })
+// ==============================================================================
+  // const data = {"name":"专用公路","type":"line","id":965018}
+  // await AppToolBar.getProps().setCurrentSymbol(data)
+  // const type = SMCollectorType.LINE_GPS_PATH
+  // ToolbarModule.addData({
+  //   lastType: type,
+  //   lastLayer:undefined,
+  // })
+  // await collectionModule().actions.createCollector(type, undefined)
+  // // await SCollector.startCollect(type)
+
   showLoading(2000, async () => {
-    // await SMap.moveToCurrent()
-    // await SMap.removeAllCallout()
-    const position = await SMap.getCurrentLocation()
-    // await SMap.addLocationCallout(position.longitude, position.latitude, '当前位置', "2")
-    await SMap.addCallouts([{
-      x: position.longitude,
-      y: position.latitude,
-    }])
-    // 地图定位到指定点位置
-    await SMap.toLocationPoint({
-      x: position.longitude,
-      y: position.latitude,
-    })
-    
-    // await SMap.setMapScale(1 / 2785.0)
-    // await SMap.setMapCenter(position.longitude, position.latitude)
-    // await SMap.refreshMap()
+    // await SCollector.startCollect(type)
+
+    const type = SMCollectorType.LINE_GPS_PATH
+    await collectionModule().actions.collectionSubmit(type)
+    await SCollector.stopCollect()
     Toast.show("上报成功")
   })
+
 }
 
 export default {

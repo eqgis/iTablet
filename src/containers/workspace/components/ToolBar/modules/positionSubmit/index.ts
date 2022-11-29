@@ -72,7 +72,7 @@ class PositionSubmitModule extends FunctionModule {
     })
 
     const point = await SCollector.addGPSPoint(type)
-    console.warn(point)
+    // console.warn(point)
     await collectionModule().actions.createCollector(type, undefined)
     await collectionModule().actions.collectionSubmit(type)
     await SCollector.stopCollect()

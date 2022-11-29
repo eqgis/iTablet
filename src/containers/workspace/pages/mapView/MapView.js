@@ -2088,6 +2088,12 @@ export default class MapView extends React.Component {
         }
       }
       // await this.props.getLayers()
+      const position = await SMap.getCurrentLocation()
+      // 地图定位到指定点位置
+      await SMap.toLocationPoint({
+        x: position.longitude,
+        y: position.latitude,
+      })
 
     }.bind(this)())
   }

@@ -14,7 +14,7 @@ import { getPublicAssets } from "@/assets"
 
 interface contactItemType {
   recordID: string,
-  name: string, // givenName
+  name: string, // displayName
   phone: string, // phoneNumbers[0].number
   firstChar: string,
 }
@@ -84,9 +84,9 @@ class ContactsList extends Component<Props, State> {
 
       // 获取首字母数组
       await contacts.map((contact) => {
-        console.warn("contact: " + JSON.stringify(contact))
+        // console.warn("contact: " + JSON.stringify(contact))
         // 获取名字首字母
-        const letterFirst = getPinYin(contact.givenName, "", true).substring(0, 1)
+        const letterFirst = getPinYin(contact.displayName, "", true).substring(0, 1)
         letterArray.push(letterFirst)
         // 数组排序并去重
         letterArray = [...new Set(letterArray)].sort()
@@ -103,22 +103,27 @@ class ContactsList extends Component<Props, State> {
       // 将联系人放进各自的分类里
       contacts.map((contact) => {
         contactDataTemp.map((item: contactDataType) => {
-          // 获取名字首字母
-          const letterFirst = getPinYin(contact.givenName, "", true).substring(0, 1)
-          // 获取名字第一个字符
-          const firstChar = contact.givenName.substring(0, 1)
+          try {
+            // 获取名字首字母
+            const letterFirst = getPinYin(contact.displayName, "", true).substring(0, 1)
+            // 获取名字第一个字符
+            const firstChar = contact.displayName.substring(0, 1)
 
-          const reg = new RegExp("-", 'gi')
-          // 构造联系人对象
-          const contactItem: contactItemType = {
-            recordID: contact.recordID,
-            name: contact.givenName,
-            phone: contact.phoneNumbers[0].number.replace(reg, ""),
-            firstChar,
-          }
+            const reg = new RegExp("-", 'gi')
+            // 构造联系人对象
+            const contactItem: contactItemType = {
+              recordID: contact.recordID,
+              name: contact.displayName,
+              phone: contact.phoneNumbers[0].number.replace(reg, ""),
+              firstChar,
+            }
 
-          if (item.title === letterFirst) {
-            item.data.push(contactItem)
+            // console.warn("obj: " + JSON.stringify(contactItem))
+            if (item.title === letterFirst) {
+              item.data.push(contactItem)
+            }
+          } catch (error) {
+            console.warn(item.title + " - " + contact.displayName + " - " + JSON.stringify(error))
           }
 
         })
@@ -169,13 +174,16 @@ class ContactsList extends Component<Props, State> {
   }
 
   addConfirm = () => {
+    const firstChar = this.state.addName.substring(0, 1)
+    const givenName = this.state.addName.substring(1, this.state.addName.length)
     const newPerson = {
       phoneNumbers: [{
         label: "mobile",
         number: this.state.addNumber,
       }],
-      familyName: "",
-      givenName: this.state.addName,
+      familyName: firstChar,
+      displayName: this.state.addName,
+      givenName: givenName,
     }
     Contacts.addContact(newPerson)
     this.addDialog?.setDialogVisible(false)

@@ -2894,4 +2894,61 @@ export const language_ar: typeof language_cn = {
   PANE_ANIMATION: 'Pane animation',    // To be tanslated
   CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
   MODEL_DATA: 'Model data',   // To be tanslated
+
+  DOCTORCC:"Dr. AR Super",// To be tanslated
+  COVER:"AR Indoor Plumbing",// To be tanslated
+  SANDTABLE:"AR Sandtable",// To be tanslated
+  AR3DMAP:"AR 3D Map",// To be tanslated
+  ARFLATMAP:"AR Flat Map",// To be tanslated
+  ARBUILDING:"AR Building",// To be tanslated
+  EXITEXHIBITION:"Do you want to exit the showroom application?",// To be tanslated
+  SEARCHCLOSE:"Query Close",// To be tanslated
+  SEARCHSTART:"Query open, please click model query properties",// To be tanslated
+  ADJUSTMENT:"Adjust",// To be tanslated
+  SHAPE:"Shape",// To be tanslated
+  TEXTTURE:"Textture",// To be tanslated
+  TRAFFIC:"Traffic",// To be tanslated
+  CIRCULAR:"Circular",// To be tanslated
+  PLAINWHITE:"Plain White",// To be tanslated
+  TEACHBLUE:"Science Blue",// To be tanslated
+  RETROBROWN:"Restored Brown",// To be tanslated
+  LOCATIONSUCCESS:"Successful location",// To be tanslated
+  FLLOW_THE_ARROW:"Please follow the arrow guide to rotate the screen to view the map",// To be tanslated
+  PANORAMA:"Panoramic",// To be tanslated
+  ROLLER:"Shutters",// To be tanslated
+  HOLE:"Hole",// To be tanslated
+  FLOW:"Flow",// To be tanslated
+  BURST:"Burst",// To be tanslated
+  SCOPE:"Scope",// To be tanslated
+  FIXED:"Fixed",// To be tanslated
+  FLOW1:"Fixed one",// To be tanslated
+  FLOW2:"Fixed two",// To be tanslated
+  BURST1:"Burst one",// To be tanslated
+  BURST2:"Burst two",// To be tanslated
+  LINK_TYPE:"Link Type",// To be tanslated
+  ROUTINE:"Routine",// To be tanslated
+  SECTION_DIAMETER:"Diameter",// To be tanslated
+  POSITION_ADJUST:"Adjustment position",// To be tanslated
+  SCAN_TOP:"Please scan the QR code on the demo stage",// To be tanslated
+  SCAN_BOTTOM:"Please scan the QR code on the ground",// To be tanslated
+  DEEP:"Deep",// To be tanslated
+  HOLE_ADJUST:"Hole Adjust",// To be tanslated
+  LIGHT:"The light of insight",// To be tanslated
+  MISSION:"Corporate Mission",// To be tanslated
+  RESEARCH:"Hypergraph Research",// To be tanslated
+  BREAK_DOWN:"Translate",// To be tanslated
+  ACTION:"Action",// To be tanslated
+  CHANGE:"Change",// To be tanslated
+  GROUP_PHOTO:"Group Photo",// To be tanslated
+  TAKE_VIDEO:"Video",// To be tanslated
+  PLEASE_WAIT_AND_EXIT:"Wait until the data is loaded before exiting!",// To be tanslated
+  SVAE_LOCAL:"Save to local",// To be tanslated
+  SHARE_TO_WECHAT:"Share it on wechat",// To be tanslated
+  FOLLOW_ARROW:"Please follow the arrow guide to rotate the screen to see the content",// To be tanslated
+  SEARCH1:"Search",// To be tanslated
+  FIGURE:"Figure",// To be tanslated
+  ZOOM:"Zoom",// To be tanslated
+  MOUTAIN:"Mountain climbing",// To be tanslated
+  SHIP:"Cruise ship",// To be tanslated
+  WEATHER:"Weather",// To be tanslated
 }

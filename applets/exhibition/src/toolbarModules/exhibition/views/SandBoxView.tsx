@@ -21,6 +21,7 @@ import ScanWrap from '../components/ScanWrap'
 import { ImageItemData } from '../components/ImageItem'
 import { addEffectLayer } from '@/Toolbar/modules/arMapAdd/Actions'
 import BottomMenu from '../components/BottomMenu'
+import { getLanguage } from '@/language'
 
 const styles = StyleSheet.create({
   backBtn: {
@@ -349,7 +350,7 @@ class SandBoxView extends React.Component<Props, State> {
           // 创建AR数据源,数据集,图层
           await this.addARLayer()
 
-          Toast.show('定位成功',{
+          Toast.show(getLanguage().LOCATIONSUCCESS,{
             backgroundColor: 'rgba(0,0,0,.5)',
             textColor: '#fff',
             position: dp(50),
@@ -378,7 +379,7 @@ class SandBoxView extends React.Component<Props, State> {
       {
         image: getImage().icon_tool_reset,
         image_selected: getImage().icon_tool_reset_selected,
-        title: '复位',
+        title: getLanguage().PLOTTING_ANIMATION_RESET,
         showIndicator: false,
         action: async () => {
           if (!this.checkSenceAndToolType()) return
@@ -402,7 +403,7 @@ class SandBoxView extends React.Component<Props, State> {
       {
         image: getImage().tool_location,
         image_selected: getImage().tool_location_selected,
-        title: '调整',
+        title: getLanguage().ADJUSTMENT,
         action: () => {
           if (!this.checkSenceAndToolType()) return
           this.timeoutTrigger?.onShowSecondMenu()
@@ -425,7 +426,7 @@ class SandBoxView extends React.Component<Props, State> {
       {
         image: getImage().tool_spot,
         image_selected: getImage().tool_spot_selected,
-        title: '景点',
+        title: getLanguage().SCENIC,
         action: () => {
           if (!this.checkSenceAndToolType()) return
           this.timeoutTrigger?.onShowSecondMenu()
@@ -435,7 +436,7 @@ class SandBoxView extends React.Component<Props, State> {
       {
         image: getImage().tool_mountain_guide,
         image_selected: getImage().tool_mountain_guide,
-        title: '登山',
+        title: getLanguage().MOUTAIN,
         action: () => {
           if (!this.checkSenceAndToolType()) return
           this.timeoutTrigger?.onShowSecondMenu()
@@ -445,7 +446,7 @@ class SandBoxView extends React.Component<Props, State> {
       {
         image: getImage().tool_boat_guide,
         image_selected: getImage().tool_boat_guide,
-        title: '游船',
+        title: getLanguage().SHIP,
         action: async () => {
           if (!this.checkSenceAndToolType()) return
           this.timeoutTrigger?.onShowSecondMenu()
@@ -455,7 +456,7 @@ class SandBoxView extends React.Component<Props, State> {
       {
         image: getImage().tool_effect,
         image_selected: getImage().tool_effect,
-        title: '天气',
+        title: getLanguage().WEATHER,
         action: () => {
           if (!this.checkSenceAndToolType()) return
           this.timeoutTrigger?.onShowSecondMenu()
@@ -470,7 +471,7 @@ class SandBoxView extends React.Component<Props, State> {
       {
         image: getImage().icon_tool_reset,
         image_selected: getImage().icon_tool_reset_selected,
-        title: '复位',
+        title: getLanguage().PLOTTING_ANIMATION_RESET,
         showIndicator: false,
         action: async () => {
           if (!this.checkSenceAndToolType()) return
@@ -776,7 +777,7 @@ class SandBoxView extends React.Component<Props, State> {
   checkSenceAndToolType = () => {
     const props = AppToolBar.getProps()
     if (!props.arMap.currentMap) {
-      Toast.show('请对准演示台上二维码进行扫描', {
+      Toast.show(getLanguage().SCAN_TOP, {
         backgroundColor: 'rgba(0,0,0,.5)',
         textColor: '#fff',
       })
@@ -856,7 +857,7 @@ class SandBoxView extends React.Component<Props, State> {
   }
 
   renderScan = () => {
-    return <ScanWrap windowSize={this.props.windowSize} hint={'请对准演示台上二维码进行扫描'}/>
+    return <ScanWrap windowSize={this.props.windowSize} hint={getLanguage().SCAN_TOP}/>
   }
 
   renderToolView = () => {
@@ -1267,7 +1268,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
     return (
       <View style={{paddingBottom: dp(20)}} >
         <View style={styles.toolRow}>
-          <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12), color: 'white'}}>位置调整</Text>
+          <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12), color: 'white'}}>{getLanguage().POSITION_ADJUST}</Text>
           <TouchableOpacity
             style={styles.closeBtn}
             onPress={this.close}
@@ -1279,7 +1280,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
           </TouchableOpacity>
         </View>
         <View style={styles.toolRow}>
-          <Text style={{textAlign: 'center', fontSize: dp(12), color: 'white'}}>缩放</Text>
+          <Text style={{textAlign: 'center', fontSize: dp(12), color: 'white'}}>{getLanguage().ZOOM}</Text>
           <SlideBar
             ref={ref => this.scaleBar = ref}
             style={styles.slideBar}
@@ -1300,7 +1301,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
           />
         </View>
         <View style={styles.toolRow}>
-          <Text style={{textAlign: 'center', fontSize: dp(12), color: 'white'}}>旋转</Text>
+          <Text style={{textAlign: 'center', fontSize: dp(12), color: 'white'}}>{getLanguage().ROTATION}</Text>
           <SlideBar
             ref={ref => this.rotationBar = ref}
             style={styles.slideBar}

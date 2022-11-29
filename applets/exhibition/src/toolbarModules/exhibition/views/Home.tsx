@@ -8,6 +8,7 @@ import { SARMap, SExhibition } from 'imobile_for_reactnative'
 import AnimatedUnit from '../components/AnimatedUnit'
 import Sound from 'react-native-sound'
 import { setModule, getModule } from '../Actions'
+import { getLanguage } from '@/language'
 
 const AppUtils = NativeModules.AppUtils
 interface Props {
@@ -316,7 +317,7 @@ class Home extends React.Component<Props, State> {
       {
         image: getImage().ar_ccdoctor_unselected,
         selectedImage: getImage().ar_ccdoctor_selected,
-        title: 'AR超超博士',
+        title: getLanguage().DOCTORCC,
         desc: '虚拟人物互动，一件换装，合影留念',
         action: () => {
           AppEvent.emitEvent('show_ar_map', true)
@@ -326,7 +327,7 @@ class Home extends React.Component<Props, State> {
       {
         image: getImage().ar_infra_unselected,
         selectedImage: getImage().ar_infra_selected,
-        title: 'AR室内管线',
+        title: getLanguage().COVER,
         desc: '地下、墙面、屋顶隐蔽管线浏览',
         action: async() => {
           const hw = await SARMap.isHuawei()
@@ -346,7 +347,7 @@ class Home extends React.Component<Props, State> {
       {
         image: getImage().ar_sandbox_unselected,
         selectedImage: getImage().ar_sandbox_selected,
-        title: 'AR景区沙盘',
+        title: getLanguage().SANDTABLE,
         desc: '建筑立体模型浏览、剖切，灯效显示',
         action: () => {
           AppEvent.emitEvent('show_ar_map', true)
@@ -357,7 +358,7 @@ class Home extends React.Component<Props, State> {
       {
         image: getImage().ar_3d_map_unselected,
         selectedImage: getImage().ar_3d_map_selected,
-        title: 'AR立体地图',
+        title: getLanguage().AR3DMAP,
         desc: '立体地图交互浏览，车辆模拟',
         action: () => {
           AppEvent.emitEvent('show_ar_map', true)
@@ -367,7 +368,7 @@ class Home extends React.Component<Props, State> {
       {
         image: getImage().ar_flat_map_unselected,
         selectedImage: getImage().ar_flat_map_selected,
-        title: 'AR平面地图',
+        title: getLanguage().ARFLATMAP,
         desc: '二维地图浏览、配图、分析、查询',
         action: () => {
           AppEvent.emitEvent('show_ar_map', true)
@@ -545,7 +546,7 @@ class Home extends React.Component<Props, State> {
         }}
         onPressOut={() => {
           AppDialog.show({
-            text: '是否退出展厅应用？',
+            text: getLanguage().EXITEXHIBITION,
             confirm: () => {
               SoundUtil.releaseAll()
               AppUtils.AppExit()

@@ -16,6 +16,7 @@ import BottomMenu, { itemConmonType } from '../components/BottomMenu'
 import AnimationWrap from '../components/AnimationWrap'
 import SlideBar from 'imobile_for_reactnative/components/SlideBar'
 import { FlowParam } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SExhibition'
+import { getLanguage } from '@/language'
 
 interface Props {
   windowSize: ScaledSize
@@ -79,35 +80,35 @@ class CoverView extends React.Component<Props, State> {
     return [
       {
         image: getImage().ar_pipe_full,
-        title: '全景',
+        title: getLanguage().PANORAMA,
         action: this.onFullScapePress,
         autoCancelSelected: false,
       },
       {
         image: getImage().icon_tool_rolling,
-        title: '卷帘',
+        title: getLanguage().ROLLER,
         action: this.onRollingPress,
         autoCancelSelected: false,
       },
       {
         image: getImage().icon_window,
-        title: '挖洞',
+        title: getLanguage().HOLE,
         action: this.onHolePress,
         autoCancelSelected: false,
       },
       {
         image: getImage().ar_pipe_flow,
-        title: '流向',
+        title: getLanguage().FLOW,
         action: this.onFlowPress,
       },
       {
         image: getImage().ar_pipe_alert,
-        title: '爆管',
+        title: getLanguage().BURST,
         action: this.onAlertPress,
       },
       {
         image: getImage().tool_attribute,
-        title: '属性',
+        title: getLanguage().ATTRIBUTE,
         action: this.onAttributePres,
         autoCancelSelected: true,
       },
@@ -118,12 +119,12 @@ class CoverView extends React.Component<Props, State> {
     return [
       {
         image: getImage().ar_pipe_bounds,
-        name: '范围',
+        name: getLanguage().SCOPE,
         action: this.onHoleBoundsPress,
       },
       {
         image: getImage().icon_tool_fix,
-        name: '固定',
+        name: getLanguage().FIXED,
         action: this.onFixPress,
       }
     ]
@@ -132,14 +133,14 @@ class CoverView extends React.Component<Props, State> {
   getRollingModeMenu = (): itemConmonType[] => {
     return [
       {
-        name: '横向',
+        name: getLanguage().TRANVERSE,
         image: getImage().icon_tool_horizontal,
         action: () => {
           this.onRollingSelect(0)
         }
       },
       {
-        name: '纵向',
+        name: getLanguage().LONGITUDINAL,
         image: getImage().icon_tool_vertical,
         action: () => {
           this.onRollingSelect(1)
@@ -151,14 +152,14 @@ class CoverView extends React.Component<Props, State> {
   getFlowMenu = (): itemConmonType[] => {
     return [
       {
-        name: '流向1',
+        name: getLanguage().FLOW1,
         image: getImage().ar_pipe_flow_1,
         action: () => {
           this.onFlowSelect(1)
         }
       },
       {
-        name: '流向2',
+        name: getLanguage().FLOW2,
         image: getImage().ar_pipe_flow_2,
         action: () => {
           this.onFlowSelect(2)
@@ -170,14 +171,14 @@ class CoverView extends React.Component<Props, State> {
   getAlertMenu = (): itemConmonType[] => {
     return [
       {
-        name: '爆管1',
+        name: getLanguage().BURST1,
         image: getImage().ar_pipe_flow_1,
         action: () => {
           this.onAlertSelect(1)
         }
       },
       {
-        name: '爆管2',
+        name: getLanguage().BURST2,
         image: getImage().ar_pipe_flow_2,
         action: () => {
           this.onAlertSelect(2)
@@ -484,7 +485,7 @@ class CoverView extends React.Component<Props, State> {
         } else {
           this.openARModel()
         }
-        Toast.show('定位成功',{
+        Toast.show(getLanguage().LOCATIONSUCCESS,{
           backgroundColor: 'rgba(0,0,0,.5)',
           textColor: '#fff',
         })
@@ -704,7 +705,7 @@ class CoverView extends React.Component<Props, State> {
               alignItems: 'center',
             }}
           >
-            <Text style={{ textAlign: 'center', fontSize: dp(18), color: 'white' }}>{"属性"}</Text>
+            <Text style={{ textAlign: 'center', fontSize: dp(18), color: 'white' }}>{getLanguage().ATTRIBUTE}</Text>
           </View>
         </View>
 
@@ -739,7 +740,7 @@ class CoverView extends React.Component<Props, State> {
                 alignItems: 'center',
               }}
             >
-              <Text style={{ textAlign: 'left', fontSize: dp(10), color: 'white', width: dp(70), marginLeft: dp(20) }}>{"管线:"}</Text>
+              <Text style={{ textAlign: 'left', fontSize: dp(10), color: 'white', width: dp(70), marginLeft: dp(20) }}>{getLanguage().MAP_AR_PIPELINE+":"}</Text>
               <Text style={{ textAlign: 'left', fontSize: dp(13), color: 'white', flex: 1 }}>{this.state.name}</Text>
             </View>
           </View>
@@ -779,13 +780,13 @@ class CoverView extends React.Component<Props, State> {
                   alignItems: 'center',
                 }}
               >
-                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(10), color: 'white', top: dp(15), }}>{"链接类型"}</Text>
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(10), color: 'white', top: dp(15), }}>{getLanguage().LINK_TYPE}</Text>
 
                 <View
                   style={{ width: dp(30), height: dp(1), backgroundColor: '#rgba(242, 79, 2, 1)' }}
                 ></View>
 
-                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', bottom: dp(10) }}>{"常规"}</Text>
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(13), color: 'white', bottom: dp(10) }}>{getLanguage().ROUTINE}</Text>
               </View>
 
             </View>
@@ -815,7 +816,7 @@ class CoverView extends React.Component<Props, State> {
                   alignItems: 'center',
                 }}
               >
-                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(10), color: 'white', top: dp(15), }}>{"长度"}</Text>
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(10), color: 'white', top: dp(15), }}>{getLanguage().LENGTH}</Text>
 
                 <View
                   style={{ width: dp(30), height: dp(1), backgroundColor: '#rgba(242, 79, 2, 1)' }}
@@ -849,7 +850,7 @@ class CoverView extends React.Component<Props, State> {
                   alignItems: 'center',
                 }}
               >
-                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(10), color: 'white', top: dp(15), }}>{"截面直径"}</Text>
+                <Text style={{ position: 'absolute', textAlign: 'center', fontSize: dp(10), color: 'white', top: dp(15), }}>{getLanguage().SECTION_DIAMETER}</Text>
 
                 <View
                   style={{ width: dp(30), height: dp(1), backgroundColor: '#rgba(242, 79, 2, 1)' }}
@@ -940,7 +941,7 @@ class CoverView extends React.Component<Props, State> {
   }
 
   renderScan = () => {
-    return <ScanWrap windowSize={this.props.windowSize} hint={'请对准地面上的二维码进行扫描'}/>
+    return <ScanWrap windowSize={this.props.windowSize} hint={getLanguage().SCAN_BOTTOM}/>
   }
 
   slider01 = () => {
@@ -990,7 +991,7 @@ class CoverView extends React.Component<Props, State> {
           >
             <Slider
               type={'single'}
-              left={{ type: 'text', text: '长度' }}
+              left={{ type: 'text', text: getLanguage().LENGTH }}
               defaultValue={this.currentRadiusx}
               right={{ type: 'indicator', unit: '' }}
               range = {[0,5]}
@@ -1039,7 +1040,7 @@ class CoverView extends React.Component<Props, State> {
           >
             <Slider
               type={'single'}
-              left={{ type: 'text', text: '宽度' }}
+              left={{ type: 'text', text: getLanguage().LEGEND_WIDTH }}
               defaultValue={this.currentRadiusy}
               right={{ type: 'indicator', unit: '' }}
               range = {[0,5]}
@@ -1088,7 +1089,7 @@ class CoverView extends React.Component<Props, State> {
           >
             <Slider
               type={'single'}
-              left={{ type: 'text', text: '深度' }}
+              left={{ type: 'text', text: getLanguage().DEEP }}
               defaultValue={this.currentDepth}
               right={{ type: 'indicator', unit: '' }}
               range = {[0,5]}
@@ -1115,7 +1116,7 @@ class CoverView extends React.Component<Props, State> {
     return (
       <View style={[styles.toolView]}>
         <View style={styles.toolRow}>
-          <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"挖洞调整"}</Text>
+          <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{getLanguage().HOLE_ADJUST}</Text>
           <TouchableOpacity
             style={styles.closeBtn}
             onPress={this.onHolePress}
@@ -1128,7 +1129,7 @@ class CoverView extends React.Component<Props, State> {
         </View>
 
         <View style={styles.toolRow}>
-          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"长度"}</Text>
+          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{getLanguage().LENGTH}</Text>
           <SlideBar
             // ref={ref => this.scaleBar = ref}
             style={styles.slideBar}
@@ -1147,7 +1148,7 @@ class CoverView extends React.Component<Props, State> {
         </View>
 
         <View style={styles.toolRow}>
-          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"宽度"}</Text>
+          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{getLanguage().LEGEND_WIDTH}</Text>
           <SlideBar
             // ref={ref => this.scaleBar = ref}
             style={styles.slideBar}
@@ -1165,7 +1166,7 @@ class CoverView extends React.Component<Props, State> {
         </View>
 
         <View style={styles.toolRow}>
-          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"深度"}</Text>
+          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{getLanguage().DEEP}</Text>
           <SlideBar
             // ref={ref => this.scaleBar = ref}
             style={styles.slideBar}

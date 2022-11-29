@@ -18,6 +18,7 @@ import ARViewLoadHandler from '../components/ARViewLoadHandler'
 import TimeoutTrigger from '../components/TimeoutTrigger'
 import ScanWrap from '../components/ScanWrap'
 import SlideBar from 'imobile_for_reactnative/components/SlideBar'
+import { getLanguage } from '@/language'
 
 interface Props {
   windowSize: ScaledSize
@@ -92,7 +93,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       {
         image: getImage().icon_tool_reset,
         image_selected: getImage().icon_tool_reset_selected,
-        title: '复位',
+        title: getLanguage().PLOTTING_ANIMATION_RESET,
         action: (index: string) => {
           if(this.sideBarIndex === index) {
             this.sideBarIndex = ""
@@ -118,7 +119,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       {
         image: getImage().tool_location,
         image_selected: getImage().tool_location_selected,
-        title: '调整',
+        title: getLanguage().ADJUSTMENT,
         action: (index: string) => {
           if(this.sideBarIndex === index) {
             this.setState({
@@ -144,7 +145,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       {
         image: getImage().flat_search,
         image_selected: getImage().flat_search_selected,
-        title: '查询',
+        title: getLanguage().SEARCH1,
         action: (index: string) => {
           if(this.sideBarIndex === index) {
             this.sideBarIndex = ""
@@ -168,7 +169,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       {
         image: getImage().flat_buffer,
         image_selected: getImage().flat_buffer_selected,
-        title: '分析',
+        title: getLanguage().ANALYST,
         action: (index: string) => {
           if(this.sideBarIndex === index) {
             this.sideBarIndex = ""
@@ -190,7 +191,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       {
         image: getImage().flat_plot,
         image_selected: getImage().flat_plot_selected,
-        title: '标绘',
+        title: getLanguage().PLOT,
         action: (index: string) => {
           if(this.sideBarIndex === index) {
             this.sideBarIndex = ""
@@ -212,7 +213,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       {
         image: getImage().flat_ai_pic,
         image_selected: getImage().flat_ai_pic_selected,
-        title: '配图',
+        title: getLanguage().FIGURE,
         action: (index: string) => {
           if(this.sideBarIndex === index) {
             this.setState({
@@ -240,7 +241,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       {
         image: getImage().flat_change_map,
         image_selected: getImage().flat_change_map_selected,
-        title: '地图',
+        title: getLanguage().MAP,
         action: (index: string) => {
           if(this.sideBarIndex === index) {
             this.setState({
@@ -387,7 +388,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         } else {
           this.start(result)
         }
-        Toast.show('定位成功', {
+        Toast.show(getLanguage().LOCATIONSUCCESS, {
           backgroundColor: 'rgba(0,0,0,.5)',
           textColor: '#fff',
           duration: 2000,
@@ -606,7 +607,7 @@ class FlatMapVIew extends React.Component<Props, State> {
   }
 
   renderScan = () => {
-    return <ScanWrap windowSize={this.props.windowSize} hint={'请对准演示台上二维码进行扫描'}/>
+    return <ScanWrap windowSize={this.props.windowSize} hint={getLanguage().SCAN_TOP}/>
   }
 
   renderSideBar = () => {
@@ -646,7 +647,7 @@ class FlatMapVIew extends React.Component<Props, State> {
     return (
       <View style={[styles.toolView]}>
         <View style={styles.toolRow}>
-          <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12),color:'white'}}>位置调整</Text>
+          <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12),color:'white'}}>{getLanguage().POSITION_ADJUST}</Text>
           <TouchableOpacity
             style={styles.closeBtn}
             onPress={()=>{
@@ -661,7 +662,7 @@ class FlatMapVIew extends React.Component<Props, State> {
           </TouchableOpacity>
         </View>
         <View style={styles.toolRow}>
-          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"缩放"}</Text>
+          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{getLanguage().ZOOM}</Text>
           <SlideBar
             // ref={ref => this.scaleBar = ref}
             style={styles.slideBar}
@@ -675,7 +676,7 @@ class FlatMapVIew extends React.Component<Props, State> {
           />
         </View>
         <View style={styles.toolRow}>
-          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"旋转"}</Text>
+          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{getLanguage().ROTATION}</Text>
           <SlideBar
             // ref={ref => this.scaleBar = ref}
             style={styles.slideBar}
@@ -714,7 +715,7 @@ class FlatMapVIew extends React.Component<Props, State> {
         {this.state.showSlide && !this.state.showScan && this.renderSlideBar()}
         <ARArrow
           arrowShowed={() => {
-            Toast.show('请按照箭头引导转动屏幕查看地图', {
+            Toast.show(getLanguage().FLLOW_THE_ARROW, {
               backgroundColor: 'rgba(0,0,0,.5)',
               textColor: '#fff',
             })

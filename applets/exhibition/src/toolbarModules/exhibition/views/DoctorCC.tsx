@@ -273,7 +273,7 @@ class DoctorCC extends Component<Props, State> {
         SARMap.stopAREnhancePosition()
         this.setState({showScan: false})
 
-        Toast.show('定位成功',{
+        Toast.show(getLanguage().LOCATIONSUCCESS,{
           backgroundColor: 'rgba(0,0,0,.5)',
           textColor: '#fff',
           duration: 2000,
@@ -543,32 +543,32 @@ class DoctorCC extends Component<Props, State> {
     this.speakData = [
       {
         key: 'doctor',
-        title: 'AR超超博士',
-        name: 'AR超超博士',
+        title: getLanguage().DOCTORCC,
+        name: getLanguage().DOCTORCC,
         image: getImage().ar_dr_supermap,
       },
       {
         key: 'pipeLine',
-        title: 'AR室内管线',
-        name: 'AR室内管线',
+        title: getLanguage().COVER,
+        name: getLanguage().COVER,
         image: getImage().ar_infra,
       },
       {
         key: 'mansion',
-        title: 'AR超图大厦',
-        name: 'AR超图大厦',
+        title: getLanguage().ARBUILDING,
+        name: getLanguage().ARBUILDING,
         image: getImage().ar_supermap_building,
       },
       {
         key: '3dMap',
-        title: 'AR立体地图',
-        name: 'AR立体地图',
+        title: getLanguage().AR3DMAP,
+        name: getLanguage().AR3DMAP,
         image: getImage().ar_3d_map,
       },
       {
         key: 'map',
-        title: 'AR平面地图',
-        name: 'AR平面地图',
+        title: getLanguage().ARFLATMAP,
+        name: getLanguage().ARFLATMAP,
         image: getImage().ar_flat_map,
       },
     ]
@@ -576,21 +576,21 @@ class DoctorCC extends Component<Props, State> {
       {
         key: 'position1',
         title: '路线1',
-        name: '洞见之光',
+        name: getLanguage().LIGHT,
         image: getImage().img_route_route01,
         // route: getRoute().route0_11,
       },
       {
         key: 'position2',
         title: '路线2',
-        name: '企业使命',
+        name: getLanguage().MISSION,
         image: getImage().img_route_route02,
         // route: getRoute().route0_12,
       },
       {
         key: 'position3',
         title: '路线3',
-        name: '超图研究院',
+        name: getLanguage().RESEARCH,
         image: getImage().img_route_route03,
         // route: getRoute().route0_13,
       },
@@ -603,31 +603,31 @@ class DoctorCC extends Component<Props, State> {
       {
         key: 'doctor',
         title: 'AR超超博士_学',
-        name: 'AR超超博士',
+        name: getLanguage().DOCTORCC,
         image: getImage().ar_dr_supermap,
       },
       {
         key: 'pipeLine',
         title: 'AR室内管线_学',
-        name: 'AR室内管线',
+        name: getLanguage().COVER,
         image: getImage().ar_infra,
       },
       {
         key: 'mansion',
         title: 'AR超图大厦_学',
-        name: 'AR超图大厦',
+        name: getLanguage().ARBUILDING,
         image: getImage().ar_supermap_building,
       },
       {
         key: '3dMap',
         title: 'AR立体地图_学',
-        name: 'AR立体地图',
+        name: getLanguage().AR3DMAP,
         image: getImage().ar_3d_map,
       },
       {
         key: 'map',
         title: 'AR平面地图_学',
-        name: 'AR平面地图',
+        name: getLanguage().ARFLATMAP,
         image: getImage().ar_flat_map,
       },
     ]
@@ -635,21 +635,21 @@ class DoctorCC extends Component<Props, State> {
       {
         key: 'position1',
         title: '路线1',
-        name: '洞见之光',
+        name: getLanguage().LIGHT,
         image: getImage().img_route_route01,
         // route: getRoute().route11,
       },
       {
         key: 'position2',
         title: '路线2',
-        name: '企业使命',
+        name: getLanguage().MISSION,
         image: getImage().img_route_route02,
         // route: getRoute().route12,
       },
       {
         key: 'position3',
         title: '路线3',
-        name: '超图研究院',
+        name: getLanguage().RESEARCH,
         image: getImage().img_route_route03,
         // route: getRoute().route13,
       },
@@ -740,7 +740,7 @@ class DoctorCC extends Component<Props, State> {
       {
         image: getImage().icon_speak,
         image_selected: getImage().icon_speak_selected,
-        title: '详解',
+        title: getLanguage().BREAK_DOWN,
         action: this.speakBtnOnpress
       }
     ]
@@ -752,25 +752,25 @@ class DoctorCC extends Component<Props, State> {
       {
         image: getImage().icon_action,
         image_selected: getImage().icon_action_selected,
-        title: '动作',
+        title: getLanguage().ACTION,
         action: this.actionBtnOnPress
       },
       {
         image: getImage().icon_reloader,
         image_selected: getImage().icon_reloader_selected,
-        title: '换装',
+        title: getLanguage().CHANGE,
         action: this.reloaderBtnOnPress
       },
       {
         image: getImage().icon_photo,
         image_selected: getImage().icon_photo_seleted,
-        title: '合影',
+        title: getLanguage().GROUP_PHOTO,
         action: this.photoBtnOnPress
       },
       {
         image: getImage().icon_video,
         image_selected: getImage().icon_video_selected,
-        title: '录像',
+        title: getLanguage().TAKE_VIDEO,
         action: this.videoBtnOnPress
       }
     ]
@@ -1012,7 +1012,7 @@ class DoctorCC extends Component<Props, State> {
     }
     // 数据未加载完成，点击返回无效
     if(!this.isBack) {
-      Toast.show("请等待数据加载完成再退出!", {
+      Toast.show(getLanguage().PLEASE_WAIT_AND_EXIT, {
         backgroundColor: 'rgba(0,0,0,.5)',
         textColor: '#fff',
       })
@@ -2740,7 +2740,7 @@ class DoctorCC extends Component<Props, State> {
               </View>
 
               <Text style={[styles.imageBtnText]} >
-                {'保存到本地'}
+                {getLanguage().SVAE_LOCAL}
               </Text>
             </TouchableOpacity>
 
@@ -2758,7 +2758,7 @@ class DoctorCC extends Component<Props, State> {
               </View>
 
               <Text style={[styles.imageBtnText]} >
-                {'分享到微信'}
+                {getLanguage().SHARE_TO_WECHAT}
               </Text>
             </TouchableOpacity>
 
@@ -2776,7 +2776,7 @@ class DoctorCC extends Component<Props, State> {
               </View>
 
               <Text style={[styles.imageBtnText]} >
-                {'取消'}
+                {getLanguage().COLLECTION_CANCEL}
               </Text>
             </TouchableOpacity>
 
@@ -2960,7 +2960,7 @@ class DoctorCC extends Component<Props, State> {
 
         <ARArrow
           arrowShowed={() => {
-            Toast.show('请按照箭头引导转动屏幕查看内容', {
+            Toast.show(getLanguage().FOLLOW_ARROW, {
               backgroundColor: 'rgba(0,0,0,.5)',
               textColor: '#fff',
             })

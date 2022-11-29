@@ -17,6 +17,7 @@ import TimeoutTrigger from '../components/TimeoutTrigger'
 import ScanWrap from '../components/ScanWrap'
 import BottomMenu,{ itemConmonType } from "../components/BottomMenu"
 import SlideBar from 'imobile_for_reactnative/components/SlideBar'
+import { getLanguage } from '@/language'
 
 
 interface Props {
@@ -94,7 +95,7 @@ class AR3DMapView extends React.Component<Props, State> {
     return [
       {
         image: getImage().icon_tool_reset,
-        title: '复位',
+        title: getLanguage().PLOTTING_ANIMATION_RESET,
         action: async (index: string) => {
           if(this.isCarAnimationPlay) {
             await SARMap.pauseCarAnimation()
@@ -111,7 +112,7 @@ class AR3DMapView extends React.Component<Props, State> {
           if (this.state.attribute) {
             SExhibition.setIsTouchSelect(false)
             this.setState({ attribute: false })
-            Toast.show('查询关闭', {
+            Toast.show(getLanguage().SEARCHCLOSE, {
               backgroundColor: 'rgba(0,0,0,.5)',
               textColor: '#fff',
               duration: 2000,
@@ -138,7 +139,7 @@ class AR3DMapView extends React.Component<Props, State> {
       {
         image: getImage().tool_location,
         image_selected: getImage().tool_location_selected,
-        title: '调整',
+        title: getLanguage().ADJUSTMENT,
         action: async(index: string) => {
           if(!this.state.showSlide){
             this.timeoutTrigger?.onShowSecondMenu()
@@ -187,7 +188,7 @@ class AR3DMapView extends React.Component<Props, State> {
       },
       {
         image: getImage().icon_tool_shape,
-        title: '形状',
+        title: getLanguage().SHAPE,
         action: async (index: string) => {
           // if(this.isCarAnimationPlay) {
           //   await SARMap.pauseCarAnimation()
@@ -232,7 +233,7 @@ class AR3DMapView extends React.Component<Props, State> {
       },
       {
         image: getImage().icon_tool_materials,
-        title: '纹理',
+        title: getLanguage().TEXTTURE,
         action: async (index: string) => {
           if (this.open) {
             this.getMaterials()
@@ -271,12 +272,12 @@ class AR3DMapView extends React.Component<Props, State> {
       },
       {
         image: getImage().icon_tool_car,
-        title: '车流',
+        title: getLanguage().TRAFFIC,
         action: this.ChangeCarAnimation,
       },
       {
         image: getImage().icon_tool_video,
-        title: '视频',
+        title: getLanguage().MAP_AR_VIDEO,
         action: async(index: string)=>{
           if(this.isCarAnimationPlay) {
             await SARMap.pauseCarAnimation()
@@ -287,7 +288,7 @@ class AR3DMapView extends React.Component<Props, State> {
           if (this.state.attribute) {
             SExhibition.setIsTouchSelect(false)
             this.setState({ attribute: false })
-            Toast.show('查询关闭', {
+            Toast.show(getLanguage().SEARCHCLOSE, {
               backgroundColor: 'rgba(0,0,0,.5)',
               textColor: '#fff',
               duration: 2000,
@@ -312,18 +313,18 @@ class AR3DMapView extends React.Component<Props, State> {
       },
       {
         image: getImage().icon_tool_attribute,
-        title: '属性',
+        title: getLanguage().ATTRIBUTE,
         action: async(index: string) => {
           if(!this.state.attribute){
             SExhibition.setIsTouchSelect(true)
-            Toast.show('查询开启，请点击模型查询属性', {
+            Toast.show(getLanguage().SEARCHSTART, {
               backgroundColor: 'rgba(0,0,0,.5)',
               textColor: '#fff',
               duration: 2000,
             })
           }else{
             SExhibition.setIsTouchSelect(false)
-            Toast.show('查询关闭', {
+            Toast.show(getLanguage().SEARCHCLOSE, {
               backgroundColor: 'rgba(0,0,0,.5)',
               textColor: '#fff',
               duration: 2000,
@@ -360,7 +361,7 @@ class AR3DMapView extends React.Component<Props, State> {
   getShape = () => {
     this.speakData = [
       {
-        name: '矩形',
+        name: getLanguage().THEME_RECTANGLE,
         image: getImage().icon_tool_juxing,
         action: async () => {
           if(this.isCarAnimationPlay) {
@@ -406,7 +407,7 @@ class AR3DMapView extends React.Component<Props, State> {
         },
       },
       {
-        name: '圆形',
+        name: getLanguage().CIRCULAR,
         image: getImage().icon_tool_yuan,
         action: async () => {
           if(this.isCarAnimationPlay) {
@@ -459,7 +460,7 @@ class AR3DMapView extends React.Component<Props, State> {
   getMaterials = () => {
     this.speakData = [
       {
-        name: '素雅白',
+        name: getLanguage().PLAINWHITE,
         image: getImage().icon_tool_meterials0,
         action: async () => {
           SExhibition.changeBuildMaterials(0)
@@ -468,7 +469,7 @@ class AR3DMapView extends React.Component<Props, State> {
         },
       },
       {
-        name: '科技蓝',
+        name: getLanguage().TEACHBLUE,
         image: getImage().icon_tool_meterials1,
         action: async () => {
           SExhibition.changeBuildMaterials(2)
@@ -477,7 +478,7 @@ class AR3DMapView extends React.Component<Props, State> {
         },
       },
       {
-        name: '复古棕',
+        name: getLanguage().RETROBROWN,
         image: getImage().icon_tool_meterials2,
         action: async () => {
           SExhibition.changeBuildMaterials(1)
@@ -509,7 +510,7 @@ class AR3DMapView extends React.Component<Props, State> {
       if (this.state.attribute) {
         SExhibition.setIsTouchSelect(false)
         this.setState({ attribute: false })
-        Toast.show('查询关闭', {
+        Toast.show(getLanguage().SEARCHCLOSE, {
           backgroundColor: 'rgba(0,0,0,.5)',
           textColor: '#fff',
           duration: 2000,
@@ -660,7 +661,7 @@ class AR3DMapView extends React.Component<Props, State> {
         } else {
           this.start(result)
         }
-        Toast.show('定位成功', {
+        Toast.show(getLanguage().LOCATIONSUCCESS, {
           backgroundColor: 'rgba(0,0,0,.5)',
           textColor: '#fff',
           duration: 2000,
@@ -894,14 +895,14 @@ class AR3DMapView extends React.Component<Props, State> {
 
   /** 扫描界面 */
   renderScan = () => {
-    return <ScanWrap windowSize={this.props.windowSize} hint={'请对准演示台上二维码进行扫描'}/>
+    return <ScanWrap windowSize={this.props.windowSize} hint={getLanguage().SCAN_TOP}/>
   }
 
   renderSlideBar = () => {
     return (
       <View style={[styles.toolView]}>
         <View style={styles.toolRow}>
-          <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12),color:'white'}}>位置调整</Text>
+          <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12),color:'white'}}>{getLanguage().POSITION_ADJUST}</Text>
           <TouchableOpacity
             style={styles.closeBtn}
             onPress={()=>{
@@ -916,7 +917,7 @@ class AR3DMapView extends React.Component<Props, State> {
           </TouchableOpacity>
         </View>
         <View style={styles.toolRow}>
-          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"缩放"}</Text>
+          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{getLanguage().SCALE}</Text>
           <SlideBar
             // ref={ref => this.scaleBar = ref}
             style={styles.slideBar}
@@ -930,7 +931,7 @@ class AR3DMapView extends React.Component<Props, State> {
           />
         </View>
         <View style={styles.toolRow}>
-          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{"旋转"}</Text>
+          <Text style={{textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{getLanguage().ROTATION}</Text>
           <SlideBar
             // ref={ref => this.scaleBar = ref}
             style={styles.slideBar}
@@ -1010,7 +1011,7 @@ class AR3DMapView extends React.Component<Props, State> {
         {this.state.showSlide && !this.state.showScan && this.renderSlideBar()}
 
         <ARArrow
-          arrowShowed={() => Toast.show('请按照箭头引导转动屏幕查看立体地图',{
+          arrowShowed={() => Toast.show(getLanguage().FLLOW_THE_ARROW,{
             backgroundColor: 'rgba(0,0,0,.5)',
             textColor: '#fff',
           })}

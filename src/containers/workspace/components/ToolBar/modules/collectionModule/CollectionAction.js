@@ -18,6 +18,7 @@ import CollectionData from './CollectionData'
 import NavigationService from '../../../../../NavigationService'
 import { jsonUtil, Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
+import layer from '@/assets/lightTheme/layer'
 
 function openTemplate(type) {
   const params = ToolbarModule.getParams()

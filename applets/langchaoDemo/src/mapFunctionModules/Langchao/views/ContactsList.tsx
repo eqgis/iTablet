@@ -1,13 +1,16 @@
 import MapToolbar from "@/containers/workspace/components/MapToolbar"
 import { RootState } from "@/redux/types"
 import React, { Component } from "react"
-import { SectionList, PermissionsAndroid, View, Text, TouchableOpacity, Linking, FlatList } from "react-native"
+import { SectionList, PermissionsAndroid, View, Text, TouchableOpacity, Linking, FlatList, Image, StyleSheet, TextInput } from "react-native"
 import { connect, ConnectedProps } from "react-redux"
-import { Container } from '../../../../../../src/components'
+import { Container, Dialog } from '../../../../../../src/components'
 import Contacts from 'react-native-contacts'
 import { getPinYin } from "@/utils/pinyin"
 import { dp } from "imobile_for_reactnative/utils/size"
 import { fontSize } from "@/containers/tabs/Mine/Register/Styles"
+import { getImage } from "imobile_for_reactnative/components/ToolbarKit/ToolbarResource"
+import { getLanguage } from "@/language"
+import { getPublicAssets } from "@/assets"
 
 interface contactItemType {
   recordID: string,
@@ -24,27 +27,40 @@ interface contactDataType {
 interface Props extends ReduxProps {
 	navigation: any,
 	mapModules: any,
+  device: any,
+  language: string,
 }
 
 interface State {
 	// to do
   contactData: Array<contactDataType>
   letterArray: Array<string>
+  addName: string
+  addNumber: string
 }
 
 class ContactsList extends Component<Props, State> {
   _sectionList: SectionList | undefined | null = null
+  addDialog: Dialog | undefined | null = null
 
   constructor(props: Props) {
     super(props)
     this.state = {
       contactData: [],
       letterArray: [],
+      addName: '',
+      addNumber: '',
     }
   }
 
   componentDidMount = async (): Promise<void> => {
     this.getContactData()
+  }
+
+  componentDidUpdate = (prevProps: Readonly<Props>, prevState: Readonly<State>): void => {
+    // if(this.props !== prevProps || prevState !== this.state) {
+    //   this.getContactData()
+    // }
   }
 
   /** 获取联系人列表数据 */
@@ -68,6 +84,7 @@ class ContactsList extends Component<Props, State> {
 
       // 获取首字母数组
       await contacts.map((contact) => {
+        console.warn("contact: " + JSON.stringify(contact))
         // 获取名字首字母
         const letterFirst = getPinYin(contact.givenName, "", true).substring(0, 1)
         letterArray.push(letterFirst)
@@ -114,7 +131,7 @@ class ContactsList extends Component<Props, State> {
 
 
     } catch (error) {
-      // console.log("获取联系人列表失败")
+      console.warn("获取联系人列表失败")
 
       this.setState({
         letterArray: letterArray,
@@ -145,6 +162,36 @@ class ContactsList extends Component<Props, State> {
       viewOffset: 20,
     })
 
+  }
+
+  addBtnOnpress = () => {
+    this.addDialog?.setDialogVisible(true)
+  }
+
+  addConfirm = () => {
+    const newPerson = {
+      phoneNumbers: [{
+        label: "mobile",
+        number: this.state.addNumber,
+      }],
+      familyName: "",
+      givenName: this.state.addName,
+    }
+    Contacts.addContact(newPerson)
+    this.addDialog?.setDialogVisible(false)
+    this.setState({
+      addName: '',
+      addNumber: '',
+    })
+    this.getContactData()
+  }
+
+  addCancel = () => {
+    this.addDialog?.setDialogVisible(false)
+    this.setState({
+      addName: '',
+      addNumber: '',
+    })
   }
 
   // /**
@@ -321,6 +368,128 @@ class ContactsList extends Component<Props, State> {
     )
   }
 
+  renderHeaderRight = () => {
+    return (
+      <TouchableOpacity
+        style={styles.addStyle}
+        onPress={this.addBtnOnpress}
+      >
+        <Image style={styles.imgStyle} source={getImage().add_round} />
+      </TouchableOpacity>
+    )
+  }
+
+  renderAddDialog = () => {
+    return (
+      <Dialog
+        ref={ref => (this.addDialog = ref)}
+        type={'modal'}
+        confirmBtnTitle={getLanguage(this.props.language).Prompt.CONFIRM}
+        cancelBtnTitle={getLanguage(this.props.language).Prompt.CANCEL}
+        confirmAction={this.addConfirm}
+        cancelAction={this.addCancel}
+        opacity={1}
+        opacityStyle={[{
+          height: dp(218),
+          backgroundColor: '#fff',
+        },
+        ]}
+        style={[{
+          height: dp(218),
+          backgroundColor: '#fff',
+        },
+        ]}
+      >
+        {this.renderDialogChildren()}
+      </Dialog>
+    )
+  }
+
+  renderDialogChildren = () => {
+    return (
+      <View style={[{
+        width: '100%',
+        flexDirection: 'column',
+        justifyContent:'center',
+        alignItems: 'center',
+      }]}>
+        {/* 标题 */}
+        <View style={[{
+          width: '96%',
+          height: dp(30),
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderBottomColor: '#ccc',
+          borderBottomWidth: dp(1),
+          marginVertical: dp(10),
+        }]} >
+          <Text style={[{
+            fontSize: dp(18),
+            color: '#333',
+          }]}>{"添加联系人"}</Text>
+        </View>
+        {/* 联系人姓名输入框 */}
+        <View style={[styles.dialogInputContainer]}>
+          <TextInput
+            style = {[styles.dialogInput]}
+            placeholder = {'联系人姓名'}
+            value = {this.state.addName}
+            onChangeText = {(text:string) => {
+              this.setState({
+                addName: text,
+              })
+            }}
+          />
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.clearBtn}
+            onPress={() => {
+              this.setState({
+                addName: '',
+              })
+            }}
+          >
+            <Image
+              style={styles.clearImg}
+              resizeMode={'contain'}
+              source={getPublicAssets().common.icon_close}
+            />
+          </TouchableOpacity>
+        </View>
+        {/* 联系人电话输入框 */}
+        <View style={[styles.dialogInputContainer,{
+          marginBottom: dp(20),
+        }]}>
+          <TextInput
+            style = {[styles.dialogInput]}
+            placeholder = {'联系人电话'}
+            value = {this.state.addNumber}
+            onChangeText = {(text:string) => {
+              this.setState({
+                addNumber: text,
+              })
+            }}
+          />
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.clearBtn}
+            onPress={() => {
+              this.setState({
+                addNumber: '',
+              })
+            }}
+          >
+            <Image
+              style={styles.clearImg}
+              resizeMode={'contain'}
+              source={getPublicAssets().common.icon_close}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    )
+  }
+
   render() {
     return (
       <Container
@@ -330,7 +499,7 @@ class ContactsList extends Component<Props, State> {
         headerProps={{
           title: "通讯录",
           withoutBack: false,
-          // headerRight: this.renderHeaderRight(),
+          headerRight: this.renderHeaderRight(),
           navigation: this.props.navigation,
           headerStyle: { borderBottomWidth: 0 },
         }}
@@ -343,6 +512,7 @@ class ContactsList extends Component<Props, State> {
         {/* <Text>{"我是通讯录页面"}</Text> */}
         {this.renderList()}
         {this.renderRightLink()}
+        {this.renderAddDialog()}
 
       </Container>
     )
@@ -351,6 +521,8 @@ class ContactsList extends Component<Props, State> {
 
 const mapStateToProp = (state: RootState) => ({
   mapModules: state.mapModules.toJS(),
+  device: state.device.toJS().device,
+  language: state.setting.toJS().language,
 })
 
 const mapDispatch = {
@@ -360,3 +532,53 @@ type ReduxProps = ConnectedProps<typeof connector>
 const connector = connect(mapStateToProp, mapDispatch)
 
 export default connector(ContactsList)
+
+const styles = StyleSheet.create({
+  addStyle: {
+    // marginTop: dp(50),
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textStyle: {
+    fontSize: dp(16),
+  },
+  imgStyle: {
+    height: dp(30),
+    width: dp(30),
+  },
+  // dialog
+  dialogInputContainer: {
+    width: '80%',
+    height: dp(40),
+    flexDirection: 'row',
+    backgroundColor: '#f3f3f3',
+    borderRadius: dp(30),
+    marginVertical: dp(5),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dialogInput: {
+    flex: 1,
+    height: dp(40),
+    paddingVertical: dp(5),
+    paddingHorizontal: dp(10),
+    backgroundColor: '#f3f3f3',
+    borderRadius: dp(30),
+    textAlign: 'center',
+  },
+
+  // 清空按钮
+  clearBtn: {
+    width: dp(26),
+    height: dp(26),
+    paddingRight: dp(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  clearImg: {
+    width: dp(26),
+    height: dp(26),
+  },
+})

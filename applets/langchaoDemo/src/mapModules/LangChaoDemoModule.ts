@@ -46,8 +46,8 @@ export default class LangChaoDemoModule extends Module {
         // collectionModule,
         TrackModule,
         CameraModule(),
-        toolModule(),
         changeMapModule(),
+        toolModule(),
         // Tour(),             // 创建轨迹
       ],
       // 地图类型（三维/二维）

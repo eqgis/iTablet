@@ -700,6 +700,7 @@ export default class LayerManager_tolbar extends React.Component {
         cb: async value => {
           if (value !== '') {
             (async function() {
+              // console.warn("layerData: " + JSON.stringify(this.state.layerData))
               await SMap.renameLayer(this.state.layerData.path, value)
               await this.props.getLayers()
               await this._refreshParentList()

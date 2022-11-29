@@ -2047,6 +2047,8 @@ export default class MapView extends React.Component {
       })
 
       await collectionModule().actions.createCollector(typeP, undefined)
+      // console.warn("layer: " + JSON.stringify(ToolbarModule.getParams().currentLayer))
+      // await SMap.renameLayer(this.state.layerData.path, value)
       // await collectionModule().actions.collectionSubmit(typeP)
 
       const typePm = SMCollectorType.POINT
@@ -2072,6 +2074,20 @@ export default class MapView extends React.Component {
       await collectionModule().actions.createCollector(typeL, undefined)
       // await collectionModule().actions.collectionSubmit(typeL)
       await SCollector.stopCollect()
+
+      const layers = await this.props.getLayers()
+
+      for(let i = 0; i < layers.length; i ++) {
+        let layerDatasetName = layers[i].datasetName
+        if(layerDatasetName === "marker_322") {
+          await SMap.renameLayer(layers[i].path, "多媒体")
+        } else if(layerDatasetName === "marker_118081") {
+          await SMap.renameLayer(layers[i].path, "位置")
+        } else if(layerDatasetName === "line_965018") {
+          await SMap.renameLayer(layers[i].path, "轨迹")
+        }
+      }
+      // await this.props.getLayers()
 
     }.bind(this)())
   }

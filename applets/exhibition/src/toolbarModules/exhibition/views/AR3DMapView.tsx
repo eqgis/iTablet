@@ -107,7 +107,6 @@ class AR3DMapView extends React.Component<Props, State> {
           SExhibition.scale3dMap(1.2)
           SExhibition.rotation3dMap(10)
           this.setState({showSlide:false})
-          this.timeoutTrigger?.onFirstMenuClick()
 
           if (this.state.attribute) {
             SExhibition.setIsTouchSelect(false)

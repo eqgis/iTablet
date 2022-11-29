@@ -133,6 +133,8 @@ const ar_pipe_full = require('./pipe_full.png')
 const ar_pipe_flow_1 = require('./pipe_flow_1.png')
 const ar_pipe_flow_2 = require('./pipe_flow_2.png')
 const ar_pipe_alert = require('./pipe_alert.png')
+const ar_pipe_flow_alert_1 = require('./pipe_flow_alert_1.png')
+const ar_pipe_flow_alert_2 = require('./pipe_flow_alert_2.png')
 
 const image = {
   ar_pipe_alert,
@@ -141,6 +143,8 @@ const image = {
   ar_pipe_flow_1,
   ar_pipe_flow_2,
   ar_pipe_bounds,
+  ar_pipe_flow_alert_1,
+  ar_pipe_flow_alert_2,
   scan,
   scan_circle,
   scan_line,

@@ -171,14 +171,14 @@ class CoverView extends React.Component<Props, State> {
     return [
       {
         name: '爆管1',
-        image: getImage().ar_pipe_flow_1,
+        image: getImage().ar_pipe_flow_alert_1,
         action: () => {
           this.onAlertSelect(1)
         }
       },
       {
         name: '爆管2',
-        image: getImage().ar_pipe_flow_2,
+        image: getImage().ar_pipe_flow_alert_2,
         action: () => {
           this.onAlertSelect(2)
         }

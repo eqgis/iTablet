@@ -85,6 +85,7 @@ import {
   SCoordinationUtils,
   AppToolBar,
   AppEvent,
+  dataUtil,
 } from '../../../../utils'
 import { color, zIndexLevel } from '../../../../styles'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
@@ -2077,17 +2078,42 @@ export default class MapView extends React.Component {
 
       const layers = await this.props.getLayers()
 
+      // const jsonStr = {
+      //   myName: '',
+      //   myPhoneNumber: '',
+      //   callName: '',
+      //   callPhoneNumber: '',
+      //   localTime: '',
+      //   bjTime: '',
+      //   duration: '',
+      // }
+      // 添加属性 字段
+      let attributeObj = {
+        caption: this.getTrimSmStr("CallContents"),
+        name: this.getTrimSmStr("CallContents"),
+        type: 10,
+        maxLength: 255,
+        required: false,
+        // defaultValue: JSON.stringify(jsonStr)
+      }
+
+      let mediaPath = ""
+      let positionPath = ""
+      let trackpath = ""
       for(let i = 0; i < layers.length; i ++) {
         let layerDatasetName = layers[i].datasetName
         if(layerDatasetName === "marker_322") {
           await SMap.renameLayer(layers[i].path, "多媒体")
+          mediaPath = layers[i].path
         } else if(layerDatasetName === "marker_118081") {
           await SMap.renameLayer(layers[i].path, "位置")
+          positionPath = layers[i].path
         } else if(layerDatasetName === "line_965018") {
           await SMap.renameLayer(layers[i].path, "轨迹")
+          trackpath = layers[i].path
         }
       }
-      // await this.props.getLayers()
+
       const position = await SMap.getCurrentLocation()
       // 地图定位到指定点位置
       await SMap.toLocationPoint({
@@ -2095,7 +2121,55 @@ export default class MapView extends React.Component {
         y: position.latitude,
       })
 
+      await this.addAttributeField(attributeObj, mediaPath)
+      setTimeout(async () => {
+        await this.addAttributeField(attributeObj, positionPath)
+        setTimeout(async () => {
+          await this.addAttributeField(attributeObj, trackpath)
+        },500)
+      },500)
+
     }.bind(this)())
+  }
+
+  /** 添加属性字段 **/
+  addAttributeField = async (fieldInfo, path) => {
+    // let path = this.props.currentLayer.path
+    let checkName = dataUtil.isLegalName(fieldInfo.name, this.props.language)
+    if (!checkName.result) {
+      Toast.show(getLanguage(this.props.language).Map_Attribute.NAME + checkName.error)
+      return false
+    }
+    let checkCaption = dataUtil.isLegalName(fieldInfo.caption, this.props.language)
+    if (!checkCaption.result) {
+      Toast.show(getLanguage(this.props.language).Map_Attribute.ALIAS + checkCaption.error)
+      return false
+    }
+    let result = await SMap.addAttributeFieldInfo(path, false, fieldInfo)
+    // if (result) {
+    //   Toast.show(getLanguage(this.props.language).Prompt.ATTRIBUTE_ADD_SUCCESS)
+    //   // this.refresh()
+    // } else {
+    //   Toast.show(getLanguage(this.props.language).Prompt.ATTRIBUTE_ADD_FAILED)
+    // }
+    return result
+  }
+
+  getTrimSmStr = text => {
+    if (text.length < 2) {
+      return text
+    }
+    let tempStr = text.toLowerCase()
+    if (tempStr.substring(0, 2) == 'sm') {
+      let endStr = text.substring(2, text.length)
+      if (endStr.length < 2) {
+        return endStr
+      } else {
+        return this.getTrimSmStr(endStr)
+      }
+    } else {
+      return text
+    }
   }
 
   /** 开始在线协作 */

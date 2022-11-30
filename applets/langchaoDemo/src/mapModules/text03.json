@@ -1,0 +1,654 @@
+{
+	"attributes": {
+		"head": [
+			{
+				"value": "SmID",
+				"isSystemField": true,
+				"fieldInfo": {
+					"caption": "SmID",
+					"name": "SmID",
+					"type": 4,
+					"maxLength": 4,
+					"defaultValue": "",
+					"isRequired": true,
+					"isSystemField": true
+				}
+			},
+			{
+				"value": "SmLength",
+				"isSystemField": true,
+				"fieldInfo": {
+					"caption": "SmLength",
+					"name": "SmLength",
+					"type": 7,
+					"maxLength": 8,
+					"defaultValue": "0",
+					"isRequired": true,
+					"isSystemField": true
+				}
+			},
+			{
+				"value": "SmSdriW",
+				"isSystemField": true,
+				"fieldInfo": {
+					"caption": "SmSdriW",
+					"name": "SmSdriW",
+					"type": 6,
+					"maxLength": 4,
+					"defaultValue": "0",
+					"isRequired": true,
+					"isSystemField": true
+				}
+			},
+			{
+				"value": "SmSdriN",
+				"isSystemField": true,
+				"fieldInfo": {
+					"caption": "SmSdriN",
+					"name": "SmSdriN",
+					"type": 6,
+					"maxLength": 4,
+					"defaultValue": "0",
+					"isRequired": true,
+					"isSystemField": true
+				}
+			},
+			{
+				"value": "SmSdriE",
+				"isSystemField": true,
+				"fieldInfo": {
+					"caption": "SmSdriE",
+					"name": "SmSdriE",
+					"type": 6,
+					"maxLength": 4,
+					"defaultValue": "0",
+					"isRequired": true,
+					"isSystemField": true
+				}
+			},
+			{
+				"value": "SmSdriS",
+				"isSystemField": true,
+				"fieldInfo": {
+					"caption": "SmSdriS",
+					"name": "SmSdriS",
+					"type": 6,
+					"maxLength": 4,
+					"defaultValue": "0",
+					"isRequired": true,
+					"isSystemField": true
+				}
+			},
+			{
+				"value": "SmUserID",
+				"isSystemField": true,
+				"fieldInfo": {
+					"caption": "SmUserID",
+					"name": "SmUserID",
+					"type": 4,
+					"maxLength": 4,
+					"defaultValue": "0",
+					"isRequired": true,
+					"isSystemField": false
+				}
+			},
+			{
+				"value": "SmTopoError",
+				"isSystemField": true,
+				"fieldInfo": {
+					"caption": "SmTopoError",
+					"name": "SmTopoError",
+					"type": 4,
+					"maxLength": 4,
+					"defaultValue": "0",
+					"isRequired": true,
+					"isSystemField": true
+				}
+			},
+			{
+				"value": "SmGeometrySize",
+				"isSystemField": true,
+				"fieldInfo": {
+					"caption": "SmGeometrySize",
+					"name": "SmGeometrySize",
+					"type": 4,
+					"maxLength": 4,
+					"defaultValue": "0",
+					"isRequired": false,
+					"isSystemField": true
+				}
+			},
+			{
+				"value": "CallContents",
+				"isSystemField": false,
+				"fieldInfo": {
+					"caption": "CallContents",
+					"name": "CallContents",
+					"type": 10,
+					"maxLength": 255,
+					"defaultValue": "",
+					"isRequired": false,
+					"isSystemField": false
+				}
+			},
+			{
+				"value": "NAME",
+				"isSystemField": false,
+				"fieldInfo": {
+					"caption": "NAME",
+					"name": "NAME",
+					"type": 10,
+					"maxLength": 255,
+					"defaultValue": "",
+					"isRequired": false,
+					"isSystemField": false
+				}
+			},
+			{
+				"value": "NOTES",
+				"isSystemField": false,
+				"fieldInfo": {
+					"caption": "NOTES",
+					"name": "NOTES",
+					"type": 10,
+					"maxLength": 255,
+					"defaultValue": "",
+					"isRequired": false,
+					"isSystemField": false
+				}
+			}
+		],
+		"data": [
+			[
+				{
+					"name": "SmID",
+					"fieldInfo": {
+						"caption": "SmID",
+						"name": "SmID",
+						"type": 4,
+						"maxLength": 4,
+						"defaultValue": "",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 14,
+					"selected": false
+				},
+				{
+					"name": "SmLength",
+					"fieldInfo": {
+						"caption": "SmLength",
+						"name": "SmLength",
+						"type": 7,
+						"maxLength": 8,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 5198.539881991643,
+					"selected": false
+				},
+				{
+					"name": "SmSdriW",
+					"fieldInfo": {
+						"caption": "SmSdriW",
+						"name": "SmSdriW",
+						"type": 6,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 11587594,
+					"selected": false
+				},
+				{
+					"name": "SmSdriN",
+					"fieldInfo": {
+						"caption": "SmSdriN",
+						"name": "SmSdriN",
+						"type": 6,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 3570862.2,
+					"selected": false
+				},
+				{
+					"name": "SmSdriE",
+					"fieldInfo": {
+						"caption": "SmSdriE",
+						"name": "SmSdriE",
+						"type": 6,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 11588976,
+					"selected": false
+				},
+				{
+					"name": "SmSdriS",
+					"fieldInfo": {
+						"caption": "SmSdriS",
+						"name": "SmSdriS",
+						"type": 6,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 3568301,
+					"selected": false
+				},
+				{
+					"name": "SmUserID",
+					"fieldInfo": {
+						"caption": "SmUserID",
+						"name": "SmUserID",
+						"type": 4,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": false
+					},
+					"value": 0,
+					"selected": false
+				},
+				{
+					"name": "SmTopoError",
+					"fieldInfo": {
+						"caption": "SmTopoError",
+						"name": "SmTopoError",
+						"type": 4,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 0,
+					"selected": false
+				},
+				{
+					"name": "SmGeometrySize",
+					"fieldInfo": {
+						"caption": "SmGeometrySize",
+						"name": "SmGeometrySize",
+						"type": 4,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": false,
+						"isSystemField": true
+					},
+					"value": 56,
+					"selected": false
+				},
+				{
+					"name": "CallContents",
+					"fieldInfo": {
+						"caption": "CallContents",
+						"name": "CallContents",
+						"type": 10,
+						"maxLength": 255,
+						"defaultValue": "",
+						"isRequired": false,
+						"isSystemField": false
+					},
+					"value": "",
+					"selected": false
+				},
+				{
+					"name": "NAME",
+					"fieldInfo": {
+						"caption": "NAME",
+						"name": "NAME",
+						"type": 10,
+						"maxLength": 255,
+						"defaultValue": "",
+						"isRequired": false,
+						"isSystemField": false
+					},
+					"value": "",
+					"selected": false
+				},
+				{
+					"name": "NOTES",
+					"fieldInfo": {
+						"caption": "NOTES",
+						"name": "NOTES",
+						"type": 10,
+						"maxLength": 255,
+						"defaultValue": "",
+						"isRequired": false,
+						"isSystemField": false
+					},
+					"value": "",
+					"selected": false
+				}
+			],
+			[
+				{
+					"name": "SmID",
+					"fieldInfo": {
+						"caption": "SmID",
+						"name": "SmID",
+						"type": 4,
+						"maxLength": 4,
+						"defaultValue": "",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 15
+				},
+				{
+					"name": "SmLength",
+					"fieldInfo": {
+						"caption": "SmLength",
+						"name": "SmLength",
+						"type": 7,
+						"maxLength": 8,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 10951.663430914376
+				},
+				{
+					"name": "SmSdriW",
+					"fieldInfo": {
+						"caption": "SmSdriW",
+						"name": "SmSdriW",
+						"type": 6,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 11585193
+				},
+				{
+					"name": "SmSdriN",
+					"fieldInfo": {
+						"caption": "SmSdriN",
+						"name": "SmSdriN",
+						"type": 6,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 3573289.5
+				},
+				{
+					"name": "SmSdriE",
+					"fieldInfo": {
+						"caption": "SmSdriE",
+						"name": "SmSdriE",
+						"type": 6,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 11589788
+				},
+				{
+					"name": "SmSdriS",
+					"fieldInfo": {
+						"caption": "SmSdriS",
+						"name": "SmSdriS",
+						"type": 6,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 3568661
+				},
+				{
+					"name": "SmUserID",
+					"fieldInfo": {
+						"caption": "SmUserID",
+						"name": "SmUserID",
+						"type": 4,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": false
+					},
+					"value": 0
+				},
+				{
+					"name": "SmTopoError",
+					"fieldInfo": {
+						"caption": "SmTopoError",
+						"name": "SmTopoError",
+						"type": 4,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 0
+				},
+				{
+					"name": "SmGeometrySize",
+					"fieldInfo": {
+						"caption": "SmGeometrySize",
+						"name": "SmGeometrySize",
+						"type": 4,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": false,
+						"isSystemField": true
+					},
+					"value": 72
+				},
+				{
+					"name": "CallContents",
+					"fieldInfo": {
+						"caption": "CallContents",
+						"name": "CallContents",
+						"type": 10,
+						"maxLength": 255,
+						"defaultValue": "",
+						"isRequired": false,
+						"isSystemField": false
+					},
+					"value": ""
+				},
+				{
+					"name": "NAME",
+					"fieldInfo": {
+						"caption": "NAME",
+						"name": "NAME",
+						"type": 10,
+						"maxLength": 255,
+						"defaultValue": "",
+						"isRequired": false,
+						"isSystemField": false
+					},
+					"value": ""
+				},
+				{
+					"name": "NOTES",
+					"fieldInfo": {
+						"caption": "NOTES",
+						"name": "NOTES",
+						"type": 10,
+						"maxLength": 255,
+						"defaultValue": "",
+						"isRequired": false,
+						"isSystemField": false
+					},
+					"value": ""
+				}
+			],
+			[
+				{
+					"name": "SmID",
+					"fieldInfo": {
+						"caption": "SmID",
+						"name": "SmID",
+						"type": 4,
+						"maxLength": 4,
+						"defaultValue": "",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 16
+				},
+				{
+					"name": "SmLength",
+					"fieldInfo": {
+						"caption": "SmLength",
+						"name": "SmLength",
+						"type": 7,
+						"maxLength": 8,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 7067.191943620185
+				},
+				{
+					"name": "SmSdriW",
+					"fieldInfo": {
+						"caption": "SmSdriW",
+						"name": "SmSdriW",
+						"type": 6,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 11585461
+				},
+				{
+					"name": "SmSdriN",
+					"fieldInfo": {
+						"caption": "SmSdriN",
+						"name": "SmSdriN",
+						"type": 6,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 3570727.8
+				},
+				{
+					"name": "SmSdriE",
+					"fieldInfo": {
+						"caption": "SmSdriE",
+						"name": "SmSdriE",
+						"type": 6,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 11587612
+				},
+				{
+					"name": "SmSdriS",
+					"fieldInfo": {
+						"caption": "SmSdriS",
+						"name": "SmSdriS",
+						"type": 6,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 3566727.2
+				},
+				{
+					"name": "SmUserID",
+					"fieldInfo": {
+						"caption": "SmUserID",
+						"name": "SmUserID",
+						"type": 4,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": false
+					},
+					"value": 0
+				},
+				{
+					"name": "SmTopoError",
+					"fieldInfo": {
+						"caption": "SmTopoError",
+						"name": "SmTopoError",
+						"type": 4,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": true,
+						"isSystemField": true
+					},
+					"value": 0
+				},
+				{
+					"name": "SmGeometrySize",
+					"fieldInfo": {
+						"caption": "SmGeometrySize",
+						"name": "SmGeometrySize",
+						"type": 4,
+						"maxLength": 4,
+						"defaultValue": "0",
+						"isRequired": false,
+						"isSystemField": true
+					},
+					"value": 72
+				},
+				{
+					"name": "CallContents",
+					"fieldInfo": {
+						"caption": "CallContents",
+						"name": "CallContents",
+						"type": 10,
+						"maxLength": 255,
+						"defaultValue": "",
+						"isRequired": false,
+						"isSystemField": false
+					},
+					"value": ""
+				},
+				{
+					"name": "NAME",
+					"fieldInfo": {
+						"caption": "NAME",
+						"name": "NAME",
+						"type": 10,
+						"maxLength": 255,
+						"defaultValue": "",
+						"isRequired": false,
+						"isSystemField": false
+					},
+					"value": ""
+				},
+				{
+					"name": "NOTES",
+					"fieldInfo": {
+						"caption": "NOTES",
+						"name": "NOTES",
+						"type": 10,
+						"maxLength": 255,
+						"defaultValue": "",
+						"isRequired": false,
+						"isSystemField": false
+					},
+					"value": ""
+				}
+			]
+		]
+	},
+	"total": 3,
+	"currentPage": 0,
+	"startIndex": 0,
+	"resLength": 3
+}

@@ -6,6 +6,7 @@ import { getThemeAssets } from '../../../../../../assets'
 import { ConstToolType } from '../../../../../../constants'
 import CollectionAction from './CollectionAction'
 import ToolbarModule from '../ToolbarModule'
+import { AppToolBar, jsonUtil, LayerUtils } from '@/utils'
 
 /**
  * 获取采集操作数据
@@ -191,6 +192,88 @@ function getData(type) {
         image: getThemeAssets().collection.icon_track_start,
       }
       global.ToolBar?.updateViewData(0,obj)
+      const date = new Date()
+
+      const callInfo = CollectionAction.getCallInfo()
+      const callContentsObj = {
+        myName: '张三',           // 呼叫人姓名
+        myPhoneNumber: '17711245121',    // 呼叫人电话
+        callName: callInfo.name,         // 被呼叫人姓名
+        callPhoneNumber: callInfo.phoneNumber,  // 被呼叫人电话
+        localTime: date.getTime(),        // 当地时间
+        bjTime: date.getTime(),           // 北京时间
+        durationTime: '',     // 时长
+      }
+      const callContentsStr = JSON.stringify(callContentsObj)
+
+      const result = await LayerUtils.getLayerAttribute(
+        {},
+        AppToolBar.getProps().currentLayer.path,
+        0,
+        30,
+        {
+          // filter: this.filter,
+        },
+        "refresh",
+      )
+
+      let layerAttributedataArray = result.attributes.data
+      // const columnIndex = result.total !== 0 ? 0 : result.total
+      const columnIndex = layerAttributedataArray.length - 1
+      let layerAttributedata = layerAttributedataArray[columnIndex]
+
+      console.warn("result: " + JSON.stringify(result))
+      let smID = 0
+      let index = 0
+
+      const length = layerAttributedata.length
+      for(let i = 0; i < length; i ++) {
+        let item = layerAttributedata[i]
+        if(item.name === "SmID") {
+          smID = item.value
+        }
+        if(item.name === "CallContents") {
+          index = i
+        }
+      }
+
+      const altData = [
+        {
+          mapName: AppToolBar.getProps().map.currentMap.name,
+          layerPath: AppToolBar.getProps().currentLayer.path,
+          fieldInfo: [
+            {
+              name: 'CallContents',
+              value: callContentsStr,
+              index: index,
+              columnIndex: columnIndex,
+              smID: smID,
+            },
+          ],
+          // prevData: [
+          //   {
+          //     name: isSingleData ? data.rowData.name : data.cellData.name,
+          //     value: isSingleData ? data.rowData.value : data.cellData.value,
+          //     index: data.index,
+          //     columnIndex: data.columnIndex,
+          //     smID: isSingleData
+          //       ? this.state.attributes.data[0][0].value
+          //       : data.rowData[1].value,
+          //   },
+          // ],
+          params: {
+            // index: int,      // 当前对象所在记录集中的位置
+            filter: `SmID=${smID}`, // 过滤条件
+            cursorType: 2, // 2: DYNAMIC, 3: STATIC
+          },
+        },
+      ]
+
+      AppToolBar.getProps().setLayerAttributes(altData)
+
+      // let newLayerAttributeState = JSON.parse(JSON.stringify(layerAttributeState))
+      // LayerUtils.setMapLayerAttribute(newLayerAttributeState)
+
     },
     size: 'large',
     image: getThemeAssets().publicAssets.icon_submit,

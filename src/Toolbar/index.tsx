@@ -18,7 +18,7 @@ import {
   arSandTableData,
   ModuleList,
 } from "./modules"
-import { getLayers, setCurrentLayer } from "@/redux/models/layers"
+import { getLayers, setCurrentLayer, setLayerAttributes } from "@/redux/models/layers"
 import { getARLayers, setCurrentARLayer } from "@/redux/models/arlayer"
 import {closeARMap, createARMap, saveARMap} from '@/redux/models/armap'
 import { setPipeLineAttribute, changeShowAttributeElement } from "@/redux/models/arattribute"
@@ -71,6 +71,9 @@ const mapStateToProp = (state: RootState) => ({
   currentUser: state.user.toJS().currentUser,
   pipeLineAttribute: state.arattribute.pipeLineAttribute,
   elementAttribute: state.arattribute.elementAttribute,
+  currentLayer: state.layers.toJS().currentLayer,
+  attributes: state.layers.toJS().attributes,
+  map: state.map.toJS(),
 })
 
 const mapDispatch = {
@@ -84,6 +87,7 @@ const mapDispatch = {
   setPipeLineAttribute,
   changeShowAttributeElement,
   setCurrentSymbol,
+  setLayerAttributes,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

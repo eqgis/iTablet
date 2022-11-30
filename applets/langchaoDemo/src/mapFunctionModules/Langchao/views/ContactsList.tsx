@@ -152,7 +152,7 @@ class ContactsList extends Component<Props, State> {
     }
   }
 
-  itemAction = async (telephone: string) => {
+  itemAction = async (telephone: string, name: string) => {
     try {
       NavigationService.navigate('MapView',{type: 'langchao'})
       const data = {"name":"专用公路","type":"line","id":965018}
@@ -165,6 +165,10 @@ class ContactsList extends Component<Props, State> {
       // await collectionModule().actions.createCollector(type, undefined)
 
       collectionModule().actions.showCollection(type)
+      collectionModule().actions.setCallInfo({
+        name: name,
+        phoneNumber: telephone,
+      })
 
       const timer = setTimeout(async () => {
         const obj = {
@@ -283,7 +287,7 @@ class ContactsList extends Component<Props, State> {
           paddingHorizontal: dp(10),
         }]}
         onPress={() => {
-          this.itemAction(item.phone)
+          this.itemAction(item.phone, item.name)
         }}
       >
         <View style={[{

@@ -305,7 +305,6 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
     }
     const data = []
     for(let i = 0; i < this.state.data.length; i ++) {
-      console.warn(i)
       if(i === index) {
         data.push(param)
       } else {

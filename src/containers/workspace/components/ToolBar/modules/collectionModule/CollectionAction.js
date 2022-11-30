@@ -371,6 +371,20 @@ function isGPSCollect (type) {
   )
 }
 
+let callInfo = {
+  name: '',
+  phoneNumber: '',
+}
+function setCallInfo (param) {
+  callInfo = {
+    name: param.name,
+    phoneNumber: param.phoneNumber,
+  }
+}
+function getCallInfo () {
+  return callInfo
+}
+
 export default {
   close,
 
@@ -384,4 +398,7 @@ export default {
   undo,
   redo,
   showAttribute,
+
+  setCallInfo,
+  getCallInfo,
 }

@@ -1745,9 +1745,10 @@ export default class LayerAttribute extends React.Component {
         ref={ref => (this.container = ref)}
         showFullInMap={true}
         headerProps={{
-          title: this.props.mapModules.modules[this.props.currentUser.userName][
-            this.props.mapModules.currentMapModule
-          ].chunk?.title || '',
+          // title: this.props.mapModules.modules[this.props.currentUser.userName][
+          //   this.props.mapModules.currentMapModule
+          // ].chunk?.title || '',
+          title: '历史记录',
           navigation: this.props.navigation,
           // backAction: this.back,
           // backImg: require('../../../../assets/mapTools/icon_close.png'),

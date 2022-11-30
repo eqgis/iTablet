@@ -3,6 +3,7 @@ import { getLanguage } from '../../language'
 import { getThemeAssets } from '../../assets'
 import { CoordSysData } from './secondMapSettings/CoordSysData'
 import NavigationService from '../NavigationService'
+import { getImage } from '../../../applets/langchaoDemo/src/assets/index'
 
 function getMapSettings() {
   const data = [
@@ -152,6 +153,14 @@ const getThematicMapSettings = () => [
     leftImage: getThemeAssets().setting.icon_location,
     action: () => {
       NavigationService.navigate('LocationSetting')
+    },
+  },
+  {
+    title: "通讯录",
+    leftImage: getImage().telephone1,
+    action: () => {
+      // NavigationService.navigate('LocationSetting')
+      NavigationService.navigate('ContactsList')
     },
   },
 ]

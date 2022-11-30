@@ -68,14 +68,50 @@ function getData(type) {
     data.push({
       key: 'start',
       title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
-      action: () => SCollector.startCollect(type),
+      action: async () => {
+        await SCollector.startCollect(type)
+        const obj = {
+          key: 'start',
+          title: "记录中",
+          action: () => {
+            Toast.show("正在记录中")
+          },
+          size: 'large',
+          image: getThemeAssets().collection.icon_track_start,
+        }
+        global.ToolBar?.updateViewData(0,obj)
+
+      },
       size: 'large',
       image: getThemeAssets().collection.icon_track_start,
     })
     data.push({
       key: 'stop',
       title: getLanguage(global.language).Map_Main_Menu.COLLECTION_STOP,
-      action: () => SCollector.pauseCollect(type),
+      action: async () => {
+        await SCollector.pauseCollect(type)
+        let obj = {
+          key: 'start',
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
+          action: async () => {
+            await SCollector.startCollect(type)
+            const obj = {
+              key: 'start',
+              title: "记录中",
+              action: () => {
+                Toast.show("正在记录中")
+              },
+              size: 'large',
+              image: getThemeAssets().collection.icon_track_start,
+            }
+            global.ToolBar?.updateViewData(0,obj)
+
+          },
+          size: 'large',
+          image: getThemeAssets().collection.icon_track_start,
+        }
+        global.ToolBar?.updateViewData(0,obj)
+      },
       size: 'large',
       image: getThemeAssets().collection.icon_track_stop,
     })
@@ -102,14 +138,60 @@ function getData(type) {
   data.push({
     key: constants.CANCEL,
     title: getLanguage(global.language).Map_Main_Menu.COLLECTION_CANCEL,
-    action: () => CollectionAction.cancel(type),
+    action: async () => {
+      await CollectionAction.cancel(type)
+      let obj = {
+        key: 'start',
+        title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
+        action: async () => {
+          await SCollector.startCollect(type)
+          const obj = {
+            key: 'start',
+            title: "记录中",
+            action: () => {
+              Toast.show("正在记录中")
+            },
+            size: 'large',
+            image: getThemeAssets().collection.icon_track_start,
+          }
+          global.ToolBar?.updateViewData(0,obj)
+
+        },
+        size: 'large',
+        image: getThemeAssets().collection.icon_track_start,
+      }
+      global.ToolBar?.updateViewData(0,obj)
+    },
     size: 'large',
     image: getThemeAssets().publicAssets.icon_cancel,
   })
   data.push({
     key: constants.SUBMIT,
     title: getLanguage(global.language).Map_Main_Menu.COLLECTION_SUBMIT,
-    action: () => CollectionAction.collectionSubmit(type),
+    action: async () => {
+      await CollectionAction.collectionSubmit(type)
+      let obj = {
+        key: 'start',
+        title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
+        action: async () => {
+          await SCollector.startCollect(type)
+          const obj = {
+            key: 'start',
+            title: "记录中",
+            action: () => {
+              Toast.show("正在记录中")
+            },
+            size: 'large',
+            image: getThemeAssets().collection.icon_track_start,
+          }
+          global.ToolBar?.updateViewData(0,obj)
+
+        },
+        size: 'large',
+        image: getThemeAssets().collection.icon_track_start,
+      }
+      global.ToolBar?.updateViewData(0,obj)
+    },
     size: 'large',
     image: getThemeAssets().publicAssets.icon_submit,
   })

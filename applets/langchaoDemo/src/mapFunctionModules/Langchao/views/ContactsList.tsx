@@ -10,12 +10,13 @@ import { dp } from "imobile_for_reactnative/utils/size"
 import { fontSize } from "@/containers/tabs/Mine/Register/Styles"
 import { getImage } from "imobile_for_reactnative/components/ToolbarKit/ToolbarResource"
 import { getLanguage } from "@/language"
-import { getPublicAssets } from "@/assets"
+import { getPublicAssets, getThemeAssets } from "@/assets"
 import { setCurrentSymbol } from "@/redux/models/symbol"
 import { SCollector, SMCollectorType } from "imobile_for_reactnative"
 import NavigationService from "@/containers/NavigationService"
 import { collectionModule } from "@/containers/workspace/components/ToolBar/modules"
 import ToolbarModule from "@/containers/workspace/components/ToolBar/modules/ToolbarModule"
+import { Toast } from "@/utils"
 
 interface contactItemType {
   recordID: string,
@@ -164,7 +165,19 @@ class ContactsList extends Component<Props, State> {
       // await collectionModule().actions.createCollector(type, undefined)
 
       collectionModule().actions.showCollection(type)
+
       const timer = setTimeout(async () => {
+        const obj = {
+          key: 'start',
+          title: "记录中",
+          action: () => {
+            Toast.show("正在记录中")
+          },
+          size: 'large',
+          image: getThemeAssets().collection.icon_track_start,
+        }
+        global.ToolBar?.updateViewData(0,obj)
+
         await SCollector.startCollect(type)
 
         const url = 'tel:' + telephone

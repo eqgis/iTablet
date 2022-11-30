@@ -297,6 +297,26 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
     this.contentView = null
   }
 
+  /** 暴露给外部的修改toolbar内容的接口 */
+  updateViewData = (index: number, param: any) => {
+    // 索引越界
+    if(index < 0 || index >= this.state.data.length) {
+      return
+    }
+    const data = []
+    for(let i = 0; i < this.state.data.length; i ++) {
+      console.warn(i)
+      if(i === index) {
+        data.push(param)
+      } else {
+        data.push(this.state.data[i])
+      }
+    }
+    this.setState({
+      data: data,
+    })
+  }
+
   getContentViewHeight = () => {
     // return this.height
     return this.contentView ? this.contentView.height : this.height

@@ -132,31 +132,31 @@ const getThematicMapSettings = () => [
     title: getLanguage(global.language).Map_Settings.BASIC_SETTING,
     leftImage: getThemeAssets().setting.icon_basic,
   },
-  {
-    title: getLanguage(global.language).Map_Settings.RANGE_SETTING,
-    leftImage: getThemeAssets().setting.icon_range,
-  },
-  {
-    title: getLanguage(global.language).Map_Settings.COORDINATE_SYSTEM_SETTING,
-    leftImage: getThemeAssets().setting.icon_coordinate,
-  },
-  // 高级设置 暂时屏蔽
   // {
-  //   title: getLanguage(global.language).Map_Settings.ADVANCED_SETTING,
+  //   title: getLanguage(global.language).Map_Settings.RANGE_SETTING,
+  //   leftImage: getThemeAssets().setting.icon_range,
+  // },
+  // {
+  //   title: getLanguage(global.language).Map_Settings.COORDINATE_SYSTEM_SETTING,
+  //   leftImage: getThemeAssets().setting.icon_coordinate,
+  // },
+  // // 高级设置 暂时屏蔽
+  // // {
+  // //   title: getLanguage(global.language).Map_Settings.ADVANCED_SETTING,
+  // // },
+  // {
+  //   title: getLanguage(global.language).Map_Settings.LEGEND_SETTING,
+  //   leftImage: getThemeAssets().setting.icon_legend,
+  // },
+  // {
+  //   title: getLanguage(global.language).Profile.SETTING_LOCATION_DEVICE,
+  //   leftImage: getThemeAssets().setting.icon_location,
+  //   action: () => {
+  //     NavigationService.navigate('LocationSetting')
+  //   },
   // },
   {
-    title: getLanguage(global.language).Map_Settings.LEGEND_SETTING,
-    leftImage: getThemeAssets().setting.icon_legend,
-  },
-  {
-    title: getLanguage(global.language).Profile.SETTING_LOCATION_DEVICE,
-    leftImage: getThemeAssets().setting.icon_location,
-    action: () => {
-      NavigationService.navigate('LocationSetting')
-    },
-  },
-  {
-    title: "通讯录",
+    title: "通讯录设置",
     leftImage: getImage().telephone1,
     action: () => {
       // NavigationService.navigate('LocationSetting')

@@ -2078,14 +2078,14 @@ export default class MapView extends React.Component {
 
       const layers = await this.props.getLayers()
 
-      // const jsonStr = {
-      //   myName: '',
-      //   myPhoneNumber: '',
-      //   callName: '',
-      //   callPhoneNumber: '',
-      //   localTime: '',
-      //   bjTime: '',
-      //   duration: '',
+      // const CallContentsObj = {
+      //   myName: '',           // 呼叫人姓名
+      //   myPhoneNumber: '',    // 呼叫人电话
+      //   callName: '',         // 被呼叫人姓名
+      //   callPhoneNumber: '',  // 被呼叫人电话
+      //   localTime: '',        // 当地时间
+      //   bjTime: '',           // 北京时间
+      //   durationTime: '',     // 时长
       // }
       // 添加属性 字段
       let attributeObj = {

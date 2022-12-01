@@ -396,7 +396,6 @@ export default class LayerAttribute extends React.Component {
             type,
           )
 
-          console.warn("result 01: " + JSON.stringify(result))
           this.total = result.total || 0
           attributes = result.attributes || []
 

@@ -165,9 +165,12 @@ class ContactsList extends Component<Props, State> {
       // await collectionModule().actions.createCollector(type, undefined)
 
       collectionModule().actions.showCollection(type)
+      const date = new Date()
+
       collectionModule().actions.setCallInfo({
         name: name,
         phoneNumber: telephone,
+        startTime: date.getTime(),
       })
 
       const timer = setTimeout(async () => {

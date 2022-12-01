@@ -162,6 +162,13 @@ function getData(type) {
         image: getThemeAssets().collection.icon_track_start,
       }
       global.ToolBar?.updateViewData(0,obj)
+
+      // 将数据恢复默认值
+      CollectionAction.setCallInfo({
+        name: '',
+        phoneNumber: '',
+        startTime: -1,
+      })
     },
     size: 'large',
     image: getThemeAssets().publicAssets.icon_cancel,
@@ -194,17 +201,34 @@ function getData(type) {
       global.ToolBar?.updateViewData(0,obj)
       const date = new Date()
 
+
+      const timezone = 8 //目标时区时间，东八区(北京时间)   东时区正数 西市区负数
+      const offset_GMT = date.getTimezoneOffset() // 本地时间和格林威治的时间差，单位为分钟
+      const nowDate = date.getTime() // 本地时间距 1970 年 1 月 1 日午夜（GMT 时间）之间的毫秒数
+      const targetDate = new Date(nowDate + offset_GMT * 60 * 1000 + timezone * 60 * 60 * 1000)
+      const beijingTime = targetDate.getTime()
+
       const callInfo = CollectionAction.getCallInfo()
+      let durationTime = 0
+      if(callInfo.startTime < 0) {
+        durationTime = nowDate - callInfo.startTime
+      }
       const callContentsObj = {
         myName: '张三',           // 呼叫人姓名
         myPhoneNumber: '17711245121',    // 呼叫人电话
         callName: callInfo.name,         // 被呼叫人姓名
         callPhoneNumber: callInfo.phoneNumber,  // 被呼叫人电话
-        localTime: date.getTime(),        // 当地时间
-        bjTime: date.getTime(),           // 北京时间
-        durationTime: '',     // 时长
+        localTime: nowDate,        // 当地时间
+        bjTime: beijingTime,           // 北京时间
+        durationTime: durationTime,     // 时长
       }
       const callContentsStr = JSON.stringify(callContentsObj)
+      // 将数据恢复默认值
+      CollectionAction.setCallInfo({
+        name: '',
+        phoneNumber: '',
+        startTime: -1,
+      })
 
       const result = await LayerUtils.getLayerAttribute(
         {},
@@ -222,7 +246,7 @@ function getData(type) {
       const columnIndex = layerAttributedataArray.length - 1
       let layerAttributedata = layerAttributedataArray[columnIndex]
 
-      console.warn("result: " + JSON.stringify(result))
+      // console.warn("result: " + JSON.stringify(result))
       let smID = 0
       let index = 0
 
@@ -279,7 +303,20 @@ function getData(type) {
     image: getThemeAssets().publicAssets.icon_submit,
   })
   buttons = [
-    ToolbarBtnType.CANCEL,
+    // ToolbarBtnType.CANCEL,
+    {
+      type: ToolbarBtnType.CANCEL,
+      image: getThemeAssets().toolbar.icon_toolbar_quit,
+      action: () => {
+        global.ToolBar?.close()
+        // 将数据恢复默认值
+        CollectionAction.setCallInfo({
+          name: '',
+          phoneNumber: '',
+          startTime: -1,
+        })
+      },
+    },
     // {
     //   type: ToolbarBtnType.CHANGE_COLLECTION,
     //   image: getThemeAssets().toolbar.icon_toolbar_switch,

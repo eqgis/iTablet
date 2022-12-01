@@ -374,11 +374,13 @@ function isGPSCollect (type) {
 let callInfo = {
   name: '',
   phoneNumber: '',
+  startTime: -1,
 }
 function setCallInfo (param) {
   callInfo = {
     name: param.name,
     phoneNumber: param.phoneNumber,
+    startTime: param.startTime
   }
 }
 function getCallInfo () {

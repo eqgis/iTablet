@@ -7,6 +7,7 @@ import { ConstToolType } from '../../../../../../constants'
 import CollectionAction from './CollectionAction'
 import ToolbarModule from '../ToolbarModule'
 import { AppToolBar, jsonUtil, LayerUtils } from '@/utils'
+import TourAction from '../../../../../../../applets/langchaoDemo/src/mapFunctionModules/Langchao/TourAction'
 
 /**
  * 获取采集操作数据
@@ -202,27 +203,32 @@ function getData(type) {
       const date = new Date()
 
 
-      const timezone = 8 //目标时区时间，东八区(北京时间)   东时区正数 西市区负数
+      const timezone = 7 //目标时区时间，东八区(北京时间)   东时区正数 西市区负数
       const offset_GMT = date.getTimezoneOffset() // 本地时间和格林威治的时间差，单位为分钟
       const nowDate = date.getTime() // 本地时间距 1970 年 1 月 1 日午夜（GMT 时间）之间的毫秒数
       const targetDate = new Date(nowDate + offset_GMT * 60 * 1000 + timezone * 60 * 60 * 1000)
-      const beijingTime = targetDate.getTime()
+      // const beijingTime = targetDate.getTime()
+      // 格式化时间
+      const formDateLocal = TourAction.dateFormat("yyyy-MM-dd HH:mm:ss", date)
+      const formDateBeijing = TourAction.dateFormat("yyyy-MM-dd HH:mm:ss", targetDate)
+      // console.warn("localDate: " + formDateLocal + "beijingdate: " + formDateBeijing)
 
       const callInfo = CollectionAction.getCallInfo()
       let durationTime = 0
-      if(callInfo.startTime < 0) {
-        durationTime = nowDate - callInfo.startTime
+      if(callInfo.startTime >= 0) {
+        durationTime = (nowDate - callInfo.startTime) / (60 * 1000)
       }
       const callContentsObj = {
         myName: '张三',           // 呼叫人姓名
         myPhoneNumber: '17711245121',    // 呼叫人电话
         callName: callInfo.name,         // 被呼叫人姓名
         callPhoneNumber: callInfo.phoneNumber,  // 被呼叫人电话
-        localTime: nowDate,        // 当地时间
-        bjTime: beijingTime,           // 北京时间
+        localTime: formDateLocal,        // 当地时间
+        bjTime: formDateBeijing,           // 北京时间
         durationTime: durationTime,     // 时长
       }
       const callContentsStr = JSON.stringify(callContentsObj)
+      console.warn("callContentsStr: " + callContentsStr)
       // 将数据恢复默认值
       CollectionAction.setCallInfo({
         name: '',

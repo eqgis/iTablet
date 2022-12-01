@@ -125,7 +125,79 @@ const positionUpload = async () => {
 
 }
 
+// "yyyy-MM-dd hh:mm:ss"
+const dateFormat = (format: string, date: Date) => {
+  let formatstr = format
+  console.warn("formatstr01: " + formatstr + " - " + date.getFullYear())
+  if(format != null && format != ""){
+    //设置年
+    if(formatstr.indexOf("yyyy") >=0 ){
+      formatstr = formatstr.replace("yyyy",date.getFullYear() + "")
+    }
+    console.warn("formatstr02: " + formatstr)
+    //设置月
+    if(formatstr.indexOf("MM") >=0 ){
+      let month: number | string = date.getMonth() + 1
+      if(month < 10){
+        month = "0" + month
+      }
+      formatstr = formatstr.replace("MM",month + "")
+    }
+    console.warn("formatstr03: " + formatstr)
+    //设置日
+    if(formatstr.indexOf("dd") >=0 ){
+      let day: number | string = date.getDay()
+      if(day < 10){
+        day = "0" + day
+      }
+      formatstr = formatstr.replace("dd",day + "")
+    }
+    console.warn("formatstr04: " + formatstr)
+    //设置时 - 24小时
+    let hours: number | string = date.getHours()
+    if(formatstr.indexOf("HH") >=0 ){
+      if(hours < 10){
+        hours = "0" + hours
+      }
+      formatstr = formatstr.replace("HH",hours + "")
+    }
+    //设置时 - 12小时
+    if(formatstr.indexOf("hh") >=0 ){
+      if(hours > 12){
+        hours = Number(hours) - 12
+      }
+      if(hours < 10){
+        hours = "0" + hours
+      }
+      formatstr = formatstr.replace("hh",hours + "")
+    }
+    console.warn("formatstr05: " + formatstr)
+    //设置分
+    if(formatstr.indexOf("mm") >=0 ){
+      let minute: number | string = date.getMinutes()
+      if(minute < 10){
+        minute = "0" + minute
+      }
+      formatstr = formatstr.replace("mm",minute + "")
+    }
+    console.warn("formatstr06: " + formatstr)
+    //设置秒
+    if(formatstr.indexOf("ss") >=0 ){
+      let second: number | string = date.getSeconds()
+      if(second < 10){
+        second = "0" + second
+      }
+      formatstr = formatstr.replace("ss",second + "")
+    }
+    console.warn("formatstr07: " + formatstr)
+  }
+  return formatstr
+}
+
+
+
 export default {
   tour,
   positionUpload,
+  dateFormat,
 }

@@ -2896,10 +2896,10 @@ export const language_tr: typeof language_cn = {
   BURST:"Burst",// To be tanslated
   SCOPE:"Scope",// To be tanslated
   FIXED:"Fixed",// To be tanslated
-  FLOW1:"Fixed one",// To be tanslated
-  FLOW2:"Fixed two",// To be tanslated
-  BURST1:"Burst one",// To be tanslated
-  BURST2:"Burst two",// To be tanslated
+  FLOW1:"Surface Flow",// To be tanslated
+  FLOW2:"Wall Flow",// To be tanslated
+  BURST1:"Surface Burst",// To be tanslated
+  BURST2:"Surface Burst",// To be tanslated
   LINK_TYPE:"Link Type",// To be tanslated
   ROUTINE:"Routine",// To be tanslated
   SECTION_DIAMETER:"Diameter",// To be tanslated

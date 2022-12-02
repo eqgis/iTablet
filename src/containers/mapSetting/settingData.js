@@ -130,6 +130,14 @@ function getMapSettings() {
 // 地图设置 新菜单栏
 const getThematicMapSettings = () => [
   {
+    title: "通讯录设置",
+    leftImage: getImage().telephone1,
+    action: () => {
+      // NavigationService.navigate('LocationSetting')
+      NavigationService.navigate('ContactsList')
+    },
+  },
+  {
     title: getLanguage(global.language).Map_Settings.BASIC_SETTING,
     leftImage: getThemeAssets().setting.icon_basic,
   },
@@ -156,14 +164,7 @@ const getThematicMapSettings = () => [
   //     NavigationService.navigate('LocationSetting')
   //   },
   // },
-  {
-    title: "通讯录设置",
-    leftImage: getImage().telephone1,
-    action: () => {
-      // NavigationService.navigate('LocationSetting')
-      NavigationService.navigate('ContactsList')
-    },
-  },
+ 
   {
     title: "许可中心",
     leftImage: getThemeAssets().setting.icon_legend,

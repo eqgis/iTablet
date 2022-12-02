@@ -313,7 +313,8 @@ function getData(type) {
     {
       type: ToolbarBtnType.CANCEL,
       image: getThemeAssets().toolbar.icon_toolbar_quit,
-      action: () => {
+      action: async () => {
+        await CollectionAction.cancel(type)
         global.ToolBar?.close()
         // 将数据恢复默认值
         CollectionAction.setCallInfo({

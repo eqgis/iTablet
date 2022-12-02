@@ -72,20 +72,18 @@ class PositionSubmitModule extends FunctionModule {
     })
 
     await collectionModule().actions.createCollector(type, undefined)
-    const point = await SCollector.addGPSPoint(type)
-    // console.warn(point)
-    // await collectionModule().actions.createCollector(type, undefined)
+    const point = await SCollector.addGPSPoint()
+    await collectionModule().actions.collectionSubmit(type)
+    await SCollector.stopCollect()
     showLoading(2000, async () => {
-      await collectionModule().actions.collectionSubmit(type)
-      await SCollector.stopCollect()
       // 地图定位到指定点位置
-      await SMap.toLocationPoint({
-        x: position.longitude,
-        y: position.latitude,
-      })
+      SMap.refreshMap()
       Toast.show("上报成功")
     })
-
+    await SMap.toLocationPoint({
+      x: position.longitude,
+      y: position.latitude,
+    })
     // const merPosition = this.llToMerto(position)
     // await SMap.setMapCenter(merPosition.x, merPosition.y)
     // await SMap.setMapScale(1 / 2785.0)

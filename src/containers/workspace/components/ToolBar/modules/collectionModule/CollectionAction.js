@@ -242,19 +242,18 @@ async function createCollector(type, layerName) {
     }
   }
 
-  SCollector.setDataset(params).then(async layerInfo => {
-    if (!layerInfo) return
-    // 设置绘制风格
-    await SCollector.setStyle(collectorStyle)
-    await SCollector.initCollect(type)
-    if (isGPSCollect(type)) {
-      await SLocation.setBackgroundLocationEnable(true)
-    } else {
-      await SLocation.setBackgroundLocationEnable(false)
-    }
-    ToolbarModule.getParams().getLayers(-1, () => {
-      ToolbarModule.getParams().setCurrentLayer(layerInfo)
-    })
+  layerInfo = await SCollector.setDataset(params)
+  if (!layerInfo) return
+  // 设置绘制风格
+  await SCollector.setStyle(collectorStyle)
+  await SCollector.initCollect(type)
+  if (isGPSCollect(type)) {
+    await SLocation.setBackgroundLocationEnable(true)
+  } else {
+    await SLocation.setBackgroundLocationEnable(false)
+  }
+  ToolbarModule.getParams().getLayers(-1, () => {
+    ToolbarModule.getParams().setCurrentLayer(layerInfo)
   })
 }
 

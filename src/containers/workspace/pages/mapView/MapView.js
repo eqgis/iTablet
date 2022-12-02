@@ -2049,6 +2049,7 @@ export default class MapView extends React.Component {
       })
 
       await collectionModule().actions.createCollector(typeP, undefined)
+      await collectionModule().actions.cancel(typeP)
       // console.warn("layer: " + JSON.stringify(ToolbarModule.getParams().currentLayer))
       // await SMap.renameLayer(this.state.layerData.path, value)
       // await collectionModule().actions.collectionSubmit(typeP)
@@ -2064,6 +2065,7 @@ export default class MapView extends React.Component {
       })
 
       await collectionModule().actions.createCollector(typePm, undefined)
+      await collectionModule().actions.cancel(typePm)
 
       const dataL = {"name":"专用公路","type":"line","id":965018}
 
@@ -2075,7 +2077,8 @@ export default class MapView extends React.Component {
       })
       await collectionModule().actions.createCollector(typeL, undefined)
       // await collectionModule().actions.collectionSubmit(typeL)
-      await SCollector.stopCollect()
+      await collectionModule().actions.cancel(typeL)
+      await SMap.setAction(Action.PAN)
 
       const layers = await this.props.getLayers()
 

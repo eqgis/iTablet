@@ -4,6 +4,7 @@ import { getThemeAssets } from '../../assets'
 import { CoordSysData } from './secondMapSettings/CoordSysData'
 import NavigationService from '../NavigationService'
 import { getImage } from '../../../applets/langchaoDemo/src/assets/index'
+import { AppToolBar } from '@/utils'
 
 function getMapSettings() {
   const data = [
@@ -161,6 +162,16 @@ const getThematicMapSettings = () => [
     action: () => {
       // NavigationService.navigate('LocationSetting')
       NavigationService.navigate('ContactsList')
+    },
+  },
+  {
+    title: "许可中心",
+    leftImage: getThemeAssets().setting.icon_legend,
+    action: () => {
+      const user = AppToolBar.getProps().user
+      NavigationService.navigate('LicensePage', {
+        user: user,
+      })
     },
   },
 ]

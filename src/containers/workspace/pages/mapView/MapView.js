@@ -146,6 +146,7 @@ import PositionStateView from '../../components/PositionStateView'
 import {
   collectionModule,
 } from '@/containers/workspace/components/ToolBar/modules'
+import TourAction from '../../../../../applets/langchaoDemo/src/mapFunctionModules/Langchao/TourAction'
 
 global.markerTag = 118082
 
@@ -2120,6 +2121,24 @@ export default class MapView extends React.Component {
         x: position.longitude,
         y: position.latitude,
       })
+      // TourAction.getlangchaoCode(position.longitude, position.latitude)
+      // TourAction.getlangchaoCode(40.7143528, 74.0059731)
+
+      // const dsets = await SMap.getDatasetsByDatasource({alias: "country"})
+      // const defualtDset = dsets.list.filter(item => {
+      //   console.warn("dataset: " + JSON.stringify(item))
+      //   return item.datasetName === "Country_84"
+      // })
+
+      const bounds = {
+        x: position.longitude,
+        y: position.latitude,
+        sizeX: 1,
+        sizeY: 1,
+      }
+
+      const result = await SMap.query("country", "Country_84", bounds)
+      console.warn("result: " + JSON.stringify(result) + "\n bounds: " + JSON.stringify(bounds))
 
       await this.addAttributeField(attributeObj, mediaPath)
       setTimeout(async () => {

@@ -9,6 +9,7 @@ import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/Too
 import { MediaData } from 'imobile_for_reactnative/types/interface/collector/SMediaCollector'
 import { SuperMapKnown } from '@/containers/tabs'
 import { collectionModule } from '@/containers/workspace/components/ToolBar/modules'
+import { getJson } from './data'
 
 /**
  * 右侧创建轨迹事件
@@ -103,7 +104,7 @@ const positionUpload = async () => {
   //   // await SMap.refreshMap()
   //   Toast.show("上报成功")
   // })
-// ==============================================================================
+  // ==============================================================================
   // const data = {"name":"专用公路","type":"line","id":965018}
   // await AppToolBar.getProps().setCurrentSymbol(data)
   // const type = SMCollectorType.LINE_GPS_PATH
@@ -125,7 +126,7 @@ const positionUpload = async () => {
 
 }
 
-// "yyyy-MM-dd hh:mm:ss"
+/** 时间格式化 "yyyy-MM-dd hh:mm:ss"（12小时制）  "yyyy-MM-dd HH:mm:ss"（24小时制） */
 const dateFormat = (format: string, date: Date) => {
   let formatstr = format
   console.warn("formatstr01: " + formatstr + " - " + date.getFullYear())
@@ -194,10 +195,42 @@ const dateFormat = (format: string, date: Date) => {
   return formatstr
 }
 
+interface countryCodeType {
+  name: string,
+  codeId: number,
+}
+
+const getCountryCode = async (lon: number, lat: number) => {
+  let code = -1
+  try {
+    const bounds = {
+      x: lon,
+      y: lat,
+      sizeX: 1,
+      sizeY: 1,
+    }
+    const result = await SMap.query("country", "Country_84", bounds)
+    console.warn("result: " + JSON.stringify(result) + "\n bounds: " + JSON.stringify(bounds))
+    console.warn("Country: " + result.Country)
+    if(result && result.Country) {
+      const countrycodeData = getJson().contryCode
+      countrycodeData.map((item: countryCodeType) => {
+        if(item.name === result.Country) {
+          code = item.codeId
+        }
+      })
+    }
+    return code
+  } catch (error) {
+    return code
+  }
+}
+
 
 
 export default {
   tour,
   positionUpload,
   dateFormat,
+  getCountryCode,
 }

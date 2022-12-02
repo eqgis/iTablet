@@ -234,8 +234,8 @@ let pose: SARMap.Pose | undefined
 
 const DefaultArrowPoint = {
   x: 0,
-  y: 1.5,
-  z: -0.6,
+  y: 0,
+  z: -1.5,
 }
 
 const DefaultScale = 0.006
@@ -502,20 +502,36 @@ class SandBoxView extends React.Component<Props, State> {
     ]
   }
 
-  arrowTricker = async (isOpen: boolean, params: {
+  arrowTricker = async (isOpen: boolean, params?: {
     x: number,
     y: number,
     z: number,
-  } = DefaultArrowPoint) => {
-    if (isOpen && pose && params) {
+  }) => {
+    if (isOpen && pose) {
       if (this.isOpenArrow) {
         await SExhibition.stopTrackingTarget()
       }
-      await SExhibition.setTrackingTarget({
-        pose: pose,
-        translation: params,
-      })
-      console.warn(params)
+
+      if (pose && params) {
+        await SExhibition.setTrackingTarget({
+          pose: pose,
+          translation: params,
+        })
+      } else {
+        const lastPosition = await SARMap.getElementPositionInfo(currentLayer.name, 1)
+        if (lastPosition?.renderNode.position) {
+          await SExhibition.setTrackingTarget({
+            center: lastPosition?.renderNode.position,
+            vertices: [],
+          })
+        } else {
+          await SExhibition.setTrackingTarget({
+            pose: pose,
+            translation: DefaultArrowPoint,
+          })
+        }
+      }
+
       await SExhibition.startTrackingTarget()
       this.isOpenArrow = isOpen
     } else {
@@ -566,11 +582,7 @@ class SandBoxView extends React.Component<Props, State> {
       const targetHomePath = home + ConstPath.CustomerPath + 'Data/ARResource/SandBox/'
       await SARMap.createARSandTable(pose && {
         pose: pose,
-        translation: {
-          x: 0,
-          y: 0,
-          z: 0,
-        }
+        translation: DefaultLocation.position,
       })
       // 添加glb
       // const glbs = await FileTools.getPathListByFilterDeep(targetHomePath, 'glb')
@@ -1777,7 +1789,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         this.props.arrowTricker?.(true, {
           x: 0,
           y: 1.3,
-          z: 0,
+          z: -1,
         })
         if (await this.twinkle2(selectImg, this.lastSpot?.location, 3)) {
           this.setState({

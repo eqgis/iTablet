@@ -246,6 +246,7 @@ dependencies {
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.3@aar'
     // Sceneform
     implementation project(':react-native-contacts')
+    implementation project(':react-native-immediate-phone-call')
 
     implementation 'de.javagl:obj:0.2.1'
     implementation 'org.rajawali3d:rajawali:1.0.325@aar'

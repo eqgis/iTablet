@@ -15,6 +15,7 @@ import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.ReactContext;
+import com.github.wumke.RNImmediatePhoneCall.RNImmediatePhoneCallPackage;
 import com.rnfs.RNFSManager;
 import com.supermap.RN.AppUtils;
 import com.supermap.RN.appManager;
@@ -145,6 +146,12 @@ public class MainActivity extends ReactActivity {
     if (requestCode == AppUtils.REQUEST_CODE && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
       AppUtils.onPermissionResult(android.os.Environment.isExternalStorageManager());
     }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    RNImmediatePhoneCallPackage.onRequestPermissionsResult(requestCode, permissions, grantResults); // very important event callback
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
   }
 
 //  private void requestPermissions() {

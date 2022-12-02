@@ -17,6 +17,7 @@ import NavigationService from "@/containers/NavigationService"
 import { collectionModule } from "@/containers/workspace/components/ToolBar/modules"
 import ToolbarModule from "@/containers/workspace/components/ToolBar/modules/ToolbarModule"
 import { Toast } from "@/utils"
+import RNImmediatePhoneCall from 'react-native-immediate-phone-call'
 
 interface contactItemType {
   recordID: string,
@@ -187,8 +188,9 @@ class ContactsList extends Component<Props, State> {
 
         await SCollector.startCollect(type)
 
-        const url = 'tel:' + telephone
-        Linking.openURL(url)
+        // const url = 'tel:' + telephone
+        // Linking.openURL(url)
+        RNImmediatePhoneCall.immediatePhoneCall(telephone)
 
         clearTimeout(timer)
       }, 1000)

@@ -12,6 +12,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.soloader.SoLoader;
+import com.github.wumke.RNImmediatePhoneCall.RNImmediatePhoneCallPackage;
 import com.supermap.bundleCore.BundleUtils;
 
 import java.io.File;

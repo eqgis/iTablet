@@ -133,7 +133,7 @@ android {
 //            abiFilters "armeabi-v7a"
             abiFilters "arm64-v8a"
         }
-        applicationId "com.supermap.itablet"
+        applicationId "com.supermap.langchaoHJ"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 120
@@ -159,16 +159,24 @@ android {
     }
     signingConfigs {
         debug {
-            keyAlias 'supermap'
-            keyPassword 'supermap321'
-            storeFile file('../keystores/release.keystore')
-            storePassword 'supermap123'
+            //keystore中key的别名
+            keyAlias 'langchao'
+            //keystore中key的密码
+            keyPassword 'langchao123'
+            //keystore的文件路径，可以是绝对路径也可以是相对路径
+            storeFile file('../keystore/langchao.keystore')
+            //keystore的密码
+            storePassword 'langchao123'
         }
         release_config {
-            keyAlias 'supermap'
-            keyPassword 'supermap321'
-            storeFile file('../keystores/release.keystore')
-            storePassword 'supermap123'
+            //keystore中key的别名
+            keyAlias 'langchao'
+            //keystore中key的密码
+            keyPassword 'langchao123'
+            //keystore的文件路径，可以是绝对路径也可以是相对路径
+            storeFile file('../keystore/langchao.keystore')
+            //keystore的密码
+            storePassword 'langchao123'
             v1SigningEnabled true
             v2SigningEnabled true
         }

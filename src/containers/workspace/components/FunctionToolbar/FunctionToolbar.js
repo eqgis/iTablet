@@ -155,7 +155,9 @@ export default class FunctionToolbar extends React.Component {
     if (this.props.device.orientation !== prevProps.device.orientation) {
       this.onOrientationChange()
     }
-    if (this.props.ARView !== prevProps.ARView) {
+    if (this.props.ARView !== prevProps.ARView
+      || this.props.language !== prevProps.language
+    ) {
       const data = this.getData(this.props.type)
       this.setState({data: data})
     }

@@ -62,9 +62,10 @@ export default class MapSetting extends Component {
     ) {
       this.setState({ data: this.props.mapSetting })
     } else if (
-      JSON.stringify(prevProps.currentMap) !==
-        JSON.stringify(this.props.currentMap) &&
-      this.props.currentMap.name
+      (JSON.stringify(prevProps.currentMap) !==
+      JSON.stringify(this.props.currentMap) &&
+    this.props.currentMap.name)
+    || this.props.language !== prevProps.language
     ) {
       this.getData()
     }

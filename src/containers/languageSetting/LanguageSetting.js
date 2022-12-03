@@ -95,6 +95,7 @@ class LanguageSetting extends React.Component {
     let currentOption = this.state.currentOption
     if (currentOption !== this.prevOption) {
       this.props.setLanguage(currentOption)
+      global.language = currentOption
     }
     NavigationService.goBack()
   }

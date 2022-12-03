@@ -2896,4 +2896,19 @@ export const language_ar: typeof language_cn = {
   PANE_ANIMATION: 'جزء الرسوم المتحركة',
   CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
   MODEL_DATA: 'Model data',   // To be tanslated
+
+  ADDRESS_BOOK_SETTING: "Address book setting", // To be tanslated
+  LICENSE_CENTER: "License center", // To be tanslated
+  LANGUAGE_SETTING: "Language setting", // To be tanslated
+  MY_CONTENT: "My content", // To be tanslated
+  HISTORICAL_RECORD: "Historical record", // To be tanslated
+  CALL: "Call", // To be tanslated
+  REPORT_POSITION: "Report", // To be tanslated
+  TRACK_TOOL: "Track", // To be tanslated
+  CAMERA_TOOL: "Camera", // To be tanslated
+  ADD_CONTACT: "Add a contact", // To be tanslated
+  CONTACT_NAME: "Contact name", // To be tanslated
+  CONTACT_NUMBER: "Contact number", // To be tanslated
+  RECORDING: "Recording", // To be tanslated
+  ON_THE_RECORD: "On the record", // To be tanslated
 }

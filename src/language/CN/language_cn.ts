@@ -2874,4 +2874,21 @@ export const language_cn = {
   CUR_ELE_NOT_SUPPORT_ATTRIBUTE: '当前对象不支持属性制作',
   MODEL_DATA: '模型数据',
 
+  ADDRESS_BOOK_SETTING: "通讯录设置", // Address book setting
+  LICENSE_CENTER: "许可中心", // License center
+  LANGUAGE_SETTING: "语言设置", // Language setting
+  MY_CONTENT: "我的内容", // My content
+  HISTORICAL_RECORD: "历史记录", // Historical record
+  CALL: "呼叫", // Call
+  REPORT_POSITION: "上报", // REPORT
+  TRACK_TOOL: "轨迹", // Track
+  CAMERA_TOOL: "相机", // Camera
+  ADD_CONTACT: "添加联系人", // Add a contact
+  CONTACT_NAME: "联系人姓名", // Contact name
+  CONTACT_NUMBER: "联系人电话", // Contact number
+  RECORDING: "记录中", // RECORDING
+  ON_THE_RECORD: "正在记录中", // On the record
+
+
+
 }

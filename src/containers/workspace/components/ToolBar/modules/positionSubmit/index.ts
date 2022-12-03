@@ -7,6 +7,7 @@ import { getThemeAssets } from '@/assets'
 import collectionModule from '../collectionModule'
 import ToolbarModule from '../ToolbarModule'
 import { AppToolBar } from '@/utils'
+import { getLanguage } from '@/language'
 
 
 const showLoading = (time: number, callback?: () => void) => {
@@ -96,7 +97,7 @@ class PositionSubmitModule extends FunctionModule {
 export default function() {
   return new PositionSubmitModule({
     type: "POSITIONSUBMIT",
-    title: "上报",
+    title: getLanguage(global.language).Prompt.REPORT_POSITION,
     size: 'large',
     image: getThemeAssets().publicAssets.icon_data_upload,
   })

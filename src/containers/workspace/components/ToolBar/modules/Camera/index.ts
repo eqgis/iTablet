@@ -34,7 +34,7 @@ class CameraModule extends FunctionModule {
 export default function() {
   return new CameraModule({
     type: "CAMERA",
-    title: "相机",
+    title: getLanguage(global.language).Prompt.CAMERA_TOOL,
     size: 'large',
     image: getThemeAssets().mapTools.icon_tool_multi_media,
   })

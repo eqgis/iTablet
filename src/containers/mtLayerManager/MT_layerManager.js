@@ -1329,7 +1329,7 @@ export default class MT_layerManager extends React.Component {
         headerProps={{
           title: this.props.mapModules?.modules?.[
             this.props.mapModules.currentMapModule
-          ]?.chunk?.title || "我的内容",
+          ]?.chunk?.title || getLanguage(global.language).Map_Settings.MY_CONTENT,
           navigation: this.props.navigation,
           // backAction: this.back,
           // backImg: require('../../assets/mapTools/icon_close.png'),

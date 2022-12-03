@@ -7,6 +7,7 @@ import { getThemeAssets } from '@/assets'
 import collectionModule from '../collectionModule'
 import AppToolBar from '@/utils/AppToolBar'
 import ToolbarModule from '../ToolbarModule'
+import { getLanguage } from '@/language'
 
 class TrackModule extends FunctionModule {
   constructor(props) {
@@ -37,7 +38,7 @@ class TrackModule extends FunctionModule {
 export default function() {
   return new TrackModule({
     type: "POSITIONSUBMIT",
-    title: "轨迹",
+    title: getLanguage(global.language).Prompt.TRACK_TOOL,
     size: 'large',
     image: getThemeAssets().module.icon_map_navigation,
   })

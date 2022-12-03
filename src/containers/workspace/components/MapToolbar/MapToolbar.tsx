@@ -141,7 +141,7 @@ export default class MapToolbar extends React.Component<Props, State> {
           list.push({
             key: module,
             // title: getLanguage(global.language).Map_Label.LAYER,
-            title: '我的内容',
+            title: getLanguage(global.language).Map_Settings.MY_CONTENT,
             //'图层',
             image: getThemeAssets().tabBar.tab_layer,
             selectedImage: getThemeAssets().tabBar.tab_layer_selected,
@@ -163,7 +163,7 @@ export default class MapToolbar extends React.Component<Props, State> {
           list.push({
             key: module,
             // title: getLanguage(global.language).Map_Label.ATTRIBUTE,
-            title: '历史记录',
+            title: getLanguage(global.language).Map_Settings.HISTORICAL_RECORD,
             //'属性',
             image: getThemeAssets().tabBar.tab_attribute,
             selectedImage: getThemeAssets().tabBar.tab_attribute_selected,

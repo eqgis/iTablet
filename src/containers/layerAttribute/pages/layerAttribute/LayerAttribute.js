@@ -1784,7 +1784,7 @@ export default class LayerAttribute extends React.Component {
           // title: this.props.mapModules.modules[this.props.currentUser.userName][
           //   this.props.mapModules.currentMapModule
           // ].chunk?.title || '',
-          title: '历史记录',
+          title: getLanguage(global.language).Map_Settings.HISTORICAL_RECORD,
           navigation: this.props.navigation,
           // backAction: this.back,
           // backImg: require('../../../../assets/mapTools/icon_close.png'),

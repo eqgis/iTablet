@@ -177,9 +177,9 @@ class ContactsList extends Component<Props, State> {
       const timer = setTimeout(async () => {
         const obj = {
           key: 'start',
-          title: "记录中",
+          title: getLanguage(global.language).Map_Settings.RECORDING,
           action: () => {
-            Toast.show("正在记录中")
+            Toast.show(getLanguage(global.language).Map_Settings.ON_THE_RECORD)
           },
           size: 'large',
           image: getThemeAssets().collection.icon_track_start,
@@ -486,13 +486,13 @@ class ContactsList extends Component<Props, State> {
           <Text style={[{
             fontSize: dp(18),
             color: '#333',
-          }]}>{"添加联系人"}</Text>
+          }]}>{getLanguage(global.language).Map_Settings.ADD_CONTACT}</Text>
         </View>
         {/* 联系人姓名输入框 */}
         <View style={[styles.dialogInputContainer]}>
           <TextInput
             style = {[styles.dialogInput]}
-            placeholder = {'联系人姓名'}
+            placeholder = {getLanguage(global.language).Map_Settings.CONTACT_NAME}
             value = {this.state.addName}
             onChangeText = {(text:string) => {
               this.setState({
@@ -522,7 +522,7 @@ class ContactsList extends Component<Props, State> {
         }]}>
           <TextInput
             style = {[styles.dialogInput]}
-            placeholder = {'联系人电话'}
+            placeholder = {getLanguage(global.language).Map_Settings.CONTACT_NUMBER}
             value = {this.state.addNumber}
             onChangeText = {(text:string) => {
               this.setState({
@@ -557,7 +557,7 @@ class ContactsList extends Component<Props, State> {
         hideInBackground={false}
         showFullInMap={true}
         headerProps={{
-          title: "通讯录",
+          title: getLanguage(global.language).Map_Settings.ADDRESS_BOOK,
           withoutBack: false,
           headerRight: this.renderHeaderRight(),
           navigation: this.props.navigation,

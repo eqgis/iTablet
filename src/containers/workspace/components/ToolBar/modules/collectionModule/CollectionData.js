@@ -74,9 +74,9 @@ function getData(type) {
         await SCollector.startCollect(type)
         const obj = {
           key: 'start',
-          title: "记录中",
+          title: getLanguage(global.language).Map_Settings.RECORDING,
           action: () => {
-            Toast.show("正在记录中")
+            Toast.show(getLanguage(global.language).Map_Settings.ON_THE_RECORD)
           },
           size: 'large',
           image: getThemeAssets().collection.icon_track_start,
@@ -99,9 +99,9 @@ function getData(type) {
             await SCollector.startCollect(type)
             const obj = {
               key: 'start',
-              title: "记录中",
+              title: getLanguage(global.language).Map_Settings.RECORDING,
               action: () => {
-                Toast.show("正在记录中")
+                Toast.show(getLanguage(global.language).Map_Settings.ON_THE_RECORD)
               },
               size: 'large',
               image: getThemeAssets().collection.icon_track_start,
@@ -149,9 +149,9 @@ function getData(type) {
           await SCollector.startCollect(type)
           const obj = {
             key: 'start',
-            title: "记录中",
+            title: getLanguage(global.language).Map_Settings.RECORDING,
             action: () => {
-              Toast.show("正在记录中")
+              Toast.show(getLanguage(global.language).Map_Settings.ON_THE_RECORD)
             },
             size: 'large',
             image: getThemeAssets().collection.icon_track_start,
@@ -186,9 +186,9 @@ function getData(type) {
           await SCollector.startCollect(type)
           const obj = {
             key: 'start',
-            title: "记录中",
+            title: getLanguage(global.language).Map_Settings.RECORDING,
             action: () => {
-              Toast.show("正在记录中")
+              Toast.show(getLanguage(global.language).Map_Settings.ON_THE_RECORD)
             },
             size: 'large',
             image: getThemeAssets().collection.icon_track_start,

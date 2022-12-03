@@ -2,6 +2,7 @@ import FunctionModule from '../../../../../../class/FunctionModule'
 import { getImage } from '../../../../../../../applets/langchaoDemo/src/assets'
 import NavigationService from '@/containers/NavigationService'
 import { getLanguage } from '@/language'
+import { AppToolBar } from '@/utils'
 
 class CallModule extends FunctionModule {
   constructor(props) {

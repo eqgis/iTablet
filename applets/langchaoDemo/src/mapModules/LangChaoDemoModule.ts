@@ -41,13 +41,13 @@ export default class LangChaoDemoModule extends Module {
         // startModule(),      // 开始
         // addModule(),        // 添加
         // markModule(),       // 标注
-        CallModule(),
+        CallModule,
         PositionSubmitModule,
         // collectionModule,
         TrackModule,
-        CameraModule(),
-        changeMapModule(),
-        toolModule(),
+        CameraModule,
+        changeMapModule,
+        toolModule,
         // Tour(),             // 创建轨迹
       ],
       // 地图类型（三维/二维）

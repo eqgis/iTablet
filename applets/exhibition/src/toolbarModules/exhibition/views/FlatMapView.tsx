@@ -437,8 +437,8 @@ class FlatMapVIew extends React.Component<Props, State> {
   addMap = async (pose: Pose) => {
     if(!this.isMapOpend) {
       // SExhibition.addTempPoint()
-      await SMap.openMapName(flatMaps[0].mapName)
-      await SMap.openMap(flatMaps[0].mapName)
+      await SMap.openMapName(flatMaps[2].mapName)
+      await SMap.openMap(flatMaps[2].mapName)
       this.isMapOpend = true
     }
     const relativePositin: Vector3 = {

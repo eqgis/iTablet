@@ -1158,6 +1158,8 @@ class DoctorCC extends Component<Props, State> {
 
   /** 点击合影界面的具体路线按钮执行的方法 */
   routeItemOnPress = async (item: routeItemType) => {
+    //这里重置一下比例尺大小 不然会在旧的基础上乘以新比例
+    this.scaleValue = 100
 
     this.timeoutTrigger?.onBackFromSecondMenu()
     // 动作的动画停掉

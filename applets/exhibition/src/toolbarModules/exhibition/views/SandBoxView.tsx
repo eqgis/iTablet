@@ -717,7 +717,7 @@ class SandBoxView extends React.Component<Props, State> {
         })
       }
       this.isOpen = true
-      this.arrowTricker(true)
+      // this.arrowTricker(true)
     } catch(e) {
       this.isOpen = false
       __DEV__ && console.warn(e)
@@ -1490,6 +1490,8 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
           }
         }
       }
+
+      this.props.arrowTricker?.(false)
       this.setState({
         selectKey: item.key,
         canBeClick: false,
@@ -1556,13 +1558,6 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
           pose: pose,
           duration: data?.duration !== undefined ? (data?.duration / 2) : AnimationTime,
         })
-
-
-        this.props.arrowTricker?.(true, data?.position || {
-          x: 0,
-          y: 1.6,
-          z: 1,
-        })
       }, data?.duration !== undefined ? (data?.duration / 2) : AnimationTime)
 
 
@@ -1580,6 +1575,12 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
         // 等待,防止移动获取位置错误
         this.mountainElements = {index: [], path: []}
         await SARMap.commitSandTableChanges()
+        
+        this.props.arrowTricker?.(true, data?.position || {
+          x: 0,
+          y: 1.6,
+          z: 1,
+        })
 
         for (const route of routeDir) {
           // 添加路线坐标
@@ -1753,6 +1754,8 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       //   index: -1,
       // }
 
+      this.props.arrowTricker?.(false)
+
       let data: any
       const dataPath = item.path
       if (await FileTools.fileIsExist(dataPath)) {
@@ -1908,12 +1911,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       const routePath = parentPath + '/' + roadName + '.json'
       const dataStr = await FileTools.readFile(routePath)
       const data = JSON.parse(dataStr)
-
-      this.props.arrowTricker?.(true, data?.location?.position || {
-        x: 0,
-        y: 1.3,
-        z: 1,
-      })
+      this.props.arrowTricker?.(false)
       // this.props.arrowTricker?.(false)
 
       await SARMap.setSandBoxAnimation(currentLayer.name, 1, {
@@ -1966,6 +1964,11 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
       }
 
       setTimeout(() => {
+        this.props.arrowTricker?.(true, data?.location?.position || {
+          x: 0,
+          y: 1.3,
+          z: 1,
+        })
         item.path && SARMap.setSandBoxAnimation2(currentLayer.name, 1, item.path, {
           route: paths,
           repeatMode: 2,

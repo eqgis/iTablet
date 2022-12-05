@@ -42,6 +42,9 @@ export default class Chunk {
 
     this.toobarModuleData = props.toolbarModuleData ? props.toolbarModuleData : []
 
+    this.isEnterHome =
+      props.isEnterHome === false ? false : true // 是否进入首页，默认为true即进入首页
+
   }
 
   getTitle = () => this.title

@@ -142,7 +142,7 @@ export default class Home extends Component {
         const item = modules[index]
         if (item && item.getChunk) {
           const module = item.getChunk(this.props.language)
-          if (module.key === 'langchao') {
+          if (!module.isEnterHome) {
             if (Platform.OS === 'android') {
               const permissionList = [
                 'android.permission.READ_PHONE_STATE',
@@ -201,6 +201,7 @@ export default class Home extends Component {
               latestMap = this.props.latestMap[currentUserName][item.key][0]
             }
             await module.action(tmpCurrentUser, latestMap)
+            break
           }
         } else {
           continue
@@ -1217,58 +1218,58 @@ export default class Home extends Component {
       this.skipbottom = scaleSize(20)
     }
 
-    return null
+    // return null
 
-    // return (
-    //   <View style={{ flex: 1 }}>
-    //     <Container
-    //       ref={ref => (this.container = ref)}
-    //       hideInBackground={false}
-    //       showFullInMap={true}
-    //       withoutHeader
-    //       headerProps={{
-    //         backAction: this.showExitPop,
-    //       }}
-    //       style={styles.container}
-    //       bottomBar={this.renderTabBar()}
-    //     >
-    //       {this.renderHeader()}
-    //       <View
-    //         style={{
-    //           flex: 1,
-    //           width: '100%',
-    //           backgroundColor: color.white,
-    //         }}
-    //       >
-    //         <ModuleList
-    //           importWorkspace={this._onImportWorkspace}
-    //           currentUser={this.props.currentUser}
-    //           device={this.props.device}
-    //           showDialog={this.showDialog}
-    //           getModuleItem={this.getModuleItem}
-    //           latestMap={this.props.latestMap}
-    //           oldMapModules={this.props.appConfig.oldMapModules}
-    //           mapModules={this.props.mapModules}
-    //           itemAction={() => {
-    //             this._closeModal()
-    //             this.SimpleDialog.set({
-    //               text: getLanguage(this.props.language).Prompt.NO_PERMISSION,
-    //               confirmText: getLanguage(this.props.language).Prompt.CONFIRM,
-    //               confirmAction: this.SimpleDialog.setVisible(false),
-    //               cancelBtnVisible:false,
-    //             })
-    //             this.SimpleDialog.setVisible(true)
-    //           }}
-    //         />
-    //         {this.renderPopMenu()}
-    //         {this.renderDialog()}
-    //         {this.renderExitDialog()}
-    //         {this._renderSimpleDialog()}
-    //       </View>
-    //     </Container>
-    //     {this.props.guideshow && this.state.mineguide && this.renderGuide()}
-    //     {this.props.guideshow && this.state.slide && this.renderSlide()}
-    //   </View>
-    // )
+    return (
+      <View style={{ flex: 1 }}>
+        <Container
+          ref={ref => (this.container = ref)}
+          hideInBackground={false}
+          showFullInMap={true}
+          withoutHeader
+          headerProps={{
+            backAction: this.showExitPop,
+          }}
+          style={styles.container}
+          bottomBar={this.renderTabBar()}
+        >
+          {this.renderHeader()}
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              backgroundColor: color.white,
+            }}
+          >
+            <ModuleList
+              importWorkspace={this._onImportWorkspace}
+              currentUser={this.props.currentUser}
+              device={this.props.device}
+              showDialog={this.showDialog}
+              getModuleItem={this.getModuleItem}
+              latestMap={this.props.latestMap}
+              oldMapModules={this.props.appConfig.oldMapModules}
+              mapModules={this.props.mapModules}
+              itemAction={() => {
+                this._closeModal()
+                this.SimpleDialog.set({
+                  text: getLanguage(this.props.language).Prompt.NO_PERMISSION,
+                  confirmText: getLanguage(this.props.language).Prompt.CONFIRM,
+                  confirmAction: this.SimpleDialog.setVisible(false),
+                  cancelBtnVisible:false,
+                })
+                this.SimpleDialog.setVisible(true)
+              }}
+            />
+            {this.renderPopMenu()}
+            {this.renderDialog()}
+            {this.renderExitDialog()}
+            {this._renderSimpleDialog()}
+          </View>
+        </Container>
+        {this.props.guideshow && this.state.mineguide && this.renderGuide()}
+        {this.props.guideshow && this.state.slide && this.renderSlide()}
+      </View>
+    )
   }
 }

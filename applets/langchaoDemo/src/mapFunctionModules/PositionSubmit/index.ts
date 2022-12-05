@@ -71,15 +71,17 @@ class PositionModule extends CustomFunctionModule {
   }
 }
 
-const _PositionModule = new PositionModule({
-  type: "POSITIONSUBMIT",                               // 自定义类型
-  title: getLanguage(global.language).Prompt.REPORT_POSITION, // title
-  size: 'large',                                      // 图片尺寸
-  image: getThemeAssets().publicAssets.icon_data_upload,             // 图片
-  getData: () => {
-    return {data: [], buttons: [],}
-  },                          // 当前Function模块获取数据的方法
-  actions: () => {},                                // 当前Function模块所有事件
-})
+const _PositionModule = function () {
+  return new PositionModule({
+    type: "POSITIONSUBMIT",                               // 自定义类型
+    title: getLanguage(global.language).Prompt.REPORT_POSITION, // title
+    size: 'large',                                      // 图片尺寸
+    image: getThemeAssets().publicAssets.icon_data_upload,             // 图片
+    getData: () => {
+      return {data: [], buttons: [],}
+    },                          // 当前Function模块获取数据的方法
+    actions: () => {},                                // 当前Function模块所有事件
+  })
+}
 
 export default defaultPositionModule

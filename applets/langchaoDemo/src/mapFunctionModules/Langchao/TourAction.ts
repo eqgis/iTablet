@@ -9,7 +9,7 @@ import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/Too
 import { MediaData } from 'imobile_for_reactnative/types/interface/collector/SMediaCollector'
 import { SuperMapKnown } from '@/containers/tabs'
 import { collectionModule } from '@/containers/workspace/components/ToolBar/modules'
-import { getJson } from './data'
+import { getJson } from '../../assets/data'
 
 /**
  * 右侧创建轨迹事件

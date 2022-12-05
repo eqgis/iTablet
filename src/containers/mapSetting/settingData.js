@@ -3,7 +3,7 @@ import { getLanguage } from '../../language'
 import { getThemeAssets } from '../../assets'
 import { CoordSysData } from './secondMapSettings/CoordSysData'
 import NavigationService from '../NavigationService'
-import { getImage } from '../../../applets/langchaoDemo/src/assets/index'
+import { getImage } from '../../../applets/langchaoDemo/src/assets/Image/index'
 import { AppToolBar } from '@/utils'
 
 function getMapSettings() {

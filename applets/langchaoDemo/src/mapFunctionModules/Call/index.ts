@@ -1,6 +1,6 @@
 import { getLanguage } from '@/language'
 import CustomFunctionModule from '@/class/CustomFunctionModule'
-import { getImage } from '../../assets'
+import { getImage } from '../../assets/Image'
 import NavigationService from '@/containers/NavigationService'
 
 const defaultCallModule = function () {
@@ -28,15 +28,17 @@ class CallModule extends CustomFunctionModule {
   }
 }
 
-const _CallModule = new CallModule({
-  type: "CALL",                               // 自定义类型
-  title: getLanguage(global.language).Prompt.CALL, // title
-  size: 'large',                                      // 图片尺寸
-  image: getImage().telephone1,             // 图片
-  getData: () => {
-    return {data: [], buttons: [],}
-  },                          // 当前Function模块获取数据的方法
-  actions: () => {},                                // 当前Function模块所有事件
-})
+const _CallModule = function () {
+  return new CallModule({
+    type: "CALL",                               // 自定义类型
+    title: getLanguage(global.language).Prompt.CALL, // title
+    size: 'large',                                      // 图片尺寸
+    image: getImage().telephone1,             // 图片
+    getData: () => {
+      return {data: [], buttons: [],}
+    },                          // 当前Function模块获取数据的方法
+    actions: () => {},                                // 当前Function模块所有事件
+  })
+}
 
 export default defaultCallModule

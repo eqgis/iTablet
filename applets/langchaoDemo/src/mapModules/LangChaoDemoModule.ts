@@ -13,7 +13,7 @@ import {
   TrackModule,
 } from '@/containers/workspace/components/ToolBar/modules'
 import { CallModule, PositionSubmitModule } from '../mapFunctionModules'
-import { getImage } from '../assets'
+import { getImage } from '../assets/Image'
 import { AppToolBar, Toast, NavigatorUtil } from '@/utils'
 import {
   Linking,
@@ -39,8 +39,8 @@ export default class LangChaoDemoModule extends Module {
         // startModule(),      // 开始
         // addModule(),        // 添加
         // markModule(),       // 标注
-        CallModule,
-        PositionSubmitModule,
+        CallModule(),
+        PositionSubmitModule(),
         // collectionModule,
         TrackModule,
         CameraModule,

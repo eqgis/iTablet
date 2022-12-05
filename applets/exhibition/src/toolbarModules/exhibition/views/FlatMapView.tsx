@@ -41,12 +41,12 @@ interface FlatMap {
 
 const flatMaps: FlatMap[] = [
   {
-    extFolderName: '玛多地震',
-    mapName: '玛多地震'
-  },
-  {
     extFolderName: '红色足迹',
     mapName: '红色足迹'
+  },
+  {
+    extFolderName: '玛多地震',
+    mapName: '玛多地震'
   },
   {
     extFolderName: '台风登陆路径',

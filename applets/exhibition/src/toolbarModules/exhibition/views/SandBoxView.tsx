@@ -717,7 +717,7 @@ class SandBoxView extends React.Component<Props, State> {
         })
       }
       this.isOpen = true
-      this.arrowTricker(true)
+      // this.arrowTricker(true)
     } catch(e) {
       this.isOpen = false
       __DEV__ && console.warn(e)

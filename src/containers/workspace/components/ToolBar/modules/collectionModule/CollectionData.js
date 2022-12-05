@@ -114,7 +114,15 @@ function getData(type) {
     image: getThemeAssets().publicAssets.icon_submit,
   })
   buttons = [
-    ToolbarBtnType.CANCEL,
+    // ToolbarBtnType.CANCEL,
+    {
+      type: ToolbarBtnType.CANCEL,
+      image: getThemeAssets().toolbar.icon_toolbar_quit,
+      action: async () => {
+        await CollectionAction.cancel(type)
+        global.ToolBar?.close()
+      },
+    },
     {
       type: ToolbarBtnType.CHANGE_COLLECTION,
       image: getThemeAssets().toolbar.icon_toolbar_switch,

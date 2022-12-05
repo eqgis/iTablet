@@ -241,8 +241,8 @@ async function createCollector(type, layerName) {
     }
   }
 
-  SCollector.setDataset(params).then(async layerInfo => {
-    if (!layerInfo) return
+  layerInfo = await SCollector.setDataset(params)
+  if (!layerInfo) return
     // 设置绘制风格
     await SCollector.setStyle(collectorStyle)
     await SCollector.initCollect(type)
@@ -254,7 +254,6 @@ async function createCollector(type, layerName) {
     ToolbarModule.getParams().getLayers(-1, () => {
       ToolbarModule.getParams().setCurrentLayer(layerInfo)
     })
-  })
 }
 
 async function collectionSubmit(type) {

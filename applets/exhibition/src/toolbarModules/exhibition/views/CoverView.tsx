@@ -262,7 +262,6 @@ class CoverView extends React.Component<Props, State> {
     this._disableAttribte()
     this._disableFlow()
     this._disableAlert()
-    this.stopDrawLine()
     this.setState({
       secondMenuData: this.getRollingModeMenu(),
       isSecondaryShow: true,
@@ -1119,7 +1118,7 @@ class CoverView extends React.Component<Props, State> {
           <Text style={{width: '100%', textAlign: 'center', fontSize: dp(12), color: '#fff'}}>{getLanguage().HOLE_ADJUST}</Text>
           <TouchableOpacity
             style={styles.closeBtn}
-            onPress={this.onHolePress}
+            onPress={this._hideSlide}
           >
             <Image
               style={styles.closeImg}

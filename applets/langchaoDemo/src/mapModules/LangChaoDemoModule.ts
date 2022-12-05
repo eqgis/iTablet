@@ -9,12 +9,10 @@ import {
   toolModule,
   changeMapModule,
   CameraModule,
-  PositionSubmitModule,
   collectionModule,
   TrackModule,
-  CallModule,
 } from '@/containers/workspace/components/ToolBar/modules'
-// import { Tour } from '../mapFunctionModules'
+import { CallModule, PositionSubmitModule } from '../mapFunctionModules'
 import { getImage } from '../assets'
 import { AppToolBar, Toast, NavigatorUtil } from '@/utils'
 import {
@@ -24,7 +22,7 @@ import { getThemeAssets } from '@/assets'
 import TourAction from '../mapFunctionModules/Langchao/TourAction'
 import { DatasetType, EngineType, FileTools, SMap, SProcess, SMCollectorType, SCollector } from 'imobile_for_reactnative'
 import NavigationService from '@/containers/NavigationService'
-import navigators from '../mapFunctionModules/Langchao/views/index'
+import navigators from '../containers/index'
 import { ToolbarModule } from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
 /**
  * 首页显示的旅行轨迹模块
@@ -221,6 +219,7 @@ export default class LangChaoDemoModule extends Module {
       moduleImageTouch: getImage().flight,
       // 默认地图名称
       defaultMapName: global.language === 'CN' ? 'LandBuild' : 'PrecipitationOfUSA',
+      // defaultData:/*'http://dddd'*/'assets/userData/xxx.zip'
       // 地图默认底图数据
       baseMapSource: [ConstOnline.tiandituCN(), ConstOnline.tianditu()],
       // 地图默认底图当前显示的地图

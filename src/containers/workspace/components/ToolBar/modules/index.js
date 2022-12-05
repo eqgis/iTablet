@@ -48,9 +48,7 @@ import arAnimation from './arAnimation'
 import arAttribute from './arAttribute'
 import arToolbox from './arToolbox'
 import CameraModule from './Camera'
-import PositionSubmitModule from './positionSubmit'
 import TrackModule from './trackModule'
-import CallModule from './Call'
 
 export {
   startModule,
@@ -104,7 +102,5 @@ export {
 
   changeMapModule,
   CameraModule,
-  PositionSubmitModule,
   TrackModule,
-  CallModule,
 }

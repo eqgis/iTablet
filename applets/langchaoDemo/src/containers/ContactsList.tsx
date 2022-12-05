@@ -3,7 +3,7 @@ import { RootState } from "@/redux/types"
 import React, { Component } from "react"
 import { SectionList, PermissionsAndroid, View, Text, TouchableOpacity, Linking, FlatList, Image, StyleSheet, TextInput } from "react-native"
 import { connect, ConnectedProps } from "react-redux"
-import { Container, Dialog } from '../../../../../../src/components'
+import { Container, Dialog } from '../../../../src/components'
 import Contacts from 'react-native-contacts'
 import { getPinYin } from "@/utils/pinyin"
 import { dp } from "imobile_for_reactnative/utils/size"

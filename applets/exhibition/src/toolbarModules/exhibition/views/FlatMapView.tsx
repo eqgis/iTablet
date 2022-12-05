@@ -41,16 +41,16 @@ interface FlatMap {
 
 const flatMaps: FlatMap[] = [
   {
-    extFolderName: '台风登陆路径',
-    mapName: '台风登陆路径'
-  },
-  {
     extFolderName: '玛多地震',
     mapName: '玛多地震'
   },
   {
     extFolderName: '红色足迹',
     mapName: '红色足迹'
+  },
+  {
+    extFolderName: '台风登陆路径',
+    mapName: '台风登陆路径'
   },
 ]
 class FlatMapVIew extends React.Component<Props, State> {
@@ -267,8 +267,8 @@ class FlatMapVIew extends React.Component<Props, State> {
   getMapList = (): ImageItem[] => {
     return [
       {
-        image: { uri: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/thumbnail.png'},
-        path: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/thumbnail.png',
+        image: { uri: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/thumbnail3.png'},
+        path: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/thumbnail3.png',
         onTouch: () => {
           this.hideListIfAny()
           this.showLoading(500)
@@ -285,8 +285,8 @@ class FlatMapVIew extends React.Component<Props, State> {
         }
       },
       {
-        image: { uri: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/thumbnail3.png'},
-        path: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/thumbnail3.png',
+        image: { uri: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/thumbnail.png'},
+        path: 'file:///sdcard/iTablet/Common/Exhibition/AR平面地图/thumbnail.png',
         onTouch: () => {
           this.hideListIfAny()
           this.showLoading(500)
@@ -437,8 +437,8 @@ class FlatMapVIew extends React.Component<Props, State> {
   addMap = async (pose: Pose) => {
     if(!this.isMapOpend) {
       // SExhibition.addTempPoint()
-      await SMap.openMapName(flatMaps[2].mapName)
-      await SMap.openMap(flatMaps[2].mapName)
+      await SMap.openMapName(flatMaps[0].mapName)
+      await SMap.openMap(flatMaps[0].mapName)
       this.isMapOpend = true
     }
     const relativePositin: Vector3 = {

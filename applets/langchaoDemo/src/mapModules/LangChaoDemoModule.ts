@@ -251,47 +251,47 @@ export default class LangChaoDemoModule extends Module {
 
   onMapOpenSuccess = async () => {
     console.warn("in onMapOpenSuccess")
-    const typeP = SMCollectorType.POINT_GPS
-    const dataP = {name:"destination",type:"marker",id:118081}
+    // const typeP = SMCollectorType.POINT_GPS
+    // const dataP = {name:"destination",type:"marker",id:118081}
 
-    AppToolBar.getProps().setCurrentSymbol(dataP)
+    // AppToolBar.getProps().setCurrentSymbol(dataP)
 
-    ToolbarModule.addData({
-      lastType: typeP,
-      lastLayer:undefined,
-    })
+    // ToolbarModule.addData({
+    //   lastType: typeP,
+    //   lastLayer:undefined,
+    // })
 
-    await collectionModule().actions.createCollector(typeP, undefined)
-    await collectionModule().actions.cancel(typeP)
-    // console.warn("layer: " + JSON.stringify(ToolbarModule.getParams().currentLayer))
-    // await SMap.renameLayer(this.state.layerData.path, value)
-    // await collectionModule().actions.collectionSubmit(typeP)
+    // await collectionModule().actions.createCollector(typeP, undefined)
+    // await collectionModule().actions.cancel(typeP)
+    // // console.warn("layer: " + JSON.stringify(ToolbarModule.getParams().currentLayer))
+    // // await SMap.renameLayer(this.state.layerData.path, value)
+    // // await collectionModule().actions.collectionSubmit(typeP)
 
-    const typePm = SMCollectorType.POINT
-    const dataPm = {name:"高程点",type:"marker",id:322}
+    // const typePm = SMCollectorType.POINT
+    // const dataPm = {name:"高程点",type:"marker",id:322}
 
-    AppToolBar.getProps().setCurrentSymbol(dataPm)
+    // AppToolBar.getProps().setCurrentSymbol(dataPm)
 
-    ToolbarModule.addData({
-      lastType: typePm,
-      lastLayer:undefined,
-    })
+    // ToolbarModule.addData({
+    //   lastType: typePm,
+    //   lastLayer:undefined,
+    // })
 
-    await collectionModule().actions.createCollector(typePm, undefined)
-    await collectionModule().actions.cancel(typePm)
+    // await collectionModule().actions.createCollector(typePm, undefined)
+    // await collectionModule().actions.cancel(typePm)
 
-    const dataL = {"name":"专用公路","type":"line","id":965018}
+    // const dataL = {"name":"专用公路","type":"line","id":965018}
 
-    AppToolBar.getProps().setCurrentSymbol(dataL)
-    const typeL = SMCollectorType.LINE_GPS_PATH
-    ToolbarModule.addData({
-      lastType: typeL,
-      lastLayer:undefined,
-    })
-    await collectionModule().actions.createCollector(typeL, undefined)
-    // await collectionModule().actions.collectionSubmit(typeL)
-    await collectionModule().actions.cancel(typeL)
-    await SMap.setAction(Action.PAN)
+    // AppToolBar.getProps().setCurrentSymbol(dataL)
+    // const typeL = SMCollectorType.LINE_GPS_PATH
+    // ToolbarModule.addData({
+    //   lastType: typeL,
+    //   lastLayer:undefined,
+    // })
+    // await collectionModule().actions.createCollector(typeL, undefined)
+    // // await collectionModule().actions.collectionSubmit(typeL)
+    // await collectionModule().actions.cancel(typeL)
+    // await SMap.setAction(Action.PAN)
 
     const layers = await AppToolBar.getProps().getLayers()
 
@@ -305,30 +305,31 @@ export default class LangChaoDemoModule extends Module {
     //   durationTime: '',     // 时长
     // }
     // 添加属性 字段
-    const attributeObj = {
-      caption: this.getTrimSmStr("CallContents"),
-      name: this.getTrimSmStr("CallContents"),
-      type: 10,
-      maxLength: 255,
-      required: false,
-      // defaultValue: JSON.stringify(jsonStr)
-    }
+    // const attributeObj = {
+    //   caption: this.getTrimSmStr("CallContents"),
+    //   name: this.getTrimSmStr("CallContents"),
+    //   type: 10,
+    //   maxLength: 255,
+    //   required: false,
+    //   // defaultValue: JSON.stringify(jsonStr)
+    // }
 
     let mediaPath = ""
     let positionPath = ""
     let trackpath = ""
     for(let i = 0; i < layers.length; i ++) {
       const layerDatasetName = layers[i].datasetName
-      if(layerDatasetName === "marker_322") {
-        await SMap.renameLayer(layers[i].path, "多媒体")
-        mediaPath = layers[i].path
-      } else if(layerDatasetName === "marker_118081") {
-        await SMap.renameLayer(layers[i].path, "位置")
-        positionPath = layers[i].path
-      } else if(layerDatasetName === "line_965018") {
-        await SMap.renameLayer(layers[i].path, "轨迹")
-        trackpath = layers[i].path
-      }
+      console.warn("layerDatasetName: " + layerDatasetName + " - " + layers[i].caption)
+      // if(layerDatasetName === "marker_322") {
+      //   await SMap.renameLayer(layers[i].path, "多媒体")
+      //   mediaPath = layers[i].path
+      // } else if(layerDatasetName === "marker_118081") {
+      //   await SMap.renameLayer(layers[i].path, "位置")
+      //   positionPath = layers[i].path
+      // } else if(layerDatasetName === "line_965018") {
+      //   await SMap.renameLayer(layers[i].path, "轨迹")
+      //   trackpath = layers[i].path
+      // }
     }
 
     const position = await SMap.getCurrentLocation()
@@ -344,13 +345,13 @@ export default class LangChaoDemoModule extends Module {
     // const countryCode = await TourAction.getCountryCode(-20.7143528, 40.0059731)
     console.warn("countryCode: " + countryCode)
 
-    await this.addAttributeField(attributeObj, mediaPath)
-    setTimeout(async () => {
-      await this.addAttributeField(attributeObj, positionPath)
-      setTimeout(async () => {
-        await this.addAttributeField(attributeObj, trackpath)
-      },500)
-    },500)
+    // await this.addAttributeField(attributeObj, mediaPath)
+    // setTimeout(async () => {
+    //   await this.addAttributeField(attributeObj, positionPath)
+    //   setTimeout(async () => {
+    //     await this.addAttributeField(attributeObj, trackpath)
+    //   },500)
+    // },500)
   }
 
   getDefaultData = () => {
@@ -363,8 +364,9 @@ export default class LangChaoDemoModule extends Module {
       // 点击时模块高亮图片
       moduleImageTouch: getImage().flight,
       // 默认地图名称
-      defaultMapName: global.language === 'CN' ? 'LandBuild' : 'PrecipitationOfUSA',
-      // defaultData:/*'http://dddd'*/'assets/userData/xxx.zip'
+      // defaultMapName: global.language === 'CN' ? 'LandBuild' : 'PrecipitationOfUSA',
+      defaultMapName: "langchaoMap",
+      defaultData:/*'http://dddd'*/'assets/userData/langchaoWs.zip',
       // 地图默认底图数据
       baseMapSource: [ConstOnline.tiandituCN(), ConstOnline.tianditu()],
       // 地图默认底图当前显示的地图

@@ -4,6 +4,7 @@
 import NavigationService from '../containers/NavigationService'
 import { FileTools } from '../native'
 import { ConstPath } from '../constants'
+import { SMap } from 'imobile_for_reactnative'
 
 export default class Chunk {
   static MapType = {
@@ -46,6 +47,7 @@ export default class Chunk {
       props.isEnterHome === false ? false : true // 是否进入首页，默认为true即进入首页
 
     this.onMapOpenSuccess = props.onMapOpenSuccess // 地图/AR地图/三维场景打开完成回调 （带一个可选参数，用于判断三维场景是否有场景打开了，地图和AR地图没有传任何参数）
+    this.defaultData = props.defaultData || '' // 小插件的默认数据
 
   }
 
@@ -106,6 +108,38 @@ export default class Chunk {
         if (user && user.userName) {
           userPath = `${ConstPath.UserPath + user.userName}/`
         }
+
+        if(this.defaultData !== '') {
+          if(this.defaultData.indexOf("http") !== -1) {
+            // 用户指定的数据在服务上 to do
+          } else {
+            // 用户指定的数据在项目里
+            const startIndex = this.defaultData.lastIndexOf("/") + 1
+            const endtIndex = this.defaultData.lastIndexOf(".")
+            const name = this.defaultData.substring(startIndex, endtIndex)
+
+            let dataPathTemp = this.defaultData
+            dataPathTemp = dataPathTemp.replace("assets/userData/","")
+            dataPathTemp = dataPathTemp.replace(".zip","")
+            // 数据在手机里的目录
+            const dataPath = homePath + ConstPath.CachePath + dataPathTemp
+            if(!( await FileTools.fileIsExist(dataPath))) {
+              // 将数据拷到手机的iTablet/Cache目录下
+              await FileTools.initAppletsUserData(name)
+            }
+
+            // 地图用相对路径
+            const MapPath = homePath + userPath + ConstPath.RelativeFilePath.Map + this.defaultMapName + `.xml`
+            if(!( await FileTools.fileIsExist(MapPath))) {
+              let wsPathTemp = dataPath + "/" + name + ".smwu"
+              let result = await SMap.importWorkspaceInfo({
+                server: wsPathTemp,
+                type: 9,
+              })
+            }
+          }
+        }
+
         const wsPath =
           homePath +
           userPath +
@@ -151,6 +185,11 @@ export default class Chunk {
           wsData = wsData.concat(data)
         } else {
           wsData.push(data)
+        }
+        if (this.baseMapSource instanceof Array) {
+          wsData = wsData.concat(this.baseMapSource)
+        } else if (this.baseMapSource) {
+          wsData = wsData.push(this.baseMapSource)
         }
         let param = {
           wsData,

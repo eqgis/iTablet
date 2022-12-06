@@ -691,7 +691,7 @@ class CoverView extends React.Component<Props, State> {
         <View>
           <Image
             resizeMode={'stretch'}
-            style={{ width: '100%', height: dp(45) ,opacity:0.8}}
+            style={{ width: '100%', height: dp(40) ,opacity:0.8}}
             source={getImage().icon_coverview_title}
           />
           <View
@@ -1415,7 +1415,7 @@ function getFlowRoute1(isBreak = false): FlowParam[] {
       segment: 5* scale,
       runRange: 1,
       pose,
-      arrow: isBreak ? arrow_break : arrow,
+      arrow,
     },
     {
       start: {x: 0.270, y: -0.141 + heightOffset, z: 0.691},
@@ -1424,7 +1424,7 @@ function getFlowRoute1(isBreak = false): FlowParam[] {
       segment: 10* scale,
       runRange: 1,
       pose,
-      arrow: isBreak ? arrow_break : arrow,
+      arrow,
     },
   ]
 }
@@ -1517,7 +1517,7 @@ function getFlowRoute2(isBreak = false): FlowParam[] {
       segment: 6,
       runRange: 1,
       pose,
-      arrow: isBreak ? arrow_break : arrow
+      arrow,
     },
     {
       start: {x: -6.061 + offset , y: 4.043, z: -3.295},
@@ -1571,7 +1571,7 @@ function getFlowRoute2(isBreak = false): FlowParam[] {
       segment: 2,
       runRange: 1,
       pose,
-      arrow: isBreak ? arrow_break : arrow,
+      arrow,
     },
   ]
 }
@@ -1673,16 +1673,16 @@ function getAlertPipe1(): {name: string, offsetX?: number, offsetY?: number, off
       offsetY: -0.02, // -0.25,
       scale: 0.5,
     },
-    {
-      name: '地下冷水管_29',
-      offsetY: -0.02, // -0.25,
-      scale: 0.5,
-    },
-    {
-      name: '地下冷水管_30',
-      offsetY: -0.02, // -0.25,
-      scale: 0.5,
-    }
+    // {
+    //   name: '地下冷水管_29',
+    //   offsetY: -0.02, // -0.25,
+    //   scale: 0.5,
+    // },
+    // {
+    //   name: '地下冷水管_30',
+    //   offsetY: -0.02, // -0.25,
+    //   scale: 0.5,
+    // }
   ]
 }
 
@@ -1693,16 +1693,16 @@ function getAlertPipe2(): {name: string, offsetX?: number, offsetY?: number, off
       offsetY: -0.02, // -0.25,
       scale: 0.5,
     },
-    {
-      name: '墙面冷水管_116',
-      // offsetX: 0.2,
-      offsetY: -0.02, // -0.25,
-      scale: 0.5,
-    },
-    {
-      name: '墙面冷水管_44',
-      offsetY: -0.02,
-      scale: 0.5,
-    }
+    // {
+    //   name: '墙面冷水管_116',
+    //   // offsetX: 0.2,
+    //   offsetY: -0.02, // -0.25,
+    //   scale: 0.5,
+    // },
+    // {
+    //   name: '墙面冷水管_44',
+    //   offsetY: -0.02,
+    //   scale: 0.5,
+    // }
   ]
 }

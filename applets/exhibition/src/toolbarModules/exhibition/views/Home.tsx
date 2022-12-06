@@ -70,8 +70,8 @@ class Home extends React.Component<Props, State> {
     if(global.isPad) {
       IMG_SIZE = dp(186)
       IMG_BOTTOM = dp(64)
-      BG_WIDTH = dp(200)
-      BG_HEIGTH = dp(278)
+      BG_WIDTH = dp(180)
+      BG_HEIGTH = dp(250)
     }
     for (let i = 0; i < this.getItems().length; i++) {
       scales.push({

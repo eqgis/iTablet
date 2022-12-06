@@ -111,6 +111,7 @@ export default class Map3D extends React.Component {
     this.name = params.name || ''
     this.type = params.type || 'MAP_3D'
     this.mapLoaded = false // 判断地图是否加载完成
+    this.onMapOpenSuccess = params.onMapOpenSuccess
   }
 
   componentDidMount() {
@@ -334,12 +335,14 @@ export default class Map3D extends React.Component {
           rightView: undefined,
         }
         this.props.setCurSceneInfo && this.props.setCurSceneInfo(defaultSceneInfo)
+        this.onMapOpenSuccess?.(true)
       }).catch(() =>{
         //reject异常处理 zhangxt
         setTimeout(() => {
           this.container.setLoading(false)
           // Toast.show('无场景显示')
           this.mapLoaded = true
+          this.onMapOpenSuccess?.(false)
         }, 1500)
       })
 
@@ -366,6 +369,7 @@ export default class Map3D extends React.Component {
         this.container.setLoading(false)
         // Toast.show('无场景显示')
         this.mapLoaded = true
+        this.onMapOpenSuccess?.(false)
       }, 1500)
     }
     // await SScene.addLayer3D(

@@ -14,16 +14,16 @@ import {
 } from '@/containers/workspace/components/ToolBar/modules'
 import { CallModule, PositionSubmitModule } from '../mapFunctionModules'
 import { getImage } from '../assets/Image'
-import { AppToolBar, Toast, NavigatorUtil } from '@/utils'
+import { AppToolBar, Toast, NavigatorUtil, dataUtil } from '@/utils'
 import {
   Linking,
 } from 'react-native'
 import { getThemeAssets } from '@/assets'
 import TourAction from '../mapFunctionModules/Langchao/TourAction'
-import { DatasetType, EngineType, FileTools, SMap, SProcess, SMCollectorType, SCollector } from 'imobile_for_reactnative'
+import { DatasetType, EngineType, FileTools, SMap, SProcess, SMCollectorType, SCollector, Action } from 'imobile_for_reactnative'
 import NavigationService from '@/containers/NavigationService'
 import navigators from '../containers/index'
-import { ToolbarModule } from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
+import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
 /**
  * 首页显示的旅行轨迹模块
  */
@@ -208,6 +208,151 @@ export default class LangChaoDemoModule extends Module {
 
   }
 
+  /** 添加属性字段 **/
+  addAttributeField = async (fieldInfo, path: string) => {
+    // let path = this.props.currentLayer.path
+    const checkName = dataUtil.isLegalName(fieldInfo.name, this.props.language)
+    if (!checkName.result) {
+      Toast.show(getLanguage(this.props.language).Map_Attribute.NAME + checkName.error)
+      return false
+    }
+    const checkCaption = dataUtil.isLegalName(fieldInfo.caption, this.props.language)
+    if (!checkCaption.result) {
+      Toast.show(getLanguage(this.props.language).Map_Attribute.ALIAS + checkCaption.error)
+      return false
+    }
+    const result = await SMap.addAttributeFieldInfo(path, false, fieldInfo)
+    // if (result) {
+    //   Toast.show(getLanguage(this.props.language).Prompt.ATTRIBUTE_ADD_SUCCESS)
+    //   // this.refresh()
+    // } else {
+    //   Toast.show(getLanguage(this.props.language).Prompt.ATTRIBUTE_ADD_FAILED)
+    // }
+    return result
+  }
+
+  getTrimSmStr = (text: string): string => {
+    if (text.length < 2) {
+      return text
+    }
+    const tempStr = text.toLowerCase()
+    if (tempStr.substring(0, 2) == 'sm') {
+      const endStr = text.substring(2, text.length)
+      if (endStr.length < 2) {
+        return endStr
+      } else {
+        return this.getTrimSmStr(endStr)
+      }
+    } else {
+      return text
+    }
+  }
+
+
+  onMapOpenSuccess = async () => {
+    console.warn("in onMapOpenSuccess")
+    const typeP = SMCollectorType.POINT_GPS
+    const dataP = {name:"destination",type:"marker",id:118081}
+
+    AppToolBar.getProps().setCurrentSymbol(dataP)
+
+    ToolbarModule.addData({
+      lastType: typeP,
+      lastLayer:undefined,
+    })
+
+    await collectionModule().actions.createCollector(typeP, undefined)
+    await collectionModule().actions.cancel(typeP)
+    // console.warn("layer: " + JSON.stringify(ToolbarModule.getParams().currentLayer))
+    // await SMap.renameLayer(this.state.layerData.path, value)
+    // await collectionModule().actions.collectionSubmit(typeP)
+
+    const typePm = SMCollectorType.POINT
+    const dataPm = {name:"高程点",type:"marker",id:322}
+
+    AppToolBar.getProps().setCurrentSymbol(dataPm)
+
+    ToolbarModule.addData({
+      lastType: typePm,
+      lastLayer:undefined,
+    })
+
+    await collectionModule().actions.createCollector(typePm, undefined)
+    await collectionModule().actions.cancel(typePm)
+
+    const dataL = {"name":"专用公路","type":"line","id":965018}
+
+    AppToolBar.getProps().setCurrentSymbol(dataL)
+    const typeL = SMCollectorType.LINE_GPS_PATH
+    ToolbarModule.addData({
+      lastType: typeL,
+      lastLayer:undefined,
+    })
+    await collectionModule().actions.createCollector(typeL, undefined)
+    // await collectionModule().actions.collectionSubmit(typeL)
+    await collectionModule().actions.cancel(typeL)
+    await SMap.setAction(Action.PAN)
+
+    const layers = await AppToolBar.getProps().getLayers()
+
+    // const CallContentsObj = {
+    //   myName: '',           // 呼叫人姓名
+    //   myPhoneNumber: '',    // 呼叫人电话
+    //   callName: '',         // 被呼叫人姓名
+    //   callPhoneNumber: '',  // 被呼叫人电话
+    //   localTime: '',        // 当地时间
+    //   bjTime: '',           // 北京时间
+    //   durationTime: '',     // 时长
+    // }
+    // 添加属性 字段
+    const attributeObj = {
+      caption: this.getTrimSmStr("CallContents"),
+      name: this.getTrimSmStr("CallContents"),
+      type: 10,
+      maxLength: 255,
+      required: false,
+      // defaultValue: JSON.stringify(jsonStr)
+    }
+
+    let mediaPath = ""
+    let positionPath = ""
+    let trackpath = ""
+    for(let i = 0; i < layers.length; i ++) {
+      const layerDatasetName = layers[i].datasetName
+      if(layerDatasetName === "marker_322") {
+        await SMap.renameLayer(layers[i].path, "多媒体")
+        mediaPath = layers[i].path
+      } else if(layerDatasetName === "marker_118081") {
+        await SMap.renameLayer(layers[i].path, "位置")
+        positionPath = layers[i].path
+      } else if(layerDatasetName === "line_965018") {
+        await SMap.renameLayer(layers[i].path, "轨迹")
+        trackpath = layers[i].path
+      }
+    }
+
+    const position = await SMap.getCurrentLocation()
+    // 地图定位到指定点位置
+    await SMap.toLocationPoint({
+      x: position.longitude,
+      y: position.latitude,
+    })
+
+    const countryCode = await TourAction.getCountryCode(position.longitude, position.latitude)
+    // const countryCode = await TourAction.getCountryCode(40.7143528, 74.0059731)
+    // const countryCode = await TourAction.getCountryCode(-90.7143528, 40.0059731)
+    // const countryCode = await TourAction.getCountryCode(-20.7143528, 40.0059731)
+    console.warn("countryCode: " + countryCode)
+
+    await this.addAttributeField(attributeObj, mediaPath)
+    setTimeout(async () => {
+      await this.addAttributeField(attributeObj, positionPath)
+      setTimeout(async () => {
+        await this.addAttributeField(attributeObj, trackpath)
+      },500)
+    },500)
+  }
+
   getDefaultData = () => {
     return {
       key: LangChaoDemoModule.key,
@@ -230,6 +375,7 @@ export default class LangChaoDemoModule extends Module {
       // action: this.action,
       onMapLoad: this.action,
       isEnterHome: false,
+      onMapOpenSuccess: this.onMapOpenSuccess,
     }
   }
 

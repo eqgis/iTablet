@@ -24,6 +24,8 @@ import { DatasetType, EngineType, FileTools, SMap, SProcess, SMCollectorType, SC
 import NavigationService from '@/containers/NavigationService'
 import navigators from '../containers/index'
 import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
+import { injectReducer } from "@/redux/store"
+import { langchao } from '../reduxModels'
 /**
  * 首页显示的旅行轨迹模块
  */
@@ -100,6 +102,15 @@ export default class LangChaoDemoModule extends Module {
 
     // 添加新的页面导航
     NavigatorUtil.addNavigator(navigators)
+
+    /**
+     * 注入第定义redux
+     */
+    injectReducer({
+      key: 'langchao',
+      reducer: langchao,
+      list: 'whitelist', //白名单,持久化数据
+    })
 
   }
 
@@ -250,7 +261,7 @@ export default class LangChaoDemoModule extends Module {
 
 
   onMapOpenSuccess = async () => {
-    console.warn("in onMapOpenSuccess")
+    // console.warn("in onMapOpenSuccess")
     // const typeP = SMCollectorType.POINT_GPS
     // const dataP = {name:"destination",type:"marker",id:118081}
 
@@ -314,23 +325,23 @@ export default class LangChaoDemoModule extends Module {
     //   // defaultValue: JSON.stringify(jsonStr)
     // }
 
-    let mediaPath = ""
-    let positionPath = ""
-    let trackpath = ""
-    for(let i = 0; i < layers.length; i ++) {
-      const layerDatasetName = layers[i].datasetName
-      console.warn("layerDatasetName: " + layerDatasetName + " - " + layers[i].caption)
-      // if(layerDatasetName === "marker_322") {
-      //   await SMap.renameLayer(layers[i].path, "多媒体")
-      //   mediaPath = layers[i].path
-      // } else if(layerDatasetName === "marker_118081") {
-      //   await SMap.renameLayer(layers[i].path, "位置")
-      //   positionPath = layers[i].path
-      // } else if(layerDatasetName === "line_965018") {
-      //   await SMap.renameLayer(layers[i].path, "轨迹")
-      //   trackpath = layers[i].path
-      // }
-    }
+    // const mediaPath = ""
+    // const positionPath = ""
+    // const trackpath = ""
+    // for(let i = 0; i < layers.length; i ++) {
+    //   const layerDatasetName = layers[i].datasetName
+    //   console.warn("layerDatasetName: " + layerDatasetName + " - " + layers[i].caption)
+    //   // if(layerDatasetName === "marker_322") {
+    //   //   await SMap.renameLayer(layers[i].path, "多媒体")
+    //   //   mediaPath = layers[i].path
+    //   // } else if(layerDatasetName === "marker_118081") {
+    //   //   await SMap.renameLayer(layers[i].path, "位置")
+    //   //   positionPath = layers[i].path
+    //   // } else if(layerDatasetName === "line_965018") {
+    //   //   await SMap.renameLayer(layers[i].path, "轨迹")
+    //   //   trackpath = layers[i].path
+    //   // }
+    // }
 
     const position = await SMap.getCurrentLocation()
     // 地图定位到指定点位置

@@ -177,9 +177,16 @@ const getThematicMapSettings = () => [
   },
   {
     title: getLanguage(global.language).Map_Settings.LANGUAGE_SETTING,
-    leftImage: getThemeAssets().setting.icon_legend,
+    leftImage: getThemeAssets().setting.icon_coordinate,
     action: () => {
       NavigationService.navigate('LanguageSetting')
+    },
+  },
+  {
+    title: "设置服务", // getLanguage(global.language).Map_Settings.LANGUAGE_SETTING,
+    leftImage: getThemeAssets().setting.icon_range,
+    action: () => {
+      NavigationService.navigate('InputServer')
     },
   },
 ]

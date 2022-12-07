@@ -32,6 +32,7 @@ interface State {
   showSlide: boolean
   /** 是否允许扫描界面进行扫描 true表示允许 fasle表示不允许 */
   isScan: boolean
+  searching: boolean
 }
 
 interface FlatMap {
@@ -85,6 +86,7 @@ class FlatMapVIew extends React.Component<Props, State> {
       imageList: [],
       showSide: true,
       showSlide: false,
+      searching: false,
     }
   }
 
@@ -95,6 +97,15 @@ class FlatMapVIew extends React.Component<Props, State> {
         image_selected: getImage().icon_tool_reset_selected,
         title: getLanguage().PLOTTING_ANIMATION_RESET,
         action: (index: string) => {
+          if(this.state.searching){
+            Toast.show('查询中', {
+              backgroundColor: 'rgba(0,0,0,.5)',
+              textColor: '#fff',
+            })
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
           if(this.sideBarIndex === index) {
             this.sideBarIndex = ""
             this.sideBar?.clear()
@@ -121,6 +132,15 @@ class FlatMapVIew extends React.Component<Props, State> {
         image_selected: getImage().tool_location_selected,
         title: getLanguage().ADJUSTMENT,
         action: (index: string) => {
+          if(this.state.searching){
+            Toast.show('查询中', {
+              backgroundColor: 'rgba(0,0,0,.5)',
+              textColor: '#fff',
+            })
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
           if(this.sideBarIndex === index) {
             this.setState({
               showSlide:false,
@@ -147,6 +167,15 @@ class FlatMapVIew extends React.Component<Props, State> {
         image_selected: getImage().flat_search_selected,
         title: getLanguage().SEARCH1,
         action: (index: string) => {
+          if(this.state.searching){
+            Toast.show('查询中', {
+              backgroundColor: 'rgba(0,0,0,.5)',
+              textColor: '#fff',
+            })
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
           if(this.sideBarIndex === index) {
             this.sideBarIndex = ""
             this.sideBar?.clear()
@@ -157,13 +186,19 @@ class FlatMapVIew extends React.Component<Props, State> {
 
           this.timeoutTrigger?.onFirstMenuClick()
           this.hideListIfAny()
-          this.showLoading(6000)
+          this.showLoading(500)
           SExhibition.onFlatFunctionPress('search')
           this.setState({
             imageList: [],
             showSlide:false,
+            searching:true,
           })
-
+          const searching = setTimeout(() => {
+            this.setState({
+              searching:false,
+            })
+            clearTimeout(searching)
+          }, 5000)
         }
       },
       {
@@ -171,6 +206,15 @@ class FlatMapVIew extends React.Component<Props, State> {
         image_selected: getImage().flat_buffer_selected,
         title: getLanguage().ANALYST,
         action: (index: string) => {
+          if(this.state.searching){
+            Toast.show('查询中', {
+              backgroundColor: 'rgba(0,0,0,.5)',
+              textColor: '#fff',
+            })
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
           if(this.sideBarIndex === index) {
             this.sideBarIndex = ""
             this.sideBar?.clear()
@@ -193,6 +237,15 @@ class FlatMapVIew extends React.Component<Props, State> {
         image_selected: getImage().flat_plot_selected,
         title: getLanguage().PLOT,
         action: (index: string) => {
+          if(this.state.searching){
+            Toast.show('查询中', {
+              backgroundColor: 'rgba(0,0,0,.5)',
+              textColor: '#fff',
+            })
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
           if(this.sideBarIndex === index) {
             this.sideBarIndex = ""
             this.sideBar?.clear()
@@ -215,6 +268,15 @@ class FlatMapVIew extends React.Component<Props, State> {
         image_selected: getImage().flat_ai_pic_selected,
         title: getLanguage().FIGURE,
         action: (index: string) => {
+          if(this.state.searching){
+            Toast.show('查询中', {
+              backgroundColor: 'rgba(0,0,0,.5)',
+              textColor: '#fff',
+            })
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
           if(this.sideBarIndex === index) {
             this.setState({
               imageList: []
@@ -243,6 +305,15 @@ class FlatMapVIew extends React.Component<Props, State> {
         image_selected: getImage().flat_change_map_selected,
         title: getLanguage().MAP,
         action: (index: string) => {
+          if(this.state.searching){
+            Toast.show('查询中', {
+              backgroundColor: 'rgba(0,0,0,.5)',
+              textColor: '#fff',
+            })
+            this.sideBarIndex = ""
+            this.sideBar?.clear()
+            return
+          }
           if(this.sideBarIndex === index) {
             this.setState({
               imageList: []

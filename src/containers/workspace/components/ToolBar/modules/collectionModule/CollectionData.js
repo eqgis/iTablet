@@ -254,7 +254,13 @@ function getData(type) {
 
       // console.warn("result: " + JSON.stringify(result))
       let smID = 0
-      let index = 0
+      let myNameIndex = 0
+      let myPhoneNumberIndex = 0
+      let callNameIndex = 0
+      let callPhoneNumberIndex = 0
+      let localTimeIndex = 0
+      let bjTimeIndex = 0
+      let durationTimeIndex = 0
 
       const length = layerAttributedata.length
       for(let i = 0; i < length; i ++) {
@@ -262,8 +268,20 @@ function getData(type) {
         if(item.name === "SmID") {
           smID = item.value
         }
-        if(item.name === "CallContents") {
-          index = i
+        if(item.name === "myName") {
+          myNameIndex = i
+        } else if(item.name === "myPhoneNumber") {
+          myPhoneNumberIndex = i
+        } else if(item.name === "callName") {
+          callNameIndex = i
+        } else if(item.name === "callPhoneNumber") {
+          callPhoneNumberIndex = i
+        } else if(item.name === "localTime_User") {
+          localTimeIndex = i
+        } else if(item.name === "bjTime") {
+          bjTimeIndex = i
+        } else if(item.name === "duration") {
+          durationTimeIndex = i
         }
       }
 
@@ -272,10 +290,59 @@ function getData(type) {
           mapName: AppToolBar.getProps().map.currentMap.name,
           layerPath: AppToolBar.getProps().currentLayer.path,
           fieldInfo: [
+            // {
+            //   name: 'CallContents',
+            //   value: callContentsStr,
+            //   index: index,
+            //   columnIndex: columnIndex,
+            //   smID: smID,
+            // },
             {
-              name: 'CallContents',
-              value: callContentsStr,
-              index: index,
+              name: 'myName',
+              value: callContentsObj.myName,
+              index: myNameIndex,
+              columnIndex: columnIndex,
+              smID: smID,
+            },
+            {
+              name: 'myPhoneNumber',
+              value: callContentsObj.myPhoneNumber,
+              index: myPhoneNumberIndex,
+              columnIndex: columnIndex,
+              smID: smID,
+            },
+            {
+              name: 'callName',
+              value: callContentsObj.callName,
+              index: callNameIndex,
+              columnIndex: columnIndex,
+              smID: smID,
+            },
+            {
+              name: 'callPhoneNumber',
+              value: callContentsObj.callPhoneNumber,
+              index: callPhoneNumberIndex,
+              columnIndex: columnIndex,
+              smID: smID,
+            },
+            {
+              name: 'localTime_User',
+              value: callContentsObj.localTime,
+              index: localTimeIndex,
+              columnIndex: columnIndex,
+              smID: smID,
+            },
+            {
+              name: 'bjTime',
+              value: callContentsObj.bjTime,
+              index: bjTimeIndex,
+              columnIndex: columnIndex,
+              smID: smID,
+            },
+            {
+              name: 'duration',
+              value: callContentsObj.durationTime,
+              index: durationTimeIndex,
               columnIndex: columnIndex,
               smID: smID,
             },

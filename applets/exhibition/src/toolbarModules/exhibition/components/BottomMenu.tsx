@@ -40,6 +40,7 @@ interface Props<T> {
   /** 外部传入的统一回调方法  参数一：当前选择项 参数二：其他信息 */
   onSelect?: (item: T, callBackInfo: CallBackInfo) => void
   visible: boolean
+  hide?:boolean
   onHide?: () => void
 }
 
@@ -181,6 +182,7 @@ class BottomMenu<T extends itemConmonType> extends Component<Props<T>, State<T>>
     return(
       <FillAnimationWrap
         visible={this.props.visible}
+        hide = {this.props.hide}
         animated={'bottom'}
         style={{
           position: 'absolute',

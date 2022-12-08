@@ -15,7 +15,7 @@ class FillAnimationWrap extends React.Component<Props> {
   render() {
     return(
       <>
-        {this.props.visible && (
+        {this.props.visible && !this.props.hide &&(
           <TouchableOpacity
             style={{
               ...StyleSheet.absoluteFillObject,

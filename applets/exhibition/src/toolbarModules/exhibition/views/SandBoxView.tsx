@@ -2255,6 +2255,7 @@ class ToolView extends React.Component<ToolViewProps, ToolViewState> {
             }
           }}
           visible={this.state.showBottom}
+          hide={true}
           imageStyle={{flex: 1, marginTop: 0, width: dp(100), height: dp(100)}}
           // itemStyle={{marginHorizontal: 0}}
           onHide={()=> {

@@ -541,6 +541,7 @@ class AR3DMapView extends React.Component<Props, State> {
         }}
         imageStyle={{width: '100%', height: '100%',marginTop: dp(0)}}
         visible={this.state.showShape}
+        hide={true}
         onHide={() => {
           this.setState({
             showShape: false,

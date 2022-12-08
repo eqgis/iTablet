@@ -739,7 +739,7 @@ class CoverView extends React.Component<Props, State> {
                 alignItems: 'center',
               }}
             >
-              <Text style={{ textAlign: 'left', fontSize: dp(10), color: 'white', width: dp(70), marginLeft: dp(20) }}>{getLanguage().MAP_AR_PIPELINE+":"}</Text>
+              <Text style={{ textAlign: 'left', fontSize: dp(10), color: 'white', width: dp(35), marginLeft: dp(20) }}>{getLanguage().MAP_AR_PIPELINE+":"}</Text>
               <Text style={{ textAlign: 'left', fontSize: dp(13), color: 'white', flex: 1 }}>{this.state.name}</Text>
             </View>
           </View>
@@ -1215,6 +1215,7 @@ class CoverView extends React.Component<Props, State> {
       <BottomMenu
         // visible={this.state.secondMenuData.length > 0}
         visible={this.state.isSecondaryShow}
+        hide={true}
         onHide={() => {
           this.timeoutTrigger?.onBackFromSecondMenu()
           this.setState({

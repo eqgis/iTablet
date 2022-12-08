@@ -6,6 +6,7 @@ export interface AnimationWrapProps extends React.ClassAttributes<AnimationWrap>
   style: ViewStyle
   range: [number, number]
   animated: 'left' | 'right' | 'top' | 'bottom'
+  hide?:boolean
 }
 
 export default class AnimationWrap extends React.Component<AnimationWrapProps> {

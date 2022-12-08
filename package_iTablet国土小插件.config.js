@@ -1,7 +1,7 @@
 const pathSep = require('path').sep
 
 function postProcessModulesFilter(module) {
-  if (module['path'].indexOf(pathSep + 'applets/guotu' + pathSep) > 0) {
+  if (module['path'].indexOf(pathSep + 'applets/iTablet国土小插件' + pathSep) > 0) {
     return true
   }
   return false

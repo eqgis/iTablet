@@ -1,8 +1,14 @@
+import React from 'react'
 import { MyDataPage } from '../component'
 import { getLanguage } from '../../../../language'
 import { ConstPath } from '../../../../constants'
 import { BundleTools, FileTools } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
+import { MTBtn } from '@/components'
+import NavigationService from '@/containers/NavigationService'
+import { scaleSize } from '@/utils'
+import { getImage } from '@/assets'
+import styles from '../styles'
 
 class MyApplet extends MyDataPage {
   static propTypes = {
@@ -56,7 +62,20 @@ class MyApplet extends MyDataPage {
   }
 
   // 不显示右上角更多按钮
-  _renderHeaderRight = () => null
+  _renderHeaderRight = () => {
+    const size = this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50
+    return (
+      <MTBtn
+        key={'applet'}
+        style={styles.headerBtn}
+        imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+        image={getImage().my_applets}
+        onPress={async () => {
+          NavigationService.navigate('AppletOnline', { cb: this.getData })
+        }}
+      />
+    )
+  }
 
   getCustomItemPopupData = () => {
     if (!this.itemInfo) return []

@@ -681,7 +681,7 @@ class CoverView extends React.Component<Props, State> {
         style={{
           position: 'absolute',
           width: dp(240),
-          height: dp(150),
+          height: dp(140),
           bottom: dp(20),
           left: dp(20),
           backgroundColor: '#rgba(25, 25, 25, 0.65)',
@@ -691,7 +691,7 @@ class CoverView extends React.Component<Props, State> {
         <View>
           <Image
             resizeMode={'stretch'}
-            style={{ width: '100%', height: dp(40) ,opacity:0.8}}
+            style={{ width: '100%', height: dp(32) ,opacity:0.8}}
             source={getImage().icon_coverview_title}
           />
           <View

@@ -1390,7 +1390,7 @@ class DoctorCC extends Component<Props, State> {
       clearTimeout(tempTimer)
     },300)
 
-    await SARMap.removeNewElementModel(this.ARModel.layerName, this.ARModel.id)
+    this.ARModel && await SARMap.removeNewElementModel(this.ARModel.layerName, this.ARModel.id)
 
     this.setState({
       selectRouteKey: item.key,

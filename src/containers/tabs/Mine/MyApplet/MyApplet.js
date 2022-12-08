@@ -71,7 +71,7 @@ class MyApplet extends MyDataPage {
         imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
         image={getImage().my_applets}
         onPress={async () => {
-          NavigationService.navigate('AppletOnline', { cb: this.getData })
+          NavigationService.navigate('AppletOnline', { cb: this._getSectionData })
         }}
       />
     )

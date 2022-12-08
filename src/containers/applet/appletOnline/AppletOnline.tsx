@@ -240,7 +240,6 @@ class AppletOnline extends React.Component<Props, State> {
   }
 
   renderItem = (data: ListRenderItemInfo<OnlineData>) => {
-    console.warn(data)
     return (
       <AppletItem
         user={this.props.user}

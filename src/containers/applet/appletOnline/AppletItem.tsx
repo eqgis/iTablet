@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 import styles from './styles'
 import { Toast } from '@/utils'
-import { FileTools } from '@/native'
 
 import { RNFS  } from 'imobile_for_reactnative'
 import ConstPath from '@/constants/ConstPath'
@@ -113,7 +112,6 @@ export default class AppletItem extends Component<Props, State> {
   }
 
   _downloadFile = async () => {
-    const fileName = this.props.data.name
     const dataId = this.props.data.iptResId
     const path = global.homePath + ConstPath.BundlesPath + this.props.data.name + '.zip'
     let dataUrl
@@ -123,7 +121,7 @@ export default class AppletItem extends Component<Props, State> {
         return
       }
       if (await RNFS.exists(path)) {
-        this.onDownloaded(fileName, path)
+        this.onDownloaded(path)
         return
       }
       if (await RNFS.exists(path)) {
@@ -166,7 +164,7 @@ export default class AppletItem extends Component<Props, State> {
         progress: 100,
         downed: true,
       })
-      this.onDownloaded(fileName, path)
+      this.onDownloaded(path)
     } catch (error) {
       Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_FAILED)
       if (await RNFS.exists(path)) {
@@ -175,31 +173,12 @@ export default class AppletItem extends Component<Props, State> {
     }
   }
 
-  onDownloaded = async (fileName: string, path: string) => {
-    const appHome = await FileTools.appendingHomeDirectory()
-    const bundlePath = appHome + ConstPath.BundlesPath
-    const index = path.lastIndexOf('.')
-    let name = '', type
-    if (index !== -1) {
-      name = path.substring(0, index)
-      type = path.substring(index + 1).toLowerCase()
+  onDownloaded = async (path: string) => {
+    let result = false
+    if (await RNFS.exists(path)) {
+      result = true
     }
-
-    let result
-    if (!type) {
-      result = false
-    } else if (type === 'zip') {
-      const fileDir = bundlePath + name
-      if (!await RNFS.exists(fileDir)) {
-        return
-      }
-      result = await FileTools.unZipFile(path, bundlePath)
-
-      if (result && name.indexOf('_template') !== -1) {
-        await FileTools.deleteFile(path)
-      }
-
-    }
+    this.getDownloadProgress()
     this.props.onDownloaded?.()
     result
       ? Toast.show(getLanguage(global.language).Find.DOWNLOADED)

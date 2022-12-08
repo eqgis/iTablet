@@ -1086,7 +1086,7 @@ export default class LayerManager_tolbar extends React.Component {
             'zip',
           )
           let datasetZipPath = tempPath + exportDatasetName
-          await SMap.getDatasetToGeoJson(
+          await SMap.exportDatasetToGeoJsonFile(
             layerData.datasourceAlias,
             layerData.datasetName,
             datasetPath,

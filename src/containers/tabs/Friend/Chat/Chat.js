@@ -1107,7 +1107,7 @@ class Chat extends React.Component {
           if (typeCount !== 1) {
             type = DatasetType.CAD
           }
-          await SMap.importDatasetFromGeoJson(
+          await SMap.importDatasetFromGeoJsonFile(
             message.originMsg.message.message.datasourceAlias,
             fileList[i].name.substr(0, fileList[i].name.lastIndexOf('.')),
             homePath + fileList[i].path,

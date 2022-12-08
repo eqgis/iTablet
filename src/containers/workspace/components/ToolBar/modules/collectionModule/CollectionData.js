@@ -1,4 +1,4 @@
-import { SCollector, SMCollectorType } from 'imobile_for_reactnative'
+import { SCollector, SMap, SMCollectorType } from 'imobile_for_reactnative'
 import constants from '../../../../constants'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import { getLanguage } from '../../../../../../language'
@@ -8,6 +8,9 @@ import CollectionAction from './CollectionAction'
 import ToolbarModule from '../ToolbarModule'
 import { AppToolBar, jsonUtil, LayerUtils } from '@/utils'
 import TourAction from '../../../../../../../applets/langchaoDemo/src/mapFunctionModules/Langchao/TourAction'
+import { ConstPath } from '../../../../../../../src/constants'
+import { FileTools } from '../../../../../../../src/native'
+import App from '@/App'
 
 /**
  * 获取采集操作数据
@@ -179,197 +182,228 @@ function getData(type) {
     title: getLanguage(global.language).Map_Main_Menu.COLLECTION_SUBMIT,
     action: async () => {
       await CollectionAction.collectionSubmit(type)
-      let obj = {
-        key: 'start',
-        title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
-        action: async () => {
-          await SCollector.startCollect(type)
-          const obj = {
-            key: 'start',
-            title: getLanguage(global.language).Map_Settings.RECORDING,
-            action: () => {
-              Toast.show(getLanguage(global.language).Map_Settings.ON_THE_RECORD)
-            },
-            size: 'large',
-            image: getThemeAssets().collection.icon_track_start,
-          }
-          global.ToolBar?.updateViewData(0,obj)
+      // langchao code
+      {
+        let obj = {
+          key: 'start',
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
+          action: async () => {
+            await SCollector.startCollect(type)
+            const obj = {
+              key: 'start',
+              title: getLanguage(global.language).Map_Settings.RECORDING,
+              action: () => {
+                Toast.show(getLanguage(global.language).Map_Settings.ON_THE_RECORD)
+              },
+              size: 'large',
+              image: getThemeAssets().collection.icon_track_start,
+            }
+            global.ToolBar?.updateViewData(0,obj)
 
-        },
-        size: 'large',
-        image: getThemeAssets().collection.icon_track_start,
-      }
-      global.ToolBar?.updateViewData(0,obj)
-      const date = new Date()
-
-
-      const timezone = 7 //目标时区时间，东八区(北京时间)   东时区正数 西市区负数
-      const offset_GMT = date.getTimezoneOffset() // 本地时间和格林威治的时间差，单位为分钟
-      const nowDate = date.getTime() // 本地时间距 1970 年 1 月 1 日午夜（GMT 时间）之间的毫秒数
-      const targetDate = new Date(nowDate + offset_GMT * 60 * 1000 + timezone * 60 * 60 * 1000)
-      // const beijingTime = targetDate.getTime()
-      // 格式化时间
-      const formDateLocal = TourAction.dateFormat("yyyy-MM-dd HH:mm:ss", date)
-      const formDateBeijing = TourAction.dateFormat("yyyy-MM-dd HH:mm:ss", targetDate)
-      // console.warn("localDate: " + formDateLocal + "beijingdate: " + formDateBeijing)
-
-      const callInfo = CollectionAction.getCallInfo()
-      let durationTime = 0
-      if(callInfo.startTime >= 0) {
-        durationTime = (nowDate - callInfo.startTime) / (60 * 1000)
-      }
-      const callContentsObj = {
-        myName: '张三',           // 呼叫人姓名
-        myPhoneNumber: '17711245121',    // 呼叫人电话
-        callName: callInfo.name,         // 被呼叫人姓名
-        callPhoneNumber: callInfo.phoneNumber,  // 被呼叫人电话
-        localTime: formDateLocal,        // 当地时间
-        bjTime: formDateBeijing,           // 北京时间
-        durationTime: durationTime,     // 时长
-      }
-      const callContentsStr = JSON.stringify(callContentsObj)
-      console.warn("callContentsStr: " + callContentsStr)
-      // 将数据恢复默认值
-      CollectionAction.setCallInfo({
-        name: '',
-        phoneNumber: '',
-        startTime: -1,
-      })
-
-      const result = await LayerUtils.getLayerAttribute(
-        {},
-        AppToolBar.getProps().currentLayer.path,
-        0,
-        30,
-        {
-          // filter: this.filter,
-        },
-        "refresh",
-      )
-
-      let layerAttributedataArray = result.attributes.data
-      // const columnIndex = result.total !== 0 ? 0 : result.total
-      const columnIndex = layerAttributedataArray.length - 1
-      let layerAttributedata = layerAttributedataArray[columnIndex]
-
-      // console.warn("result: " + JSON.stringify(result))
-      let smID = 0
-      let myNameIndex = 0
-      let myPhoneNumberIndex = 0
-      let callNameIndex = 0
-      let callPhoneNumberIndex = 0
-      let localTimeIndex = 0
-      let bjTimeIndex = 0
-      let durationTimeIndex = 0
-
-      const length = layerAttributedata.length
-      for(let i = 0; i < length; i ++) {
-        let item = layerAttributedata[i]
-        if(item.name === "SmID") {
-          smID = item.value
-        }
-        if(item.name === "myName") {
-          myNameIndex = i
-        } else if(item.name === "myPhoneNumber") {
-          myPhoneNumberIndex = i
-        } else if(item.name === "callName") {
-          callNameIndex = i
-        } else if(item.name === "callPhoneNumber") {
-          callPhoneNumberIndex = i
-        } else if(item.name === "localTime_User") {
-          localTimeIndex = i
-        } else if(item.name === "bjTime") {
-          bjTimeIndex = i
-        } else if(item.name === "duration") {
-          durationTimeIndex = i
-        }
-      }
-
-      const altData = [
-        {
-          mapName: AppToolBar.getProps().map.currentMap.name,
-          layerPath: AppToolBar.getProps().currentLayer.path,
-          fieldInfo: [
-            // {
-            //   name: 'CallContents',
-            //   value: callContentsStr,
-            //   index: index,
-            //   columnIndex: columnIndex,
-            //   smID: smID,
-            // },
-            {
-              name: 'myName',
-              value: callContentsObj.myName,
-              index: myNameIndex,
-              columnIndex: columnIndex,
-              smID: smID,
-            },
-            {
-              name: 'myPhoneNumber',
-              value: callContentsObj.myPhoneNumber,
-              index: myPhoneNumberIndex,
-              columnIndex: columnIndex,
-              smID: smID,
-            },
-            {
-              name: 'callName',
-              value: callContentsObj.callName,
-              index: callNameIndex,
-              columnIndex: columnIndex,
-              smID: smID,
-            },
-            {
-              name: 'callPhoneNumber',
-              value: callContentsObj.callPhoneNumber,
-              index: callPhoneNumberIndex,
-              columnIndex: columnIndex,
-              smID: smID,
-            },
-            {
-              name: 'localTime_User',
-              value: callContentsObj.localTime,
-              index: localTimeIndex,
-              columnIndex: columnIndex,
-              smID: smID,
-            },
-            {
-              name: 'bjTime',
-              value: callContentsObj.bjTime,
-              index: bjTimeIndex,
-              columnIndex: columnIndex,
-              smID: smID,
-            },
-            {
-              name: 'duration',
-              value: callContentsObj.durationTime,
-              index: durationTimeIndex,
-              columnIndex: columnIndex,
-              smID: smID,
-            },
-          ],
-          // prevData: [
-          //   {
-          //     name: isSingleData ? data.rowData.name : data.cellData.name,
-          //     value: isSingleData ? data.rowData.value : data.cellData.value,
-          //     index: data.index,
-          //     columnIndex: data.columnIndex,
-          //     smID: isSingleData
-          //       ? this.state.attributes.data[0][0].value
-          //       : data.rowData[1].value,
-          //   },
-          // ],
-          params: {
-            // index: int,      // 当前对象所在记录集中的位置
-            filter: `SmID=${smID}`, // 过滤条件
-            cursorType: 2, // 2: DYNAMIC, 3: STATIC
           },
-        },
-      ]
+          size: 'large',
+          image: getThemeAssets().collection.icon_track_start,
+        }
+        global.ToolBar?.updateViewData(0,obj)
+        const date = new Date()
 
-      AppToolBar.getProps().setLayerAttributes(altData)
 
-      // let newLayerAttributeState = JSON.parse(JSON.stringify(layerAttributeState))
-      // LayerUtils.setMapLayerAttribute(newLayerAttributeState)
+        const timezone = 8 //目标时区时间，东八区(北京时间)   东时区正数 西市区负数
+        const offset_GMT = date.getTimezoneOffset() // 本地时间和格林威治的时间差，单位为分钟
+        const nowDate = date.getTime() // 本地时间距 1970 年 1 月 1 日午夜（GMT 时间）之间的毫秒数
+        const targetDate = new Date(nowDate + offset_GMT * 60 * 1000 + timezone * 60 * 60 * 1000)
+        // const beijingTime = targetDate.getTime()
+        // 格式化时间
+        const formDateLocal = TourAction.dateFormat("yyyy-MM-dd HH:mm:ss", date)
+        const formDateBeijing = TourAction.dateFormat("yyyy-MM-dd HH:mm:ss", targetDate)
+        // console.warn("localDate: " + formDateLocal + "beijingdate: " + formDateBeijing)
+
+        const callInfo = CollectionAction.getCallInfo()
+        let durationTime = 0
+        if(callInfo.startTime >= 0) {
+          durationTime = (nowDate - callInfo.startTime) / (60 * 1000)
+        }
+        const callContentsObj = {
+          myName: '张三',           // 呼叫人姓名
+          myPhoneNumber: '17711245121',    // 呼叫人电话
+          callName: callInfo.name,         // 被呼叫人姓名
+          callPhoneNumber: callInfo.phoneNumber,  // 被呼叫人电话
+          localTime: formDateLocal,        // 当地时间
+          bjTime: formDateBeijing,           // 北京时间
+          durationTime: durationTime,     // 时长
+        }
+        const callContentsStr = JSON.stringify(callContentsObj)
+        console.warn("callContentsStr: " + callContentsStr)
+        // 将数据恢复默认值
+        CollectionAction.setCallInfo({
+          name: '',
+          phoneNumber: '',
+          startTime: -1,
+        })
+
+        const result = await LayerUtils.getLayerAttribute(
+          {},
+          AppToolBar.getProps().currentLayer.path,
+          0,
+          30,
+          {
+            // filter: this.filter,
+          },
+          "refresh",
+        )
+
+        let layerAttributedataArray = result.attributes.data
+        // const columnIndex = result.total !== 0 ? 0 : result.total
+        const columnIndex = layerAttributedataArray.length - 1
+        let layerAttributedata = layerAttributedataArray[columnIndex]
+
+        // console.warn("result: " + JSON.stringify(result))
+        let smID = 0
+        let myNameIndex = 0
+        let myPhoneNumberIndex = 0
+        let callNameIndex = 0
+        let callPhoneNumberIndex = 0
+        let localTimeIndex = 0
+        let bjTimeIndex = 0
+        let durationTimeIndex = 0
+        let isUploadedIndex = 0
+
+        const length = layerAttributedata.length
+        for(let i = 0; i < length; i ++) {
+          let item = layerAttributedata[i]
+          if(item.name === "SmID") {
+            smID = item.value
+          }
+          if(item.name === "myName") {
+            myNameIndex = i
+          } else if(item.name === "myPhoneNumber") {
+            myPhoneNumberIndex = i
+          } else if(item.name === "callName") {
+            callNameIndex = i
+          } else if(item.name === "callPhoneNumber") {
+            callPhoneNumberIndex = i
+          } else if(item.name === "localTime_User") {
+            localTimeIndex = i
+          } else if(item.name === "bjTime") {
+            bjTimeIndex = i
+          } else if(item.name === "duration") {
+            durationTimeIndex = i
+          } else if(item.name === "isUploaded") {
+            isUploadedIndex = i
+          }
+        }
+
+        const altData = [
+          {
+            mapName: AppToolBar.getProps().map.currentMap.name,
+            layerPath: AppToolBar.getProps().currentLayer.path,
+            fieldInfo: [
+              // {
+              //   name: 'CallContents',
+              //   value: callContentsStr,
+              //   index: index,
+              //   columnIndex: columnIndex,
+              //   smID: smID,
+              // },
+              {
+                name: 'myName',
+                value: callContentsObj.myName,
+                index: myNameIndex,
+                columnIndex: columnIndex,
+                smID: smID,
+              },
+              {
+                name: 'myPhoneNumber',
+                value: callContentsObj.myPhoneNumber,
+                index: myPhoneNumberIndex,
+                columnIndex: columnIndex,
+                smID: smID,
+              },
+              {
+                name: 'callName',
+                value: callContentsObj.callName,
+                index: callNameIndex,
+                columnIndex: columnIndex,
+                smID: smID,
+              },
+              {
+                name: 'callPhoneNumber',
+                value: callContentsObj.callPhoneNumber,
+                index: callPhoneNumberIndex,
+                columnIndex: columnIndex,
+                smID: smID,
+              },
+              {
+                name: 'localTime_User',
+                value: callContentsObj.localTime,
+                index: localTimeIndex,
+                columnIndex: columnIndex,
+                smID: smID,
+              },
+              {
+                name: 'bjTime',
+                value: callContentsObj.bjTime,
+                index: bjTimeIndex,
+                columnIndex: columnIndex,
+                smID: smID,
+              },
+              {
+                name: 'duration',
+                value: callContentsObj.durationTime,
+                index: durationTimeIndex,
+                columnIndex: columnIndex,
+                smID: smID,
+              },
+              {
+                name: 'isUploaded',
+                value: false,
+                index: isUploadedIndex,
+                columnIndex: columnIndex,
+                smID: smID,
+              },
+            ],
+            // prevData: [
+            //   {
+            //     name: isSingleData ? data.rowData.name : data.cellData.name,
+            //     value: isSingleData ? data.rowData.value : data.cellData.value,
+            //     index: data.index,
+            //     columnIndex: data.columnIndex,
+            //     smID: isSingleData
+            //       ? this.state.attributes.data[0][0].value
+            //       : data.rowData[1].value,
+            //   },
+            // ],
+            params: {
+              // index: int,      // 当前对象所在记录集中的位置
+              filter: `SmID=${smID}`, // 过滤条件
+              cursorType: 2, // 2: DYNAMIC, 3: STATIC
+            },
+          },
+        ]
+
+        await AppToolBar.getProps().setLayerAttributes(altData)
+
+        const homePath = await FileTools.getHomeDirectory()
+        const tempPath =
+          homePath +
+          ConstPath.UserPath +
+          AppToolBar.getProps().user.currentUser.userName +
+          '/' +
+          ConstPath.RelativePath.Temp
+        const path = tempPath + 'line_965018_' + date.getTime() + '.json'
+
+        const datasetArray = await SMap.querybyAttributeValue("langchao", "line_965018", "isUploaded=0")
+        const datasetArrayLength = datasetArray.length
+        if(datasetArrayLength > 0) {
+          const ids = []
+          for(let i =0; i < datasetArrayLength; i ++) {
+            const item = JSON.parse(JSON.stringify(datasetArray[i]))
+            ids.push(Number(item.SmID))
+          }
+          const count = await SMap.exportDatasetToGeoJsonFileByID("langchao", "line_965018", path, ids)
+        }
+      }
+
 
     },
     size: 'large',

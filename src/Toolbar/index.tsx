@@ -74,6 +74,7 @@ const mapStateToProp = (state: RootState) => ({
   currentLayer: state.layers.toJS().currentLayer,
   attributes: state.layers.toJS().attributes,
   map: state.map.toJS(),
+  user: state.user.toJS(),
 })
 
 const mapDispatch = {

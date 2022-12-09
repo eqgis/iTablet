@@ -610,8 +610,8 @@ class SandBoxView extends React.Component<Props, State> {
           z: 0,
         },
         scale: {
-          x: 80000,
-          y: 70000,
+          x: 373,
+          y: 325,
           z: 0,
         },
       })

@@ -1474,6 +1474,7 @@ export default class LayerAttribute extends React.Component {
           return
         }
         let info = await SMediaCollector.getMediaInfo(layerName, geoID)
+        console.warn("info: " + JSON.stringify(info))
         let layerType = LayerUtils.getLayerType(this.props.currentLayer)
         let isTaggingLayer = layerType === 'TAGGINGLAYER'
         if (isTaggingLayer) {

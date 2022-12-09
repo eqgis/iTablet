@@ -15,7 +15,7 @@ import { ConstPath } from '../../constants'
 import { FileTools } from '../../native'
 import NavigationService from '../NavigationService'
 import { getPublicAssets } from '../../assets'
-import { screen } from '../../utils'
+import { AppToolBar, LayerUtils, screen } from '../../utils'
 import { Progress, MediaViewer, ImagePicker } from '../../components'
 import { Camera as RNCamera, CameraCaptureError, CameraDevice, PhotoFile, RecordVideoOptions, TakePhotoOptions, useCameraDevices, useFrameProcessor, VideoFile, CameraDeviceFormat } from 'react-native-vision-camera'
 import { SMediaCollector } from 'imobile_for_reactnative'
@@ -35,6 +35,7 @@ import {
 import { RootState } from '@/redux/types'
 import { CAREMA_MEDIA_TYPE, CAREMA_RECORD_STATUS, RECORD_STATUS, TYPE } from './types'
 import { LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
+import TourAction from '../../../applets/langchaoDemo/src/mapFunctionModules/Langchao/TourAction'
 
 const TIME_LIMIT = 60
 
@@ -282,6 +283,64 @@ class Camera extends React.Component<Props, State> {
 
     if (await SMediaCollector.isTourLayer((this.props.currentLayer as LayerInfo).name) && !this.attribute) {
       result = await SMediaCollector.updateTour((this.props.currentLayer as LayerInfo).name)
+    }
+    {
+      // langchao code
+      const result = await LayerUtils.getLayerAttribute(
+        {
+          data: [],
+          head: [],
+        },
+        "marker_322@langchao",
+        0,
+        30,
+        {
+          // filter: this.filter,
+        },
+        "refresh",
+      )
+
+      const layerAttributedataArray = result.attributes.data
+      // const columnIndex = result.total !== 0 ? 0 : result.total
+      const columnIndex = layerAttributedataArray.length - 1
+      const layerAttributedata = layerAttributedataArray[columnIndex]
+
+      let smID = 0
+      let isUploadedIndex = 0
+
+      const length = layerAttributedata.length
+      for(let i = 0; i < length; i ++) {
+        const item = layerAttributedata[i]
+        if(item.name === "SmID") {
+          smID = Number(item.value)
+        } else if(item.name === "isUploaded") {
+          isUploadedIndex = i
+        }
+      }
+
+      const altData = [
+        {
+          mapName: "langchao",
+          layerPath: "marker_322@langchao",
+          fieldInfo: [
+            {
+              name: 'isUploaded',
+              value: false,
+              index: isUploadedIndex,
+              columnIndex: columnIndex,
+              smID: smID,
+            },
+          ],
+          params: {
+            // index: int,      // 当前对象所在记录集中的位置
+            filter: `SmID=${smID}`, // 过滤条件
+            cursorType: 2, // 2: DYNAMIC, 3: STATIC
+          },
+        },
+      ]
+
+      await AppToolBar.getProps().setLayerAttributes(altData)
+      await TourAction.uploadDialog(smID, 'media')
     }
     if (this.atcb) {
       this.atcb({

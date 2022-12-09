@@ -383,25 +383,26 @@ function getData(type) {
 
         await AppToolBar.getProps().setLayerAttributes(altData)
 
-        const homePath = await FileTools.getHomeDirectory()
-        const tempPath =
-          homePath +
-          ConstPath.UserPath +
-          AppToolBar.getProps().user.currentUser.userName +
-          '/' +
-          ConstPath.RelativePath.Temp
-        const path = tempPath + 'line_965018_' + date.getTime() + '.json'
+        TourAction.uploadDialog(smID, 'line')
+        // const homePath = await FileTools.getHomeDirectory()
+        // const tempPath =
+        //   homePath +
+        //   ConstPath.UserPath +
+        //   AppToolBar.getProps().user.currentUser.userName +
+        //   '/' +
+        //   ConstPath.RelativePath.Temp
+        // const path = tempPath + 'line_965018_' + date.getTime() + '.json'
 
-        const datasetArray = await SMap.querybyAttributeValue("langchao", "line_965018", "isUploaded=0")
-        const datasetArrayLength = datasetArray.length
-        if(datasetArrayLength > 0) {
-          const ids = []
-          for(let i =0; i < datasetArrayLength; i ++) {
-            const item = JSON.parse(JSON.stringify(datasetArray[i]))
-            ids.push(Number(item.SmID))
-          }
-          const count = await SMap.exportDatasetToGeoJsonFileByID("langchao", "line_965018", path, ids)
-        }
+        // const datasetArray = await SMap.querybyAttributeValue("langchao", "line_965018", "isUploaded=0")
+        // const datasetArrayLength = datasetArray.length
+        // if(datasetArrayLength > 0) {
+        //   const ids = []
+        //   for(let i =0; i < datasetArrayLength; i ++) {
+        //     const item = JSON.parse(JSON.stringify(datasetArray[i]))
+        //     ids.push(Number(item.SmID))
+        //   }
+        //   const count = await SMap.exportDatasetToGeoJsonFileByID("langchao", "line_965018", path, ids)
+        // }
       }
 
 

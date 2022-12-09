@@ -7,6 +7,7 @@ import { getLanguage } from "@/language"
 import { setCurrentSymbol } from "@/redux/models/symbol"
 import { getPublicAssets } from "@/assets"
 import { setServerIP } from '../reduxModels/langchao'
+import { getToken } from "../utils/langchaoServer"
 
 
 interface Props extends ReduxProps {
@@ -14,7 +15,7 @@ interface Props extends ReduxProps {
   device: any,
   language: string,
   serverIP: string,
-  setServerIP: (url: string) => void
+  setServerIP: (url: string) => Promise<void>
 }
 
 interface State {
@@ -39,9 +40,10 @@ class InputServer extends Component<Props, State> {
 
   }
 
-  confirm = () => {
-    console.warn("33333:" + this.state.serverUrl)
-    this.props.setServerIP(this.state.serverUrl)
+  confirm = async () => {
+    // console.warn("33333:" + this.state.serverUrl)
+    await this.props.setServerIP(this.state.serverUrl)
+    getToken()
   }
 
   renderHeaderRight = () => {

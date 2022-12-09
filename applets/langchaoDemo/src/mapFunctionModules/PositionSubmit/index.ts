@@ -1,11 +1,12 @@
 import { getLanguage } from '@/language'
 import CustomFunctionModule from '@/class/CustomFunctionModule'
 import { getImage } from '../../assets'
-import { AppToolBar, Toast } from '@/utils'
+import { AppToolBar, LayerUtils, Toast } from '@/utils'
 import { FileTools, SCollector, SMap, SMCollectorType } from 'imobile_for_reactnative'
 import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
 import { collectionModule } from '@/containers/workspace/components/ToolBar/modules'
 import { getThemeAssets } from '@/assets'
+import TourAction from '../Langchao/TourAction'
 
 const defaultPositionModule = function () {
   return _PositionModule
@@ -53,11 +54,69 @@ class PositionModule extends CustomFunctionModule {
     await SCollector.addGPSPoint()
     await collectionModule().actions.collectionSubmit(type)
     await SCollector.stopCollect()
-    showLoading(2000, async () => {
-      // 地图定位到指定点位置
-      SMap.refreshMap()
-      Toast.show("上报成功")
-    })
+    // showLoading(2000, async () => {
+    //   // 地图定位到指定点位置
+    //   SMap.refreshMap()
+    //   Toast.show("上报成功")
+    // })
+    const result = await LayerUtils.getLayerAttribute(
+      {
+        data: [],
+        head: [],
+      },
+      "marker_118081@langchao",
+      0,
+      30,
+      {
+        // filter: this.filter,
+      },
+      "refresh",
+    )
+
+    const layerAttributedataArray = result.attributes.data
+    // const columnIndex = result.total !== 0 ? 0 : result.total
+    const columnIndex = layerAttributedataArray.length - 1
+    const layerAttributedata = layerAttributedataArray[columnIndex]
+
+    let smID = 0
+    let isUploadedIndex = 0
+
+    const length = layerAttributedata.length
+    for(let i = 0; i < length; i ++) {
+      const item = layerAttributedata[i]
+      if(item.name === "SmID") {
+        smID = Number(item.value)
+      } else if(item.name === "isUploaded") {
+        isUploadedIndex = i
+      }
+    }
+
+    const altData = [
+      {
+        mapName: "langchao",
+        layerPath: "marker_118081@langchao",
+        fieldInfo: [
+          {
+            name: 'isUploaded',
+            value: false,
+            index: isUploadedIndex,
+            columnIndex: columnIndex,
+            smID: smID,
+          },
+        ],
+        params: {
+          // index: int,      // 当前对象所在记录集中的位置
+          filter: `SmID=${smID}`, // 过滤条件
+          cursorType: 2, // 2: DYNAMIC, 3: STATIC
+        },
+      },
+    ]
+
+    await AppToolBar.getProps().setLayerAttributes(altData)
+
+    TourAction.uploadDialog(smID, 'marker')
+
+
     await SMap.toLocationPoint({
       x: position.longitude,
       y: position.latitude,

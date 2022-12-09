@@ -330,7 +330,7 @@ export default class LangChaoDemoModule extends Module {
     // const trackpath = ""
     // for(let i = 0; i < layers.length; i ++) {
     //   const layerDatasetName = layers[i].datasetName
-    //   console.warn("layerDatasetName: " + layerDatasetName + " - " + layers[i].caption)
+    //   console.warn("layerDatasetName: " + layerDatasetName + " - " + layers[i].caption + " - " + layers[i].name)
     //   // if(layerDatasetName === "marker_322") {
     //   //   await SMap.renameLayer(layers[i].path, "多媒体")
     //   //   mediaPath = layers[i].path

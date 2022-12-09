@@ -206,6 +206,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopWidth: scaleSize(1),
     borderTopColor: '#A0A0A0',
+    marginTop: scaleSize(20),
   },
   searchButton: {
     width: scaleSize(200),

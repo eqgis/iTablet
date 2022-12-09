@@ -147,7 +147,7 @@ export default class SearchMenu extends React.Component<Props, State> {
   setSearchText = (text: string) => {
     this.setState({ searchText: text })
     this.props.setParams({
-      keywords: text === '' ? undefined : text,
+      keywords: text,
     })
   }
 

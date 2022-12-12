@@ -11,6 +11,36 @@ let serverIP = ""
 let serverToken = ""
 let serverClientid = "Gvvy19yU"
 
+
+let userId = ""
+let username = ""
+let sysOrgid = ""
+let userInfo = {}
+
+export const getUserInfo = () => {
+  return userInfo
+}
+
+export const getUserParam = () => {
+  return {
+    userId: userId,
+    username: username,
+    SysOrgid: sysOrgid,
+  }
+}
+export const setUserId = (id: string) => {
+  userId = id
+}
+
+export const setUserName = (name: string) => {
+  username = name
+}
+
+export const setSysOrgid = (id: string) => {
+  sysOrgid = id
+}
+
+
 export const setServerIPUtil = (IP: string) => {
   serverIP = IP
 }
@@ -228,6 +258,7 @@ export const users = async (params: UserInfoType) => {
       const data = JSON.parse(JSON.stringify(res.data))
       if(data.ok === true) {
         infos = JSON.parse(JSON.stringify(data.data))
+        userInfo = infos
       }
     }
     return infos

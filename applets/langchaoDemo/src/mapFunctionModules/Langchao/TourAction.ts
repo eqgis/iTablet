@@ -10,7 +10,7 @@ import { MediaData } from 'imobile_for_reactnative/types/interface/collector/SMe
 import { SuperMapKnown } from '@/containers/tabs'
 import { collectionModule } from '@/containers/workspace/components/ToolBar/modules'
 import { getJson } from '../../assets/data'
-import { uploadFile, MessageInfoType, message } from '../../utils/langchaoServer'
+import { uploadFile, MessageInfoType, message, getUserParam } from '../../utils/langchaoServer'
 
 /**
  * 右侧创建轨迹事件
@@ -341,10 +341,14 @@ const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadTyp
     const position = await SMap.getCurrentLocation()
     const countryCode = await getCountryCode(position.longitude, position.latitude)
 
+    let infos = getUserParam()
+    const name = infos.username !== "" ? infos.username : '张三'
+    const userid = infos.userId !== "" ? infos.userId : "zhangsan"
+
     const params: MessageInfoType = {
       ...uuidInfo,
-      UserId: "",
-      UserName: "",
+      UserId: userid,
+      UserName: name,
       LocalTime: formDateLocal,
       BeijingTime: formDateBeijing,
       CountryCode: countryCode + "",

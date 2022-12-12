@@ -11,6 +11,7 @@ import TourAction from '../../../../../../../applets/langchaoDemo/src/mapFunctio
 import { ConstPath } from '../../../../../../../src/constants'
 import { FileTools } from '../../../../../../../src/native'
 import App from '@/App'
+import { getUserInfo } from '../../../../../../../applets/langchaoDemo/src/utils/langchaoServer'
 
 /**
  * 获取采集操作数据
@@ -223,9 +224,21 @@ function getData(type) {
         if(callInfo.startTime >= 0) {
           durationTime = (nowDate - callInfo.startTime) / (60 * 1000)
         }
+
+        let infos = getUserInfo()
+        infos = JSON.parse(JSON.stringify(infos))
+        console.warn("用户信息" + JSON.stringify(infos))
+        let name = '张三'
+        let phoneNumber = "17711245121"
+        if(infos && infos.length > 0) {
+          const itemTemp = infos[0]
+          name = itemTemp.name
+          phoneNumber = itemTemp.mobilePhone !== "" ? itemTemp.mobilePhone : itemTemp.phone
+        }
+
         const callContentsObj = {
-          myName: '张三',           // 呼叫人姓名
-          myPhoneNumber: '17711245121',    // 呼叫人电话
+          myName: name,           // 呼叫人姓名
+          myPhoneNumber: phoneNumber,    // 呼叫人电话
           callName: callInfo.name,         // 被呼叫人姓名
           callPhoneNumber: callInfo.phoneNumber,  // 被呼叫人电话
           localTime: formDateLocal,        // 当地时间

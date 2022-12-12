@@ -7,7 +7,7 @@ import { getLanguage } from "@/language"
 import { setCurrentSymbol } from "@/redux/models/symbol"
 import { getPublicAssets } from "@/assets"
 import { setServerIP } from '../reduxModels/langchao'
-import { getToken } from "../utils/langchaoServer"
+import { dateFormat, getToken, setSysOrgid, setUserId, setUserName, users } from "../utils/langchaoServer"
 
 
 interface Props extends ReduxProps {
@@ -20,6 +20,9 @@ interface Props extends ReduxProps {
 
 interface State {
 	serverUrl: string,
+  userId:string,
+  userName: string,
+  sysOrgId: string,
 }
 
 class InputServer extends Component<Props, State> {
@@ -30,6 +33,9 @@ class InputServer extends Component<Props, State> {
     super(props)
     this.state = {
       serverUrl: props.serverIP || "",
+      userId: "",
+      userName: "",
+      sysOrgId: "",
     }
   }
 
@@ -43,7 +49,29 @@ class InputServer extends Component<Props, State> {
   confirm = async () => {
     // console.warn("33333:" + this.state.serverUrl)
     await this.props.setServerIP(this.state.serverUrl)
+    setUserId(this.state.userId)
+    setUserName(this.state.userName)
+    setSysOrgid(this.state.sysOrgId)
     getToken()
+
+    const date = new Date()
+    const timezone = 8 //目标时区时间，东八区(北京时间)   东时区正数 西市区负数
+    const offset_GMT = date.getTimezoneOffset() // 本地时间和格林威治的时间差，单位为分钟
+    const nowDate = date.getTime() // 本地时间距 1970 年 1 月 1 日午夜（GMT 时间）之间的毫秒数
+    const targetDate = new Date(nowDate + offset_GMT * 60 * 1000 + timezone * 60 * 60 * 1000)
+    // const beijingTime = targetDate.getTime()
+    // 格式化时间
+    // const formDateLocal = await dateFormat("yyyy-MM-dd HH:mm:ss", date)
+    const formDateBeijing = await dateFormat("yyyy-MM-dd HH:mm:ss", targetDate)
+
+    const params = {
+      UserId: this.state.userId,
+      UserName: this.state.userName,
+      BeginTime: formDateBeijing,
+      EndTime: formDateBeijing,
+      SysOrgid: this.state.sysOrgId,
+    }
+    users(params)
   }
 
   renderHeaderRight = () => {
@@ -86,6 +114,91 @@ class InputServer extends Component<Props, State> {
             onPress={() => {
               this.setState({
                 serverUrl: '',
+              })
+            }}
+          >
+            <Image
+              style={styles.clearImg}
+              resizeMode={'contain'}
+              source={getPublicAssets().common.icon_close}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={[styles.dialogInputContainer]}>
+          <TextInput
+            style = {[styles.dialogInput]}
+            // placeholder = {getLanguage(global.language).Map_Settings.CONTACT_NAME}
+            placeholder={"用户id"}
+            value = {this.state.userId}
+            onChangeText = {(text:string) => {
+              this.setState({
+                userId: text,
+              })
+            }}
+          />
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.clearBtn}
+            onPress={() => {
+              this.setState({
+                userId: '',
+              })
+            }}
+          >
+            <Image
+              style={styles.clearImg}
+              resizeMode={'contain'}
+              source={getPublicAssets().common.icon_close}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={[styles.dialogInputContainer]}>
+          <TextInput
+            style = {[styles.dialogInput]}
+            // placeholder = {getLanguage(global.language).Map_Settings.CONTACT_NAME}
+            placeholder={"用户姓名"}
+            value = {this.state.userName}
+            onChangeText = {(text:string) => {
+              this.setState({
+                userName: text,
+              })
+            }}
+          />
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.clearBtn}
+            onPress={() => {
+              this.setState({
+                userName: '',
+              })
+            }}
+          >
+            <Image
+              style={styles.clearImg}
+              resizeMode={'contain'}
+              source={getPublicAssets().common.icon_close}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={[styles.dialogInputContainer]}>
+          <TextInput
+            style = {[styles.dialogInput]}
+            // placeholder = {getLanguage(global.language).Map_Settings.CONTACT_NAME}
+            placeholder={"部门id"}
+            value = {this.state.sysOrgId}
+            onChangeText = {(text:string) => {
+              this.setState({
+                sysOrgId: text,
+              })
+            }}
+          />
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.clearBtn}
+            onPress={() => {
+              this.setState({
+                sysOrgId: '',
               })
             }}
           >

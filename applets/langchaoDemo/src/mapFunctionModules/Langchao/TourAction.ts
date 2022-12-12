@@ -493,7 +493,7 @@ const uploadDialog = async (id: number, type: uploadType) => {
       cancelText: getLanguage(global.language).Prompt.NO,
       confirmAction: async () => {
         global.SimpleDialog.setVisible(false)
-        global.Loading.setLoading(true, "提交中...")
+        global.Loading.setLoading(true, getLanguage(global.language).Prompt.RESOURCE_UPLOADING)
         switch(type) {
           case "line":
             await uploadTrack(id, 'line')
@@ -509,7 +509,7 @@ const uploadDialog = async (id: number, type: uploadType) => {
             break
         }
         global.Loading.setLoading(false)
-        Toast.show("上传成功")
+        Toast.show(getLanguage(global.language).Prompt.RESOURCE_UPLOAD_SUCCESS)
       },
       cancelAction: () => {
         global.SimpleDialog.setVisible(false)

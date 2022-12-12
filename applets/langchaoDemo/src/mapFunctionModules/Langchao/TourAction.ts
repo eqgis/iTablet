@@ -10,7 +10,7 @@ import { MediaData } from 'imobile_for_reactnative/types/interface/collector/SMe
 import { SuperMapKnown } from '@/containers/tabs'
 import { collectionModule } from '@/containers/workspace/components/ToolBar/modules'
 import { getJson } from '../../assets/data'
-import { uploadFile, MessageInfoType, message, getUserParam } from '../../utils/langchaoServer'
+import { uploadFile, MessageInfoType, message, getUserParam, printLog } from '../../utils/langchaoServer'
 
 /**
  * 右侧创建轨迹事件
@@ -250,7 +250,7 @@ type uploadType = "marker" | "line" | "media" | "all"
  */
 const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadType) => {
   try {
-
+    printLog(`============================ sendMessagePhone ============================`)
     let layerpath = "marker_118081@langchao"
     switch(type) {
       case "line":
@@ -388,6 +388,7 @@ const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadTyp
 
     return isSuccessed
   } catch (error) {
+    printLog(`sendMessagePhone error: ${JSON.stringify(error)}`)
     return false
   }
 }
@@ -399,6 +400,7 @@ const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadTyp
  */
 const uploadTrack = async (id: number, type: uploadType) => {
   try {
+    printLog(`============================ uploadTrack ============================`)
     let layerdatasetName = "marker_118081"
     switch(type) {
       case "line":
@@ -472,6 +474,7 @@ const uploadTrack = async (id: number, type: uploadType) => {
     }
   } catch (error) {
     // to do
+    printLog(`uploadTrack error: ${JSON.stringify(error)}`)
   }
 }
 

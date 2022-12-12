@@ -1,5 +1,7 @@
+import { ConstPath } from '@/constants'
 import { AppToolBar, Toast } from '@/utils'
 import axios from 'axios'
+import FileTools from 'imobile_for_reactnative/NativeModule/utility/FileTools'
 import { Platform } from 'react-native'
 import RNFetchBlob from 'rn-fetch-blob'
 
@@ -51,6 +53,19 @@ export const setServerTokenUtil = (token: string) => {
 
 export const setServerClientidUtil = (clientid: string) => {
   serverClientid = clientid
+}
+
+export const printLog = async (str: string) => {
+  try {
+    const homePath = await FileTools.getHomeDirectory()
+    const path = homePath + ConstPath.CachePath + "langchaoWs/langchaoLog.txt"
+    const logfileExist = await FileTools.fileIsExist(path)
+    if(logfileExist) {
+      await FileTools.appendToFile(path, str)
+    }
+  } catch (error) {
+    Toast.show("日志文件写入失败：" + str)
+  }
 }
 
 
@@ -130,36 +145,39 @@ export const dateFormat = (format: string, date: Date) => {
  * 获取动态的token
  */
 export const getToken = async (clientid?: string, clientsecret?: string) => {
-  const IP = serverIP
-  const url =  `http://${IP}/api/app/osa/v1.0/token/get`
-  const clientId = clientid || serverClientid
-  // AppToolBar.getProps().setServerClientid(clientId)
-  console.warn("getToken: " + url + "\nclientId: " + clientId)
-  axios.get(url, {
-    params: {
-      clientid: clientId,
-      clientsecret: clientsecret || "fe699f4b76afe5066b2302faf2ab3737",
-      grant_type: "client_credentials",
-    }
-  })
-    .then(function (response) {
-      console.log(response)
-      if(response.status === 200) {
-        const data = JSON.parse(JSON.stringify(response.data))
-        if(data.ok === true) {
-          const token = data.data
-          console.warn("token: " + token)
-          // AppToolBar.getProps().setServerToken(token)
-          setServerTokenUtil(token)
-        }
+  try {
+    const IP = serverIP
+    const url =  `http://${IP}/api/app/osa/v1.0/token/get`
+    const clientId = clientid || serverClientid
+
+    printLog(`\n =========================== getToken 获取token值 =========================== 
+  \n getToken(clientid: ${clientId} , clientsecret: ${clientsecret}) \n url: ${url}`)
+
+    // AppToolBar.getProps().setServerClientid(clientId)
+    console.warn("getToken: " + url + "\nclientId: " + clientId)
+    const response = await axios.get(url, {
+      params: {
+        clientid: clientId,
+        clientsecret: clientsecret || "fe699f4b76afe5066b2302faf2ab3737",
+        grant_type: "client_credentials",
       }
     })
-    .catch(function (error) {
-      console.log(error)
-    })
-    .finally(function () {
-    // always executed
-    })
+    console.log(response)
+    printLog(`\n getToken response : ${JSON.stringify(response)}`)
+    if(response.status === 200) {
+      const data = JSON.parse(JSON.stringify(response.data))
+      if(data.ok === true) {
+        const token = data.data
+        console.warn("token: " + token)
+        // AppToolBar.getProps().setServerToken(token)
+        setServerTokenUtil(token)
+        printLog(`\n getToken token : ${token}`)
+      }
+    }
+  } catch (error) {
+    console.log(error)
+    printLog(`\n getToken error : ${JSON.stringify(error)}`)
+  }
 }
 
 /**
@@ -174,6 +192,9 @@ export const uploadFile = async (path: string) => {
     const clientId = serverClientid
 
     const url = `http://${IP}/api/app/osa/v1.0/attachment/upload`
+
+    printLog(`\n =========================== uploadFile 上传附件 =========================== 
+    \n uploadFile(path: ${path} ) \n url: ${url} \n clientid: ${clientId} token: ${token}`)
 
     const formData = new FormData()
     // file是字段名，根据后端接受参数的名字来定,android上通过react-native-file-selector获取的path是不包含'file://'协议的
@@ -204,17 +225,20 @@ export const uploadFile = async (path: string) => {
       headers,
     })
     console.log('res', res)
+    printLog(`\n uploadFile response : ${JSON.stringify(res)}`)
     let info = null
     if(res.status === 200) {
       const data = JSON.parse(JSON.stringify(res.data))
       if(data.ok === true) {
         Toast.show("附件上传成功")
         info = JSON.parse(JSON.stringify(data.data))
+        printLog(`\n uploadFile result : ${JSON.stringify(data.data)}`)
       }
     }
     return info
   } catch (error) {
     console.warn("error: " + error)
+    printLog(`\n uploadFile error : ${JSON.stringify(error)}`)
     return null
   }
 
@@ -239,6 +263,9 @@ export const users = async (params: UserInfoType) => {
 
     const url = `http://${IP}/api/app/osa/v1.0/onecall/users`
 
+    printLog(`\n =========================== users 获取员工信息 =========================== 
+    \n uploadFile(params: ${JSON.stringify(params)} ) \n url: ${url} \n clientid: ${clientId} token: ${token}`)
+
     const date = new Date()
     const timestamp = dateFormat("yyyy-MM-dd HH:mm:ss", date)
 
@@ -253,17 +280,20 @@ export const users = async (params: UserInfoType) => {
       headers,
     })
     console.log('res', res)
+    printLog(`\n users res: ${JSON.stringify(res)}`)
     let infos = null
     if(res.status === 200) {
       const data = JSON.parse(JSON.stringify(res.data))
       if(data.ok === true) {
         infos = JSON.parse(JSON.stringify(data.data))
         userInfo = infos
+        printLog(`\n users infos: ${JSON.stringify(infos)}`)
       }
     }
     return infos
   } catch (error) {
     console.log('error', error)
+    printLog(`\n users error : ${JSON.stringify(error)}`)
     return null
   }
 
@@ -301,6 +331,9 @@ export const message = async (params: MessageInfoType) => {
 
     const url = `http://${IP}/api/app/osa/v1.0/onecall/message`
 
+    printLog(`\n =========================== message 数据上传 =========================== 
+    \n message(params: ${JSON.stringify(params)} ) \n url: ${url} \n clientid: ${clientId} token: ${token}`)
+
     const date = new Date()
     const timestamp = dateFormat("yyyy-MM-dd HH:mm:ss", date)
 
@@ -320,16 +353,19 @@ export const message = async (params: MessageInfoType) => {
       headers,
     })
     console.log('res', res)
+    printLog(`\n message res: ${JSON.stringify(res)}`)
     let infos = false
     if(res.status === 200) {
       const data = JSON.parse(JSON.stringify(res.data))
       if(data.ok === true) {
         infos = true
+        printLog(`\n message data: ${JSON.stringify(res.data)}`)
       }
     }
     return infos
   } catch (error) {
     console.log('error', error)
+    printLog(`\n message error: ${JSON.stringify(error)}`)
     return false
   }
 

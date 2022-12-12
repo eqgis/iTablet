@@ -363,6 +363,13 @@ export default class LangChaoDemoModule extends Module {
     //     await this.addAttributeField(attributeObj, trackpath)
     //   },500)
     // },500)
+
+    const homePath = await FileTools.getHomeDirectory()
+    const path = homePath + ConstPath.CachePath + "langchaoWs/langchaoLog.txt"
+    const logfileExist = await FileTools.fileIsExist(path)
+    if(logfileExist) {
+      await FileTools.appendToFile(path, "================ 进入了浪潮app ================ \n国家：" + countryCode)
+    }
   }
 
   getDefaultData = () => {

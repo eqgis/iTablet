@@ -52,7 +52,7 @@ class InputServer extends Component<Props, State> {
     setUserId(this.state.userId)
     setUserName(this.state.userName)
     setSysOrgid(this.state.sysOrgId)
-    getToken()
+    await getToken()
 
     const date = new Date()
     const timezone = 8 //目标时区时间，东八区(北京时间)   东时区正数 西市区负数
@@ -71,7 +71,7 @@ class InputServer extends Component<Props, State> {
       EndTime: formDateBeijing,
       SysOrgid: this.state.sysOrgId,
     }
-    users(params)
+    await users(params)
   }
 
   renderHeaderRight = () => {

@@ -2884,5 +2884,11 @@ export const language_en: typeof language_cn = {
   CONTACT_NUMBER: "Contact number", // To be tanslated
   RECORDING: "Recording", // To be tanslated
   ON_THE_RECORD: "On the record", // To be tanslated
+  SERVER_SETTING: "Server setting", // To be tanslated
+  SERVICE_ADDRESS_SETTING: "Setting the server address", // To be tanslated
+  USER_INFO: "User infomation", // To be tanslated
+  USER_ID: "User id", // To be tanslated
+  USER_NAME: "User name", // To be tanslated
+  DEPARTMENT_ID: "Department id", // To be tanslated
 
 }

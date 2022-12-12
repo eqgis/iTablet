@@ -73,7 +73,7 @@ class InputServer extends Component<Props, State> {
       SysOrgid: this.state.sysOrgId,
     }
     await users(params)
-    Toast.show("设置成功")
+    Toast.show(getLanguage(global.language).Map_Settings.SETTING_SUCCESS)
   }
 
   renderHeaderRight = () => {
@@ -105,14 +105,14 @@ class InputServer extends Component<Props, State> {
           justifyContent: 'center',
         }]}>
           <View style={[styles.titleStyle]}>
-            <Text style={[styles.titleText]}>{"服务地址"}</Text>
+            <Text style={[styles.titleText]}>{getLanguage(global.language).Map_Settings.SERVICE_ADDRESS}</Text>
           </View>
         </View>
         <View style={[styles.dialogInputContainer]}>
           <TextInput
             style = {[styles.dialogInput]}
-            // placeholder = {getLanguage(global.language).Map_Settings.CONTACT_NAME}
-            placeholder={"服务地址"}
+            placeholder = {getLanguage(global.language).Map_Settings.SERVICE_ADDRESS}
+            // placeholder={"服务地址"}
             value = {this.state.serverUrl}
             onChangeText = {(text:string) => {
               this.setState({
@@ -146,15 +146,15 @@ class InputServer extends Component<Props, State> {
           marginTop: dp(10),
         }]}>
           <View style={[styles.titleStyle]}>
-            <Text style={[styles.titleText]}>{"用户信息"}</Text>
+            <Text style={[styles.titleText]}>{getLanguage(global.language).Map_Settings.USER_INFO}</Text>
           </View>
         </View>
 
         <View style={[styles.dialogInputContainer]}>
           <TextInput
             style = {[styles.dialogInput]}
-            // placeholder = {getLanguage(global.language).Map_Settings.CONTACT_NAME}
-            placeholder={"用户id"}
+            placeholder = {getLanguage(global.language).Map_Settings.USER_ID}
+            // placeholder={"用户id"}
             value = {this.state.userId}
             onChangeText = {(text:string) => {
               this.setState({
@@ -182,8 +182,8 @@ class InputServer extends Component<Props, State> {
         <View style={[styles.dialogInputContainer]}>
           <TextInput
             style = {[styles.dialogInput]}
-            // placeholder = {getLanguage(global.language).Map_Settings.CONTACT_NAME}
-            placeholder={"用户姓名"}
+            placeholder = {getLanguage(global.language).Map_Settings.USER_NAME}
+            // placeholder={"用户姓名"}
             value = {this.state.userName}
             onChangeText = {(text:string) => {
               this.setState({
@@ -210,8 +210,8 @@ class InputServer extends Component<Props, State> {
         <View style={[styles.dialogInputContainer]}>
           <TextInput
             style = {[styles.dialogInput]}
-            // placeholder = {getLanguage(global.language).Map_Settings.CONTACT_NAME}
-            placeholder={"部门id"}
+            placeholder = {getLanguage(global.language).Map_Settings.DEPARTMENT_ID}
+            // placeholder={"部门id"}
             value = {this.state.sysOrgId}
             onChangeText = {(text:string) => {
               this.setState({
@@ -246,8 +246,8 @@ class InputServer extends Component<Props, State> {
         hideInBackground={false}
         showFullInMap={true}
         headerProps={{
-          // title: getLanguage(global.language).Map_Settings.ADDRESS_BOOK,
-          title: "设置服务地址",
+          title: getLanguage(global.language).Map_Settings.SERVICE_ADDRESS_SETTING,
+          // title: "设置服务地址",
           withoutBack: false,
           headerRight: this.renderHeaderRight(),
           navigation: this.props.navigation,

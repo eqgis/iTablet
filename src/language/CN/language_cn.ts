@@ -2888,6 +2888,12 @@ export const language_cn = {
   CONTACT_NUMBER: "联系人电话", // Contact number
   RECORDING: "记录中", // RECORDING
   ON_THE_RECORD: "正在记录中", // On the record
+  SERVER_SETTING: "服务设置", // Server setting
+  SERVICE_ADDRESS_SETTING: "设置服务地址", // Setting the server address
+  USER_INFO: "用户信息", // User infomation
+  USER_ID: "用户id", // User id
+  USER_NAME: "用户姓名", // User name
+  DEPARTMENT_ID: "部门id", // Department id
 
 
 

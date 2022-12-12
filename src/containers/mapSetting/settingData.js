@@ -183,7 +183,7 @@ const getThematicMapSettings = () => [
     },
   },
   {
-    title: "设置服务", // getLanguage(global.language).Map_Settings.LANGUAGE_SETTING,
+    title: getLanguage(global.language).Map_Settings.SERVER_SETTING,
     leftImage: getThemeAssets().setting.icon_range,
     action: () => {
       NavigationService.navigate('InputServer')

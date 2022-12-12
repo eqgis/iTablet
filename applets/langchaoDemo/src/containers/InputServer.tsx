@@ -8,6 +8,7 @@ import { setCurrentSymbol } from "@/redux/models/symbol"
 import { getPublicAssets } from "@/assets"
 import { setServerIP } from '../reduxModels/langchao'
 import { dateFormat, getToken, setSysOrgid, setUserId, setUserName, users } from "../utils/langchaoServer"
+import { Toast } from "@/utils"
 
 
 interface Props extends ReduxProps {
@@ -72,6 +73,7 @@ class InputServer extends Component<Props, State> {
       SysOrgid: this.state.sysOrgId,
     }
     await users(params)
+    Toast.show("设置成功")
   }
 
   renderHeaderRight = () => {
@@ -93,9 +95,19 @@ class InputServer extends Component<Props, State> {
           width: '100%',
           justifyContent: 'center',
           alignItems: 'center',
-          marginTop: dp(20),
+          // marginTop: dp(20),
         }]}
       >
+        <View style={[{
+          width: '100%',
+          height: dp(40),
+          backgroundColor: "#f3f3f3",
+          justifyContent: 'center',
+        }]}>
+          <View style={[styles.titleStyle]}>
+            <Text style={[styles.titleText]}>{"服务地址"}</Text>
+          </View>
+        </View>
         <View style={[styles.dialogInputContainer]}>
           <TextInput
             style = {[styles.dialogInput]}
@@ -124,6 +136,20 @@ class InputServer extends Component<Props, State> {
             />
           </TouchableOpacity>
         </View>
+
+        <View style={[{
+          width: '100%',
+          height: dp(40),
+          backgroundColor: "#f3f3f3",
+          justifyContent: 'center',
+        }, {
+          marginTop: dp(10),
+        }]}>
+          <View style={[styles.titleStyle]}>
+            <Text style={[styles.titleText]}>{"用户信息"}</Text>
+          </View>
+        </View>
+
         <View style={[styles.dialogInputContainer]}>
           <TextInput
             style = {[styles.dialogInput]}
@@ -276,18 +302,20 @@ const styles = StyleSheet.create({
     width: '90%',
     height: dp(40),
     flexDirection: 'row',
-    backgroundColor: '#f3f3f3',
+    // backgroundColor: '#f3f3f3',
     borderRadius: dp(30),
     marginVertical: dp(5),
     justifyContent: 'center',
     alignItems: 'center',
+    borderBottomColor: "#999",
+    borderBottomWidth: dp(1),
   },
   dialogInput: {
     flex: 1,
     height: dp(40),
     paddingVertical: dp(5),
     paddingHorizontal: dp(10),
-    backgroundColor: '#f3f3f3',
+    // backgroundColor: '#f3f3f3',
     borderRadius: dp(30),
     textAlign: 'center',
   },
@@ -304,5 +332,13 @@ const styles = StyleSheet.create({
   clearImg: {
     width: dp(26),
     height: dp(26),
+  },
+  titleStyle: {
+    width: '90%',
+    paddingHorizontal: dp(10),
+  },
+  titleText: {
+    fontSize: dp(16),
+    fontWeight: '400'
   },
 })

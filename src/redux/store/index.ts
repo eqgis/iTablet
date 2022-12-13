@@ -80,10 +80,8 @@ export const injectReducer = (params: InjectParams) => {
     setTimeout(() => {
       if (!store) return
       store?.replaceReducer(reducer)
-      console.warn('1111')
       persistor = persistStore(store)
       persistor.persist()
-      console.warn('22222')
     }, 100)
   } catch (error) {
     __DEV__ && console.warn(error)

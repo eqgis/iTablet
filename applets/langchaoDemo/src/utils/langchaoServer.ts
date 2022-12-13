@@ -65,6 +65,7 @@ export const printLog = async (str: string) => {
     }
   } catch (error) {
     Toast.show("日志文件写入失败：" + str)
+    console.warn("日志文件写入失败：" + error)
   }
 }
 
@@ -185,6 +186,7 @@ export const getToken = async (clientid?: string, clientsecret?: string) => {
  * @params path 文件路径
  * @returns 上传成功返回一个对象，失败返回null
  */
+
 export const uploadFile = async (path: string) => {
   try {
     const IP = serverIP
@@ -193,42 +195,23 @@ export const uploadFile = async (path: string) => {
 
     const url = `http://${IP}/api/app/osa/v1.0/attachment/upload`
 
-    printLog(`\n =========================== uploadFile 上传附件 =========================== 
+    printLog(`\n =========================== uploadFile01 上传附件 =========================== 
     \n uploadFile(path: ${path} ) \n url: ${url} \n clientid: ${clientId} token: ${token}`)
 
-    const formData = new FormData()
-    // file是字段名，根据后端接受参数的名字来定,android上通过react-native-file-selector获取的path是不包含'file://'协议的
-    // android上需要拼接协议为'file://'+path，而IOS则不需要,type可以是文件的MIME类型或者'multipart/form-data'
-    if(Platform.OS === "android") {
-      formData.append('file',{uri: 'file://'+path,type:'multipart/form-data'})
-    } else if(Platform.OS === 'ios') {
-      formData.append('file',{uri: path,type:'multipart/form-data'})
-    }
-    // 可能还会有其他参数 formData.append(key,value)
-
-    // const params = new URLSearchParams()
-    // if(Platform.OS === "android") {
-    //   params.append('file',{uri: 'file://'+path,type:'multipart/form-data'})
-    // } else if(Platform.OS === 'ios') {
-    //   params.append('file',{uri: path,type:'multipart/form-data'})
-    // }
-
-    const headers = {
-    // 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-      'Content-Type': 'multipart/form-data',
-      AccessToken: token,
-      ClientId: clientId,
-    }
-
-    const res = await axios.post(url, formData, {
-      method: 'post',
-      headers,
-    })
-    console.log('res', res)
+    const fileName = path.substring(path.lastIndexOf("/"), path.length)
+    const res = await RNFetchBlob.fetch('POST', url, {
+      // header...
+      'Content-Type': 'multipart/form-data'
+    }, [
+    // path是指文件的路径，wrap方法可以根据文件路径获取到文件信息
+      { name: 'file', filename: fileName, type: 'image/foo', data: RNFetchBlob.wrap(path) },
+    //... 可能还会有其他非文件字段{name:'字段名',data:'对应值'}
+    ])
+    console.warn('res', res)
     printLog(`\n uploadFile response : ${JSON.stringify(res)}`)
     let info = null
     if(res.status === 200) {
-      const data = JSON.parse(JSON.stringify(res.data))
+      const data = JSON.parse(JSON.stringify(res?.data))
       if(data.ok === true) {
         Toast.show("附件上传成功")
         info = JSON.parse(JSON.stringify(data.data))
@@ -243,7 +226,6 @@ export const uploadFile = async (path: string) => {
   }
 
 }
-
 export interface UserInfoType {
 	UserId?: string,
 	UserName?: string,

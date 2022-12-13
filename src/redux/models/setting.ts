@@ -7,6 +7,7 @@ import { getMapSettings } from '../../containers/mapSetting/settingData'
 import { ModelUtils } from '../../utils'
 import { ChunkType } from '../../constants'
 import { setCurrentLanguage } from '@/language'
+import { setLastLaunchState } from '../store'
 
 const { AppUtils } = NativeModules
 // Constants
@@ -597,6 +598,9 @@ export default handleActions<SettingStateType>(
       data.isAR = false
       data.poiSearch = false
       // data.showARLabel = true
+
+      // 临时存放上一期关闭app时保存的数据
+      payload && setLastLaunchState(payload)
       return fromJS(data)
     },
   },

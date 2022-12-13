@@ -2,15 +2,37 @@ import { getImage } from '../../../assets'
 import React from 'react'
 import { NativeModules, Animated, Image, ImageSourcePropType, ScaledSize, StyleSheet, Text, TouchableOpacity, View, ScrollView, ImageBackground, PanResponder, PanResponderInstance, GestureResponderEvent, Platform } from 'react-native'
 import Swiper from 'react-native-swiper'
-import { AppDialog, AppEvent, AppLog, AppToolBar, dp ,SoundUtil,Toast} from '@/utils'
+import { AppDialog, AppEvent, AppLog, AppToolBar, dp ,SoundUtil,Toast, AppUser, DataHandler,} from '@/utils'
 import { Easing } from 'react-native'
-import { SARMap, SExhibition } from 'imobile_for_reactnative'
+import { SARMap, SExhibition,FileTools } from 'imobile_for_reactnative'
 import AnimatedUnit from '../components/AnimatedUnit'
 import Sound from 'react-native-sound'
 import { setModule, getModule } from '../Actions'
 import { getLanguage } from '@/language'
+import { ILocalData } from '@/utils/DataHandler/DataLocal'
+import { ConstPath } from '@/constants'
+import NavigationService from '../../../../../../src/containers/NavigationService'
 
 const AppUtils = NativeModules.AppUtils
+
+interface FlatMap {
+  extFolderName: string
+  mapName: string
+}
+const flatMaps: FlatMap[] = [
+  {
+    extFolderName: '红色足迹',
+    mapName: '红色足迹'
+  },
+  {
+    extFolderName: '玛多地震',
+    mapName: '玛多地震'
+  },
+  {
+    extFolderName: '台风登陆路径',
+    mapName: '台风登陆路径'
+  },
+]
 interface Props {
   windowSize: ScaledSize
 }
@@ -30,6 +52,7 @@ interface State {
   },
   currentIndex: number,
   playBg: boolean,
+  showSetting: boolean,
 }
 
 interface Item {
@@ -92,6 +115,7 @@ class Home extends React.Component<Props, State> {
       },
       currentIndex: getModule(),
       playBg: AppToolBar.getProps().backgroundSoundPlaystate === false ? false : true,
+      showSetting: false,
     }
 
     this._panResponder = PanResponder.create({
@@ -570,7 +594,7 @@ class Home extends React.Component<Props, State> {
       <TouchableOpacity
         style={{
           position: 'absolute',
-          bottom: dp(21),
+          top: dp(20),
           right: dp(24),
         }}
         onPressOut={() => {
@@ -593,12 +617,183 @@ class Home extends React.Component<Props, State> {
       >
         <Image
           style={{
-            width: dp(50),
-            height: dp(50)
+            width: dp(60),
+            height: dp(60)
           }}
           source={this.state.playBg ? getImage().icon_music_selected : getImage().icon_music}
         />
       </TouchableOpacity>
+    )
+  }
+
+  renderSetting = () => {
+    return (
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          top: dp(25),
+          right: dp(80),
+        }}
+        onPressOut={() => {
+          this.setState({showSetting:!this.state.showSetting})
+        }}
+      >
+        <Image
+          style={{
+            width: dp(50),
+            height: dp(50)
+          }}
+          source={getImage().icon_setting}
+        />
+      </TouchableOpacity>
+    )
+  }
+  importMap = async (map: FlatMap, localMaps: ILocalData[]) => {
+    const hasFlatMap = localMaps.find(item => {
+      return item.name === `${map.mapName}.xml`
+    })
+
+    if(hasFlatMap) {
+      const homePath = await FileTools.getHomeDirectory()
+      const mapPath = homePath + hasFlatMap.path
+      const mapExpPath = mapPath.substring(0, mapPath.lastIndexOf('.')) + '.exp'
+      await FileTools.deleteFile(mapPath)
+      await FileTools.deleteFile(mapExpPath)
+      const animationPath = homePath + ConstPath.UserPath + `Customer/Data/Animation/${map.mapName}`
+      await FileTools.deleteFile(animationPath)
+
+      const path = homePath + ConstPath.Common + `Exhibition/AR平面地图/${map.extFolderName}`
+      const data = await DataHandler.getExternalData(path)
+      if (data.length > 0 && data[0].fileType === 'workspace') {
+        await DataHandler.importExternalData(AppUser.getCurrentUser(), data[0])
+      }
+    }
+
+    global.Loading.setLoading(false)
+    Toast.show(getLanguage().SETTING_CLEAR_CACHE_SUCCESS, {
+      backgroundColor: 'rgba(0,0,0,.5)',
+      textColor: '#fff',
+    })
+  }
+
+  renderSettingView = () => {
+    return (
+      <View
+        style={{
+          position: 'absolute',
+          top: dp(80),
+          right: dp(45),
+          backgroundColor:'#191919CC',
+          width: dp(120),
+          height: dp(170),
+          borderRadius: dp(8),
+          borderWidth:dp(2),
+          borderColor:'#696969',
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            width: '100%',
+            alignItems: 'center',
+            // justifyContent: 'center',
+          }}
+          onPressOut={() => {
+            NavigationService.navigate('LanguageSetting')
+          }}
+        >
+          <Image
+            style={{
+              width: dp(40),
+              height: dp(40),
+              marginLeft:dp(5),
+            }}
+            source={getImage().icon_language}
+          />
+          <Text
+            style={{
+              height:'100%',
+              textAlign: 'center',
+              fontSize: dp(15),
+              color: 'white',
+              textAlignVertical:'center',
+            }}
+          >{getLanguage().SETTING_LANGUAGE}</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            width: '100%',
+            alignItems: 'center',
+            // justifyContent: 'center',
+          }}
+          onPressOut={async() => {
+            global.Loading.setLoading(true)
+            const data = await DataHandler.getLocalData(AppUser.getCurrentUser(), 'MAP')
+            flatMaps.map(async map => {
+              return this.importMap(map, data)
+            })
+          }}
+        >
+          <Image
+            style={{
+              width: dp(40),
+              height: dp(40),
+              marginLeft:dp(5),
+            }}
+            source={getImage().icon_clear}
+          />
+          <Text
+            style={{
+              height:'100%',
+              textAlign: 'center',
+              fontSize: dp(15),
+              color: 'white',
+              textAlignVertical:'center',
+            }}
+          >{getLanguage().SETTING_CLEAR_CACHE}</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            width: '100%',
+            alignItems: 'center',
+            // justifyContent: 'center',
+          }}
+          onPressOut={() => {
+            AppDialog.show({
+              text: getLanguage().EXITEXHIBITION,
+              confirm: () => {
+                SoundUtil.releaseAll()
+                AppUtils.AppExit()
+              },
+            })
+          }}
+        >
+          <Image
+            style={{
+              width: dp(40),
+              height: dp(40),
+              marginLeft:dp(5),
+            }}
+            source={getImage().icon_quit}
+          />
+          <Text
+            style={{
+              height:'100%',
+              textAlign: 'center',
+              fontSize: dp(15),
+              color: 'white',
+              textAlignVertical:'center',
+            }}
+          >{ getLanguage().LICENSE_EXIT}</Text>
+        </TouchableOpacity>
+      </View>
     )
   }
 
@@ -648,8 +843,10 @@ class Home extends React.Component<Props, State> {
           />
           {this.isPortrait ? this.renderSwiper() : this.renderStatic()}
           {this.renderStartButton()}
-          {this.renderClose()}
+          {/* {this.renderClose()} */}
           {this.renderSound()}
+          {this.renderSetting()}
+          {this.state.showSetting && this.renderSettingView()}
           <AnimatedUnit ref={ref => this.animatedUnit = ref} initialPosition={this.state.initialPosition} endDiameter={CIRCLE_SIZE} />
         </ImageBackground>
       </View>

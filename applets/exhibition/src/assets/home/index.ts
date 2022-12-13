@@ -22,6 +22,10 @@ const img_bg_title_paid = require('./img_bg_title_paid.png')
 const img_bg = require('./img_bg.png')
 const icon_music = require('./icon_music.png')
 const icon_music_selected = require('./icon_music_selected.png')
+const icon_setting = require('./icon_setting.png')
+const icon_language = require('./icon_language.png')
+const icon_clear = require('./icon_clear.png')
+const icon_quit = require('./icon_quit.png')
 
 export {
   ar_3d_map_selected,
@@ -48,4 +52,8 @@ export {
   img_bg,
   icon_music,
   icon_music_selected,
+  icon_setting,
+  icon_language,
+  icon_clear,
+  icon_quit,
 }

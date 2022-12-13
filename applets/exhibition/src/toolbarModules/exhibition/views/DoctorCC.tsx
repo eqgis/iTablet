@@ -23,6 +23,7 @@ import ScanWrap from "../components/ScanWrap"
 import TimeoutTrigger from '../components/TimeoutTrigger'
 import BottomMenu from "../components/BottomMenu"
 import FillAnimationWrap from "../components/FillAnimationWrap"
+import { addModel } from "@/Toolbar/modules/arMapAdd/Actions"
 
 const appUtilsModule = NativeModules.AppUtils
 
@@ -378,27 +379,7 @@ class DoctorCC extends Component<Props, State> {
             isRouteSpeak: true,
           })
 
-
-          const home = await FileTools.getHomeDirectory()
-          const path = home + ConstPath.Common + 'Exhibition/AR超超博士/'
-          let modelPath = ""
-          if (this.ARModel) {
-            await SARMap.removeNewElementModel(this.ARModel.layerName, this.ARModel.id)
-            switch(this.state.selectRouteKey) {
-              case "position1" :
-                modelPath = path +  "专家.gif"
-                await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id,{path:modelPath,type:2,size:{x:0.1,y:0.1,z:0.1},rotation:0,position:{x:0.1,y:-0.03,z:0}})
-                break
-              case "position2" :
-                modelPath = path +  "金字塔.glb"
-                await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id,{path:modelPath,type:1,size:{x:0.06,y:0.06,z:0.06},rotation:265,position:{x:0.1,y:0.015,z:0}})
-                break
-              case "position3" :
-                modelPath = path +  "ibbc.glb"
-                await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id,{path:modelPath,type:1,size:{x:0.04,y:0.04,z:0.04},rotation:265,position:{x:0.08,y:0.015,z:0}})
-                break
-            }
-          }
+          this.addVideoModel()
         }
 
       },
@@ -425,6 +406,29 @@ class DoctorCC extends Component<Props, State> {
     }
   }
 
+  addVideoModel = async () => {
+    const home = await FileTools.getHomeDirectory()
+    const path = home + ConstPath.Common + 'Exhibition/AR超超博士/'
+    let modelPath = ""
+    if (this.ARModel) {
+      await SARMap.removeNewElementModel(this.ARModel.layerName, this.ARModel.id)
+      switch (this.state.selectRouteKey) {
+        case "position1":
+          modelPath = path + "专家.gif"
+          await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id, { path: modelPath, type: 2, size: { x: 0.1, y: 0.1, z: 0.1 }, rotation: 0, position: { x: 0.1, y: -0.03, z: 0 } })
+          break
+        case "position2":
+          modelPath = path + "金字塔.glb"
+          await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id, { path: modelPath, type: 1, size: { x: 0.06, y: 0.06, z: 0.06 }, rotation: 265, position: { x: 0.1, y: 0.015, z: 0 } })
+          break
+        case "position3":
+          modelPath = path + "ibbc.glb"
+          await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id, { path: modelPath, type: 1, size: { x: 0.04, y: 0.04, z: 0.04 }, rotation: 265, position: { x: 0.08, y: 0.015, z: 0 } })
+          break
+      }
+    }
+  }
+
   stopRouteAnimation = async () => {
     if(this.state.isRoutePlay) {
       if(this.ARModel) {
@@ -441,25 +445,8 @@ class DoctorCC extends Component<Props, State> {
               isRouteSpeak: false,
             })
 
-            const home = await FileTools.getHomeDirectory()
-            const path = home + ConstPath.Common + 'Exhibition/AR超超博士/'
-            let modelPath = ""
-            if (this.ARModel) {
-              await SARMap.removeNewElementModel(this.ARModel.layerName, this.ARModel.id)
-              switch(this.state.selectRouteKey) {
-                case "position1" :
-                  modelPath = path +  "专家.gif"
-                  await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id,{path:modelPath,type:2,size:{x:0.1,y:0.1,z:0.1},rotation:0,position:{x:0.1,y:-0.03,z:0}})
-                  break
-                case "position2" :
-                  modelPath = path +  "金字塔.glb"
-                  await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id,{path:modelPath,type:1,size:{x:0.06,y:0.06,z:0.06},rotation:265,position:{x:0.1,y:0.015,z:0}})
-                  break
-                case "position3" :
-                  modelPath = path +  "ibbc.glb"
-                  await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id,{path:modelPath,type:1,size:{x:0.04,y:0.04,z:0.04},rotation:265,position:{x:0.08,y:0.015,z:0}})
-                  break
-              }
+            if (this.state.selectType === 'video') {
+              this.addVideoModel()
             }
 
             const arrowTimer = setTimeout( async () => {

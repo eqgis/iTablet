@@ -28,6 +28,7 @@ import aranimation from './aranimation'
 import scenes from './scenes'
 import arattribute from './arattribute'
 import location from './location'
+import langchao from './langchao'
 
 export {
   nav,
@@ -60,4 +61,5 @@ export {
   scenes,
   arattribute,
   location,
+  langchao,
 }

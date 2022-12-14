@@ -10,7 +10,7 @@ import { MediaData } from 'imobile_for_reactnative/types/interface/collector/SMe
 import { SuperMapKnown } from '@/containers/tabs'
 import { collectionModule } from '@/containers/workspace/components/ToolBar/modules'
 import { getJson } from '../../assets/data'
-import { uploadFile, MessageInfoType, message, getUserParam, printLog } from '../../utils/langchaoServer'
+import { uploadFile, MessageInfoType, message, getUserParam, printLog, uploadFileTest } from '../../utils/langchaoServer'
 
 /**
  * 右侧创建轨迹事件
@@ -438,7 +438,7 @@ const uploadTrack = async (id: number, type: uploadType) => {
     const layerName = layerdatasetName + "@langchao"
     const info = await SMediaCollector.getMediaInfo(layerName, id)
     console.warn("info: " + JSON.stringify(info))
-    const mediaPaths = info.mediaFilePaths
+    const mediaPaths = info?.mediaFilePaths || []
     // 遍历将上传图片路径，获取uuid
     const photoUuids = ""
     for(let i = 0; i < mediaPaths.length; i ++) {

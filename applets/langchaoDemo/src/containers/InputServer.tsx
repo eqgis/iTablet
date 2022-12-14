@@ -6,9 +6,10 @@ import { dp } from "imobile_for_reactnative/utils/size"
 import { getLanguage } from "@/language"
 import { setCurrentSymbol } from "@/redux/models/symbol"
 import { getPublicAssets } from "@/assets"
-import { setServerIP } from '../reduxModels/langchao'
+// import { setServerIP1 } from '../reduxModels/langchao'
 import { dateFormat, getToken, setSysOrgid, setUserId, setUserName, users } from "../utils/langchaoServer"
 import { Toast } from "@/utils"
+import { setServerIP, setServerUserId, setServerUserName, setServerDepartmentId } from "@/redux/models/langchao"
 
 
 interface Props extends ReduxProps {
@@ -16,6 +17,9 @@ interface Props extends ReduxProps {
   device: any,
   language: string,
   serverIP: string,
+  userId: string,
+  userName: string,
+  departmentId: string,
   setServerIP: (url: string) => Promise<void>
 }
 
@@ -34,9 +38,9 @@ class InputServer extends Component<Props, State> {
     super(props)
     this.state = {
       serverUrl: props.serverIP || "",
-      userId: "",
-      userName: "",
-      sysOrgId: "",
+      userId: props.userId || "",
+      userName: props.userName || "",
+      sysOrgId: props.departmentId || "",
     }
   }
 
@@ -50,9 +54,13 @@ class InputServer extends Component<Props, State> {
   confirm = async () => {
     // console.warn("33333:" + this.state.serverUrl)
     await this.props.setServerIP(this.state.serverUrl)
-    setUserId(this.state.userId)
-    setUserName(this.state.userName)
-    setSysOrgid(this.state.sysOrgId)
+    // await this.props.setServerIP1(this.state.serverUrl)
+    // setUserId(this.state.userId)
+    // setUserName(this.state.userName)
+    // setSysOrgid(this.state.sysOrgId)
+    await this.props.setServerUserId(this.state.userId)
+    await this.props.setServerUserName(this.state.userName)
+    await this.props.setServerDepartmentId(this.state.sysOrgId)
     await getToken()
 
     const date = new Date()
@@ -270,12 +278,19 @@ class InputServer extends Component<Props, State> {
 const mapStateToProp = (state: any) => ({
   device: state.device.toJS().device,
   language: state.setting.toJS().language,
-  serverIP: state.langchao.toJS().serverIP
+  serverIP: state.langchao.toJS().serverIP,
+  userId: state.langchao.toJS().userId,
+  userName: state.langchao.toJS().userName,
+  departmentId: state.langchao.toJS().departmentId
 })
 
 const mapDispatch = {
   setCurrentSymbol,
   setServerIP,
+  // setServerIP1,
+  setServerUserId,
+  setServerUserName,
+  setServerDepartmentId,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

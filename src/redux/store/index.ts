@@ -28,7 +28,6 @@ const persistConfig: PersistConfig<any, any, any, any> = {
     'armap',
     'mapModules',
     'scenes',
-    'langchao',
   ],
   blacklist: [
     'nav',

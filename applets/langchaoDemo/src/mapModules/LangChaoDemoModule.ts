@@ -106,11 +106,11 @@ export default class LangChaoDemoModule extends Module {
     /**
      * 注入第定义redux
      */
-    // injectReducer({
-    //   key: 'langchao',
-    //   reducer: langchao,
-    //   list: 'whitelist', //白名单,持久化数据
-    // })
+    injectReducer({
+      key: 'langchao',
+      reducer: langchao,
+      list: 'whitelist', //白名单,持久化数据
+    })
 
   }
 

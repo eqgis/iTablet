@@ -6,10 +6,10 @@ import { dp } from "imobile_for_reactnative/utils/size"
 import { getLanguage } from "@/language"
 import { setCurrentSymbol } from "@/redux/models/symbol"
 import { getPublicAssets } from "@/assets"
-// import { setServerIP1 } from '../reduxModels/langchao'
+import { setServerIP, setServerUserId, setServerUserName, setServerDepartmentId } from '../reduxModels/langchao'
 import { dateFormat, getToken, setSysOrgid, setUserId, setUserName, users } from "../utils/langchaoServer"
 import { Toast } from "@/utils"
-import { setServerIP, setServerUserId, setServerUserName, setServerDepartmentId } from "@/redux/models/langchao"
+// import { setServerIP, setServerUserId, setServerUserName, setServerDepartmentId } from "@/redux/models/langchao"
 
 
 interface Props extends ReduxProps {

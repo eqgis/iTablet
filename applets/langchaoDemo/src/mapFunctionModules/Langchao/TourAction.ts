@@ -148,7 +148,7 @@ const dateFormat = (format: string, date: Date) => {
     console.warn("formatstr03: " + formatstr)
     //设置日
     if(formatstr.indexOf("dd") >=0 ){
-      let day: number | string = date.getDay()
+      let day: number | string = date.getDate()
       if(day < 10){
         day = "0" + day
       }

@@ -26,6 +26,7 @@ import navigators from '../containers/index'
 import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
 import { injectReducer } from "@/redux/store"
 import { langchao } from '../reduxModels'
+import RNFetchBlob from 'rn-fetch-blob'
 /**
  * 首页显示的旅行轨迹模块
  */
@@ -367,9 +368,10 @@ export default class LangChaoDemoModule extends Module {
     const homePath = await FileTools.getHomeDirectory()
     const path = homePath + ConstPath.CachePath + "langchaoWs/langchaoLog.txt"
     const logfileExist = await FileTools.fileIsExist(path)
-    if(logfileExist) {
-      await FileTools.appendToFile(path, "================ 进入了浪潮app ================ \n国家：" + countryCode)
+    if(!logfileExist){
+      await RNFetchBlob.fs.createFile(path, "", "utf8")
     }
+    await FileTools.appendToFile(path, "================ 进入了浪潮app ================ \n国家：" + countryCode)
   }
 
   getDefaultData = () => {

@@ -25,6 +25,10 @@ export interface ChunkProps {
   mapType: 'MAP' | 'SCENE' | '', // 二维，三维地图，默认为空
   onMapLoad: () => void, //地图/AR地图/三维场景加载完成回调
   toolbarModuleData: Array<any>,
+  onMapOpenSuccess: () => void,
+  isEnterHome: boolean,
+  defaultData: string,
+
 }
 
 export default class Chunk {
@@ -49,6 +53,9 @@ export default class Chunk {
   mapType: 'MAP' | 'SCENE' | '' // 二维，三维地图，默认为空
   onMapLoad: () => void //地图/AR地图/三维场景加载完成回调
   toolbarModuleData: Array<any>
+  onMapOpenSuccess: () => void
+  defaultData:string
+  isEnterHome: boolean
 
   constructor(props: ChunkProps) {
     this.props = props
@@ -127,11 +134,11 @@ export default class Chunk {
           const fileDirPath = cachePath + fileName
           const arrFile = await FileTools.getFilterFiles(fileDirPath)
           if (arrFile.length === 0) {
-            NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: {mapType:  this.mapType,  onMapLoad: this.onMapLoad, toolbarModuleData: this.toolbarModuleData,}})
+            NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: {mapType:  this.mapType,  onMapLoad: this.onMapLoad, toolbarModuleData: this.toolbarModuleData,  onMapOpenSuccess:  this.onMapOpenSuccess,}})
           } else {
             // const name = 'OlympicGreen_EXAMPLE'
             const name = 'OlympicGreen'
-            NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: { name, mapType:  this.mapType,  onMapLoad: this.onMapLoad, toolbarModuleData: this.toolbarModuleData,}})
+            NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: { name, mapType:  this.mapType,  onMapLoad: this.onMapLoad, toolbarModuleData: this.toolbarModuleData,  onMapOpenSuccess:  this.onMapOpenSuccess,}})
           }
         }
         break
@@ -236,6 +243,7 @@ export default class Chunk {
           mapType:  this.mapType,
           onMapLoad: this.onMapLoad,
           toolbarModuleData: this.toolbarModuleData,
+          onMapOpenSuccess:  this.onMapOpenSuccess,
         }
         if (service) {
           param = Object.assign(param, {service: service})
@@ -310,6 +318,7 @@ export default class Chunk {
           mapType:  this.mapType,
           onMapLoad: this.onMapLoad,
           toolbarModuleData: this.toolbarModuleData,
+          onMapOpenSuccess:  this.onMapOpenSuccess,
         }
         // if (global.coworkMode) {
         //   NavigationService.navigate('CoworkMapStack', param)

@@ -5,6 +5,27 @@ import NavigationService from '../containers/NavigationService'
 import { FileTools } from '../native'
 import { ConstPath } from '../constants'
 import { SMap } from 'imobile_for_reactnative'
+import { ImageSourcePropType } from 'react-native'
+import { Map, UserInfo } from '@/types'
+import { DataItemServices } from 'imobile_for_reactnative/types/interface/iserver/types'
+
+export interface ChunkProps {
+  key: string,
+  title: string, // 模块名称，进入地图后的标题
+  moduleImage: ImageSourcePropType, // 默认图标
+  moduleImageTouch: ImageSourcePropType, // 点击高亮图标
+  defaultMapName: string, // 默认地图名
+  openDefaultMap: boolean, // 是否打开默认地图
+  action: () => void,
+  preAction: () => boolean, // action之前的检测，返回false则不执行之后的action
+  afterAction: () => boolean, // action之后的检测，返回false则不执行之后的action
+  baseMapSource: any, // 默认地图资源
+  baseMapIndex: number, // 默认地图资源对应的地图index
+  isExample: boolean, // 是否是示例，只显示地图，没有其他功能
+  mapType: 'MAP' | 'SCENE' | '', // 二维，三维地图，默认为空
+  onMapLoad: () => void, //地图/AR地图/三维场景加载完成回调
+  toolbarModuleData: Array<any>,
+}
 
 export default class Chunk {
   static MapType = {
@@ -12,7 +33,24 @@ export default class Chunk {
     SCENE: 'SCENE',
     AR: 'AR',
   }
-  constructor(props) {
+
+  props: ChunkProps
+  key: string
+  title: string // 模块名称，进入地图后的标题
+  moduleImage: ImageSourcePropType // 默认图标
+  moduleImageTouch: ImageSourcePropType // 点击高亮图标
+  defaultMapName: string // 默认地图名
+  openDefaultMap: boolean // 是否打开默认地图
+  preAction: () => boolean // action之前的检测，返回false则不执行之后的action
+  afterAction: () => boolean // action之后的检测，返回false则不执行之后的action
+  baseMapSource: any // 默认地图资源
+  baseMapIndex: number // 默认地图资源对应的地图index
+  isExample: boolean // 是否是示例，只显示地图，没有其他功能
+  mapType: 'MAP' | 'SCENE' | '' // 二维，三维地图，默认为空
+  onMapLoad: () => void //地图/AR地图/三维场景加载完成回调
+  toolbarModuleData: Array<any>
+
+  constructor(props: ChunkProps) {
     this.props = props
 
     this.key = props.key
@@ -29,7 +67,7 @@ export default class Chunk {
       props.openDefaultMap !== undefined ? props.openDefaultMap : true // 是否打开默认地图
 
     this.preAction = props.preAction // action之前的检测，返回false则不执行之后的action
-    this.afterAction = props.afterAction // action之前的检测，返回false则不执行之后的action
+    this.afterAction = props.afterAction // action之后的检测，返回false则不执行之后的action
 
     this.baseMapSource = props.baseMapSource // 默认地图资源
 
@@ -41,7 +79,7 @@ export default class Chunk {
 
     this.onMapLoad = props.onMapLoad //地图/AR地图/三维场景加载完成回调（地图容器控件初始化完成回调）
 
-    this.toobarModuleData = props.toolbarModuleData ? props.toolbarModuleData : []
+    this.toolbarModuleData = props.toolbarModuleData ? props.toolbarModuleData : []
 
     this.isEnterHome =
       props.isEnterHome === false ? false : true // 是否进入首页，默认为true即进入首页
@@ -53,9 +91,9 @@ export default class Chunk {
 
   getTitle = () => this.title
 
-  action = async (user, lastMap, service) => {
+  action = async (user: UserInfo, lastMap: Map, service: DataItemServices) => {
     if (this.preAction && typeof this.preAction === 'function') {
-      let result = await this.preAction()
+      const result = await this.preAction()
       if (!result) return false
     }
     if (
@@ -80,20 +118,20 @@ export default class Chunk {
           )
         }
         //三维也先获取一下上次场景 add xiezhy
-        if(isOpenLastMap){
+        if (isOpenLastMap) {
           NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: {name:lastMap.name}})
-        }else{
-          let fileName = 'OlympicGreen_EXAMPLE'
+        } else {
+          const fileName = 'OlympicGreen_EXAMPLE'
           const homePath = await FileTools.appendingHomeDirectory()
           const cachePath = homePath + ConstPath.CachePath
           const fileDirPath = cachePath + fileName
           const arrFile = await FileTools.getFilterFiles(fileDirPath)
           if (arrFile.length === 0) {
-            NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: {mapType:  this.mapType,  onMapLoad: this.onMapLoad, toolbarModuleData: this.toobarModuleData, onMapOpenSuccess:  this.onMapOpenSuccess,}})
+            NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: {mapType:  this.mapType,  onMapLoad: this.onMapLoad, toolbarModuleData: this.toolbarModuleData,}})
           } else {
             // const name = 'OlympicGreen_EXAMPLE'
             const name = 'OlympicGreen'
-            NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: { name, mapType:  this.mapType,  onMapLoad: this.onMapLoad, toolbarModuleData: this.toobarModuleData, onMapOpenSuccess:  this.onMapOpenSuccess,}})
+            NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: { name, mapType:  this.mapType,  onMapLoad: this.onMapLoad, toolbarModuleData: this.toolbarModuleData,}})
           }
         }
         break
@@ -197,8 +235,7 @@ export default class Chunk {
           isExample: this.isExample,
           mapType:  this.mapType,
           onMapLoad: this.onMapLoad,
-          toolbarModuleData: this.toobarModuleData,
-          onMapOpenSuccess:  this.onMapOpenSuccess,
+          toolbarModuleData: this.toolbarModuleData,
         }
         if (service) {
           param = Object.assign(param, {service: service})
@@ -266,14 +303,13 @@ export default class Chunk {
         } else {
           wsData.push(data)
         }
-        let param = {
+        const param = {
           wsData,
           mapTitle: this.title,
           isExample: this.isExample,
           mapType:  this.mapType,
           onMapLoad: this.onMapLoad,
-          toolbarModuleData: this.toobarModuleData,
-          onMapOpenSuccess:  this.onMapOpenSuccess,
+          toolbarModuleData: this.toolbarModuleData,
         }
         // if (global.coworkMode) {
         //   NavigationService.navigate('CoworkMapStack', param)
@@ -287,7 +323,7 @@ export default class Chunk {
     }
 
     if (this.afterAction && typeof this.afterAction === 'function') {
-      let result = await this.afterAction()
+      const result = await this.afterAction()
       if (!result) return false
     }
     return true

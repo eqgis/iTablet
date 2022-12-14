@@ -1,10 +1,46 @@
 /**
  * 地图右侧功能基础类
  */
+import { ImageSourcePropType } from 'react-native'
 import ToolbarModule from '../containers/workspace/components/ToolBar/modules/ToolbarModule'
 
+interface ActionsType {[key: string]: () => any}
+
+interface FunctionModuleProps {
+  key: string,
+  type: string,
+  title: string, // 模块名称，进入地图后的标题
+  size: number, // 默认图标
+  image: ImageSourcePropType, // 点击高亮图标
+  getData: string, // 默认地图名
+  getMenuData: () => void,
+  getHeaderView: () => void,
+  getHeaderData: () => boolean, // action之前的检测，返回false则不执行之后的action
+  getCustomView: () => boolean, // action之后的检测，返回false则不执行之后的action
+  getBottomView: () => void, // 默认地图资源
+  actions: ActionsType, // 默认地图资源对应的地图index
+  action: () => any,
+}
+
 export default class FunctionModule {
-  constructor(props) {
+
+  props: FunctionModuleProps
+  key: string
+  type: string
+  title: string // 模块名称，进入地图后的标题
+  size: number // 默认图标
+  image: ImageSourcePropType // 点击高亮图标
+  getData: string // 默认地图名
+  getMenuData: () => void
+  getHeaderView: () => void
+  getHeaderData: () => boolean // action之前的检测，返回false则不执行之后的action
+  getCustomView: () => boolean // action之后的检测，返回false则不执行之后的action
+  getBottomView: () => void // 默认地图资源
+  actions: ActionsType // 默认地图资源对应的地图index
+
+  ToolbarModule: any
+
+  constructor(props: FunctionModuleProps) {
     this.props = props || {}
     this.type = this.props.type
     this.title = this.props.title || ''
@@ -19,7 +55,7 @@ export default class FunctionModule {
     this.getCustomView = this.props.getCustomView
     this.getBottomView = this.props.getBottomView
     // 整合默认事件和自定义事件
-    this.actions = Object(this.props.actions || {}, Actions)
+    this.actions = Object.assign(this.props.actions || {}, Actions)
   }
 
   /**
@@ -29,7 +65,7 @@ export default class FunctionModule {
    * @param additional  补充数据，自行定义
    */
   // eslint-disable-next-line
-  getToolbarSize = (type, orientation, additional) => {
+  getToolbarSize = (type: string, orientation: string, additional: any) => {
     // let height = 0,
     //   column = -1,
     //   row = -1
@@ -38,7 +74,7 @@ export default class FunctionModule {
 
   getTitle = () => this.title
 
-  setToolbarModule = param => {
+  setToolbarModule = (param: any) => {
     this.ToolbarModule = param
   }
 
@@ -47,7 +83,7 @@ export default class FunctionModule {
    * @param type
    */
   setModuleData = (type = this.type) => {
-    let toolbarModule = this.ToolbarModule || ToolbarModule
+    const toolbarModule = this.ToolbarModule || ToolbarModule
     toolbarModule.setData({
       type,
       title: this.title,
@@ -61,7 +97,7 @@ export default class FunctionModule {
    * 启动模块事件
    * @param type
    */
-  action = type => {
+  action = (type: string) => {
     this.setModuleData(type)
     this.props.action && this.props.action()
   }
@@ -70,13 +106,13 @@ export default class FunctionModule {
    * 添加模块事件
    * @param _actions
    */
-  addActions = (_actions = {}) => {
-    this.actions = Object(this.actions || {}, _actions)
+  addActions = (_actions: ActionsType) => {
+    this.actions = Object.assign(this.actions || {}, _actions)
   }
 }
 
 /** 模块相关默认事件 **/
-const Actions = {
+const Actions: ActionsType = {
   /********** ToolbarBottomButtons事件 **********/
   commit: () => {}, // 提交
   menu: () => {}, // 屏幕中间的指滑菜单

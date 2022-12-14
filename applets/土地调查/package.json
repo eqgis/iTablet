@@ -1,0 +1,12 @@
+{
+  "name": "土地调查",
+  "version": "0.0.1",
+  "bundleType": "CONFIG_MODULE",
+  "description": "《SuperMap iTablet 小插件》，高性能、低代码、强专业、小体积，对于用户而言毋需单独安装，对于开发而言，轻应用，低代码、低门槛逐渐成为主流。",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

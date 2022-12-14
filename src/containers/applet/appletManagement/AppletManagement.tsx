@@ -6,10 +6,10 @@
 
 import * as React from 'react'
 import { ScrollView, View, Text, RefreshControl } from 'react-native'
-import { scaleSize } from '@/utils'
+import { scaleSize, screen } from '@/utils'
 import { color } from '@/styles'
 import { getLanguage } from '@/language'
-import { getPublicAssets } from '@/assets'
+import { getImage, getPublicAssets } from '@/assets'
 import {
   Container,
   MTBtn,
@@ -18,24 +18,34 @@ import { BundleTools, BundleType } from 'imobile_for_reactnative'
 // import _mapModules from '@/../configs/mapModules'
 import NavigationService from '../../NavigationService'
 import AppletItem2 from './AppletItem2'
-import { Users } from '@/redux/models/user'
+import { connect, ConnectedProps } from 'react-redux'
+import {
+  loadAddedModule,
+} from '@/redux/models/mapModules'
+import { RootState } from '@/redux/types'
 
 import styles from './styles'
-import { Module } from '@/class'
+import { BUNDLE_TYPE } from 'imobile_for_reactnative/types/interface/utils/types'
 
-interface Props {
-  navigation: any,
-  user: Users,
-  language: string,
-  down: any,
+const mapStateToProps = (state: RootState) => ({
+  language: state.setting.toJS().language,
+  device: state.device.toJS().device,
+  user: state.user.toJS(),
+})
 
-  updateDownList: () => void,
-  removeItemOfDownList: () => void,
-  setMapModule: () => void,
-  addMapModule: (module: Module, cb?: () => void) => Promise<void>,
-  loadAddedModule: (moduleKey: string, cb?: () => void) => Promise<void>,
+const mapDispatchToProps = {
+  loadAddedModule,
 }
+const connector = connect(mapStateToProps, mapDispatchToProps)
+type ReduxProps = ConnectedProps<typeof connector>
 
+interface Props extends ReduxProps {
+  navigation: any,
+  // user: Users,
+  // language: string,
+
+  // loadAddedModule: (moduleKey: string, cb?: () => void) => Promise<void>,
+}
 interface State {
   data: any[],
   myApplets: any[],
@@ -46,7 +56,7 @@ interface State {
 
 // const appUtilsModule = NativeModules.appUtilsModule
 
-export default class AppletManagement extends React.Component<Props, State> {
+class AppletManagement extends React.Component<Props, State> {
 
   count = 0
   currentPage = 1
@@ -90,7 +100,7 @@ export default class AppletManagement extends React.Component<Props, State> {
     })
   }
 
-  renderItem = (item: BundleType, action: (path: string, bundleType: string) => void) => {
+  renderItem = (item: BundleType, action: (path: string, bundleType: BUNDLE_TYPE) => void) => {
     return (
       <AppletItem2
         key={item.name}
@@ -102,7 +112,7 @@ export default class AppletManagement extends React.Component<Props, State> {
     )
   }
 
-  renderRows = (data: BundleType[], action: (path: string, bundleType: string) => void) => {
+  renderRows = (data: BundleType[], action: (path: string, bundleType: BUNDLE_TYPE) => void) => {
     const applets: any[] = [], column = 4
     let row: any[] = []
     data.forEach((item, index) => {
@@ -143,7 +153,7 @@ export default class AppletManagement extends React.Component<Props, State> {
     return (
       <View style={styles.contentView}>
         <View style={styles.contentHeaderView}>
-          <Text style={styles.contentHeaderTitle}>{getLanguage(this.props.language).Profile.MY_APPLET}</Text>
+          <Text style={styles.contentHeaderTitle}>{getLanguage().Profile.MY_APPLET}</Text>
           <MTBtn
             style={{ padding: scaleSize(10) }}
             imageStyle={styles.contentHeaderImg}
@@ -171,7 +181,7 @@ export default class AppletManagement extends React.Component<Props, State> {
     return (
       <View style={styles.contentView}>
         <View style={styles.contentHeaderView}>
-          <Text style={styles.contentHeaderTitle}>{getLanguage(this.props.language).Profile.LOCAL_APPLET}</Text>
+          <Text style={styles.contentHeaderTitle}>{getLanguage().Profile.LOCAL_APPLET}</Text>
         </View>
         <View style={styles.rows}>
           {this.renderRows(this.state.unusedModules, path => {
@@ -189,6 +199,23 @@ export default class AppletManagement extends React.Component<Props, State> {
     )
   }
 
+  renderHeaderRight = () => {
+    const size = this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50
+    return (
+      <MTBtn
+        key={'more'}
+        style={[styles.headerBtn, this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
+          height: screen.HEADER_HEIGHT_LANDSCAPE - 2,
+        }]}
+        imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+        image={getImage().my_applets}
+        onPress={async () => {
+          NavigationService.navigate('AppletList')
+        }}
+      />
+    )
+  }
+
   render() {
     return (
       <Container
@@ -196,13 +223,14 @@ export default class AppletManagement extends React.Component<Props, State> {
           backgroundColor: color.itemColorGray2,
         }}
         headerProps={{
-          title: getLanguage(this.props.language).Find.APPLET,
+          title: getLanguage().Find.APPLET,
           navigation: this.props.navigation,
           headerTitleViewStyle: {
             justifyContent: 'flex-start',
             marginLeft: scaleSize(90),
             borderBottomWidth: 0,
           },
+          headerRight: this.renderHeaderRight(),
         }}
       >
         <ScrollView
@@ -226,3 +254,5 @@ export default class AppletManagement extends React.Component<Props, State> {
     )
   }
 }
+
+export default connector(AppletManagement)

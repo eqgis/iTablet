@@ -425,6 +425,14 @@ function getData(type) {
   })
   buttons = [
     // ToolbarBtnType.CANCEL,
+    // {
+    //   type: ToolbarBtnType.CANCEL,
+    //   image: getThemeAssets().toolbar.icon_toolbar_quit,
+    //   action: async () => {
+    //     await CollectionAction.cancel(type)
+    //     global.ToolBar?.close()
+    //   },
+    // },
     {
       type: ToolbarBtnType.CANCEL,
       image: getThemeAssets().toolbar.icon_toolbar_quit,

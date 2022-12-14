@@ -18,19 +18,30 @@ import { mapModules } from '@/../configs/mapModules'
 import AppletItem from './AppletItem'
 
 import styles from './styles'
-import { Users } from '@/redux/models/user'
-// import TouchableOpacity from 'react-native-gesture-handler/touchables/TouchableOpacity'
+import { connect, ConnectedProps } from 'react-redux'
+import { setMapModule } from '@/redux/models/mapModules'
+import { setOldMapModule } from '@/redux/models/appConfig'
+import { RootState } from '@/redux/types'
 
-interface Props {
+const mapStateToProps = (state: RootState) => ({
+  language: state.setting.toJS().language,
+  device: state.device.toJS().device,
+  user: state.user.toJS(),
+  appConfig: state.appConfig.toJS(),
+  mapModules: state.mapModules.toJS(),
+})
+
+const mapDispatchToProps = {
+  setMapModule,
+  setOldMapModule,
+}
+
+const connector = connect(mapStateToProps, mapDispatchToProps)
+type ReduxProps = ConnectedProps<typeof connector>
+
+interface Props extends ReduxProps {
   navigation: any,
   route: any,
-  user: Users,
-  language: string,
-  appConfig: any,
-  mapModules: any,
-
-  setMapModule: (applets: any) => void,
-  setOldMapModule: (key: string) => void,
 }
 
 interface State {
@@ -38,7 +49,7 @@ interface State {
   selected: Map<string, boolean>,
 }
 
-export default class AppletList extends React.Component<Props, State> {
+class AppletList extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
@@ -198,3 +209,5 @@ export default class AppletList extends React.Component<Props, State> {
     )
   }
 }
+
+export default connector(AppletList)

@@ -17,6 +17,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  headerBtn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: scaleSize(80),
+    width: scaleSize(80),
+  },
+  headerBtnImg: {
+    height: scaleSize(60),
+    width: scaleSize(60),
+  },
 })
 
 export default styles

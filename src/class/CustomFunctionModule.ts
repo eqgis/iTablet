@@ -6,16 +6,19 @@
 import checkType from '../utils/checkType'
 import FunctionModule from './FunctionModule'
 
+interface Types {[key: string]: string}
+
 export default class CustomFunctionModule extends FunctionModule{
-  constructor(props) {
+  TYPES: Types = {}
+  constructor(props: any) {
     super(props)
   }
-  
+
   /**
    * 用于检测Type是否可用，避免与系统自带类型冲突
    * @param types
    */
-  setTypes = types => {
+  setTypes = (types: Types) => {
     checkType.checkCustomToolbarType(types)
     this.TYPES = types || {}
   }

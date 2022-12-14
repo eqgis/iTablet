@@ -199,7 +199,7 @@ export const uploadFile = async (path: string) => {
     \n uploadFile(path: ${path} ) \n url: ${url} \n clientid: ${clientId} token: ${token}`)
 
     const fileName = path.substring(path.lastIndexOf("/"), path.length)
-    const res = await RNFetchBlob.fetch('POST', url, {
+    let res = await RNFetchBlob.fetch('POST', url, {
       // header...
       'Content-Type': 'multipart/form-data'
     }, [
@@ -208,10 +208,12 @@ export const uploadFile = async (path: string) => {
     //... 可能还会有其他非文件字段{name:'字段名',data:'对应值'}
     ])
     console.warn('res', res)
+    res = JSON.parse(JSON.stringify(res))
+    const respInfo = JSON.parse(JSON.stringify(res.respInfo))
     printLog(`\n uploadFile response : ${JSON.stringify(res)}`)
     let info = null
-    if(res.status === 200) {
-      const data = JSON.parse(JSON.stringify(res?.data))
+    if(respInfo.status === 200) {
+      const data = JSON.parse(res?.data)
       if(data.ok === true) {
         Toast.show("附件上传成功")
         info = JSON.parse(JSON.stringify(data.data))

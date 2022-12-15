@@ -506,7 +506,7 @@ class ContactsList extends Component<Props, State> {
         }]}>
           <TextInput
             style = {[styles.dialogInput]}
-            placeholder = {getLanguage(global.language).Map_Settings.CONTACT_NUMBER}
+            placeholder = {getLanguage(global.language).Map_Settings.USER_ID}
             value = {this.state.addUserID}
             onChangeText = {(text:string) => {
               this.setState({

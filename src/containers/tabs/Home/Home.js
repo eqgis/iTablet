@@ -82,6 +82,7 @@ export default class Home extends Component {
       mineguide: true,
       slide: false,
     }
+    this.isEnterHome = true
   }
 
   componentDidMount() {
@@ -143,6 +144,7 @@ export default class Home extends Component {
         if (item && item.getChunk) {
           const module = item.getChunk(this.props.language)
           if (!module.isEnterHome) {
+            this.isEnterHome = module.isEnterHome
             if (Platform.OS === 'android') {
               const permissionList = [
                 'android.permission.READ_PHONE_STATE',
@@ -1218,7 +1220,9 @@ export default class Home extends Component {
       this.skipbottom = scaleSize(20)
     }
 
-    // return null
+    if(this.isEnterHome) {
+      return null
+    }
 
     return (
       <View style={{ flex: 1 }}>

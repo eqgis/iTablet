@@ -9,6 +9,7 @@ import { getThemeAssets } from '../assets'
 import {
   Platform,
 } from 'react-native'
+import { getImage } from '../../applets/langchaoDemo/src/assets/Image'
 
 async function OpenData(data, index, callback) {
   global.Loading?.setLoading(true)
@@ -300,10 +301,10 @@ const layerAdd = [
 function layerManagerData() {
   let data = [
     {
-      title: 'Google RoadMap',
+      title: "Google",// 'Google RoadMap',
       action: () => OpenData(ConstOnline.Google, 0),
       data: [],
-      image: getThemeAssets().layerType.layer_image,
+      image: getImage().icon_ditu_4, // getThemeAssets().layerType.layer_image,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -335,20 +336,20 @@ function layerManagerData() {
       title: 'Google labelmap',
       action: () => OpenData(ConstOnline.Google, 4),
       data: [],
-      image: getThemeAssets().layerType.layer_image,
+      image: getImage().icon_ditu_3, // getThemeAssets().layerType.layer_image,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
     {
-      title: 'BingMap',
+      title: global.language === "CN" ? '必应地图' : 'Bing', // BingMap
       action: () => OpenData(ConstOnline.BingMap, 0),
       data: [],
-      image: getThemeAssets().layerType.layer_image,
+      image: getImage().icon_ditu_1, // getThemeAssets().layerType.layer_image,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
     {
-      title: 'Tianditu',
+      title: '天地图', // 'Tianditu',
       action: ({callback}) => {
         global.SimpleDialog.set({
           text: getLanguage(global.language).Map_Layer.IS_ADD_NOTATION_LAYER,
@@ -369,12 +370,12 @@ function layerManagerData() {
         global.SimpleDialog.setVisible(true)
       },
       data: [],
-      image: getThemeAssets().layerType.layer_image,
+      image: getImage().icon_ditu_2, // getThemeAssets().layerType.layer_image,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
     {
-      title: 'Tianditu Image',
+      title: '天地图-影像', //'Tianditu Image',
       action: ({callback}) => {
         global.SimpleDialog.set({
           text: getLanguage(global.language).Map_Layer.IS_ADD_NOTATION_LAYER,
@@ -395,7 +396,7 @@ function layerManagerData() {
         global.SimpleDialog.setVisible(true)
       },
       data: [],
-      image: getThemeAssets().layerType.layer_image,
+      image: getImage().icon_ditu_3, // getThemeAssets().layerType.layer_image,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -422,18 +423,18 @@ function layerManagerData() {
       themeType: -1,
     },
     {
-      title: 'GaoDe',
+      title: "高德", // 'GaoDe',
       action: () => OpenData(ConstOnline.GAODE, 0),
       data: [],
-      image: getThemeAssets().layerType.layer_image,
+      image: getImage().icon_ditu_4, // getThemeAssets().layerType.layer_image,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
     {
-      title: 'GaoDe Image',
+      title: "高德-影像", //'GaoDe Image',
       action: () => OpenData(ConstOnline.GAODE, 1),
       data: [],
-      image: getThemeAssets().layerType.layer_image,
+      image: getImage().icon_ditu_5, // getThemeAssets().layerType.layer_image,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -473,7 +474,7 @@ function layerManagerData() {
         return OpenData(ConstOnline.OSM, 0)
       },
       data: [],
-      image: getThemeAssets().layerType.layer_image,
+      image: getImage().icon_ditu_2, // getThemeAssets().layerType.layer_image,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -513,11 +514,17 @@ function layerManagerData() {
       return (
         item.title.indexOf('Google') === -1 &&
         item.title.indexOf('OSM') === -1
+        && item.title.indexOf('Tianditu Terrain') === -1
       )
     } else {
       return (
         item.title.indexOf('GaoDe') === -1 &&
         item.title.indexOf('Tianditu') === -1
+        && item.title.indexOf('天地图')
+        && item.title.indexOf('高德') // Google Satellite
+        && item.title.indexOf('Google Satellite') === -1
+        && item.title.indexOf('Google Terrain') === -1
+        && item.title.indexOf('Google Hybrid') === -1
       )
     }
   })

@@ -36,7 +36,7 @@ class LanguageSetting extends React.Component {
   constructor(props) {
     super(props)
     this.prevOption = this.props.autoLanguage
-      ? option.auto
+      ? option.CN // option.auto
       : this.props.language
     this.state = {
       currentOption: this.prevOption,
@@ -84,10 +84,10 @@ class LanguageSetting extends React.Component {
         supportedLanguage.indexOf(value.key) > -1
       )
     })
-    data.unshift({
-      key: option.auto,
-      title: getLanguage(this.props.language).Profile.SETTING_LANGUAGE_AUTO,
-    })
+    // data.unshift({
+    //   key: option.auto,
+    //   title: getLanguage(this.props.language).Profile.SETTING_LANGUAGE_AUTO,
+    // })
     return data
   }
 

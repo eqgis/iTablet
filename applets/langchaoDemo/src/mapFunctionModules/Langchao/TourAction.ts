@@ -250,7 +250,7 @@ type uploadType = "marker" | "line" | "media" | "all"
  */
 const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadType) => {
   try {
-    printLog(`============================ sendMessagePhone ============================`)
+    printLog(`\n============================ sendMessagePhone ============================`)
     let layerpath = "marker_118081@langchao"
     switch(type) {
       case "line":
@@ -277,12 +277,14 @@ const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadTyp
       },
       "refresh",
     )
+    console.warn("01: " + JSON.stringify(result))
+    printLog("\n01: " + JSON.stringify(result))
     const layerAttributedataArray = result.attributes.data
     // const columnIndex = result.total !== 0 ? 0 : result.total
-    let columnIndex = layerAttributedataArray.length - 1
+    let columnIndex = 0
     const layerAttributedataLength = layerAttributedataArray.length
     for(let i = 0; i < layerAttributedataLength; i ++) {
-      const AttributedataItem = layerAttributedataArray[columnIndex]
+      const AttributedataItem = layerAttributedataArray[i]
       for(let j = 0; j < AttributedataItem.length; j ++) {
         const item = AttributedataItem[j]
         if(item.name === "SmID" && item.value === id) {
@@ -299,13 +301,18 @@ const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadTyp
     let bjTime: string | number | boolean = ''          // 北京时间
     let durationTime: string | number | boolean = 0
 
+    console.warn("02: " + JSON.stringify(columnIndex))
+    printLog("\n02: " + JSON.stringify(columnIndex))
     const layerAttributedata = layerAttributedataArray[columnIndex]
+    console.warn("03: " + JSON.stringify(layerAttributedata))
+    printLog("\n03: " + JSON.stringify(layerAttributedata))
 
     const smID = id
     let isUploadedIndex = 0
 
     for(let j = 0; j < layerAttributedata.length; j ++) {
       const item = layerAttributedata[j]
+      console.warn("item name: " + item.name + " - item value: " + item.value)
       if(item.name === "isUploaded") {
         isUploadedIndex = j
       }
@@ -327,6 +334,8 @@ const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadTyp
       }
     }
     const MesContent = `-${myName}-  -${myPhoneNumber}- 呼叫    -${callName}-  -${callPhoneNumber}-  ${localTime}   ${bjTime}   时长-${durationTime}- 分钟`
+    console.warn("04 MesContent: " + MesContent)
+    printLog("\n04 MesContent: " + MesContent)
 
     const date = new Date()
     const timezone = 8 //目标时区时间，东八区(北京时间)   东时区正数 西市区负数
@@ -340,10 +349,14 @@ const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadTyp
 
     const position = await SMap.getCurrentLocation()
     const countryCode = await getCountryCode(position.longitude, position.latitude)
+    console.warn("05 countryCode: " + countryCode + " - position: " + JSON.stringify(position))
+    printLog("\n05 countryCode: " + countryCode + " - position: " + JSON.stringify(position))
 
     let infos = getUserParam()
     const name = infos.username !== "" ? infos.username : '张三'
     const userid = infos.userId !== "" ? infos.userId : "zhangsan"
+    console.warn("06 userinfo: " + JSON.stringify(infos))
+    printLog("\n06 userinfo: " + JSON.stringify(infos))
 
     const params: MessageInfoType = {
       ...uuidInfo,
@@ -355,6 +368,8 @@ const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadTyp
       /** 呼叫内容 */
       MesContent: MesContent,
     }
+    console.warn("07 MessageInfo: " + JSON.stringify(params))
+    printLog("\n07 MessageInfo: " + JSON.stringify(params))
     const isSuccessed = await message(params)
 
 
@@ -388,7 +403,8 @@ const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadTyp
 
     return isSuccessed
   } catch (error) {
-    printLog(`sendMessagePhone error: ${JSON.stringify(error)}`)
+    printLog(`\nsendMessagePhone error: ${JSON.stringify(error)}`)
+    global.SimpleDialog.setVisible(false)
     return false
   }
 }
@@ -400,7 +416,7 @@ const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadTyp
  */
 const uploadTrack = async (id: number, type: uploadType) => {
   try {
-    printLog(`============================ uploadTrack ============================`)
+    printLog(`\n============================ uploadTrack ============================`)
     let layerdatasetName = "marker_118081"
     switch(type) {
       case "line":
@@ -435,14 +451,29 @@ const uploadTrack = async (id: number, type: uploadType) => {
 
     const count = await SMap.exportDatasetToGeoJsonFileByID("langchao", layerdatasetName, path, ids, false)
 
+    /////////////////////////////////////////////////
+    // const PathTemp = homePath +
+    // ConstPath.UserPath +
+    // AppToolBar.getProps().user.currentUser.userName +
+    // '/' +
+    // ConstPath.RelativePath.ARSymbol + "arnavi_arrow.png"
+    // uploadFileTest(PathTemp, 'image/foo')
+    // uploadFileTest(path, 'image/foo')
+    /////////////////////////////////////////////////
+
     const layerName = layerdatasetName + "@langchao"
     const info = await SMediaCollector.getMediaInfo(layerName, id)
     console.warn("info: " + JSON.stringify(info))
+    printLog(`\n mediainfo： ${JSON.stringify(info)}`)
     const mediaPaths = info?.mediaFilePaths || []
     // 遍历将上传图片路径，获取uuid
     const photoUuids = ""
+    printLog(`\n mediaPaths： ${JSON.stringify(mediaPaths)}`)
     for(let i = 0; i < mediaPaths.length; i ++) {
       const itemPath = homePath + mediaPaths[i]
+      console.warn("imagePAth: " + itemPath)
+      printLog(`\n imagePath ${itemPath}`)
+      // uploadFileTest(itemPath)
       let mediaUploadInfo = await uploadFile(path)
       if(mediaUploadInfo) {
         const mUUID = mediaUploadInfo.uuid
@@ -453,6 +484,14 @@ const uploadTrack = async (id: number, type: uploadType) => {
         }
       }
     }
+
+    printLog(`\n photoUuids ${photoUuids}`)
+
+    // const result = await sendMessagePhone({
+    //   Trajectory: "1111111",
+    //   Photo: photoUuids,
+    // }, id, 'line')
+    // console.warn("message result: " + result)
 
     if(count > 0) {
       let uploadInfo = await uploadFile(path)
@@ -475,6 +514,7 @@ const uploadTrack = async (id: number, type: uploadType) => {
   } catch (error) {
     // to do
     printLog(`uploadTrack error: ${JSON.stringify(error)}`)
+    global.SimpleDialog.setVisible(false)
   }
 }
 

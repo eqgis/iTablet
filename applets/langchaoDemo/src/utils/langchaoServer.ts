@@ -199,12 +199,56 @@ export const uploadFile = async (path: string) => {
     \n uploadFile(path: ${path} ) \n url: ${url} \n clientid: ${clientId} token: ${token}`)
 
     const fileName = path.substring(path.lastIndexOf("/"), path.length)
+    printLog(`\n uploadFile fileName : ${fileName}`)
     let res = await RNFetchBlob.fetch('POST', url, {
       // header...
       'Content-Type': 'multipart/form-data'
     }, [
     // path是指文件的路径，wrap方法可以根据文件路径获取到文件信息
       { name: 'file', filename: fileName, type: 'image/foo', data: RNFetchBlob.wrap(path) },
+    //... 可能还会有其他非文件字段{name:'字段名',data:'对应值'}
+    ])
+    console.warn('res', res)
+    printLog(`\n uploadFile response : ${JSON.stringify(res)}`)
+    res = JSON.parse(JSON.stringify(res))
+    const respInfo = JSON.parse(JSON.stringify(res.respInfo))
+    printLog(`\n uploadFile respInfo : ${JSON.stringify(respInfo)}`)
+    let info = null
+    if(respInfo.status === 200) {
+      const data = JSON.parse(res?.data)
+      if(data.ok === true) {
+        Toast.show("附件上传成功")
+        info = JSON.parse(JSON.stringify(data.data))
+        printLog(`\n uploadFile result : ${JSON.stringify(data.data)}`)
+      }
+    }
+    return info
+  } catch (error) {
+    console.warn("error: " + error)
+    printLog(`\n uploadFile error : ${JSON.stringify(error)}`)
+    global.Loading.setLoading(false)
+    return null
+  }
+
+}
+
+export const uploadFileTest = async (path: string) => {
+  try {
+    const token = serverToken
+    const clientId = serverClientid
+
+    const url = `http://192.168.11.21:8080/test/upFile`
+
+    // const fileType = type || "image/foo"
+
+    const fileName = path.substring(path.lastIndexOf("/"), path.length)
+    const res = await RNFetchBlob.fetch('POST', url, {
+      // header...
+      'Content-Type': 'multipart/form-data'
+    }, [
+    // path是指文件的路径，wrap方法可以根据文件路径获取到文件信息
+      { name: 'file', filename: fileName, type: 'image/foo', data: RNFetchBlob.wrap(path) },
+      // { name: 'file', filename: fileName, type: fileType, data: RNFetchBlob.wrap(path) },
     //... 可能还会有其他非文件字段{name:'字段名',data:'对应值'}
     ])
     console.warn('res', res)
@@ -223,11 +267,13 @@ export const uploadFile = async (path: string) => {
     return info
   } catch (error) {
     console.warn("error: " + error)
-    printLog(`\n uploadFile error : ${JSON.stringify(error)}`)
+    global.SimpleDialog.setVisible(false)
     return null
   }
 
 }
+
+
 export interface UserInfoType {
 	UserId?: string,
 	UserName?: string,
@@ -350,6 +396,7 @@ export const message = async (params: MessageInfoType) => {
   } catch (error) {
     console.log('error', error)
     printLog(`\n message error: ${JSON.stringify(error)}`)
+    global.SimpleDialog.setVisible(false)
     return false
   }
 

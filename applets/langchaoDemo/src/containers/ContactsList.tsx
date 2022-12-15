@@ -18,33 +18,38 @@ import { collectionModule } from "@/containers/workspace/components/ToolBar/modu
 import ToolbarModule from "@/containers/workspace/components/ToolBar/modules/ToolbarModule"
 import { Toast } from "@/utils"
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call'
+import { addContact } from "../reduxModels/langchao"
 
-interface contactItemType {
-  recordID: string,
+export interface contactItemType {
+  ID: number,
+  userID: string,
   name: string, // displayName
   phone: string, // phoneNumbers[0].number
-  firstChar: string,
 }
 
-interface contactDataType {
-  title: string,
-  data: Array<contactItemType>
-}
+// interface contactDataType {
+//   title: string,
+//   data: Array<contactItemType>
+// }
 
 interface Props extends ReduxProps {
 	navigation: any,
 	mapModules: any,
   device: any,
   language: string,
+  contacts: any,
   setCurrentSymbol: (param: any) => void,
+  addContact: (paran: any) => void
 }
 
 interface State {
 	// to do
-  contactData: Array<contactDataType>
-  letterArray: Array<string>
+  contactData: Array<contactItemType>
   addName: string
   addNumber: string
+  addUserID: string
+  selectItem: contactItemType | null,
+  morePanShow: boolean,
 }
 
 class ContactsList extends Component<Props, State> {
@@ -53,103 +58,14 @@ class ContactsList extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
+    console.warn("this.props.contacts: "  + JSON.stringify(this.props.contacts))
     this.state = {
-      contactData: [],
-      letterArray: [],
+      contactData: this.props.contacts || [],
       addName: '',
       addNumber: '',
-    }
-  }
-
-  componentDidMount = async (): Promise<void> => {
-    this.getContactData()
-  }
-
-  componentDidUpdate = (prevProps: Readonly<Props>, prevState: Readonly<State>): void => {
-    // if(this.props !== prevProps || prevState !== this.state) {
-    //   this.getContactData()
-    // }
-  }
-
-  /** 获取联系人列表数据 */
-  getContactData = async (): Promise<void> => {
-    // 临时的联系人数据
-    const contactDataTemp: Array<contactDataType> = []
-    // 首字母数组
-    let letterArray: Array<string> = []
-    try {
-      // 在使用Contacts的方法之前必须先确定要有相关权限
-      await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-        {
-          'title': 'Contacts',
-          'message': 'This app would like to view your contacts.',
-          'buttonPositive': 'Please accept bare mortal'
-        }
-      )
-      // 获取联系人列表
-      const contacts = await Contacts.getAll()
-
-      // 获取首字母数组
-      await contacts.map((contact) => {
-        // console.warn("contact: " + JSON.stringify(contact))
-        // 获取名字首字母
-        const letterFirst = getPinYin(contact.displayName, "", true).substring(0, 1)
-        letterArray.push(letterFirst)
-        // 数组排序并去重
-        letterArray = [...new Set(letterArray)].sort()
-      })
-
-      // 将联系人分类的数据结构搭好
-      await letterArray.map((item: string) => {
-        contactDataTemp.push({
-          title: item,
-          data: [],
-        })
-      })
-
-      // 将联系人放进各自的分类里
-      contacts.map((contact) => {
-        contactDataTemp.map((item: contactDataType) => {
-          try {
-            // 获取名字首字母
-            const letterFirst = getPinYin(contact.displayName, "", true).substring(0, 1)
-            // 获取名字第一个字符
-            const firstChar = contact.displayName.substring(0, 1)
-
-            const reg = new RegExp("-", 'gi')
-            // 构造联系人对象
-            const contactItem: contactItemType = {
-              recordID: contact.recordID,
-              name: contact.displayName,
-              phone: contact.phoneNumbers[0].number.replace(reg, ""),
-              firstChar,
-            }
-
-            // console.warn("obj: " + JSON.stringify(contactItem))
-            if (item.title === letterFirst) {
-              item.data.push(contactItem)
-            }
-          } catch (error) {
-            console.warn(item.title + " - " + contact.displayName + " - " + JSON.stringify(error))
-          }
-
-        })
-      })
-
-      this.setState({
-        letterArray: letterArray,
-        contactData: JSON.parse(JSON.stringify(contactDataTemp)),
-      })
-
-
-    } catch (error) {
-      console.warn("获取联系人列表失败")
-
-      this.setState({
-        letterArray: letterArray,
-        contactData: JSON.parse(JSON.stringify(contactDataTemp)),
-      })
+      addUserID: '',
+      selectItem: null,
+      morePanShow: false,
     }
   }
 
@@ -226,24 +142,33 @@ class ContactsList extends Component<Props, State> {
   }
 
   addConfirm = () => {
-    const firstChar = this.state.addName.substring(0, 1)
-    const givenName = this.state.addName.substring(1, this.state.addName.length)
-    const newPerson = {
-      phoneNumbers: [{
-        label: "mobile",
-        number: this.state.addNumber,
-      }],
-      familyName: firstChar,
-      displayName: this.state.addName,
-      givenName: givenName,
+    const newcontact = this.state.contactData
+    if(this.state.selectItem) {
+      const id = this.state.selectItem.ID
+      const newcontactItem = {
+        ID: id,
+        userID: this.state.addUserID,
+        name: this.state.addName,
+        phone: this.state.addNumber,
+      }
+      newcontact.splice(id, 1, newcontactItem)
+    } else {
+      const newcontactItem = {
+        ID: newcontact.length,
+        userID: this.state.addUserID,
+        name: this.state.addName,
+        phone: this.state.addNumber,
+      }
+      newcontact.push(newcontactItem)
     }
-    Contacts.addContact(newPerson)
+    this.props.addContact(newcontact)
     this.addDialog?.setDialogVisible(false)
     this.setState({
       addName: '',
       addNumber: '',
+      addUserID: '',
+      selectItem: null,
     })
-    this.getContactData()
   }
 
   addCancel = () => {
@@ -251,23 +176,37 @@ class ContactsList extends Component<Props, State> {
     this.setState({
       addName: '',
       addNumber: '',
+      addUserID: '',
+      selectItem: null,
     })
   }
 
-  // /**
-  //  * 底部工具栏
-  //  * @returns {XML}
-  //  */
-  // renderToolBar = () => {
-  //   return (
-  //     <MapToolbar
-  //       navigation={this.props.navigation}
-  //       mapModules={this.props.mapModules}
-  //       initIndex={2}
-  //       type={"langchao"}
-  //     />
-  //   )
-  // }
+  editItemAction = () => {
+    // 编辑对象
+    this.setState({
+      morePanShow: false,
+      // selectItem: null,
+      addName: this.state.selectItem?.name || "",
+      addUserID: this.state.selectItem?.userID || "",
+      addNumber: this.state.selectItem?.phone || "",
+    })
+    this.addDialog?.setDialogVisible(true)
+  }
+
+  deleteItemAction = () => {
+    const id = this.state.selectItem?.ID
+    if(id && id >= 0) {
+      const newcontact = this.state.contactData.splice(id, 1)
+      this.props.addContact(newcontact)
+    }
+
+    // 删除对象
+    this.setState({
+      morePanShow: false,
+      selectItem: null,
+    })
+  }
+
   /** 分隔线 */
   renderSeparator = () => {
     return (
@@ -280,8 +219,9 @@ class ContactsList extends Component<Props, State> {
   }
 
   _renderItem(item: contactItemType, index: number) {
+    const firstChar = item.name.substring(0, 1)
     return (
-      <TouchableOpacity
+      <View
         style={[{
           width: '100%',
           height: dp(60),
@@ -291,68 +231,106 @@ class ContactsList extends Component<Props, State> {
           alignItems: 'center',
           paddingHorizontal: dp(10),
         }]}
-        onPress={() => {
-          this.itemAction(item.phone, item.name)
-        }}
       >
-        <View style={[{
-          width: dp(50),
-          height: dp(50),
-          borderRadius: dp(8),
-          backgroundColor: '#ccc',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }]}>
-          <Text style={[{
-            color: '#fff',
-            fontSize: dp(30),
-            fontWeight: 'bold',
-          }]}>{item.firstChar}</Text>
-        </View>
+        <TouchableOpacity
+          style={[{
+            // width: '100%',
+            flex:1,
+            height: dp(60),
+            backgroundColor: '#fff',
+            flexDirection: 'row',
+            justifyContent:'flex-start',
+            alignItems: 'center',
+            // paddingHorizontal: dp(10),
+          }]}
+          onPress={() => {
+            this.itemAction(item.phone, item.name)
+          }}
+        >
+          <View style={[{
+            width: dp(50),
+            height: dp(50),
+            borderRadius: dp(8),
+            backgroundColor: '#ccc',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }]}>
+            <Text style={[{
+              color: '#fff',
+              fontSize: dp(30),
+              fontWeight: 'bold',
+            }]}>{firstChar}</Text>
+          </View>
 
-        <View style={[{
-          flex:1,
-          height: dp(50),
-          flexDirection:'column',
-          justifyContent:'space-around',
-          alignItems:'flex-start',
-          marginLeft: dp(10),
-        }]}>
-          <Text style={[{
-            color:'#333',
-            fontSize: dp(18),
-          }]}>{item.name}</Text>
-          <Text style={[{
-            color: '#999',
-            fontSize: dp(14)
-          }]}>{item.phone}</Text>
-        </View>
-      </TouchableOpacity>
+          <View style={[{
+            flex:1,
+            height: dp(50),
+            flexDirection:'column',
+            justifyContent:'space-around',
+            alignItems:'flex-start',
+            marginLeft: dp(10),
+          }]}>
+            <Text style={[{
+              color:'#333',
+              fontSize: dp(18),
+            }]}>{item.name}</Text>
+            <Text style={[{
+              color: '#999',
+              fontSize: dp(14)
+            }]}>{item.phone}</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[{
+            width: dp(20),
+            height: dp(20),
+            justifyContent:'center',
+            alignItems: 'center',
+            // backgroundColor: '#ccc',
+          }]}
+          onPress={() => {
+            this.setState({
+              morePanShow: true,
+              selectItem: item,
+            })
+          }}
+        >
+          {/* <Text>{"更多"}</Text> */}
+          <Image
+            source={getPublicAssets().common.icon_more}
+            style={[{
+              width: dp(16),
+              height: dp(16),
+            }]}
+          />
+        </TouchableOpacity>
+      </View>
     )
   }
 
   _renderSectionHeader(sectionItem: { section: any }) {
-    const section = sectionItem.section
-    return (
-      <View style={[
-        {
-          width: '100%',
-          height: dp(24),
-          backgroundColor: '#eee',
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignContent: 'center',
-        },
-      ]}>
-        <Text style={[
-          {
-            color: '#666',
-            fontSize: dp(16),
-            marginLeft: dp(10),
-          },
-        ]}>{section.title.toUpperCase()}</Text>
-      </View>
-    )
+    // const section = sectionItem.section
+    return null
+    // return (
+    //   <View style={[
+    //     {
+    //       width: '100%',
+    //       height: dp(24),
+    //       backgroundColor: '#eee',
+    //       flexDirection: 'row',
+    //       justifyContent: 'flex-start',
+    //       alignContent: 'center',
+    //     },
+    //   ]}>
+    //     <Text style={[
+    //       {
+    //         color: '#666',
+    //         fontSize: dp(16),
+    //         marginLeft: dp(10),
+    //       },
+    //     ]}>{section.title.toUpperCase()}</Text>
+    //   </View>
+    // )
   }
 
   renderList = () => {
@@ -374,14 +352,11 @@ class ContactsList extends Component<Props, State> {
         </View>
       )
     }
-    return(
-      <SectionList
-        ref={(ref)=> {this._sectionList = ref}}
+    return (
+      <FlatList
         renderItem={({item, index}) => this._renderItem(item, index)}
-        renderSectionHeader={this._renderSectionHeader}
-        sections={this.state.contactData}
-        keyExtractor={(item, index) => item.recordID + "-" + index}
-        ItemSeparatorComponent={this.renderSeparator}
+        data={this.state.contactData}
+        keyExtractor={(item, index) => item.ID + "-" + index}
         showsVerticalScrollIndicator={false}
       />
     )
@@ -409,25 +384,6 @@ class ContactsList extends Component<Props, State> {
     )
   }
 
-  renderRightLink = () => {
-    return(
-      <View>
-        <FlatList
-          data={this.state.letterArray}
-          keyExtractor={(item, index) => item + "-" + index}
-          renderItem={({item, index}) => this.renderRightItem(item, index)}
-          style={[{
-            position: 'absolute',
-            right: dp(10),
-            bottom: dp(50),
-            backgroundColor: 'transparent',
-          },
-          ]}
-        />
-      </View>
-    )
-  }
-
   renderHeaderRight = () => {
     return (
       <TouchableOpacity
@@ -450,12 +406,12 @@ class ContactsList extends Component<Props, State> {
         cancelAction={this.addCancel}
         opacity={1}
         opacityStyle={[{
-          height: dp(218),
+          height: dp(268),
           backgroundColor: '#fff',
         },
         ]}
         style={[{
-          height: dp(218),
+          height: dp(268),
           backgroundColor: '#fff',
         },
         ]}
@@ -517,9 +473,7 @@ class ContactsList extends Component<Props, State> {
           </TouchableOpacity>
         </View>
         {/* 联系人电话输入框 */}
-        <View style={[styles.dialogInputContainer,{
-          marginBottom: dp(20),
-        }]}>
+        <View style={[styles.dialogInputContainer]}>
           <TextInput
             style = {[styles.dialogInput]}
             placeholder = {getLanguage(global.language).Map_Settings.CONTACT_NUMBER}
@@ -546,6 +500,106 @@ class ContactsList extends Component<Props, State> {
             />
           </TouchableOpacity>
         </View>
+        {/* 联系人电话id */}
+        <View style={[styles.dialogInputContainer,{
+          marginBottom: dp(20),
+        }]}>
+          <TextInput
+            style = {[styles.dialogInput]}
+            placeholder = {getLanguage(global.language).Map_Settings.CONTACT_NUMBER}
+            value = {this.state.addUserID}
+            onChangeText = {(text:string) => {
+              this.setState({
+                addUserID: text,
+              })
+            }}
+          />
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.clearBtn}
+            onPress={() => {
+              this.setState({
+                addUserID: '',
+              })
+            }}
+          >
+            <Image
+              style={styles.clearImg}
+              resizeMode={'contain'}
+              source={getPublicAssets().common.icon_close}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    )
+  }
+
+  operationView = () => {
+    return (
+      <View
+        style={[{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          width: "100%",
+          height: '100%',
+          flexDirection: 'column',
+        }]}
+      >
+        <TouchableOpacity
+          style={[{
+            width: '100%',
+            flex: 1,
+            backgroundColor: '#000',
+            opacity: 0.5,
+          }]}
+          onPress={() => {
+            this.setState({
+              morePanShow: false,
+              selectItem: null,
+            })
+          }}
+        ></TouchableOpacity>
+        <View
+          style={[{
+            width: "100%",
+            height: dp(150),
+            backgroundColor: '#fff',
+            paddingVertical: dp(10),
+          }]}
+        >
+          <TouchableOpacity
+            style={[{
+              width: '100%',
+              height: dp(40),
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginVertical: dp(10),
+            }]}
+            onPress={this.editItemAction}
+          >
+            <Text
+              style={[{
+                color: '#000',
+              }]}
+            >{getLanguage(global.language).EDIT}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[{
+              width: '100%',
+              height: dp(40),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }]}
+            onPress={this.deleteItemAction}
+          >
+            <Text
+              style={[{
+                color: '#000',
+              }]}
+            >{getLanguage(global.language).DELETE}</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
@@ -566,13 +620,13 @@ class ContactsList extends Component<Props, State> {
         // bottomBar={this.renderToolBar()}
         style={{
           flex: 1,
-          backgroundColor: '#fff',
+          backgroundColor: '#f3f3f3',
         }}
       >
         {/* <Text>{"我是通讯录页面"}</Text> */}
         {this.renderList()}
-        {this.renderRightLink()}
         {this.renderAddDialog()}
+        {this.state.morePanShow && this.operationView()}
 
       </Container>
     )
@@ -583,10 +637,12 @@ const mapStateToProp = (state: RootState) => ({
   mapModules: state.mapModules.toJS(),
   device: state.device.toJS().device,
   language: state.setting.toJS().language,
+  contacts: state.langchao.toJS().contacts,
 })
 
 const mapDispatch = {
   setCurrentSymbol,
+  addContact,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

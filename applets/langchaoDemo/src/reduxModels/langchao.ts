@@ -11,6 +11,7 @@ export const LANGCHAO_SET_SERVER_CLIENT_ID = "LANGCHAO_SET_SERVER_CLIENT_ID"
 export const LANGCHAO_SET_USER_ID = "LANGCHAO_SET_USER_ID"
 export const LANGCHAO_SET_USER_NAME = "LANGCHAO_SET_USER_NAME"
 export const LANGCHAO_SET_DEPARTMENT_ID = "LANGCHAO_SET_DEPARTMENT_ID"
+export const LANGCHAO_ADD_CONTACT = "LANGCHAO_ADD_CONTACT"
 // Actions
 // ---------------------------------.3-----------------
 
@@ -86,6 +87,28 @@ export const setServerDepartmentId = (
   cb && cb()
 }
 
+export const addContact = (
+  params = "",
+  cb = () => {},
+) => async (dispatch: (arg0: any) => any) => {
+  setSysOrgid(params)
+  await dispatch({
+    type: LANGCHAO_ADD_CONTACT,
+    payload: params,
+  })
+  cb && cb()
+}
+
+export interface contactItemType {
+  ID: number,
+  userID: string,
+  name: string, // displayName
+  phone: string, // phoneNumbers[0].number
+}
+
+
+
+
 const initialState = fromJS({
   serverIP: null,
   token: null,
@@ -93,6 +116,7 @@ const initialState = fromJS({
   userId: '',
   userName: '',
   departmentId: '',
+  contacts: [],
 })
 
 export default handleActions(
@@ -114,6 +138,9 @@ export default handleActions(
     },
     [`${LANGCHAO_SET_DEPARTMENT_ID}`]: (state: any, { payload }: any) => {
       return state.setIn(['departmentId'], fromJS(payload))
+    },
+    [`${LANGCHAO_ADD_CONTACT}`]: (state: any, { payload }: any) => {
+      return state.setIn(['contacts'], fromJS(payload))
     },
     [REHYDRATE]: (state, { payload }) => {
       const langchao = getLastLaunchState()?.langchao

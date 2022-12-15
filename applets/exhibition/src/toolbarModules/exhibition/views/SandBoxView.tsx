@@ -238,8 +238,8 @@ const DefaultArrowPoint = {
   z: -1.5,
 }
 
-const DefaultScale = 0.006
-const DefaultLocation ={
+let DefaultScale = 0.0035
+let DefaultLocation ={
   position: {
     // y: -100,
     // z: -320,
@@ -594,17 +594,36 @@ class SandBoxView extends React.Component<Props, State> {
         paths.push(home + glb.path)
       }
 
+      // 获取沙盘默认大小位置
+      if (await FileTools.fileIsExist(targetHomePath + 'SandBox.json')) {
+        const sandBoxJson = await FileTools.readFile(targetHomePath + 'SandBox.json')
+        const sandBoxData = JSON.parse(sandBoxJson)
+  
+        if (sandBoxData) {
+          DefaultLocation = sandBoxData
+          DefaultScale = sandBoxData.scale?.x || DefaultScale
+        }
+      }
+
       await SARMap.addModelToSandTable(paths, {
         location: DefaultLocation,
         pose: pose,
       })
+
+      // 获取沙盘默认大小位置
+      let waveData
+      const wavePath = targetHomePath + 'wave.json'
+      if (await FileTools.fileIsExist(wavePath)) {
+        const waveJson = await FileTools.readFile(wavePath)
+        waveData = JSON.parse(waveJson)
+      }
       await SARMap.addARMediaToSandbox(targetHomePath + 'wave.mp4', {
-        position: {
+        position: waveData?.position || {
           x: -116,
           y: 24.38,
           z: 100,
         },
-        rotation: {
+        rotation: waveData?.rotation || {
           x: 90,
           y: 90,
           z: 0,

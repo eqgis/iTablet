@@ -38,6 +38,7 @@ interface State {
   attributeShow:boolean
 }
 
+let pose: SARMap.Pose | undefined
 class CoverView extends React.Component<Props, State> {
   currentRadiusx = 1
   currentRadiusy = 1
@@ -473,6 +474,7 @@ class CoverView extends React.Component<Props, State> {
     AppEvent.addListener('ar_single_click', this.onSingleClick)
 
     AppEvent.addListener('ar_image_tracking_result', result => {
+      pose = result
       if(result) {
         this.timeoutTrigger?.onBackFromScan()
         SARMap.stopAREnhancePosition()
@@ -518,7 +520,14 @@ class CoverView extends React.Component<Props, State> {
     // console.warn(layer)
     // if(layer){
     // console.warn(layer)
-    await SARMap.addARCover(layer.name, undefined)
+    await SARMap.addARCover(layer.name, pose && {
+      pose: pose,
+      translation: {
+        x: 0,
+        y: 0,
+        z: 0,
+      }
+    })
     // }
     const _time = async function() {
       return new Promise(function(resolve) {

@@ -354,14 +354,14 @@ class Home extends React.Component<Props, State> {
         title: getLanguage().COVER,
         desc: '地下、墙面、屋顶隐蔽管线浏览',
         action: async() => {
-          const hw = await SARMap.isHuawei()
-          if(hw){
-            Toast.show('暂不支持此功能', {
-              backgroundColor: 'rgba(0,0,0,.5)',
-              textColor: '#fff',
-            })
-            return
-          }
+          // const hw = await SARMap.isHuawei()
+          // if(hw){
+          //   Toast.show('暂不支持此功能', {
+          //     backgroundColor: 'rgba(0,0,0,.5)',
+          //     textColor: '#fff',
+          //   })
+          //   return
+          // }
           SExhibition.setCustomOcclusionEnable(true).then(() => {
             AppEvent.emitEvent('show_ar_map', true)
           })
@@ -753,7 +753,9 @@ class Home extends React.Component<Props, State> {
               fontSize: dp(15),
               color: 'white',
               textAlignVertical:'center',
+              width:dp(70),
             }}
+            numberOfLines={1}
           >{getLanguage().SETTING_CLEAR_CACHE}</Text>
         </TouchableOpacity>
 

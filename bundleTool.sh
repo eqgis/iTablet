@@ -66,7 +66,12 @@ buildApplet() {
     echoc "创建$buildName.bundle"
     mkdir -p bundle/$platform/$buildName
     echoc "生成$buildName.bundle"
-    npx react-native bundle --entry-file applets/$buildName/index.ts --platform $platform --config package_$buildName.config.js --dev false --bundle-output bundle/$platform/$buildName/$buildName.bundle --assets-dest bundle/$platform/$buildName
+
+    if [[ $platform == "android" && $buildName != "base" ]];then
+      npx react-native bundle --entry-file applets/$buildName/index.ts --platform ios --config package_$buildName.config.js --dev false --bundle-output bundle/$platform/$buildName/$buildName.bundle --assets-dest bundle/$platform/$buildName
+    else
+      npx react-native bundle --entry-file applets/$buildName/index.ts --platform $platform --config package_$buildName.config.js --dev false --bundle-output bundle/$platform/$buildName/$buildName.bundle --assets-dest bundle/$platform/$buildName
+    fi
     echoc "$buildName.bundle配置文件"
     node makeBundleConfig $platform bundle/$platform/$buildName/$buildName.bundle applets/$buildName/package.json
 }

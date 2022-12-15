@@ -6,7 +6,7 @@ import { getLanguage } from '../../../../../language'
 import { Toast, scaleSize, screen, AccountUtils } from '../../../../../utils'
 import { color } from '../../../../../styles'
 import OnlineLoginView from '../../../Mine/Login/component/OnlineLoginView'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 import { connect } from 'react-redux'
 import {
   setCloudLicenseUser,
@@ -57,10 +57,10 @@ class LoginCloud extends Component {
 
   reLogin = async () => {
     try {
-      await SMap.setCloudLicenseSite(this.props.cloudLicenseSite)
+      await SData.setCloudLicenseSite(this.props.cloudLicenseSite)
       let user = this.props.cloudLicenseUser
       if (user.isEmail !== undefined) {
-        await SMap.logoutCloudLicense()
+        await SData.logoutCloudLicense()
         let result = await this._login(user)
         if (result) {
           this._queryLicense()
@@ -94,7 +94,7 @@ class LoginCloud extends Component {
       this.onlineLogin?.logining()
     }
     try {
-      result = await SMap.queryCloudLicense()
+      result = await SData.queryCloudLicense()
     } catch (error) {
       result = {
         licenses: [],
@@ -103,7 +103,7 @@ class LoginCloud extends Component {
     }
     result.isStaff = false
     if(result.licenses.length === 0) {
-      const queryResult = await SMap.queryCloudTrialLicense()
+      const queryResult = await SData.queryCloudTrialLicense()
       result.isStaff = queryResult.staff
     }
     if(this.state.reLogin) {
@@ -140,7 +140,7 @@ class LoginCloud extends Component {
           this.onlineLogin?.logining()
         }
         let startLogin = async () => {
-          let loginResult = SMap.loginCloudLicense(userName, password)
+          let loginResult = SData.loginCloudLicense(userName, password)
           return loginResult
         }
         result = startLogin()
@@ -176,15 +176,15 @@ class LoginCloud extends Component {
       } else if (result.indexOf('Wrong user name and password') >= 0) {
         // Login Failed:Wrong user name and password
         Toast.show(getLanguage(global.language).Prompt.INCORRECT_USER_INFO)
-        SMap.logoutCloudLicense()
+        SData.logoutCloudLicense()
       } else {
         Toast.show(getLanguage(global.language).Prompt.FAILED_TO_LOG)
-        SMap.logoutCloudLicense()
+        SData.logoutCloudLicense()
         return false
       }
     } catch (e) {
       Toast.show(getLanguage(global.language).Prompt.FAILED_TO_LOG)
-      SMap.logoutCloudLicense()
+      SData.logoutCloudLicense()
       return false
     } finally {
       if(this.state.reLogin) {

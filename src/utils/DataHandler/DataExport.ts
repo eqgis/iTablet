@@ -1,7 +1,7 @@
 import { ConstPath } from "@/constants"
 import { LocalDataType } from "@/types"
 import { AppUser } from "@/utils"
-import { FileTools, FiltedData, SARMap, SMap, SScene } from "imobile_for_reactnative"
+import { FileTools, FiltedData, SARMap, SData, SMap, SScene } from "imobile_for_reactnative"
 import { ILocalData } from "./DataLocal"
 
 
@@ -85,6 +85,7 @@ async function _exportDatasource(data: FiltedData, targetPath: string): Promise<
 }
 
 async function _exportMap(data: FiltedData, targetPath: string, inUse: boolean): Promise<boolean> {
+   
   const homePath = await FileTools.getHomeDirectory()
   const tempPath = homePath + ConstPath.UserPath + AppUser.getCurrentUser().userName + '/' + ConstPath.RelativePath.Temp
   const mapName = data.name.substring(0, data.name.lastIndexOf('.'))
@@ -93,11 +94,14 @@ async function _exportMap(data: FiltedData, targetPath: string, inUse: boolean):
   await FileTools.deleteFile(tempDir)
 
   let result = false
-  if(inUse) {
-    result = await SMap.exportWorkspace([mapName], wsPath, false, {exportMedia: true})
-  } else {
-    result = await SMap.exportWorkspaceByMap(mapName, wsPath,{exportMedia: true})
-  }
+  //接口统一 add xiezhy
+   
+  result = await SData.exportWorkspaceByMap(mapName, wsPath,true)
+  // if(inUse) {
+  //   result = await SMap.exportWorkspace([mapName], wsPath, false, {exportMedia: true})
+  // } else {
+  //   result = await SMap.exportWorkspaceByMap(mapName, wsPath,{exportMedia: true})
+  // }
   result = result && (await FileTools.zipFile(tempDir, targetPath))
   result && FileTools.deleteFile(tempDir)
   return result

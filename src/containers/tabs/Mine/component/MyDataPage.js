@@ -337,8 +337,6 @@ export default class MyDataPage extends Component {
           : getLanguage(global.language).Prompt.SHARING,
       )
 
-      await SMap.checkLicense()
-
       let result = undefined
       if (fileName === '') {
         if (this.type === this.types.dataset) {
@@ -393,6 +391,7 @@ export default class MyDataPage extends Component {
           if(type === 'template'){
             Toast.show( getLanguage(global.language).Prompt.EXPORT_TEMP_FAILED )
           } else {
+             
             Toast.show(
               type === 'local'
                 ? getLanguage(global.language).Prompt.EXPORT_FAILED
@@ -402,6 +401,7 @@ export default class MyDataPage extends Component {
         }
       }
     } catch (error) {
+       
       Toast.show(
         type === 'local' || type === 'template'
           ? getLanguage(global.language).Prompt.EXPORT_FAILED

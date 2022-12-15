@@ -1,4 +1,4 @@
-import { SMap, EngineType, SScene, SARMap, AppInfo, FileInfo } from 'imobile_for_reactnative'
+import { SData,SMap, EngineType, SScene, SARMap, AppInfo, FileInfo } from 'imobile_for_reactnative'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
 import { ExternalDatasetType, UserInfo } from '@/types'
@@ -131,7 +131,7 @@ async function importWorkspace(item: IExternalData) {
       server: filePath,
       type,
     }
-    let result = await SMap.importWorkspaceInfo(data)
+    let result = await SData.importWorkspace(data)
     return result
   } catch (error) {
     return false
@@ -251,9 +251,9 @@ async function importSCI(item: IExternalData) {
     //   }
     // }
 
-    // debugger
+    //  
     await FileTools.copydir(item.directory, `${userPath}/${datasourceName}`)
-    // debugger
+    //  
     return true
   } catch (e) {
     return false

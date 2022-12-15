@@ -13,7 +13,7 @@ import { Container } from '../../components'
 import { getThemeAssets } from '../../assets'
 import { color } from '../../styles'
 import { getLanguage } from '../../language'
-import { SMap, SCollectSceneFormView, SARMap} from 'imobile_for_reactnative'
+import { SMap, SCollectSceneFormView, SARMap, SData} from 'imobile_for_reactnative'
 import { Toast, scaleSize } from '../../utils'
 import { ConstOnline, TouchType } from '../../constants'
 import NavigationService from '../../containers/NavigationService'
@@ -126,7 +126,7 @@ class CollectSceneFormSet extends Component {
     let map = await SMap.getCurrentPosition()
     let wsData = JSON.parse(JSON.stringify(ConstOnline.Google))
     wsData.layerIndex = 3
-    let licenseStatus = await SMap.getEnvironmentStatus()
+    let licenseStatus = await SData.getEnvironmentStatus()
     global.isLicenseValid = licenseStatus.isLicenseValid
     NavigationService.navigate('MapView', {
       wsData,

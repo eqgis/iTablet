@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
-import { SMap, SScene, RNFS as fs } from 'imobile_for_reactnative'
+import { SMap, SScene, RNFS as fs, SData } from 'imobile_for_reactnative'
 import { FileTools } from '../../native'
 import { Toast } from '../../utils'
 import { ConstPath, ConstInfo } from '../../constants'
@@ -60,7 +60,8 @@ export const mapFromXml = (params, cb = () => { }) => async () => {
 // 打开工作空间
 export const openWorkspace = (params, cb = () => { }) => async dispatch => {
   try {
-    const result = await SMap.openWorkspace(params)
+    // const result = await SMap.openWorkspace(params) 废弃 add xiezhy
+    const result = await SData.initUserWorkspace()
     await dispatch({
       type: OPEN_WORKSPACE,
       payload: params || {},
@@ -117,7 +118,7 @@ export const openMap = (params, cb = () => { }) => async (
     const module = params.module || ''
     const fileName = params.name || params.title
     const isCustomerPath = params.path.indexOf(ConstPath.CustomerPath) >= 0
-    const importResult = await SMap.openMapName(fileName, {
+    const openMapResult = await SMap.openMapName(fileName, {
       Module: module,
       IsPrivate: !isCustomerPath,
     })
@@ -125,7 +126,7 @@ export const openMap = (params, cb = () => { }) => async (
       0,
       absolutePath.lastIndexOf('.'),
     )}.exp`
-    const openMapResult = importResult && (await SMap.openMap(fileName))
+    // const openMapResult = importResult && (await SMap.openMap(fileName))
     const mapInfo = await SMap.getMapInfo()
     if (openMapResult) {
       const expIsExist = await FileTools.fileIsExist(expFilePath)
@@ -316,23 +317,28 @@ export const exportWorkspace = (params, cb = () => { }) => async (
       const fileReplace =
         params.fileReplace === undefined ? true : params.fileReplace
       const extra = params.extra || {}
-      if (params.isOpenMap) { // isOpenMap需要打开地图后导出
-        const isLogin =
-          getState().user.toJS().currentUser.userType !==
-          UserType.PROBATION_USER
-        exportResult = await SMap.exportWorkspaceByMap(params.maps[0], path, {
-          Module: '',
-          IsPrivate: isLogin,
-          ...extra,
-        })
-      } else {
-        exportResult = await SMap.exportWorkspace(
-          params.maps,
-          path,
-          fileReplace,
-          extra,
-        )
-      }
+
+      //接口统一 add xiezhy
+       
+      exportResult = await SData.exportWorkspaceByMap(params.maps[0],path,extra.exportMedia)
+
+      // if (params.isOpenMap) { // isOpenMap需要打开地图后导出
+      //   const isLogin =
+      //     getState().user.toJS().currentUser.userType !==
+      //     UserType.PROBATION_USER
+      //   exportResult = await SMap.exportWorkspaceByMap(params.maps[0], path, {
+      //     Module: '',
+      //     IsPrivate: isLogin,
+      //     ...extra,
+      //   })
+      // } else {
+      //   exportResult = await SMap.exportWorkspace(
+      //     params.maps,
+      //     path,
+      //     fileReplace,
+      //     extra,
+      //   )
+      // }
     }
     if (!template) {
       // 压缩工作空间
@@ -404,6 +410,7 @@ export const exportmap3DWorkspace = (params, cb = () => { }) => async (
         cb && cb(result, zipPath)
       }
     } else {
+       
       Toast.show(getLanguage(global.language).Prompt.EXPORT_FAILED)
       // '导出失败')
     }

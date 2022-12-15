@@ -55,7 +55,7 @@ async function showDatasetsList(type, filter = {}) {
             engineType: EngineType.UDB,
             alias,
           }
-          if (await SMap.openDatasource(datasourceParams, 0, true)) {
+          if (await SMap.openMapWithDatasource(datasourceParams, 0, true)) {
             await showDatasetsList(type, filter)
             NavigationService.goBack()
             _params.setContainerLoading && _params.setContainerLoading(false)

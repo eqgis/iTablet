@@ -165,7 +165,7 @@ export default class OnlineAnalystView extends Component {
         for (let i = 0; i < res.datasources.length; i++) {
           let datasource = res.datasources[i]
           let alias = datasource.substr(datasource.lastIndexOf('/') + 1)
-          await SMap.openDatasource(
+          await SMap.openMapWithDatasource(
             {
               server: datasource,
               engineType: EngineType.Rest,

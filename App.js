@@ -48,7 +48,7 @@ import { setAnalystParams } from './src/redux/models/analyst'
 import { setCollectionInfo } from './src/redux/models/collection'
 import { setShow } from './src/redux/models/device'
 import { setLicenseInfo } from './src/redux/models/license'
-import { RNFS as fs } from 'imobile_for_reactnative'
+import { RNFS as fs, SData } from 'imobile_for_reactnative'
 import { FileTools, SplashScreen} from './src/native'
 import ConfigStore from './src/redux/store'
 import { scaleSize, Toast, screen, DialogUtils, GetUserBaseMapUtil } from './src/utils'
@@ -368,7 +368,7 @@ class AppRoot extends Component {
     //申请 android 11 读写权限
     let permisson11 = await AppUtils.requestStoragePermissionR()
     if (isAllGranted && permisson11) {
-      await SMap.setPermisson(true)
+      await SData.setPermisson(true)
       await this.init()
       global.Loading.setLoading(false)
     } else {
@@ -410,8 +410,8 @@ class AppRoot extends Component {
     SOnlineService.init()
     SIPortalService.init(this.props.user.currentUser.serverUrl)
     await this.initLicense()
-    SMap.setModuleListener(this.onInvalidModule)
-    SMap.setLicenseListener(this.onInvalidLicense)
+    SData.setModuleListener(this.onInvalidModule)
+    SData.setLicenseListener(this.onInvalidLicense)
     if (Platform.OS === 'android') {
       //  this.initSpeechManager()
       SSpeechRecognizer.init('5dafb910')
@@ -567,12 +567,12 @@ class AppRoot extends Component {
   /** 检查本地离线许可 */
   inspectEnvironment = async () => {
     //todo 初始化云许可，私有云许可状态
-    let serialNumber = await SMap.initSerialNumber('')
+    let serialNumber = await SData.initSerialNumber()
     if (serialNumber !== '') {
-      await SMap.reloadLocalLicense()
+      await SData.reloadLocalLicense()
     }
 
-    let status = await SMap.getEnvironmentStatus()
+    let status = await SData.getEnvironmentStatus()
     this.props.setLicenseInfo(status)
   }
 
@@ -814,7 +814,7 @@ class AppRoot extends Component {
     let bundleInfo = await AppInfo.getBundleVersion()
     global.APP_VERSION = 'V' + appInfo.versionName + '_' + appInfo.versionCode
       + '_' + bundleInfo.BundleVersion + '_' + bundleInfo.BundleBuildVersion
-    global.isAudit = await SMap.isAudit()
+    global.isAudit = await SData._isAudit()
     global.GUIDE_VERSION = appInfo.GuideVersion
   }
 

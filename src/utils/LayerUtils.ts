@@ -336,7 +336,7 @@ function isBaseLayer(layer: LayerInfo) {
     }
     return false
   } catch (e) {
-    // debugger
+    //  
     return false
   }
 

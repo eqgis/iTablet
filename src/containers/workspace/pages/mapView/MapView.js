@@ -531,7 +531,7 @@ export default class MapView extends React.Component {
 
   async componentDidMount() {
     if (!global.isLicenseValid) {
-      let licenseStatus = await SMap.getEnvironmentStatus()
+      let licenseStatus = await SData.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid
     }
 
@@ -2036,7 +2036,6 @@ export default class MapView extends React.Component {
       return
     }
     try {
-      // let result = await SMap.openWorkspace(wsData.DSParams)
       let result = await this.props.openWorkspace(wsData.DSParams)
       result && this.props.openMap(index)
     } catch (e) {
@@ -2057,7 +2056,7 @@ export default class MapView extends React.Component {
       return
     }
     try {
-      await SMap.openDatasource(wsData.DSParams, index, toHead)
+      await SMap.openMapWithDatasource(wsData.DSParams, index, toHead)
     } catch (e) {
       this.setLoading(false)
     }

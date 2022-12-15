@@ -197,7 +197,7 @@ export default class ToolList extends React.Component {
               wsPath = await FileTools.appendingHomeDirectory(customerPath)
             }
             await this.props.openWorkspace({ server: wsPath })
-            await SMap.openDatasource(
+            await SMap.openMapWithDatasource(
               ConstOnline['Google'].DSParams,
               // ConstOnline['Google'].layerIndex,
               1,

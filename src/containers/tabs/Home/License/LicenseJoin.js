@@ -5,7 +5,7 @@ import { View, StyleSheet, TextInput, Text } from 'react-native'
 import { Container, Button } from '../../../../components'
 import { color } from '../../../../styles'
 import { getLanguage } from '../../../../language/index'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 import { scaleSize, Toast } from '../../../../utils'
 class LicenseJoin extends Component {
   props: {
@@ -94,7 +94,7 @@ class LicenseJoin extends Component {
       licenseInfo.isLicenseValid &&
       licenseInfo.licenseType === 2
     ) {
-      SMap.closePrivateCloudLicense()
+      SData.closePrivateCloudLicense()
     }
   }
 
@@ -105,13 +105,13 @@ class LicenseJoin extends Component {
       licenseInfo.isLicenseValid &&
       licenseInfo.licenseType === 4
     ) {
-      SMap.closeEduLicense()
+      SData.closeEduLicense()
     }
   }
 
   reloadLocalLicense = async (confirm = false) => {
     try {
-      let serialNumber = await SMap.initSerialNumber('')
+      let serialNumber = await SData.initSerialNumber()
       if (serialNumber !== '') {
         if (!confirm) {
           this._checkCloudLicense4Reload()
@@ -123,8 +123,8 @@ class LicenseJoin extends Component {
           true,
           getLanguage(global.language).Profile.LICENSE_ACTIVATING,
         )
-        await SMap.reloadLocalLicense()
-        let status = await SMap.getEnvironmentStatus()
+        await SData.reloadLocalLicense()
+        let status = await SData.getEnvironmentStatus()
         if (status && status.isLicenseValid && status.licenseType === 0) {
           this.props.setLicenseInfo(status)
           this.props.navigation.pop(2)
@@ -136,6 +136,7 @@ class LicenseJoin extends Component {
         this.setState({ checkLocal: false })
       }
     } catch (error) {
+       
       Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
       global.Loading.setLoading(false)
       this.setState({ checkLocal: false })
@@ -183,7 +184,7 @@ class LicenseJoin extends Component {
               return
             }
           }, 40000)
-          result = await SMap.activateLicense(str)
+          result = await SData.activateLicense(str)
           if (result) {
             // let modules = await SMap.licenseContainModule(str)
             // let size = modules.length
@@ -198,7 +199,7 @@ class LicenseJoin extends Component {
             Toast.show(
               getLanguage(global.language).Profile.LICENSE_ACTIVATION_SUCCESS,
             )
-            let info = await SMap.getEnvironmentStatus()
+            let info = await SData.getEnvironmentStatus()
             this.props.setLicenseInfo(info)
             global.Loading.setLoading(
               false,

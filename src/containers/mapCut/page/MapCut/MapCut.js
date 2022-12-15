@@ -216,7 +216,7 @@ export default class MapCut extends React.Component {
               datasourceParams.alias = newDatasourceName
               let rel = await SMap.createDatasource(datasourceParams)
               if (rel === true) {
-                await SMap.openDatasource(datasourceParams)
+                await SMap.openMapWithDatasource(datasourceParams)
               }
               let prefix = `@Label_${this.props.currentUser.userName}#`
               let regexp = new RegExp(prefix)
@@ -242,7 +242,7 @@ export default class MapCut extends React.Component {
                 datasourceParams.alias = returnName
                 let rel = await SMap.createDatasource(datasourceParams)
                 if (rel === true) {
-                  await SMap.openDatasource(datasourceParams)
+                  await SMap.openMapWithDatasource(datasourceParams)
                   DSName.push(info.datasourceName)
                 }
               }

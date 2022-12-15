@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
-import { SMap, WorkspaceType, RNFS as fs } from 'imobile_for_reactnative'
+import { SMap, WorkspaceType, RNFS as fs, SData } from 'imobile_for_reactnative'
 import xml2js from 'react-native-xml2js'
 import { FileTools } from '../../native'
 import { ConstInfo } from '../../constants'
@@ -148,7 +148,7 @@ export const importWorkspace = (params, cb = () => {}) => async (
       } else {
         data = { server: params.path, type }
       }
-      mapsInfo = await SMap.importWorkspaceInfo(data, params.module)
+      mapsInfo = await SData.importWorkspace(data)
       payload = params
     }
     await dispatch({

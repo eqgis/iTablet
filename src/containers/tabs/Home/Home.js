@@ -21,6 +21,7 @@ import {
   SOnlineService,
   SIPortalService,
   SLocation,
+  SData,
 } from 'imobile_for_reactnative'
 import FileTools from '../../../native/FileTools'
 import ConstPath from '../../../constants/ConstPath'
@@ -132,7 +133,7 @@ export default class Home extends Component {
           } else {
             Toast.show(getLanguage(global.language).Prompt.IMPORTED_SUCCESS)
           }
-          result = await SMap.importWorkspaceInfo({
+          result = await SData.importWorkspace({
             server: filePath,
             type: 9,
           })
@@ -143,7 +144,7 @@ export default class Home extends Component {
           //   )
           // }
         } else {
-          let result = await SMap.importWorkspaceInfo({
+          let result = await SData.importWorkspace({
             server: filePath,
             type: 9,
           })
@@ -154,6 +155,7 @@ export default class Home extends Component {
         }
       }
     } catch (e) {
+       
       Toast.show('导入失败')
     } finally {
       // if (isFirstImportWorkspace === true) {
@@ -1089,7 +1091,7 @@ export default class Home extends Component {
     //申请 android 11 读写权限
     let permisson11 = await appUtilsModule.requestStoragePermissionR()
     if (isAllGranted && permisson11) {
-      SMap.setPermisson(true)
+      SData.setPermisson(true)
       // this.init()
     } else {
       this._closeModal()

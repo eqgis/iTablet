@@ -184,7 +184,7 @@ export default class MT_layerManager extends React.Component {
       ) {
         data = this.dealLayers(allLayers)
       } else if (allLayers.length === 0) {
-        await SMap.openDatasource(
+        await SMap.openMapWithDatasource(
           ConstOnline.Google.DSParams,
           global.Type === ChunkType.MAP_COLLECTION
             ? 1

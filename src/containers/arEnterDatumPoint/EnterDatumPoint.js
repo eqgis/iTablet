@@ -13,7 +13,7 @@ import { Container, Button } from '../../components'
 
 import { color } from '../../styles'
 import { getLanguage } from '../../language'
-import { SMap, SCollectSceneFormView, Action } from 'imobile_for_reactnative'
+import { SMap, SCollectSceneFormView, Action, SData } from 'imobile_for_reactnative'
 import { Toast, scaleSize } from '../../utils'
 import { ConstOnline, TouchType } from '../../constants'
 import constants from '../../containers/workspace/constants'
@@ -112,7 +112,7 @@ export default class EnterDatumPoint extends Component {
       let map = await SMap.getCurrentPosition()
       let wsData = JSON.parse(JSON.stringify(ConstOnline.Google))
       wsData.layerIndex = 3
-      let licenseStatus = await SMap.getEnvironmentStatus()
+      let licenseStatus = await SData.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid
       NavigationService.navigate('MapView', {
         // NavigationService.navigate('MapViewSingle', {

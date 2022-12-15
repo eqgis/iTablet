@@ -209,7 +209,7 @@ async function getData(type: string, params: any) {
               },
               confirmText: getLanguage(global.language).Prompt.YES,
               confirmAction: async () => {
-                await SMap.checkCurrentModule()
+                // await SMap.checkCurrentModule()
                 if (!name) return
                 const datasetDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
                 if (datasetDescription?.type === 'onlineService') {

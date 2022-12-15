@@ -153,6 +153,7 @@ export default class ChooseNaviLayer extends React.Component {
         if(result){
           Toast.show(getLanguage(global.language).Prompt.EXPORT_SUCCESS)
         }else{
+           
           Toast.show(getLanguage(global.language).Prompt.EXPORT_FAILED)
         }
       } else {

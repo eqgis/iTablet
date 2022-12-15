@@ -22,7 +22,7 @@ import {
   InputToolbar,
 } from 'react-native-gifted-chat'
 import { SimpleDialog, ImageViewer } from '../Component/index'
-import { SMap, EngineType, DatasetType,RNFS, SLocation } from 'imobile_for_reactnative'
+import { SMap, EngineType, DatasetType,RNFS, SLocation, SData } from 'imobile_for_reactnative'
 import { Container, MTBtn } from '../../../../components'
 import { scaleSize } from '../../../../utils/screen'
 import NavigationService from '../../../NavigationService'
@@ -900,7 +900,7 @@ class Chat extends React.Component {
     } else {
       let wsData = JSON.parse(JSON.stringify(global.language === 'CN'? ConstOnline.OSM:ConstOnline.Google))
       wsData.layerIndex = 0
-      let licenseStatus = await SMap.getEnvironmentStatus()
+      let licenseStatus = await SData.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid
       NavigationService.navigate('MapViewSingle', {
         wsData,
@@ -1063,7 +1063,7 @@ class Chat extends React.Component {
         datasourceParams.alias =
           message.originMsg.message.message.datasourceAlias
         await SMap.createDatasource(datasourceParams)
-        await SMap.openDatasource(datasourceParams)
+        await SMap.openMapWithDatasource(datasourceParams)
       }
       for (let i = 0; i < fileList.length; i++) {
         if (fileList[i].path.indexOf('.json') !== -1) {

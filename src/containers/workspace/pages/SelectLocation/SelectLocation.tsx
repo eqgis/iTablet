@@ -76,7 +76,7 @@ export default class SelectLocation extends React.Component<Props, State>{
 
   componentDidMount() {
     // if (Platform.OS === 'ios') {
-    //   debugger
+    //    
     //   iOSEventEmi.addListener(
     //     "com.supermap.RN.Mapcontrol.single_tap_event_two",
     //     this.onSingleTap,

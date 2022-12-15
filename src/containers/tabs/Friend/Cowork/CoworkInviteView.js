@@ -2,7 +2,7 @@ import React from 'react'
 import { Image, TouchableOpacity, Text, View } from 'react-native'
 import { getLanguage } from '../../../../language'
 import { scaleSize, px } from '../../../../utils/screen'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 import { connect } from 'react-redux'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 import moment from 'moment'
@@ -52,7 +52,7 @@ class CoworkInviteView extends React.Component {
       Toast.show(getLanguage(global.language).Friends.NO_SUCH_MAP)
       return
     }
-    let licenseStatus = await SMap.getEnvironmentStatus()
+    let licenseStatus = await SData.getEnvironmentStatus()
     global.isLicenseValid = licenseStatus.isLicenseValid
     if (!global.isLicenseValid) {
       global.SimpleDialog.set({

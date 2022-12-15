@@ -563,7 +563,7 @@ async function updateToLocal (layerData: {
   }
   let result = false
   try {
-    await SMap.checkCurrentModule()
+    // await SMap.checkCurrentModule()
     _params.setCoworkService({
       groupId: _params.currentTask.groupID,
       taskId: _params.currentTask.id,
@@ -647,7 +647,7 @@ async function uploadToService(layerData: {
   }
   let result = false
   try {
-    await SMap.checkCurrentModule()
+    // await SMap.checkCurrentModule()
     _params.setCoworkService({
       groupId: _params.currentTask.groupID,
       taskId: _params.currentTask.id,

@@ -11,7 +11,7 @@ import { connect } from 'react-redux'
 import { setLicenseInfo } from '../../../../../redux/models/license'
 import { Container, Button } from '../../../../../components'
 import { color } from '../../../../../styles'
-import { LicenseModule, SMap } from 'imobile_for_reactnative'
+import { LicenseModule, SData, SMap } from 'imobile_for_reactnative'
 import { scaleSize, Toast } from '../../../../../utils'
 import styles from '../styles'
 import { getLanguage } from '../../../../../language'
@@ -49,7 +49,7 @@ class LicenseJoinPrivateCloud extends Component {
       licenseInfo.isLicenseValid &&
       licenseInfo.licenseType === 4
     ) {
-      SMap.closeEduLicense()
+      SData.closeEduLicense()
     }
   }
 
@@ -91,18 +91,18 @@ class LicenseJoinPrivateCloud extends Component {
             true,
             getLanguage(global.language).Profile.LICENSE_ACTIVATING,
           )
-        let result = await SMap.applyPrivateCloudLicense(ids)
+        let result = await SData.applyPrivateCloudLicense(ids)
         if (result) {
-          await SMap.setPrivateCloudCloseCallback(async () => {
+          await SData.setPrivateCloudCloseCallback(async () => {
             Toast.show(
               global.language === 'CN'
                 ? '与私有云服务器的连接已断开!'
                 : 'Lost connection with private cloud license server!',
             )
-            let info = await SMap.getEnvironmentStatus()
+            let info = await SData.getEnvironmentStatus()
             this.props.setLicenseInfo(info)
           })
-          let info = await SMap.getEnvironmentStatus()
+          let info = await SData.getEnvironmentStatus()
           this.props.setLicenseInfo(info)
           this.props.navigation.pop(2)
         } else {

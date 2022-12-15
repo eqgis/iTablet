@@ -5,7 +5,7 @@ import { setLicenseInfo } from '../../../../redux/models/license'
 import Container from '../../../../components/Container'
 import { color } from '../../../../styles'
 import { getLanguage } from '../../../../language/index'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 import { scaleSize, Toast } from '../../../../utils'
 import NavigationService from '../../../NavigationService'
 import constants from '../../../../../src/containers/workspace/constants'
@@ -43,7 +43,7 @@ class LicensePage extends Component {
   getLicenseInfo = async () => {
     let info
     try {
-      info = await SMap.getEnvironmentStatus()
+      info = await SData.getEnvironmentStatus()
     } catch (error) {
       info = {}
     }
@@ -69,12 +69,12 @@ class LicensePage extends Component {
         true,
         getLanguage(global.language).Prompt.LOADING,
       )
-      let serialNumber = await SMap.initSerialNumber('')
+      let serialNumber = await SData.initSerialNumber()
       if (serialNumber !== '') {
-        await SMap.recycleLicense()
+        await SData.recycleLicense()
         this.getLicenseInfo()
       } else {
-        await SMap.clearLocalLicense()
+        await SData.clearLocalLicense()
         this.getLicenseInfo()
       }
       global.Loading.setLoading(false)
@@ -122,9 +122,9 @@ class LicensePage extends Component {
       if (licenseId !== '' && returnId !== '') {
         let username = userInfo.userName
         let password = userInfo.password
-        await SMap.loginCloudLicense(username, password)
+        await SData.loginCloudLicense(username, password)
       }
-      let days = await SMap.recycleCloudLicense(licenseId, returnId)
+      let days = await SData.recycleCloudLicense(licenseId, returnId)
       if (days < 0) {
         Toast.show(global.language === 'CN' ? '归还失败' : 'return failed')
       } else {
@@ -149,18 +149,18 @@ class LicensePage extends Component {
   //申请试用许可
   applyTrialLicense = async () => {
     try {
-      let result = await SMap.applyTrialLicense()
-      if (result) {
-        let info = await SMap.getEnvironmentStatus()
-        this.props.setLicenseInfo(info)
-        Toast.show(global.language === 'CN' ? '试用成功' : 'Successful trial')
-      } else {
-        Toast.show(
-          global.language === 'CN'
-            ? '您已经申请过试用许可,请接入正式许可'
-            : 'You have applied for trial license, please access the formal license',
-        )
-      }
+      // let result = await SData.applyTrialLicense()
+      // if (result) {
+      //   let info = await SMap.getEnvironmentStatus()
+      //   this.props.setLicenseInfo(info)
+      //   Toast.show(global.language === 'CN' ? '试用成功' : 'Successful trial')
+      // } else {
+      //   Toast.show(
+      //     global.language === 'CN'
+      //       ? '您已经申请过试用许可,请接入正式许可'
+      //       : 'You have applied for trial license, please access the formal license',
+      //   )
+      // }
     } catch (error) {
       Toast.show(global.language === 'CN' ? '试用失败' : 'fail to get trial')
     }

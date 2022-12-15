@@ -4,7 +4,7 @@ import { Container } from '../../../../components'
 import TouchableItemView from '../TouchableItemView'
 import { getLanguage } from '../../../../language/index'
 import { connect } from 'react-redux'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 import NavigationService from '../../../NavigationService'
 
@@ -37,7 +37,7 @@ class SelectModule extends Component {
   }
 
   navigateToModule = async (module, index, map) => {
-    let licenseStatus = await SMap.getEnvironmentStatus()
+    let licenseStatus = await SData.getEnvironmentStatus()
     global.isLicenseValid = licenseStatus.isLicenseValid
     if (!global.isLicenseValid) {
       global.SimpleDialog.set({

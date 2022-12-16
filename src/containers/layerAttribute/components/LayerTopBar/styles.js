@@ -39,8 +39,8 @@ export default StyleSheet.create({
   btn: {
     backgroundColor: color.itemColorGray2,
     height: scaleSize(80),
-    minWidth: scaleSize(220),
-    paddingHorizontal: scaleSize(20),
+    minWidth: scaleSize(175),
+    paddingHorizontal: scaleSize(8),
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: scaleSize(8),

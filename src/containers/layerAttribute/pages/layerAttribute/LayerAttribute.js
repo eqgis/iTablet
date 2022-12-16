@@ -1813,25 +1813,35 @@ export default class LayerAttribute extends React.Component {
         <MTBtn
           key={'attribute'}
           image={
-            this.state.isShowSystemFields
-              ? getThemeAssets().attribute.icon_attribute_hide
-              : getThemeAssets().attribute.icon_attribute_show
+            getThemeAssets().attribute.rightbar_tool_select_layerlist
           }
           imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
-          onPress={this.showSystemFields}
+          onPress={() => {
+            this.showDrawer(true)
+          }}
         />,
-        <MTBtn
-          key={'undo'}
-          image={getThemeAssets().nav.icon_nav_undo}
-          imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
-          onPress={this.showUndoView}
-        />,
-        <MTBtn
-          key={'search'}
-          image={getThemeAssets().nav.icon_nav_search}
-          imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
-          onPress={this.goToSearch}
-        />,
+        // <MTBtn
+        //   key={'attribute'}
+        //   image={
+        //     this.state.isShowSystemFields
+        //       ? getThemeAssets().attribute.icon_attribute_hide
+        //       : getThemeAssets().attribute.icon_attribute_show
+        //   }
+        //   imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+        //   onPress={this.showSystemFields}
+        // />,
+        // <MTBtn
+        //   key={'undo'}
+        //   image={getThemeAssets().nav.icon_nav_undo}
+        //   imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+        //   onPress={this.showUndoView}
+        // />,
+        // <MTBtn
+        //   key={'search'}
+        //   image={getThemeAssets().nav.icon_nav_search}
+        //   imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+        //   onPress={this.goToSearch}
+        // />,
       ]
     }
     return (
@@ -1882,7 +1892,7 @@ export default class LayerAttribute extends React.Component {
             // marginLeft: scaleSize(90),
           },
           withoutBack: true,
-          // headerRight: this._renderHeader(),
+          headerRight: this._renderHeader(),
           isResponseHeader: true,
         }}
         bottomBar={this.type !== SINGLE_ATTRIBUTE && this.renderToolBar()}
@@ -1890,8 +1900,8 @@ export default class LayerAttribute extends React.Component {
       >
         {this.type !== 'MAP_3D' && (
           <LayerTopBar
-            hasTabBtn
-            tabsAction={this.showDrawer}
+            // hasTabBtn
+            // tabsAction={this.showDrawer}
             orientation={this.props.device.orientation}
             hasAddField={!global.coworkMode}
             hasCamera={global.coworkMode && this.isMediaLayer || !global.coworkMode} // 协作中若原始数据不带多媒体的图层不能进行多媒体采集

@@ -172,6 +172,9 @@ export default class Row extends Component {
     } else if (this.props.data instanceof Array && this.props.data.length > 4) {
       width = CELL_WIDTH
     }
+    if(index === 0) {
+      width = 40
+    }
     if (this.props.renderCell && typeof this.props.renderCell === 'function') {
       return this.props.renderCell({ item, index })
     }

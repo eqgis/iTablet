@@ -308,7 +308,7 @@ export default class LayerTopBar extends React.Component {
             : getThemeAssets().attribute.icon_unrelation,
           key: '关联',
           title: getLanguage(global.language).Map_Attribute
-            .ATTRIBUTE_ASSOCIATION,
+            .DETAIL,
           action: this.relateAction,
           enabled: this.props.canRelated,
         },
@@ -341,7 +341,7 @@ export default class LayerTopBar extends React.Component {
             : getThemeAssets().attribute.icon_unrelation,
           key: '关联',
           title: getLanguage(global.language).Map_Attribute
-            .ATTRIBUTE_ASSOCIATION,
+            .DETAIL,
           action: this.relateAction,
           enabled: this.props.canRelated,
         },
@@ -364,7 +364,7 @@ export default class LayerTopBar extends React.Component {
           ? getThemeAssets().mapTools.icon_tool_multi_media
           : getThemeAssets().mapTools.icon_tool_multi_media_ash,
         key: '拍照',
-        title: getLanguage(global.language).Map_Main_Menu.TAKE_PHOTO,
+        title: getLanguage(global.language).Map_Main_Menu.IMAGE,
         action: this.captureImage,
         enabled: this.props.canRelated,
       })

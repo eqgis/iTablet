@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react'
-import { InteractionManager, View } from 'react-native'
+import { InteractionManager, View, TouchableOpacity } from 'react-native'
 import NavigationService from '../../../NavigationService'
 import {
   Container,
@@ -22,13 +22,15 @@ import {
   StyleUtils,
   screen,
   dataUtil,
+  AppToolBar,
 } from '../../../../utils'
-import { ConstInfo, ConstToolType, ChunkType } from '../../../../constants'
+import { ConstInfo, ConstToolType, ChunkType, AppTabs } from '../../../../constants'
 import { MapToolbar } from '../../../workspace/components'
 import {
   LayerAttributeTable,
   LayerTopBar,
   LocationView,
+  DrawerBar,
 } from '../../components'
 import { getThemeAssets } from '../../../../assets'
 import styles from './styles'
@@ -129,6 +131,8 @@ export default class LayerAttribute extends React.Component {
 
         isShowSystemFields: false,
         descending: false, //属性排列倒序时为true add jiakai
+        isShowDrawer: false,
+        layerData:[],
       }
     }
 
@@ -145,9 +149,10 @@ export default class LayerAttribute extends React.Component {
     this.buttonTitles = params?.buttonTitles || []
     this.buttonActions = params?.buttonActions || []
     this.dismissTitles = params?.dismissTitles || []
+    this.layerData = []
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.type === 'MAP_3D') {
       this.getMap3DAttribute()
     } else if (this.props.currentLayer?.name) {
@@ -191,7 +196,90 @@ export default class LayerAttribute extends React.Component {
     }
     // 添加导航监听,使每次添加对象等导致属性变化的操作,返回到属性页面时,保持刷新
     // this.props.navigation.addListener('focus', this.resetCurrentPage)
+
+    await this.getLayerData()
   }
+
+  // langcaho code ==== start
+  getLayerData = async () => {
+    // 构建图层数据
+    const _params = ToolbarModule.getParams()
+    const layers = await (_params.getLayers())
+    // console.warn(layers)
+    this.layerData = []
+    if(layers) {
+      for(let i = 0; i < layers.length; i ++) {
+        const layer = layers[i]
+        const layerInfo = {
+          name: layer.name,
+          selectable: layer.isSelectable,
+          editable: layer.isEditable,
+          path: layer.path,
+          type: layer.type,
+          visible: layer.isVisible,
+          caption: layer.caption,
+        }
+        // const datasetArrayL = await SMap.querybyAttributeValue("langchao", "line_965018", "isUploaded=0")
+        // const datasetArrayLengthL = datasetArrayL.length
+        // const ids = []
+        // if(datasetArrayLengthL > 0) {
+        //   // const ids = []
+        //   for(let i =0; i < datasetArrayLengthL; i ++) {
+        //     const item = JSON.parse(JSON.stringify(datasetArrayL[i]))
+        //     ids.push(Number(item.SmID))
+        //   }
+        // }
+        const obj = {
+          layerInfo: layerInfo,
+          ids: [], // ids,
+        }
+        if(layer.datasetName === "line_965018" || layer.datasetName === "marker_322" || layer.datasetName === "marker_118081") {
+          this.layerData.push(obj)
+        }
+      }
+    }
+    this.setState({
+      layerData: this.layerData,
+    })
+
+
+  }
+
+  showDrawer = isShow => {
+    this.locationView && this.locationView.show(false)
+    if (!this.drawer) return
+    if (isShow !== undefined && isShow !== this.state.isShowDrawer) {
+      this.setState(
+        {
+          isShowDrawer: isShow,
+        },
+        () => this.drawer.showBar(isShow),
+      )
+    } else if (isShow === undefined) {
+      this.setState(
+        {
+          isShowDrawer: !this.state.isShowDrawer,
+        },
+        () => this.drawer.showBar(this.state.isShowDrawer),
+      )
+    }
+  }
+  drawerOnChange = async ({item, index }) => {
+    // console.warn("11111: " + JSON.stringify(item))
+    const path = item.layerInfo.path
+    const _params = ToolbarModule.getParams()
+    const layers = await (_params.getLayers())
+    if(layers) {
+      for(let i = 0; i < layers.length; i ++) {
+        let layerpath = layers[i].path
+        if(layerpath === path) {
+          ToolbarModule.getParams().setCurrentLayer(layers[i])
+        }
+      }
+    }
+  }
+
+  // langcaho code ==== end
 
   shouldComponentUpdate(nextProps, nextState) {
     let shouldUpdate = (
@@ -383,114 +471,114 @@ export default class LayerAttribute extends React.Component {
     let result = {},
       attributes = {}
       ; (async function () {
-        try {
-          let checkData = this.checkToolIsViable()
-          result = await LayerUtils.getLayerAttribute(
-            JSON.parse(JSON.stringify(this.state.attributes)),
-            this.props.currentLayer.path,
-            currentPage,
-            pageSize !== undefined ? pageSize : PAGE_SIZE,
-            {
-              filter: this.filter,
-            },
-            type,
-          )
+      try {
+        let checkData = this.checkToolIsViable()
+        result = await LayerUtils.getLayerAttribute(
+          JSON.parse(JSON.stringify(this.state.attributes)),
+          this.props.currentLayer.path,
+          currentPage,
+          pageSize !== undefined ? pageSize : PAGE_SIZE,
+          {
+            filter: this.filter,
+          },
+          type,
+        )
 
-          this.total = result.total || 0
-          attributes = result.attributes || []
+        this.total = result.total || 0
+        attributes = result.attributes || []
 
-          // this.noMore =
-          //   Math.floor(this.total / PAGE_SIZE) === currentPage ||
-          //   attributes.data.length < PAGE_SIZE
+        // this.noMore =
+        //   Math.floor(this.total / PAGE_SIZE) === currentPage ||
+        //   attributes.data.length < PAGE_SIZE
 
-          if (this.total === 1 && attributes.data.length === 1) {
-            this.setState({
-              showTable: true,
-              attributes,
-              currentIndex: 0,
-              relativeIndex: 0,
-              currentFieldInfo: attributes.data[0],
-              startIndex: 0,
-              ...checkData,
-              ...others,
-            }, () => {
-              const LayerAttributeState = Object.assign({}, this.state)
-              LayerAttributeState.layerPath = this.props.currentLayer.path
-              LayerUtils.setMapLayerAttribute(LayerAttributeState, this.getTags())
-            })
-            this.setLoading(false)
-            cb && cb(attributes)
-          } else {
-            let newAttributes = JSON.parse(JSON.stringify(attributes))
-            let startIndex =
+        if (this.total === 1 && attributes.data.length === 1) {
+          this.setState({
+            showTable: true,
+            attributes,
+            currentIndex: 0,
+            relativeIndex: 0,
+            currentFieldInfo: attributes.data[0],
+            startIndex: 0,
+            ...checkData,
+            ...others,
+          }, () => {
+            const LayerAttributeState = Object.assign({}, this.state)
+            LayerAttributeState.layerPath = this.props.currentLayer.path
+            LayerUtils.setMapLayerAttribute(LayerAttributeState, this.getTags())
+          })
+          this.setLoading(false)
+          cb && cb(attributes)
+        } else {
+          let newAttributes = JSON.parse(JSON.stringify(attributes))
+          let startIndex =
               others.startIndex >= 0
                 ? others.startIndex
                 : this.state.startIndex || 0
-            // 截取数据，最多显示 ROWS_LIMIT 行
-            if (attributes.data.length > ROWS_LIMIT) {
-              if (type === 'refresh') {
-                newAttributes.data = newAttributes.data.slice(0, ROWS_LIMIT)
-                startIndex = result.startIndex
-              } else {
-                startIndex = result.startIndex + result.resLength - ROWS_LIMIT
-                startIndex =
+          // 截取数据，最多显示 ROWS_LIMIT 行
+          if (attributes.data.length > ROWS_LIMIT) {
+            if (type === 'refresh') {
+              newAttributes.data = newAttributes.data.slice(0, ROWS_LIMIT)
+              startIndex = result.startIndex
+            } else {
+              startIndex = result.startIndex + result.resLength - ROWS_LIMIT
+              startIndex =
                   parseInt((startIndex / PAGE_SIZE).toFixed()) * PAGE_SIZE
 
-                let sliceStartIndex = 0
-                if (attributes.data.length >= ROWS_LIMIT) {
-                  sliceStartIndex =
+              let sliceStartIndex = 0
+              if (attributes.data.length >= ROWS_LIMIT) {
+                sliceStartIndex =
                     parseInt(
                       (
                         (attributes.data.length - ROWS_LIMIT) /
                         PAGE_SIZE
                       ).toFixed(),
                     ) * PAGE_SIZE
-                }
-                newAttributes.data = newAttributes.data.slice(
-                  sliceStartIndex,
-                  attributes.data.length,
-                )
               }
+              newAttributes.data = newAttributes.data.slice(
+                sliceStartIndex,
+                attributes.data.length,
+              )
             }
+          }
 
-            let currentIndex = resetCurrent
-              ? -1
-              : others.currentIndex !== undefined
-                ? others.currentIndex
-                : this.state.currentIndex
+          let currentIndex = resetCurrent
+            ? -1
+            : others.currentIndex !== undefined
+              ? others.currentIndex
+              : this.state.currentIndex
 
-            let relativeIndex =
+          let relativeIndex =
               resetCurrent || currentIndex < 0 ? -1 : currentIndex - startIndex
-            // : currentIndex - startIndex - 1
-            let prevStartIndex = this.state.startIndex
-            this.currentPage = Math.floor(
-              (startIndex + newAttributes.data.length - 1) / PAGE_SIZE,
-            )
-            this.noMore = startIndex + newAttributes.data.length === this.total
-            this.setState(
-              {
-                showTable: true,
-                attributes: newAttributes,
-                currentIndex,
-                relativeIndex,
-                currentFieldInfo:
+          // : currentIndex - startIndex - 1
+          let prevStartIndex = this.state.startIndex
+          this.currentPage = Math.floor(
+            (startIndex + newAttributes.data.length - 1) / PAGE_SIZE,
+          )
+          this.noMore = startIndex + newAttributes.data.length === this.total
+          this.setState(
+            {
+              showTable: true,
+              attributes: newAttributes,
+              currentIndex,
+              relativeIndex,
+              currentFieldInfo:
                   relativeIndex >= 0 && relativeIndex < newAttributes.data.length
                     ? newAttributes.data[relativeIndex]
                     : this.state.currentFieldInfo,
-                startIndex,
-                ...checkData,
-                // ...others,
-              },
-              () => {
-                const LayerAttributeState = Object.assign({}, this.state)
-                LayerAttributeState.layerPath = this.props.currentLayer.path
-                LayerUtils.setMapLayerAttribute(LayerAttributeState, this.getTags())
-                setTimeout(() => {
-                  if (currentIndex === -1) {
-                    this.table?.clearSelected()
-                  }
-                  if (type === 'refresh') {
-                    this.table &&
+              startIndex,
+              ...checkData,
+              // ...others,
+            },
+            () => {
+              const LayerAttributeState = Object.assign({}, this.state)
+              LayerAttributeState.layerPath = this.props.currentLayer.path
+              LayerUtils.setMapLayerAttribute(LayerAttributeState, this.getTags())
+              setTimeout(() => {
+                if (currentIndex === -1) {
+                  this.table?.clearSelected()
+                }
+                if (type === 'refresh') {
+                  this.table &&
                       this.table.scrollToLocation({
                         animated: false,
                         itemIndex: prevStartIndex - startIndex,
@@ -498,27 +586,27 @@ export default class LayerAttribute extends React.Component {
                         viewPosition: 0,
                         viewOffset: COL_HEIGHT,
                       })
-                  } else if (type === 'loadMore') {
-                    this.table &&
+                } else if (type === 'loadMore') {
+                  this.table &&
                       this.table.scrollToLocation({
                         animated: false,
                         itemIndex: newAttributes.data.length - result.resLength,
                         sectionIndex: 0,
                         viewPosition: 1,
                       })
-                  }
-                  this.setLoading(false)
-                  cb && cb(attributes)
-                }, 0)
-              },
-            )
-          }
-        } catch (e) {
-          this.isLoading = false
-          this.setLoading(false)
-          cb && cb(attributes)
+                }
+                this.setLoading(false)
+                cb && cb(attributes)
+              }, 0)
+            },
+          )
         }
-      }.bind(this)())
+      } catch (e) {
+        this.isLoading = false
+        this.setLoading(false)
+        cb && cb(attributes)
+      }
+    }.bind(this)())
   }
 
   /**
@@ -798,7 +886,7 @@ export default class LayerAttribute extends React.Component {
                 data: { fieldInfo },
                 isDetail: true,
               })
-            }, 300);
+            }, 300)
           })
         },
       },
@@ -857,7 +945,7 @@ export default class LayerAttribute extends React.Component {
             deleteFieldData = fieldInfo
             setTimeout(() => {
               this.deleteFieldDialog.setDialogVisible(true)
-            }, 300);
+            }, 300)
           })
         },
       })
@@ -1146,7 +1234,7 @@ export default class LayerAttribute extends React.Component {
             filter: `SmID=${isSingleData
               ? this.state.attributes.data[0][0].value
               : data.rowData[1].value // 0为序号
-              }`, // 过滤条件
+            }`, // 过滤条件
             cursorType: 2, // 2: DYNAMIC, 3: STATIC
           },
         },
@@ -1183,7 +1271,7 @@ export default class LayerAttribute extends React.Component {
               filter: `SmID=${isSingleData
                 ? this.state.attributes.data[0][0].value
                 : data.rowData[1].value // 0为序号
-                }`, // 过滤条件
+              }`, // 过滤条件
               cursorType: 2, // 2: DYNAMIC, 3: STATIC
             },
           },
@@ -1802,6 +1890,8 @@ export default class LayerAttribute extends React.Component {
       >
         {this.type !== 'MAP_3D' && (
           <LayerTopBar
+            hasTabBtn
+            tabsAction={this.showDrawer}
             orientation={this.props.device.orientation}
             hasAddField={!global.coworkMode}
             hasCamera={global.coworkMode && this.isMediaLayer || !global.coworkMode} // 协作中若原始数据不带多媒体的图层不能进行多媒体采集
@@ -1896,6 +1986,19 @@ export default class LayerAttribute extends React.Component {
           ref={ref => this.Popover = ref}
           backgroundStyle={{ backgroundColor: 'rgba(0, 0, 0, 0)' }}
           popoverStyle={{ backgroundColor: 'rgba(0, 0, 0, 1)' }}
+        />
+        {this.state.isShowDrawer && (
+          <TouchableOpacity
+            activeOpacity={1}
+            style={styles.drawerOverlay}
+            onPress={() => this.showDrawer(false)}
+          />
+        )}
+        <DrawerBar
+          ref={ref => (this.drawer = ref)}
+          data={this.state.layerData}
+          index={this.state.currentTabIndex}
+          onChange={this.drawerOnChange}
         />
       </Container>
     )

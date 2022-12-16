@@ -7,7 +7,7 @@
 import * as React from 'react'
 import { FlatList, Animated } from 'react-native'
 import { ListSeparator, ImageButton } from '../../../../components'
-import { scaleSize } from '../../../../utils'
+import { AppToolBar, scaleSize } from '../../../../utils'
 import { getLayerIconByType } from '../../../../assets'
 
 import styles from './styles'
@@ -99,7 +99,7 @@ export default class DrawerBar extends React.Component {
         iconBtnStyle={iconBtnStyle}
         iconStyle={iconStyle}
         icon={icon}
-        title={item.layerInfo.name}
+        title={item.layerInfo.caption}
         direction={'row'}
         onPress={() => this.action({ item, index })}
       />

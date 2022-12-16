@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { scaleSize } from '../../../../utils'
-import { size, color } from '../../../../styles'
+import { size, color, zIndexLevel } from '../../../../styles'
 
 export default StyleSheet.create({
   container: {
@@ -60,5 +60,14 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: color.bgW,
+  },
+  drawerOverlay: {
+    backgroundColor: color.modalBgColor,
+    position: 'absolute',
+    zIndex: zIndexLevel.TWO,
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
 })

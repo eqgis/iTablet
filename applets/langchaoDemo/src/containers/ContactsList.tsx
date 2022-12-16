@@ -282,10 +282,11 @@ class ContactsList extends Component<Props, State> {
         </TouchableOpacity>
         <TouchableOpacity
           style={[{
-            width: dp(20),
-            height: dp(20),
+            width: dp(60),
+            height: dp(60),
             justifyContent:'center',
-            alignItems: 'center',
+            alignItems: 'flex-end',
+            paddingRight: dp(10),
             // backgroundColor: '#ccc',
           }]}
           onPress={() => {
@@ -428,6 +429,7 @@ class ContactsList extends Component<Props, State> {
         flexDirection: 'column',
         justifyContent:'center',
         alignItems: 'center',
+        paddingBottom: dp(20),
       }]}>
         {/* 标题 */}
         <View style={[{
@@ -443,6 +445,34 @@ class ContactsList extends Component<Props, State> {
             fontSize: dp(18),
             color: '#333',
           }]}>{getLanguage(global.language).Map_Settings.ADD_CONTACT}</Text>
+        </View>
+        {/* 联系人电话id */}
+        <View style={[styles.dialogInputContainer]}>
+          <TextInput
+            style = {[styles.dialogInput]}
+            placeholder = {getLanguage(global.language).Map_Settings.USER_ID}
+            value = {this.state.addUserID}
+            onChangeText = {(text:string) => {
+              this.setState({
+                addUserID: text,
+              })
+            }}
+          />
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.clearBtn}
+            onPress={() => {
+              this.setState({
+                addUserID: '',
+              })
+            }}
+          >
+            <Image
+              style={styles.clearImg}
+              resizeMode={'contain'}
+              source={getPublicAssets().common.icon_close}
+            />
+          </TouchableOpacity>
         </View>
         {/* 联系人姓名输入框 */}
         <View style={[styles.dialogInputContainer]}>
@@ -490,36 +520,6 @@ class ContactsList extends Component<Props, State> {
             onPress={() => {
               this.setState({
                 addNumber: '',
-              })
-            }}
-          >
-            <Image
-              style={styles.clearImg}
-              resizeMode={'contain'}
-              source={getPublicAssets().common.icon_close}
-            />
-          </TouchableOpacity>
-        </View>
-        {/* 联系人电话id */}
-        <View style={[styles.dialogInputContainer,{
-          marginBottom: dp(20),
-        }]}>
-          <TextInput
-            style = {[styles.dialogInput]}
-            placeholder = {getLanguage(global.language).Map_Settings.USER_ID}
-            value = {this.state.addUserID}
-            onChangeText = {(text:string) => {
-              this.setState({
-                addUserID: text,
-              })
-            }}
-          />
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={styles.clearBtn}
-            onPress={() => {
-              this.setState({
-                addUserID: '',
               })
             }}
           >

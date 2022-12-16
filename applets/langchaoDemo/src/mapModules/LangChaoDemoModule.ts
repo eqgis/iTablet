@@ -81,7 +81,7 @@ export default class LangChaoDemoModule extends Module {
     this.tabModules = [
       // 系统自带Tab
       MapTabs.MapView,          // 系统自带Tab-地图
-      MapTabs.LayerManager,     // 系统自带Tab-图层
+      // MapTabs.LayerManager,     // 系统自带Tab-图层
       MapTabs.LayerAttribute,   // 系统自带Tab-属性
 
       // todo 用户自定义Tab页面

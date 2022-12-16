@@ -127,6 +127,18 @@ function getData(type, params) {
       //     },
       //   )
       // }
+
+      data.push(
+        {
+          key: 'selectByRectangle',
+          title: getLanguage(global.language).Map_Main_Menu
+            .TOOLS_RECTANGLE_SELECT,
+          // '框选',
+          action: ToolAction.selectByRectangle,
+          size: 'large',
+          image: getThemeAssets().mapTools.icon_tool_frame,
+        },
+      )
       break
     case ConstToolType.SM_MAP_TOOL_MEASURE_LENGTH:
     case ConstToolType.SM_MAP_TOOL_MEASURE_AREA:

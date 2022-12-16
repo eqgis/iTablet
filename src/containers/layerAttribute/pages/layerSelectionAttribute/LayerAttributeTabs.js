@@ -142,7 +142,7 @@ export default class LayerAttributeTabs extends React.Component {
       canBeRedo: false,
       canBeRevert: false,
 
-      isShowSystemFields: true,
+      isShowSystemFields: false,
       //采集标注后属性为true 默认false add jiakai
       isCollection: params && params.isCollection ? params.isCollection : false, // Selection为空，查询最后一条
 
@@ -1077,14 +1077,15 @@ export default class LayerAttributeTabs extends React.Component {
         ref={ref => (this.container = ref)}
         showFullInMap={true}
         headerProps={{
-          title: getLanguage(this.props.language).Map_Label.ATTRIBUTE,
+          // title: getLanguage(this.props.language).Map_Label.ATTRIBUTE,
+          title: getLanguage(global.language).Map_Settings.HISTORICAL_RECORD,
           navigation: this.props.navigation,
           backAction: this.back,
           headerTitleViewStyle: {
             justifyContent: 'flex-start',
             marginLeft: scaleSize(90),
           },
-          headerRight: this._renderHeader(),
+          // headerRight: this._renderHeader(),
         }}
         style={styles.container}
       >

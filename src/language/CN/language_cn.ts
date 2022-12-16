@@ -1687,7 +1687,7 @@ export const language_cn = {
   ATTRIBUTE_EDIT: "编辑",
   ATTRIBUTE_STATISTIC: "统计",
   ATTRIBUTE_ASSOCIATION: "关联",
-  ATTRIBUTE_NO: "序号",
+  ATTRIBUTE_NO: "记录",
   ATTRIBUTE_CURRENT: "当前位置",
   ATTRIBUTE_FIRST_RECORD: "定位到首行",
   ATTRIBUTE_LAST_RECORD: "定位到末行",

@@ -42,13 +42,13 @@ export default class LayerTopBar extends React.Component {
     canRelated?: boolean, // 是否可点击关联
     hasTabBtn?: boolean, // 是否可点击关联
     canAddField?: boolean, // 是否可点击添加属性
-    orientation?: String,
+    orientation?: string,
     canDelete?: boolean, //是否可以点击删除
     currentIndex?: Object,//点击的数据集字段位置
     selectionAttribute?: Object,//判断是否为采集或标注功能跳转属性
     islayerSelection?: Object,//当前属性拦选中的属性的图层名
     layerAttribute?:Object,//是否为地图界面跳转属性
-    type?:String,//我的里面会传一个type过来
+    type?:string,//我的里面会传一个type过来
     attributes?:Object,
     // layerName?:String,
     layerInfo?: Object,
@@ -288,16 +288,16 @@ export default class LayerTopBar extends React.Component {
   renderContentView = () => {
     let data = []
     if (this.props.hasAddField) {
-      data.push({
-        icon: this.props.canAddField
-          ? getPublicAssets().common.icon_plus
-          : getPublicAssets().common.icon_plus_gray,
-        key: '添加',
-        title: getLanguage(global.language).Map_Attribute
-          .ATTRIBUTE_FIELD_ADD,
-        action: this.addAttributeFieldAction,
-        enabled: this.props.canAddField,
-      })
+      // data.push({
+      //   icon: this.props.canAddField
+      //     ? getPublicAssets().common.icon_plus
+      //     : getPublicAssets().common.icon_plus_gray,
+      //   key: '添加',
+      //   title: getLanguage(global.language).Map_Attribute
+      //     .ATTRIBUTE_FIELD_ADD,
+      //   action: this.addAttributeFieldAction,
+      //   enabled: this.props.canAddField,
+      // })
     }
 
     if (this.props.selectionAttribute) {
@@ -325,16 +325,16 @@ export default class LayerTopBar extends React.Component {
       ])
     } else {
       data = data.concat([
-        {
-          icon: this.props.canLocated
-            ? getThemeAssets().attribute.icon_location
-            : getThemeAssets().attribute.icon_unlocation,
-          key: '定位',
-          title: getLanguage(global.language).Map_Attribute
-            .ATTRIBUTE_LOCATION,
-          action: this.locateAction,
-          enabled: this.props.canLocated,
-        },
+        // {
+        //   icon: this.props.canLocated
+        //     ? getThemeAssets().attribute.icon_location
+        //     : getThemeAssets().attribute.icon_unlocation,
+        //   key: '定位',
+        //   title: getLanguage(global.language).Map_Attribute
+        //     .ATTRIBUTE_LOCATION,
+        //   action: this.locateAction,
+        //   enabled: this.props.canLocated,
+        // },
         {
           icon: this.props.canRelated
             ? getThemeAssets().attribute.icon_relation
@@ -364,7 +364,7 @@ export default class LayerTopBar extends React.Component {
           ? getThemeAssets().mapTools.icon_tool_multi_media
           : getThemeAssets().mapTools.icon_tool_multi_media_ash,
         key: '拍照',
-        title: getLanguage(global.language).Map_Main_Menu.CAMERA,
+        title: getLanguage(global.language).Map_Main_Menu.TAKE_PHOTO,
         action: this.captureImage,
         enabled: this.props.canRelated,
       })

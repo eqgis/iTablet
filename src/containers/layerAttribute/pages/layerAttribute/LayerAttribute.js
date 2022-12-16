@@ -127,7 +127,7 @@ export default class LayerAttribute extends React.Component {
         canBeRedo: checkData.canBeRedo,
         canBeRevert: checkData.canBeRevert,
 
-        isShowSystemFields: true,
+        isShowSystemFields: false,
         descending: false, //属性排列倒序时为true add jiakai
       }
     }
@@ -1794,7 +1794,7 @@ export default class LayerAttribute extends React.Component {
             // marginLeft: scaleSize(90),
           },
           withoutBack: true,
-          headerRight: this._renderHeader(),
+          // headerRight: this._renderHeader(),
           isResponseHeader: true,
         }}
         bottomBar={this.type !== SINGLE_ATTRIBUTE && this.renderToolBar()}
@@ -1808,6 +1808,7 @@ export default class LayerAttribute extends React.Component {
             canLocated={this.state.attributes.data.length > 1}
             canRelated={this.state.currentIndex >= 0}
             canDelete={this.state.currentIndex >= 0}
+            hasAddField={false}
             canAddField={
               !(global.coworkMode && dsDescription?.url && dsDescription?.type === 'onlineService') &&
               this.props.currentLayer.name !== undefined &&

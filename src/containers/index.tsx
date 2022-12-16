@@ -339,7 +339,7 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="Personal" component={Personal} options={modalOption(params)} />
       <Stack.Screen name="WebView" component={WebView} options={modalOption(params)} />
       <Stack.Screen name="AboutITablet" component={AboutITablet} options={modalOption(params)} />
-      <Stack.Screen name="LicensePage" component={LicensePage} options={modalOption(params)} />
+      <Stack.Screen name="LicensePage" component={LoginCloud} options={modalOption(params)} />
       <Stack.Screen name="LicenseTypePage" component={LicenseTypePage} options={modalOption(params)} />
       <Stack.Screen name="LicenseModule" component={LicenseModule} options={modalOption(params)} />
       <Stack.Screen name="LicenseJoin" component={LicenseJoin} options={modalOption(params)} />

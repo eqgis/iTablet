@@ -1,7 +1,7 @@
 const pathSep = require('path').sep
 
 function postProcessModulesFilter(module) {
-  if (module['path'].indexOf(pathSep + 'applets/旅行轨迹' + pathSep) > 0) {
+  if (module['path'].indexOf(pathSep + 'applets/tour' + pathSep) > 0) {
     return true
   }
   return false
@@ -33,7 +33,6 @@ function createModuleIdFactory() {
     const regExp =
       pathSep == '\\' ? new RegExp('\\\\', 'gm') : new RegExp(pathSep, 'gm')
     name = name.replace(regExp, '_') //把path中的/换成下划线
-    console.log(name)
     return name
   }
 }

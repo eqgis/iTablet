@@ -74,7 +74,7 @@ export default class Chunk {
       props.openDefaultMap !== undefined ? props.openDefaultMap : true // 是否打开默认地图
 
     this.preAction = props.preAction // action之前的检测，返回false则不执行之后的action
-    this.afterAction = props.afterAction // action之后的检测，返回false则不执行之后的action
+    this.afterAction = props.afterAction // action之前的检测，返回false则不执行之后的action
 
     this.baseMapSource = props.baseMapSource // 默认地图资源
 
@@ -86,7 +86,7 @@ export default class Chunk {
 
     this.onMapLoad = props.onMapLoad //地图/AR地图/三维场景加载完成回调（地图容器控件初始化完成回调）
 
-    this.toolbarModuleData = props.toolbarModuleData ? props.toolbarModuleData : []
+    this.toobarModuleData = props.toolbarModuleData ? props.toolbarModuleData : []
 
     this.isEnterHome =
       props.isEnterHome === false ? false : true // 是否进入首页，默认为true即进入首页
@@ -98,9 +98,9 @@ export default class Chunk {
 
   getTitle = () => this.title
 
-  action = async (user: UserInfo, lastMap: Map, service: DataItemServices) => {
+  action = async (user, lastMap, service) => {
     if (this.preAction && typeof this.preAction === 'function') {
-      const result = await this.preAction()
+      let result = await this.preAction()
       if (!result) return false
     }
     if (
@@ -125,10 +125,10 @@ export default class Chunk {
           )
         }
         //三维也先获取一下上次场景 add xiezhy
-        if (isOpenLastMap) {
+        if(isOpenLastMap){
           NavigationService.navigate('Map3DStack', {screen: 'Map3D', params: {name:lastMap.name}})
-        } else {
-          const fileName = 'OlympicGreen_EXAMPLE'
+        }else{
+          let fileName = 'OlympicGreen_EXAMPLE'
           const homePath = await FileTools.appendingHomeDirectory()
           const cachePath = homePath + ConstPath.CachePath
           const fileDirPath = cachePath + fileName
@@ -311,7 +311,7 @@ export default class Chunk {
         } else {
           wsData.push(data)
         }
-        const param = {
+        let param = {
           wsData,
           mapTitle: this.title,
           isExample: this.isExample,
@@ -332,7 +332,7 @@ export default class Chunk {
     }
 
     if (this.afterAction && typeof this.afterAction === 'function') {
-      const result = await this.afterAction()
+      let result = await this.afterAction()
       if (!result) return false
     }
     return true

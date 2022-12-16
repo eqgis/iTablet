@@ -21,6 +21,7 @@ import { Camera as RNCamera, CameraCaptureError, CameraDevice, PhotoFile, Record
 import { SMediaCollector } from 'imobile_for_reactnative'
 import { getLanguage } from '../../language'
 import { DBRConfig, decode, TextResult } from 'vision-camera-dynamsoft-barcode-reader'
+import * as REA from 'react-native-reanimated'
 
 import styles from './styles'
 import ImageButton from '../../components/ImageButton'
@@ -656,24 +657,19 @@ const MyCamera: ForwardRefRenderFunction<IRefProps, MyCameraProps> = (props, ref
 
   let frameProcessor = undefined
   if (props.type === TYPE.BARCODE) {
-    // 判断是否是调试模式
-    if (typeof atob !== 'undefined') {
-      Toast.show(global.language === 'CN' ? '调试模式无法使用二维码' : 'QR code cannot be used in debugging mode')
-    } else {
-      const REA = require('react-native-reanimated')
-      // 帧处理
-      frameProcessor = useFrameProcessor((frame) => {
-        'worklet'
-        const config: DBRConfig = {}
-        config.template = "{\"ImageParameter\":{\"BarcodeFormatIds\":[\"BF_QR_CODE\"],\"Description\":\"\",\"Name\":\"Settings\"},\"Version\":\"3.0\"}" //scan qrcode only
+    // 帧处理
+    frameProcessor = useFrameProcessor((frame) => {
+      'worklet'
+      const config: DBRConfig = {}
+      config.template = "{\"ImageParameter\":{\"BarcodeFormatIds\":[\"BF_QR_CODE\"],\"Description\":\"\",\"Name\":\"Settings\"},\"Version\":\"3.0\"}" //scan qrcode only
 
-        // 二维码解码
-        const results: TextResult[] = decode(frame, config)
-        if (props.qrCb && results.length > 0) {
-          REA.runOnJS(props.qrCb)(results)
-        }
-      }, [])
-    }
+      // 二维码解码
+      const results: TextResult[] = decode(frame, config)
+      if (props.qrCb && results.length > 0) {
+        REA.runOnJS(props.qrCb)(results)
+        // props.qrCb(results)
+      }
+    }, [])
   }
 
   function getMaxFps(format: CameraDeviceFormat): number {

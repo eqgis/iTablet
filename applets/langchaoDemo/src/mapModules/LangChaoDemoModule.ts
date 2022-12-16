@@ -87,14 +87,12 @@ export default class LangChaoDemoModule extends Module {
       // todo 用户自定义Tab页面
       // {
       //   key: module,
-      //   title: "呼叫中心",
+      //   title: "历史记录2",
       //   //'属性',
       //   image: getImage().telephone1,
       //   selectedImage: getImage().telephone2,
       //   btnClick: () => {
-      //     Toast.show("呼叫中心")
-      //     // Linking.openURL('tel:10086')
-      //     NavigationService.navigate('ContactsList')
+      //     NavigationService.navigate('LayerSelectionAttribute', null)
       //   },
       // },
 
@@ -343,6 +341,20 @@ export default class LangChaoDemoModule extends Module {
     //   //   trackpath = layers[i].path
     //   // }
     // }
+
+    // 将点采集图层设为当前图层
+    // const _params = ToolbarModule.getParams()
+    // const layers = await (_params.getLayers())
+
+    const datasetName = "line_965018"
+    if(layers) {
+      for(let i = 0; i < layers.length; i ++) {
+        const layerDatasetName = layers[i].datasetName
+        if(layerDatasetName === datasetName) {
+          ToolbarModule.getParams().setCurrentLayer(layers[i])
+        }
+      }
+    }
 
     const position = await SMap.getCurrentLocation()
     // 地图定位到指定点位置

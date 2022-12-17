@@ -129,7 +129,7 @@ export default class LayerAttribute extends React.Component {
         canBeRedo: checkData.canBeRedo,
         canBeRevert: checkData.canBeRevert,
 
-        isShowSystemFields: false,
+        isShowSystemFields: true,
         descending: false, //属性排列倒序时为true add jiakai
         isShowDrawer: false,
         layerData:[],
@@ -1547,6 +1547,30 @@ export default class LayerAttribute extends React.Component {
   renderMapLayerAttribute = () => {
     // let buttonNameFilter = this.isMediaLayer ? ['MediaFilePaths', 'MediaServiceIds', 'MediaData'] : [], // 属性表cell显示 查看 按钮
     //   buttonTitles = this.isMediaLayer ? [getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW] : []
+
+    // console.warn("data: " + JSON.stringify(this.state.attributes.data))
+    const tempData = this.state.attributes.data
+    const length = tempData.length
+    const langcahoDismissTitles = []
+    for(let i = 0; i < length; i ++) {
+      const arr = tempData[i]
+      for(let j = 0; j < arr.length; j ++) {
+        const item = arr[j]
+        const name = item.name
+        if (name.toUpperCase().indexOf('SS_') === 0
+        || (name.toUpperCase().indexOf('SM') === 0 && name.toUpperCase() !== "SMLENGTH")
+        || name === "NAME"
+        || name === "NOTES"
+        || name === "MediaData"
+        ) {
+          langcahoDismissTitles.push(name)
+        }
+      }
+    }
+    // const langcahoDismissTitles = ["SmX","SmY","SmLibTileID","SmUserID","SmGeometrySize","SmGeoPosition","SmID","MediaData","SS_MediaType","SmSdriW","SmSdriN","SmSdriE","SmSdriS","SmTopoError","NAME","NOTES"]
+    console.warn("langcahoDismissTitles: " + JSON.stringify(langcahoDismissTitles))
+
+
     let buttonNameFilter = (this.isMediaLayer ? ['MediaData'] : []).concat(this.buttonNameFilter), // 属性表cell显示 查看 按钮
       buttonTitles = (this.isMediaLayer ? [getLanguage(global.language).Map_Tools.VIEW] : []).concat(this.buttonTitles)
     let buttonActions = this.isMediaLayer ? [
@@ -1637,7 +1661,7 @@ export default class LayerAttribute extends React.Component {
       },
     ] : []
     buttonActions = buttonActions.concat(this.buttonActions)
-    const dismissTitles = ['MediaFilePaths', 'MediaServiceIds'].concat(this.dismissTitles)
+    const dismissTitles = ['MediaFilePaths', 'MediaServiceIds'].concat(this.dismissTitles,langcahoDismissTitles)
     const isSingle = this.total === 1 && this.state.attributes.data.length === 1
     return (
       <LayerAttributeTable

@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderLeftWidth: 1,
     borderRightWidth: 1,
-    borderColor: color.gray7,
+    borderColor: color.gray5, // color.gray7,
     // borderBottomWidth: 1,
     //borderBottomColor: color.bgG,
   },

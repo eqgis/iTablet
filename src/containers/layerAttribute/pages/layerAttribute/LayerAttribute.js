@@ -1568,7 +1568,7 @@ export default class LayerAttribute extends React.Component {
       }
     }
     // const langcahoDismissTitles = ["SmX","SmY","SmLibTileID","SmUserID","SmGeometrySize","SmGeoPosition","SmID","MediaData","SS_MediaType","SmSdriW","SmSdriN","SmSdriE","SmSdriS","SmTopoError","NAME","NOTES"]
-    console.warn("langcahoDismissTitles: " + JSON.stringify(langcahoDismissTitles))
+    // console.warn("langcahoDismissTitles: " + JSON.stringify(langcahoDismissTitles))
 
 
     let buttonNameFilter = (this.isMediaLayer ? ['MediaData'] : []).concat(this.buttonNameFilter), // 属性表cell显示 查看 按钮

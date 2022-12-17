@@ -655,7 +655,7 @@ export default class LayerAttributeTable extends React.Component {
     return (
       <Row
         style={{
-          backgroundColor: color.gray7,
+          backgroundColor: color.itemColorGray2, // color.gray7,
           borderTopRightRadius: Platform.OS === 'ios' ? 0 : scaleSize(12),
           borderTopLeftRadius: Platform.OS === 'ios' ? 0 : scaleSize(12),
           borderWidth: 0,

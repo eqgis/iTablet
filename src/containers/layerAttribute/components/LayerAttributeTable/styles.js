@@ -64,7 +64,7 @@ export default StyleSheet.create({
   indexCell: {
     height: ROW_HEIGHT,
     // backgroundColor: color.bgW2,
-    backgroundColor: color.gray7,
+    backgroundColor: color.itemColorGray2, // color.gray7,
     paddingHorizontal: scaleSize(4),
     alignItems: 'center',
     justifyContent: 'center',

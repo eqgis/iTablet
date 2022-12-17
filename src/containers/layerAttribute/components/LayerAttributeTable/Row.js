@@ -187,6 +187,41 @@ export default class Row extends Component {
       item === null || item === undefined || item.fieldInfo === undefined
     // let value = isSingleData ? item : item.value
     let value = item instanceof Object ? item.value : item
+
+    console.warn("value: " + value)
+    switch(value) {
+      case "myName":
+        value = "呼叫人"
+        break
+      case "myPhoneNumber":
+        value = "呼叫人电话"
+        break
+      case "callName":
+        value = "被呼叫人"
+        break
+      case "callPhoneNumber":
+        value = "被呼叫人电话"
+        break
+      case 'localTime':
+        value = "当地时间"
+        break
+      case 'bjTime':
+        value = "北京时间"
+        break
+      case 'duration':
+        value = "通话时长"
+        break
+      case 'isUploaded':
+        value = "是否已提交"
+        break
+      case 'SmLength':
+        value = "长度"
+        break
+
+    }
+
+
+
     let editable, isRequired, defaultValue
     if (isSingleData) {
       // 单个属性，第一列为名称

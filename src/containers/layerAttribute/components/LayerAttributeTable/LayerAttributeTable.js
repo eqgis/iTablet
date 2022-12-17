@@ -641,7 +641,7 @@ export default class LayerAttributeTable extends React.Component {
 
   _renderSectionHeader = ({ section }) => {
     let titles = [...section.title]
-    console.warn("titles: " + JSON.stringify(titles))
+    // console.warn("titles: " + JSON.stringify(titles))
     if (
       this.props.startIndex >= 0 &&
       titles && titles.length > 0 &&

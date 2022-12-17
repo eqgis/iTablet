@@ -1535,7 +1535,7 @@ export default class LayerAttribute extends React.Component {
       <MapToolbar
         navigation={this.props.navigation}
         mapModules={this.props.mapModules}
-        initIndex={2}
+        initIndex={1}
         currentAction={() => {
           this.resetCurrentPage()
         }}

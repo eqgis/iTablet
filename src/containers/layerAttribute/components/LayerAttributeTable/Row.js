@@ -10,6 +10,7 @@ import { scaleSize } from '../../../../utils'
 import { color } from '../../../../styles'
 import Cell from './Cell'
 import CellButton from './CellButton'
+import { getLanguage } from '../../../../language'
 
 const ROW_HEIGHT = scaleSize(80)
 const CELL_WIDTH = 100
@@ -325,7 +326,15 @@ export default class Row extends Component {
     let cells = []
     if (this.props.data instanceof Array) {
       this.props.data.forEach((item, index) => {
-        if (
+        // getLanguage().NAME,
+        // getLanguage().ATTRIBUTE,
+        if(typeof item === 'string' && (
+          item === getLanguage().NAME
+          || item === getLanguage().ATTRIBUTE
+        ) ){
+          console.warn("push item sign: " + JSON.stringify(item))
+          cells.push(this._renderCell(item, index))
+        } else if (
           this.props.dismissIndexes.indexOf(index) < 0 && (
             this.props.isShowSystemFields ||
             typeof item === 'string' ||
@@ -339,6 +348,7 @@ export default class Row extends Component {
             // (item.isSystemField !== undefined && !this._isSystomField(item))
           )
         ) {
+          console.warn("push item: " + JSON.stringify(item))
           cells.push(this._renderCell(item, index))
         }
       })

@@ -215,7 +215,7 @@ export default class MapSetting extends Component {
       <MapToolbar
         navigation={this.props.navigation}
         mapModules={this.props.mapModules}
-        initIndex={3}
+        initIndex={2}
         type={this.type}
       />
     )

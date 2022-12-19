@@ -738,6 +738,24 @@ export default class LayerAttributeTable extends React.Component {
     } else {
       tableData = this.state.tableData
     }
+
+    let lengthObj = null
+      const dataTemp = tableData[0].data
+      // console.warn("dataTemp: " + JSON.stringify(dataTemp))
+      for(let i = 0, length = dataTemp.length; i < length; i ++) {
+        const item = dataTemp[i]
+        // console.warn("tableDataItem: "  + JSON.stringify(item))
+        if(item.name === "SmLength") {
+          lengthObj = item
+          tableData[0].data.splice(i, 1)
+          break
+        }
+      }
+      if(lengthObj) {
+        tableData[0].data.push(lengthObj)
+      }
+
+
     return (
       <SectionList
         ref={ref => (this.table = ref)}

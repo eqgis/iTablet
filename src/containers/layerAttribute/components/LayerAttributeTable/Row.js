@@ -188,7 +188,7 @@ export default class Row extends Component {
     // let value = isSingleData ? item : item.value
     let value = item instanceof Object ? item.value : item
 
-    console.warn("value: " + value)
+    // console.warn("value: " + value)
     switch(value) {
       case "myName":
         value = "呼叫人"
@@ -368,7 +368,7 @@ export default class Row extends Component {
           item === getLanguage().NAME
           || item === getLanguage().ATTRIBUTE
         ) ){
-          console.warn("push item sign: " + JSON.stringify(item))
+          // console.warn("push item sign: " + JSON.stringify(item))
           cells.push(this._renderCell(item, index))
         } else if (
           this.props.dismissIndexes.indexOf(index) < 0 && (
@@ -384,7 +384,7 @@ export default class Row extends Component {
             // (item.isSystemField !== undefined && !this._isSystomField(item))
           )
         ) {
-          console.warn("push item: " + JSON.stringify(item))
+          // console.warn("push item: " + JSON.stringify(item))
           cells.push(this._renderCell(item, index))
         }
       })

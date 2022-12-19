@@ -66,7 +66,7 @@ class changeMapModule extends FunctionModule {
 export default function() {
   return new changeMapModule({
     type: ConstToolType.SM_AR_NAVI,
-    title: getLanguage(global.language).Profile.BASEMAP,
+    title: getLanguage(global.language).Profile.LAYER,
     size: 'large',
     image: getThemeAssets().mine.my_basemap,
   })

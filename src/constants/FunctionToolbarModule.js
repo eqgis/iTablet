@@ -341,7 +341,7 @@ function layerManagerData() {
       themeType: -1,
     },
     {
-      title: global.language === "CN" ? '必应地图' : 'Bing', // BingMap
+      title: global.language === "CN" ? '必应底图' : 'Bing', // BingMap
       action: () => OpenData(ConstOnline.BingMap, 0),
       data: [],
       image: getImage().icon_ditu_3, // getThemeAssets().layerType.layer_image,
@@ -349,7 +349,7 @@ function layerManagerData() {
       themeType: -1,
     },
     {
-      title: '天地图', // 'Tianditu',
+      title: '天地图底图', // 'Tianditu',
       action: ({callback}) => {
         global.SimpleDialog.set({
           text: getLanguage(global.language).Map_Layer.IS_ADD_NOTATION_LAYER,
@@ -375,7 +375,7 @@ function layerManagerData() {
       themeType: -1,
     },
     {
-      title: '天地图-影像', //'Tianditu Image',
+      title: '天地图-影像底图', //'Tianditu Image',
       action: ({callback}) => {
         global.SimpleDialog.set({
           text: getLanguage(global.language).Map_Layer.IS_ADD_NOTATION_LAYER,
@@ -423,7 +423,7 @@ function layerManagerData() {
       themeType: -1,
     },
     {
-      title: "高德", // 'GaoDe',
+      title: "高德底图", // 'GaoDe',
       action: () => OpenData(ConstOnline.GAODE, 0),
       data: [],
       image: getImage().icon_ditu_3, // getThemeAssets().layerType.layer_image,
@@ -431,7 +431,7 @@ function layerManagerData() {
       themeType: -1,
     },
     {
-      title: "高德-影像", //'GaoDe Image',
+      title: "高德-影像底图", //'GaoDe Image',
       action: () => OpenData(ConstOnline.GAODE, 1),
       data: [],
       image: getImage().icon_ditu_3, // getThemeAssets().layerType.layer_image,

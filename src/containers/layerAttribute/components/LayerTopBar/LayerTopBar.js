@@ -383,7 +383,7 @@ export default class LayerTopBar extends React.Component {
       //   action: this.captureImage,
       //   enabled: this.props.canRelated,
       // })
-      const photoObj = {
+      data.splice(1, 0, {
         icon: this.props.canRelated
           ? getThemeAssets().mapTools.icon_tool_multi_media
           : getThemeAssets().mapTools.icon_tool_multi_media_ash,
@@ -391,8 +391,7 @@ export default class LayerTopBar extends React.Component {
         title: getLanguage(global.language).Map_Main_Menu.IMAGE,
         action: this.captureImage,
         enabled: this.props.canRelated,
-      }
-      data.splice(1, 0, photoObj)
+      })
     }
 
     if(this.props.type === 'MY_DATA' || this.props.type === 'NAVIGATION'){

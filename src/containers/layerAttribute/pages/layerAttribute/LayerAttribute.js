@@ -1562,6 +1562,10 @@ export default class LayerAttribute extends React.Component {
         || name === "NAME"
         || name === "NOTES"
         || name === "MediaData"
+        || name === "MediaName"
+        || name === "ModifiedDate"
+        || name === "Description"
+        || name === "HttpAddress"
         ) {
           langcahoDismissTitles.push(name)
         }

@@ -1223,57 +1223,57 @@ export default class Home extends Component {
     if(this.isEnterHome) {
       return null
     }
-
-    return (
-      <View style={{ flex: 1 }}>
-        <Container
-          ref={ref => (this.container = ref)}
-          hideInBackground={false}
-          showFullInMap={true}
-          withoutHeader
-          headerProps={{
-            backAction: this.showExitPop,
-          }}
-          style={styles.container}
-          bottomBar={this.renderTabBar()}
-        >
-          {this.renderHeader()}
-          <View
-            style={{
-              flex: 1,
-              width: '100%',
-              backgroundColor: color.white,
-            }}
-          >
-            <ModuleList
-              importWorkspace={this._onImportWorkspace}
-              currentUser={this.props.currentUser}
-              device={this.props.device}
-              showDialog={this.showDialog}
-              getModuleItem={this.getModuleItem}
-              latestMap={this.props.latestMap}
-              oldMapModules={this.props.appConfig.oldMapModules}
-              mapModules={this.props.mapModules}
-              itemAction={() => {
-                this._closeModal()
-                this.SimpleDialog.set({
-                  text: getLanguage(this.props.language).Prompt.NO_PERMISSION,
-                  confirmText: getLanguage(this.props.language).Prompt.CONFIRM,
-                  confirmAction: this.SimpleDialog.setVisible(false),
-                  cancelBtnVisible:false,
-                })
-                this.SimpleDialog.setVisible(true)
-              }}
-            />
-            {this.renderPopMenu()}
-            {this.renderDialog()}
-            {this.renderExitDialog()}
-            {this._renderSimpleDialog()}
-          </View>
-        </Container>
-        {this.props.guideshow && this.state.mineguide && this.renderGuide()}
-        {this.props.guideshow && this.state.slide && this.renderSlide()}
-      </View>
-    )
+    return null
+    // return (
+    //   <View style={{ flex: 1 }}>
+    //     <Container
+    //       ref={ref => (this.container = ref)}
+    //       hideInBackground={false}
+    //       showFullInMap={true}
+    //       withoutHeader
+    //       headerProps={{
+    //         backAction: this.showExitPop,
+    //       }}
+    //       style={styles.container}
+    //       bottomBar={this.renderTabBar()}
+    //     >
+    //       {this.renderHeader()}
+    //       <View
+    //         style={{
+    //           flex: 1,
+    //           width: '100%',
+    //           backgroundColor: color.white,
+    //         }}
+    //       >
+    //         <ModuleList
+    //           importWorkspace={this._onImportWorkspace}
+    //           currentUser={this.props.currentUser}
+    //           device={this.props.device}
+    //           showDialog={this.showDialog}
+    //           getModuleItem={this.getModuleItem}
+    //           latestMap={this.props.latestMap}
+    //           oldMapModules={this.props.appConfig.oldMapModules}
+    //           mapModules={this.props.mapModules}
+    //           itemAction={() => {
+    //             this._closeModal()
+    //             this.SimpleDialog.set({
+    //               text: getLanguage(this.props.language).Prompt.NO_PERMISSION,
+    //               confirmText: getLanguage(this.props.language).Prompt.CONFIRM,
+    //               confirmAction: this.SimpleDialog.setVisible(false),
+    //               cancelBtnVisible:false,
+    //             })
+    //             this.SimpleDialog.setVisible(true)
+    //           }}
+    //         />
+    //         {this.renderPopMenu()}
+    //         {this.renderDialog()}
+    //         {this.renderExitDialog()}
+    //         {this._renderSimpleDialog()}
+    //       </View>
+    //     </Container>
+    //     {this.props.guideshow && this.state.mineguide && this.renderGuide()}
+    //     {this.props.guideshow && this.state.slide && this.renderSlide()}
+    //   </View>
+    // )
   }
 }

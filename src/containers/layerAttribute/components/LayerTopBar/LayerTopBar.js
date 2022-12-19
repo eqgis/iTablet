@@ -374,7 +374,16 @@ export default class LayerTopBar extends React.Component {
     }
 
     if ((!global.showAIDetect || this.props.selectionAttribute) && this.props.hasCamera) {
-      data.push({
+      // data.push({
+      //   icon: this.props.canRelated
+      //     ? getThemeAssets().mapTools.icon_tool_multi_media
+      //     : getThemeAssets().mapTools.icon_tool_multi_media_ash,
+      //   key: '拍照',
+      //   title: getLanguage(global.language).Map_Main_Menu.IMAGE,
+      //   action: this.captureImage,
+      //   enabled: this.props.canRelated,
+      // })
+      const photoObj = {
         icon: this.props.canRelated
           ? getThemeAssets().mapTools.icon_tool_multi_media
           : getThemeAssets().mapTools.icon_tool_multi_media_ash,
@@ -382,7 +391,8 @@ export default class LayerTopBar extends React.Component {
         title: getLanguage(global.language).Map_Main_Menu.IMAGE,
         action: this.captureImage,
         enabled: this.props.canRelated,
-      })
+      }
+      data.splice(1, 0, photoObj)
     }
 
     if(this.props.type === 'MY_DATA' || this.props.type === 'NAVIGATION'){

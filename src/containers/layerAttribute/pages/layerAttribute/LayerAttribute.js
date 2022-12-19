@@ -1203,42 +1203,6 @@ export default class LayerAttribute extends React.Component {
           }
         }
       }
-      console.warn("data 02: " + JSON.stringify([
-        {
-          mapName: this.props.map.currentMap.name,
-          layerPath: this.props.currentLayer.path,
-          fieldInfo: [
-            {
-              name: isSingleData ? data.rowData.name : data.cellData.name,
-              value: data.value,
-              index: data.index,
-              columnIndex: data.columnIndex,
-              smID: isSingleData
-                ? this.state.attributes.data[0][0].value
-                : data.rowData[1].value,
-            },
-          ],
-          prevData: [
-            {
-              name: isSingleData ? data.rowData.name : data.cellData.name,
-              value: isSingleData ? data.rowData.value : data.cellData.value,
-              index: data.index,
-              columnIndex: data.columnIndex,
-              smID: isSingleData
-                ? this.state.attributes.data[0][0].value
-                : data.rowData[1].value,
-            },
-          ],
-          params: {
-            // index: int,      // 当前对象所在记录集中的位置
-            filter: `SmID=${isSingleData
-              ? this.state.attributes.data[0][0].value
-              : data.rowData[1].value // 0为序号
-            }`, // 过滤条件
-            cursorType: 2, // 2: DYNAMIC, 3: STATIC
-          },
-        },
-      ]))
       this.props
         .setLayerAttributes([
           {

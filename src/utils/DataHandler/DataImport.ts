@@ -325,7 +325,6 @@ async function _importDataset(
         alias,
         engineType: EngineType.UDB,
       },
-      importParams?.datasetName,
     )
     SData.closeDatasource(alias)
     return result

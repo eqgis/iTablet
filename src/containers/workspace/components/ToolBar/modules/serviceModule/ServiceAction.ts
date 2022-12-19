@@ -7,7 +7,6 @@ import {
   EntityType,
   ServiceData,
   SData,
-  SData,
 } from 'imobile_for_reactnative'
 import {
   ConstToolType,

@@ -273,11 +273,10 @@ class NewDataset extends Component {
               newDataset.datasetType,
             )
             if(result){
-              await SProcess.setPrjCoordSys(
-                this.state.title,
-                newDataset.datasetName,
+              await SData.setDatasetPrjCoordSys(
+                {datasourceName:this.state.title,
+                datasetName:newDataset.datasetName},
                 newDataset.datasetPrjValue+"",
-                this.userTempWorkspace,
               )
             }
           }

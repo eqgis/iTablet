@@ -256,7 +256,6 @@ export default class BufferAnalystViewTab extends Component {
     // let dataSets = await SMap.getDatasetsByDatasource(info, true,{mode:'analyst'})
     let dataSets = await SData.getDatasetsByDatasource(info)
     dataSets.list.forEach(item => {
-    dataSets.list.forEach(item => {
       item.key = item.datasetName
       item.value = item.key
       dss.push(item)

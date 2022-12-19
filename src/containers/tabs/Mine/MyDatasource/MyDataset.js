@@ -177,11 +177,8 @@ class MyDataset extends MyDataPage {
         let result = false
         //设置数据集投影
         let datasetName = this.itemInfo.item.datasetName
-        result = await SProcess.setPrjCoordSys(
-          this.datasourceName,
-          datasetName,
-          targetCoords.value+"",
-          !this.isAlreadyOpen && this.from === 'MapView',
+        result = await SData.setDatasetPrjCoordSys( {datasourceName: this.datasourceName,datasetName:datasetName},
+          targetCoords.value+""
         )
         global.Loading.setLoading(false)
         if (result) {

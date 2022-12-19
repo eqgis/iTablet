@@ -196,7 +196,7 @@ class ContactsList extends Component<Props, State> {
   deleteItemAction = () => {
     const id = this.state.selectItem?.ID
     const newdata = JSON.parse(JSON.stringify(this.state.contactData))
-    if(id && id >= 0) {
+    if(id !== undefined && id >= 0) {
       // const newcontact = this.state.contactData.splice(id, 1)
       // this.props.addContact(newcontact)
       newdata.splice(id, 1)

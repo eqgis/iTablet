@@ -1551,6 +1551,7 @@ export default class LayerAttribute extends React.Component {
         || name === "ModifiedDate"
         || name === "Description"
         || name === "HttpAddress"
+        || name === "isUploaded"
         ) {
           langcahoDismissTitles.push(name)
         }

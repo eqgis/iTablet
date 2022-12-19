@@ -196,18 +196,33 @@ class ContactsList extends Component<Props, State> {
   deleteItemAction = () => {
     const id = this.state.selectItem?.ID
     const newdata = JSON.parse(JSON.stringify(this.state.contactData))
+    let tempData = []
     if(id !== undefined && id >= 0) {
       // const newcontact = this.state.contactData.splice(id, 1)
       // this.props.addContact(newcontact)
       newdata.splice(id, 1)
-      this.props.addContact(newdata)
+      for(let i = newdata.length - 1; i >= 0; i --) {
+        const item = {
+          ...newdata[i],
+          ID: i,
+        }
+        console.warn("item: " + i + " - " + JSON.stringify(item))
+        // obj.ID = i
+        tempData.unshift(item)
+      }
+
+
+      console.warn("tempData: " +  JSON.stringify(tempData))
+      this.props.addContact(tempData)
+    } else {
+      tempData = JSON.parse(JSON.stringify(newdata))
     }
 
     // 删除对象
     this.setState({
       morePanShow: false,
       selectItem: null,
-      contactData: newdata,
+      contactData: tempData,
     })
   }
 

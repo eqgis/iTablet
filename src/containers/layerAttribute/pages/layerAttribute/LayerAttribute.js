@@ -1558,7 +1558,7 @@ export default class LayerAttribute extends React.Component {
         const item = arr[j]
         const name = item.name
         if (name.toUpperCase().indexOf('SS_') === 0
-        || (name.toUpperCase().indexOf('SM') === 0 && name.toUpperCase() !== "SMLENGTH")
+        || (name.toUpperCase().indexOf('SM') === 0) // && name.toUpperCase() !== "SMLENGTH"
         || name === "NAME"
         || name === "NOTES"
         || name === "MediaData"

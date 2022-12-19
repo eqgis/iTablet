@@ -37,7 +37,7 @@ import {
   getDetectStyleSettings,
   getDetectTypesSettings,
 } from '../settingData'
-import { SMap, SAIDetectView } from 'imobile_for_reactnative'
+import { SMap, SAIDetectView, SData } from 'imobile_for_reactnative'
 import { scaleSize, screen } from '../../../utils'
 import color from '../../../styles/color'
 import styles from './styles'
@@ -198,7 +198,7 @@ export default class SecondMapSettings extends Component {
   // 获取数据源
   getDatasources = async () => {
     let datas = []
-    let datasources = await SMap.getDatasources()
+    let datasources = await SData.getDatasources()
     datasources.map(item => {
       let obj = {}
       obj.title = item.alias
@@ -218,13 +218,12 @@ export default class SecondMapSettings extends Component {
     try {
       for (let item of data) {
         let datasets = []
-        dataset = await SMap.getDatasetsByDatasource(
+        dataset = await SData.getDatasetsByDatasource(
           {
             server: item.server,
             engineType: item.engineType,
             alias: item.title,
           },
-          false,
         )
         //  
         dataset.list.map(val => {

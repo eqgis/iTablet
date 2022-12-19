@@ -594,7 +594,7 @@ export default class LayerManager_tolbar extends React.Component {
             await SMap.removeLayer(layers[i].path)
           }
           for (let i = 0; i < layers.length; i++) {
-            await SMap.closeDatasource(layers[i].datasourceAlias)
+            await SData.closeDatasource(layers[i].datasourceAlias)
           }
           global.BaseMapSize = 0
         } else {

@@ -34,7 +34,7 @@ async function getData(type: string, params: any) {
       const result = await ServiceAction.getGroupServices(params.currentTask.groupID)
       let _data: any = []
       if (result?.content?.length > 0) {
-        let datasources = await SMap.getDatasources() || []
+        let datasources = await SData.getDatasources() || []
         // let services = []
         const mapName = params.map?.currentMap?.name?.replace(/_[0-9]+$/g, '') || ''
         result.content.forEach(item => {

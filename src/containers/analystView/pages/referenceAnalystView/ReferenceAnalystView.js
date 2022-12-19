@@ -21,6 +21,7 @@ import {
   DatasetType,
   Action,
   GeometryType,
+  SData,
 } from 'imobile_for_reactnative'
 
 const popTypes = {
@@ -288,7 +289,7 @@ export default class ReferenceAnalystView extends Component {
 
   getDataSets = async (info, filter = {}) => {
     let dss = []
-    let dataSets = await SMap.getDatasetsByDatasource(info, true)
+    let dataSets = await SData.getDatasetsByDatasource(info)
 
     dataSets.list.forEach(item => {
       if (filter.typeFilter && filter.typeFilter.length > 0) {

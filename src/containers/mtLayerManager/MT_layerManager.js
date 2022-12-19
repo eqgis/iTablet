@@ -189,8 +189,7 @@ export default class MT_layerManager extends React.Component {
           global.Type === ChunkType.MAP_COLLECTION
             ? 1
             : ConstOnline.Google.layerIndex,
-          false,
-          false, // 分析模块下，显示地图
+          false
         )
         allLayers = await this.props.getLayers()
         data = this.dealLayers(allLayers)
@@ -1042,7 +1041,7 @@ export default class MT_layerManager extends React.Component {
                   //     },
                   //   })
                   // } else {
-                  let datasources = await SMap.getDatasources()
+                  let datasources = await SData.getDatasources()
                   let datasrouceNames = ''
                   for (const datasource of datasources) {
                     const datasourceAlias = datasource.alias

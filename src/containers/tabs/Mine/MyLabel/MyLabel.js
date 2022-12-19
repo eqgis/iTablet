@@ -2,7 +2,7 @@ import { MyDataPage } from '../component'
 import DataHandler from '../../../../utils/DataHandler'
 import { FileTools } from '../../../../native'
 import { ConstPath } from '../../../../constants'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 
 class MyLabel extends MyDataPage {
   constructor(props) {
@@ -99,7 +99,7 @@ class MyLabel extends MyDataPage {
         uploadList = [this.itemInfo.item.name]
       }
 
-      await SMap.copyDataset(datasourcePath, todatasourcePath, uploadList, true)
+      await SData.copyDataset(datasourcePath, todatasourcePath, uploadList, true)
       result = await FileTools.zipFile(archivePath, targetPath)
       FileTools.deleteFile(archivePath)
     }

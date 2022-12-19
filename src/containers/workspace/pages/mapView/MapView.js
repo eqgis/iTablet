@@ -23,6 +23,7 @@ import {
   // SCollectSceneFormView,
   ARElementType,
   ARAction,
+  SData,
 } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import {
@@ -2119,7 +2120,7 @@ export default class MapView extends React.Component {
       )
     }
     while (!initResult) {
-      initResult = await SMap.createDatasource({
+      initResult = await SData.createDatasource({
         alias: collectorDSName,
         engineType: EngineType.UDB,
         server: collectorDSPath + collectorDSName + '.udb',

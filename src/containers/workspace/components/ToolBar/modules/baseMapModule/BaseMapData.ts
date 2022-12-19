@@ -1,7 +1,7 @@
 /**
  * 添加 数据
  */
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 import { getThemeAssets } from '../../../../../../assets'
 import { ConstOnline, OpenData } from '../../../../../../constants'
 import ToolbarBtnType from '../../ToolbarBtnType'
@@ -31,10 +31,7 @@ async function getDatasets(params = {}) {
     if (!_data || !_data.DSParams) {
       return { data, buttons }
     }
-    let datasets = await SMap.getDatasetsByDatasource(
-      _data.DSParams,
-      false,
-    )
+    let datasets = await SData.getDatasetsByDatasource(_data.DSParams)
     let baseLayers: { name: string; image: any; data: SMap.DatasetInfo; type: string }[] = []
     datasets.list.forEach(element => {
       baseLayers.push({

@@ -9,7 +9,7 @@ import { Container } from '../../../../components'
 import { getLayerIconByType } from '../../../../assets'
 import { ListSeparator } from '../../../../components'
 import NavigationService from '../../../../containers/NavigationService'
-import { DatasetType } from 'imobile_for_reactnative'
+import { DatasetType, SData } from 'imobile_for_reactnative'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
 import { SMap } from 'imobile_for_reactnative'
@@ -43,7 +43,7 @@ export default class TemplateSource extends React.Component {
     let data = []
     if (this.type && params.datasource) {
       // 选择数据集
-      let _data = (await SMap.getDatasetsByDatasource(params.datasource)).list
+      let _data = (await SData.getDatasetsByDatasource(params.datasource)).list
       if (_data.length > 0) {
         for (let item of _data) {
           if (
@@ -58,7 +58,7 @@ export default class TemplateSource extends React.Component {
       }
     } else {
       // 选择数据源
-      let _data = await SMap.getLocalDatasources()
+      let _data = await SData.getLocalDatasources()
       for (let item of _data) {
         if (!(item.alias.startsWith('Label_') && item.alias.endsWith('#'))) {
           data.push(item)

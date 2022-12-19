@@ -1,4 +1,4 @@
-import { FileTools,  SMap, EngineType, ARLayerType, DatasetType, FiltedData, TDatasetType, TARLayerType, RNFS, FileInfo } from 'imobile_for_reactnative'
+import { FileTools,  SMap, EngineType, ARLayerType, DatasetType, FiltedData, TDatasetType, TARLayerType, RNFS, FileInfo, SData } from 'imobile_for_reactnative'
 import { ConstPath } from '../../constants'
 import { NativeMethod } from '../../native'
 import { dataUtil } from '..'
@@ -347,7 +347,7 @@ async function _getLocalSandTable(userName: string): Promise<ILocalData[]> {
 }
 
 async function createDatasourceFile(user: UserInfo, datasourcePath: string) {
-  const result = await SMap.createDatasourceFile({
+  const result = await SData.createDatasourceFile({
     server: datasourcePath,
     engineType: EngineType.UDB,
     alias: `Label_${user.userName}#`,
@@ -438,13 +438,13 @@ async function createDefaultDatasource(
   newDatasource: boolean,
   newDataset: boolean,
 ): Promise<ICreateResult> {
-  let result = false
+  let result = ""
   try {
     let server = datasourcePath + datasourceName + '.udb'
     const exist = await FileTools.fileIsExist(server)
     if(!exist) {
       //不存在，创建并打开
-      result = await SMap.createDatasource({
+      result = await SData.createDatasource({
         alias: datasourceName,
         server: server,
         engineType: EngineType.UDB,
@@ -454,47 +454,46 @@ async function createDefaultDatasource(
         //存在，创建新的数据源
         datasourceName = await getAvailableFileNameNoExt(datasourcePath, datasourceName, 'udb')
         server = datasourcePath + datasourceName + '.udb'
-        result = await SMap.createDatasource({
+        result = await SData.createDatasource({
           alias: datasourceName,
           server: server,
           engineType: EngineType.UDB,
         })
       } else {
         //存在，检查是否打开
-        const wsds = await SMap.getDatasources()
+        const wsds = await SData.getDatasources()
         const opends = wsds.filter(item => {
           return item.server === server
         })
         //未打开则在此打开
         if(opends.length === 0) {
-          result = !!await SMap.openMapWithDatasource({
+          result = await SData.openDatasource({
             alias: datasourceName,
             server: server,
             engineType: EngineType.UDB,
-          }, -1)
-        } else {
-          result = true
+          })
         }
       }
 
     }
-    if(result) {
+    if(result != "") {
     //检查打开的数据源中是否有默认的数据集
-      const dsets = await SMap.getDatasetsByDatasource({alias: datasourceName})
+      const dsets = await SData.getDatasetsByDatasource({alias: datasourceName})
       const defualtDset = dsets.list.filter(item => {
         return item.datasetName === datasetName
       })
+      let bDsCreate = false
       //没有则创建
       if(defualtDset.length === 0) {
-        result = await SMap.createDataset(datasourceName, datasetName, datastType)
+        bDsCreate = await SData.createDataset(datasourceName, datasetName, datastType)
       } else {
         //重名则创建新的数据集
         if(newDataset) {
           datasetName = await SMap.getAvailableDatasetName(datasourceName, datasetName)
-          result = await SMap.createDataset(datasourceName, datasetName, datastType)
+          bDsCreate = await SData.createDataset(datasourceName, datasetName, datastType)
         }
       }
-      if(result) {
+      if(bDsCreate) {
         return {
           success: true,
           datasourceName,

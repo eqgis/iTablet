@@ -434,20 +434,18 @@ async function addBaseMap(
   if (getBaseLayers(layers).length === 0) {
     if (data instanceof Array) {
       for (let i = 0; i < data.length; i++) {
-        await SMap.openDatasource(
+        await SMap.openMapWithDatasource(
           data[i].DSParams,
           index !== undefined ? index : data[i].layerIndex,
           false,
-          visible,
         )
       }
       global.BaseMapSize = data.length
     } else {
-      await SMap.openDatasource(
+      await SMap.openMapWithDatasource(
         data.DSParams,
         index !== undefined ? index : data.layerIndex,
-        false,
-        visible,
+        false
       )
       global.BaseMapSize = 1
     }

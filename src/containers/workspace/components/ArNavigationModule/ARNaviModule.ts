@@ -2,7 +2,7 @@
  * AR导航，路径分析管理模块
  */
 
-import { SMap } from "imobile_for_reactnative"
+import { SData, SMap } from "imobile_for_reactnative"
 import { POIInfo, POIInfoOnline, RouteAnalyzeResult } from "imobile_for_reactnative/types/interface/ar"
 
 /** 室外导航数据源及路网数据集信息*/
@@ -44,7 +44,7 @@ export function setData(params: Partial<ARNaviModuleData>) {
 /** 退出AR导航 */
 export async function exit() {
   if(data.naviDatasourceInfo) {
-    await SMap.closeDatasource(data.naviDatasourceInfo.alias)
+    await SData.closeDatasource(data.naviDatasourceInfo.alias)
   }
   data.naviDatasourceInfo = undefined
   data.naviDatasetInfo = undefined

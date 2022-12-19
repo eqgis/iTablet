@@ -315,7 +315,9 @@ async function _importDataset(
     if (index > 0) {
       alias = alias.substring(0, index)
     }
-    const result = await SMap.importDataset(
+
+    //todo xiezhy 需要确认参数类型
+    const result = await SData.importDataset(
       type,
       filePath,
       {
@@ -323,9 +325,9 @@ async function _importDataset(
         alias,
         engineType: EngineType.UDB,
       },
-      importParams,
+      importParams?.datasetName,
     )
-    SMap.closeDatasource(alias)
+    SData.closeDatasource(alias)
     return result
   } catch (error) {
     return false

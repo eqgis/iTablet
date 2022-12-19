@@ -1034,7 +1034,7 @@ class Chat extends React.Component {
     let fileList = await FileTools.getPathList(fileDir)
 
     if (fileList.length > 0) {
-      let datasourceList = await SMap.getDatasources()
+      let datasourceList = await SData.getDatasources()
       let isDatasourceOpen = false
       //是否打开了对应的数据源
       for (let i = 0; i < datasourceList.length; i++) {
@@ -1062,8 +1062,8 @@ class Chat extends React.Component {
         datasourceParams.engineType = EngineType.UDB
         datasourceParams.alias =
           message.originMsg.message.message.datasourceAlias
-        await SMap.createDatasource(datasourceParams)
-        await SMap.openMapWithDatasource(datasourceParams)
+        await SData.createDatasource(datasourceParams)
+        await SMap.openMapWithDatasource(datasourceParams,-1)
       }
       for (let i = 0; i < fileList.length; i++) {
         if (fileList[i].path.indexOf('.json') !== -1) {

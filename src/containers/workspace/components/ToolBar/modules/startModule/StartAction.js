@@ -286,7 +286,6 @@ async function create() {
         await SMap.importSymbolLibrary(value, markerLibPath) // 导入点符号库
         // await params.setCurrentMap()
         // await SMap.removeAllLayer() // 移除所有图层
-        // await SMap.closeDatasource(-1) // 关闭所有数据源
 
         LayerUtils.openDefaultBaseMap()
         await SMap.openTaggingDataset(params.user.currentUser.userName)

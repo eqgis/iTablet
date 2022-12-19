@@ -6,6 +6,8 @@ import {
   PermissionType,
   EntityType,
   ServiceData,
+  SData,
+  SData,
 } from 'imobile_for_reactnative'
 import {
   ConstToolType,
@@ -46,7 +48,7 @@ function isLabelDatasource(datasourceAlias?: string) {
 async function getLabelDatasourceName(datasourceAlias?: string) {
   let _datasourceAlias = datasourceAlias || ''
   const _params: any = ToolbarModule.getParams()
-  if (_datasourceAlias && isLabelDatasource(_datasourceAlias) && await SMap.isDatasourceOpened(_datasourceAlias)) {
+  if (_datasourceAlias && isLabelDatasource(_datasourceAlias) && await SData.isDatasourceOpened(_datasourceAlias)) {
 
   } else if (_datasourceAlias && isLabelDatasource(_datasourceAlias)) {
     _datasourceAlias = `Label_${
@@ -64,11 +66,11 @@ async function addServiceLayer(datasetName: string, datasource?: string) {
   const _params: any = ToolbarModule.getParams()
   let labelUDB = datasource || `Label_${_params.user.currentUser.userName}#`
   if (labelUDB) {
-    const datasourceInfo = await SMap.getDatasourceByAlias(labelUDB)
+    const datasourceInfo = await SData.getDatasourceByAlias(labelUDB)
     if (datasourceInfo?.server) {
       labelUDB = datasourceInfo.server.substring(datasourceInfo.server.lastIndexOf('/') + 1, datasourceInfo.server.lastIndexOf('.'))
     }
-  } else if (!labelUDB || !await SMap.isDatasourceOpened(labelUDB)) {
+  } else if (!labelUDB || !await SData.isDatasourceOpened(labelUDB)) {
     labelUDB = `Label_${
       _params.user.currentUser.userName
     }#`
@@ -484,7 +486,7 @@ async function downloadService(url: string,messageIcon:any) {
     let services = []
     for (const datasource of serviceData) {
       let datasourceName = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
-      const _datasets = await SMap.getDatasetsByDatasource({alias: datasourceName})
+      const _datasets = await SData.getDatasetsByDatasource({alias: datasourceName})
       for (const dataset of datasource.datasets) {
         let canAdd = true
         if(_datasets != null){
@@ -573,7 +575,7 @@ async function updateToLocal (layerData: {
       },
     })
     let datasourceAlias
-    if (layerData?.datasourceAlias && await SMap.isDatasourceOpened(layerData?.datasourceAlias)) {
+    if (layerData?.datasourceAlias && await SData.isDatasourceOpened(layerData?.datasourceAlias)) {
       datasourceAlias = layerData.datasourceAlias
     } else if (isLabelDatasource(layerData?.datasourceAlias)) {
       datasourceAlias = `Label_${
@@ -587,7 +589,7 @@ async function updateToLocal (layerData: {
       if (layerData.url.indexOf('/datasources/') && layerData.url.indexOf('/datasets/')) {
         datasourceAlias = layerData.url.substring(layerData.url.indexOf('datasources/') + 12, layerData.url.indexOf('/datasets'))
       }
-      if (!datasourceAlias || !await SMap.isDatasourceOpened(datasourceAlias)) {
+      if (!datasourceAlias || !await SData.isDatasourceOpened(datasourceAlias)) {
         datasourceAlias = `Label_${
           _params.user.currentUser.userName
         }#`
@@ -734,9 +736,9 @@ async function exportData(name: string, datasourcePath: string, datasets: string
 
     if (dataType === 'WORKSPACE') {
       let workspaceServer = userPath + ConstPath.RelativePath.Temp + name + '/' + name + '.smwu'
-      result = await SMap.copyDatasetToNewWorkspace(datasourcePath, todatasourcePath, datasets, workspaceServer)
+      result = await SData.copyDatasetToNewWorkspace(datasourcePath, todatasourcePath, datasets, workspaceServer)
     } else {
-      result = await SMap.copyDataset(datasourcePath, todatasourcePath, datasets)
+      result = await SData.copyDataset(datasourcePath, todatasourcePath, datasets)
     }
 
     result = result && await FileTools.zipFile(archivePath, targetPath)
@@ -1003,7 +1005,7 @@ async function publishMapService() {
     },
   })
   try {
-    let datasources = await SMap.getDatasources()
+    let datasources = await SData.getDatasources()
     for (const datasource of datasources) {
       const datasourceAlias = datasource.alias
       // 不发布标注图层

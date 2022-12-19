@@ -31,7 +31,7 @@ import { color } from '../../../../styles'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
 import { MapCutSetting, CutListItem, MapCutAddLayer } from '../../compoents'
 import NavigationService from '../../../NavigationService'
-import { DatasetType, SMap, EngineType } from 'imobile_for_reactnative'
+import { DatasetType, SMap, EngineType, SData } from 'imobile_for_reactnative'
 import styles from '../../styles'
 import { getLanguage } from '../../../../language'
 import ConstPath from '../../../../constants/ConstPath'
@@ -85,7 +85,7 @@ export default class MapCut extends React.Component {
       try {
         this.container && this.container.setLoading(true, getLanguage(this.props.language).Prompt.LOADING)
         let layers = await this.props.getLayers()
-        SMap.getDatasources().then(datasources => {
+        SData.getDatasources().then(datasources => {
           let reg = /^Label_(.*)((#$)|(#_\d+$)|(##\d+$))/
           datasources = datasources.filter(
             item =>
@@ -214,9 +214,9 @@ export default class MapCut extends React.Component {
               datasourceParams.server = newDatasourcePath
               datasourceParams.engineType = EngineType.UDB
               datasourceParams.alias = newDatasourceName
-              let rel = await SMap.createDatasource(datasourceParams)
+              let rel = await SData.createDatasource(datasourceParams)
               if (rel === true) {
-                await SMap.openMapWithDatasource(datasourceParams)
+                await SMap.openMapWithDatasource(datasourceParams,-1)
               }
               let prefix = `@Label_${this.props.currentUser.userName}#`
               let regexp = new RegExp(prefix)
@@ -240,9 +240,9 @@ export default class MapCut extends React.Component {
                 datasourceParams.engineType = EngineType.UDB
                 let returnName = await SMap.isAvilableAlias(info.datasourceName)
                 datasourceParams.alias = returnName
-                let rel = await SMap.createDatasource(datasourceParams)
+                let rel = await SData.createDatasource(datasourceParams)
                 if (rel === true) {
-                  await SMap.openMapWithDatasource(datasourceParams)
+                  await SMap.openMapWithDatasource(datasourceParams,-1)
                   DSName.push(info.datasourceName)
                 }
               }
@@ -277,9 +277,9 @@ export default class MapCut extends React.Component {
             ).then(
               () => {
                 if (this.state.saveAsName !== '') {
-                  SMap.closeDatasource(newDatasourceName)
-                  SMap.deleteDatasource(newDatasourcePath)
-                  SMap.deleteDatasource(newDatasourceUDDPath)
+                  SData.closeDatasource(newDatasourceName)
+                  SData.deleteDatasource(newDatasourcePath)
+                  SData.deleteDatasource(newDatasourceUDDPath)
                 }
                 this.container && this.container.setLoading(false)
                 this.isCutting = false

@@ -4,7 +4,7 @@ import { FileTools } from '../../../../native'
 import { getLanguage } from '../../../../language/index'
 import { ConstPath } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
-import { SMap, EngineType } from 'imobile_for_reactnative'
+import { SMap, EngineType, SData } from 'imobile_for_reactnative'
 import { Toast } from '../../../../utils'
 
 class MyDatasource extends MyDataPage {
@@ -180,8 +180,8 @@ class MyDatasource extends MyDataPage {
     datasourceParams.server = newDatasourcePath
     datasourceParams.engineType = EngineType.UDB
     datasourceParams.alias = datasourceAlias
-    await SMap.createDatasource(datasourceParams)
-    SMap.closeDatasource(datasourceAlias)
+    await SData.createDatasource(datasourceParams)
+    await SData.closeDatasource(datasourceAlias)
   }
 }
 

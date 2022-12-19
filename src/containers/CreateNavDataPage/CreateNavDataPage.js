@@ -24,7 +24,7 @@ import {
 import { dataUtil, scaleSize, setSpText, Toast } from '../../utils'
 import color from '../../styles/color'
 import { getLanguage } from '../../language'
-import { SMap, DatasetType } from 'imobile_for_reactnative'
+import { SMap, DatasetType, SData } from 'imobile_for_reactnative'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
 import ModalDropdown from 'react-native-modal-dropdown'
@@ -88,7 +88,7 @@ export default class CreateNavDataPage extends Component {
    * 获取所有数据源，标注数据源除外。没有数据源时，弹出新建对话框 zhangxt
    */
   getDatasource = async () => {
-    let datasource = await SMap.getDatasources()
+    let datasource = await SData.getDatasources()
     let data = []
     datasource.map(item => {
       if (
@@ -334,7 +334,7 @@ export default class CreateNavDataPage extends Component {
         item={item}
         selected={selected}
         onSelect={async item => {
-          let result = await SMap.isPrgCoordSysWGS1984({...item})
+          let result = await SData.isPrgCoordSysWGS1984({...item})
           if(result){
             let data = JSON.parse(JSON.stringify(this.state.sleectedData))
             let has = false

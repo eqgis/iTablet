@@ -15,7 +15,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Container, Input } from '../../../../components'
-import { SMap, DatasetType, SProcess } from 'imobile_for_reactnative'
+import { SMap, DatasetType, SProcess, SData } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import { scaleSize, Toast, dataUtil } from '../../../../utils'
 import { color, size } from '../../../../styles'
@@ -267,11 +267,10 @@ class NewDataset extends Component {
           }, 1000)
         } else {
           for (let newDataset of newDatasets) {
-            let result = await SMap.createDataset(
+            let result = await SData.createDataset(
               this.state.title,
               newDataset.datasetName,
               newDataset.datasetType,
-              this.userTempWorkspace,
             )
             if(result){
               await SProcess.setPrjCoordSys(
@@ -305,10 +304,9 @@ class NewDataset extends Component {
     } else {
       for (let i = 0; i < datasets.length; i++) {
         if (
-          !(await SMap.isAvailableDatasetName(
+          !(await SData.isAvailableDatasetName(
             this.state.title,
             datasets[i].datasetName,
-            this.userTempWorkspace,
           ))
         ) {
           this.badName = datasets[i].datasetName

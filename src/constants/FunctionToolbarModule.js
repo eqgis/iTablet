@@ -1,4 +1,4 @@
-import { SMap, DatasetType, SMediaCollector ,SMap2} from 'imobile_for_reactnative'
+import { SMap, DatasetType, SMediaCollector ,SMap2, SData} from 'imobile_for_reactnative'
 import ConstOnline from './ConstOnline'
 import ConstToolType from './ConstToolType'
 import ToolbarType from './ToolbarType'
@@ -36,7 +36,7 @@ async function OpenData(data, index, callback) {
         }
         // 关闭数据源
         for (let i = 0; i < baseMap.length; i++) {
-          await SMap.closeDatasource(baseMap[i].datasourceAlias)
+          await SData.closeDatasource(baseMap[i].datasourceAlias)
         }
       }
     }

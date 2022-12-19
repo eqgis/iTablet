@@ -171,7 +171,7 @@ class MapSelectList extends React.Component<Props, State> {
                 datasourceParams.server = await FileTools.appendingHomeDirectory(item.path)
                 datasourceParams.engineType = EngineType.UDB
                 datasourceParams.alias = item.name.substring(0, item.name.indexOf('.'))
-                const datasourceAlias = await SMap.openMapWithDatasource(datasourceParams)
+                const datasourceAlias = await SMap.openMapWithDatasource(datasourceParams,-1)//待确认 add xiezhy
                 if(datasourceAlias){
                   Toast.show(getLanguage().Prompt.ADD_SUCCESS)
                 }

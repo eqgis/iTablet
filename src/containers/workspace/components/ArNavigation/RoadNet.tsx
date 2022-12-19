@@ -1,4 +1,4 @@
-import { EngineType, FileTools, SMap } from 'imobile_for_reactnative'
+import { EngineType, FileTools, SData, SMap } from 'imobile_for_reactnative'
 import { NaviDataset } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import React from 'react'
 import { View, TouchableOpacity, Image, Text, FlatList, ListRenderItemInfo } from 'react-native'
@@ -47,11 +47,11 @@ class RoadNet extends React.Component<Props, State> {
 
   openDatasource = async (alias: string, path: string, index: number | undefined = undefined) => {
     try {
-      await SMap.getDatasetsByDatasource({
+      await SData.getDatasetsByDatasource({
         alias: alias,
         server: await FileTools.getHomeDirectory() + path,
         engineType: EngineType.UDB,
-      }, true)
+      })
       const naviData = await SMap.getAllNavData()
       const naviDataset = naviData.filter(item => {
         return item.title === 'dataset'
@@ -97,7 +97,7 @@ class RoadNet extends React.Component<Props, State> {
   closePreDatasource = async () => {
     const prevDatasource = ARNaviModule.getData().naviDatasourceInfo
     if(prevDatasource) {
-      await SMap.closeDatasource(prevDatasource.alias)
+      await SData.closeDatasource(prevDatasource.alias)
     }
   }
 

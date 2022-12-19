@@ -205,6 +205,7 @@ export default class LayerAttribute extends React.Component {
     // 构建图层数据
     const _params = ToolbarModule.getParams()
     const layers = await (_params.getLayers())
+    let index = 0
     // console.warn(layers)
     this.layerData = []
     if(layers) {
@@ -235,11 +236,16 @@ export default class LayerAttribute extends React.Component {
         }
         if(layer.datasetName === "line_965018" || layer.datasetName === "marker_322" || layer.datasetName === "marker_118081") {
           this.layerData.push(obj)
+          if(layer.name === this.props.currentLayer.name) {
+            index = this.layerData.length - 1
+            // break
+          }
         }
       }
     }
     this.setState({
       layerData: this.layerData,
+      currentTabIndex: index
     })
 
 
@@ -311,6 +317,21 @@ export default class LayerAttribute extends React.Component {
       this.noMore = false
       this.props.currentLayer?.name && SMediaCollector.isMediaLayer(this.props.currentLayer.name).then(result => {
         this.isMediaLayer = result
+      })
+      // 改变选择的图层
+      const layers = this.state.layerData
+      let index = this.state.currentTabIndex
+      // console.warn("cur layer: " + JSON.stringify(this.props.currentLayer))
+      for(let i = 0; i < layers.length; i ++) {
+        const layer = layers[i].layerInfo
+        // console.warn("layer: " + JSON.stringify(layer))
+        if(layer.name === this.props.currentLayer.name) {
+          index = i
+          break
+        }
+      }
+      this.setState({
+        currentTabIndex: index,
       })
       this.refresh(null, true)
     } else if (

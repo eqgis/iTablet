@@ -202,7 +202,8 @@ export default class Row extends Component {
       case "callPhoneNumber":
         value = "被呼叫人电话"
         break
-      case 'localTime':
+      case "localTime":
+      case 'localTime_User':
         value = "当地时间"
         break
       case 'bjTime':

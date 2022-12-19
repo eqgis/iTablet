@@ -17,7 +17,7 @@ let serverClientid = "Gvvy19yU"
 let userId = ""
 let username = ""
 let sysOrgid = ""
-let userInfo = {}
+let userInfo: any[] = []
 
 export const getUserInfo = () => {
   return userInfo

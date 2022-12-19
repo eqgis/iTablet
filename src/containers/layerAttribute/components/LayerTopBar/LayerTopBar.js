@@ -452,17 +452,34 @@ export default class LayerTopBar extends React.Component {
         items.push(this.renderBtn(item))
       })
     }
+    if(items.length <= 3) {
+      return (
+        <View
+          style={[
+            styles.rightScrollList,
+            {
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              height: scaleSize(80),
+              width:'100%',
+            },
+          ]}
+        >
+          {items}
+        </View>
+      )
+    } else {
 
-    // if (isScroll) {
-    return (
-      <ScrollView
-        horizontal={true}
-        contentContainerStyle={styles.rightScrollList}
-        showsHorizontalScrollIndicator={false}
-      >
-        {items}
-      </ScrollView>
-    )
+      // if (isScroll) {
+      return (
+        <ScrollView
+          horizontal={true}
+          contentContainerStyle={styles.rightScrollList}
+          showsHorizontalScrollIndicator={false}
+        >
+          {items}
+        </ScrollView>
+      )
     // } else {
     //   return (
     //     <View style={styles.rightList}>
@@ -470,6 +487,7 @@ export default class LayerTopBar extends React.Component {
     //     </View>
     //   )
     // }
+    }
   }
 
   renderBtn = ({ key, icon, title, action, enabled, containerStyle }) => {

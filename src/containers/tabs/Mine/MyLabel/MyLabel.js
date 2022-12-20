@@ -41,7 +41,7 @@ class MyLabel extends MyDataPage {
       'Label_' +
       this.props.user.currentUser.userName +
       '#.udb'
-    return await SMap.removeDatasetByName(
+    return await SData.deleteDataset(
       datasourcePath,
       this.itemInfo.item.name,
     )

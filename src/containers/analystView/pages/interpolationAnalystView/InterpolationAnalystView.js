@@ -649,10 +649,10 @@ export default class InterpolationAnalystView extends Component {
 
                     // 获取默认插值范围
                     let sourceData = {
-                      datasource: data.value,
-                      dataset: dataSets[0].datasetName,
+                      datasourceName: data.value,
+                      datasetName: dataSets[0].datasetName,
                     }
-                    let bounds = (await SMap.getDatasetBounds(sourceData)) || {}
+                    let bounds = (await SData.getDatasetBounds(sourceData)) || {}
                     newStateData = Object.assign(newStateData, {
                       left: parseFloat(bounds.left.toFixed(6)),
                       bottom: parseFloat(bounds.bottom.toFixed(6)),

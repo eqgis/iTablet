@@ -7,7 +7,7 @@ import { scaleSize, Toast } from '../../../../utils'
 import { color } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
 import { View, Text, ScrollView } from 'react-native'
-import { SMap, SProcess, DatasetType } from 'imobile_for_reactnative'
+import { SMap, SProcess, DatasetType, SData } from 'imobile_for_reactnative'
 import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
 
 const popTypes = {
@@ -174,7 +174,7 @@ export default class ProjectionTransformationPage extends Component {
 
   getDataSources = async () => {
     let dss = []
-    let datasources = await SMap.getDatasetsByWorkspaceDatasource()
+    let datasources = await SData._getDatasetsByWorkspaceDatasource()
 
     //过滤只保留矢量数据集
     datasources = this.filtVectDataset(datasources)

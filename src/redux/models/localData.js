@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 import { handleActions } from 'redux-actions'
-import { DatasetType, SMap, EngineType } from 'imobile_for_reactnative'
+import { DatasetType, SMap, EngineType, SData } from 'imobile_for_reactnative'
 import { ConstPath } from '../../constants'
 import { FileTools } from '../../native'
 // Constants
@@ -26,12 +26,17 @@ export const getUdbAndDs = (params = {}, cb = () => {}) => async dispatch => {
       dataSource.path.lastIndexOf('.') - dataSource.path.lastIndexOf('/') - 1,
     )
     const udbPath = await FileTools.appendingHomeDirectory(dataSource.path)
-    const datasets = await SMap.getDatasetsByExternalDatasource({
+    // const datasets = await SData.getDatasetsByExternalDatasource({ 废弃接口 add xiezhy
+    //   server: udbPath,
+    //   alias,
+    //   engineType: EngineType.UDB,
+    // })
+
+    const datasets = await SData.getDatasetsByDatasource({
       server: udbPath,
       alias,
       engineType: EngineType.UDB,
     })
-
     const dss = []
     for (let j = 0; j < datasets.length; j++) {
       if (datasets[j].datasetType === DatasetType.Network) {

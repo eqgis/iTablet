@@ -8,7 +8,7 @@ import { getThemeAssets } from '../../../../assets'
 import { color, size } from '../../../../styles'
 import { View, Text, SectionList, TouchableOpacity, Image, Platform } from 'react-native'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
-import { SMap, SProcess, DatasetType } from 'imobile_for_reactnative'
+import { SMap, SProcess, DatasetType, SData } from 'imobile_for_reactnative'
 import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
 import ImageButton from '../../../../components/ImageButton'
 import NavigationService from '../../../NavigationService'
@@ -145,7 +145,7 @@ export default class ProjectionTargetCoordsPage extends Component {
     // return datasources
 
     let dss = []
-    let datasources = await SMap.getDatasetsByWorkspaceDatasource()
+    let datasources = await SData._getDatasetsByWorkspaceDatasource()
     //过滤只保留矢量数据集
     datasources = this.filtVectDataset(datasources)
 

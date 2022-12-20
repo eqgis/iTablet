@@ -6,7 +6,7 @@ import { getLanguage } from '../../../../language'
 import { scaleSize, Toast } from '../../../../utils'
 import { color, size } from '../../../../styles'
 import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
-import { SMap, SRectifyView } from 'imobile_for_reactnative'
+import { SData, SMap, SRectifyView } from 'imobile_for_reactnative'
 import SampleModeView from '../../components/SampleModeView'
 import { getPublicAssets } from '../../../../assets'
 import NavigationService from '../../../NavigationService'
@@ -38,7 +38,7 @@ export default class RegistrationExecutePage extends Component {
         getLanguage(global.language).Prompt.LOADING,
       )
       try {
-        let data = await SMap.getDatasetsByWorkspaceDatasource()
+        let data = await SData._getDatasetsByWorkspaceDatasource()
         for (let i = 0; i < data.length; i++) {
           let datasource = data[i]
           datasource.title = datasource.alias

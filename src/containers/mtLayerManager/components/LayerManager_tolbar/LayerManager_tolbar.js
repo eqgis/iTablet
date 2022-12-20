@@ -41,7 +41,7 @@ import {
 } from 'react-native'
 import ToolBarSectionList from '../../../workspace/components/ToolBar/components/ToolBarSectionList'
 import styles from './styles'
-import { SMap, DatasetType, SMCollectorType, RNFS, SMediaCollector } from 'imobile_for_reactnative'
+import { SMap, DatasetType, SMCollectorType, RNFS, SMediaCollector, SData } from 'imobile_for_reactnative'
 // import { Dialog } from '../../../../components'
 import { color } from '../../../../styles'
 import { Toast, scaleSize, setSpText, dataUtil, LayerUtils } from '../../../../utils'
@@ -1084,7 +1084,7 @@ export default class LayerManager_tolbar extends React.Component {
             'zip',
           )
           let datasetZipPath = tempPath + exportDatasetName
-          await SMap.getDatasetToGeoJson(
+          await SData.exportDatasetToGeoJsonFile(
             layerData.datasourceAlias,
             layerData.datasetName,
             datasetPath,

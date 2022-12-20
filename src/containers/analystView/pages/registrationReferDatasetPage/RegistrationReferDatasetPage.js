@@ -5,7 +5,7 @@ import { getLanguage } from '../../../../language'
 import { scaleSize, Toast } from '../../../../utils'
 import NavigationService from '../../../NavigationService'
 import { View } from 'react-native'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 
 export default class RegistrationReferDatasetPage extends Component {
   props: {
@@ -31,7 +31,7 @@ export default class RegistrationReferDatasetPage extends Component {
     (async function() {
       this.setLoading(true, getLanguage(global.language).Prompt.LOADING)
       try {
-        let data = await SMap.getDatasetsByWorkspaceDatasource()
+        let data = await SData._getDatasetsByWorkspaceDatasource()
         for (let i = 0; i < data.length; ) {
           let datasource = data[i]
           if (!this.filtDatasource(datasource)) {

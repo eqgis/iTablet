@@ -1,0 +1,38 @@
+{
+	"animations": [
+		{
+			"endFrame": -1,
+			"startFrame": 0,
+			"delay": 0,
+			"duration": 3,
+			"elementID": 3,
+			"layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
+			"modelAnimationIndex": 3,
+			"order": 0,
+			"repeatCount": 0,
+			"name": "打招呼",
+			"type": 1,
+			"category": 2
+		},
+		{
+      "endFrame": -1,
+      "startFrame": 0,
+      "delay": 0,
+      "duration": 6,
+      "elementID": 3,
+      "layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
+      "modelAnimationIndex": 5,
+      "order": 1,
+      "repeatCount": 0,
+      "name": "说话",
+      "type": 1,
+      "category": 2
+    }
+	],
+	"delay": 0,
+	"order": 0,
+	"repeatCount": 0,
+	"name": "博士学打招呼",
+	"type": 2,
+	"category": 2
+}

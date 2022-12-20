@@ -39,6 +39,11 @@ const routev_1_31 = require("./routev_1_31.json")
 const routev_1_32 = require("./routev_1_32.json")
 const routev_1_33 = require("./routev_1_33.json")
 
+// 博士学的打招呼
+const doctorGreet0 = require("./doctorGreet0.json")
+// 超人博士的打招呼
+const doctorGreet1 = require("./doctorGreet1.json")
+
 const routes = {
   route0_11,
   route0_12,
@@ -76,6 +81,9 @@ const routes = {
   routev_1_31,
   routev_1_32,
   routev_1_33,
+
+  doctorGreet0,
+  doctorGreet1,
 }
 
 function getRoute(): typeof routes {

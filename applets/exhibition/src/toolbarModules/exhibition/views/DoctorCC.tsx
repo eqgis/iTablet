@@ -118,6 +118,8 @@ interface State {
   isScan: boolean,
   /** 视屏的路线里面的推演是否到解说部分了 */
   isRouteSpeak: boolean,
+  /** 博士是否在打招呼解说 */
+  isGreetSpeak: boolean,
 }
 
 homePath = ""
@@ -180,6 +182,7 @@ class DoctorCC extends Component<Props, State> {
 
   sideBarIndex: string | undefined = ""
 
+
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -205,6 +208,7 @@ class DoctorCC extends Component<Props, State> {
       selectRouteKey: 'position1',
       isRoutePlay: false,
       isRouteSpeak: false,
+      isGreetSpeak: false,
       btRight: new Animated.Value (
         0,
       ),
@@ -307,6 +311,29 @@ class DoctorCC extends Component<Props, State> {
             clearTimeout(timer01)
           },300)
 
+          let doctorGreet = getRoute().doctorGreet0
+          if(this.state.selectReloaderKey === 'doctor') {
+            doctorGreet = getRoute().doctorGreet0
+          } else if(this.state.selectReloaderKey === 'doctorStudy') {
+            doctorGreet = getRoute().doctorGreet1
+          }
+
+          const animation = JSON.parse(JSON.stringify(doctorGreet))
+
+          // 1. 添加动画
+          await SARMap.addARAnimation(animation)
+          // console.warn(doctorGreet)
+          // 2. 播放动画
+          const tempTimer =  setTimeout(async () => {
+            // 路线动画开始前，停掉箭头追踪功能
+            await SExhibition.stopTrackingTarget()
+            // 开始播放推演动画
+            SARMap.playARAnimation(animation)
+            clearTimeout(tempTimer)
+            this.setState({
+              isGreetSpeak: true,
+            })
+          },300)
 
         }
       }
@@ -345,8 +372,13 @@ class DoctorCC extends Component<Props, State> {
     // 推演动画结束监听
     SARMap.addStopARAnimationListen({
       callback: async () => {
-        this.stopRouteAnimation()
-
+        if(this.state.isGreetSpeak) {
+          this.setState({
+            isGreetSpeak: false,
+          })
+        } else {
+          this.stopRouteAnimation()
+        }
       },
     })
 
@@ -366,11 +398,20 @@ class DoctorCC extends Component<Props, State> {
               source = "researchinstitute"
               break
           }
+          if(this.state.isGreetSpeak) {
+            source = "doctorgreet"
+          }
           if(source !== "") {
             this.isRouteSpeakPlay = source
             SoundUtil.play(source, false, {
               afterAction: () => {
                 SoundUtil.stop(source)
+                if(this.state.isGreetSpeak) {
+                  SARMap.stopARAnimation()
+                  this.setState({
+                    isGreetSpeak: false,
+                  })
+                }
               }
             })
           }
@@ -379,7 +420,9 @@ class DoctorCC extends Component<Props, State> {
             isRouteSpeak: true,
           })
 
-          this.addVideoModel()
+          if(!this.state.isGreetSpeak){
+            this.addVideoModel()
+          }
         }
 
       },
@@ -566,6 +609,7 @@ class DoctorCC extends Component<Props, State> {
     SoundUtil.setSound("lightinsight", `lightinsight.mp3`, Sound.MAIN_BUNDLE)
     SoundUtil.setSound("corporatemission", `corporatemission.mp3`, Sound.MAIN_BUNDLE)
     SoundUtil.setSound("researchinstitute", `researchinstitute.mp3`, Sound.MAIN_BUNDLE)
+    SoundUtil.setSound("doctorgreet", `doctorgreet.m4a`, Sound.MAIN_BUNDLE)
   }
 
   /** 博士的解说数据 */
@@ -2953,7 +2997,7 @@ class DoctorCC extends Component<Props, State> {
               height: dp(300),
             }}
           >
-            {!this.state.isShowFull && !this.state.showGuide && !this.state.showScan && this.renderSideBar()}
+            {!this.state.isShowFull && !this.state.isGreetSpeak && !this.state.showGuide && !this.state.showScan && this.renderSideBar()}
           </Animated.View>
 
         </View>
@@ -2975,8 +3019,8 @@ class DoctorCC extends Component<Props, State> {
             overflow: 'hidden',
           }}
         >
-          {!this.state.isShowFull && !this.state.showGuide && !this.state.showScan && this.renderScanBtn()}
-          {!this.state.isVideoStart && !this.state.showGuide && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderBackBtn()}
+          {!this.state.isShowFull && !this.state.isGreetSpeak && !this.state.showGuide && !this.state.showScan && this.renderScanBtn()}
+          {!this.state.isVideoStart && !this.state.isGreetSpeak && !this.state.showGuide && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderBackBtn()}
           {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isRoutePlay && this.renderPhotoBtn()}
           {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isRoutePlay && this.renderRouteBtn()}
           {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && !this.state.isRoutePlay && this.renderOperationBtn()}

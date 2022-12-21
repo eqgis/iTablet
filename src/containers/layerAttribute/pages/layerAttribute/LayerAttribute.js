@@ -1535,10 +1535,10 @@ export default class LayerAttribute extends React.Component {
 
     // console.warn("data: " + JSON.stringify(this.state.attributes.data))
     const tempData = this.state.attributes.data
-    const length = tempData.length
+    // const length = tempData.length
     const langcahoDismissTitles = []
-    for(let i = 0; i < length; i ++) {
-      const arr = tempData[i]
+    if (tempData.length > 0) {
+      const arr = tempData[0]
       for(let j = 0; j < arr.length; j ++) {
         const item = arr[j]
         const name = item.name

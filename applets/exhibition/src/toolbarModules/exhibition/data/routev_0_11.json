@@ -16,7 +16,7 @@
     },
     {
       "degrees": [
-        30
+        50
       ],
       "delay": 0,
       "duration": 0.2,
@@ -50,7 +50,7 @@
     },
     {
       "degrees": [
-        -30
+        -50
       ],
       "delay": 0,
       "duration": 0.2,

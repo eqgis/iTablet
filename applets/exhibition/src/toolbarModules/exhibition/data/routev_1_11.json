@@ -4,6 +4,40 @@
       "endFrame": -1,
       "startFrame": 0,
       "delay": 0,
+      "duration": 3,
+      "elementID": 3,
+      "layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
+      "modelAnimationIndex": 0,
+      "order": 0,
+      "repeatCount": 0,
+      "name": "站立",
+      "type": 1,
+      "category": 2
+    },
+    {
+      "degrees": [
+        30
+      ],
+      "delay": 0,
+      "duration": 0.2,
+      "nodeType": 1,
+      "elementID": 3,
+      "layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
+      "rotationAxis": {
+        "z": 0,
+        "y": 1,
+        "x": 0
+      },
+      "order": 0,
+      "repeatCount": 0,
+      "name": "转身",
+      "type": 0,
+      "category": 2
+    },
+    {
+      "endFrame": -1,
+      "startFrame": 0,
+      "delay": 0,
       "duration": 28,
       "elementID": 3,
       "layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
@@ -11,6 +45,40 @@
       "order": 0,
       "repeatCount": 0,
       "name": "说话",
+      "type": 1,
+      "category": 2
+    },
+    {
+      "degrees": [
+        -30
+      ],
+      "delay": 0,
+      "duration": 0.2,
+      "nodeType": 1,
+      "elementID": 3,
+      "layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
+      "rotationAxis": {
+        "z": 0,
+        "y": 1,
+        "x": 0
+      },
+      "order": 0,
+      "repeatCount": 0,
+      "name": "转身",
+      "type": 0,
+      "category": 2
+    },
+    {
+      "endFrame": -1,
+      "startFrame": 0,
+      "delay": 0,
+      "duration": 1,
+      "elementID": 3,
+      "layerName": "defaultArModelLayer_1@ARMAP_DEFAULT",
+      "modelAnimationIndex": 0,
+      "order": 0,
+      "repeatCount": 0,
+      "name": "转身缓冲",
       "type": 1,
       "category": 2
     }

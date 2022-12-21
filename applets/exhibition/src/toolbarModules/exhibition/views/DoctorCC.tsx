@@ -420,9 +420,11 @@ class DoctorCC extends Component<Props, State> {
             isRouteSpeak: true,
           })
 
-          if(!this.state.isGreetSpeak){
-            this.addVideoModel()
-          }
+          // if(!this.state.isGreetSpeak){
+          //   this.addVideoModel()
+          // }
+        } else if(result === '站立') {
+          this.addVideoModel()
         }
 
       },
@@ -458,15 +460,17 @@ class DoctorCC extends Component<Props, State> {
       switch (this.state.selectRouteKey) {
         case "position1":
           modelPath = path + "专家.gif"
-          await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id, { path: modelPath, type: 2, size: { x: 0.1, y: 0.1, z: 0.1 }, rotation: 0, position: { x: 0.1, y: -0.03, z: 0 } })
+          await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id, { path: modelPath, type: 2, size: { x: 0.1, y: 0.1, z: 0.1 }, rotation: 0, position: { x: 0.13, y: -0.03, z: -0.1 } })
           break
         case "position2":
           modelPath = path + "金字塔.glb"
-          await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id, { path: modelPath, type: 1, size: { x: 0.06, y: 0.06, z: 0.06 }, rotation: 265, position: { x: 0.1, y: 0.015, z: 0 } })
+          // 1-2
+          await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id, { path: modelPath, type: 1, size: { x: 0.08, y: 0.08, z: 0.08 }, rotation: 247, position: { x: 0.16, y: 0.020, z: -0.1 } })
           break
         case "position3":
           modelPath = path + "ibbc.glb"
-          await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id, { path: modelPath, type: 1, size: { x: 0.04, y: 0.04, z: 0.04 }, rotation: 265, position: { x: 0.08, y: 0.015, z: 0 } })
+          // 1-3
+          await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id, { path: modelPath, type: 1, size: { x: 0.05, y: 0.05, z: 0.05 }, rotation: 255, position: { x: 0.11, y: 0.024, z: -0.1 } })
           break
       }
     }
@@ -488,9 +492,9 @@ class DoctorCC extends Component<Props, State> {
               isRouteSpeak: false,
             })
 
-            if (this.state.selectType === 'video') {
-              this.addVideoModel()
-            }
+            // if (this.state.selectType === 'video') {
+            //   this.addVideoModel()
+            // }
 
             const arrowTimer = setTimeout( async () => {
               // 更新箭头追踪的位置和范围

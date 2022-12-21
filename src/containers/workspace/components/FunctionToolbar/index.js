@@ -8,6 +8,10 @@ const mapDispatchToProps = {}
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
+  null,
+  {
+    forwardRef: true,
+  },
 )(FunctionToolbar)
 
 // export default FunctionToolbar

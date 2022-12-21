@@ -333,7 +333,7 @@ class DoctorCC extends Component<Props, State> {
             this.setState({
               isGreetSpeak: true,
             })
-          },300)
+          },3000)
 
         }
       }

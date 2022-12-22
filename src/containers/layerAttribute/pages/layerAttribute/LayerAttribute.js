@@ -1879,6 +1879,8 @@ export default class LayerAttribute extends React.Component {
       this.state.attributes &&
       this.state.attributes.head &&
       this.state.attributes.head.length > 0
+      && this.state.attributes.data
+      && this.state.attributes.data.length > 0
 
     const dsDescription = LayerUtils.getDatasetDescriptionByLayer(this.props.currentLayer)
 

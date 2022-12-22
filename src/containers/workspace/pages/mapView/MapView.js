@@ -1440,7 +1440,7 @@ export default class MapView extends React.Component {
         addition.Template = this.props.map.currentMap.Template
       }
 
-      this.setLoading(true, getLanguage(this.props.language).Prompt.SAVING)
+      // this.setLoading(true, getLanguage(this.props.language).Prompt.SAVING)
       // 导出(保存)工作空间中地图到模块
       let result = await this.props.saveMap({ mapTitle: mapName, nModule: '', addition })
       if (result || result === '') {

@@ -1597,8 +1597,15 @@ export default class MapView extends React.Component {
   }
 
   /** 处理android系统返回键 */
-  backHandler = () => {
-    return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
+  backHandler = async () => {
+    // return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
+    this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
+    const timer = setTimeout(async()=> {
+      await this.saveMap()
+      this.exitConfirm()
+      clearTimeout(timer)
+    }, 1000)
+    return true
   }
   renderExitDialog = () => {
     return (
@@ -5257,8 +5264,11 @@ export default class MapView extends React.Component {
             // }
             // return this.back()
             this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
-            await this.saveMap()
-            this.exitConfirm()
+            const timer = setTimeout(async()=> {
+              await this.saveMap()
+              this.exitConfirm()
+              clearTimeout(timer)
+            }, 1000)
           },
           type: 'fix',
           headerCenter: this.renderSearchBar(),

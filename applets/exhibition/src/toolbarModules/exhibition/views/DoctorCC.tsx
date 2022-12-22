@@ -639,8 +639,8 @@ class DoctorCC extends Component<Props, State> {
       },
       {
         key: 'mansion',
-        title: getLanguage().ARBUILDING,
-        name: getLanguage().ARBUILDING,
+        title: getLanguage().SANDTABLE,
+        name: getLanguage().SANDTABLE,
         image: getImage().ar_supermap_building,
       },
       {
@@ -699,7 +699,7 @@ class DoctorCC extends Component<Props, State> {
       {
         key: 'mansion',
         title: 'AR超图大厦_学',
-        name: getLanguage().ARBUILDING,
+        name: getLanguage().SANDTABLE,
         image: getImage().ar_supermap_building,
       },
       {

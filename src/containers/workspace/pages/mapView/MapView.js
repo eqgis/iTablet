@@ -1950,6 +1950,8 @@ export default class MapView extends React.Component {
 
       if (this.viewEntire) {
         SMap.viewEntire()
+      }else{
+        SMap.moveToCurrent()
       }
     }.bind(this)())
   }

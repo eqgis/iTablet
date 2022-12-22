@@ -460,17 +460,17 @@ class DoctorCC extends Component<Props, State> {
       switch (this.state.selectRouteKey) {
         case "position1":
           modelPath = path + "专家.gif"
-          await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id, { path: modelPath, type: 2, size: { x: 0.1, y: 0.1, z: 0.1 }, rotation: 0, position: { x: 0.13, y: -0.03, z: -0.1 } })
+          await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id, { path: modelPath, type: 2, size: { x: 0.1, y: 0.1, z: 0.1 }, rotation: { x: 0, y: 0, z: 0 }, position: { x: 0.13, y: -0.03, z: -0.1 } })
           break
         case "position2":
           modelPath = path + "金字塔.glb"
           // 1-2
-          await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id, { path: modelPath, type: 1, size: { x: 0.07, y: 0.07, z: 0.07 }, rotation: 240, position: { x: 0.16, y: 0.020, z: -0.1 } })
+          await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id, { path: modelPath, type: 1, size: { x: 0.07, y: 0.07, z: 0.07 }, rotation: { x: 2, y: 240, z: 0 }, position: { x: 0.16, y: 0.020, z: -0.1 } })
           break
         case "position3":
           modelPath = path + "ibbc.glb"
           // 1-3
-          await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id, { path: modelPath, type: 1, size: { x: 0.05, y: 0.05, z: 0.05 }, rotation: 255, position: { x: 0.11, y: 0.022, z: -0.1 } })
+          await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id, { path: modelPath, type: 1, size: { x: 0.05, y: 0.05, z: 0.05 }, rotation: { x: 0, y: 255, z: 0 }, position: { x: 0.11, y: 0.022, z: -0.1 } })
           break
       }
     }

@@ -7,6 +7,7 @@ const icon_ditu_2 = require('./ditu_2.png')
 const icon_ditu_3 = require('./ditu_3.png')
 const icon_ditu_4 = require('./ditu_4.png')
 const icon_ditu_5 = require('./ditu_5.png')
+const exitApp = require('./icon_exit.png')
 
 const image = {
   flight,
@@ -18,6 +19,7 @@ const image = {
   icon_ditu_3,
   icon_ditu_4,
   icon_ditu_5,
+  exitApp,
 }
 
 function getImage(): typeof image {

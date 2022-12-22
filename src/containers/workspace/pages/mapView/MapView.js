@@ -147,6 +147,7 @@ import {
   collectionModule,
 } from '@/containers/workspace/components/ToolBar/modules'
 import TourAction from '../../../../../applets/langchaoDemo/src/mapFunctionModules/Langchao/TourAction'
+import { getImage } from '../../../../../applets/langchaoDemo/src/assets/Image'
 
 global.markerTag = 118082
 
@@ -5237,6 +5238,7 @@ export default class MapView extends React.Component {
         headerProps={{
           title: this.state.mapTitle,
           navigation: this.props.navigation,
+          backImg: getImage().exitApp,
           headerTitleViewStyle: {
             // justifyContent: 'flex-start',
             // marginLeft: scaleSize(90),

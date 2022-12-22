@@ -2442,7 +2442,7 @@ export const language_cn = {
   NO_SCENE_LIST: "无场景列表",
   NO_SCENE_SELECTED: "未选择场景",
   SWITCHING_MAP: "正在切换地图",
-  CLOSING: "正在关闭地图",
+  CLOSING: '退出中', // "正在关闭地图",
   CLOSING_3D: "正在关闭场景",
   SAVING: "正在保存地图",
   SWITCHING_SUCCESS: "切换成功",

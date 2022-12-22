@@ -79,6 +79,10 @@ interface State {
   isShowFull: boolean
   /** 选中解说模块儿的key */
   selectSpeakKey: 'doctor' | 'pipeLine' | 'mansion' | '3dMap' | 'map' | 'null'
+  /** 解说模块儿要播放的视频路径 */
+  speakVideoUrl: string,
+  /** 解说视屏是否播放 1为播放 0为暂停 */
+  speakRate: number,
   /** 二级目录是否显示 true显示 false不显示 */
   isSecondaryShow: boolean,
   /** 点击合影按钮后截屏获取的图片uri */
@@ -194,6 +198,8 @@ class DoctorCC extends Component<Props, State> {
       selectReloaderKey: 'doctor',
       isShowFull: false,
       selectSpeakKey: 'null',
+      speakVideoUrl: "null",
+      speakRate: 1,
       isSecondaryShow: true,
       uri: 'null',
       isVideoStart: false,
@@ -1679,7 +1685,7 @@ class DoctorCC extends Component<Props, State> {
   }
 
   /** 点击了具体的解说按钮 */
-  speakItemOnpress = async (item: speakItemType) => {
+  speakItemOnpress01 = async (item: speakItemType) => {
     this.timeoutTrigger?.onBackFromSecondMenu()
     if(this.isPlay) {
       SARMap.stopARAnimation()
@@ -1742,6 +1748,55 @@ class DoctorCC extends Component<Props, State> {
     })
 
 
+  }
+
+  speakItemOnpress = async (item: speakItemType) => {
+    this.timeoutTrigger?.onBackFromSecondMenu()
+
+    const home = await FileTools.getHomeDirectory()
+    const path = home + ConstPath.Common + 'Exhibition/AR超超博士/speakVideo/'
+    let url = path + 'pipelinespeak.mp4'
+    // 'doctor' | 'pipeLine' | 'mansion' | '3dMap' | 'map' | 'null'
+    switch(item.key) {
+      case 'doctor':
+        url = path + 'doctorspeak.mp4'
+        break
+      case 'pipeLine':
+        url = path + 'pipelinespeak.mp4'
+        break
+      case 'mansion':
+        url = path + 'mansionspeak.mp4'
+        break
+      case '3dMap':
+        url = path + '3dmapspeak.mp4'
+        break
+      case 'map':
+        url = path + 'flatmapspeak.mp4'
+        break
+
+    }
+
+    // 当再次点击同一解说模块儿时，停止该模块儿的动画和取消选中状态
+    if(this.state.selectSpeakKey === item.key){
+      this.setState({
+        selectSpeakKey: 'null',
+        speakVideoUrl: 'null',
+      })
+      return
+    }
+
+    this.setState({
+      // isSecondaryShow: false,
+      selectSpeakKey: item.key,
+      speakVideoUrl: url,
+    })
+  }
+
+  exitspeak = async () => {
+    this.setState({
+      selectSpeakKey: 'null',
+      speakVideoUrl: 'null',
+    })
   }
 
   /** 点击了具体的动作按钮 */
@@ -2873,6 +2928,74 @@ class DoctorCC extends Component<Props, State> {
     )
   }
 
+  /** 解说模块的视屏界面 */
+  renderSpeakVideo = () => {
+    return(
+      <View
+        style={[{
+          position:'absolute',
+          width:"100%",
+          height: '100%',
+          top: 0,
+          bottom:0,
+          left: 0,
+          right: 0,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }]}
+      >
+        {/* 具体的内容 */}
+        <View
+          style={[{
+            width:"100%",
+            height: '100%',
+          }]}
+        >
+          <Video
+            source={{uri: this.state.speakVideoUrl}}
+            style={[{
+              width: '100%',
+              height: '100%',
+              // borderRadius: dp(15),
+            }]}
+            rate={this.state.speakRate} // 控制暂停/播放，0 代表暂停paused, 1代表播放normal.
+            paused={false}
+            volume={1}             // 声音的放大倍数，0 代表没有声音，就是静音muted, 1 代表正常音量 normal，更大的数字表示放大的倍数
+            muted={false}           // true代表静音，默认为false.
+            resizeMode='cover'   // 视频的自适应伸缩铺放行为，
+            controls={false}        //显示控制按钮
+            // onLoad={this.onLoad}           // 当视频加载完毕时的回调函数
+            // onLoadStart={this.loadStart}   // 当视频开始加载时的回调函数
+            // onProgress={this.onProgress}   //  进度控制，每250ms调用一次，以获取视频播放的进度
+            onEnd={this.exitspeak}             // 当视频播放完毕后的回调函数
+            onError={this.videoError}         // 当视频不能加载，或出错后的回调函数
+
+            repeat={false}                     // 是否重复播放
+          />
+
+        </View>
+        <TouchableOpacity
+          style={[styles.imageBtn,{
+            position: 'absolute',
+            top: dp(20),
+            left: dp(10),
+          }]}
+          onPress={this.exitspeak}
+        >
+          <View
+            style={[styles.imageBtnView]}
+          >
+            <Image
+              style={[styles.imageBtnImg]}
+              source={getImage().icon_return}
+            />
+          </View>
+
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
 
   /** 解说模块的按钮引导界面 */
   renderStartGuide = () => {
@@ -3001,7 +3124,7 @@ class DoctorCC extends Component<Props, State> {
               height: dp(300),
             }}
           >
-            {!this.state.isShowFull && !this.state.isGreetSpeak && !this.state.showGuide && !this.state.showScan && this.renderSideBar()}
+            {!this.state.isShowFull && !this.state.isGreetSpeak && !this.state.showGuide && !this.state.showScan && (this.state.selectType === 'speak' ? this.state.speakVideoUrl === "null" : true ) && this.renderSideBar()}
           </Animated.View>
 
         </View>
@@ -3023,8 +3146,8 @@ class DoctorCC extends Component<Props, State> {
             overflow: 'hidden',
           }}
         >
-          {!this.state.isShowFull && !this.state.isGreetSpeak && !this.state.showGuide && !this.state.showScan && this.renderScanBtn()}
-          {!this.state.isVideoStart && !this.state.isGreetSpeak && !this.state.showGuide && this.state.videoUrl === 'null' && this.state.uri === 'null' && this.renderBackBtn()}
+          {!this.state.isShowFull && !this.state.isGreetSpeak && !this.state.showGuide && !this.state.showScan && (this.state.selectType === 'speak' ? this.state.speakVideoUrl === "null" : true ) && this.renderScanBtn()}
+          {!this.state.isVideoStart && !this.state.isGreetSpeak && !this.state.showGuide && this.state.videoUrl === 'null' && this.state.uri === 'null' && (this.state.selectType === 'speak' ? this.state.speakVideoUrl === "null" : true ) && this.renderBackBtn()}
           {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isRoutePlay && this.renderPhotoBtn()}
           {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isRoutePlay && this.renderRouteBtn()}
           {this.state.isShowFull && (this.state.selectType === 'video' || this.state.selectType === 'photo') && this.state.videoUrl === 'null' && this.state.uri === 'null' && !this.state.isVideoStart && !this.state.isRoutePlay && this.renderOperationBtn()}
@@ -3037,6 +3160,8 @@ class DoctorCC extends Component<Props, State> {
         {/* 录屏的预览和录像中界面 */}
         {this.state.isShowFull && this.state.selectType === 'video' && this.state.videoTime >= 0 && this.renderVideotime()}
         {this.state.selectType === 'video' && this.state.videoUrl !== 'null' && this.renderVideo()}
+
+        {this.state.selectType === 'speak' && this.state.speakVideoUrl !== 'null' && this.renderSpeakVideo()}
 
 
         {/* 解说模块的按钮引导 */}

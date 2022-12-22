@@ -5250,12 +5250,15 @@ export default class MapView extends React.Component {
                 ? scaleSize(96)
                 : 0,
           },
-          backAction: event => {
+          backAction: async (event) => {
             // this.backPositon = {
             //   x: event?.nativeEvent.pageX,
             //   y: event?.nativeEvent.pageY,
             // }
-            return this.back()
+            // return this.back()
+            this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
+            await this.saveMap()
+            this.exitConfirm()
           },
           type: 'fix',
           headerCenter: this.renderSearchBar(),

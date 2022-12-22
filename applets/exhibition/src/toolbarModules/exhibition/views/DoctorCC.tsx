@@ -476,7 +476,7 @@ class DoctorCC extends Component<Props, State> {
         case "position3":
           modelPath = path + "ibbc.glb"
           // 1-3
-          await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id, { path: modelPath, type: 1, size: { x: 0.05, y: 0.05, z: 0.05 }, rotation: { x: 0, y: 255, z: 0 }, position: { x: 0.11, y: 0.022, z: -0.1 } })
+          await SARMap.addNewElementModel(this.ARModel.layerName, this.ARModel.id, { path: modelPath, type: 1, size: { x: 0.05, y: 0.05, z: 0.05 }, rotation: { x: -2, y: 255, z: 0 }, position: { x: 0.11, y: 0.022, z: -0.1 } })
           break
       }
     }

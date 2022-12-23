@@ -23,6 +23,11 @@ function getToolbarSize(type, orientation, additional = {}) {
   switch (type) {
     case ToolbarType.list: // 列表
     case ToolbarType.selectableList: // 可选择列表，每行左方多选框
+      height =
+          orientation.indexOf('LANDSCAPE') === 0
+            ? Height.LIST_HEIGHT_L_LANGCAHO
+            : Height.LIST_HEIGHT_P_LANGCAHO
+      break
     case ToolbarType.createPlotAnimation: // 创建标绘推演
     case ToolbarType.animationNode: // 态势推演
       height =

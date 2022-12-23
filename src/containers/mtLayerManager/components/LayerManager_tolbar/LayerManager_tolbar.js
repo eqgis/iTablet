@@ -622,7 +622,7 @@ export default class LayerManager_tolbar extends React.Component {
     ) {
       //'切换底图') {
       this.setVisible(true, ConstToolType.SM_MAP_LAYER_BASE_CHANGE, {
-        height: ConstToolType.TOOLBAR_HEIGHT[5],
+        height: ConstToolType.TOOLBAR_HEIGHT[2],
         layerData: this.state.layerData,
       })
     } else if (

@@ -55,7 +55,7 @@ class changeMapModule extends FunctionModule {
     ToolbarModule.setData({ type: ConstToolType.SM_MAP_LAYER_BASE_CHANGE }) //切换底图前先清空一下module数据避免点击方法调用错误 add jiakai
     _params.showFullMap(true)
     _params.setToolbarVisible(true, ConstToolType.SM_MAP_LAYER_BASE_CHANGE, {
-      height: ConstToolType.TOOLBAR_HEIGHT[5],
+      height: ConstToolType.TOOLBAR_HEIGHT[2],
       containerType: 'list',
       data: data,
       isFullScreen: true,

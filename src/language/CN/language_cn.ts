@@ -2894,9 +2894,9 @@ export const language_cn = {
   USER_ID: "用户id", // User id
   USER_NAME: "用户姓名", // User name
   DEPARTMENT_ID: "部门id", // Department id
-  INPUT_CONTACT_ID: "请输入用户id", // Please enter the user id
-  INPUT_CONTACT_NAME: "请输入联系人姓名", // Please enter the contact name
-  CHECK_CONTACT_NUMBER: "请核对号码后输入", // Please check the phone number
+  INPUT_CONTACT_ID: "用户id不能为空",
+  INPUT_CONTACT_NAME: "联系人姓名不能为空",
+  CHECK_CONTACT_NUMBER: "电话号码由数字组成，且长度在5到20之间",
 
 
 

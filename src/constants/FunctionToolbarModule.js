@@ -409,7 +409,12 @@ function layerManagerData() {
           cancelText: getLanguage(global.language).Prompt.NO,
           confirmAction: () => {
             let data = []
-            data.push(ConstOnline.tiandituTerCN())
+            // data.push(ConstOnline.tiandituTerCN())
+            if (global.language === 'CN') {
+              data.push(ConstOnline.tiandituImgCN())
+            } else {
+              data.push(ConstOnline.tiandituImgEN())
+            }
             data.push(ConstOnline.tiandituTer())
             OpenData(data, 0, callback)
           },

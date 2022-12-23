@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "启动图标-iTablet-iocn.png",
+      "filename" : "langchaologo.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "启动图标-iTablet-iocn@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "启动图标-iTablet-iocn@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

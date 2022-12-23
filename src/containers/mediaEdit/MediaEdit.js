@@ -364,7 +364,8 @@ export default class MediaEdit extends React.Component {
       }
       if (modifiedData.length === 0) {
         this.container && this.container.setLoading(false)
-        Toast.show(getLanguage(this.props.language).Prompt.NO_NEED_TO_SAVE)
+        // Toast.show(getLanguage(this.props.language).Prompt.NO_NEED_TO_SAVE)
+        Toast.show(getLanguage(this.props.language).Prompt.SAVE_SUCCESSFULLY)
         return
       }
 

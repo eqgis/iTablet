@@ -2892,5 +2892,8 @@ export const language_en: typeof language_cn = {
   USER_ID: "User id", // To be tanslated
   USER_NAME: "User name", // To be tanslated
   DEPARTMENT_ID: "Department id", // To be tanslated
+  INPUT_CONTACT_ID: "Please enter the user id", // To be tanslated
+  INPUT_CONTACT_NAME: "Please enter the contact name", // To be tanslated
+  CHECK_CONTACT_NUMBER: "Please check the phone number", // To be tanslated
 
 }

@@ -142,6 +142,23 @@ class ContactsList extends Component<Props, State> {
   }
 
   addConfirm = () => {
+    if(this.state.addUserID === "") {
+      Toast.show(getLanguage(this.props.language).Prompt.INPUT_CONTACT_ID)
+      return
+    }
+    if(this.state.addName === "") {
+      Toast.show(getLanguage(this.props.language).Prompt.INPUT_CONTACT_NAME)
+      return
+    }
+    const phone = this.state.addNumber
+    if(phone.length < 5 || phone.length > 20) {
+      Toast.show(getLanguage(this.props.language).Prompt.CHECK_CONTACT_NUMBER)
+      this.setState({
+        addNumber: "",
+      })
+      return
+    }
+
     const newcontact = this.state.contactData
     if(this.state.selectItem) {
       const id = this.state.selectItem.ID
@@ -528,8 +545,13 @@ class ContactsList extends Component<Props, State> {
             placeholder = {getLanguage(global.language).Map_Settings.CONTACT_NUMBER}
             value = {this.state.addNumber}
             onChangeText = {(text:string) => {
+              let str = this.state.addNumber
+              if(Number(text).toString() !== 'NaN' && text.length <= 20) {
+                str = text
+              }
+
               this.setState({
-                addNumber: text,
+                addNumber: str,
               })
             }}
           />

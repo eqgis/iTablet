@@ -1533,15 +1533,13 @@ export default class LayerAttribute extends React.Component {
     // let buttonNameFilter = this.isMediaLayer ? ['MediaFilePaths', 'MediaServiceIds', 'MediaData'] : [], // 属性表cell显示 查看 按钮
     //   buttonTitles = this.isMediaLayer ? [getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW] : []
 
-    // console.warn("data: " + JSON.stringify(this.state.attributes.data))
-    const tempData = this.state.attributes.data
-    // const length = tempData.length
+    const tempData = this.state.attributes.head
     const langcahoDismissTitles = []
     if (tempData.length > 0) {
-      const arr = tempData[0]
-      for(let j = 0; j < arr.length; j ++) {
-        const item = arr[j]
-        const name = item.name
+      // const arr = tempData[0]
+      const arr = tempData
+      for(const item of arr) {
+        const name = item.value
         if (name.toUpperCase().indexOf('SS_') === 0
         || (name.toUpperCase().indexOf('SM') === 0) // && name.toUpperCase() !== "SMLENGTH"
         || name === "NAME"

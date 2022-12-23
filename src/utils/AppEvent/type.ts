@@ -26,4 +26,6 @@ export interface Event {
   'ar_animation_exit': undefined
 
   'ar_tracking_image_result': {success: boolean}
+
+  'on_exit_ar_map_module': undefined
 }

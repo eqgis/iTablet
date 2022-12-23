@@ -80,6 +80,7 @@ export default class Home extends Component {
       mineguide: true,
       slide: false,
     }
+    global.is3dSceneFirst = this.props.is3dSceneFirst
   }
 
   componentDidMount() {

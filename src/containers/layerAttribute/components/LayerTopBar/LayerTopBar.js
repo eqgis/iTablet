@@ -281,6 +281,9 @@ export default class LayerTopBar extends React.Component {
               ) {
                 this.props.refreshAction()
               }
+              if (await SMediaCollector.isMediaLayer(layerInfo.name)){
+                await SMediaCollector.showMedia(layerInfo.name, false)
+              }
             } catch (e) {
             // eslint-disable-next-line no-console
               __DEV__ && console.warn('error')

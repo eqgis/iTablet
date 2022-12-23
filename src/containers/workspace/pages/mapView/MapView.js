@@ -1498,11 +1498,11 @@ export default class MapView extends React.Component {
       LayerUtils.setMapLayerAttribute(undefined, undefined, true)
       this.setLoading(false)
       // NavigationService.goBack(baskFrom)
-      try {
-        await appUtilsModule.AppExit()
-      } catch (error) {
-        Toast.show('退出失败')
-      }
+      // try {
+      //   await appUtilsModule.AppExit()
+      // } catch (error) {
+      //   Toast.show('退出失败')
+      // }
 
       this.closeSample()
     } catch (e) {
@@ -1599,12 +1599,13 @@ export default class MapView extends React.Component {
   /** 处理android系统返回键 */
   backHandler = async () => {
     // return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
-    this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
-    const timer = setTimeout(async()=> {
-      await this.saveMap()
-      this.exitConfirm()
-      clearTimeout(timer)
-    }, 1000)
+    // this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
+    // const timer = setTimeout(async()=> {
+    //   await this.saveMap()
+    //   this.exitConfirm()
+    //   clearTimeout(timer)
+    // }, 1000)
+    this.exit.setDialogVisible(true)
     return true
   }
   renderExitDialog = () => {
@@ -1658,7 +1659,14 @@ export default class MapView extends React.Component {
 
   exitConfirm = async () => {
     try {
-      await appUtilsModule.AppExit()
+      // await appUtilsModule.AppExit()
+      this.exit.setDialogVisible(false)
+      this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
+      const timer = setTimeout(async()=> {
+        await this.saveMap()
+        await appUtilsModule.AppExit()
+        clearTimeout(timer)
+      }, 1500)
     } catch (error) {
       Toast.show('退出失败')
     }
@@ -5263,12 +5271,13 @@ export default class MapView extends React.Component {
             //   y: event?.nativeEvent.pageY,
             // }
             // return this.back()
-            this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
-            const timer = setTimeout(async()=> {
-              await this.saveMap()
-              this.exitConfirm()
-              clearTimeout(timer)
-            }, 1000)
+            this.exit.setDialogVisible(true)
+            // this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
+            // const timer = setTimeout(async()=> {
+            //   await this.saveMap()
+            //   this.exitConfirm()
+            //   clearTimeout(timer)
+            // }, 1000)
           },
           type: 'fix',
           headerCenter: this.renderSearchBar(),

@@ -312,7 +312,7 @@ function layerManagerData() {
       title: 'Google Satellite',
       action: () => OpenData(ConstOnline.Google, 1),
       data: [],
-      image: getThemeAssets().layerType.layer_image,
+      image: getImage().icon_ditu_3, // getThemeAssets().layerType.layer_image,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -320,7 +320,7 @@ function layerManagerData() {
       title: 'Google Terrain',
       action: () => OpenData(ConstOnline.Google, 2),
       data: [],
-      image: getThemeAssets().layerType.layer_image,
+      image: getImage().icon_ditu_3, // getThemeAssets().layerType.layer_image,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -341,7 +341,7 @@ function layerManagerData() {
       themeType: -1,
     },
     {
-      title: global.language === "CN" ? '必应底图' : 'Bing', // BingMap
+      title: "BingMap", // BingMap
       action: () => OpenData(ConstOnline.BingMap, 0),
       data: [],
       image: getImage().icon_ditu_3, // getThemeAssets().layerType.layer_image,
@@ -401,7 +401,7 @@ function layerManagerData() {
       themeType: -1,
     },
     {
-      title: 'Tianditu Terrain',
+      title: '天地图-地形底图', // Tianditu Terrain
       action: ({callback}) => {
         global.SimpleDialog.set({
           text: getLanguage(global.language).Map_Layer.IS_ADD_NOTATION_LAYER,
@@ -418,7 +418,7 @@ function layerManagerData() {
         global.SimpleDialog.setVisible(true)
       },
       data: [],
-      image: getThemeAssets().layerType.layer_image,
+      image: getImage().icon_ditu_3, // getThemeAssets().layerType.layer_image,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -513,7 +513,8 @@ function layerManagerData() {
       return (
         item.title.indexOf('Google') === -1 &&
         item.title.indexOf('OSM') === -1
-        && item.title.indexOf('Tianditu Terrain') === -1
+        && item.title.indexOf('高德')
+        && item.title.indexOf('BingMap')
       )
     } else {
       return (
@@ -521,9 +522,11 @@ function layerManagerData() {
         item.title.indexOf('Tianditu') === -1
         && item.title.indexOf('天地图')
         && item.title.indexOf('高德') // Google Satellite
-        && item.title.indexOf('Google Satellite') === -1
-        && item.title.indexOf('Google Terrain') === -1
+        // && item.title.indexOf('Google Satellite') === -1
         && item.title.indexOf('Google Hybrid') === -1
+        && item.title.indexOf('Google labelmap') === -1
+        && item.title.indexOf('BingMap')
+        && item.title.indexOf('OSM') === -1
       )
     }
   })

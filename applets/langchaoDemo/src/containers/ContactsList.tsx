@@ -50,6 +50,9 @@ interface State {
   addUserID: string
   selectItem: contactItemType | null,
   morePanShow: boolean,
+  phoneTip: boolean,
+  userIdTip: boolean,
+  contactNameTip: boolean,
 }
 
 class ContactsList extends Component<Props, State> {
@@ -66,6 +69,9 @@ class ContactsList extends Component<Props, State> {
       addUserID: '',
       selectItem: null,
       morePanShow: false,
+      phoneTip: false,
+      userIdTip: false,
+      contactNameTip: false,
     }
   }
 
@@ -142,6 +148,31 @@ class ContactsList extends Component<Props, State> {
   }
 
   addConfirm = () => {
+    let isEnterRight = true
+    if(this.state.addUserID === "") {
+      this.setState({
+        userIdTip: true,
+      })
+      isEnterRight = false
+    }
+    if(this.state.addName === "") {
+      this.setState({
+        contactNameTip: true,
+      })
+      isEnterRight = false
+    }
+    const phone = this.state.addNumber
+    if(phone.length < 5 || phone.length > 20) {
+      this.setState({
+        phoneTip: true,
+      })
+      isEnterRight = false
+    }
+
+    if(!isEnterRight) {
+      return
+    }
+
     const newcontact = this.state.contactData
     if(this.state.selectItem) {
       const id = this.state.selectItem.ID
@@ -168,6 +199,9 @@ class ContactsList extends Component<Props, State> {
       addNumber: '',
       addUserID: '',
       selectItem: null,
+      userIdTip: false,
+      contactNameTip: false,
+      phoneTip: false,
     })
   }
 
@@ -178,6 +212,9 @@ class ContactsList extends Component<Props, State> {
       addNumber: '',
       addUserID: '',
       selectItem: null,
+      userIdTip: false,
+      contactNameTip: false,
+      phoneTip: false,
     })
   }
 
@@ -426,12 +463,12 @@ class ContactsList extends Component<Props, State> {
         cancelAction={this.addCancel}
         opacity={1}
         opacityStyle={[{
-          height: dp(268),
+          height: dp(298),
           backgroundColor: '#fff',
         },
         ]}
         style={[{
-          height: dp(268),
+          height: dp(298),
           backgroundColor: '#fff',
         },
         ]}
@@ -466,7 +503,9 @@ class ContactsList extends Component<Props, State> {
           }]}>{getLanguage(global.language).Map_Settings.ADD_CONTACT}</Text>
         </View>
         {/* 联系人电话id */}
-        <View style={[styles.dialogInputContainer]}>
+        <View style={[styles.dialogInputContainer,
+          this.state.userIdTip && styles.dialogInputContainerAddStyle
+        ]}>
           <TextInput
             style = {[styles.dialogInput]}
             placeholder = {getLanguage(global.language).Map_Settings.USER_ID}
@@ -474,6 +513,7 @@ class ContactsList extends Component<Props, State> {
             onChangeText = {(text:string) => {
               this.setState({
                 addUserID: text,
+                userIdTip: text === '',
               })
             }}
           />
@@ -483,6 +523,7 @@ class ContactsList extends Component<Props, State> {
             onPress={() => {
               this.setState({
                 addUserID: '',
+                userIdTip: true,
               })
             }}
           >
@@ -493,8 +534,20 @@ class ContactsList extends Component<Props, State> {
             />
           </TouchableOpacity>
         </View>
+        <View style={[styles.tipStyle]}>
+          {this.state.userIdTip && (
+            <Text
+              style={[{
+                fontSize: dp(10),
+                color: '#f00',
+              }]}
+            >{getLanguage(this.props.language).Prompt.INPUT_CONTACT_ID}</Text>
+          )}
+        </View>
         {/* 联系人姓名输入框 */}
-        <View style={[styles.dialogInputContainer]}>
+        <View style={[styles.dialogInputContainer,
+          this.state.contactNameTip && styles.dialogInputContainerAddStyle
+        ]}>
           <TextInput
             style = {[styles.dialogInput]}
             placeholder = {getLanguage(global.language).Map_Settings.CONTACT_NAME}
@@ -502,6 +555,7 @@ class ContactsList extends Component<Props, State> {
             onChangeText = {(text:string) => {
               this.setState({
                 addName: text,
+                contactNameTip: text === "",
               })
             }}
           />
@@ -511,6 +565,7 @@ class ContactsList extends Component<Props, State> {
             onPress={() => {
               this.setState({
                 addName: '',
+                contactNameTip: true,
               })
             }}
           >
@@ -521,15 +576,33 @@ class ContactsList extends Component<Props, State> {
             />
           </TouchableOpacity>
         </View>
+        <View style={[styles.tipStyle]}>
+          {this.state.contactNameTip && (
+            <Text
+              style={[{
+                fontSize: dp(10),
+                color: '#f00',
+              }]}
+            >{getLanguage(this.props.language).Prompt.INPUT_CONTACT_NAME}</Text>
+          )}
+        </View>
         {/* 联系人电话输入框 */}
-        <View style={[styles.dialogInputContainer]}>
+        <View style={[styles.dialogInputContainer,
+          this.state.phoneTip && styles.dialogInputContainerAddStyle
+        ]}>
           <TextInput
             style = {[styles.dialogInput]}
             placeholder = {getLanguage(global.language).Map_Settings.CONTACT_NUMBER}
             value = {this.state.addNumber}
             onChangeText = {(text:string) => {
+              let flag = true
+              if(Number(text).toString() !== 'NaN' && text.length >= 5 && text.length <= 20) {
+                flag = false
+              }
+
               this.setState({
                 addNumber: text,
+                phoneTip: flag,
               })
             }}
           />
@@ -539,6 +612,7 @@ class ContactsList extends Component<Props, State> {
             onPress={() => {
               this.setState({
                 addNumber: '',
+                phoneTip: true,
               })
             }}
           >
@@ -549,6 +623,17 @@ class ContactsList extends Component<Props, State> {
             />
           </TouchableOpacity>
         </View>
+        <View style={[styles.tipStyle]}>
+          {this.state.phoneTip && (
+            <Text
+              style={[{
+                fontSize: dp(10),
+                color: '#f00',
+              }]}
+            >{getLanguage(this.props.language).Prompt.CHECK_CONTACT_NUMBER}</Text>
+          )}
+        </View>
+
       </View>
     )
   }
@@ -686,13 +771,17 @@ const styles = StyleSheet.create({
   // dialog
   dialogInputContainer: {
     width: '80%',
-    height: dp(40),
+    height: dp(44),
     flexDirection: 'row',
     backgroundColor: '#f3f3f3',
     borderRadius: dp(30),
-    marginVertical: dp(5),
+    // marginVertical: dp(5),
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  dialogInputContainerAddStyle: {
+    borderColor: '#f00',
+    borderWidth: dp(1),
   },
   dialogInput: {
     flex: 1,
@@ -716,5 +805,15 @@ const styles = StyleSheet.create({
   clearImg: {
     width: dp(26),
     height: dp(26),
+  },
+
+  tipStyle: {
+    width: '80%',
+    height: dp(12),
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: dp(3),
   },
 })

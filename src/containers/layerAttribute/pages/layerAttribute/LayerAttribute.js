@@ -234,7 +234,8 @@ export default class LayerAttribute extends React.Component {
           layerInfo: layerInfo,
           ids: [], // ids,
         }
-        if(layer.datasetName === "line_965018" || layer.datasetName === "marker_322" || layer.datasetName === "marker_118081") {
+        // || layer.datasetName === "marker_118081"
+        if(layer.datasetName === "line_965018" || layer.datasetName === "marker_322") {
           this.layerData.push(obj)
           if(layer.name === this.props.currentLayer.name) {
             index = this.layerData.length - 1
@@ -1876,6 +1877,8 @@ export default class LayerAttribute extends React.Component {
       this.state.attributes &&
       this.state.attributes.head &&
       this.state.attributes.head.length > 0
+      && this.state.attributes.data
+      && this.state.attributes.data.length > 0
 
     const dsDescription = LayerUtils.getDatasetDescriptionByLayer(this.props.currentLayer)
 

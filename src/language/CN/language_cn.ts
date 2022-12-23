@@ -2442,7 +2442,7 @@ export const language_cn = {
   NO_SCENE_LIST: "无场景列表",
   NO_SCENE_SELECTED: "未选择场景",
   SWITCHING_MAP: "正在切换地图",
-  CLOSING: "正在关闭地图",
+  CLOSING: '退出中', // "正在关闭地图",
   CLOSING_3D: "正在关闭场景",
   SAVING: "正在保存地图",
   SWITCHING_SUCCESS: "切换成功",
@@ -2894,6 +2894,9 @@ export const language_cn = {
   USER_ID: "用户id", // User id
   USER_NAME: "用户姓名", // User name
   DEPARTMENT_ID: "部门id", // Department id
+  INPUT_CONTACT_ID: "用户id不能为空",
+  INPUT_CONTACT_NAME: "联系人姓名不能为空",
+  CHECK_CONTACT_NUMBER: "电话号码由数字组成，且长度在5到20之间",
 
 
 

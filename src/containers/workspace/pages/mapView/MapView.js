@@ -147,6 +147,7 @@ import {
   collectionModule,
 } from '@/containers/workspace/components/ToolBar/modules'
 import TourAction from '../../../../../applets/langchaoDemo/src/mapFunctionModules/Langchao/TourAction'
+import { getImage } from '../../../../../applets/langchaoDemo/src/assets/Image'
 
 global.markerTag = 118082
 
@@ -1439,7 +1440,7 @@ export default class MapView extends React.Component {
         addition.Template = this.props.map.currentMap.Template
       }
 
-      this.setLoading(true, getLanguage(this.props.language).Prompt.SAVING)
+      // this.setLoading(true, getLanguage(this.props.language).Prompt.SAVING)
       // 导出(保存)工作空间中地图到模块
       let result = await this.props.saveMap({ mapTitle: mapName, nModule: '', addition })
       if (result || result === '') {
@@ -1497,11 +1498,11 @@ export default class MapView extends React.Component {
       LayerUtils.setMapLayerAttribute(undefined, undefined, true)
       this.setLoading(false)
       // NavigationService.goBack(baskFrom)
-      try {
-        await appUtilsModule.AppExit()
-      } catch (error) {
-        Toast.show('退出失败')
-      }
+      // try {
+      //   await appUtilsModule.AppExit()
+      // } catch (error) {
+      //   Toast.show('退出失败')
+      // }
 
       this.closeSample()
     } catch (e) {
@@ -1596,8 +1597,16 @@ export default class MapView extends React.Component {
   }
 
   /** 处理android系统返回键 */
-  backHandler = () => {
-    return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
+  backHandler = async () => {
+    // return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
+    // this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
+    // const timer = setTimeout(async()=> {
+    //   await this.saveMap()
+    //   this.exitConfirm()
+    //   clearTimeout(timer)
+    // }, 1000)
+    this.exit.setDialogVisible(true)
+    return true
   }
   renderExitDialog = () => {
     return (
@@ -1650,7 +1659,14 @@ export default class MapView extends React.Component {
 
   exitConfirm = async () => {
     try {
-      await appUtilsModule.AppExit()
+      // await appUtilsModule.AppExit()
+      this.exit.setDialogVisible(false)
+      this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
+      const timer = setTimeout(async()=> {
+        await this.saveMap()
+        await appUtilsModule.AppExit()
+        clearTimeout(timer)
+      }, 1500)
     } catch (error) {
       Toast.show('退出失败')
     }
@@ -2039,6 +2055,8 @@ export default class MapView extends React.Component {
 
       if (this.viewEntire) {
         SMap.viewEntire()
+      }else{
+        SMap.moveToCurrent()
       }
       await this.onMapOpenSuccess?.()
 
@@ -5235,6 +5253,7 @@ export default class MapView extends React.Component {
         headerProps={{
           title: this.state.mapTitle,
           navigation: this.props.navigation,
+          backImg: getImage().exitApp,
           headerTitleViewStyle: {
             // justifyContent: 'flex-start',
             // marginLeft: scaleSize(90),
@@ -5246,12 +5265,19 @@ export default class MapView extends React.Component {
                 ? scaleSize(96)
                 : 0,
           },
-          backAction: event => {
+          backAction: async (event) => {
             // this.backPositon = {
             //   x: event?.nativeEvent.pageX,
             //   y: event?.nativeEvent.pageY,
             // }
-            return this.back()
+            // return this.back()
+            this.exit.setDialogVisible(true)
+            // this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
+            // const timer = setTimeout(async()=> {
+            //   await this.saveMap()
+            //   this.exitConfirm()
+            //   clearTimeout(timer)
+            // }, 1000)
           },
           type: 'fix',
           headerCenter: this.renderSearchBar(),

@@ -2,7 +2,7 @@ import FunctionModule from '../../../../../../class/FunctionModule'
 import TourAction from 'applets/langchaoDemo/src/mapFunctionModules/Langchao/TourAction'
 import { getImage } from 'applets/langchaoDemo/src/assets'
 import Toast from '@/utils/Toast'
-import { SMap, SMCollectorType } from 'imobile_for_reactnative'
+import { SCollector, SMap, SMCollectorType } from 'imobile_for_reactnative'
 import { getThemeAssets } from '@/assets'
 import collectionModule from '../collectionModule'
 import AppToolBar from '@/utils/AppToolBar'
@@ -32,6 +32,25 @@ class TrackModule extends FunctionModule {
     AppToolBar.getProps().setCurrentSymbol(data)
     const type = SMCollectorType.LINE_GPS_PATH
     collectionModule().actions.showCollection(type)
+
+    const timer = setTimeout(async () => {
+      const obj = {
+        key: 'start',
+        title: getLanguage(global.language).Map_Settings.RECORDING,
+        action: () => {
+          Toast.show(getLanguage(global.language).Map_Settings.ON_THE_RECORD)
+        },
+        size: 'large',
+        image: getThemeAssets().collection.icon_track_start,
+      }
+      global.ToolBar?.updateViewData(0,obj)
+
+      await SCollector.startCollect(type)
+
+      clearTimeout(timer)
+    }, 1000)
+
+
   }
 }
 

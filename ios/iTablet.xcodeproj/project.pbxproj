@@ -66,7 +66,7 @@
 		0AC8AFE628081A0600435541 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFE528081A0600435541 /* UserNotifications.framework */; };
 		0AC8AFEB28082C4700435541 /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFEA28082C4000435541 /* libstdc++.6.0.9.tbd */; };
 		0AC8AFEC28082D9E00435541 /* JRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFB12808180800435541 /* JRE.framework */; };
-		0ACCB9EC28BDADBB00527B71 /* base.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0ACCB9EB28BDADBB00527B71 /* base.zip */; };
+		0ADD189529545176003D44CF /* langchaoWs.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0ADD189429545175003D44CF /* langchaoWs.zip */; };
 		0AF8516E2832379100287BA5 /* SuperMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFA7280817BE00435541 /* SuperMap.framework */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -281,7 +281,7 @@
 		0AC8AFE3280819FE00435541 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0AC8AFE528081A0600435541 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		0AC8AFEA28082C4000435541 /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "iPhoneOS/libstdc++.6.0.9.tbd"; sourceTree = "<group>"; };
-		0ACCB9EB28BDADBB00527B71 /* base.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = base.zip; sourceTree = "<group>"; };
+		0ADD189429545175003D44CF /* langchaoWs.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = langchaoWs.zip; sourceTree = "<group>"; };
 		0AF851192831DB6800287BA5 /* iTablet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iTablet-Bridging-Header.h"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* SuperMap iTablet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SuperMap iTablet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = iTablet/AppDelegate.h; sourceTree = "<group>"; };
@@ -465,6 +465,7 @@
 		0AC8AE812808109E00435541 /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				0ADD1896295451F5003D44CF /* userData */,
 				6547809C28A2020600C044DA /* ARAlbumImage */,
 				6547809A28A1FF8400C044DA /* SuperMapAR.bundle */,
 				E565E989286309A4007797E3 /* Model */,
@@ -473,7 +474,6 @@
 				4E28CE8F28378DEA0045CB07 /* ARWebView.xib */,
 				4E28CE8C28378DEA0045CB07 /* left_arrow.png */,
 				4E28CE9028378DEA0045CB07 /* publicMap.txt */,
-				0ACCB9EB28BDADBB00527B71 /* base.zip */,
 				0AC8AE822808109E00435541 /* Images.zip */,
 				0AC8AE832808109E00435541 /* icon.png */,
 				0AC8AE842808109E00435541 /* launch_slogan_en.png */,
@@ -497,6 +497,14 @@
 				0AC8AF84280815BF00435541 /* libSupermap.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		0ADD1896295451F5003D44CF /* userData */ = {
+			isa = PBXGroup;
+			children = (
+				0ADD189429545175003D44CF /* langchaoWs.zip */,
+			);
+			path = userData;
 			sourceTree = "<group>";
 		};
 		13B07FAE1A68108700A75B9A /* iTablet */ = {
@@ -869,7 +877,6 @@
 				65CDD18D28A4F53400B5A2C8 /* tab_icon_close01.png in Resources */,
 				E565E992286309A5007797E3 /* mobilenet_quant_224_cn.txt in Resources */,
 				E565E993286309A5007797E3 /* mobilenet_quant_224.txt in Resources */,
-				0ACCB9EC28BDADBB00527B71 /* base.zip in Resources */,
 				E13A5CAC28752B6B004DFA1E /* InfoPlist.strings in Resources */,
 				0AC8AF062808109F00435541 /* launch_slogan_cn.png in Resources */,
 				0AC8AF002808109F00435541 /* MyLaunchScreen.storyboard in Resources */,
@@ -885,6 +892,7 @@
 				E565E982286303CF007797E3 /* HorizonalFinemapping.caffemodel in Resources */,
 				E565E983286303CF007797E3 /* CharacterRecognization.caffemodel in Resources */,
 				E565E986286303CF007797E3 /* HorizonalFinemapping.prototxt in Resources */,
+				0ADD189529545176003D44CF /* langchaoWs.zip in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

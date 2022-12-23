@@ -566,6 +566,8 @@ const uploadDialog = async (id: number, type: uploadType) => {
  */
 const sendInfoAll = async() => {
   try {
+
+    console.warn("enter send all ")
     // 线的整体提交
     const datasetArrayL = await SMap.querybyAttributeValue("langchao", "line_965018", "isUploaded=0")
     const datasetArrayLengthL = datasetArrayL.length
@@ -574,23 +576,21 @@ const sendInfoAll = async() => {
       for(let i =0; i < datasetArrayLengthL; i ++) {
         const item = JSON.parse(JSON.stringify(datasetArrayL[i]))
         // ids.push(Number(item.SmID))
-        await uploadTrack(item.SmID, 'line')
+        await uploadTrack(Number(item.SmID), 'line')
       }
     }
 
-    // 点的整体提交
-    const datasetArrayM = await SMap.querybyAttributeValue("langchao", "marker_118081", "isUploaded=0")
+    // 多媒体的整体提交 to do
+    const datasetArrayM = await SMap.querybyAttributeValue("langchao", "marker_322", "isUploaded=0")
     const datasetArrayLengthM = datasetArrayM.length
     if(datasetArrayLengthM > 0) {
       // const ids = []
       for(let i =0; i < datasetArrayLengthM; i ++) {
         const item = JSON.parse(JSON.stringify(datasetArrayM[i]))
         // ids.push(Number(item.SmID))
-        await uploadTrack(item.SmID, 'marker')
+        await uploadTrack(Number(item.SmID), 'media')
       }
     }
-
-    // 多媒体的整体提交 to do
 
   } catch (error) {
     // to do

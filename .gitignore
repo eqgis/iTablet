@@ -3,7 +3,7 @@
 .gradle
 local.properties
 *.iml
-android/keystores/
+
 android/app/release/
 android/app/app.iml
 android/local.properties

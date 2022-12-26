@@ -12,68 +12,6 @@ import { collectionModule } from '@/containers/workspace/components/ToolBar/modu
 import { getJson } from '../../assets/data'
 import { uploadFile, MessageInfoType, message, getUserParam, printLog, uploadFileTest } from '../../utils/langchaoServer'
 
-/**
- * 右侧创建轨迹事件
- */
-async function tour() {
-  try {
-    await SMap.checkCurrentModule()
-    const _params: any = ToolbarModule.getParams()
-    const targetPath = await FileTools.appendingHomeDirectory(
-      `${ConstPath.UserPath + _params.user.currentUser.userName}/${
-        ConstPath.RelativeFilePath.Media
-      }`,
-    )
-    SMediaCollector.initMediaCollector(targetPath)
-
-    let tourLayer: string
-    ImagePicker.AlbumListView.defaultProps.showDialog = true
-    ImagePicker.AlbumListView.defaultProps.dialogConfirm = async (
-      value = '',
-      cb = () => {},
-    ) => {
-      try {
-        if (value !== '') {
-          await SMap.setLabelColor()
-          const tagginData = await SMap.newTaggingDataset(
-            value,
-            _params.user.currentUser.userName,
-            false, // 轨迹图层都设置为不可编辑
-            'tour',
-          )
-          tourLayer = tagginData.layerName
-          cb && cb()
-        }
-        Toast.show(value)
-      } catch (error: any) {
-        if (error?.code === 'INVALID_MODULE') {
-          ImagePicker.hide()
-        }
-      }
-    }
-
-    ImagePicker.AlbumListView.defaultProps.assetType = 'All'
-    ImagePicker.AlbumListView.defaultProps.groupTypes = 'All'
-
-    ImagePicker.getAlbum({
-      maxSize: 9,
-      callback: async (data: MediaData[]) => {
-        if (data.length <= 1) {
-          Toast.show(
-            getLanguage(global.language).Prompt.SELECT_TWO_MEDIAS_AT_LEAST,
-          )
-          return
-        }
-        if (tourLayer) {
-          const res = await SMediaCollector.addTour(tourLayer, data)
-          res.result && (await SMap.setLayerFullView(tourLayer))
-        }
-      },
-    })
-  } catch(e) {
-    __DEV__ && console.warn(e)
-  }
-}
 
 
 /** 时间格式化 "yyyy-MM-dd hh:mm:ss"（12小时制）  "yyyy-MM-dd HH:mm:ss"（24小时制） */
@@ -549,7 +487,6 @@ const sendInfoAll = async() => {
 
 
 export default {
-  tour,
   dateFormat,
   getCountryCode,
   sendInfoAll,

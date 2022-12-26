@@ -1,16 +1,11 @@
 // import React from 'react'
-import { SCollector, SMap, SMediaCollector, SMCollectorType } from 'imobile_for_reactnative'
+import { SMap, SMediaCollector } from 'imobile_for_reactnative'
 import { FileTools } from '@/native'
 import { ConstPath } from '@/constants'
 import { AppToolBar, LayerUtils, Toast } from '@/utils'
 import { getLanguage } from '@/language'
-import { ImagePicker } from '@/components'
-import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
-import { MediaData } from 'imobile_for_reactnative/types/interface/collector/SMediaCollector'
-import { SuperMapKnown } from '@/containers/tabs'
-import { collectionModule } from '@/containers/workspace/components/ToolBar/modules'
 import { getJson } from '../../assets/data'
-import { uploadFile, MessageInfoType, message, getUserParam, printLog, uploadFileTest } from '../../utils/langchaoServer'
+import { uploadFile, MessageInfoType, message, getUserParam, printLog } from '../../utils/langchaoServer'
 
 
 

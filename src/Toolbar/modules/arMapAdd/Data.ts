@@ -6,7 +6,7 @@ import { ToolbarTabItem, ToolBarBottomItem, ToolBarListItem, IToolbarOption, Too
 import { getLanguage } from "@/language"
 import { AppEvent, AppToolBar, AppUser, CheckSpell, DataHandler, Toast, DialogUtils } from "@/utils"
 import AppRoot, {UserRoot} from '@/utils/AppPath'
-import { AR3DExample, AREffectExample, ARModelExample, AREffectExample2, AREffectExample3, AREffectExample4, ExampleData } from "@/utils/DataHandler/DataExample"
+import { AR3DExample, ARModelExample, ExampleData, AREffectExamples } from "@/utils/DataHandler/DataExample"
 import { ModuleList } from ".."
 import { addImage, addVideo, addText, addWebView, addModel, addARSceneLayer,addEffectLayer,
   addBubbleText,
@@ -346,22 +346,12 @@ function _getAddTab(): ToolbarTabItem[] {
         const items: ToolBarListItem[] = []
         const downloadKeys: string[] = []
         const exampleData: ExampleData[] = []
-        if(data.findIndex(item => item.name === AREffectExample.toName) < 0) {
-          downloadKeys.push(AREffectExample.userName + '_' + AREffectExample.downloadName)
-          exampleData.push(AREffectExample)
-        }
-        if(data.findIndex(item => item.name === AREffectExample2.toName) < 0) {
-          downloadKeys.push(AREffectExample2.userName + '_' + AREffectExample2.downloadName)
-          exampleData.push(AREffectExample2)
-        }
-        if(data.findIndex(item => item.name === AREffectExample3.toName) < 0) {
-          downloadKeys.push(AREffectExample3.userName + '_' + AREffectExample3.downloadName)
-          exampleData.push(AREffectExample3)
-        }
-        if(data.findIndex(item => item.name === AREffectExample4.toName) < 0) {
-          downloadKeys.push(AREffectExample4.userName + '_' + AREffectExample4.downloadName)
-          exampleData.push(AREffectExample4)
-        }
+        AREffectExamples.forEach(example => {
+          if(data.findIndex(item => item.name === example.toName) < 0) {
+            downloadKeys.push(example.userName + '_' + example.downloadName)
+            exampleData.push(example)
+          }
+        })
         if(downloadKeys.length > 0) {
           items.push({
             image: getImage().icon_download,

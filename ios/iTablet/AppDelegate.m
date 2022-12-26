@@ -226,7 +226,7 @@ static BOOL isBundle = YES;
   } else {
     #if DEBUG
     //  [[RCTBundleURLProvider sharedSettings] setJsLocation:@"192.168.11.76"];
-      [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.6.51"];
+      [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.0.69"];
       return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
     #else
       return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];

@@ -23,7 +23,7 @@
     "fbjs": "^3.0.4",
     "fbjs-scripts": "^3.0.1",
     "immutable": "^4.0.0",
-    "imobile_for_reactnative": "file:imobile_for_reactnative",
+    "imobile_for_reactnative": "^1.6.13",
     "moment": "^2.29.1",
     "react": "17.0.2",
     "react-native": "0.67.4",

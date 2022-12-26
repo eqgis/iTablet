@@ -8,8 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* iTabletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* iTabletTests.m */; };
-		0A33905628323ED70094AD2F /* libSupermap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AF84280815BF00435541 /* libSupermap.a */; };
-		0A33933D283386F90094AD2F /* SuperMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0A33933C283386F90094AD2F /* SuperMap.bundle */; };
+		0A3D96A02952E22300C617BA /* libSMSuperMap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A3D969F2952E20500C617BA /* libSMSuperMap.a */; };
+		0A522AB229596F2700AC7779 /* SuperMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0A522AB129596F2700AC7779 /* SuperMap.bundle */; };
+		0A522AB5295970CF00AC7779 /* resources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0A522AB4295970CE00AC7779 /* resources.bundle */; };
 		0AC8AEF92808109F00435541 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AE6A2808109D00435541 /* libWeChatSDK.a */; };
 		0AC8AEFA2808109F00435541 /* AppUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AC8AE6C2808109E00435541 /* AppUtils.m */; };
 		0AC8AEFC2808109F00435541 /* WeiXinUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AC8AE6F2808109E00435541 /* WeiXinUtils.m */; };
@@ -24,7 +25,6 @@
 		0AC8AF072808109F00435541 /* Workspace.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE872808109E00435541 /* Workspace.zip */; };
 		0AC8AF092808109F00435541 /* python2.7.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE892808109E00435541 /* python2.7.zip */; };
 		0AC8AF642808109F00435541 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEE52808109F00435541 /* logo.png */; };
-		0AC8AF742808109F00435541 /* resources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEF72808109F00435541 /* resources.bundle */; };
 		0AC8AF752808109F00435541 /* PlotLibData.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AEF82808109F00435541 /* PlotLibData.zip */; };
 		0AC8AF78280810BF00435541 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AF76280810BF00435541 /* LaunchScreen.xib */; };
 		0AC8AF86280816AB00435541 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AF85280816AB00435541 /* Accelerate.framework */; };
@@ -43,10 +43,6 @@
 		0AC8AFA4280817BA00435541 /* GLTFSceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFA3280817BA00435541 /* GLTFSceneKit.framework */; };
 		0AC8AFA5280817BA00435541 /* GLTFSceneKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFA3280817BA00435541 /* GLTFSceneKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0AC8AFAA280817C900435541 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
-		0AC8AFBC2808186400435541 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFBB2808185D00435541 /* libSocketRocket.a */; };
-		0AC8AFBD2808186400435541 /* libCorePlot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFB82808185D00435541 /* libCorePlot.a */; };
-		0AC8AFBE2808186400435541 /* libAsHttpRequest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFB92808185D00435541 /* libAsHttpRequest.a */; };
-		0AC8AFBF2808186400435541 /* libflyMSC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFBA2808185D00435541 /* libflyMSC.a */; };
 		0AC8AFC12808188400435541 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFC02808187300435541 /* libbz2.tbd */; };
 		0AC8AFC32808189500435541 /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFC22808188C00435541 /* libc++.1.tbd */; };
 		0AC8AFC5280818AD00435541 /* libiconv.2.4.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFC4280818A600435541 /* libiconv.2.4.0.tbd */; };
@@ -65,9 +61,6 @@
 		0AC8AFE4280819FE00435541 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFE3280819FE00435541 /* UIKit.framework */; };
 		0AC8AFE628081A0600435541 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFE528081A0600435541 /* UserNotifications.framework */; };
 		0AC8AFEB28082C4700435541 /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFEA28082C4000435541 /* libstdc++.6.0.9.tbd */; };
-		0AC8AFEC28082D9E00435541 /* JRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFB12808180800435541 /* JRE.framework */; };
-		0ACCB9EC28BDADBB00527B71 /* base.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0ACCB9EB28BDADBB00527B71 /* base.zip */; };
-		0AF8516E2832379100287BA5 /* SuperMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFA7280817BE00435541 /* SuperMap.framework */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -124,12 +117,12 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = iTablet;
 		};
-		0AC8AF83280815BF00435541 /* PBXContainerItemProxy */ = {
+		0A3D969E2952E20500C617BA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 0AC8AF7F280815BF00435541 /* Supermap.xcodeproj */;
+			containerPortal = 0A3D969A2952E20500C617BA /* SMSuperMap.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = Supermap;
+			remoteGlobalIDString = 0AA85F2D27D5D58C0067CB94;
+			remoteInfo = SMSuperMap;
 		};
 		47ABE6AA28659DB200770561 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -215,7 +208,9 @@
 		00E356F21AD99517003FC87E /* iTabletTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iTabletTests.m; sourceTree = "<group>"; };
 		06FACE8019E26F0904A7ACC2 /* Pods-iTablet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iTablet.release.xcconfig"; path = "Target Support Files/Pods-iTablet/Pods-iTablet.release.xcconfig"; sourceTree = "<group>"; };
 		0A2BD33228B7144F00361F7B /* BundleUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BundleUtils.h; sourceTree = "<group>"; };
-		0A33933C283386F90094AD2F /* SuperMap.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = SuperMap.bundle; path = iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/SuperMap.bundle; sourceTree = "<group>"; };
+		0A3D969A2952E20500C617BA /* SMSuperMap.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SMSuperMap.xcodeproj; path = ../node_modules/imobile_for_reactnative/ios/SMSuperMap.xcodeproj; sourceTree = "<group>"; };
+		0A522AB129596F2700AC7779 /* SuperMap.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = SuperMap.bundle; path = ../node_modules/imobile_for_reactnative/ios/iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/SuperMap.bundle; sourceTree = "<group>"; };
+		0A522AB4295970CE00AC7779 /* resources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = resources.bundle; path = ../node_modules/imobile_for_reactnative/ios/assets/resources.bundle; sourceTree = "<group>"; };
 		0AC8AE682808109D00435541 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		0AC8AE692808109D00435541 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		0AC8AE6A2808109D00435541 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
@@ -240,9 +235,7 @@
 		0AC8AE872808109E00435541 /* Workspace.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Workspace.zip; sourceTree = "<group>"; };
 		0AC8AE892808109E00435541 /* python2.7.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = python2.7.zip; sourceTree = "<group>"; };
 		0AC8AEE52808109F00435541 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
-		0AC8AEF72808109F00435541 /* resources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = resources.bundle; sourceTree = "<group>"; };
 		0AC8AEF82808109F00435541 /* PlotLibData.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = PlotLibData.zip; sourceTree = "<group>"; };
-		0AC8AF7F280815BF00435541 /* Supermap.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Supermap.xcodeproj; path = ../node_modules/imobile_for_reactnative/ios/Supermap.xcodeproj; sourceTree = "<group>"; };
 		0AC8AF85280816AB00435541 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		0AC8AF87280816B100435541 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		0AC8AF89280816B900435541 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -281,7 +274,6 @@
 		0AC8AFE3280819FE00435541 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0AC8AFE528081A0600435541 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		0AC8AFEA28082C4000435541 /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "iPhoneOS/libstdc++.6.0.9.tbd"; sourceTree = "<group>"; };
-		0ACCB9EB28BDADBB00527B71 /* base.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = base.zip; sourceTree = "<group>"; };
 		0AF851192831DB6800287BA5 /* iTablet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iTablet-Bridging-Header.h"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* SuperMap iTablet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SuperMap iTablet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = iTablet/AppDelegate.h; sourceTree = "<group>"; };
@@ -347,16 +339,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0AF8516E2832379100287BA5 /* SuperMap.framework in Frameworks */,
 				E19F41E128925D6B007B04D6 /* ZipArchive.framework in Frameworks */,
 				0AC8AF982808176000435541 /* CoreGraphics.framework in Frameworks */,
-				0AF8516E2832379100287BA5 /* SuperMap.framework in Frameworks */,
-				0A33905628323ED70094AD2F /* libSupermap.a in Frameworks */,
+				0A3D96A02952E22300C617BA /* libSMSuperMap.a in Frameworks */,
 				0AC8AFE4280819FE00435541 /* UIKit.framework in Frameworks */,
 				0AC8AFC32808189500435541 /* libc++.1.tbd in Frameworks */,
 				E19F41E328925D7B007B04D6 /* CocoaAsyncSocket.framework in Frameworks */,
 				0AC8AFD62808196900435541 /* MediaPlayer.framework in Frameworks */,
-				0AC8AFBD2808186400435541 /* libCorePlot.a in Frameworks */,
 				0AC8AF86280816AB00435541 /* Accelerate.framework in Frameworks */,
 				0AC8AFA22808178700435541 /* Foundation.framework in Frameworks */,
 				0AC8AFCE2808191A00435541 /* libsqlite3.tbd in Frameworks */,
@@ -379,19 +368,15 @@
 				0AC8AFAA280817C900435541 /* JavaScriptCore.framework in Frameworks */,
 				0AC8AFC5280818AD00435541 /* libiconv.2.4.0.tbd in Frameworks */,
 				0AC8AFCA2808190100435541 /* libresolv.tbd in Frameworks */,
-				0AC8AFBF2808186400435541 /* libflyMSC.a in Frameworks */,
 				0AC8AFE628081A0600435541 /* UserNotifications.framework in Frameworks */,
 				0AC8AFC7280818C600435541 /* libicucore.A.tbd in Frameworks */,
 				0AC8AFEB28082C4700435541 /* libstdc++.6.0.9.tbd in Frameworks */,
 				0AC8AFC12808188400435541 /* libbz2.tbd in Frameworks */,
 				0AC8AFA4280817BA00435541 /* GLTFSceneKit.framework in Frameworks */,
 				0AC8AFDA2808199100435541 /* QuartzCore.framework in Frameworks */,
-				0AC8AFBE2808186400435541 /* libAsHttpRequest.a in Frameworks */,
 				0AC8AFDB280819A100435541 /* QuartzCore.framework in Frameworks */,
 				0AC8AF88280816B100435541 /* AddressBook.framework in Frameworks */,
 				0AC8AF962808175700435541 /* CoreFoundation.framework in Frameworks */,
-				0AC8AFEC28082D9E00435541 /* JRE.framework in Frameworks */,
-				0AC8AFBC2808186400435541 /* libSocketRocket.a in Frameworks */,
 				E19F41DB28925CE7007B04D6 /* JKVValue.framework in Frameworks */,
 				5B78CC2D3FD5CC5131E4B19E /* libPods-iTablet.a in Frameworks */,
 			);
@@ -415,6 +400,14 @@
 				00E356F11AD99517003FC87E /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0A3D969B2952E20500C617BA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0A3D969F2952E20500C617BA /* libSMSuperMap.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		0AC8AE672808109D00435541 /* SDKExport */ = {
@@ -473,7 +466,6 @@
 				4E28CE8F28378DEA0045CB07 /* ARWebView.xib */,
 				4E28CE8C28378DEA0045CB07 /* left_arrow.png */,
 				4E28CE9028378DEA0045CB07 /* publicMap.txt */,
-				0ACCB9EB28BDADBB00527B71 /* base.zip */,
 				0AC8AE822808109E00435541 /* Images.zip */,
 				0AC8AE832808109E00435541 /* icon.png */,
 				0AC8AE842808109E00435541 /* launch_slogan_en.png */,
@@ -482,21 +474,12 @@
 				0AC8AE872808109E00435541 /* Workspace.zip */,
 				0AC8AE892808109E00435541 /* python2.7.zip */,
 				0AC8AEE52808109F00435541 /* logo.png */,
-				0AC8AEF72808109F00435541 /* resources.bundle */,
 				0AC8AEF82808109F00435541 /* PlotLibData.zip */,
 				65D43B91288E759D00C3391B /* ARImageView.xib */,
 				65B76A7D289D0E62001888E6 /* ARListView.xib */,
 				650BA19728C9DFB600246390 /* ARVideoView.xib */,
 			);
 			path = assets;
-			sourceTree = "<group>";
-		};
-		0AC8AF80280815BF00435541 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				0AC8AF84280815BF00435541 /* libSupermap.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		13B07FAE1A68108700A75B9A /* iTablet */ = {
@@ -552,7 +535,6 @@
 				0AC8AFBB2808185D00435541 /* libSocketRocket.a */,
 				0AC8AFB12808180800435541 /* JRE.framework */,
 				0AC8AFA7280817BE00435541 /* SuperMap.framework */,
-				0A33933C283386F90094AD2F /* SuperMap.bundle */,
 				0AC8AFA3280817BA00435541 /* GLTFSceneKit.framework */,
 				0AC8AFA12808178700435541 /* Foundation.framework */,
 				0AC8AF9F2808177E00435541 /* ExternalAccessory.framework */,
@@ -605,8 +587,8 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				0A3D969A2952E20500C617BA /* SMSuperMap.xcodeproj */,
 				47ABE69F28659DB100770561 /* LibUGC.xcodeproj */,
-				0AC8AF7F280815BF00435541 /* Supermap.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -614,6 +596,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				0A522AB4295970CE00AC7779 /* resources.bundle */,
+				0A522AB129596F2700AC7779 /* SuperMap.bundle */,
 				13B07FAE1A68108700A75B9A /* iTablet */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* iTabletTests */,
@@ -753,8 +737,8 @@
 					ProjectRef = 47ABE69F28659DB100770561 /* LibUGC.xcodeproj */;
 				},
 				{
-					ProductGroup = 0AC8AF80280815BF00435541 /* Products */;
-					ProjectRef = 0AC8AF7F280815BF00435541 /* Supermap.xcodeproj */;
+					ProductGroup = 0A3D969B2952E20500C617BA /* Products */;
+					ProjectRef = 0A3D969A2952E20500C617BA /* SMSuperMap.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -766,11 +750,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		0AC8AF84280815BF00435541 /* libSupermap.a */ = {
+		0A3D969F2952E20500C617BA /* libSMSuperMap.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libSupermap.a;
-			remoteRef = 0AC8AF83280815BF00435541 /* PBXContainerItemProxy */;
+			path = libSMSuperMap.a;
+			remoteRef = 0A3D969E2952E20500C617BA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		47ABE6AB28659DB200770561 /* libLibUGC.a */ = {
@@ -836,6 +820,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A522AB5295970CF00AC7779 /* resources.bundle in Resources */,
+				0A522AB229596F2700AC7779 /* SuperMap.bundle in Resources */,
 				E565E988286303CF007797E3 /* CharacterRecognization.prototxt in Resources */,
 				65CDD19728A4F99000B5A2C8 /* icon_tool_previous.png in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
@@ -844,7 +830,6 @@
 				0AC8AF032808109F00435541 /* icon.png in Resources */,
 				E13A5CB128752BFC004DFA1E /* InfoPlist.strings in Resources */,
 				4E28CE9328378DEA0045CB07 /* publicMap.txt in Resources */,
-				0AC8AF742808109F00435541 /* resources.bundle in Resources */,
 				E565E990286309A5007797E3 /* mobilenet_quant_224.tflite in Resources */,
 				65CDD19528A4F99000B5A2C8 /* icon_tool_next.png in Resources */,
 				E565E981286303CF007797E3 /* SegmenationFree-Inception.prototxt in Resources */,
@@ -860,7 +845,6 @@
 				65CDD18E28A4F53400B5A2C8 /* tab_icon_back.png in Resources */,
 				4E28CE9228378DEA0045CB07 /* ARWebView.xib in Resources */,
 				65D43B92288E759D00C3391B /* ARImageView.xib in Resources */,
-				0A33933D283386F90094AD2F /* SuperMap.bundle in Resources */,
 				E565E995286309A5007797E3 /* detect.tflite in Resources */,
 				65B76A7E289D0E62001888E6 /* ARListView.xib in Resources */,
 				0AC8AF022808109F00435541 /* Images.zip in Resources */,
@@ -869,7 +853,6 @@
 				65CDD18D28A4F53400B5A2C8 /* tab_icon_close01.png in Resources */,
 				E565E992286309A5007797E3 /* mobilenet_quant_224_cn.txt in Resources */,
 				E565E993286309A5007797E3 /* mobilenet_quant_224.txt in Resources */,
-				0ACCB9EC28BDADBB00527B71 /* base.zip in Resources */,
 				E13A5CAC28752B6B004DFA1E /* InfoPlist.strings in Resources */,
 				0AC8AF062808109F00435541 /* launch_slogan_cn.png in Resources */,
 				0AC8AF002808109F00435541 /* MyLaunchScreen.storyboard in Resources */,

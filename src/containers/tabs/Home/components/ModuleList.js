@@ -22,6 +22,7 @@ import { connect } from 'react-redux'
 import { getLanguage } from '../../../../language'
 import ModuleItem from './ModuleItem'
 import SizeUtil from '../SizeUtil'
+import { addNetworkChangeEventListener } from '@/utils/NetworkHandler'
 let AppUtils = NativeModules.AppUtils
 
 async function composeWaiting(action) {
@@ -329,6 +330,8 @@ class ModuleList extends Component {
         if (isAllGranted && permisson11) {
           await SMap.setPermisson(true)
           // this.init()
+
+          addNetworkChangeEventListener()
 
           // 重新设置权限后，重新打开定位
           await SLocation.openGPS()

@@ -249,7 +249,7 @@ export default class CustomActions extends React.Component {
   }
 
   handleLocationClick = async () => {
-    let isConnected = true//(await NetInfo.fetch()).isConnected
+    let isConnected = (await NetInfo.fetch()).isConnected
     if (!isConnected) {
       Toast.show(getLanguage(global.language).Prompt.NO_NETWORK)
       return

@@ -1651,7 +1651,7 @@ export default class MapView extends React.Component {
           marginRight: scaleSize(10),
           textAlign: 'center',
         }}>
-          {"确认退出"}
+          {getLanguage(this.props.language).Prompt.EXIT_APP}
         </Text>
       </View>
     )

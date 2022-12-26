@@ -75,57 +75,6 @@ async function tour() {
   }
 }
 
-const showLoading = (time: number, callback?: () => void) => {
-  global.Loading.setLoading(true, "上报中")
-  setTimeout(() => {
-    global.Loading.setLoading(false)
-    callback && callback()
-  }, time)
-}
-
-/** 顶上的位置上传按钮 */
-const positionUpload = async () => {
-  // showLoading(2000, async () => {
-  //   // // await SMap.moveToCurrent()
-  //   // // await SMap.removeAllCallout()
-  //   // const position = await SMap.getCurrentLocation()
-  //   // // await SMap.addLocationCallout(position.longitude, position.latitude, '当前位置', "2")
-  //   // await SMap.addCallouts([{
-  //   //   x: position.longitude,
-  //   //   y: position.latitude,
-  //   // }])
-  //   // // 地图定位到指定点位置
-  //   // await SMap.toLocationPoint({
-  //   //   x: position.longitude,
-  //   //   y: position.latitude,
-  //   // })
-
-  //   // await SMap.setMapScale(1 / 2785.0)
-  //   // await SMap.setMapCenter(position.longitude, position.latitude)
-  //   // await SMap.refreshMap()
-  //   Toast.show("上报成功")
-  // })
-  // ==============================================================================
-  // const data = {"name":"专用公路","type":"line","id":965018}
-  // await AppToolBar.getProps().setCurrentSymbol(data)
-  // const type = SMCollectorType.LINE_GPS_PATH
-  // ToolbarModule.addData({
-  //   lastType: type,
-  //   lastLayer:undefined,
-  // })
-  // await collectionModule().actions.createCollector(type, undefined)
-  // // await SCollector.startCollect(type)
-
-  showLoading(2000, async () => {
-    // await SCollector.startCollect(type)
-
-    const type = SMCollectorType.LINE_GPS_PATH
-    await collectionModule().actions.collectionSubmit(type)
-    await SCollector.stopCollect()
-    Toast.show("上报成功")
-  })
-
-}
 
 /** 时间格式化 "yyyy-MM-dd hh:mm:ss"（12小时制）  "yyyy-MM-dd HH:mm:ss"（24小时制） */
 const dateFormat = (format: string, date: Date) => {
@@ -601,7 +550,6 @@ const sendInfoAll = async() => {
 
 export default {
   tour,
-  positionUpload,
   dateFormat,
   getCountryCode,
   sendInfoAll,

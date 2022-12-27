@@ -1409,8 +1409,26 @@ export default class LayerAttribute extends React.Component {
   renderMapLayerAttribute = () => {
     // let buttonNameFilter = this.isMediaLayer ? ['MediaFilePaths', 'MediaServiceIds', 'MediaData'] : [], // 属性表cell显示 查看 按钮
     //   buttonTitles = this.isMediaLayer ? [getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW] : []
-    let buttonNameFilter = this.isMediaLayer ? ['MediaData'] : [], // 属性表cell显示 查看 按钮
-      buttonTitles = this.isMediaLayer ? [getLanguage(global.language).Map_Tools.VIEW] : []
+    const tempData = this.state.attributes.head
+    const langcahoDismissTitles = []
+    if (tempData.length > 0) {
+      const arr = tempData
+      for(const item of arr) {
+        const name = item.value
+        if (name.toUpperCase().indexOf('SS_') === 0
+        || name === "MediaData"
+        || name === "MediaName"
+        || name === "ModifiedDate"
+        || name === "Description"
+        || name === "HttpAddress"
+        ) {
+          langcahoDismissTitles.push(name)
+        }
+      }
+    }
+
+    let buttonNameFilter = (this.isMediaLayer ? ['MediaData'] : []).concat(this.buttonNameFilter), // 属性表cell显示 查看 按钮
+      buttonTitles =(this.isMediaLayer ? [getLanguage(global.language).Map_Tools.VIEW] : []).concat(this.buttonTitles)
     let buttonActions = this.isMediaLayer ? [
       async data => {
         let layerName = this.props.currentLayer.name,
@@ -1497,7 +1515,8 @@ export default class LayerAttribute extends React.Component {
 
       },
     ] : []
-    const dismissTitles = ['MediaFilePaths', 'MediaServiceIds']
+    buttonActions = buttonActions.concat(this.buttonActions)
+    const dismissTitles = ['MediaFilePaths', 'MediaServiceIds'].concat(this.dismissTitles,langcahoDismissTitles)
     const isSingle = this.total === 1 && this.state.attributes.data.length === 1
     return (
       <LayerAttributeTable

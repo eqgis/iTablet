@@ -42,6 +42,8 @@ export const ARPOISEARCH_VIEW = 'ARPOISEARCH_VIEW'
 export const SET_AI_DETECT_MODEL = 'SET_AI_DETECT_MODEL'
 export const SET_AI_CLASSIFY_MODEL = 'SET_AI_CLASSIFY_MODEL'
 const SET_ARLABEL = 'SET_ARLABEL'
+const SET_3D_SCENE_FIRST = 'SET_3D_SCENE_FIRST'
+
 // Actions
 // --------------------------------------------------
 
@@ -292,6 +294,12 @@ export const setAIClassifyModel = (model: any) => async (dispatch: (arg0: { type
   })
 }
 
+export const set3dSceneFirst = (is3dSceneFirst: boolean) => async (dispatch: (arg0: { type: string; payload: any }) => any) => {
+  await dispatch({
+    type: SET_3D_SCENE_FIRST,
+    payload: is3dSceneFirst,
+  })
+}
 
 const defaultMapLegend: {[key in keyof Legend]?: Legend[key]} = (() => {
   let _mapLegend: {[key in keyof Legend]?: Legend[key]} = {}
@@ -365,6 +373,7 @@ const initialState = fromJS({
   poiSearch:false,
   aiDetectData: {},
   aiClassifyData: {},
+  is3dSceneFirst: false,
 })
 
 interface Legend {
@@ -427,6 +436,7 @@ interface SettingState {
   poiSearch: boolean,
   aiDetectData: {[key: string]: any},
   aiClassifyData: {[key: string]: any},
+  is3dSceneFirst: boolean
 }
 
 type SettingStateType = Record<SettingState> & SettingState
@@ -576,6 +586,10 @@ export default handleActions<SettingStateType>(
     },
     [`${SET_AI_CLASSIFY_MODEL}`]: (state, { payload }) => {
       return state.setIn(['aiClassifyData'], fromJS(payload))
+    },
+    [`${SET_3D_SCENE_FIRST}`]: (state, { payload }) => {
+      global.is3dSceneFirst = payload
+      return state.setIn(['is3dSceneFirst'], fromJS(payload))
     },
     [REHYDRATE]: (state, { payload }) => {
       let data: SettingStateType = ModelUtils.checkModel(

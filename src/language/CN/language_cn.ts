@@ -2874,4 +2874,6 @@ export const language_cn = {
   CUR_ELE_NOT_SUPPORT_ATTRIBUTE: '当前对象不支持属性制作',
   MODEL_DATA: '模型数据',
 
+  RENDER_AR_SCENE_ON_3D: '优先渲染场景到3维',
+  RESTART_MODULE_INFO: '该设置重启模块后生效，是否现在退出模块?',
 }

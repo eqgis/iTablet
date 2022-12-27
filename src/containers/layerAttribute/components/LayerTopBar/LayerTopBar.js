@@ -171,108 +171,121 @@ export default class LayerTopBar extends React.Component {
         datasetName = info.datasetName
         datasourceAlias = info.datasourceAlias
       }
-      NavigationService.navigate('Camera', {
-        datasourceAlias,
-        datasetName,
-        index,
-        attribute: true,
-        selectionAttribute,
-        layerAttribute,
-        limit:limit,
-        cb: async ({
-          datasourceName,
-          datasetName,
-          mediaPaths,
-        }) => {
-        // cb: async mediaPaths => {
-          try {
-            if (global.coworkMode) {
-              let resourceIds = [],
-                _mediaPaths = [] // 保存修改名称后的图片地址
-              let name = '', suffix = ''
-              let dest = await FileTools.appendingHomeDirectory(ConstPath.UserPath + this.props.currentUser.userName + '/' + ConstPath.RelativeFilePath.Media)
-              const newPaths = await FileTools.copyFiles(mediaPaths, dest)
-              for (let mediaPath of newPaths) {
-                if (mediaPath.indexOf('assets-library://') === 0) { // 处理iOS相册文件
-                  suffix = dataUtil.getUrlQueryVariable(mediaPath, 'ext') || ''
-                  name = dataUtil.getUrlQueryVariable(mediaPath, 'id') || ''
-                  dest += `${name}.${suffix}`
-                  mediaPath = await RNFS.copyAssetsFileIOS(mediaPath, dest, 0, 0)
-                } else if (mediaPath.indexOf('ph://') === 0) { // 处理iOS相册文件
-                  suffix = 'png'
-                  name = mediaPath.substr(mediaPath.lastIndexOf('/') + 1)
-                  dest += `${name}.${suffix}`
-                  mediaPath = await RNFS.copyAssetsFileIOS(mediaPath, dest, 0, 0)
-                } else if (mediaPath.indexOf('content://') === 0) { // 处理android相册文件
-                  let filePath = await FileTools.getContentAbsolutePath(mediaPath)
-                  name = filePath.substring(filePath.lastIndexOf('/') + 1, filePath.lastIndexOf('.'))
-                  suffix = filePath.substr(filePath.lastIndexOf('.') + 1)
-                  dest += `${name}.${suffix}`
-                  await RNFS.copyFile(filePath, dest)
-                  mediaPath = dest
-                } else { // 处理文件目录中的文件
-                  name = mediaPath.substring(mediaPath.lastIndexOf('/') + 1, mediaPath.lastIndexOf('.'))
-                  suffix = mediaPath.substr(mediaPath.lastIndexOf('.') + 1)
-                  dest += `${name}.${suffix}`
-                }
-                let resourceId = await this.onlineServicesUtils.uploadFileWithCheckCapacity(
-                  mediaPath,
-                  `${name}.${suffix}`,
-                  'PHOTOS',
-                )
-                // TODO是否删除原图
-                if (resourceId) {
-                  resourceIds.push(resourceId)
 
-                  let _newPath = `${mediaPath.replace(name, resourceId)}`
-                  _mediaPaths.push(_newPath)
-                }
-              }
-              if (resourceIds.length > 0) {
-                let result = await SMediaCollector.addMedia({
-                  datasourceName,
-                  datasetName,
-                  mediaPaths,
-                  mediaIds: resourceIds,
-                }, false, { index: index, selectionAttribute: selectionAttribute, ids: global.layerSelection?.ids ,layerAttribute: layerAttribute})
-              } else {
-                Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_FAILED)
-              }
-              // 分享到群组中
-              if (resourceIds.length > 0 && this.props.currentTask?.groupID) {
-                this.servicesUtils?.shareDataToGroup({
-                  groupId: this.props.currentTask.groupID,
-                  ids: resourceIds,
-                }).then(result => {
-                  if (result.succeed) {
-                    Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_SUCCESS)
-                    this.cb && this.cb()
-                  } else {
-                    Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_FAILED)
+      // 跳转到图像编辑页面
+      let info = await SMediaCollector.getMediaInfo(layerInfo.name, smID)
+      const mediaPaths = info?.mediaFilePaths || []
+      if(mediaPaths.length > 0) {
+        NavigationService.navigate('MediaEdit', {
+          info,
+          cb: () => {
+            // refresh
+          },
+        })
+      } else {
+        NavigationService.navigate('Camera', {
+          datasourceAlias,
+          datasetName,
+          index,
+          attribute: true,
+          selectionAttribute,
+          layerAttribute,
+          limit:limit,
+          cb: async ({
+            datasourceName,
+            datasetName,
+            mediaPaths,
+          }) => {
+          // cb: async mediaPaths => {
+            try {
+              if (global.coworkMode) {
+                let resourceIds = [],
+                  _mediaPaths = [] // 保存修改名称后的图片地址
+                let name = '', suffix = ''
+                let dest = await FileTools.appendingHomeDirectory(ConstPath.UserPath + this.props.currentUser.userName + '/' + ConstPath.RelativeFilePath.Media)
+                const newPaths = await FileTools.copyFiles(mediaPaths, dest)
+                for (let mediaPath of newPaths) {
+                  if (mediaPath.indexOf('assets-library://') === 0) { // 处理iOS相册文件
+                    suffix = dataUtil.getUrlQueryVariable(mediaPath, 'ext') || ''
+                    name = dataUtil.getUrlQueryVariable(mediaPath, 'id') || ''
+                    dest += `${name}.${suffix}`
+                    mediaPath = await RNFS.copyAssetsFileIOS(mediaPath, dest, 0, 0)
+                  } else if (mediaPath.indexOf('ph://') === 0) { // 处理iOS相册文件
+                    suffix = 'png'
+                    name = mediaPath.substr(mediaPath.lastIndexOf('/') + 1)
+                    dest += `${name}.${suffix}`
+                    mediaPath = await RNFS.copyAssetsFileIOS(mediaPath, dest, 0, 0)
+                  } else if (mediaPath.indexOf('content://') === 0) { // 处理android相册文件
+                    let filePath = await FileTools.getContentAbsolutePath(mediaPath)
+                    name = filePath.substring(filePath.lastIndexOf('/') + 1, filePath.lastIndexOf('.'))
+                    suffix = filePath.substr(filePath.lastIndexOf('.') + 1)
+                    dest += `${name}.${suffix}`
+                    await RNFS.copyFile(filePath, dest)
+                    mediaPath = dest
+                  } else { // 处理文件目录中的文件
+                    name = mediaPath.substring(mediaPath.lastIndexOf('/') + 1, mediaPath.lastIndexOf('.'))
+                    suffix = mediaPath.substr(mediaPath.lastIndexOf('.') + 1)
+                    dest += `${name}.${suffix}`
                   }
-                }).catch(() => {
+                  let resourceId = await this.onlineServicesUtils.uploadFileWithCheckCapacity(
+                    mediaPath,
+                    `${name}.${suffix}`,
+                    'PHOTOS',
+                  )
+                  // TODO是否删除原图
+                  if (resourceId) {
+                    resourceIds.push(resourceId)
+
+                    let _newPath = `${mediaPath.replace(name, resourceId)}`
+                    _mediaPaths.push(_newPath)
+                  }
+                }
+                if (resourceIds.length > 0) {
+                  let result = await SMediaCollector.addMedia({
+                    datasourceName,
+                    datasetName,
+                    mediaPaths,
+                    mediaIds: resourceIds,
+                  }, false, { index: index, selectionAttribute: selectionAttribute, ids: global.layerSelection?.ids ,layerAttribute: layerAttribute})
+                } else {
                   Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_FAILED)
-                })
+                }
+                // 分享到群组中
+                if (resourceIds.length > 0 && this.props.currentTask?.groupID) {
+                  this.servicesUtils?.shareDataToGroup({
+                    groupId: this.props.currentTask.groupID,
+                    ids: resourceIds,
+                  }).then(result => {
+                    if (result.succeed) {
+                      Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_SUCCESS)
+                      this.cb && this.cb()
+                    } else {
+                      Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_FAILED)
+                    }
+                  }).catch(() => {
+                    Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_FAILED)
+                  })
+                }
+              } else {
+                let result = await SMediaCollector.addMedia({
+                  datasourceName: datasourceAlias,
+                  datasetName: datasetName,
+                  mediaPaths,
+                }, false, { index: index, selectionAttribute: selectionAttribute, ids: global.layerSelection?.ids ,layerAttribute: layerAttribute})
               }
-            } else {
-              let result = await SMediaCollector.addMedia({
-                datasourceName: datasourceAlias,
-                datasetName: datasetName,
-                mediaPaths,
-              }, false, { index: index, selectionAttribute: selectionAttribute, ids: global.layerSelection?.ids ,layerAttribute: layerAttribute})
+              if (
+                this.props.refreshAction &&
+                typeof this.props.refreshAction === 'function'
+              ) {
+                this.props.refreshAction()
+              }
+            } catch (e) {
+              // eslint-disable-next-line no-console
+              __DEV__ && console.warn('error')
             }
-            if (
-              this.props.refreshAction &&
-              typeof this.props.refreshAction === 'function'
-            ) {
-              this.props.refreshAction()
-            }
-          } catch (e) {
-            // eslint-disable-next-line no-console
-            __DEV__ && console.warn('error')
-          }
-        },
-      })
+          },
+        })
+      }
     }
   }
 

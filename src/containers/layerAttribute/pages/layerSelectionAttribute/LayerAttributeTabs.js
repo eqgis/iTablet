@@ -1055,6 +1055,18 @@ export default class LayerAttributeTabs extends React.Component {
           />,
         ]
       }
+      buttons.push(
+        <MTBtn
+          key={'attribute'}
+          image={
+            getThemeAssets().attribute.rightbar_tool_select_layerlist
+          }
+          imageStyle={{ width: scaleSize(size), height: scaleSize(size) }}
+          onPress={() => {
+            this.showDrawer(true)
+          }}
+        />
+      )
     }
     return (
       <View
@@ -1089,7 +1101,7 @@ export default class LayerAttributeTabs extends React.Component {
         style={styles.container}
       >
         <LayerTopBar
-          hasTabBtn
+          // hasTabBtn
           hasAddField={!global.coworkMode && this.hasAddField}
           hasCamera={global.coworkMode && this.state.isMediaLayer || !global.coworkMode} // 协作中若原始数据不带多媒体的图层不能进行多媒体采集
           orientation={this.props.device.orientation}

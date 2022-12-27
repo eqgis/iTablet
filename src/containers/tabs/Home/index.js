@@ -41,6 +41,7 @@ const mapStateToProps = state => ({
   mineModules: state.appConfig.toJS().mineModules,
   version: state.home.toJS().version,
   isAgreeToProtocol: state.setting.toJS().isAgreeToProtocol,
+  is3dSceneFirst: state.setting.toJS().is3dSceneFirst
 })
 const mapDispatchToProps = {
   setLanguage,

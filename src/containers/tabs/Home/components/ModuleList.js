@@ -22,6 +22,7 @@ import { connect } from 'react-redux'
 import { getLanguage } from '../../../../language'
 import ModuleItem from './ModuleItem'
 import SizeUtil from '../SizeUtil'
+import { addNetworkChangeEventListener } from '@/utils/NetworkHandler'
 let AppUtils = NativeModules.AppUtils
 
 async function composeWaiting(action) {
@@ -121,7 +122,7 @@ class ModuleList extends Component {
       let keyword = item.name.endsWith('_EXAMPLE')
         ? item.name
         : item.name + '_EXAMPLE'
-      let isConnected = true//(await NetInfo.fetch()).isConnected // 检测网络，有网的时候再去检查数据
+      let isConnected = (await NetInfo.fetch()).isConnected // 检测网络，有网的时候再去检查数据
       if (!isConnected) return
       if (!downloadData.url) {
         let result = await FetchUtils.getDataInfoByUrl(
@@ -329,6 +330,8 @@ class ModuleList extends Component {
         if (isAllGranted && permisson11) {
           await SData.setPermisson(true)
           // this.init()
+
+          addNetworkChangeEventListener()
 
           // 重新设置权限后，重新打开定位
           await SLocation.openGPS()

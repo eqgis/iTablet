@@ -531,6 +531,7 @@ export default class MapView extends React.Component {
   }
 
   async componentDidMount() {
+    AppEvent.addListener('on_exit_ar_map_module', this.back)
     if (!global.isLicenseValid) {
       let licenseStatus = await SData.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid
@@ -940,6 +941,7 @@ export default class MapView extends React.Component {
   }
 
   componentWillUnmount() {
+    AppEvent.removeListener('on_exit_ar_map_module', this.back)
     if (global.Type === ChunkType.MAP_AR) {
       Dimensions.removeEventListener('change', this.onChange)
     }
@@ -1951,6 +1953,8 @@ export default class MapView extends React.Component {
 
       if (this.viewEntire) {
         SMap.viewEntire()
+      }else{
+        SMap.moveToCurrent()
       }
     }.bind(this)())
   }

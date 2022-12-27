@@ -55,9 +55,7 @@ async function getOnlineData(
       objDataList.content = newData
     }
   } catch (e) {
-    // const result = await NetInfo.getConnectionInfo()
-    // if (result.type === 'unknown' || result.type === 'none') {
-    const result = true//await NetInfo.fetch()
+    const result = true
     if (result.type === 'unknown' || result.type === 'none') {
       Toast.show(getLanguage(global.language).Prompt.NETWORK_ERROR)
     } else {

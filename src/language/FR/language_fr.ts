@@ -2870,4 +2870,8 @@ export const language_fr: typeof language_cn = {
   PANE_ANIMATION: 'Animation du panneau',
   CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
   MODEL_DATA: 'Model data',   // To be tanslated
+
+  RENDER_AR_SCENE_ON_3D: 'Render AR to 3D Scene',  // To be tanslated
+  RESTART_MODULE_INFO: 'This setting will take effect after restart the module. Would you like to restart module now?',  // To be tanslated
+
 }

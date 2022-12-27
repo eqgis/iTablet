@@ -52,7 +52,7 @@ public class AppUtils extends ReactContextBaseJavaModule {
     public void AppExit(){
         SLocation.closeGPS();
         appManager.getAppManager().AppExit(getReactApplicationContext());
-
+        System.exit(0);
     }
 
     @ReactMethod

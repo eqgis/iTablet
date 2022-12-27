@@ -13,7 +13,6 @@ import {
   StatusBar,
   TextInput,
   PermissionsAndroid,
-  // NetInfo,
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import NetInfo from "@react-native-community/netinfo"
@@ -51,7 +50,7 @@ import { setLicenseInfo } from './src/redux/models/license'
 import { RNFS as fs, SData } from 'imobile_for_reactnative'
 import { FileTools, SplashScreen} from './src/native'
 import ConfigStore from './src/redux/store'
-import { scaleSize, Toast, screen, DialogUtils, GetUserBaseMapUtil } from './src/utils'
+import { scaleSize, Toast, screen, DialogUtils, GetUserBaseMapUtil, AppEvent } from './src/utils'
 import * as OnlineServicesUtils from './src/utils/OnlineServicesUtils'
 import RootNavigator from './src/containers/RootNavigator'
 import { color } from './src/styles'
@@ -89,6 +88,7 @@ import { setBaseMap } from './src/redux/models/map'
 import AppNavigator from './src/containers'
 import AppDialog from '@/utils/AppDialog'
 import AppInputDialog from '@/utils/AppInputDialog'
+import { addNetworkChangeEventListener } from '@/utils/NetworkHandler'
 
 //字体不随系统字体变化
 Text.defaultProps = Object.assign({}, Text.defaultProps, { allowFontScaling: false })
@@ -238,8 +238,7 @@ class AppRoot extends Component {
     AppState.addEventListener('change', this.handleStateChange)
     Platform.OS === 'android' &&
       BackHandler.addEventListener('hardwareBackPress', this.back)
-    NetInfo.addEventListener(this.handleNetworkState)
-
+    AppEvent.addListener('network_change', this.handleNetworkState)
   }
 
   initGlobal = () => {
@@ -335,7 +334,7 @@ class AppRoot extends Component {
       this.requestPermission()
     } else {
       global.Loading.setLoading(true, 'Loading')
-      await this.init()
+      await this.init(true)
       global.Loading.setLoading(false)
     }
   }
@@ -369,14 +368,14 @@ class AppRoot extends Component {
     let permisson11 = await AppUtils.requestStoragePermissionR()
     if (isAllGranted && permisson11) {
       await SData.setPermisson(true)
-      await this.init()
+      await this.init(true)
       global.Loading.setLoading(false)
     } else {
       global.SimpleDialog.set({
         text: getLanguage(this.props.language).Prompt.NO_PERMISSION_ALERT,
         cancelText: getLanguage(this.props.language).Prompt.CONTINUE,
         cancelAction: /*AppUtils.AppExit*/ async () =>{
-          await this.init()
+          await this.init(false)
           global.Loading.setLoading(false)
         },
         confirmText: getLanguage(this.props.language).Prompt.REQUEST_PERMISSION,
@@ -386,7 +385,7 @@ class AppRoot extends Component {
     }
   }
 
-  init = async () => {
+  init = async (hasPermission) => {
     await this.initEnvironment()
     await this.initLocation()
     await this.initUser()
@@ -394,6 +393,10 @@ class AppRoot extends Component {
     this.checkImportData()
     // this.initOrientation()
     this.reCircleLogin()
+
+    if(hasPermission) {
+      addNetworkChangeEventListener()
+    }
 
     // 显示界面，之前的为预加载
     this.setState({ isInit: true }, () => {

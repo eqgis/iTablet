@@ -132,10 +132,10 @@ export default class LangChaoDemoModule extends Module {
 
     const position = await SMap.getCurrentLocation()
     // 地图定位到指定点位置
-    await SMap.toLocationPoint({
-      x: position.longitude,
-      y: position.latitude,
-    }, false)
+    // await SMap.toLocationPoint({
+    //   x: position.longitude,
+    //   y: position.latitude,
+    // }, false)
 
     const countryCode = await TourAction.getCountryCode(position.longitude, position.latitude)
     // const countryCode = await TourAction.getCountryCode(40.7143528, 74.0059731)

@@ -123,10 +123,25 @@ async function getAvailableFileName(path: string, name: string, ext: string) {
 
 
 
+/**
+ * 小插件用户的自定义数据 存放目录为iTablet/android/app/src/main/assets/userData/xxxx.zip
+ * @param dataName 数据压缩包名字（注意不要加后缀 xxxx)
+ */
+async function initAppletsUserData(dataName: string): Promise<boolean> {
+  try {
+    return FileTools.initAppletsUserData(dataName)
+  } catch (error) {
+    return false
+  }
+}
+
+
+
 
 export default {
   ...FileTools,
   getFilterFiles,
   getAvailableMapName,
   getAvailableFileName,
+  initAppletsUserData,
 }

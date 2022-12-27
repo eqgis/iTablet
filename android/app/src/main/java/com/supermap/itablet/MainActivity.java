@@ -113,32 +113,32 @@ public class MainActivity extends ReactActivity {
     return super.onKeyDown(keyCode, event);
   }
 
-  private void createContext() {
-    final ReactInstanceManager manager = ((ReactApplication)getApplication()).getReactNativeHost().getReactInstanceManager();
-    if (!manager.hasStartedCreatingInitialContext()) {
-      manager.addReactInstanceEventListener(new ReactInstanceManager.ReactInstanceEventListener() {
-        @Override
-        public void onReactContextInitialized(ReactContext context) {
-//          loadBundle("base");
-//          IntentModule.loadBundle("base");
-        }
-      });
-      ((ReactApplication)getApplication()).getReactNativeHost().getReactInstanceManager().createReactContextInBackground();
-    }
-  }
-
-  private void loadBundle(String bundle) {
-    // 若没有加载bundle则加载，并记录到DispatchUtils中
-    if (!BundleUtils.findLoadedBundle(bundle)) {
-      String bundlePath = "assets://bundles/" + bundle + "/" + bundle + ".bundle";
-      BundleTools.loadBundleFromAssets(bundlePath);
-      BundleBean bundleBean = new BundleBean();
-      bundleBean.setPath(bundlePath);
-      BundleUtils.addLoadedBundle(bundleBean);
-    }
-//    BundleUtils.dispatchModel = bundle;
-//    DispatchActivity.start(MainActivity.this);
-  }
+//  private void createContext() {
+//    final ReactInstanceManager manager = ((ReactApplication)getApplication()).getReactNativeHost().getReactInstanceManager();
+//    if (!manager.hasStartedCreatingInitialContext()) {
+//      manager.addReactInstanceEventListener(new ReactInstanceManager.ReactInstanceEventListener() {
+//        @Override
+//        public void onReactContextInitialized(ReactContext context) {
+////          loadBundle("base");
+////          IntentModule.loadBundle("base");
+//        }
+//      });
+//      ((ReactApplication)getApplication()).getReactNativeHost().getReactInstanceManager().createReactContextInBackground();
+//    }
+//  }
+//
+//  private void loadBundle(String bundle) {
+//    // 若没有加载bundle则加载，并记录到DispatchUtils中
+//    if (!BundleUtils.findLoadedBundle(bundle)) {
+//      String bundlePath = "assets://bundles/" + bundle + "/" + bundle + ".bundle";
+//      BundleTools.loadBundleFromAssets(bundlePath);
+//      BundleBean bundleBean = new BundleBean();
+//      bundleBean.setPath(bundlePath);
+//      BundleUtils.addLoadedBundle(bundleBean);
+//    }
+////    BundleUtils.dispatchModel = bundle;
+////    DispatchActivity.start(MainActivity.this);
+//  }
 
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {

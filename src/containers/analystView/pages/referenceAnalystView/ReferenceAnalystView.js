@@ -739,7 +739,7 @@ export default class ReferenceAnalystView extends Component {
                 })
               }
               if (this.state.resultDataSource === null) {
-                let resultDatasetName = await SMap.getAvailableDatasetName(
+                let resultDatasetName = await SData._getAvailableDatasetName(
                   data.key,
                   'Thiessen',
                 )

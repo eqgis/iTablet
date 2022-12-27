@@ -191,7 +191,8 @@ export default class InterpolationAnalystView extends Component {
 
   getFieldInfos = async (info, filter) => {
     let infos = []
-    let fieldInfos = await SMap.getFieldInfos(info, filter)
+    //todo 取消过滤，返回全部字段，JS处理 @yangsl   add xiezhy
+    let fieldInfos = await SData.getFieldInfos(info)
 
     fieldInfos.forEach(item => {
       item.key = item.name
@@ -675,8 +676,8 @@ export default class InterpolationAnalystView extends Component {
                     data.datasetName !== this.state.dataSet.datasetName)
                 ) {
                   let sourceData = {
-                    datasource: this.state.dataSource.value,
-                    dataset: data.value,
+                    datasourceName: this.state.dataSource.value,
+                    datasetName: data.value,
                   }
                   // 获取默认插值字段
                   let filter2 = {}
@@ -700,7 +701,7 @@ export default class InterpolationAnalystView extends Component {
                     fieldInfos && fieldInfos.length > 0 && fieldInfos[0]
 
                   // 获取默认插值范围
-                  let bounds = (await SMap.getDatasetBounds(sourceData)) || {}
+                  let bounds = (await SData.getDatasetBounds(sourceData)) || {}
                   newStateData = Object.assign(newStateData, {
                     // interpolationField: null,
                     left: bounds.left,

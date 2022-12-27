@@ -15,77 +15,76 @@ import {
   PermissionsAndroid,
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import NetInfo from "@react-native-community/netinfo"
+// import NetInfo from "@react-native-community/netinfo"
 import { Provider, connect } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import PropTypes from 'prop-types'
-import { setNav } from './src/redux/models/nav'
-import { setUser, setUsers, deleteUser } from './src/redux/models/user'
-import { setAgreeToProtocol, setLanguage, setMapSetting } from './src/redux/models/setting'
-import { setPointStateText } from './src/redux/models/location'
+import { setNav } from './redux/models/nav'
+import { setUser, setUsers, deleteUser } from './redux/models/user'
+import { setAgreeToProtocol, setLanguage, setMapSetting } from './redux/models/setting'
+import { setPointStateText } from './redux/models/location'
 import {
   setEditLayer,
   setSelection,
   setCurrentLayer,
-} from './src/redux/models/layers'
+} from './redux/models/layers'
 import {
   openWorkspace,
   closeMap,
   setCurrentMap,
   saveMap,
   closeWorkspace,
-} from './src/redux/models/map'
+} from './redux/models/map'
 import {
   setCurrentTemplateInfo,
   setCurrentTemplateList,
   setTemplate,
-} from './src/redux/models/template'
-import { setModules } from './src/redux/models/appConfig'
-import { setMapModule } from './src/redux/models/mapModules'
-import { Dialog, Loading, MyToast, InputDialog, Dialog2, InputDialog2 } from './src/components'
-import { setAnalystParams } from './src/redux/models/analyst'
-import { setCollectionInfo } from './src/redux/models/collection'
-import { setShow } from './src/redux/models/device'
-import { setLicenseInfo } from './src/redux/models/license'
-import { RNFS as fs } from 'imobile_for_reactnative'
-import { FileTools, SplashScreen} from './src/native'
-import ConfigStore from './src/redux/store'
-import { scaleSize, Toast, screen, DialogUtils, GetUserBaseMapUtil, AppEvent } from './src/utils'
-import * as OnlineServicesUtils from './src/utils/OnlineServicesUtils'
-import RootNavigator from './src/containers/RootNavigator'
-import { color } from './src/styles'
-import { ConstPath, ThemeType, ChunkType, UserType } from './src/constants'
-import * as PT from './src/customPrototype'
-import NavigationService from './src/containers/NavigationService'
+} from './redux/models/template'
+import { setModules } from './redux/models/appConfig'
+import { setMapModule } from './redux/models/mapModules'
+import { Dialog, Loading, MyToast, InputDialog, Dialog2, InputDialog2 } from './components'
+import { setAnalystParams } from './redux/models/analyst'
+import { setCollectionInfo } from './redux/models/collection'
+import { setShow } from './redux/models/device'
+import { setLicenseInfo } from './redux/models/license'
+import { FileTools, SplashScreen} from './native'
+import ConfigStore from './redux/store'
+import { scaleSize, Toast, screen, DialogUtils, GetUserBaseMapUtil, AppEvent } from './utils'
+import * as OnlineServicesUtils from './utils/OnlineServicesUtils'
+import RootNavigator from './containers/RootNavigator'
+import { color } from './styles'
+import { ConstPath, ThemeType, ChunkType, UserType } from './constants'
+import * as PT from './customPrototype'
+import NavigationService from './containers/NavigationService'
 import Orientation from 'react-native-orientation'
-import { SOnlineService, SScene, SMap, SIPortalService, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo ,SARMap} from 'imobile_for_reactnative'
+import { RNFS as fs, SOnlineService, SScene, SMap, SIPortalService, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo ,SARMap} from 'imobile_for_reactnative'
 // import SplashScreen from 'react-native-splash-screen'
-import { getLanguage } from './src/language/index'
-import { ProtocolDialog } from './src/containers/tabs/Home/components'
-import FriendListFileHandle from './src/containers/tabs/Friend/FriendListFileHandle'
-import { SimpleDialog } from './src/containers/tabs/Friend'
-import DataHandler from './src/utils/DataHandler'
+import { getLanguage } from './language/index'
+import { ProtocolDialog } from './containers/tabs/Home/components'
+import FriendListFileHandle from './containers/tabs/Friend/FriendListFileHandle'
+import { SimpleDialog } from './containers/tabs/Friend'
+import DataHandler from './utils/DataHandler'
 let AppUtils = NativeModules.AppUtils
-import config from './configs/config'
-import _mapModules, { mapModules } from './configs/mapModules'
-import { BackHandlerUtil } from './src/containers/workspace/util'
+import config from '../configs/config'
+import _mapModules, { mapModules } from '../configs/mapModules'
+import { BackHandlerUtil } from './containers/workspace/util'
 import {
   setGuideShow,
   setVersion,
   setMapAnalystGuide,
-} from './src/redux/models/home'
+} from './redux/models/home'
 
 import {
   setMapArGuide,
   setMapArMappingGuide,
-} from './src/redux/models/ar'
+} from './redux/models/ar'
 
-import LaunchGuidePage from './src/components/guide'
-import LaunchGuide from './configs/guide'
+import LaunchGuidePage from './components/guide'
+import LaunchGuide from '../configs/guide'
 // import CoworkInfo from './src/containers/tabs/Friend/Cowork/CoworkInfo'
 
-import { setBaseMap } from './src/redux/models/map'
-import AppNavigator from './src/containers'
+import { setBaseMap } from './redux/models/map'
+// import AppNavigator from './containers'
 import AppDialog from '@/utils/AppDialog'
 import AppInputDialog from '@/utils/AppInputDialog'
 import { addNetworkChangeEventListener } from '@/utils/NetworkHandler'
@@ -1120,7 +1119,7 @@ class AppRoot extends Component {
     return (
       <View style={styles.dialogHeaderView}>
         <Image
-          source={require('./src/assets/home/Frenchgrey/icon_prompt.png')}
+          source={require('./assets/home/Frenchgrey/icon_prompt.png')}
           style={styles.dialogHeaderImg}
         />
         <Text style={styles.promptTtile}>{'是否导入外部数据'}</Text>

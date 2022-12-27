@@ -3,7 +3,7 @@ import { getLanguage } from '../../language'
 import { getThemeAssets } from '../../assets'
 import { Module } from '../../class'
 import Toast from '../../utils/Toast'
-import { SAIDetectView, SMap } from 'imobile_for_reactnative'
+import { SAIDetectView, SARMap, SMap } from 'imobile_for_reactnative'
 import {
   startModule,
   addModule,
@@ -114,6 +114,11 @@ export default class MapARConfig extends Module {
           return false
         }
         SMap.setDynamicviewsetVisible(false)
+        const is3dSceneFirst = global.is3dSceneFirst
+        SARMap.setIs3dSceneFirst(is3dSceneFirst)
+        if(is3dSceneFirst) {
+          screen.lockToLandscape()
+        }
         // 竖屏时,锁定竖屏
         // if (screen.getOrientation().indexOf('LANDSCAPE') < 0) {
         //   screen.lockToPortrait()

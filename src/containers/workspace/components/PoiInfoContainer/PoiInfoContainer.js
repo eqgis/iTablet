@@ -251,13 +251,15 @@ export default class PoiInfoContainer extends React.Component {
   }
 
   //online返回存在的缺陷，没有直接返回楼层，地址中包含有楼层，但格式不统一，无法拿到，后续导航无法到正确楼层
-  getSearchResult = (params, cb) => {
+  getSearchResult = async (params, cb) => {
     try {
       global.Loading.setLoading(
         true,
         getLanguage(global.language).Prompt.SEARCHING,
       )
-      LocateUtils.getSearchResult(params, this.state.location, data => {
+
+      const currentLocation = await SMap.getCurrentLocation()
+      LocateUtils.getSearchResult(params, { x: currentLocation.longitude, y: currentLocation.latitude }, data => {
         if (data) {
           let newState = {resultList: data.resultList, radius: 50000, showList: true}
           if (data.radius !== undefined) {

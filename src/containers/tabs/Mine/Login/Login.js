@@ -154,7 +154,7 @@ export default class Login extends React.Component {
         return
       }
 
-      let isConnected = true//(await NetInfo.fetch()).isConnected
+      let isConnected = (await NetInfo.fetch()).isConnected
       if(!isConnected) {
         Toast.show(getLanguage(this.props.language).Prompt.NO_NETWORK)
         return

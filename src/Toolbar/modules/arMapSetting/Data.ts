@@ -4,7 +4,6 @@ import { getImage } from "../../../assets"
 import { getLanguage } from "../../../language"
 import { IToolbarOption, ToolbarOption } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppToolBar } from "../../../utils"
-import App from "App"
 
 
 export function getData(key: ModuleList['ARMAP_SETTING']): IToolbarOption {

@@ -4,7 +4,7 @@ import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
 import { Image, ScaledSize, TouchableOpacity, View, EmitterSubscription, StyleSheet, Text } from 'react-native'
 import Scan from '../components/Scan'
-import { TARLayerType, SARMap ,ARElementLayer,ARLayerType, SExhibition} from 'imobile_for_reactnative'
+import { TARLayerType, SARMap ,ARElementLayer,ARLayerType, SExhibition,RNFS,FileTools} from 'imobile_for_reactnative'
 import { Slider } from 'imobile_for_reactnative/components'
 import { getGlobalPose, isCoverGuided, setCoverGuided } from '../Actions'
 import ARGuide from '../components/ARGuide'
@@ -17,6 +17,7 @@ import AnimationWrap from '../components/AnimationWrap'
 import SlideBar from 'imobile_for_reactnative/components/SlideBar'
 import { FlowParam } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SExhibition'
 import { getLanguage } from '@/language'
+import { ConstPath } from '@/constants'
 
 interface Props {
   windowSize: ScaledSize
@@ -399,19 +400,28 @@ class CoverView extends React.Component<Props, State> {
     }
   }
 
-  _disableFlow = () => {
+  _disableFlow =async () => {
     if(this.flowEnabled) {
+      const homePath = await FileTools.getHomeDirectory()
+      const path1 = homePath + ConstPath.Common + `Exhibition/AR室内管线/route1.json`
+      const path2 = homePath + ConstPath.Common + `Exhibition/AR室内管线/route2.json`
+      const info1 = await RNFS.readFile(path1)
+      const infoJson1 = JSON.parse(info1)
+
+      const info2 = await RNFS.readFile(path2)
+      const infoJson2 = JSON.parse(info2)
+
       this.flowEnabled = false
       SExhibition.hidePipeFlow()
       const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
       if(layer){
         SExhibition.restorePipeMaterial(
           layer.name,
-          getRoute1Names()
+          infoJson1.names
         )
         SExhibition.restorePipeMaterial(
           layer.name,
-          getRoute2Names()
+          infoJson2.names
         )
       }
     }
@@ -419,10 +429,19 @@ class CoverView extends React.Component<Props, State> {
 
 
   _disableAlert = async () => {
+    const homePath = await FileTools.getHomeDirectory()
+    const path1 = homePath + ConstPath.Common + `Exhibition/AR室内管线/route1.json`
+    const path2 = homePath + ConstPath.Common + `Exhibition/AR室内管线/route2.json`
+    const info1 = await RNFS.readFile(path1)
+    const infoJson1 = JSON.parse(info1)
+
+    const info2 = await RNFS.readFile(path2)
+    const infoJson2 = JSON.parse(info2)
+
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if(layer) {
-      await SExhibition.hideBreakPoint(layer.name, [...getAlertPipe1(), ...getAlertPipe2()])
-      await SExhibition.restorePipeMaterial(layer.name, [...getRoute1Names(), ...getRoute2Names()])
+      await SExhibition.hideBreakPoint(layer.name, [...infoJson1.alert, ...infoJson2.alert])
+      await SExhibition.restorePipeMaterial(layer.name, [...infoJson1.names, ...infoJson2.names])
       await SExhibition.hidePipeFlow()
     }
   }
@@ -651,35 +670,53 @@ class CoverView extends React.Component<Props, State> {
   }
 
   flow = async (index: 1 | 2) => {
+    const homePath = await FileTools.getHomeDirectory()
+    const path1 = homePath + ConstPath.Common + `Exhibition/AR室内管线/route1.json`
+    const path2 = homePath + ConstPath.Common + `Exhibition/AR室内管线/route2.json`
+    const info1 = await RNFS.readFile(path1)
+    const infoJson1 = JSON.parse(info1)
+
+    const info2 = await RNFS.readFile(path2)
+    const infoJson2 = JSON.parse(info2)
+
     await SExhibition.hidePipeFlow()
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if(layer){
       await SExhibition.restorePipeMaterial(
         layer.name,
-        index === 1 ? getRoute2Names() : getRoute1Names()
+        index === 1 ? infoJson2.names : infoJson1.names
       )
       SExhibition.showPipeFlow(
         layer.name,
-        index === 1 ? getFlowRoute1() : getFlowRoute2()
+        index === 1 ? getFlowRoute1(false,infoJson1.flow) : getFlowRoute2(false,infoJson2.flow)
       )
 
       SExhibition.makePipeMaterialTransparent(
         layer.name,
-        index === 1 ? getRoute1Names() : getRoute2Names()
+        index === 1 ? infoJson1.names : infoJson2.names
       )
     }
   }
 
   alert = async (index: 1 | 2) => {
+    const homePath = await FileTools.getHomeDirectory()
+    const path1 = homePath + ConstPath.Common + `Exhibition/AR室内管线/route1.json`
+    const path2 = homePath + ConstPath.Common + `Exhibition/AR室内管线/route2.json`
+    const info1 = await RNFS.readFile(path1)
+    const infoJson1 = JSON.parse(info1)
+
+    const info2 = await RNFS.readFile(path2)
+    const infoJson2 = JSON.parse(info2)
+
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     await this._disableAlert()
     if(layer) {
-      SExhibition.showBreakPoint(layer.name, index === 1 ? getAlertPipe1() : getAlertPipe2())
+      SExhibition.showBreakPoint(layer.name, index === 1 ? infoJson1.alert : infoJson2.alert)
       SExhibition.makePipeMaterialTransparent(layer.name,
-        index === 1 ? getRoute1Names() : getRoute2Names()
+        index === 1 ? infoJson1.names : infoJson2.names
       )
       SExhibition.showPipeFlow(layer.name,
-        index === 1 ? getFlowRoute1(true) : getFlowRoute2(true)
+        index === 1 ? getFlowRoute1(true,infoJson1.flow) : getFlowRoute2(true,infoJson2.flow)
       )
     }
   }
@@ -1365,138 +1402,170 @@ const styles = StyleSheet.create({
 export default CoverView
 
 
-function getFlowRoute1(isBreak = false): FlowParam[] {
+function getFlowRoute1(isBreak = false,info?:any): FlowParam[] {
   const speed = 0.49
   const heightOffset = 0
   const pose = 0
   const scale = 2
   const arrow = 3
   const arrow_break = 4
-  return [
-    {
-      start: {x: -1.646, y:  -0.733 + heightOffset, z: -9.824},
-      end:  {x: -1.646, y:  1.362 + heightOffset, z: -9.824},
-      speed: speed,
-      segment: 5,
-      runRange: 1,
-      pose,
-      arrow: isBreak ? arrow_break : arrow,
-    },
-    {
-      start: {x: -0.883, y:  1.362 + heightOffset, z: -9.824},
-      end:  {x: -0.883, y:  -0.733 + heightOffset, z: -9.824},
-      speed: speed,
-      segment: 5,
-      runRange: 1,
-      pose,
-      arrow: isBreak ? arrow_break : arrow,
-    },
-    {
-      start: {x: -0.967, y:  -0.814 + heightOffset, z: -9.824},
-      end:  {x: -1.582, y:  -0.814 + heightOffset, z: -9.824},
-      speed: speed,
-      segment: 2,
-      runRange: 1,
-      pose,
-      arrow: isBreak ? arrow_break : arrow,
-    },
 
-    {
-      start: {x: -1.646, y:  -0.733 + heightOffset, z: -10.972},
-      end:  {x: -1.646, y:  1.362 + heightOffset, z: -10.972},
+  const arr:FlowParam[] = []
+
+  for(let i =0 ; i<info.start.length ;i++){
+    arr.push({
+      start: {x: info.start[i].x, y:  info.start[i].y + heightOffset, z: info.start[i].z},
+      end:  {x: info.end[i].x, y:  info.end[i].y + heightOffset, z: info.end[i].z},
       speed: speed,
-      segment: 5,
+      segment: info.start[i].segment,
       runRange: 1,
       pose,
       arrow: isBreak ? arrow_break : arrow,
-    },
-    {
-      start: {x: -0.883, y:  1.362 + heightOffset, z: -10.972},
-      end:  {x: -0.883, y:  -0.733 + heightOffset, z: -10.972},
-      speed: speed,
-      segment: 5,
-      runRange: 1,
-      pose,
-      arrow: isBreak ? arrow_break : arrow,
-    },
-    {
-      start: {x: -0.967, y:  -0.814 + heightOffset, z: -10.972},
-      end:  {x: -1.582, y:  -0.814 + heightOffset, z: -10.972},
-      speed: speed,
-      segment: 2,
-      runRange: 1,
-      pose,
-      arrow: isBreak ? arrow_break : arrow,
-    },
+    })
+  }
+  return arr
+
+  // return [
+  //   {
+  //     start: {x: info.start[0].x, y:  info.start[0].y + heightOffset, z: info.start[0].z},
+  //     end:  {x: info.end[0].x, y:  info.end[0].y + heightOffset, z: info.end[0].z},
+  //     speed: speed,
+  //     segment: info.start[0].segment,
+  //     runRange: 1,
+  //     pose,
+  //     arrow: isBreak ? arrow_break : arrow,
+  //   },
+  //   {
+  //     start: {x: info.start[1].x, y:  info.start[1].y + heightOffset, z: info.start[1].z},
+  //     end:  {x: info.end[1].x, y:  info.end[1].y + heightOffset, z: info.end[1].z},
+  //     speed: speed,
+  //     segment: info.start[1].segment,
+  //     runRange: 1,
+  //     pose,
+  //     arrow: isBreak ? arrow_break : arrow,
+  //   },
+  //   {
+  //     start: {x: info.start[2].x, y:  info.start[2].y + heightOffset, z: info.start[2].z},
+  //     end:  {x: info.end[2].x, y:  info.end[2].y + heightOffset, z: info.end[2].z},
+  //     speed: speed,
+  //     segment: info.start[2].segment,
+  //     runRange: 1,
+  //     pose,
+  //     arrow: isBreak ? arrow_break : arrow,
+  //   },
+
+  //   {
+  //     start: {x: info.start[3].x, y:  info.start[3].y + heightOffset, z: info.start[3].z},
+  //     end:  {x: info.end[3].x, y:  info.end[3].y + heightOffset, z: info.end[3].z},
+  //     speed: speed,
+  //     segment: info.start[3].segment,
+  //     runRange: 1,
+  //     pose,
+  //     arrow: isBreak ? arrow_break : arrow,
+  //   },
+  //   {
+  //     start: {x: info.start[4].x, y:  info.start[4].y + heightOffset, z: info.start[4].z},
+  //     end:  {x: info.end[4].x, y:  info.end[4].y + heightOffset, z: info.end[4].z},
+  //     speed: speed,
+  //     segment: info.start[4].segment,
+  //     runRange: 1,
+  //     pose,
+  //     arrow: isBreak ? arrow_break : arrow,
+  //   },
+  //   {
+  //     start: {x: info.start[5].x, y:  info.start[5].y + heightOffset, z: info.start[5].z},
+  //     end:  {x: info.end[5].x, y:  info.end[5].y + heightOffset, z: info.end[5].z},
+  //     speed: speed,
+  //     segment: info.start[5].segment,
+  //     runRange: 1,
+  //     pose,
+  //     arrow: isBreak ? arrow_break : arrow,
+  //   },
 
 
-  ]
+  // ]
 }
 
 
-function getFlowRoute2(isBreak = false): FlowParam[] {
+function getFlowRoute2(isBreak = false,info?:any): FlowParam[] {
   const speed = 0.49
   const offset = 0
   const pose = 1
   const arrow = 3
   const arrow_break = 4
-  return [
-    {
-      start: {x: -1.646, y:  -0.733 , z: -12.032},
-      end:  {x: -1.646, y:  1.362 , z: -12.032},
-      speed: speed,
-      segment: 5,
-      runRange: 1,
-      pose,
-      arrow: isBreak ? arrow_break : arrow,
-    },
-    {
-      start: {x: -0.883, y:  1.362 , z: -12.032},
-      end:  {x: -0.883, y:  -0.733 , z: -12.032},
-      speed: speed,
-      segment: 5,
-      runRange: 1,
-      pose,
-      arrow: isBreak ? arrow_break : arrow,
-    },
-    {
-      start: {x: -0.967, y:  -0.814 , z: -12.032},
-      end:  {x: -1.582, y:  -0.814 , z: -12.032},
-      speed: speed,
-      segment: 2,
-      runRange: 1,
-      pose,
-      arrow: isBreak ? arrow_break : arrow,
-    },
 
-    {
-      start: {x: -1.646, y:  -0.733 , z: -13.169},
-      end:  {x: -1.646, y:  1.362 , z: -13.169},
+  const arr:FlowParam[] = []
+
+  for(let i =0 ; i<info.start.length ;i++){
+    arr.push({
+      start: {x: info.start[i].x, y:  info.start[i].y , z: info.start[i].z},
+      end:  {x: info.end[i].x, y:  info.end[i].y , z: info.end[i].z},
       speed: speed,
-      segment: 5,
+      segment: info.start[i].segment,
       runRange: 1,
       pose,
       arrow: isBreak ? arrow_break : arrow,
-    },
-    {
-      start: {x: -0.883, y:  1.362 , z: -13.169},
-      end:  {x: -0.883, y:  -0.733 , z: -13.169},
-      speed: speed,
-      segment: 5,
-      runRange: 1,
-      pose,
-      arrow: isBreak ? arrow_break : arrow,
-    },
-    {
-      start: {x: -0.967, y:  -0.814 , z: -13.169},
-      end:  {x: -1.582, y:  -0.814 , z: -13.169},
-      speed: speed,
-      segment: 2,
-      runRange: 1,
-      pose,
-      arrow: isBreak ? arrow_break : arrow,
-    },
-  ]
+    })
+  }
+  return arr
+
+  // return [
+  //   {
+  //     start: {x: info.start[0].x, y:  info.start[0].y , z: info.start[0].z},
+  //     end:  {x: info.end[0].x, y:  info.end[0].y , z: info.end[0].z},
+  //     speed: speed,
+  //     segment: info.start[0].segment,
+  //     runRange: 1,
+  //     pose,
+  //     arrow: isBreak ? arrow_break : arrow,
+  //   },
+  //   {
+  //     start: {x: info.start[1].x, y:  info.start[1].y , z: info.start[1].z},
+  //     end:  {x: info.end[1].x, y:  info.end[1].y , z: info.end[1].z},
+  //     speed: speed,
+  //     segment: info.start[1].segment,
+  //     runRange: 1,
+  //     pose,
+  //     arrow: isBreak ? arrow_break : arrow,
+  //   },
+  //   {
+  //     start: {x: -0.967, y:  -0.814 , z: -12.032},
+  //     end:  {x: -1.582, y:  -0.814 , z: -12.032},
+  //     speed: speed,
+  //     segment: 2,
+  //     runRange: 1,
+  //     pose,
+  //     arrow: isBreak ? arrow_break : arrow,
+  //   },
+
+  //   {
+  //     start: {x: -1.646, y:  -0.733 , z: -13.169},
+  //     end:  {x: -1.646, y:  1.362 , z: -13.169},
+  //     speed: speed,
+  //     segment: 5,
+  //     runRange: 1,
+  //     pose,
+  //     arrow: isBreak ? arrow_break : arrow,
+  //   },
+  //   {
+  //     start: {x: -0.883, y:  1.362 , z: -13.169},
+  //     end:  {x: -0.883, y:  -0.733 , z: -13.169},
+  //     speed: speed,
+  //     segment: 5,
+  //     runRange: 1,
+  //     pose,
+  //     arrow: isBreak ? arrow_break : arrow,
+  //   },
+  //   {
+  //     start: {x: -0.967, y:  -0.814 , z: -13.169},
+  //     end:  {x: -1.582, y:  -0.814 , z: -13.169},
+  //     speed: speed,
+  //     segment: 2,
+  //     runRange: 1,
+  //     pose,
+  //     arrow: isBreak ? arrow_break : arrow,
+  //   },
+  // ]
 }
 
 

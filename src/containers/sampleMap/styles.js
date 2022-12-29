@@ -20,7 +20,7 @@ export default StyleSheet.create({
     // overflow: 'hidden',
     elevation: 5,
     shadowOffset: { width: 5, height: 5 },
-    shadowColor: color.itemColorGray2,
+    shadowColor: color.colorEF,
     shadowOpacity: 1,
     shadowRadius: 2,
   },

@@ -237,6 +237,11 @@ export default class MapSetting extends Component {
             marginLeft: scaleSize(90),
           },
           withoutBack: true,
+          headerStyle: {
+            backgroundColor: color.containerHeaderBgColor,
+          },
+          responseHeaderTitleStyle: {color: color.containerTextColor},
+          isResponseHeader: true,
         }}
         onOverlayPress={() => {
           // this.props.navigation.navigate('MapView')

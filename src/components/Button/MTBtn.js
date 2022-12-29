@@ -14,7 +14,7 @@ import {
   View,
 } from 'react-native'
 import { constUtil, scaleSize } from '../../utils/index'
-import { size } from '../../styles/index'
+import { size, color } from '../../styles/index'
 
 const BTN_UNDERCOLOR = constUtil.UNDERLAYCOLOR_TINT
 
@@ -142,7 +142,7 @@ export default class MTBtn extends React.Component {
         accessibilityLabel={this.props.title}
         onPress={this.action}
         style={[styles.container, this.props.style]}
-        underlayColor={BTN_UNDERCOLOR}
+        underlayColor={color.MTbtnUnderLayer} // BTN_UNDERCOLOR
         onPressOut={this._onPressOut}
         onPressIn={this._onPressIn}
       >

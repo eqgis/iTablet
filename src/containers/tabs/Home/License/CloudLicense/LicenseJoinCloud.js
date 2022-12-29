@@ -475,6 +475,11 @@ class LicenseJoinCloud extends Component {
         headerProps={{
           title: getLanguage(global.language).Profile.LICENSE_SELECT_LICENSE,
           navigation: this.props.navigation,
+          headerStyle: {
+            backgroundColor: color.containerHeaderBgColor,
+          },
+          responseHeaderTitleStyle: {color: color.containerTextColor},
+          isResponseHeader: true,
         }}
       >
         <ScrollView style={{ flex: 1, backgroundColor: color.bgW }}>

@@ -25,6 +25,7 @@ import styles, {
 import { serviceModule } from '../../../workspace/components/ToolBar/modules'
 import { FileTools } from '../../../../native'
 // import {  } from 'imobile_for_reactnative'
+import { color } from '../../../../styles'
 
 const COLLECTION = 'COLLECTION'
 const NETWORK = 'NETWORK'
@@ -600,7 +601,7 @@ export default class FunctionToolbar extends React.Component {
           imageStyle={styles.btnImage}
           key={index}
           title={item.getTitle()}
-          textColor={'black'}
+          textColor={color.rightListTextColor} // 'black'
           textStyle={{ fontSize: scaleSize(20), marginTop: scaleSize(8) }}
           size={MTBtn.Size.NORMAL}
           image={item.image}

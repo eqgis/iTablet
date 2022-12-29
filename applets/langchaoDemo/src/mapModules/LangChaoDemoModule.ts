@@ -22,6 +22,7 @@ import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/Too
 import { injectReducer } from "@/redux/store"
 import { langchao } from '../reduxModels'
 import RNFetchBlob from 'rn-fetch-blob'
+import { setAppColor } from '@/styles/color'
 /**
  * 首页显示的旅行轨迹模块
  */
@@ -106,6 +107,21 @@ export default class LangChaoDemoModule extends Module {
       reducer: langchao,
       list: 'whitelist', //白名单,持久化数据
     })
+
+    // setAppColor({
+    //   itemColorGray2: '#add8e6',  // 历史记录工具栏和表头的背景颜色
+    //   contentColorGray: '#fff',  // 历史记录工具栏和表头的文字颜色
+    //   selected: '#afeeee',  // 历史记录表格的选中行的背景颜色 图层页面，选中图层的背景颜色
+    //   containerHeaderBgColor: '#add8e6', // 页面顶部容器的背景色（在这里设置没用 ？）
+    //   containerTextColor: '#fff',   // 页面顶部容器的标题颜色（在这里设置没用 ？）
+    //   bottomTabBgColor: '#add8e6',  // 页面底部tab的背景色
+    //   bottomTabTextColor: '#fff', // 页面底部tab的文字颜色
+    //   rightListBgColor: '#add8e6',  //（右）侧边栏列表的背景色
+    //   rightListTextColor: '#fff',  //（右）侧边栏列表的文字万册
+    //   leftBottomBtnBgColor: '#add8e6', // 左下角的按钮背景色
+    //   toolbarBgColor: '#add8e6', // Toolbar的背景色
+    //   MTbtnUnderLayer: '#afeeee', // MtBtn类型的按钮按下时显示的背景色
+    // })
 
   }
 

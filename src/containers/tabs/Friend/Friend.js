@@ -2260,7 +2260,7 @@ export default class Friend extends Component {
     return (
       <View
         style={{
-          backgroundColor: color.itemColorGray2,
+          backgroundColor: color.colorEF,
           flexDirection: 'row',
           alignItems: 'center',
           height: scaleSize(80),

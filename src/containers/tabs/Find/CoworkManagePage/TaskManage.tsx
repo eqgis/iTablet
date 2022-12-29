@@ -591,7 +591,7 @@ class TaskManage extends React.Component<Props, State> {
   }
 
   _renderItemSeparatorComponent = () => {
-    return <ListSeparator color={color.itemColorGray2} style={{marginLeft: scaleSize(150), marginRight: scaleSize(50)}} />
+    return <ListSeparator color={color.colorEF} style={{marginLeft: scaleSize(150), marginRight: scaleSize(50)}} />
   }
 
   /**

@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { scaleSize } from '../../../../utils'
+import { color } from '../../../../styles/index'
 
 export default StyleSheet.create({
   container: {
@@ -11,11 +12,11 @@ export default StyleSheet.create({
   },
   topView: {
     flexDirection: 'column',
-    backgroundColor: 'white',
+    backgroundColor: color.leftBottomBtnBgColor, // 'white',
     borderRadius: scaleSize(8),
   },
   btn: {
-    backgroundColor: 'white',
+    backgroundColor: color.leftBottomBtnBgColor, // 'white',
     borderRadius: scaleSize(8),
     width: scaleSize(64),
     height: scaleSize(64),
@@ -36,7 +37,7 @@ export default StyleSheet.create({
     width: scaleSize(64),
     height: scaleSize(64),
     borderRadius: scaleSize(8),
-    backgroundColor: 'white',
+    backgroundColor: color.leftBottomBtnBgColor, // 'white',
     marginTop: scaleSize(30),
     justifyContent: 'center',
     alignItems: 'center',

@@ -19,6 +19,7 @@ import ToolbarModule from "@/containers/workspace/components/ToolBar/modules/Too
 import { Toast } from "@/utils"
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call'
 import { addContact } from "../reduxModels/langchao"
+import { color } from "@/styles"
 
 export interface contactItemType {
   ID: number,
@@ -719,7 +720,12 @@ class ContactsList extends Component<Props, State> {
           withoutBack: false,
           headerRight: this.renderHeaderRight(),
           navigation: this.props.navigation,
-          headerStyle: { borderBottomWidth: 0 },
+          headerStyle: {
+            borderBottomWidth: 0,
+            backgroundColor: color.containerHeaderBgColor,
+          },
+          responseHeaderTitleStyle: {color: color.containerTextColor},
+          isResponseHeader: true,
         }}
         // bottomBar={this.renderToolBar()}
         style={{

@@ -345,7 +345,10 @@ class LoginCloud extends Component {
           backImg: require('../../../../../assets/public/left_arrow.png'),
           headerStyle: {
             borderBottomWidth: 0,
+            backgroundColor: color.containerHeaderBgColor,
           },
+          responseHeaderTitleStyle: {color: color.containerTextColor},
+          isResponseHeader: true,
           navigation: this.props.navigation,
           headerRight: !this.state.reLogin && this.renderRight(),
         }}

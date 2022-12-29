@@ -448,7 +448,7 @@ const styles = StyleSheet.create({
     borderRadius: scaleSize(44),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: color.itemColorGray2,
+    backgroundColor: color.colorEF,
   },
   plusImg: {
     height: scaleSize(50),

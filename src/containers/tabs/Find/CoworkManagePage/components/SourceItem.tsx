@@ -485,7 +485,7 @@ export default class SourceItem extends Component<Props, State> {
           {this._renderDownload()}
         </View>
         {this._renderProgress()}
-        <ListSeparator color={color.itemColorGray2} style={{marginLeft: scaleSize(150), marginRight: scaleSize(42)}} />
+        <ListSeparator color={color.colorEF} style={{marginLeft: scaleSize(150), marginRight: scaleSize(42)}} />
       </View>
     )
   }

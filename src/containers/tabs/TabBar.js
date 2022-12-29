@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     borderTopWidth: scaleSize(3),
-    borderColor: color.itemColorGray2,
+    borderColor: color.colorEF,
   },
   containerL: {
     width: scaleSize(96),
@@ -218,6 +218,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     borderLeftWidth: scaleSize(3),
-    borderColor: color.itemColorGray2,
+    borderColor: color.colorEF,
   },
 })

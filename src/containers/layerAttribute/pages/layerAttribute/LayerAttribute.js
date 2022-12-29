@@ -1909,6 +1909,10 @@ export default class LayerAttribute extends React.Component {
           withoutBack: true,
           headerRight: this._renderHeader(),
           isResponseHeader: true,
+          headerStyle: {
+            backgroundColor: color.containerHeaderBgColor,
+          },
+          responseHeaderTitleStyle: {color: color.containerTextColor},
         }}
         bottomBar={this.type !== SINGLE_ATTRIBUTE && this.renderToolBar()}
         style={styles.container}
@@ -2009,8 +2013,8 @@ export default class LayerAttribute extends React.Component {
         {this.renderDeleteFieldDialog()}
         <PopoverButtonsView
           ref={ref => this.Popover = ref}
-          backgroundStyle={{ backgroundColor: 'rgba(0, 0, 0, 0)' }}
-          popoverStyle={{ backgroundColor: 'rgba(0, 0, 0, 1)' }}
+          backgroundStyle={{ backgroundColor: color.transOverlay }}
+          popoverStyle={{ backgroundColor: color.black }}
         />
         {this.state.isShowDrawer && (
           <TouchableOpacity

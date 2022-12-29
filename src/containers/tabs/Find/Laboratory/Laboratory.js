@@ -132,7 +132,7 @@ class Laboratory extends React.Component {
           <View
             style={{
               height: scaleSize(1),
-              backgroundColor: color.itemColorGray2,
+              backgroundColor: color.colorEF,
             }}
           />
         )}

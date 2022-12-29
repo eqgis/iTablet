@@ -665,7 +665,7 @@ export default class LayerAttributeTable extends React.Component {
           borderLeftWidth: 0,
           // borderBottomWidth: 0,
         }}
-        cellTextStyle={{ color: '#3C3C3C' }}
+        cellTextStyle={{ color: color.contentColorGray }} // '#3C3C3C'
         data={titles}
         hasInputText={false}
         onPress={this.onPressHeader}

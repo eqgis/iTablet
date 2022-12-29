@@ -266,7 +266,7 @@ class GuoTuLocation extends Component<Props, State> {
   }
 
   _renderItemSeparatorComponent = () => {
-    return <ListSeparator color={color.itemColorGray2} style={{marginLeft: scaleSize(110), marginRight: scaleSize(42)}} />
+    return <ListSeparator color={color.colorEF} style={{marginLeft: scaleSize(110), marginRight: scaleSize(42)}} />
   }
 
   _renderGroupList = () => {

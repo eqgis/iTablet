@@ -532,7 +532,7 @@ export default class Home extends Component {
             style={[
               styles.dialogButton,
               {
-                backgroundColor: color.itemColorGray2,
+                backgroundColor: color.colorEF,
                 marginTop: scaleSize(22),
               },
             ]}

@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     height: scaleSize(2),
     paddingLeft: scaleSize(36),
     paddingRight: scaleSize(28),
-    backgroundColor: color.itemColorGray2,
+    backgroundColor: color.colorEF,
   },
   itemTitle: {
     fontSize: size.fontSize.fontSizeLg,

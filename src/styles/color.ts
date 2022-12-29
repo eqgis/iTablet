@@ -142,6 +142,25 @@ const defaultStyles = {
   warning: '#D4A146',
   success: '#88C148',
   error: '#D96C6C',
+
+  transOverlay: 'rgba(0, 0, 0, 0)',
+  whiteOpacity50: 'rgba(255, 255, 255, 0.5)',
+  colorFB: '#FBFBFB',
+  colorEF: '#EFEFEF',
+  color30: '#303030',
+  colorD3: '#D3D3D3',
+  containerHeaderBgColor: 'rgba(255, 255, 255, 1)',
+  // containerHeaderBgColor: '#add8e6',
+  containerTextColor: '#555555',
+  // containerTextColor: '#fff',
+  bottomTabBgColor: '#fff',
+  bottomTabTextColor: '#505050',
+  rightListBgColor: '#fff',
+  rightListTextColor: '#000',
+  leftBottomBtnBgColor: '#fff',
+  toolbarBgColor: '#fff',
+  MTbtnUnderLayer: '#D3D3D3',
+
 }
 
 
@@ -272,6 +291,15 @@ switch (global.ThemeType) {
     customStyles = lightTheme
     break
 }
-const styles = Object.assign({colors}, defaultStyles, customStyles)
+let styles = Object.assign({colors}, defaultStyles, customStyles)
+
+// '#0093f3'
+/**
+ * 添加或重置颜色风格
+ * @param params 用户的颜色对象，{key: value}的形式 key的范围不定， value为字符串类型
+ */
+export const setAppColor = (params: Record<string, string>) => {
+  styles  = Object.assign(styles, params)
+}
 
 export default styles

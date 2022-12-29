@@ -297,14 +297,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: fixedSize(16),
-    backgroundColor: color.itemColorGray2,
+    backgroundColor: color.colorEF,
   },
   moduleViewL: {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: fixedSize(12),
-    backgroundColor: color.itemColorGray2,
+    backgroundColor: color.colorEF,
   },
   moduleItemP: {
     alignItems: 'center',

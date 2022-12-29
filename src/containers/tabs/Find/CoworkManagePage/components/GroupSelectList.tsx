@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
   },
   ITemHeadTextViewStyle: {
     height: scaleSize(72),
-    backgroundColor: color.itemColorGray2,
+    backgroundColor: color.colorEF,
     flexDirection: 'row',
     alignItems: 'center',
   },

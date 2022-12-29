@@ -11,6 +11,7 @@ import Container from '../../components/Container'
 import { scaleSize } from '../../utils'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
+import { color } from '../../styles'
 
 const radio_on = require('../../assets/public/radio_select.png')
 const radio_off = require('../../assets/public/radio_select_no.png')
@@ -166,6 +167,11 @@ class LanguageSetting extends React.Component {
           withoutBack: false,
           navigation: this.props.navigation,
           headerRight: this.renderRight(),
+          headerStyle: {
+            backgroundColor: color.containerHeaderBgColor,
+          },
+          responseHeaderTitleStyle: {color: color.containerTextColor},
+          isResponseHeader: true,
         }}
       >
         {this.renderList()}

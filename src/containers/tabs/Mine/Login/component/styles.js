@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   inputBackgroud: {
-    backgroundColor: color.itemColorGray2,
+    backgroundColor: color.colorEF,
     height: scaleSize(90),
     borderRadius: scaleSize(40),
     paddingHorizontal: scaleSize(10),
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     // paddingVertical: scaleSize(20),
     width: '75%',
     borderRadius: scaleSize(40),
-    backgroundColor: color.itemColorGray2,
+    backgroundColor: color.colorEF,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',

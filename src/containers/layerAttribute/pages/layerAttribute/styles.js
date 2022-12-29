@@ -21,19 +21,19 @@ export default StyleSheet.create({
     marginHorizontal: scaleSize(150),
     alignItems: 'center',
     marginVertical: scaleSize(30),
-    backgroundColor: '#rgba(255, 255, 255, 0.5)',
+    backgroundColor: color.whiteOpacity50, // '#rgba(255, 255, 255, 0.5)',
   },
   infoView: {
     flex: 1,
     alignItems: 'center',
     // backgroundColor: color.subTheme,
-    backgroundColor: '#FBFBFB',
+    backgroundColor: color.colorFB, //  '#FBFBFB',
     width: '100%',
   },
   info: {
     fontSize: size.fontSize.fontSizeLg,
     // color: color.themeText,
-    color: '#303030',
+    color: color.color30, // '#303030',
     marginTop: scaleSize(100),
   },
   headerBtn: {

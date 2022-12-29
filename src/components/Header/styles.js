@@ -6,7 +6,7 @@ export default StyleSheet.create({
   defaultHeaderView: {
     width: '100%',
     flexDirection: 'row',
-    backgroundColor: color.white,
+    backgroundColor: color.containerHeaderBgColor, // color.white,
     alignItems: 'center',
   },
   fixHeaderView: {
@@ -16,7 +16,7 @@ export default StyleSheet.create({
     right: 0,
     zIndex: zIndexLevel.FOUR + 1,
     // width: '100%',
-    backgroundColor: color.white,
+    backgroundColor: color.containerHeaderBgColor, // color.white,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -27,7 +27,7 @@ export default StyleSheet.create({
     right: 0,
     zIndex: zIndexLevel.FOUR + 1,
     width: '100%',
-    backgroundColor: '#rgba(255, 255, 255, 0)',
+    backgroundColor: color.containerHeaderBgColor, // '#rgba(255, 255, 255, 0)',
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -40,7 +40,7 @@ export default StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#rgba(255, 255, 255, 0)',
+    backgroundColor: color.containerHeaderBgColor, // '#rgba(255, 255, 255, 0)',
   },
   navigationHeader: {
     flex: 1,
@@ -116,7 +116,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   headerTitle: {
-    color: color.content,
+    color: color.containerTextColor, // color.content,
     fontSize: setSpText(36),
     backgroundColor: 'rgba(255, 255, 255, 0)',
   },

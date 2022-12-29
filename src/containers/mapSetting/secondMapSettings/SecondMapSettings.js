@@ -1369,6 +1369,11 @@ export default class SecondMapSettings extends Component {
                 </Text>
               </TouchableOpacity>,
             ],
+            headerStyle: {
+              backgroundColor: color.containerHeaderBgColor,
+            },
+            responseHeaderTitleStyle: {color: color.containerTextColor},
+            isResponseHeader: true,
           }}
         >
           {this.renderKeybordItem(data)}
@@ -1385,6 +1390,11 @@ export default class SecondMapSettings extends Component {
           headerProps={{
             title: this.state.title,
             backAction: this.backAction,
+            headerStyle: {
+              backgroundColor: color.containerHeaderBgColor,
+            },
+            responseHeaderTitleStyle: {color: color.containerTextColor},
+            isResponseHeader: true,
           }}
         >
           <SectionList
@@ -1408,6 +1418,11 @@ export default class SecondMapSettings extends Component {
           headerProps={{
             title: this.state.title,
             backAction: this.backAction,
+            headerStyle: {
+              backgroundColor: color.containerHeaderBgColor,
+            },
+            responseHeaderTitleStyle: {color: color.containerTextColor},
+            isResponseHeader: true,
           }}
         >
           <LinkageList
@@ -1433,6 +1448,11 @@ export default class SecondMapSettings extends Component {
           headerProps={{
             title: this.state.title,
             backAction: this.backAction,
+            headerStyle: {
+              backgroundColor: color.containerHeaderBgColor,
+            },
+            responseHeaderTitleStyle: {color: color.containerTextColor},
+            isResponseHeader: true,
           }}
         >
           <FilterList
@@ -1479,6 +1499,10 @@ export default class SecondMapSettings extends Component {
               </TouchableOpacity>,
             ],
             isResponseHeader: true,
+            headerStyle: {
+              backgroundColor: color.containerHeaderBgColor,
+            },
+            responseHeaderTitleStyle: {color: color.containerTextColor},
           }}
         >
           <ScrollView>
@@ -1516,6 +1540,10 @@ export default class SecondMapSettings extends Component {
           headerOnTop: this.state.showConfidence,
           // 国际版标题过长
           isResponseHeader: true,
+          headerStyle: {
+            backgroundColor: color.containerHeaderBgColor,
+          },
+          responseHeaderTitleStyle: {color: color.containerTextColor},
         }}
       >
         <FlatList

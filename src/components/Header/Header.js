@@ -291,7 +291,7 @@ class NavigationHeader extends Component {
           {
             height: this.state.headerHeight,
             borderBottomWidth: hasBorderBottomWidth ? 2 : 0,
-            borderBottomColor: color.itemColorGray2,
+            borderBottomColor: color.colorEF,
           },
           headerStyle,
           padding,

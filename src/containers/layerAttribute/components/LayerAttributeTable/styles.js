@@ -70,7 +70,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   indexCellText: {
-    color: color.itemColorBlack,
+    color: color.contentColorGray, // color.itemColorBlack,
     textAlign: 'center',
     backgroundColor: 'transparent',
   },

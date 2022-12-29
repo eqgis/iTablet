@@ -193,7 +193,7 @@ export default class AppletManagement extends React.Component<Props, State> {
     return (
       <Container
         style={{
-          backgroundColor: color.itemColorGray2,
+          backgroundColor: color.colorEF,
         }}
         headerProps={{
           title: getLanguage(this.props.language).Find.APPLET,

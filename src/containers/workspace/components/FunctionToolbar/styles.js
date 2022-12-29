@@ -18,7 +18,7 @@ export const MAX_HEIGHT_P = ITEM_VIEW_HEIGHT_P * MAX_VISIBLE_NUMBER + INDICATOR_
 export default StyleSheet.create({
   containerP: {
     position: 'absolute',
-    backgroundColor: color.white,
+    backgroundColor:  color.rightListBgColor, // color.white,
     borderRadius: scaleSize(12),
     width: scaleSize(96),
     maxHeight: MAX_HEIGHT_P,
@@ -26,7 +26,7 @@ export default StyleSheet.create({
   containerL: {
     position: 'absolute',
     flexDirection: 'row',
-    backgroundColor: color.white,
+    backgroundColor: color.rightListBgColor, // color.white,
     borderRadius: scaleSize(44),
     height: ITEM_VIEW_HEIGHT_L,
     maxWidth: MAX_WIDTH_L,

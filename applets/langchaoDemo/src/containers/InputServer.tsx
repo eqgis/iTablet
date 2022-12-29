@@ -9,6 +9,7 @@ import { getPublicAssets } from "@/assets"
 import { setServerIP, setServerUserId, setServerUserName, setServerDepartmentId } from '../reduxModels/langchao'
 import { dateFormat, getToken, setSysOrgid, setUserId, setUserName, users } from "../utils/langchaoServer"
 import { Toast } from "@/utils"
+import { color } from "@/styles"
 // import { setServerIP, setServerUserId, setServerUserName, setServerDepartmentId } from "@/redux/models/langchao"
 
 
@@ -259,7 +260,12 @@ class InputServer extends Component<Props, State> {
           withoutBack: false,
           headerRight: this.renderHeaderRight(),
           navigation: this.props.navigation,
-          headerStyle: { borderBottomWidth: 0 },
+          headerStyle: {
+            borderBottomWidth: 0,
+            backgroundColor: color.containerHeaderBgColor,
+          },
+          responseHeaderTitleStyle: {color: color.containerTextColor},
+          isResponseHeader: true,
         }}
         // bottomBar={this.renderToolBar()}
         style={{

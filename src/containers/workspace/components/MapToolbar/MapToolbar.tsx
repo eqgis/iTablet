@@ -248,7 +248,7 @@ export default class MapToolbar extends React.Component<Props, State> {
         key={item.key}
         opacity={1}
         title={title || item.title}
-        textColor={'#505050'}
+        textColor={color.bottomTabTextColor}
         textStyle={{ fontSize: setSpText(18), marginTop: scaleSize(5), }}
         selected={this.state.currentIndex === index}
         imageStyle= {{width: scaleSize(48), height: scaleSize(48)}}
@@ -303,25 +303,25 @@ const styles = StyleSheet.create({
   containerP: {
     width: '100%',
     height: scaleSize(96),
-    backgroundColor: 'white',
+    backgroundColor: color.bottomTabBgColor, // 'white',
     alignSelf: 'center',
     borderStyle: 'solid',
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     borderTopWidth: scaleSize(3),
-    borderColor: color.itemColorGray2,
+    borderColor: color.colorEF,
   },
   containerL: {
     width: scaleSize(96),
     height: '100%',
-    backgroundColor: 'white',
+    backgroundColor: color.bottomTabBgColor, // 'white',
     alignSelf: 'center',
     borderStyle: 'solid',
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
     borderLeftWidth: scaleSize(3),
-    borderColor: color.itemColorGray2,
+    borderColor: color.colorEF,
   },
 })

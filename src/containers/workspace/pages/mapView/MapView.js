@@ -5264,7 +5264,9 @@ export default class MapView extends React.Component {
               this.props.device.orientation.indexOf('LANDSCAPE') >= 0
                 ? scaleSize(96)
                 : 0,
+            backgroundColor: color.containerHeaderBgColor,
           },
+          responseHeaderTitleStyle: {color: color.containerTextColor},
           backAction: async (event) => {
             // this.backPositon = {
             //   x: event?.nativeEvent.pageX,

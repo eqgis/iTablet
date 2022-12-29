@@ -489,7 +489,7 @@ export default class TaskMessageItem extends React.Component<Props, State> {
           <RedDot style={{position: 'absolute', top: scaleSize(30), left: scaleSize(30)}} />
         }
         {this._renderProgress()}
-        <ListSeparator color={color.itemColorGray2} style={{marginLeft: scaleSize(150), marginRight: scaleSize(42)}} />
+        <ListSeparator color={color.colorEF} style={{marginLeft: scaleSize(150), marginRight: scaleSize(42)}} />
       </View>
     )
   }

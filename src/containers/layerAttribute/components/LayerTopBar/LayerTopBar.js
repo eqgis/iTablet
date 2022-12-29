@@ -21,6 +21,7 @@ import {
   SCoordination,
 } from 'imobile_for_reactnative'
 import { FileTools } from '../../../../native'
+import style from '@/containers/workspace/components/PoiInfoContainer/style'
 
 const itemGap = scaleSize(20)
 
@@ -496,7 +497,8 @@ export default class LayerTopBar extends React.Component {
     return (
       <ImageButton
         key={key}
-        containerStyle={[styles.btn, containerStyle]}
+        containerStyle={[styles.btn, containerStyle,
+          enabled && styles.btnforbidden]}
         iconBtnStyle={styles.imgBtn}
         titleStyle={enabled ? styles.enableBtnTitle : styles.btnTitle}
         icon={icon}

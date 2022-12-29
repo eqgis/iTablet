@@ -795,7 +795,8 @@ const styles = StyleSheet.create({
   },
   item: {
     height: scaleSize(80),
-    backgroundColor: color.white,
+    // backgroundColor: color.white,
+    backgroundColor: 'transparent',
     alignItems: 'center',
     flexDirection: 'row',
   },

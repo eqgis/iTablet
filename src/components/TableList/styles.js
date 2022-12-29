@@ -6,13 +6,15 @@ export default StyleSheet.create({
   scrollContainer: {
     // flex: 1,
     flexDirection: 'column',
-    backgroundColor: color.content_white,
+    // backgroundColor: color.content_white,
+    backgroundColor: 'transparent',
   },
   normalContainer: {
     // flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-around',
-    backgroundColor: color.content_white,
+    // backgroundColor: color.content_white,
+    backgroundColor: 'transparent',
   },
   row: {
     flexDirection: 'row',

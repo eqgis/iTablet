@@ -16,7 +16,7 @@ export default StyleSheet.create({
     minHeight: scaleSize(300),
     elevation: 10,
     shadowOffset: { width: 0, height: 0 },
-    shadowColor: color.itemColorGray2,
+    shadowColor: color.colorEF,
     shadowOpacity: 1,
     shadowRadius: 2,
   },

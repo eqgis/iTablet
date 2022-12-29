@@ -28,7 +28,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   tabBtn: {
-    backgroundColor: color.itemColorGray2,
+    backgroundColor: color.colorEF,
     height: scaleSize(80),
     width: scaleSize(110),
     marginLeft: scaleSize(40),
@@ -37,13 +37,16 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   btn: {
-    backgroundColor: color.itemColorGray2,
+    backgroundColor: color.colorEF,
     height: scaleSize(80),
     minWidth: scaleSize(175),
     paddingHorizontal: scaleSize(8),
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: scaleSize(8),
+  },
+  btnforbidden: {
+    backgroundColor: color.itemColorGray2,
   },
   btnTitle: {
     backgroundColor: 'transparent',

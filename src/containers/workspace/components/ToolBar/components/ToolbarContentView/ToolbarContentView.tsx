@@ -596,7 +596,7 @@ export default class ToolbarContentView extends React.Component<Props, State> {
     }
     return (
       <Animated.View
-        style={[style, { backgroundColor: 'transparent' }]}
+        style={[style, { backgroundColor: 'transparent' }, {backgroundColor: color.toolbarBgColor}]}
         pointerEvents={'box-none'}
       >
         {box}

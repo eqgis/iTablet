@@ -776,7 +776,7 @@ class GroupSourceManagePage extends Component<Props, State> {
   //       renderRow={this._renderDropdownItem}
   //       onSelect={this._dropDownOnSelect}
   //     >
-  //       <View style={[styles.dropdownItem, { backgroundColor: color.itemColorGray2 }]}>
+  //       <View style={[styles.dropdownItem, { backgroundColor: color.colorEF }]}>
   //         <Image resizeMode={'contain'} style={styles.dropdownItemImage} source={this.state.currentModule.moduleImage} />
   //         <Text style={styles.dropdownItemText}>{this.state.currentModule.title}</Text>
   //         <Text style={styles.dropdownItemRightText}>{getLanguage(this.props.language).Friends.SELECT_MODULE}</Text>

@@ -274,7 +274,7 @@ export default class ToolList extends React.Component {
   render() {
     return (
       <ToolBarSectionList
-        style={{ flex: 1, backgroundColor: color.white, paddingTop: scaleSize(20) }}
+        style={{ flex: 1, backgroundColor: 'transparent', paddingTop: scaleSize(20) }}
         ref={ref => (this.toolBarSectionList = ref)}
         listSelectable={this.props.containerType === ToolbarType.selectableList}
         sections={this.state.data}
@@ -292,7 +292,7 @@ export default class ToolList extends React.Component {
           }
         }}
         headerAction={this.headerAction}
-        underlayColor={color.item_separate_white}
+        underlayColor={"transparent"} //  color.item_separate_white
         keyExtractor={(item, index) => index}
         device={this.props.device}
         getToolbarModule={this.props.getToolbarModule}

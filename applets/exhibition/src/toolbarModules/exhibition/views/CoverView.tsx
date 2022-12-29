@@ -17,6 +17,7 @@ import AnimationWrap from '../components/AnimationWrap'
 import SlideBar from 'imobile_for_reactnative/components/SlideBar'
 import { FlowParam } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SExhibition'
 import { getLanguage } from '@/language'
+import { Vector3 } from 'imobile_for_reactnative/types/data'
 
 interface Props {
   windowSize: ScaledSize
@@ -74,6 +75,46 @@ class CoverView extends React.Component<Props, State> {
       width:'',
       length:'',
       attributeShow:false,
+    }
+  }
+
+  valveListener: EmitterSubscription | null = null
+  route1ValveStatus: [boolean, boolean, boolean] = [true, true, true]
+  route2ValueStatus: [boolean, boolean, boolean] = [true, true, true]
+
+  componentDidMount(): void {
+    this.valveListener = SExhibition.addVavlePressListener(result =>{
+      console.log(result)
+      let route: 1 | 2 = 1
+      if(result.name === 'valve_1_0') {
+        this.route1ValveStatus[0] = result.isOpen
+      }
+      if(result.name === 'valve_1_1') {
+        this.route1ValveStatus[1] = result.isOpen
+      }
+      if(result.name === 'valve_1_2') {
+        this.route1ValveStatus[2] = result.isOpen
+      }
+      if(result.name === 'valve_2_0') {
+        this.route2ValueStatus[0] = result.isOpen
+        route = 2
+      }
+      if(result.name === 'valve_2_1') {
+        this.route2ValueStatus[1] = result.isOpen
+        route = 2
+      }
+      if(result.name === 'valve_2_2') {
+        this.route2ValueStatus[2] = result.isOpen
+        route = 2
+      }
+      this.onValveOpen(route)
+    })
+  }
+
+  componentWillUnmount(): void {
+    if(this.valveListener != null) {
+      this.valveListener.remove()
+      this.valveListener = null
     }
   }
 
@@ -419,11 +460,15 @@ class CoverView extends React.Component<Props, State> {
 
 
   _disableAlert = async () => {
+    this.route1ValveStatus = [true, true, true]
+    this.route2ValueStatus = [true, true, true]
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if(layer) {
       await SExhibition.hideBreakPoint(layer.name, [...getAlertPipe1(), ...getAlertPipe2()])
       await SExhibition.restorePipeMaterial(layer.name, [...getRoute1Names(), ...getRoute2Names()])
       await SExhibition.hidePipeFlow()
+      await SExhibition.hideValve(layer.name, getValve1())
+      await SExhibition.hideValve(layer.name, getValve2())
     }
   }
 
@@ -679,8 +724,34 @@ class CoverView extends React.Component<Props, State> {
         index === 1 ? getRoute1Names() : getRoute2Names()
       )
       SExhibition.showPipeFlow(layer.name,
-        index === 1 ? getFlowRoute1(true) : getFlowRoute2(true)
+        index === 1 ? getBreakFlowRoute1(this.route1ValveStatus) : getBreakFlowRoute2(this.route2ValueStatus)
       )
+      SExhibition.showValve(layer.name, index === 1 ? getValve1() : getValve2())
+    }
+  }
+
+  onValveOpen = async (route: 1 | 2) => {
+    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+    if(layer) {
+      await SExhibition.hidePipeFlow()
+      if(route === 1) {
+        //三个阀门都打开才会流向爆管处
+        if(this.route1ValveStatus[0] && this.route1ValveStatus[1] && this.route1ValveStatus[2]) {
+          SExhibition.showBreakPoint(layer.name, getAlertPipe1())
+        } else {
+          SExhibition.hideBreakPoint(layer.name, getAlertPipe1())
+        }
+        SExhibition.showPipeFlow(layer.name, getBreakFlowRoute1(this.route1ValveStatus))
+      } else {
+        //第一个和第三个阀门打开才会流向爆管处
+        if(this.route2ValueStatus[0] && this.route2ValueStatus[2]) {
+          SExhibition.showBreakPoint(layer.name, getAlertPipe2())
+        } else {
+          SExhibition.hideBreakPoint(layer.name, getAlertPipe2())
+        }
+        SExhibition.showPipeFlow(layer.name, getBreakFlowRoute2(this.route2ValueStatus))
+      }
+
     }
   }
 
@@ -1364,15 +1435,27 @@ const styles = StyleSheet.create({
 
 export default CoverView
 
+//流向 1
+function getFlowRoute1(): FlowParam[] {
+  return _getFlowRoute1Origin([true, true, true])
+}
 
-function getFlowRoute1(isBreak = false): FlowParam[] {
+//爆管流向 1
+function getBreakFlowRoute1(valveStatus: [boolean, boolean, boolean]): FlowParam[] {
+  return _getFlowRoute1Origin(valveStatus, true)
+}
+
+//流向 1 拆分
+function _getFlowRoute1Origin(valveStatus: [boolean, boolean, boolean], isBreak = false): FlowParam[] {
   const speed = 0.49
   const heightOffset = 0
   const pose = 0
   const scale = 2
   const arrow = 3
   const arrow_break = 4
-  return [
+
+
+  const route_1_1: FlowParam =
     {
       start: {x: -1.318, y:  -0.141 + heightOffset, z: -11},
       end:  {x: -1.318, y:  -0.141 + heightOffset, z: -0.75},
@@ -1380,8 +1463,9 @@ function getFlowRoute1(isBreak = false): FlowParam[] {
       segment: 10 * scale,
       runRange: 1,
       pose,
-      arrow: isBreak ? arrow_break : arrow,
-    },
+      arrow: arrow,
+    }
+  const route_1_2: FlowParam =
     {
       start: {x: -1.135, y:  -0.141 + heightOffset, z: -0.093},
       end:  {x: -0.462, y:  -0.141 + heightOffset, z: -0.093},
@@ -1390,16 +1474,28 @@ function getFlowRoute1(isBreak = false): FlowParam[] {
       runRange: 1,
       pose,
       arrow,
-    },
+    }
+  const route_1_3_1: FlowParam =
     {
       start: {x: -0.332, y: -0.141 + heightOffset, z: 0.3},
-      end:  {x: -0.332, y:  -0.141 + heightOffset, z: 1.607},
+      end:  {x: -0.332, y:  -0.141 + heightOffset, z: 0.954},
       speed: speed,
-      segment: 2* scale,
+      segment: 2,
       runRange: 1,
       pose,
       arrow,
-    },
+    }
+  const route_1_3_2: FlowParam =
+    {
+      start: {x: -0.332, y: -0.141 + heightOffset, z: 0.954},
+      end:  {x: -0.332, y:  -0.141 + heightOffset, z: 1.607},
+      speed: speed,
+      segment: 2,
+      runRange: 1,
+      pose,
+      arrow,
+    }
+  const route_1_4: FlowParam =
     {
       start: {x: -0.677, y: -0.141 + heightOffset, z: 1.852},
       end:  {x: -4.338, y:  -0.141 + heightOffset, z: 1.852},
@@ -1407,8 +1503,9 @@ function getFlowRoute1(isBreak = false): FlowParam[] {
       segment: 5* scale,
       runRange: 1,
       pose,
-      arrow,
-    },
+      arrow: isBreak ? arrow_break : arrow,
+    }
+  const route_1_5: FlowParam =
     {
       start: {x: -4.645, y: -0.141 + heightOffset, z: 1.664},
       end:  {x: -4.645, y:  -0.141 + heightOffset, z: 1.191},
@@ -1417,16 +1514,28 @@ function getFlowRoute1(isBreak = false): FlowParam[] {
       runRange: 1,
       pose,
       arrow,
-    },
+    }
+  const route_1_6_1: FlowParam =
     {
       start: {x: -4.324, y: -0.141 + heightOffset, z: 0.976},
-      end:  {x: -0.265, y: -0.141 + heightOffset, z: 0.976},
+      end:  {x: -0.395, y: -0.141 + heightOffset, z: 0.976},
       speed: speed,
-      segment: 5* scale,
+      segment: 9,
       runRange: 1,
       pose,
       arrow,
-    },
+    }
+  const route_1_6_2: FlowParam =
+    {
+      start: {x: -0.395, y: -0.141 + heightOffset, z: 0.976},
+      end:  {x: 0.092, y: -0.141 + heightOffset, z: 0.976},
+      speed: speed,
+      segment: 1,
+      runRange: 1,
+      pose,
+      arrow,
+    }
+  const route_1_7: FlowParam =
     {
       start: {x: 0.270, y: -0.141 + heightOffset, z: 0.691},
       end:  {x: 0.270, y:  -0.141 + heightOffset, z: -10.982},
@@ -1435,18 +1544,59 @@ function getFlowRoute1(isBreak = false): FlowParam[] {
       runRange: 1,
       pose,
       arrow,
-    },
-  ]
+    }
+
+  const result: FlowParam[] = [route_1_1]
+
+  if(valveStatus[0]) {
+    result.push(
+      route_1_2,
+      route_1_3_1,
+    )
+
+    if(valveStatus[1]) {
+      result.push(route_1_3_2)
+
+      if(valveStatus[2]) {
+        result.push(
+          route_1_4,
+          route_1_5,
+          route_1_6_1,
+        )
+      }
+    }
+
+    result.push(
+      route_1_6_2,
+      route_1_7,
+    )
+  }
+
+  return result
 }
 
+//流向 2
+function getFlowRoute2(): FlowParam[] {
+  return _getFlowRoute2Origin([true, true, true])
+}
 
-function getFlowRoute2(isBreak = false): FlowParam[] {
+//爆管流向 2
+function getBreakFlowRoute2(valveStatus: [boolean, boolean, boolean]): FlowParam[] {
+  return _getFlowRoute2Origin(valveStatus, true)
+}
+
+//流向 2 拆分
+function _getFlowRoute2Origin(valveStatus: [boolean, boolean, boolean], isBreak = false): FlowParam[] {
   const speed = 0.49
   const offset = 0
   const pose = 1
   const arrow = 3
   const arrow_break = 4
-  return [
+
+
+
+
+  const route_2_1: FlowParam =
     {
       start: {x: -5.909 + offset , y: 0.415, z: 9.669},
       end:  {x: -5.909+ offset, y:  0.415 , z: 8.070},
@@ -1455,7 +1605,8 @@ function getFlowRoute2(isBreak = false): FlowParam[] {
       runRange: 1,
       pose,
       arrow,
-    },
+    }
+  const route_2_2: FlowParam =
     {
       start: {x: -5.909 + offset , y: 0.663, z: 7.891},
       end:  {x: -5.909+ offset, y:  0.919 , z: 7.891},
@@ -1464,7 +1615,8 @@ function getFlowRoute2(isBreak = false): FlowParam[] {
       runRange: 1,
       pose,
       arrow,
-    },
+    }
+  const route_2_3: FlowParam =
     {
       start: {x: -6.069 + offset , y: 1.072, z: 7.891},
       end:  {x: -6.069+ offset, y:  3.070 , z: 7.891},
@@ -1473,7 +1625,8 @@ function getFlowRoute2(isBreak = false): FlowParam[] {
       runRange: 1,
       pose,
       arrow,
-    },
+    }
+  const route_2_4: FlowParam =
     {
       start: {x: -6.069 + offset , y: 3.312, z: 7.574},
       end:  {x: -6.069+ offset, y:  3.312 , z: 5.942},
@@ -1481,8 +1634,9 @@ function getFlowRoute2(isBreak = false): FlowParam[] {
       segment: 4,
       runRange: 1,
       pose,
-      arrow: isBreak ? arrow_break : arrow,
-    },
+      arrow,
+    }
+  const route_2_5: FlowParam =
     {
       start: {x: -6.431 + offset , y: 3.312, z: 5.681},
       end:  {x: -6.431+ offset, y:  3.312 , z: 5.298},
@@ -1491,7 +1645,8 @@ function getFlowRoute2(isBreak = false): FlowParam[] {
       runRange: 1,
       pose,
       arrow,
-    },
+    }
+  const route_2_6: FlowParam =
     {
       start: {x: -6.447 + offset , y: 3.518, z: 5.104},
       end:  {x: -6.467 + offset, y:  3.916 , z: 5.104},
@@ -1500,8 +1655,8 @@ function getFlowRoute2(isBreak = false): FlowParam[] {
       runRange: 1,
       pose,
       arrow,
-    },
-
+    }
+  const route_2_7: FlowParam =
     {
       start: {x: -6.467 + offset , y: 4.067, z: 4.918},
       end:  {x: -6.467 + offset, y:  4.067 , z: 2.820},
@@ -1510,7 +1665,8 @@ function getFlowRoute2(isBreak = false): FlowParam[] {
       runRange: 1,
       pose,
       arrow,
-    },
+    }
+  const route_2_8: FlowParam =
     {
       start: {x: -5.892 + offset , y: 4.043, z: 2.427},
       end:  {x: -5.892 + offset, y:  4.043 , z: 0.003},
@@ -1519,7 +1675,8 @@ function getFlowRoute2(isBreak = false): FlowParam[] {
       runRange: 1,
       pose,
       arrow,
-    },
+    }
+  const route_2_9: FlowParam =
     {
       start: {x: -6.477 + offset , y: 4.043, z: -0.388},
       end:  {x: -6.477+ offset, y:  4.043 , z: -2.89},
@@ -1528,16 +1685,28 @@ function getFlowRoute2(isBreak = false): FlowParam[] {
       runRange: 1,
       pose,
       arrow,
-    },
+    }
+  const route_2_10: FlowParam =
     {
       start: {x: -6.061 + offset , y: 4.043, z: -3.295},
+      end:  {x: -6.080 + offset, y:  4.078, z: -5.086},
+      speed: speed,
+      segment: 4,
+      runRange: 1,
+      pose,
+      arrow: isBreak ? arrow_break : arrow,
+    }
+  const route_2_10_1: FlowParam =
+    {
+      start: {x: -6.080 + offset, y:  4.078, z: -5.086},
       end:  {x: -6.061+ offset, y:  4.043 , z: -5.531},
       speed: speed,
-      segment: 5,
+      segment: 1,
       runRange: 1,
       pose,
       arrow,
-    },
+    }
+  const route_2_11: FlowParam =
     {
       start: {x: -6.061 + offset , y: 4.043, z: -6.147},
       end:  {x: -6.061+ offset, y:  4.043 , z: -7.033},
@@ -1546,7 +1715,8 @@ function getFlowRoute2(isBreak = false): FlowParam[] {
       runRange: 1,
       pose,
       arrow,
-    },
+    }
+  const route_2_12: FlowParam =
     {
       start: {x: -6.061 + offset , y: 3.418, z: -7.558},
       end:  {x: -6.061+ offset, y: 3.418, z: -9.038},
@@ -1555,7 +1725,8 @@ function getFlowRoute2(isBreak = false): FlowParam[] {
       runRange: 1,
       pose,
       arrow,
-    },
+    }
+  const route_2_13: FlowParam =
     {
       start: {x: -5.924 + offset , y: 3.418, z: -9.531},
       end:  {x: -5.924 + offset, y: 3.418, z: -9.874},
@@ -1564,7 +1735,8 @@ function getFlowRoute2(isBreak = false): FlowParam[] {
       runRange: 1,
       pose,
       arrow,
-    },
+    }
+  const route_2_14: FlowParam =
     {
       start: {x: -5.896 + offset , y: 3.730, z: -10.041},
       end:  {x: -5.896+ offset, y:  4.832, z: -10.040},
@@ -1573,7 +1745,8 @@ function getFlowRoute2(isBreak = false): FlowParam[] {
       runRange: 1,
       pose,
       arrow,
-    },
+    }
+  const route_2_15: FlowParam =
     {
       start: {x: -5.898 + offset , y: 4.977, z: -10.23},
       end:  {x: -5.898+ offset, y:  4.977, z: -11.086},
@@ -1582,11 +1755,107 @@ function getFlowRoute2(isBreak = false): FlowParam[] {
       runRange: 1,
       pose,
       arrow,
-    },
+    }
+  const route_2_top_1: FlowParam =
+    {
+      start: {x: -5.891 + offset , y: 4.101, z: -0.687},
+      end:  {x: -5.891+ offset, y:  4.912, z: -0.687},
+      speed: speed,
+      segment: 4,
+      runRange: 1,
+      pose,
+      arrow,
+    }
+  const route_2_top_2: FlowParam =
+    {
+      start: {x: -5.891 + offset , y: 5.069, z: -0.930},
+      end:  {x: -5.891 + offset, y:  5.069, z: -2.679},
+      speed: speed,
+      segment: 6,
+      runRange: 1,
+      pose,
+      arrow,
+    }
+  const route_2_top_3: FlowParam =
+    {
+      start: {x: -5.891 + offset , y: 5.069, z: -0.930},
+      end:  {x: -5.891 + offset, y:  5.069, z: -2.679},
+      speed: speed,
+      segment: 6,
+      runRange: 1,
+      pose,
+      arrow,
+    }
+  const route_2_top_4: FlowParam =
+    {
+      start: {x: -6.080 + offset , y: 5.069, z: -3.190},
+      end:  {x: -6.080 + offset, y:  5.069, z: -5.086},
+      speed: speed,
+      segment: 6,
+      runRange: 1,
+      pose,
+      arrow,
+    }
+  const route_2_top_5: FlowParam =
+    {
+      start: {x: -6.080 + offset, y:  5.069, z: -5.086},
+      end:  {x: -6.080 + offset, y:  4.078, z: -5.086},
+      speed: speed,
+      segment: 4,
+      runRange: 1,
+      pose,
+      arrow,
+    }
+
+  const result: FlowParam[] = [
+    route_2_1,
+    route_2_2,
+    route_2_3,
+    route_2_4,
+    route_2_5,
+    route_2_6,
   ]
+
+  if(valveStatus[0]) {
+    result.push(
+      route_2_7,
+      route_2_8,
+      route_2_9,
+    )
+
+    if(valveStatus[1]) {
+      result.push(
+        route_2_top_1,
+        route_2_top_2,
+        route_2_top_3,
+        route_2_top_4,
+        route_2_top_5,
+      )
+    }
+
+    if(valveStatus[2]) {
+      result.push(route_2_10)
+    }
+
+    if(valveStatus[1] || valveStatus[2]) {
+      result.push(
+        route_2_10_1,
+        route_2_11,
+        route_2_12,
+        route_2_13,
+        route_2_14,
+        route_2_15,
+      )
+    }
+
+  }
+
+  return result
 }
 
 
+
+//流向 1 管线名称 用来设置管线透明
 function getRoute1Names(): string[] {
   return [
     '地下冷水管_23',
@@ -1607,6 +1876,7 @@ function getRoute1Names(): string[] {
   ]
 }
 
+//流向 2 管线名称 用来设置管线透明
 function getRoute2Names(): string[] {
   return [
     '墙面冷水管_122',
@@ -1672,47 +1942,122 @@ function getRoute2Names(): string[] {
     '墙面冷水管_43',
     '墙面冷水管_弯头13',
     '墙面冷水管_44',
+    '墙面冷水管_60',
+    '墙面冷水管_61',
+    '墙面冷水管_弯头39',
+    '墙面冷水管_62',
+    '墙面冷水管_三通07',
+    '墙面冷水管_63',
+    '墙面冷水管_弯头40',
+    '墙面冷水管_64',
+    '墙面冷水管_弯头41',
+    '墙面冷水管_65',
+    '墙面冷水管_弯头42',
+    '墙面冷水管_66',
+    '墙面冷水管_弯头43',
+    '墙面冷水管_67',
+    '墙面冷水管_四通02',
+    '墙面冷水管_68',
   ]
 }
 
 
+//流向 1 爆管点
 function getAlertPipe1(): {name: string, offsetX?: number, offsetY?: number, offsetZ?: number, scale?: number}[] {
   return [
     {
-      name: '地下冷水管_23',
-      offsetY: -0.02, // -0.25,
+      name: '地下冷水管_27',
+      offsetY: -0.02,
       scale: 0.5,
     },
-    // {
-    //   name: '地下冷水管_29',
-    //   offsetY: -0.02, // -0.25,
-    //   scale: 0.5,
-    // },
-    // {
-    //   name: '地下冷水管_30',
-    //   offsetY: -0.02, // -0.25,
-    //   scale: 0.5,
-    // }
   ]
 }
 
+//流向 2 爆管点
 function getAlertPipe2(): {name: string, offsetX?: number, offsetY?: number, offsetZ?: number, scale?: number}[] {
   return [
     {
-      name: '墙面冷水管_118',
-      offsetY: -0.02, // -0.25,
+      name: '墙面冷水管_31',
+      offsetY: -0.02,
       scale: 0.5,
     },
-    // {
-    //   name: '墙面冷水管_116',
-    //   // offsetX: 0.2,
-    //   offsetY: -0.02, // -0.25,
-    //   scale: 0.5,
-    // },
-    // {
-    //   name: '墙面冷水管_44',
-    //   offsetY: -0.02,
-    //   scale: 0.5,
-    // }
+  ]
+}
+
+//流向 1 阀门点
+function getValve1(): {name: string,position: Vector3,scale: number,isOpen: boolean}[] {
+  const scale = 0.3
+  const offsetY = -0.05
+
+  return [
+    {
+      name: 'valve_1_0',
+      position: {
+        x: -1.048,
+        y: -0.126 + offsetY,
+        z: -0.106,
+      },
+      scale,
+      isOpen: true,
+    },
+    {
+      name: 'valve_1_1',
+      position: {
+        x: -0.335,
+        y: -0.126 + offsetY,
+        z: 0.933,
+      },
+      scale,
+      isOpen: true,
+    },
+    {
+      name: 'valve_1_2',
+      position: {
+        x: -0.340,
+        y: -0.126 + offsetY,
+        z: 1.728,
+      },
+      scale,
+      isOpen: true,
+    }
+  ]
+}
+
+//流向 2 阀门点
+function getValve2(): {name: string,position: Vector3,scale: number,isOpen: boolean}[] {
+  const scale = 0.5
+  const offsetY = -0.05
+
+  return [
+    {
+      name: 'valve_2_0',
+      position: {
+        x: -6.467,
+        y: 4.067 + offsetY,
+        z: 4.918,
+      },
+      scale,
+      isOpen: true,
+    },
+    {
+      name: 'valve_2_1',
+      position: {
+        x: -5.885,
+        y: 4.060 + offsetY,
+        z: -0.694,
+      },
+      scale,
+      isOpen: true,
+    },
+    {
+      name: 'valve_2_2',
+      position: {
+        x: -6.061,
+        y: 4.043 + offsetY,
+        z: -3.295,
+      },
+      scale,
+      isOpen: true,
+    }
   ]
 }

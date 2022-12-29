@@ -40,6 +40,7 @@ interface State {
 }
 
 let pose: SARMap.Pose | undefined
+let data:{name:string,x:string,y:string,route1:{names:[],flow:{start:[],end:[]},alert:[]},route2:{names:[],flow:{start:[],end:[]},alert:[]}}
 class CoverView extends React.Component<Props, State> {
   currentRadiusx = 1
   currentRadiusy = 1
@@ -402,26 +403,17 @@ class CoverView extends React.Component<Props, State> {
 
   _disableFlow =async () => {
     if(this.flowEnabled) {
-      const homePath = await FileTools.getHomeDirectory()
-      const path1 = homePath + ConstPath.Common + `Exhibition/AR室内管线/route1.json`
-      const path2 = homePath + ConstPath.Common + `Exhibition/AR室内管线/route2.json`
-      const info1 = await RNFS.readFile(path1)
-      const infoJson1 = JSON.parse(info1)
-
-      const info2 = await RNFS.readFile(path2)
-      const infoJson2 = JSON.parse(info2)
-
       this.flowEnabled = false
       SExhibition.hidePipeFlow()
       const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
       if(layer){
         SExhibition.restorePipeMaterial(
           layer.name,
-          infoJson1.names
+          data.route1.names
         )
         SExhibition.restorePipeMaterial(
           layer.name,
-          infoJson2.names
+          data.route2.names
         )
       }
     }
@@ -429,19 +421,10 @@ class CoverView extends React.Component<Props, State> {
 
 
   _disableAlert = async () => {
-    const homePath = await FileTools.getHomeDirectory()
-    const path1 = homePath + ConstPath.Common + `Exhibition/AR室内管线/route1.json`
-    const path2 = homePath + ConstPath.Common + `Exhibition/AR室内管线/route2.json`
-    const info1 = await RNFS.readFile(path1)
-    const infoJson1 = JSON.parse(info1)
-
-    const info2 = await RNFS.readFile(path2)
-    const infoJson2 = JSON.parse(info2)
-
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if(layer) {
-      await SExhibition.hideBreakPoint(layer.name, [...infoJson1.alert, ...infoJson2.alert])
-      await SExhibition.restorePipeMaterial(layer.name, [...infoJson1.names, ...infoJson2.names])
+      await SExhibition.hideBreakPoint(layer.name, [...data.route1.alert, ...data.route2.alert])
+      await SExhibition.restorePipeMaterial(layer.name, [...data.route1.names, ...data.route2.names])
       await SExhibition.hidePipeFlow()
     }
   }
@@ -539,14 +522,26 @@ class CoverView extends React.Component<Props, State> {
     // console.warn(layer)
     // if(layer){
     // console.warn(layer)
-    await SARMap.addARCover(layer.name, pose && {
-      pose: pose,
-      translation: {
-        x: 0,
-        y: 0,
-        z: 0,
+    const homePath = await FileTools.getHomeDirectory()
+    const path = homePath + ConstPath.Common + `Exhibition/AR室内管线/route.json`
+    const info = await RNFS.readFile(path)
+    const infoJson = JSON.parse(info)
+    const datas = infoJson.datas
+    for(let i =0 ; i<datas.length ;i++){
+      if(pose && pose.imgx === datas[i].x && pose.imgy === datas[i].y){
+        data = datas[i]
+        await SARMap.addARCover(layer.name,datas[i].name, pose && {
+          pose: pose,
+          translation: {
+            x: 0,
+            y: 0,
+            z: 0,
+          }
+        })
       }
-    })
+    }
+
+
     // }
     const _time = async function() {
       return new Promise(function(resolve) {
@@ -670,53 +665,35 @@ class CoverView extends React.Component<Props, State> {
   }
 
   flow = async (index: 1 | 2) => {
-    const homePath = await FileTools.getHomeDirectory()
-    const path1 = homePath + ConstPath.Common + `Exhibition/AR室内管线/route1.json`
-    const path2 = homePath + ConstPath.Common + `Exhibition/AR室内管线/route2.json`
-    const info1 = await RNFS.readFile(path1)
-    const infoJson1 = JSON.parse(info1)
-
-    const info2 = await RNFS.readFile(path2)
-    const infoJson2 = JSON.parse(info2)
-
     await SExhibition.hidePipeFlow()
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if(layer){
       await SExhibition.restorePipeMaterial(
         layer.name,
-        index === 1 ? infoJson2.names : infoJson1.names
+        index === 1 ? data.route2.names : data.route1.names
       )
       SExhibition.showPipeFlow(
         layer.name,
-        index === 1 ? getFlowRoute1(false,infoJson1.flow) : getFlowRoute2(false,infoJson2.flow)
+        index === 1 ? getFlowRoute1(false,data.route1.flow) : getFlowRoute2(false,data.route2.flow)
       )
 
       SExhibition.makePipeMaterialTransparent(
         layer.name,
-        index === 1 ? infoJson1.names : infoJson2.names
+        index === 1 ? data.route1.names : data.route2.names
       )
     }
   }
 
   alert = async (index: 1 | 2) => {
-    const homePath = await FileTools.getHomeDirectory()
-    const path1 = homePath + ConstPath.Common + `Exhibition/AR室内管线/route1.json`
-    const path2 = homePath + ConstPath.Common + `Exhibition/AR室内管线/route2.json`
-    const info1 = await RNFS.readFile(path1)
-    const infoJson1 = JSON.parse(info1)
-
-    const info2 = await RNFS.readFile(path2)
-    const infoJson2 = JSON.parse(info2)
-
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     await this._disableAlert()
     if(layer) {
-      SExhibition.showBreakPoint(layer.name, index === 1 ? infoJson1.alert : infoJson2.alert)
+      SExhibition.showBreakPoint(layer.name, index === 1 ? data.route1.alert : data.route2.alert)
       SExhibition.makePipeMaterialTransparent(layer.name,
-        index === 1 ? infoJson1.names : infoJson2.names
+        index === 1 ? data.route1.names : data.route2.names
       )
       SExhibition.showPipeFlow(layer.name,
-        index === 1 ? getFlowRoute1(true,infoJson1.flow) : getFlowRoute2(true,infoJson2.flow)
+        index === 1 ? getFlowRoute1(true,data.route1.flow) : getFlowRoute2(true,data.route2.flow)
       )
     }
   }

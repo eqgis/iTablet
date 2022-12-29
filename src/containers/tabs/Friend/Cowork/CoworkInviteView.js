@@ -97,7 +97,7 @@ class CoworkInviteView extends React.Component {
    */
   getModuleData = () => {
     let image, title
-    let modules = this.props.mapModules.modules
+    let modules = this.props.mapModules.modules[this.props.user.currentUser.userName]
     for (let i = 0; i < modules.length; i++) {
       if (modules[i].key === this.props.data.module) {
         let data = modules[i].getChunk(global.language)

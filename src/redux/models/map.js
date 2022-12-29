@@ -111,7 +111,8 @@ export const openMap = (params, cb = () => { }) => async (
       !params.path
     )
       return
-    const absolutePath = await FileTools.appendingHomeDirectory(params.path)
+    const homePath = await FileTools.appendingHomeDirectory()
+    const absolutePath = params.path.indexOf(homePath) === 0 ? params.path : (homePath + params.path)
     const userName = getState().user.toJS().currentUser.userName || 'Customer'
     const moduleName = global.Type
     const module = params.module || ''
@@ -191,8 +192,7 @@ export const saveMap = (params = {}, cb = () => { }) => async (
         undefined,
         params.isMapFromXML,
       )
-      path = `${ConstPath.UserPath + userName}/${ConstPath.RelativePath.Map
-        }${mapName}.xml`
+      path = `${ConstPath.UserPath + userName}/${ConstPath.RelativePath.Map}${mapName}.xml`
     } else {
       await SMap.saveMap(params.mapName, false, false)
     }
@@ -283,7 +283,7 @@ export const exportWorkspace = (params, cb = () => { }) => async (
   getState,
 ) => {
   if (isExporting) {
-    Toast.show(getLanguage(global.language).Prompt.TYR_AGAIN_LATER)
+    Toast.show(getLanguage().TYR_AGAIN_LATER)
     // ''请稍后再试')
     return false
   }
@@ -365,7 +365,7 @@ export const exportWorkspace = (params, cb = () => { }) => async (
   } catch (e) {
     isExporting = false
     if (!exportResult) {
-      Toast.show(getLanguage(global.language).Prompt.EXPORT_FAILED)
+      Toast.show(getLanguage().EXPORT_FAILED)
       // ConstInfo.EXPORT_WORKSPACE_FAILED)
     } else if (!zipResult) {
       Toast.show(ConstInfo.ZIP_FAILED)
@@ -387,7 +387,7 @@ export const exportmap3DWorkspace = (params, cb = () => { }) => async (
   const userName = getState().user.toJS().currentUser.userName || 'Customer'
   if (params.name) {
     if (isExporting) {
-      Toast.show(getLanguage(global.language).Prompt.TYR_AGAIN_LATER)
+      Toast.show(getLanguage().TYR_AGAIN_LATER)
       // '请稍后再试')
       return false
     }
@@ -403,20 +403,19 @@ export const exportmap3DWorkspace = (params, cb = () => { }) => async (
       result = await FileTools.zipFile(path, zipPath)
       if (result) {
         await FileTools.deleteFile(path)
-        Toast.show(getLanguage(global.language).Prompt.SHARE_START)
+        Toast.show(getLanguage().SHARE_START)
         // '导出成功,开始分享')
         isExporting = false
         cb && cb(result, zipPath)
       }
     } else {
-       
-      Toast.show(getLanguage(global.language).Prompt.EXPORT_FAILED)
+      Toast.show(getLanguage().EXPORT_FAILED)
       // '导出失败')
     }
   }
 }
 // 导入三维工作空间
-export const importSceneWorkspace = params => async (dispatch, getState) => {
+export const importSceneWorkspace = params => async () => {
   // const userName = getState().user.toJS().currentUser.userName || 'Customer'
   // // return
   // if (userName !== 'Customer') {

@@ -29,6 +29,10 @@ export default class LayerSelectionAttribute extends React.Component {
     map: Object,
     layerSelection: Object,
     attributesHistory: Array,
+    buttonNameFilter: string[],
+    buttonTitles: string[],
+    buttonActions: (() => void)[],
+    dismissTitles: string[],
     setCurrentAttribute: () => {},
     setLayerAttributes: () => {},
     setDataAttributes: () => {},
@@ -75,6 +79,11 @@ export default class LayerSelectionAttribute extends React.Component {
     this.isLoading = false // 防止同时重复加载多次
     this.isMediaLayer = false // 是否是多媒体图层
     this.Popover = undefined // 长按弹窗
+
+    this.buttonNameFilter = params?.buttonNameFilter || this.props.buttonNameFilter || []
+    this.buttonTitles = params?.buttonTitles || this.props.buttonTitles || []
+    this.buttonActions = params?.buttonActions || this.props.buttonActions || []
+    this.dismissTitles = params?.dismissTitles || this.props.dismissTitles || []
   }
 
   componentDidMount() {
@@ -1136,8 +1145,8 @@ export default class LayerSelectionAttribute extends React.Component {
     global.layerSelection = this.props.layerSelection
     // let buttonNameFilter = this.isMediaLayer ? ['MediaFilePaths', 'MediaServiceIds', 'MediaData'] : [], // 属性表cell显示 查看 按钮
     //   buttonTitles = this.isMediaLayer ? [getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW] : []
-    let buttonNameFilter = this.isMediaLayer ? ['MediaData'] : [], // 属性表cell显示 查看 按钮
-      buttonTitles = this.isMediaLayer ? [getLanguage(global.language).Map_Tools.VIEW] : []
+    let buttonNameFilter = (this.isMediaLayer ? ['MediaData'] : []).concat(this.buttonNameFilter), // 属性表cell显示 查看 按钮
+      buttonTitles = (this.isMediaLayer ? [getLanguage(global.language).Map_Tools.VIEW] : []).concat(this.buttonTitles)
     let buttonActions = this.isMediaLayer ? [
       async data => {
         let layerName = this.props.layerSelection.layerInfo.name,
@@ -1225,7 +1234,8 @@ export default class LayerSelectionAttribute extends React.Component {
         // }
       },
     ] : []
-    const dismissTitles = ['MediaFilePaths', 'MediaServiceIds']
+    buttonActions = buttonActions.concat(this.buttonActions)
+    const dismissTitles = ['MediaFilePaths', 'MediaServiceIds'].concat(this.dismissTitles)
     const isSingle = this.state.attributes.data.length === 1
     return (
       <LayerAttributeTable

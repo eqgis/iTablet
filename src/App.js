@@ -41,13 +41,13 @@ import {
   setTemplate,
 } from './redux/models/template'
 import { setModules } from './redux/models/appConfig'
-import { setMapModule } from './redux/models/mapModules'
+import { setMapModule, addMapModule, loadAddedModule } from './redux/models/mapModules'
 import { Dialog, Loading, MyToast, InputDialog, Dialog2, InputDialog2 } from './components'
 import { setAnalystParams } from './redux/models/analyst'
 import { setCollectionInfo } from './redux/models/collection'
 import { setShow } from './redux/models/device'
 import { setLicenseInfo } from './redux/models/license'
-import { FileTools, SplashScreen} from './native'
+import { FileTools, SplashScreen } from './native'
 import ConfigStore from './redux/store'
 import { scaleSize, Toast, screen, DialogUtils, GetUserBaseMapUtil, AppEvent } from './utils'
 import * as OnlineServicesUtils from './utils/OnlineServicesUtils'
@@ -57,7 +57,7 @@ import { ConstPath, ThemeType, ChunkType, UserType } from './constants'
 import * as PT from './customPrototype'
 import NavigationService from './containers/NavigationService'
 import Orientation from 'react-native-orientation'
-import { RNFS as fs, SOnlineService, SScene, SMap, SIPortalService, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo ,SARMap, SData} from 'imobile_for_reactnative'
+import { BundleTools, RNFS as fs, SOnlineService, SScene, SMap, SIPortalService, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo ,SARMap, SData} from 'imobile_for_reactnative'
 // import SplashScreen from 'react-native-splash-screen'
 import { getLanguage } from './language/index'
 import { ProtocolDialog } from './containers/tabs/Home/components'
@@ -87,6 +87,7 @@ import { setBaseMap } from './redux/models/map'
 // import AppNavigator from './containers'
 import AppDialog from '@/utils/AppDialog'
 import AppInputDialog from '@/utils/AppInputDialog'
+import BundleUtils from './utils/BundleUtils'
 import { addNetworkChangeEventListener } from '@/utils/NetworkHandler'
 
 //字体不随系统字体变化
@@ -196,12 +197,14 @@ class AppRoot extends Component {
     setCurrentLayer: PropTypes.func,
     setModules: PropTypes.func,
     setMapModule: PropTypes.func,
+    addMapModule: PropTypes.func,
     setLicenseInfo: PropTypes.func,
     setGuideShow: PropTypes.func,
     setVersion: PropTypes.func,
     setMapArGuide: PropTypes.func,
     setMapArMappingGuide: PropTypes.func,
     setMapAnalystGuide: PropTypes.func,
+    loadAddedModule: PropTypes.func,
     setPointStateText: PropTypes.func,
   }
 
@@ -237,7 +240,14 @@ class AppRoot extends Component {
     AppState.addEventListener('change', this.handleStateChange)
     Platform.OS === 'android' &&
       BackHandler.addEventListener('hardwareBackPress', this.back)
+
     AppEvent.addListener('network_change', this.handleNetworkState)
+
+    // 初始化bundle工具,用于加载小插件
+    BundleUtils.init({
+      addMapModule: this.props.addMapModule,
+    })
+    global.coworkMode = false // 初始化协作模块标识
   }
 
   initGlobal = () => {
@@ -274,7 +284,7 @@ class AppRoot extends Component {
   componentDidMount() {
     Platform.OS === 'android' && SplashScreen.hide()
     this.initOrientation()
-    if(!this.state.showLaunchGuide) {
+    if (!this.state.showLaunchGuide) {
       this.showUserProtocol()
     }
   }
@@ -296,7 +306,7 @@ class AppRoot extends Component {
 
   handleNetworkState = async state => {
     // TODO 网络状态发生变化,wifi切换为移动网络,判断内网服务是否可用
-    if(UserType.isIPortalUser(this.props.user.currentUser) || UserType.isOnlineUser(this.props.user.currentUser)) {
+    if (UserType.isIPortalUser(this.props.user.currentUser) || UserType.isOnlineUser(this.props.user.currentUser)) {
       const isConnected = await OnlineServicesUtils.getService()?.checkConnection()
       if (isConnected) {
         Toast.show(getLanguage().Prompt.NETWORK_RECONNECT)
@@ -321,7 +331,7 @@ class AppRoot extends Component {
   }
 
   showUserProtocol = () => {
-    if(this.props.isAgreeToProtocol) {
+    if (this.props.isAgreeToProtocol) {
       this.prevLoad()
     } else {
       this.protocolDialog?.setVisible(true)
@@ -474,13 +484,13 @@ class AppRoot extends Component {
   /**
    * 加载当前用户的底图
    */
-  async loadUserBaseMaps(){
+  async loadUserBaseMaps() {
     let curUserBaseMaps = []
     // 根据当前用户id获取当前用户的底图数组
-    if(this.props.user.currentUser.userId){
+    if (this.props.user.currentUser.userId) {
       curUserBaseMaps = this.props.baseMaps[this.props.user.currentUser.userId]
     }
-     
+
     // 如果当前用户底图数组没有值或不存在就，设置为系统默认的底图数组
     if (!curUserBaseMaps) {
       curUserBaseMaps = this.props.baseMaps['default']
@@ -490,7 +500,7 @@ class AppRoot extends Component {
     if (arrPublishServiceList.length > 0) {
       for (let i = 0, n = arrPublishServiceList.length; i < n; i++) {
         // 当公有服务列表的元素的地图名字和地图信息数组，以及地图信息数组的地图服务地址都存在时，更新当前用户的底图
-        if (arrPublishServiceList[i].restTitle && arrPublishServiceList[i].mapInfos[0] && arrPublishServiceList[i].mapInfos[0].mapUrl){
+        if (arrPublishServiceList[i].restTitle && arrPublishServiceList[i].mapInfos[0] && arrPublishServiceList[i].mapInfos[0].mapUrl) {
           let list = await GetUserBaseMapUtil.addServer(arrPublishServiceList[i].restTitle, arrPublishServiceList[i].mapInfos[0].mapUrl)
           // 将更改完成后的当前用户的底图数组，进行持久化存储，此处会触发页面刷新（是其他地方能够拿到用户底图的关键）
           this.props.setBaseMap &&
@@ -527,13 +537,13 @@ class AppRoot extends Component {
     }
   }
 
-   initUserDirectories = async (userName = 'Customer') => {
-     if (!(await FileTools.fileIsExist(ConstPath.UserPath + userName))) {
-       await FileTools.initUserDefaultData(userName)
-     }
-   }
+  initUserDirectories = async (userName = 'Customer') => {
+    if (!(await FileTools.fileIsExist(ConstPath.UserPath + userName))) {
+      await FileTools.initUserDefaultData(userName)
+    }
+  }
 
-  createXmlTemplate = async() =>{
+  createXmlTemplate = async () => {
     const fileDir = await FileTools.appendingHomeDirectory(ConstPath.ExternalData + '/' + ConstPath.Module.XmlTemplate)
     let exists = await fs.exists(fileDir)
     if (!exists) {
@@ -561,7 +571,7 @@ class AppRoot extends Component {
       // path = await FileTools.appendingHomeDirectory(customerPath)
 
       this.props.openWorkspace({ server: path })
-    } catch(e) {
+    } catch (e) {
       //
     }
   }
@@ -631,7 +641,7 @@ class AppRoot extends Component {
     let password = this.props.user.currentUser.password
     let userType = this.props.user.currentUser.userType
 
-    if(userType === UserType.COMMON_USER) {
+    if (userType === UserType.COMMON_USER) {
       await SOnlineService.setOnlineServiceSite('DEFAULT')
     } else {
       await SOnlineService.setOnlineServiceSite('JP')
@@ -656,7 +666,7 @@ class AppRoot extends Component {
         let customPath = await FileTools.appendingHomeDirectory(
           ConstPath.CustomerPath +
           ConstPath.RelativeFilePath.Workspace[
-            this.props.language === 'CN' ? 'CN' : 'EN'
+          this.props.language === 'CN' ? 'CN' : 'EN'
           ],
         )
         this.props.deleteUser(this.props.user.currentUser)
@@ -666,7 +676,7 @@ class AppRoot extends Component {
           userType: UserType.PROBATION_USER,
         })
         // NavigationService.popToTop('Tabs')
-        NavigationService.navigate('Tabs', {screen: 'Home'})
+        NavigationService.navigate('Tabs', { screen: 'Home' })
         this.props.openWorkspace({ server: customPath })
         Toast.show(getLanguage(this.props.language).Profile.LOGIN_INVALID)
       })
@@ -686,7 +696,7 @@ class AppRoot extends Component {
         result = await this.loginOnline()
         result = result && await FriendListFileHandle.initFriendList(this.props.user.currentUser)
       }
-      if(result === true){
+      if (result === true) {
         let userType = this.props.user.currentUser.userType
         // let JSOnlineservice = new OnlineServicesUtils(userType === UserType.COMMON_USER ? 'online' : 'OnlineJP')
         let JSOnlineservice = OnlineServicesUtils.getService(userType === UserType.COMMON_USER ? 'online' : 'OnlineJP')
@@ -705,13 +715,13 @@ class AppRoot extends Component {
         }
         await this.props.setUser(user)
         //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
-        if(bResetMsgService !== true){
+        if (bResetMsgService !== true) {
           //TODO 处理app加载流程，确保登录后再更新消息服务
           global.getFriend?.().onUserLoggedin()
         }
       } else {
         //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
-        if(bResetMsgService !== true){
+        if (bResetMsgService !== true) {
           this.logoutOnline()
         }
       }
@@ -747,35 +757,43 @@ class AppRoot extends Component {
 
   getUserApplets = async userName => {
     try {
-      // 获取当前用户的小程序
-      let applets = await ConfigUtils.getApplets(userName)
+      // 获取当前用户的小插件
+      // let applets = await ConfigUtils.getApplets(userName)
+      // let myMapModules = []
+      // if (applets === null || userName === 'Customer' && applets.length === 0) {
+      //   await ConfigUtils.recordApplets(userName, _mapModules)
+      //   applets = _mapModules
+      // } else {
+      //   // APP默认模块不能改动
+      //   let defaultValues = Object.values(ChunkType)
+      //   let tempArr = defaultValues.concat(applets)
+      //   applets = Array.from(new Set(tempArr))
+      // }
+      // let needToUpdate = false
+      // applets.map(key => {
+      //   if (key !== 'APPLET_ADD') {
+      //     for (let item of mapModules) {
+      //       needToUpdate = this.props.appConfig.oldMapModules.indexOf(item.key) < 0
+      //       if (item.key === key || needToUpdate) {
+      //         myMapModules.push(item)
+      //         break
+      //       }
+      //     }
+      //   }
+      // })
+
+      let applets = await BundleTools.getBundles()
       let myMapModules = []
-      if (applets === null || userName === 'Customer' && applets.length === 0) {
-        await ConfigUtils.recordApplets(userName, _mapModules)
-        applets = _mapModules
-      } else {
-        // APP默认模块不能改动
-        let defaultValues = Object.values(ChunkType)
-        let tempArr = defaultValues.concat(applets)
-        applets = Array.from(new Set(tempArr))
+      // 系统自带模块
+      for (let item of mapModules) {
+        myMapModules.push(item)
       }
-      let needToUpdate = false
-      applets.map(key => {
-        if (key !== 'APPLET_ADD') {
-          for (let item of mapModules) {
-            needToUpdate = this.props.appConfig.oldMapModules.indexOf(item.key) < 0
-            if (item.key === key || needToUpdate) {
-              myMapModules.push(item)
-              break
-            }
-          }
+      await this.props.setMapModule(myMapModules, () => {
+        // 加载用户小插件
+        for (let item of applets) {
+          this.props.loadAddedModule(item.name)
         }
       })
-      // 添加新的小程序后，直接显示在首页，并记录到本地文件
-      if (needToUpdate) {
-        await ConfigUtils.recordApplets(userName, _mapModules)
-      }
-      await this.props.setMapModule(myMapModules)
     } catch (e) {
       await ConfigUtils.recordApplets(userName, _mapModules)
     }
@@ -1060,10 +1078,10 @@ class AppRoot extends Component {
           this.protocolDialog.setVisible(false)
           this.prevLoad()
         }}
-        cancel={() =>{
+        cancel={() => {
           this.protocolDialog.setVisible(false)
           global.SimpleDialog.set({
-            renderCustomeView:()=>{
+            renderCustomeView: () => {
               return (
                 <View
                   style={{
@@ -1104,7 +1122,7 @@ class AppRoot extends Component {
 
             },
             cancelText: getLanguage(this.props.language).Protocol.AGAIN,
-            cancelAction: () => { this.protocolDialog.setVisible(true) ,this.protocolDialog.setconfirmBtnDisable(true)},
+            cancelAction: () => { this.protocolDialog.setVisible(true), this.protocolDialog.setconfirmBtnDisable(true) },
             confirmText: getLanguage(this.props.language).Protocol.EXIT_APP,
             confirmAction: () => { this.exitApp() },
           })
@@ -1143,13 +1161,13 @@ class AppRoot extends Component {
             type: this.isHuawei ? 'AREngineDevice' : 'ARDevice',
           })
         }}
-        installBtnVisible={global.ARServiceAction === -1?true:false}
-        text={ 
+        installBtnVisible={global.ARServiceAction === -1 ? true : false}
+        text={
           global.ARServiceAction === 0
-          ? getLanguage(this.props.language).Prompt.DEVICE_DOES_NOT_SUPPORT_AR 
-          : getLanguage(this.props.language).Prompt.DONOT_SUPPORT_ARCORE
+            ? getLanguage(this.props.language).Prompt.DEVICE_DOES_NOT_SUPPORT_AR
+            : getLanguage(this.props.language).Prompt.DONOT_SUPPORT_ARCORE
         }
-        installAction={()=>{SARMap.installARCore()}}
+        installAction={() => { SARMap.installARCore() }}
         confirmTitleStyle={{ color: '#4680DF' }}
         cancelTitleStyle={{ color: '#4680DF' }}
       />
@@ -1174,17 +1192,17 @@ class AppRoot extends Component {
     return (
       <InputDialog
         ref={ref => DialogUtils.setInputDialog(ref)}
-        // title={
-        //   getLanguage(this.props.language).Template.COLLECTION_TEMPLATE_NAME
-        // }
-        // confirmAction={async value => {
-        //   await this.goBack({
-        //     title: value,
-        //   })
-        //   this.dialog.setDialogVisible(false)
-        // }}
-        // confirmBtnTitle={getLanguage(global.language).Map_Settings.CONFIRM}
-        // cancelBtnTitle={getLanguage(global.language).Map_Settings.CANCEL}
+      // title={
+      //   getLanguage(this.props.language).Template.COLLECTION_TEMPLATE_NAME
+      // }
+      // confirmAction={async value => {
+      //   await this.goBack({
+      //     title: value,
+      //   })
+      //   this.dialog.setDialogVisible(false)
+      // }}
+      // confirmBtnTitle={getLanguage(global.language).Map_Settings.CONFIRM}
+      // cancelBtnTitle={getLanguage(global.language).Map_Settings.CANCEL}
       />
     )
   }
@@ -1228,7 +1246,7 @@ class AppRoot extends Component {
       <>
         {this.state.showLaunchGuide ? this.renderGuidePage() : this.renderRoot()}
         {this.renderImportDialog()}
-        {this.state.isInit && global.ARServiceAction !==undefined && this.renderARDeviceListDialog()}
+        {this.state.isInit && global.ARServiceAction !== undefined && this.renderARDeviceListDialog()}
         {this._renderProtocolDialog()}
         <Loading ref={ref => global.Loading = ref} initLoading={false} />
         <MyToast ref={ref => global.Toast = ref} />
@@ -1284,6 +1302,7 @@ const AppRootWithRedux = connect(mapStateToProps, {
   setLanguage,
   setModules,
   setMapModule,
+  addMapModule,
   setLicenseInfo,
   setGuideShow,
   setVersion,
@@ -1293,6 +1312,7 @@ const AppRootWithRedux = connect(mapStateToProps, {
   deleteUser,
   closeWorkspace,
   setBaseMap,
+  loadAddedModule,
   setPointStateText,
 })(AppRoot)
 

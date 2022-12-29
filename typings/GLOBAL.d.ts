@@ -29,7 +29,7 @@ declare global {
   /** 是否是在线协作模式 */
   var coworkMode: boolean
   /** 首页模块类型 */
-  var Type: keyof TChunkType | null
+  var Type: keyof TChunkType | null | string
   /** 地图触摸事件类型 */
   var TouchType: string
   /** 三维Action PAN3D | PANSELECT3D | PAN3D_FIX */

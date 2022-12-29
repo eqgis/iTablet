@@ -606,7 +606,7 @@ export const language_cn = {
 
   TOGGLE_FIND_ITEM: "打开/关闭发现页面入口",
   PUBLIC_DATA: "公共数据",
-  APPLET: "小程序",
+  APPLET: "小插件",
   GIS_ACADEMY: "GIS学院",
   SEARCH_RESULT: "搜索结果",
   RESET: "重置",
@@ -631,7 +631,7 @@ export const language_cn = {
   LABORATORY: "实验室",
   ONLINE_COWORK: "在线协作",
   COWORK_LOGIN: "请登录Online获取列表",
-  APPLET_DOWNLOADED_RELOAD: "下载完成，重新加载小程序",
+  APPLET_DOWNLOADED_RELOAD: "下载完成，重新加载小插件",
   RELOAD: "重载",
   APPLET_RESET_OLD_VERSION: "是否重置回之前的版本?",
   APPLET_OLD_VERSION_ALREADY: "已经是最初版本",
@@ -938,7 +938,7 @@ export const language_cn = {
   MAP_PLOTTING: "应急标绘",
   MAP_ANALYST: "数据处理",
 
-  APPLET_ADD: "添加\n您的小程序",
+  APPLET_ADD: "添加\n您的小插件",
 
   // 地图底部导航
   LAYER: "图层",
@@ -2102,10 +2102,12 @@ export const language_cn = {
   BATCH_DELETE: "批量删除",
   BATCH_ADD: "批量添加",
   BATCH_OPERATE: "批量操作",
-  MY_APPLET: "我的小程序",
-  UN_DOWNLOADED_APPLET: "未下载的小程序",
-  DELETE_APPLET: "删除小程序",
-  ADD_APPLET: "添加小程序",
+  MY_APPLET: "我的小插件",
+  UN_DOWNLOADED_APPLET: "未下载的小插件",
+  NOT_LOADED_APPLET: "未加载的小插件",
+  LOCAL_APPLET: "本地小插件",
+  DELETE_APPLET: "删除小插件",
+  ADD_APPLET: "添加小插件",
   MOVE_UP: "上移",
   MOVE_DOWN: "下移",
 

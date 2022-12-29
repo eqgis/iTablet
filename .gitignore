@@ -1,31 +1,101 @@
-#android
+#imobile
+imobile_for_reactnative
+
+# OSX
+#
+.DS_Store
+
+# Xcode
+#
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+
+# Android/IntelliJ
+#
+build/
 .idea
 .gradle
 local.properties
 *.iml
+*.hprof
 
+# node.js
+#
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# BUCK
+buck-out/
+\.buckd/
+*.keystore
+!debug.keystore
+
+# fastlane
+#
+# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
+# screenshots whenever they are needed.
+# For more information about the recommended setup visit:
+# https://docs.fastlane.tools/best-practices/source-control/
+
+*/fastlane/report.xml
+*/fastlane/Preview.html
+*/fastlane/screenshots
+
+# Bundle artifact
+*.jsbundle
+bundle/*
+
+.idea/
+.gradle/
+android/keystores/
 android/app/release/
 android/app/app.iml
 android/local.properties
 android/app/build/
 android/app/src/main/assets/Trial_License.slm
 android/.DS_Store
+src/.DS_Store
+android/app/src/main/assets/*.so
+android/app/src/main/assets/python_android_assets/*.so
+android/app/src/main/assets/python_android_assets/*PIL.zip
+android/app/src/main/assets/python_android_assets/*python2.7.zip
+android/app/src/main/assets/bundles/*
+android/app/src/main/assets/base.zip
 
-#iOS
-ios/Build
-ios/iPhoneOS.sdk/JRE.framework
 ios/iPhoneOS.sdk/SuperMap.framework
+ios/iPhoneOS.sdk/JRE.framework
+ios/Trial_License.slm
+ios/iPhoneSimulator.sdk
+ios/MessageQueue.sdk
+ios/iTablet-tvOS
+ios/iTablet-tvOSTests
+ios/Build
+ios/Index
 ios/Pods
-ios/iTablet.xcodeproj/xcuserdata
-ios/iTablet.xcworkspace/xcuserdata
-#common
-node_modules
-.vscode
-*.DS_Store
-imobile_for_reactnative
-ios/Podfile.lock
+ios/assets/base.zip
+
 package-lock.json
 yarn.lock
+.vscode/
+JRE.frameworkTrial_License.slm
+*.txt
+*.bin
+*.log
 *.lock
 bundle/
 bundles/

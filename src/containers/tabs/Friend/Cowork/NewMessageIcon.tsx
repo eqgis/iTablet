@@ -5,6 +5,7 @@ import { scaleSize } from '../../../../utils'
 import { color, size } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
 import { connect } from 'react-redux'
+import { ChunkType } from '@/constants'
 
 interface Props {
   language: string,
@@ -97,7 +98,9 @@ class NewMessageIcon extends Component<Props, State> {
           >
             <Text style={{ color: 'white', fontSize: size.fontSize.fontSizeLg }}>
               {this.state.text ? this.state.text : `${
-                getLanguage(this.props.language).Friends.COWORK_MESSAGE
+                Object.keys(ChunkType).indexOf(global.Type) >= 0
+                  ? getLanguage(this.props.language).Friends.COWORK_MESSAGE
+                  : getLanguage().MESSAGES
               }(${number})`}
             </Text>
           </View>

@@ -132,62 +132,7 @@ async function getData(type: string, params: any) {
         {
           key: 'submit_service',
           title: getLanguage(global.language).Cowork.SUBMIT_SERVICE,
-          action: ({ layerData }: ActionParams) => {
-            const _params: any = ToolbarModule.getParams()
-            const datasetDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
-            if (datasetDescription?.type !== 'onlineService') {
-              return
-            }
-            let exist = false
-            if (
-              _params.currentTask?.groupID &&
-              _params.coworkInfo?.[_params.user.currentUser.userName]?.[_params?.currentTask?.groupID]?.[_params?.currentTask?.id]?.messages
-            ) {
-              const dsDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
-              if (dsDescription.url && dsDescription?.type === 'onlineService') {
-                const currentCoworkMessage = _params.coworkInfo[_params.user.currentUser.userName][_params.currentTask.groupID][_params.currentTask.id].messages
-                if (currentCoworkMessage?.length > 0) {
-                  for (const message of currentCoworkMessage) {
-                    if (message.message?.serviceUrl === dsDescription.url && message?.status === 0) {
-                      exist = true
-                      global.SimpleDialog.set({
-                        text: getLanguage(global.language).Prompt.SERVICE_SUBMIT_BEFORE_UPDATE,
-                        cancelText: getLanguage(global.language).Prompt.CANCEL,
-                        cancelAction: async () => {
-                          global.Loading.setLoading(false)
-                        },
-                        confirmText: getLanguage(global.language).Prompt.SUBMIT,
-                        confirmAction: async () => {
-                          ServiceAction.updateToLocal({
-                            url: datasetDescription.url,
-                            datasourceAlias: layerData.datasourceAlias,
-                            datasetName: layerData.datasetName,
-                          }, result => {
-                            ServiceAction.uploadToService({
-                              // layerName: layerData.name,
-                              url: datasetDescription.url,
-                              datasourceAlias: layerData.datasourceAlias,
-                              datasetName: layerData.datasetName,
-                              onlineDatasourceAlias: datasetDescription.datasourceAlias,
-                            })
-                          })
-                        },
-                      })
-                      global.SimpleDialog.setVisible(true)
-                      break
-                    }
-                  }
-                }
-              }
-            }
-            !exist && ServiceAction.uploadToService({
-              // layerName: layerData.name,
-              url: datasetDescription.url,
-              datasourceAlias: layerData.datasourceAlias,
-              datasetName: layerData.datasetName,
-              onlineDatasourceAlias: datasetDescription.datasourceAlias,
-            })
-          },
+          action: ({ layerData }: ActionParams) => ServiceAction.uploadLayerService({ layerData }),
           image: getThemeAssets().mapTools.icon_submitdata,
         },
       ]
@@ -195,7 +140,7 @@ async function getData(type: string, params: any) {
     case ConstToolType.SM_MAP_SERVICE_UPLOAD:
       data = [
         {
-          key: 'upload_service',
+          key: 'publish_service',
           title: getLanguage(global.language).Profile.PUBLISH_SERVICE,
           action: ({ layerData }: ActionParams) => {
             const _params: any = ToolbarModule.getParams()
@@ -279,8 +224,8 @@ async function getData(type: string, params: any) {
                     // _params.setContainerLoading?.(false)
                     await SMap.resetModified(layerData.path) // 发布后,重置图层
                     if (result) {
-                      let keywords: string[] = []
-                      let _content: DataServiceUrlParams[] = []
+                      const keywords: string[] = []
+                      const _content: DataServiceUrlParams[] = []
                       content?.forEach(item => {
                         _content.push({
                           id: item.id,

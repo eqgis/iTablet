@@ -553,6 +553,7 @@ export default class LayerManager_tolbar extends React.Component {
     if (section.action) {
       (async function() {
         try {
+          await this.setVisible(false)
           // global.Loading?.setLoading(true)
           if (section.title === 'Tianditu' || section.title === 'Tianditu Image' || section.title === 'Tianditu Terrain') {
             await section.action({
@@ -564,12 +565,12 @@ export default class LayerManager_tolbar extends React.Component {
             await section.action({layerData: this.state.layerData})
           }
           await this.props.getLayers()
-          this.setVisible(false)
           // global.Loading?.setLoading(false)
         } catch (error) {
           global.Loading?.setLoading(false)
         }
       }.bind(this)())
+      return
     }
     if (
       section.title === getLanguage(global.language).Map_Layer.LAYERS_REMOVE

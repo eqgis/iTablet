@@ -66,6 +66,7 @@
 		0AC8AFE628081A0600435541 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFE528081A0600435541 /* UserNotifications.framework */; };
 		0AC8AFEB28082C4700435541 /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFEA28082C4000435541 /* libstdc++.6.0.9.tbd */; };
 		0AC8AFEC28082D9E00435541 /* JRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFB12808180800435541 /* JRE.framework */; };
+		0ACCB9EC28BDADBB00527B71 /* base.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0ACCB9EB28BDADBB00527B71 /* base.zip */; };
 		0AF8516E2832379100287BA5 /* SuperMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFA7280817BE00435541 /* SuperMap.framework */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -164,6 +165,7 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* iTabletTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iTabletTests.m; sourceTree = "<group>"; };
 		06FACE8019E26F0904A7ACC2 /* Pods-iTablet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iTablet.release.xcconfig"; path = "Target Support Files/Pods-iTablet/Pods-iTablet.release.xcconfig"; sourceTree = "<group>"; };
+		0A2BD33228B7144F00361F7B /* BundleUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BundleUtils.h; sourceTree = "<group>"; };
 		0A33933C283386F90094AD2F /* SuperMap.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = SuperMap.bundle; path = iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/SuperMap.bundle; sourceTree = "<group>"; };
 		0AC8AE682808109D00435541 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		0AC8AE692808109D00435541 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
@@ -230,6 +232,7 @@
 		0AC8AFE3280819FE00435541 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0AC8AFE528081A0600435541 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		0AC8AFEA28082C4000435541 /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "iPhoneOS/libstdc++.6.0.9.tbd"; sourceTree = "<group>"; };
+		0ACCB9EB28BDADBB00527B71 /* base.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = base.zip; sourceTree = "<group>"; };
 		0AF851192831DB6800287BA5 /* iTablet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iTablet-Bridging-Header.h"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* SuperMap iTablet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SuperMap iTablet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = iTablet/AppDelegate.h; sourceTree = "<group>"; };
@@ -377,6 +380,7 @@
 		0AC8AE6B2808109E00435541 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				0A2BD33228B7144F00361F7B /* BundleUtils.h */,
 				0AC8AE6C2808109E00435541 /* AppUtils.m */,
 				0AC8AE6F2808109E00435541 /* WeiXinUtils.m */,
 				0AC8AE712808109E00435541 /* AppInfo.h */,
@@ -419,6 +423,7 @@
 				4E28CE8F28378DEA0045CB07 /* ARWebView.xib */,
 				4E28CE8C28378DEA0045CB07 /* left_arrow.png */,
 				4E28CE9028378DEA0045CB07 /* publicMap.txt */,
+				0ACCB9EB28BDADBB00527B71 /* base.zip */,
 				0AC8AE822808109E00435541 /* Images.zip */,
 				0AC8AE832808109E00435541 /* icon.png */,
 				0AC8AE842808109E00435541 /* launch_slogan_en.png */,
@@ -746,6 +751,7 @@
 				65CDD18D28A4F53400B5A2C8 /* tab_icon_close01.png in Resources */,
 				E565E992286309A5007797E3 /* mobilenet_quant_224_cn.txt in Resources */,
 				E565E993286309A5007797E3 /* mobilenet_quant_224.txt in Resources */,
+				0ACCB9EC28BDADBB00527B71 /* base.zip in Resources */,
 				E13A5CAC28752B6B004DFA1E /* InfoPlist.strings in Resources */,
 				0AC8AF062808109F00435541 /* launch_slogan_cn.png in Resources */,
 				0AC8AF002808109F00435541 /* MyLaunchScreen.storyboard in Resources */,
@@ -769,7 +775,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
@@ -777,7 +783,7 @@
 			name = "Bundle React Native code and images";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};

@@ -16,7 +16,7 @@ import {
   UserType,
 } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
-import { Toast, OnlineServicesUtils, SCoordinationUtils, pinyin, LayerUtils } from '../../../../../../utils'
+import { Toast, OnlineServicesUtils, SCoordinationUtils, pinyin, LayerUtils, CheckService } from '../../../../../../utils'
 import { OnlineDataType } from '../../../../../../utils/OnlineServicesUtils'
 import * as Type from '../../../../../../types'
 import { getThemeAssets } from '../../../../../../assets'
@@ -473,18 +473,18 @@ async function listAction(type: string, params: any = {}) {
 }
 
 let  g_messageIcon:any
-async function downloadService(url: string,messageIcon:any) {
+async function downloadService(url: string, messageIcon?:any) {
+  const _params: any = ToolbarModule.getParams()
+  const services = []
   try {
     if (!url) return false
-    const _params: any = ToolbarModule.getParams()
 
     _params.setToolbarVisible(false)
     _params.showFullMap && _params.showFullMap(false)
-      let result = false
-      const serviceData = await SCoordinationUtils.initMapDataWithService(url)
-    let services = []
+    const serviceData = await SCoordinationUtils.initMapDataWithService(url)
+    let showError = true // 用于控制重复提示错误信息
     for (const datasource of serviceData) {
-      let datasourceName = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
+      const datasourceName = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
       const _datasets = await SData.getDatasetsByDatasource({alias: datasourceName})
       for (const dataset of datasource.datasets) {
         let canAdd = true
@@ -504,10 +504,23 @@ async function downloadService(url: string,messageIcon:any) {
           datasetUrl: dataset.datasetUrl,
           status: 'download',
         })
-        downloadToLocal(dataset.datasetUrl, datasourceName)
+        downloadToLocal(dataset.datasetUrl, datasourceName).then().catch(e => {
+          if (showError && e.message === 'INVALID_MODULE') {
+            showError = false
+            Toast.show('激活许可后,需要重新更新服务')
+          }
+          // 下载服务失败(或无许可),则把下载状态的服务改为done,防止无法退出地图
+          _params.setCoworkService({
+            groupId: _params.currentTask.groupID,
+            taskId: _params.currentTask.id,
+            service: [{
+              datasetUrl: dataset.datasetUrl,
+              status: 'done',
+            }],
+          })
+        })
       }
     }
-
     _params.setCoworkService({
       groupId: _params.currentTask.groupID,
       taskId: _params.currentTask.id,
@@ -515,6 +528,19 @@ async function downloadService(url: string,messageIcon:any) {
     })
     return true
   } catch (error) {
+    if (services.length > 0) {
+      // 下载服务失败(或无许可),则把下载状态的服务改为done,防止无法退出地图
+      services.map(item => {
+        item.status = 'done'
+        return item
+      })
+      _params.setCoworkService({
+        groupId: _params.currentTask.groupID,
+        taskId: _params.currentTask.id,
+        service: services,
+      })
+    }
+    console.warn(2)
     return false
   }
 }
@@ -1154,8 +1180,74 @@ async function commit() {
       }
     }
   } catch (error) {
-    
+    __DEV__ && console.warn(error)
   }
+}
+
+/**
+ * 先检测是否需要更新,然后再提交
+ */
+async function uploadLayerService({ layerData }: {
+  layerData: SMap.LayerInfo,
+}) {
+  // 检测是否可以提交服务
+  if (!CheckService.checkServiceUpload()) {
+    return
+  }
+  const _params: any = ToolbarModule.getParams()
+  const datasetDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
+  if (datasetDescription?.type !== 'onlineService') {
+    return
+  }
+  let exist = false
+  if (
+    _params.currentTask?.groupID &&
+    _params.coworkInfo?.[_params.user.currentUser.userName]?.[_params?.currentTask?.groupID]?.[_params?.currentTask?.id]?.messages
+  ) {
+    const dsDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
+    if (dsDescription.url && dsDescription?.type === 'onlineService') {
+      const currentCoworkMessage = _params.coworkInfo[_params.user.currentUser.userName][_params.currentTask.groupID][_params.currentTask.id].messages
+      if (currentCoworkMessage?.length > 0) {
+        for (const message of currentCoworkMessage) {
+          if (message.message?.serviceUrl === dsDescription.url && message?.status === 0) {
+            exist = true
+            global.SimpleDialog.set({
+              text: getLanguage(global.language).Prompt.SERVICE_SUBMIT_BEFORE_UPDATE,
+              cancelText: getLanguage(global.language).Prompt.CANCEL,
+              cancelAction: async () => {
+                global.Loading.setLoading(false)
+              },
+              confirmText: getLanguage(global.language).Prompt.SUBMIT,
+              confirmAction: async () => {
+                updateToLocal({
+                  url: datasetDescription.url,
+                  datasourceAlias: layerData.datasourceAlias,
+                  datasetName: layerData.datasetName,
+                }, result => {
+                  uploadToService({
+                    // layerName: layerData.name,
+                    url: datasetDescription.url,
+                    datasourceAlias: layerData.datasourceAlias,
+                    datasetName: layerData.datasetName,
+                    onlineDatasourceAlias: datasetDescription.datasourceAlias,
+                  })
+                })
+              },
+            })
+            global.SimpleDialog.setVisible(true)
+            break
+          }
+        }
+      }
+    }
+  }
+  !exist && uploadToService({
+    // layerName: layerData.name,
+    url: datasetDescription.url,
+    datasourceAlias: layerData.datasourceAlias,
+    datasetName: layerData.datasetName,
+    onlineDatasourceAlias: datasetDescription.datasourceAlias,
+  })
 }
 
 export default {
@@ -1176,4 +1268,5 @@ export default {
   publishService,
   publishMapService,
   setDataService,
+  uploadLayerService,
 }

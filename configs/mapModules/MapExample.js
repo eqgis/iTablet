@@ -42,7 +42,7 @@ export default class MapExample extends Module {
     return this.createChunk(language, {
       key: MapExample.key,
       // 根据语言获取地图模块名称
-      title:'Gis小程序',
+      title:'Gis小插件',
       // 模块图片
       moduleImage: require('../../src/assets/userDefine/userDefineTab.png'),
       // 点击时模块高亮图片

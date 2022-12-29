@@ -785,6 +785,7 @@ export default class Map3D extends React.Component {
         device={this.props.device}
         online={this.props.online}
         mapModules={this.props.mapModules}
+        user={this.props.user}
       />
     )
   }
@@ -893,6 +894,7 @@ export default class Map3D extends React.Component {
         ref={ref => (this.NavMenu = ref)}
         navigation={this.props.navigation}
         mapModules={this.props.mapModules}
+        user={this.props.user}
         initIndex={0}
         type={this.type}
         device={this.props.device}
@@ -1035,7 +1037,7 @@ export default class Map3D extends React.Component {
     let size =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50
 
-    const currentMapModule = this.props.mapModules.modules.find(item => {
+    const currentMapModule = this.props.mapModules.modules[this.props.user.currentUser.userName].find(item => {
       return item.key === this.type
     })
     let buttonInfos = (currentMapModule && currentMapModule.headerButtons) || [

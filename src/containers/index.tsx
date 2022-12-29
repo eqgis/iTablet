@@ -186,7 +186,6 @@ import NavigationView2D from './workspace/components/ArNavigation/NavigationView
 import RoadNet from './workspace/components/ArNavigation/RoadNet'
 import Report from '../containers/tabs/Friend/Chat/Report'
 import WebView from '../components/WebView'
-import { ImagePickerStack } from '@/components/ImagePicker'
 import { UserInfo } from '@/types'
 import { Platform } from 'react-native'
 import MapSelectList from '../containers/workspace/components/ToolBar/modules/arDrawingModule/MapSelectList'
@@ -198,6 +197,7 @@ import BluetoothDevices from './BluetoothDevices'
 import NtripSetting from './NtripSetting'
 import ARAnimation from './ARAnimation/ARAnimation'
 import AttributeDetail from './AttributeDetail'
+import AppletOnline from './applet/appletOnline'
 
 const Stack = createNativeStackNavigator()
 
@@ -205,6 +205,7 @@ interface StackNavigatorProps {
   appConfig: any,
   device: DEVICE,
   currentUser: UserInfo,
+  otherNavigators?: any,
 }
 
 /**
@@ -451,6 +452,10 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="NtripSetting" component={NtripSetting} options={modalOption(params)} />
       <Stack.Screen name="ARAnimation" component={ARAnimation} options={modalOption(params)} />
       <Stack.Screen name="AttributeDetail" component={AttributeDetail} options={modalOption(params)} />
+      <Stack.Screen name="AppletOnline" component={AppletOnline} options={modalOption(params)} />
+      {
+        params?.otherNavigators
+      }
     </Stack.Navigator>
   )
 }

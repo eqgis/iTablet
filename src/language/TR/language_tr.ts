@@ -2102,6 +2102,8 @@ export const language_tr: typeof language_cn = {
   BATCH_OPERATE: "Toplu İşlem",
   MY_APPLET: "Uygulamalarım",
   UN_DOWNLOADED_APPLET: "Yüklenmemiş Uygulama",
+  NOT_LOADED_APPLET: "Applets that have not been loaded", // need to translate
+  LOCAL_APPLET: "Local Applets", // need to translate
   DELETE_APPLET: "Delete Applet",
   ADD_APPLET: "Add Applet",
   MOVE_UP: "Move Up",

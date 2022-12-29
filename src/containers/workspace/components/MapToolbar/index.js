@@ -5,6 +5,7 @@ const mapStateToProps = state => ({
   language: state.setting.toJS().language,
   device: state.device.toJS().device,
   isAR: state.setting.toJS().isAR,
+  user: state.user.toJS(),
 })
 
 const mapDispatchToProps = {}

@@ -1,0 +1,20 @@
+const APPLETS_CHECK_CONST = {
+  APPLETS_CHECK_EDIT: 'APPLETS_CHECK_EDIT',                                   // 地图编辑模块，Toolbar只有底部按钮栏（未选中任何对象时的编辑模式），模块类型
+  APPLETS_CHECK_EDIT_POINT: 'APPLETS_CHECK_EDIT_POINT',                       // 编辑点
+  APPLETS_CHECK_EDIT_LINE: 'APPLETS_CHECK_EDIT_LINE',                         // 编辑线
+  APPLETS_CHECK_EDIT_REGION: 'APPLETS_CHECK_EDIT_REGION',                     // 编辑面
+  APPLETS_CHECK_EDIT_TEXT: 'APPLETS_CHECK_EDIT_TEXT',                         // 编辑文字
+  APPLETS_CHECK_EDIT_TAGGING: 'APPLETS_CHECK_EDIT_TAGGING',                   // 编辑标注
+  APPLETS_CHECK_EDIT_TAGGING_SETTING: 'APPLETS_CHECK_EDIT_TAGGING_SETTING',   // 标注设置
+  APPLETS_CHECK_EDIT_PLOT: 'APPLETS_CHECK_EDIT_PLOT',                         // 编辑标绘
+  APPLETS_CHECK_EDIT_ADD_REGION: 'APPLETS_CHECK_EDIT_ADD_REGION',                  // 新增地块
+}
+
+const APPLETS_LOCATION_CONST = {
+  APPLETS_LOCATION: 'APPLETS_LOCATION',
+}
+
+export default {
+  ...APPLETS_CHECK_CONST,
+  ...APPLETS_LOCATION_CONST,
+}

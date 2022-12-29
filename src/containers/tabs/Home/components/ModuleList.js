@@ -93,12 +93,12 @@ class ModuleList extends Component {
 
   getData = () => {
     let data = []
-    for (let item of this.props.mapModules.modules) {
+    const modules = this.props.mapModules.modules[this.props.currentUser.userName] || []
+    for (let item of modules) {
       if (item && item.getChunk) {
         data.push(item.getChunk(this.props.language))
       } else {
-        data = []
-        break
+        continue
       }
     }
     if (
@@ -108,7 +108,7 @@ class ModuleList extends Component {
       data.push(new AppletAdd().getChunk(this.props.language))
     }
 
-    //市场不允许出现添加小程序，在审核期间把标去掉 add xiezhy
+    //市场不允许出现添加小插件，在审核期间把标去掉 add xiezhy
     // if(global.isAudit){
     //   data.splice(data.length-1, 1)
     // }
@@ -230,10 +230,11 @@ class ModuleList extends Component {
   }
 
   getDownloadData = (language, item, index) => {
-    if (index > this.props.mapModules.modules.length - 1) return {}
-    let module = this.props.mapModules.modules[index]
+    const modules = this.props.mapModules.modules[this.props.currentUser.userName] || []
+    if (index > modules.length - 1) return {}
+    let module = modules[index]
     // let example = module.example
-    let example = module.getExampleName(language)
+    let example = module?.getExampleName?.(language)
     if (!example || example.length === 0) return {}
     let moduleKey = item.key
 
@@ -272,7 +273,7 @@ class ModuleList extends Component {
    */
   checkData = async index => {
     let moduleKey
-    let module = this.props.mapModules.modules[index]
+    let module = this.props.mapModules.modules[this.props.currentUser.userName][index]
     let examples =
       module &&
       module.getExampleName &&

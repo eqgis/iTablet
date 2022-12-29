@@ -77,10 +77,10 @@ export default class MyDataPage extends Component {
     }
     JSOnlineService = new OnlineServicesUtils('online')
     JSIPortalServce = new OnlineServicesUtils('iportal')
-    this.getItemCallback = params.getItemCallback || undefined
-    this.chatCallback = params.chatCallback || undefined
-    this.exitCallback = params.exitCallback || undefined
-    this.showNewData = params.showNewData || undefined
+    this.getItemCallback = params?.getItemCallback || undefined
+    this.chatCallback = params?.chatCallback || undefined
+    this.exitCallback = params?.exitCallback || undefined
+    this.showNewData = params?.showNewData || undefined
     this.exportPath = ''
   }
 

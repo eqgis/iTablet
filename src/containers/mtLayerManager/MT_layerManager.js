@@ -198,7 +198,8 @@ export default class MT_layerManager extends React.Component {
       let taggingLayers = [] // 标注图层
 
       // 若无标注图层，则去加载
-      if (taggingLayers.length === 0) {
+      // if (taggingLayers.length === 0) {
+      if (data?.[0].title === getLanguage(this.props.language).Map_Layer.MY_PLOTS && data?.[0].data.length === 0) {
         taggingLayers = await SMap.getTaggingLayers(
           this.props.user.currentUser.userName,
         )

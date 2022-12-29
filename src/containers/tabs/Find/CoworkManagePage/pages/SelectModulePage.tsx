@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import { setCurrentMapModule } from '../../../../../redux/models/mapModules'
 import { scaleSize } from '../../../../../utils'
 import { size, color } from '../../../../../styles'
+import { Users } from '@/redux/models/user'
 
 const styles = StyleSheet.create({
   item: {
@@ -36,6 +37,7 @@ interface Props {
   language: string,
   navigation: any,
   mapModules: any,
+  user: Users,
   setCurrentMapModule: () => any,
 }
 
@@ -50,7 +52,7 @@ class SelectModulePage extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.callBack = this.props.route.params.callBack
-    let _modules = this.props.mapModules.modules
+    const _modules = this.props.mapModules.modules[this.props.user.currentUser.userName]
       .filter((item: any) => {
         return item.key === ChunkType.MAP_EDIT ||
         item.key === ChunkType.MAP_COLLECTION ||
@@ -68,8 +70,8 @@ class SelectModulePage extends Component<Props, State> {
   _onPress = (module: any, index: number) => {
     if (this.callBack) {
       let moduleIndex = index
-      for (let i = 0; i < this.props.mapModules.modules.length; i++) {
-        if (this.props.mapModules.modules[i].key === module.key) {
+      for (let i = 0; i < this.props.mapModules.modules[this.props.user.currentUser.userName].length; i++) {
+        if (this.props.mapModules.modules[this.props.user.currentUser.userName][i].key === module.key) {
           moduleIndex = i
           break
         }
@@ -124,6 +126,7 @@ class SelectModulePage extends Component<Props, State> {
 const mapStateToProps = (state: any) => ({
   language: state.setting.toJS().language,
   mapModules: state.mapModules.toJS(),
+  user: state.user.toJS(),
 })
 const mapDispatchToProps = {
   setCurrentMapModule,

@@ -1,4 +1,7 @@
 /** App自带模块 **/
+// import { TourModule } from '../../applets/tour/src/mapModules'
+// import { ExhibitionModule } from '../../applets/exhibition/src/mapModules'
+// import { GuoTuModule } from '../../applets/guotu/src/mapModules'
 import * as AppModule from '../../src/customModule/mapModules'
 
 /** 自定义模块 **/
@@ -18,6 +21,9 @@ const mapModules = [
   AppModule.MapPlottingConfig,
   AppModule.MapAnalystConfig,
   // MapExample,
+  // TourModule,
+  // GuoTuModule,
+  // ExhibitionModule,
   // TourModule,
 ]
 

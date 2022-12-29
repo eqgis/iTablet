@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { SData, SMap } from 'imobile_for_reactnative'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 import NavigationService from '../../../NavigationService'
+import { Users } from '@/redux/models/user'
 
 class SelectModule extends Component {
   props: {
@@ -14,6 +15,7 @@ class SelectModule extends Component {
     latestMap: Object,
     navigation: Object,
     mapModules: Object,
+    user: Users,
     setCurrentMapModule: () => {},
   }
 
@@ -56,7 +58,7 @@ class SelectModule extends Component {
   }
 
   render() {
-    let data = this.props.mapModules.modules.map(item =>
+    const data = this.props.mapModules.modules[this.props.user.currentUser.userName].map(item =>
       item.getChunk(this.props.language),
     )
     return (
@@ -103,6 +105,7 @@ const mapStateToProps = state => ({
   language: state.setting.toJS().language,
   latestMap: state.map.toJS().latestMap,
   mapModules: state.mapModules.toJS(),
+  user: state.user.toJS(),
 })
 const mapDispatchToProps = {
   setCurrentMapModule,

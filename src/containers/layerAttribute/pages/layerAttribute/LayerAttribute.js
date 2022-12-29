@@ -131,6 +131,20 @@ export default class LayerAttribute extends React.Component {
         descending: false, //属性排列倒序时为true add jiakai
       }
     }
+
+    this.currentPage = 0
+    this.total = 0 // 属性总数
+    this.canBeRefresh = true // 是否可以刷新
+    this.noMore = false // 是否可以加载更多
+    this.isLoading = false // 防止同时重复加载多次
+    this.filter = '' // 属性查询过滤
+    this.isMediaLayer = false // 是否是多媒体图层
+    this.Popover = undefined // 长按弹窗
+
+    this.buttonNameFilter = params?.buttonNameFilter || []
+    this.buttonTitles = params?.buttonTitles || []
+    this.buttonActions = params?.buttonActions || []
+    this.dismissTitles = params?.dismissTitles || []
   }
 
   componentDidMount() {
@@ -1749,7 +1763,7 @@ export default class LayerAttribute extends React.Component {
         ref={ref => (this.container = ref)}
         showFullInMap={true}
         headerProps={{
-          title: this.props.mapModules.modules[
+          title: this.props.mapModules.modules[this.props.currentUser.userName][
             this.props.mapModules.currentMapModule
           ].chunk?.title || '',
           navigation: this.props.navigation,

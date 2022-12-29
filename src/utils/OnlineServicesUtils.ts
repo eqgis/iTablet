@@ -10,7 +10,7 @@ import { UserType } from '../constants'
 import { getLanguage } from '../language'
 import { Toast } from '../utils'
 import { OnlineRouteAnalyzeParam, POISearchResultOnline, RouteAnalyzeResult } from 'imobile_for_reactnative/types/interface/ar'
-import { MyCreateData, ResultDataBase } from 'imobile_for_reactnative/types/interface/iserver/types'
+import { MyCreateData, OnlineData, ResultDataBase } from 'imobile_for_reactnative/types/interface/iserver/types'
 import RNFetchBlob from 'rn-fetch-blob'
 import { TLoginUserType } from '../constants/UserType'
 import { UserInfo } from '../types'
@@ -31,6 +31,13 @@ interface QueryParam {
   pageSize?: number
   currentPage?: number
   keywords?: string
+}
+
+interface OnlineDataQurey extends QueryParam {
+  typeId: number,
+  isBoutique: boolean,
+  isFree: boolean,
+  classifyIds: number,
 }
 
 interface CommonUserInfo {
@@ -859,6 +866,47 @@ export default class OnlineServicesUtils {
       return false
     }
   }
+
+  /**
+   * 获取Online数据
+   * @param params
+   * @returns
+   */
+  async getOnlineData(params: OnlineDataQurey): Promise<ResultDataBase<OnlineData>> {
+    params.orderBy = params.orderBy || 'UPDATE_TIME'
+    params.orderType = params.orderType || 'DESC'
+    params.pageSize = params.pageSize || 9
+    params.currentPage = params.currentPage || 1
+    const paramStr = this._obj2params(params)
+    let url = this.serverUrl + `/online/resource/nominate/datas?` + paramStr
+
+    url = encodeURI(url)
+    const cookie = await this.getCookie()
+    let headers = {}
+    if (cookie) {
+      headers = {
+        cookie: cookie,
+      }
+    }
+    const response = await fetch(url, {
+      method: 'GET',
+      headers,
+    })
+    const responseObj = await response.json()
+
+    if (responseObj) {
+      return responseObj
+    } else {
+      return {
+        total: 0,
+        totalPage: 0,
+        pageSize: 0,
+        currentPage: 0,
+        content: [],
+      }
+    }
+  }
+
   /************************ 公共数据相关（不用登陆）end ***************************/
 
   /************************ online账号相关 ***********************/

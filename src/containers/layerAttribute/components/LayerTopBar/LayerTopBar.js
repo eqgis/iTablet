@@ -54,6 +54,7 @@ export default class LayerTopBar extends React.Component {
     layerInfo?: Object,
     currentTask?: Object,
     currentUser?: Object,
+    customButtons?: any[],
   }
 
   static defaultProps = {
@@ -428,6 +429,17 @@ export default class LayerTopBar extends React.Component {
       }
       items.push(this.renderBtn(item))
     })
+
+    if (this.props.customButtons?.length > 0) {
+      this.props.customButtons.forEach((item, index) => {
+        item = Object.assign(item, {
+          containerStyle: {
+            marginLeft: itemGap,
+          },
+        })
+        items.push(this.renderBtn(item))
+      })
+    }
 
     // if (isScroll) {
     return (

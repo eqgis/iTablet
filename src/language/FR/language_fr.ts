@@ -2104,6 +2104,8 @@ export const language_fr: typeof language_cn = {
   BATCH_OPERATE: "Opération par lots",
   MY_APPLET: "Mon applet",
   UN_DOWNLOADED_APPLET: "Applet non téléchargé",
+  NOT_LOADED_APPLET: "Applets that have not been loaded", // need to translate
+  LOCAL_APPLET: "Local Applets", // need to translate
   DELETE_APPLET: "Supprimer l'applet",
   ADD_APPLET: "Ajouter l'applet",
   MOVE_UP: "Déplacer vers le haut",

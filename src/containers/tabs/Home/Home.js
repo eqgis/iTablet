@@ -17,11 +17,10 @@ import styles from './styles'
 import Toast from '../../../utils/Toast'
 import {
   SScene,
-  SMap,
   SOnlineService,
   SIPortalService,
-  SLocation,
   SData,
+  BundleTools,
 } from 'imobile_for_reactnative'
 import FileTools from '../../../native/FileTools'
 import ConstPath from '../../../constants/ConstPath'
@@ -98,6 +97,9 @@ export default class Home extends Component {
         this.props.setMapSceneGuide(true)
       }
     }
+
+    this._loadModel()
+
     if (Platform.OS === 'android') {
       this.props.setBackAction({ key: 'Home', action: this.showExitPop })
     }
@@ -110,11 +112,32 @@ export default class Home extends Component {
     )
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.user.currentUser.userName !== this.props.user.currentUser.userName) {
+      this._loadModel()
+    }
+  }
+
   componentWillUnmount() {
     if (Platform.OS === 'android') {
       this.props.removeBackAction({
         key: this.props.route.name,
       })
+    }
+  }
+
+  _loadModel = () => {
+    try {
+      BundleTools.getBundles().then(async bundles => {
+        for (const bundle of bundles) {
+          await BundleTools.loadModel(bundle.path).then(async result => {
+            // result && this.getBundles()
+          })
+        }
+      })
+    } catch(e) {
+      // eslint-disable-next-line no-undef
+      __DEV__ && console.warn(e)
     }
   }
 

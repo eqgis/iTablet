@@ -136,7 +136,7 @@ export default class Find extends Component {
   }
 
   /**
-   * 获取小程序数据，判断是否有新的小程序
+   * 获取小插件数据，判断是否有新的小插件
    **/
   // _getAppletData = async () => {
   //   let data = []

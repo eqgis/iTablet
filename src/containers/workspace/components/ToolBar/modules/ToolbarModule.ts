@@ -1,3 +1,4 @@
+import FunctionModule from '@/class/FunctionModule'
 import { IToolbarType } from '@/constants/ToolbarType'
 import screen from '../../../../../utils/screen'
 import ToolBar, {Props, DefaultProps} from '../ToolBar'
@@ -87,45 +88,33 @@ export class ToolbarModule {
 
   getModules() {
     try {
-      // if (this._modules.length === 0) {
-      //   for (let key in Modules) {
-      //     // eslint-disable-next-line import/namespace
-      //     let item = Modules[key]()
-      //     item.setToolbarModule && item.setToolbarModule(this)
-      //     this._modules.push(item)
-      //   }
-      // }
-      // return this._modules
       return ToolbarModuleUtils.getModules(this)
     } catch (error) {
       return []
     }
   }
 
-  add(param) {
-    // let item = param()
-    // item.setToolbarModule(this)
-    // this._modules.push(item)
-    ToolbarModuleUtils.add(this, param)
+  add(param: () => FunctionModule) {
+    try {
+      ToolbarModuleUtils.add(this, param)
+    } catch(e) {
+      __DEV__ && console.warn(e)
+    }
+  }
+
+  /**
+   * 添加小小插件自定义地图工具栏模块
+   */
+  addAppletModule(param: () => FunctionModule) {
+    try {
+      ToolbarModuleUtils.addAppletModule(param)
+    } catch(e) {
+      __DEV__ && console.warn(e)
+    }
   }
 
   getModule(type: ToolbarModuleKey, params = {}) {
     try {
-      // let module
-      // let modules = this.getModules()
-      // if (typeof type !== 'string') return null // 防止type不为字符串
-      // // SM_ 开头的为系统字段
-      // if (type.indexOf('SM_') === 0) {
-      //   modules.map(item => {
-      //     if (type.indexOf(item.type) === 0) {
-      //       module = item
-      //     }
-      //   })
-      // } else if (type !== '') {
-      //   // 自定义FunctionModule
-      //   module = mapFunctionModules.getModule(type, params)
-      // }
-      // return module
       return ToolbarModuleUtils.getModule(this, type, params)
     } catch (error) {
       return []
@@ -156,9 +145,13 @@ export class ToolbarModule {
   }
 
   async setToolBarData(type: ToolbarModuleKey, params = {}) {
-    const module = this.getModule(type, params)
-    if (module && module.setModuleData) {
-      module.setModuleData(type)
+    try {
+      const module = this.getModule(type, params)
+      if (module && module.setModuleData) {
+        module.setModuleData(type)
+      }
+    } catch(e) {
+      __DEV__ && console.warn(e)
     }
   }
 

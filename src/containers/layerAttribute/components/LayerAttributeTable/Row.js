@@ -160,6 +160,9 @@ export default class Row extends Component {
     ) {
       isButton = true
       buttonTitle = this.props.buttonTitles[index] || this.props.buttonTitles[0]
+      if (typeof buttonTitle === 'function') {
+        buttonTitle = buttonTitle(this.props.data)
+      }
       buttonAction =
         this.props.buttonActions[index] || this.props.buttonActions[0]
     }

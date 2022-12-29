@@ -21,6 +21,8 @@ import { size, color } from '../../../styles'
 import Orientation from 'react-native-orientation'
 import * as ImageUtils from './ImageUtils'
 import { SelectedItems } from './types'
+import { DEVICE } from '@/redux/models/device'
+import { OrientationType } from '@/utils/screen'
 
 interface Props {
   maxSize: number,
@@ -30,18 +32,18 @@ interface Props {
   choosePhotoTitle: string,
   cancelLabel: string,
   navigation: any,
-  device: Device,
+  device: DEVICE,
   showDialog?: boolean,
 
   callback: () => void,
-  dialogConfirm: (value: string, cb?: () => void) => void,
-  dialogCancel: () => void,
+  dialogConfirm?:((value: string, cb?: () => void) => void) | undefined,
+  dialogCancel?: (() => void) | undefined,
 }
 
 interface State {
   data: Item[],
   selectedItems: SelectedItems,
-  orientation: string,
+  orientation: OrientationType,
   refreshing: boolean,
 }
 
@@ -62,8 +64,8 @@ export default class AlbumListView extends React.PureComponent<Props, State> {
     assetType: 'Photos',
     groupTypes: 'All',
     showDialog: false,
-    dialogConfirm: null,
-    dialogCancel: null,
+    dialogConfirm: () => {},
+    dialogCancel: () => {},
   }
 
   constructor(props: Props) {

@@ -317,7 +317,7 @@ export default class FunctionToolbar extends React.Component {
 
   /** 获取一级数据 **/
   getData = type => {
-    const currentMapModule = this.props.mapModules.modules.find(function(item) {
+    const currentMapModule = this.props.mapModules.modules[this.props.user.currentUser.userName].find(function(item) {
       return item.key === type
     })
     let functionModules = currentMapModule?.functionModules || []
@@ -365,7 +365,7 @@ export default class FunctionToolbar extends React.Component {
       }
     })
     // 在线协作非三维模块，侧边栏新增多媒体采集
-    if (global.coworkMode && global.Type.indexOf('3D') < 0) {
+    if (global.coworkMode && global.Type.indexOf('3D') < 0 && Object.keys(ChunkType).indexOf(global.Type) >= 0) {
       global.Type !== ChunkType.MAP_PLOTTING && data.push({
         isLoading: false,
         ...serviceModule(UserType.isIPortalUser(this.props.user.currentUser) ? 'iportal' : 'online'),

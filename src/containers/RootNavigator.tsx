@@ -4,6 +4,9 @@ import NavigationService from './NavigationService'
 import AppNavigator from '../containers'
 import { NavigationContainer, NavigationState } from '@react-navigation/native'
 import { UserInfo } from '@/types'
+import { NavigatorUtil } from '@/utils'
+
+let _otherNavigator = new Set()
 
 interface Props {
   appConfig: any,
@@ -20,9 +23,15 @@ export default class RootNavigator extends Component<Props> {
     const nextAppConfig = Object.assign({}, nextProps.appConfig)
     delete prevAppConfig.currentMapModule
     delete nextAppConfig.currentMapModule
+    const otherNavigators = NavigatorUtil.getNavigator()
+    const updateOtherNavigators = !NavigatorUtil.isSameNavigator(otherNavigators, _otherNavigator)
+    if (updateOtherNavigators) {
+      _otherNavigator = otherNavigators
+    }
     const shouldUpdate =
       JSON.stringify(prevAppConfig) !== JSON.stringify(nextAppConfig) ||
-      JSON.stringify(nextProps.device) !== JSON.stringify(this.props.device)
+      JSON.stringify(nextProps.device) !== JSON.stringify(this.props.device) ||
+      updateOtherNavigators
     return shouldUpdate
   }
 
@@ -36,6 +45,7 @@ export default class RootNavigator extends Component<Props> {
         appConfig: this.props.appConfig,
         device: this.props.device,
         currentUser: this.props.currentUser,
+        otherNavigators: Array.from(_otherNavigator),
       })
     }
     return (

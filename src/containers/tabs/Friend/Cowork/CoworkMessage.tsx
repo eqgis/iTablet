@@ -11,6 +11,7 @@ import MsgConstant from '../../../../constants/MsgConstant'
 import { GeometryType } from 'imobile_for_reactnative'
 import moment from 'moment'
 import NavigationService from '../../../NavigationService'
+import { ChunkType } from '@/constants'
 
 
 interface Props {
@@ -182,7 +183,7 @@ class CoworkMessage extends Component<Props, State> {
           image: getThemeAssets().edit.icon_redo,
           action: () => this.onButtomPress('update'),
         })}
-        {this._renderButton({
+        {Object.keys(ChunkType).indexOf(global.Type) >= 0 && this._renderButton({
           title: getLanguage(global.language).Friends.COWORK_ADD,
           image: getThemeAssets().publicAssets.icon_add,
           disableImage: getThemeAssets().publicAssets.icon_add_disable,

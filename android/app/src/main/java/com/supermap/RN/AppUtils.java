@@ -208,17 +208,17 @@ public class AppUtils extends ReactContextBaseJavaModule {
         }
     }
 
-    @ReactMethod
-    public void reloadBundle(Promise promise){
-        try {
-            if (!MainActivity.getInstance().isFinishing()) {
-                MainActivity.getInstance().loadBundle();
-            }
-            promise.resolve(true);
-        } catch (Exception e){
-            promise.resolve(false);
-        }
-    }
+//    @ReactMethod
+//    public void reloadBundle(Promise promise){
+//        try {
+//            if (!MainActivity.getInstance().isFinishing()) {
+//                MainActivity.getInstance().loadBundle();
+//            }
+//            promise.resolve(true);
+//        } catch (Exception e){
+//            promise.resolve(false);
+//        }
+//    }
 
     public static void sendShareResult(String result) {
         mReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(EventConst.MESSAGE_SHARERESULT, result);

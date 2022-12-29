@@ -234,7 +234,7 @@ const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadTyp
     console.warn("05 countryCode: " + countryCode + " - position: " + JSON.stringify(position))
     printLog("\n05 countryCode: " + countryCode + " - position: " + JSON.stringify(position))
 
-    let infos = getUserParam()
+    const infos = getUserParam()
     const name = infos.username !== "" ? infos.username : '张三'
     const userid = infos.userId !== "" ? infos.userId : "zhangsan"
     console.warn("06 userinfo: " + JSON.stringify(infos))
@@ -349,14 +349,14 @@ const uploadTrack = async (id: number, type: uploadType) => {
     printLog(`\n mediainfo： ${JSON.stringify(info)}`)
     const mediaPaths = info?.mediaFilePaths || []
     // 遍历将上传图片路径，获取uuid
-    const photoUuids = ""
+    let photoUuids = ""
     printLog(`\n mediaPaths： ${JSON.stringify(mediaPaths)}`)
     for(let i = 0; i < mediaPaths.length; i ++) {
       const itemPath = homePath + mediaPaths[i]
       console.warn("imagePAth: " + itemPath)
       printLog(`\n imagePath ${itemPath}`)
       // uploadFileTest(itemPath)
-      let mediaUploadInfo = await uploadFile(path)
+      const mediaUploadInfo = await uploadFile(itemPath)
       if(mediaUploadInfo) {
         const mUUID = mediaUploadInfo.uuid
         if(photoUuids !== "") {

@@ -375,7 +375,7 @@ const uploadTrack = async (id: number, type: uploadType) => {
     // }, id, 'line')
     // console.warn("message result: " + result)
 
-    if(count > 0) {
+    if(count > 0 && type !== 'media') {
       let uploadInfo = await uploadFile(path)
       if(uploadInfo !== null) {
         uploadInfo = JSON.parse(JSON.stringify(uploadInfo))

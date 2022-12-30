@@ -163,7 +163,8 @@ class ContactsList extends Component<Props, State> {
       isEnterRight = false
     }
     const phone = this.state.addNumber
-    if(phone.length < 5 || phone.length > 20) {
+
+    if(phone.length < 5 || phone.length > 20 || Number(phone).toString() === 'NaN') {
       this.setState({
         phoneTip: true,
       })

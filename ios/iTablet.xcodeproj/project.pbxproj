@@ -8,9 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* iTabletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* iTabletTests.m */; };
-		0A3D96A02952E22300C617BA /* libSMSuperMap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A3D969F2952E20500C617BA /* libSMSuperMap.a */; };
-		0A522AB229596F2700AC7779 /* SuperMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0A522AB129596F2700AC7779 /* SuperMap.bundle */; };
-		0A522AB5295970CF00AC7779 /* resources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0A522AB4295970CE00AC7779 /* resources.bundle */; };
+		0A513BFF295D79F100E851D7 /* libSMSuperMap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A3D969F2952E20500C617BA /* libSMSuperMap.a */; };
+		0A62B265295D8F7000787D16 /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A62B260295D8F6F00787D16 /* ZipArchive.framework */; };
+		0A62B26A295D8F8400787D16 /* GLTFSceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A62B263295D8F7000787D16 /* GLTFSceneKit.framework */; };
+		0A62B26B295D8F8400787D16 /* GLTFSceneKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A62B263295D8F7000787D16 /* GLTFSceneKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0A62B26C295D8F8700787D16 /* JKVValue.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A62B261295D8F6F00787D16 /* JKVValue.framework */; };
+		0A62B26D295D8F8800787D16 /* JKVValue.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A62B261295D8F6F00787D16 /* JKVValue.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0A62B26E295D8F8B00787D16 /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A62B262295D8F6F00787D16 /* CocoaAsyncSocket.framework */; };
+		0A62B26F295D8F8B00787D16 /* CocoaAsyncSocket.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A62B262295D8F6F00787D16 /* CocoaAsyncSocket.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0A62B270295D8F9400787D16 /* RMQClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A62B264295D8F7000787D16 /* RMQClient.framework */; };
+		0A62B271295D8F9400787D16 /* RMQClient.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A62B264295D8F7000787D16 /* RMQClient.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0A62B272295D8F9700787D16 /* ZipArchive.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A62B260295D8F6F00787D16 /* ZipArchive.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0A62B280295E769C00787D16 /* SuperMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0A62B27F295E769C00787D16 /* SuperMap.bundle */; };
+		0A62B282295E774D00787D16 /* resources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0A62B281295E774D00787D16 /* resources.bundle */; };
 		0AC8AEF92808109F00435541 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AE6A2808109D00435541 /* libWeChatSDK.a */; };
 		0AC8AEFA2808109F00435541 /* AppUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AC8AE6C2808109E00435541 /* AppUtils.m */; };
 		0AC8AEFC2808109F00435541 /* WeiXinUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AC8AE6F2808109E00435541 /* WeiXinUtils.m */; };
@@ -40,8 +50,6 @@
 		0AC8AF9E2808177400435541 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AF9C2808177400435541 /* CoreText.framework */; };
 		0AC8AFA02808177E00435541 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AF9F2808177E00435541 /* ExternalAccessory.framework */; };
 		0AC8AFA22808178700435541 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFA12808178700435541 /* Foundation.framework */; };
-		0AC8AFA4280817BA00435541 /* GLTFSceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFA3280817BA00435541 /* GLTFSceneKit.framework */; };
-		0AC8AFA5280817BA00435541 /* GLTFSceneKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFA3280817BA00435541 /* GLTFSceneKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0AC8AFAA280817C900435541 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		0AC8AFC12808188400435541 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFC02808187300435541 /* libbz2.tbd */; };
 		0AC8AFC32808189500435541 /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AFC22808188C00435541 /* libc++.1.tbd */; };
@@ -84,14 +92,6 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		E13A5CAC28752B6B004DFA1E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E13A5CAE28752B6C004DFA1E /* InfoPlist.strings */; };
 		E13A5CB128752BFC004DFA1E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E13A5CB328752BFC004DFA1E /* InfoPlist.strings */; };
-		E19F41DB28925CE7007B04D6 /* JKVValue.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E19F41D628925C9D007B04D6 /* JKVValue.framework */; };
-		E19F41DC28925CE7007B04D6 /* JKVValue.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E19F41D628925C9D007B04D6 /* JKVValue.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E19F41DF28925D66007B04D6 /* RMQClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E19F41DD28925D44007B04D6 /* RMQClient.framework */; };
-		E19F41E028925D66007B04D6 /* RMQClient.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E19F41DD28925D44007B04D6 /* RMQClient.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E19F41E128925D6B007B04D6 /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E19F41D528925C9D007B04D6 /* ZipArchive.framework */; };
-		E19F41E228925D6B007B04D6 /* ZipArchive.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E19F41D528925C9D007B04D6 /* ZipArchive.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E19F41E328925D7B007B04D6 /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E19F41D328925C9D007B04D6 /* CocoaAsyncSocket.framework */; };
-		E19F41E428925D7B007B04D6 /* CocoaAsyncSocket.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E19F41D328925C9D007B04D6 /* CocoaAsyncSocket.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E565E980286303CF007797E3 /* SegmenationFree-Inception.caffemodel in Resources */ = {isa = PBXBuildFile; fileRef = E565E977286303CF007797E3 /* SegmenationFree-Inception.caffemodel */; };
 		E565E981286303CF007797E3 /* SegmenationFree-Inception.prototxt in Resources */ = {isa = PBXBuildFile; fileRef = E565E978286303CF007797E3 /* SegmenationFree-Inception.prototxt */; };
 		E565E982286303CF007797E3 /* HorizonalFinemapping.caffemodel in Resources */ = {isa = PBXBuildFile; fileRef = E565E979286303CF007797E3 /* HorizonalFinemapping.caffemodel */; };
@@ -133,11 +133,11 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E19F41DC28925CE7007B04D6 /* JKVValue.framework in Embed Frameworks */,
-				E19F41E228925D6B007B04D6 /* ZipArchive.framework in Embed Frameworks */,
-				E19F41E428925D7B007B04D6 /* CocoaAsyncSocket.framework in Embed Frameworks */,
-				E19F41E028925D66007B04D6 /* RMQClient.framework in Embed Frameworks */,
-				0AC8AFA5280817BA00435541 /* GLTFSceneKit.framework in Embed Frameworks */,
+				0A62B26F295D8F8B00787D16 /* CocoaAsyncSocket.framework in Embed Frameworks */,
+				0A62B26D295D8F8800787D16 /* JKVValue.framework in Embed Frameworks */,
+				0A62B271295D8F9400787D16 /* RMQClient.framework in Embed Frameworks */,
+				0A62B26B295D8F8400787D16 /* GLTFSceneKit.framework in Embed Frameworks */,
+				0A62B272295D8F9700787D16 /* ZipArchive.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -160,8 +160,19 @@
 		06FACE8019E26F0904A7ACC2 /* Pods-iTablet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iTablet.release.xcconfig"; path = "Target Support Files/Pods-iTablet/Pods-iTablet.release.xcconfig"; sourceTree = "<group>"; };
 		0A2BD33228B7144F00361F7B /* BundleUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BundleUtils.h; sourceTree = "<group>"; };
 		0A3D969A2952E20500C617BA /* SMSuperMap.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SMSuperMap.xcodeproj; path = ../node_modules/imobile_for_reactnative/ios/SMSuperMap.xcodeproj; sourceTree = "<group>"; };
-		0A522AB129596F2700AC7779 /* SuperMap.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = SuperMap.bundle; path = ../node_modules/imobile_for_reactnative/ios/iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/SuperMap.bundle; sourceTree = "<group>"; };
-		0A522AB4295970CE00AC7779 /* resources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = resources.bundle; path = ../node_modules/imobile_for_reactnative/ios/assets/resources.bundle; sourceTree = "<group>"; };
+		0A513C05295D815600E851D7 /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = ../imobile_for_reactnative/ios/iPhoneOS.sdk/ZipArchive.framework; sourceTree = "<group>"; };
+		0A513C06295D815600E851D7 /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaAsyncSocket.framework; path = ../imobile_for_reactnative/ios/iPhoneOS.sdk/CocoaAsyncSocket.framework; sourceTree = "<group>"; };
+		0A513C07295D815700E851D7 /* GLTFSceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLTFSceneKit.framework; path = ../imobile_for_reactnative/ios/iPhoneOS.sdk/GLTFSceneKit.framework; sourceTree = "<group>"; };
+		0A513C08295D815700E851D7 /* RMQClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RMQClient.framework; path = ../imobile_for_reactnative/ios/iPhoneOS.sdk/RMQClient.framework; sourceTree = "<group>"; };
+		0A513C09295D815700E851D7 /* JKVValue.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JKVValue.framework; path = ../imobile_for_reactnative/ios/iPhoneOS.sdk/JKVValue.framework; sourceTree = "<group>"; };
+		0A62B260295D8F6F00787D16 /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = ../imobile_for_reactnative/ios/iPhoneOS.sdk/ZipArchive.framework; sourceTree = "<group>"; };
+		0A62B261295D8F6F00787D16 /* JKVValue.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JKVValue.framework; path = ../imobile_for_reactnative/ios/iPhoneOS.sdk/JKVValue.framework; sourceTree = "<group>"; };
+		0A62B262295D8F6F00787D16 /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaAsyncSocket.framework; path = ../imobile_for_reactnative/ios/iPhoneOS.sdk/CocoaAsyncSocket.framework; sourceTree = "<group>"; };
+		0A62B263295D8F7000787D16 /* GLTFSceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLTFSceneKit.framework; path = ../imobile_for_reactnative/ios/iPhoneOS.sdk/GLTFSceneKit.framework; sourceTree = "<group>"; };
+		0A62B264295D8F7000787D16 /* RMQClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RMQClient.framework; path = ../imobile_for_reactnative/ios/iPhoneOS.sdk/RMQClient.framework; sourceTree = "<group>"; };
+		0A62B274295E6FBC00787D16 /* SuperMap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SuperMap.framework; path = ../imobile_for_reactnative/ios/iPhoneOS.sdk/SuperMap.framework; sourceTree = "<group>"; };
+		0A62B27F295E769C00787D16 /* SuperMap.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = SuperMap.bundle; path = ../imobile_for_reactnative/ios/iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/SuperMap.bundle; sourceTree = "<group>"; };
+		0A62B281295E774D00787D16 /* resources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = resources.bundle; path = ../imobile_for_reactnative/ios/assets/resources.bundle; sourceTree = "<group>"; };
 		0AC8AE682808109D00435541 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		0AC8AE692808109D00435541 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		0AC8AE6A2808109D00435541 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
@@ -200,7 +211,6 @@
 		0AC8AF9C2808177400435541 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		0AC8AF9F2808177E00435541 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		0AC8AFA12808178700435541 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		0AC8AFA3280817BA00435541 /* GLTFSceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLTFSceneKit.framework; path = iPhoneOS.sdk/GLTFSceneKit.framework; sourceTree = "<group>"; };
 		0AC8AFC02808187300435541 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		0AC8AFC22808188C00435541 /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "usr/lib/libc++.1.tbd"; sourceTree = SDKROOT; };
 		0AC8AFC4280818A600435541 /* libiconv.2.4.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.2.4.0.tbd; path = usr/lib/libiconv.2.4.0.tbd; sourceTree = SDKROOT; };
@@ -248,10 +258,6 @@
 		E13A5CA928752B33004DFA1E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "iTablet/zh-Hans.lproj/LaunchScreen.xib"; sourceTree = "<group>"; };
 		E13A5CAD28752B6C004DFA1E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		E13A5CB228752BFC004DFA1E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		E19F41D328925C9D007B04D6 /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaAsyncSocket.framework; path = iPhoneOS.sdk/CocoaAsyncSocket.framework; sourceTree = "<group>"; };
-		E19F41D528925C9D007B04D6 /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = iPhoneOS.sdk/ZipArchive.framework; sourceTree = "<group>"; };
-		E19F41D628925C9D007B04D6 /* JKVValue.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JKVValue.framework; path = iPhoneOS.sdk/JKVValue.framework; sourceTree = "<group>"; };
-		E19F41DD28925D44007B04D6 /* RMQClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RMQClient.framework; path = iPhoneOS.sdk/RMQClient.framework; sourceTree = "<group>"; };
 		E565E977286303CF007797E3 /* SegmenationFree-Inception.caffemodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SegmenationFree-Inception.caffemodel"; sourceTree = "<group>"; };
 		E565E978286303CF007797E3 /* SegmenationFree-Inception.prototxt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "SegmenationFree-Inception.prototxt"; sourceTree = "<group>"; };
 		E565E979286303CF007797E3 /* HorizonalFinemapping.caffemodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = HorizonalFinemapping.caffemodel; sourceTree = "<group>"; };
@@ -283,14 +289,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E19F41E128925D6B007B04D6 /* ZipArchive.framework in Frameworks */,
 				0AC8AF982808176000435541 /* CoreGraphics.framework in Frameworks */,
-				0A3D96A02952E22300C617BA /* libSMSuperMap.a in Frameworks */,
+				0A513BFF295D79F100E851D7 /* libSMSuperMap.a in Frameworks */,
 				0AC8AFE4280819FE00435541 /* UIKit.framework in Frameworks */,
 				0AC8AFC32808189500435541 /* libc++.1.tbd in Frameworks */,
-				E19F41E328925D7B007B04D6 /* CocoaAsyncSocket.framework in Frameworks */,
 				0AC8AFD62808196900435541 /* MediaPlayer.framework in Frameworks */,
 				0AC8AF86280816AB00435541 /* Accelerate.framework in Frameworks */,
+				0A62B26C295D8F8700787D16 /* JKVValue.framework in Frameworks */,
 				0AC8AFA22808178700435541 /* Foundation.framework in Frameworks */,
 				0AC8AFCE2808191A00435541 /* libsqlite3.tbd in Frameworks */,
 				0AC8AF9E2808177400435541 /* CoreText.framework in Frameworks */,
@@ -302,26 +307,27 @@
 				0AC8AFD22808194600435541 /* libxml2.tbd in Frameworks */,
 				0AC8AFD82808197D00435541 /* MobileCoreServices.framework in Frameworks */,
 				0AC8AEF92808109F00435541 /* libWeChatSDK.a in Frameworks */,
+				0A62B270295D8F9400787D16 /* RMQClient.framework in Frameworks */,
 				0AC8AFE2280819F700435541 /* SystemConfiguration.framework in Frameworks */,
-				E19F41DF28925D66007B04D6 /* RMQClient.framework in Frameworks */,
+				0A62B26A295D8F8400787D16 /* GLTFSceneKit.framework in Frameworks */,
 				0AC8AF8E280816C700435541 /* CFNetwork.framework in Frameworks */,
 				0AC8AF8C280816BF00435541 /* AVFoundation.framework in Frameworks */,
 				0AC8AFCD2808191A00435541 /* libsqlite3.0.tbd in Frameworks */,
+				0A62B265295D8F7000787D16 /* ZipArchive.framework in Frameworks */,
 				0AC8AFE0280819F000435541 /* Security.framework in Frameworks */,
 				0AC8AF8A280816B900435541 /* AudioToolbox.framework in Frameworks */,
 				0AC8AFAA280817C900435541 /* JavaScriptCore.framework in Frameworks */,
 				0AC8AFC5280818AD00435541 /* libiconv.2.4.0.tbd in Frameworks */,
+				0A62B26E295D8F8B00787D16 /* CocoaAsyncSocket.framework in Frameworks */,
 				0AC8AFCA2808190100435541 /* libresolv.tbd in Frameworks */,
 				0AC8AFE628081A0600435541 /* UserNotifications.framework in Frameworks */,
 				0AC8AFC7280818C600435541 /* libicucore.A.tbd in Frameworks */,
 				0AC8AFEB28082C4700435541 /* libstdc++.6.0.9.tbd in Frameworks */,
 				0AC8AFC12808188400435541 /* libbz2.tbd in Frameworks */,
-				0AC8AFA4280817BA00435541 /* GLTFSceneKit.framework in Frameworks */,
 				0AC8AFDA2808199100435541 /* QuartzCore.framework in Frameworks */,
 				0AC8AFDB280819A100435541 /* QuartzCore.framework in Frameworks */,
 				0AC8AF88280816B100435541 /* AddressBook.framework in Frameworks */,
 				0AC8AF962808175700435541 /* CoreFoundation.framework in Frameworks */,
-				E19F41DB28925CE7007B04D6 /* JKVValue.framework in Frameworks */,
 				5B78CC2D3FD5CC5131E4B19E /* libPods-iTablet.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -451,10 +457,12 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E19F41DD28925D44007B04D6 /* RMQClient.framework */,
-				E19F41D328925C9D007B04D6 /* CocoaAsyncSocket.framework */,
-				E19F41D628925C9D007B04D6 /* JKVValue.framework */,
-				E19F41D528925C9D007B04D6 /* ZipArchive.framework */,
+				0A62B274295E6FBC00787D16 /* SuperMap.framework */,
+				0A513C06295D815600E851D7 /* CocoaAsyncSocket.framework */,
+				0A513C07295D815700E851D7 /* GLTFSceneKit.framework */,
+				0A513C09295D815700E851D7 /* JKVValue.framework */,
+				0A513C08295D815700E851D7 /* RMQClient.framework */,
+				0A513C05295D815600E851D7 /* ZipArchive.framework */,
 				0AC8AFEA28082C4000435541 /* libstdc++.6.0.9.tbd */,
 				0AC8AFE528081A0600435541 /* UserNotifications.framework */,
 				0AC8AFE3280819FE00435541 /* UIKit.framework */,
@@ -473,7 +481,6 @@
 				0AC8AFC4280818A600435541 /* libiconv.2.4.0.tbd */,
 				0AC8AFC22808188C00435541 /* libc++.1.tbd */,
 				0AC8AFC02808187300435541 /* libbz2.tbd */,
-				0AC8AFA3280817BA00435541 /* GLTFSceneKit.framework */,
 				0AC8AFA12808178700435541 /* Foundation.framework */,
 				0AC8AF9F2808177E00435541 /* ExternalAccessory.framework */,
 				0AC8AF9B2808177400435541 /* CoreTelephony.framework */,
@@ -511,6 +518,11 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				0A62B262295D8F6F00787D16 /* CocoaAsyncSocket.framework */,
+				0A62B263295D8F7000787D16 /* GLTFSceneKit.framework */,
+				0A62B261295D8F6F00787D16 /* JKVValue.framework */,
+				0A62B264295D8F7000787D16 /* RMQClient.framework */,
+				0A62B260295D8F6F00787D16 /* ZipArchive.framework */,
 				0A3D969A2952E20500C617BA /* SMSuperMap.xcodeproj */,
 			);
 			name = Libraries;
@@ -519,8 +531,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				0A522AB4295970CE00AC7779 /* resources.bundle */,
-				0A522AB129596F2700AC7779 /* SuperMap.bundle */,
+				0A62B281295E774D00787D16 /* resources.bundle */,
+				0A62B27F295E769C00787D16 /* SuperMap.bundle */,
 				13B07FAE1A68108700A75B9A /* iTablet */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* iTabletTests */,
@@ -690,8 +702,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A522AB5295970CF00AC7779 /* resources.bundle in Resources */,
-				0A522AB229596F2700AC7779 /* SuperMap.bundle in Resources */,
+				0A62B282295E774D00787D16 /* resources.bundle in Resources */,
+				0A62B280295E769C00787D16 /* SuperMap.bundle in Resources */,
 				E565E988286303CF007797E3 /* CharacterRecognization.prototxt in Resources */,
 				65CDD19728A4F99000B5A2C8 /* icon_tool_previous.png in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
@@ -959,18 +971,9 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/iPhoneOS.sdk",
 					"$(PROJECT_DIR)",
-				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"$(inherited)",
 					"$(PROJECT_DIR)/iPhoneOS.sdk",
-					"$(PROJECT_DIR)",
-				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/iPhoneOS.sdk",
-					"$(PROJECT_DIR)",
+					"\"$(SRCROOT)/../node_modules/imobile_for_reactnative/ios/iPhoneOS.sdk\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1048,21 +1051,18 @@
 					"$(PROJECT_DIR)/SDKExport",
 					"$(PROJECT_DIR)/iPhoneOS",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib",
 				);
 				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*]" = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/SDKExport",
 					"$(PROJECT_DIR)/iPhoneOS",
 					"$(SRCROOT)/iTablet",
-					"$(PROJECT_DIR)/iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib",
 				);
 				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*]" = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/SDKExport",
 					"$(SRCROOT)/iTablet",
 					"$(PROJECT_DIR)/iPhoneSimulator",
-					"$(PROJECT_DIR)/iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib",
 				);
 				MARKETING_VERSION = 11.0.2;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1109,18 +1109,9 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/iPhoneOS.sdk",
 					"$(PROJECT_DIR)",
-				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"$(inherited)",
 					"$(PROJECT_DIR)/iPhoneOS.sdk",
-					"$(PROJECT_DIR)",
-				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/iPhoneOS.sdk",
-					"$(PROJECT_DIR)",
+					"\"$(SRCROOT)/../node_modules/imobile_for_reactnative/ios/iPhoneOS.sdk\"",
 				);
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = (
@@ -1198,7 +1189,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/SDKExport",
 					"$(PROJECT_DIR)/iPhoneOS",
-					"$(PROJECT_DIR)/iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib",
 					"$(PROJECT_DIR)",
 				);
 				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*]" = (
@@ -1207,7 +1197,6 @@
 					"$(PROJECT_DIR)/iPhoneOS",
 					"$(PROJECT_DIR)",
 					"$(SRCROOT)/iTablet",
-					"$(PROJECT_DIR)/iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib",
 					"$(PROJECT_DIR)/SDKExport/",
 				);
 				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*]" = (
@@ -1216,7 +1205,6 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/iPhoneSimulator",
 					"$(SRCROOT)/iTablet",
-					"$(PROJECT_DIR)/iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib",
 				);
 				MARKETING_VERSION = 11.0.2;
 				ONLY_ACTIVE_ARCH = YES;

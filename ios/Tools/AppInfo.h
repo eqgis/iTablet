@@ -15,7 +15,6 @@
 +(NSString*) getRootPath;
 +(void) setUserName:(NSString*)name;
 +(NSString*) getUserName;
-+(NSString *)getBundleFile;
 +(void) setCookie:(NSString*)cookie;
 +(NSString*) getCookie;
 +(void) setMyServiceUrl:(NSString*)url;

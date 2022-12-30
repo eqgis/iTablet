@@ -344,7 +344,7 @@ export default class Row extends Component {
           ]}
           value={value}
           data={this.props.data instanceof Array ? item : this.props.data}
-          editable={editable}
+          editable={false}
           overlayStyle={editable && styles.selectedOverlay}
           isRequired={isRequired}
           defaultValue={defaultValue}

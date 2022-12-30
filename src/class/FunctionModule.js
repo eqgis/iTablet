@@ -19,7 +19,7 @@ export default class FunctionModule {
     this.getCustomView = this.props.getCustomView
     this.getBottomView = this.props.getBottomView
     // 整合默认事件和自定义事件
-    this.actions = Object({}, this.props.actions || {})
+    this.actions = Object.assign({}, this.props.actions || {})
   }
 
   /**

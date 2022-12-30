@@ -614,7 +614,7 @@ export default handleActions<SettingStateType>(
       // data.showARLabel = true
 
       // 临时存放上一期关闭app时保存的数据
-      payload && setLastLaunchState(payload)
+      // payload && setLastLaunchState(payload)
       return fromJS(data)
     },
   },

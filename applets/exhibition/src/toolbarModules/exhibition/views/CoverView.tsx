@@ -18,6 +18,7 @@ import SlideBar from 'imobile_for_reactnative/components/SlideBar'
 import { FlowParam } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SExhibition'
 import { getLanguage } from '@/language'
 import { Vector3 } from 'imobile_for_reactnative/types/data'
+import ARArrow from '../components/ARArrow'
 
 interface Props {
   windowSize: ScaledSize
@@ -465,6 +466,7 @@ class CoverView extends React.Component<Props, State> {
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if(layer) {
       await SExhibition.hideBreakPoint(layer.name, [...getAlertPipe1(), ...getAlertPipe2()])
+      await this.onHideBreakPoint()
       await SExhibition.restorePipeMaterial(layer.name, [...getRoute1Names(), ...getRoute2Names()])
       await SExhibition.hidePipeFlow()
       await SExhibition.hideValve(layer.name, getValve1())
@@ -720,6 +722,7 @@ class CoverView extends React.Component<Props, State> {
     await this._disableAlert()
     if(layer) {
       SExhibition.showBreakPoint(layer.name, index === 1 ? getAlertPipe1() : getAlertPipe2())
+      this.onShowBreakPoint((layer.name, index === 1 ? getAlertPipe1()[0].position : getAlertPipe2()[0].position))
       SExhibition.makePipeMaterialTransparent(layer.name,
         index === 1 ? getRoute1Names() : getRoute2Names()
       )
@@ -738,21 +741,46 @@ class CoverView extends React.Component<Props, State> {
         //三个阀门都打开才会流向爆管处
         if(this.route1ValveStatus[0] && this.route1ValveStatus[1] && this.route1ValveStatus[2]) {
           SExhibition.showBreakPoint(layer.name, getAlertPipe1())
+          this.onShowBreakPoint(getAlertPipe1()[0].position)
         } else {
           SExhibition.hideBreakPoint(layer.name, getAlertPipe1())
+          this.onHideBreakPoint()
         }
         SExhibition.showPipeFlow(layer.name, getBreakFlowRoute1(this.route1ValveStatus))
       } else {
         //第一个和第三个阀门打开才会流向爆管处
         if(this.route2ValueStatus[0] && this.route2ValueStatus[2]) {
           SExhibition.showBreakPoint(layer.name, getAlertPipe2())
+          this.onShowBreakPoint(getAlertPipe2()[0].position)
         } else {
           SExhibition.hideBreakPoint(layer.name, getAlertPipe2())
+          this.onHideBreakPoint()
         }
         SExhibition.showPipeFlow(layer.name, getBreakFlowRoute2(this.route2ValueStatus))
       }
 
     }
+  }
+
+  /**
+   * 显示爆管点时的回调
+   * @param position 爆管点的 local 坐标
+   */
+  onShowBreakPoint = async (position: Vector3) => {
+    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+    if(layer) {
+      const pose = await SExhibition.getARCoverPose(layer.name)
+      if(pose) {
+        //显示爆管点箭头
+        await SExhibition.stopTrackingTarget()
+        await SExhibition.setTrackingTarget({pose, translation: position})
+        SExhibition.startTrackingTarget()
+      }
+    }
+  }
+
+  onHideBreakPoint = async () => {
+    await SExhibition.stopTrackingTarget()
   }
 
   attribute = () => {
@@ -1372,7 +1400,14 @@ class CoverView extends React.Component<Props, State> {
         {this.state.showSlider && this.slider()}
 
         {this.state.attributeShow && this.attribute()}
-
+        <ARArrow
+          arrowShowed={() => {
+            Toast.show(getLanguage().FLLOW_THE_ARROW, {
+              backgroundColor: 'rgba(0,0,0,.5)',
+              textColor: '#fff',
+            })
+          }}
+        />
         <ARGuide
           show={this.state.showGuide}
           animationName={'AR室内管线'}
@@ -1963,22 +1998,32 @@ function getRoute2Names(): string[] {
 
 
 //流向 1 爆管点
-function getAlertPipe1(): {name: string, offsetX?: number, offsetY?: number, offsetZ?: number, scale?: number}[] {
+function getAlertPipe1(): {name: string, position: Vector3, scale?: number}[] {
   return [
     {
       name: '地下冷水管_27',
-      offsetY: -0.02,
+      // offsetY: -0.02,
+      position: {
+        x: -2.561,
+        y: -0.143,
+        z: 1.872
+      },
       scale: 1,
     },
   ]
 }
 
 //流向 2 爆管点
-function getAlertPipe2(): {name: string, offsetX?: number, offsetY?: number, offsetZ?: number, scale?: number}[] {
+function getAlertPipe2(): {name: string,position: Vector3, scale?: number}[] {
   return [
     {
       name: '墙面冷水管_31',
-      offsetY: -0.02,
+      // offsetY: -0.02,
+      position: {
+        x: -6.080,
+        y: 4.078,
+        z: -4.629
+      },
       scale: 1,
     },
   ]

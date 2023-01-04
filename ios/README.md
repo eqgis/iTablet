@@ -17,6 +17,7 @@
 
 ```
 /*
+//  assert(severity >= 0 && severity < NUM_SEVERITIES);
  if(!(severity >= 0 && severity < NUM_SEVERITIES) ){
         return;
     }

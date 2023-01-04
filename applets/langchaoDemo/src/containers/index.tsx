@@ -4,6 +4,7 @@ import {
 } from '@react-navigation/native-stack'
 import ContactsList from './ContactsList'
 import InputServer from './InputServer'
+import HistoricalRecord from './HistoricalRecord'
 
 const Stack = createNativeStackNavigator()
 
@@ -14,6 +15,11 @@ const _navigators = [
     presentation: 'containedTransparentModal',
   }} />,
   <Stack.Screen key="InputServer" name="InputServer" component={InputServer} options={{
+    headerShown: false,
+    animation: 'none',
+    presentation: 'containedTransparentModal',
+  }} />,
+  <Stack.Screen key="HistoricalRecord" name="HistoricalRecord" component={HistoricalRecord} options={{
     headerShown: false,
     animation: 'none',
     presentation: 'containedTransparentModal',

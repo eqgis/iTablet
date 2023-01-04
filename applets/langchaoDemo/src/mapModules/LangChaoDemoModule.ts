@@ -23,6 +23,7 @@ import { injectReducer } from "@/redux/store"
 import { langchao } from '../reduxModels'
 import RNFetchBlob from 'rn-fetch-blob'
 import { setAppColor } from '@/styles/color'
+import NavigationService from '@/containers/NavigationService'
 /**
  * 首页显示的旅行轨迹模块
  */
@@ -79,19 +80,19 @@ export default class LangChaoDemoModule extends Module {
       // 系统自带Tab
       MapTabs.MapView,          // 系统自带Tab-地图
       // MapTabs.LayerManager,     // 系统自带Tab-图层
-      MapTabs.LayerAttribute,   // 系统自带Tab-属性
+      // MapTabs.LayerAttribute,   // 系统自带Tab-属性
 
       // todo 用户自定义Tab页面
-      // {
-      //   key: module,
-      //   title: "历史记录2",
-      //   //'属性',
-      //   image: getImage().telephone1,
-      //   selectedImage: getImage().telephone2,
-      //   btnClick: () => {
-      //     NavigationService.navigate('LayerSelectionAttribute', null)
-      //   },
-      // },
+      {
+        key: module,
+        title:  getLanguage(global.language).Map_Settings.HISTORICAL_RECORD,
+        //'属性',
+        image: getImage().telephone1,
+        selectedImage: getImage().telephone2,
+        btnClick: () => {
+          NavigationService.navigate('HistoricalRecord')
+        },
+      },
 
       MapTabs.MapSetting,       // 系统自带Tab-设置
     ]

@@ -431,6 +431,7 @@ export default class MediaEdit extends React.Component {
       let result = false
       // 有geoID就是修改保存,没有则是添加
       if (this.info.geoID) {
+        console.warn("mediaData01: " + JSON.stringify(modifiedData))
         result = await SMediaCollector.saveMediaByDataset(
           this.info.layerName,
           this.info.geoID,
@@ -449,6 +450,7 @@ export default class MediaEdit extends React.Component {
             description = item.value
           }
         }
+        console.warn("mediaData: " + JSON.stringify(this.state.mediaData))
         result = await SMediaCollector.addMedia({
           datasourceName: this.layerInfo.datasourceAlias,
           datasetName: this.layerInfo.datasetName,
@@ -648,6 +650,7 @@ export default class MediaEdit extends React.Component {
 
   renderAlbum = () => {
     let data = [...this.state.paths]
+    console.warn("paths: " + JSON.stringify(data))
     if (!this.state.showDelete && this.state.paths.length < 9) {
       data.push({uri: '+', type: 'addMedia'})
     }

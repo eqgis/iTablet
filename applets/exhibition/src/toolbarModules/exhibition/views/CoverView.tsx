@@ -1968,7 +1968,7 @@ function getAlertPipe1(): {name: string, offsetX?: number, offsetY?: number, off
     {
       name: '地下冷水管_27',
       offsetY: -0.02,
-      scale: 0.5,
+      scale: 1,
     },
   ]
 }
@@ -1979,7 +1979,7 @@ function getAlertPipe2(): {name: string, offsetX?: number, offsetY?: number, off
     {
       name: '墙面冷水管_31',
       offsetY: -0.02,
-      scale: 0.5,
+      scale: 1,
     },
   ]
 }

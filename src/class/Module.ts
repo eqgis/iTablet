@@ -6,11 +6,11 @@ import Chunk, { ChunkProps } from './Chunk'
 import { MapTabs } from '../constants'
 import FunctionModule from './FunctionModule'
 
-type HeaderButton = Array<string | {
+type HeaderButton = string | {
   key: string,
   image: ImageSourcePropType,
   action: () => void,
-}>
+}
 
 type EXAMPLE_MAP = {
   name?: string,
@@ -42,6 +42,15 @@ interface Props {
   tabModules: Array<string>,
 }
 
+interface TabProps{
+  key: string,
+  title: string,
+  //'属性',
+  image: ImageSourcePropType,
+  selectedImage: ImageSourcePropType,
+  btnClick: (data: any) => void,
+}
+
 export default class Module {
   // static MapType = Chunk.MapType
   static MapType = {
@@ -64,7 +73,7 @@ export default class Module {
 
   headerButtons: HeaderButton[] = [] // 地图导航栏右侧按钮 App默认有audio，undo，search
 
-  tabModules: Array<string> = [] // 地图底部Tab栏
+  tabModules: Array<string | TabProps> = [] // 地图底部Tab栏
 
   getTabModules: (() => void) | undefined
 

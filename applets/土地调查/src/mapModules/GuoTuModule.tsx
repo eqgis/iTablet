@@ -154,7 +154,7 @@ export default class GuoTuModule extends Module {
       MapTabs.MapSetting,       // 系统自带Tab-设置
       // todo 用户自定义Tab页面
       {
-        key: module,
+        key: 'Task',
         title: getLanguage().TASK,
         //'属性',
         image: getImage().task,

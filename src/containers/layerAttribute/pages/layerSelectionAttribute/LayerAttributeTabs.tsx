@@ -808,7 +808,6 @@ export default class LayerAttributeTabs extends React.Component {
             }
           } else {
             //todo @yangsl 处理layerInfo没有数据集问题，逻辑看能否和MY_DATA统一
-            debugger
             let datasetInfo: DatasetInfo = {datasetName:layerInfo.datasetName || '',datasourceName :layerInfo.datasourceAlias || ''}
             
             result = await SData.removeFieldInfos(datasetInfo, [this.deleteFieldData?.name])

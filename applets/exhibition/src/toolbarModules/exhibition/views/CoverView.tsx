@@ -2008,7 +2008,7 @@ function getAlertPipe1(): {name: string, position: Vector3, scale?: number}[] {
         y: -0.143,
         z: 1.872
       },
-      scale: 0.5,
+      scale: 1,
     },
   ]
 }
@@ -2024,7 +2024,7 @@ function getAlertPipe2(): {name: string,position: Vector3, scale?: number}[] {
         y: 4.078,
         z: -4.629
       },
-      scale: 0.5,
+      scale: 1,
     },
   ]
 }

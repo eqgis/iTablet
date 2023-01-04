@@ -15,6 +15,7 @@ class TrackModule extends FunctionModule {
   }
 
   action = async () => {
+    this.setModuleData(this.type)
     const data = {"name":"专用公路","type":"line","id":965018}
 
     // 将点采集图层设为当前图层

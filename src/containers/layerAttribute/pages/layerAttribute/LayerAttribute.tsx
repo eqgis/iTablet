@@ -41,12 +41,15 @@ import {
   DatasetType,
   TextStyle,
   GeometryType,
+  SData,
 } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import { color } from '../../../../styles'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import LayerAttributeAdd from '../layerAttributeAdd'
 import { Rect } from 'react-native-popover-view'
+import { LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
+import { DatasetInfo } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 const SINGLE_ATTRIBUTE = 'singleAttribute'
 const PAGE_SIZE = 30
@@ -60,7 +63,7 @@ export default class LayerAttribute extends React.Component {
     language: string,
     navigation: Object,
     currentAttribute: Object,
-    currentLayer: Object,
+    currentLayer: LayerInfo,
     selection: Object,
     map: Object,
     appConfig: Object,
@@ -980,7 +983,11 @@ export default class LayerAttribute extends React.Component {
       Toast.show(getLanguage(this.props.language).Map_Attribute.ALIAS + checkCaption.error)
       return false
     }
-    let result = await SMap.addAttributeFieldInfo(path, false, fieldInfo)
+    // let result = await SMap.addAttributeFieldInfo(path, false, fieldInfo)
+    let datasetInfo: DatasetInfo = {datasourceName:this.props.currentLayer.datasourceAlias || '',
+      datasetName: this.props.currentLayer.datasetName || ''}
+    let result = await SData.addFieldInfos(datasetInfo, [fieldInfo])
+    
     if (result) {
       Toast.show(getLanguage(this.props.language).Prompt.ATTRIBUTE_ADD_SUCCESS)
       this.refresh()
@@ -1119,7 +1126,7 @@ export default class LayerAttribute extends React.Component {
         .setLayerAttributes([
           {
             mapName: this.props.map.currentMap.name,
-            layerPath: this.props.currentLayer.path,
+            layerInfo: this.props.currentLayer,
             fieldInfo: [
               {
                 name: isSingleData ? data.rowData.name : data.cellData.name,
@@ -1344,7 +1351,7 @@ export default class LayerAttribute extends React.Component {
 
   goToSearch = () => {
     NavigationService.navigate('LayerAttributeSearch', {
-      layerPath: this.props.currentLayer.path,
+      layerInfo: this.props.currentLayer,
       cb: this.refresh,
     })
   }
@@ -1364,15 +1371,18 @@ export default class LayerAttribute extends React.Component {
         type={'modal'}
         confirmAction={async () => {
           this.deleteFieldDialog.setDialogVisible(false)
-          let layerPath = this.props.currentLayer.path
+          let layerInfo:LayerInfo = this.props.currentLayer
           if (this.filter.split(' ').indexOf(deleteFieldData.name) >= 0) {
             this.filter = ''
           }
-          let result = await SMap.removeRecordsetFieldInfo(
-            layerPath,
-            false,
-            deleteFieldData.name,
-          )
+
+          let datasetInfo: DatasetInfo = {datasetName:layerInfo.datasetName || '',datasourceName :layerInfo.datasourceAlias || ''}
+          let result = await SData.removeFieldInfos(datasetInfo, [deleteFieldData?.name])
+          // let result = await SMap.removeRecordsetFieldInfo(
+          //   layerPath,
+          //   false,
+          //   deleteFieldData.name,
+          // )
           if (
             this.filter &&
             this.filter.split(' ').indexOf(deleteFieldData.name) >= 0

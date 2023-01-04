@@ -1,9 +1,10 @@
-import { FieldInfo2, SARMap } from 'imobile_for_reactnative'
+import {SARMap } from 'imobile_for_reactnative'
+import { FieldInfoValue } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 export interface AttributeHead {
   value: string,
   isSystemField: boolean,
-  fieldInfo: FieldInfo2,
+  fieldInfo: FieldInfoValue,
   name: string
 }
 

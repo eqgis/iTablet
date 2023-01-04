@@ -4,7 +4,8 @@
  E-mail: yangshanglong@supermap.com
  */
 
-import { FieldInfo2 } from 'imobile_for_reactnative'
+// import { FieldInfo2 } from 'imobile_for_reactnative'
+import { FieldInfoValue } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import React, { Component } from 'react'
 import {
   Platform,
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
 
 interface Props {
   data: {
-    fieldInfo: FieldInfo2,
+    fieldInfo: FieldInfoValue,
   },
   value: number | string | boolean | undefined,
   defaultValue?: number | string | boolean,

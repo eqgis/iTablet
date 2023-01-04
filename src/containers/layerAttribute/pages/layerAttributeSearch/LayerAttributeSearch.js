@@ -39,7 +39,7 @@ export default class LayerAttributeSearch extends React.Component {
     super(props)
     const { params } = this.props.route
     this.type = params && params.type
-    this.layerPath = params && params.layerPath
+    this.layerInfo = params && params.layerInfo
     this.isSelection = (params && params.isSelection) || false
     this.myData = (params && params.myData) || false
     this.cb = params && params.cb
@@ -205,7 +205,7 @@ export default class LayerAttributeSearch extends React.Component {
       this.props.setLayerAttributes([
         {
           mapName: this.props.map.currentMap.name,
-          layerPath: this.layerPath,
+          layerInfo: this.layerInfo,
           fieldInfo: [
             {
               name: isSingleData ? data.rowData.name : data.cellData.name,

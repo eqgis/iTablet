@@ -6,6 +6,7 @@ import {
   SCollector,
   TGeometryType,
   TAction,
+  SData,
 } from 'imobile_for_reactnative'
 import { ConstToolType, ToolbarType } from '@/constants'
 import { LayerUtils, StyleUtils, Toast } from '@/utils'
@@ -458,8 +459,8 @@ async function showAttribute(type?: string) {
           const selection = _params.layers.selection[0]
           const isCheck = !data.cellData.value // 核查后修改的值
           // 修改核查结果
-          SMap.setLayerFieldInfo(
-            selection.layerInfo.path,
+          SData.setFieldInfoValue(
+            {datasetName:selection.layerInfo.datasetName||'',datasourceName:selection.layerInfo.datasourceAlias||''},
             [{
               name: data.cellData.fieldInfo.name,
               value: isCheck,
@@ -467,7 +468,6 @@ async function showAttribute(type?: string) {
             {
               // index: int,      // 当前对象所在记录集中的位置
               filter: `SmID=${selection.ids[0]}`, // 过滤条件
-              cursorType: 2, // 2: DYNAMIC, 3: STATIC
             },
           ).then(result => {
             if (!result) return

@@ -4,7 +4,8 @@
  E-mail: yangshanglong@supermap.com
  */
 
-import { FieldInfo2 } from 'imobile_for_reactnative/types/data'
+// import { FieldInfo2 } from 'imobile_for_reactnative/types/data'
+import { FieldInfoValue } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, ViewStyle, TextStyle, GestureResponderEvent, StyleProp, Image } from 'react-native'
 import { getImage } from '../../../../../../../assets'
@@ -73,7 +74,7 @@ interface RowDataType {
   name: string,
   data: any,
   value: string | number | boolean,
-  fieldInfo: FieldInfo2,
+  fieldInfo: FieldInfoValue,
   isSystemField: boolean,
 }
 
@@ -169,7 +170,7 @@ export default class Row extends Component<Props, State> {
     }
   }
 
-  _isSystomField = (fieldInfo: FieldInfo2 | RowDataType) => {
+  _isSystomField = (fieldInfo: FieldInfoValue | RowDataType) => {
     return fieldInfo?.isSystemField || fieldInfo?.name?.toUpperCase().indexOf('SS_') === 0 || fieldInfo?.name?.toUpperCase().indexOf('SM') === 0
     || fieldInfo?.name?.toUpperCase().indexOf('AR_') === 0
   }

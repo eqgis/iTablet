@@ -1,19 +1,20 @@
 /* global global */
 import { TOnlineData } from '@/constants/ConstOnline'
-import { SMap, DatasetType, FieldType, FieldInfo2, TDatasetType, FieldInfo1, TFieldType } from 'imobile_for_reactnative'
-import { AttributesResp, FieldInfo, LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
+import { SMap, DatasetType, FieldType,} from 'imobile_for_reactnative'
+import { FieldInfo, FieldInfoValue } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { AttributesResp, LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import { ConstOnline } from '../constants'
 import { getLanguage } from '../language'
 
 export interface AttributeHead {
   value: string,
   isSystemField: boolean,
-  fieldInfo: FieldInfo2,
+  fieldInfo: FieldInfoValue,
   name?: string,
 }
 
 export interface Attributes {
-  data: Array<FieldInfo1[]>,
+  data: Array<FieldInfo[]>,
   head: AttributeHead[],
 }
 
@@ -181,7 +182,7 @@ function dealData(attributes: Attributes, result: AttributesResp, page: number, 
   const tableHead: {
     value: string,
     isSystemField: boolean,
-    fieldInfo: FieldInfo2,
+    fieldInfo: FieldInfoValue,
   }[] = []
   const resLength = (result.data && result.data.length) || 0
   if (resLength > 0) {
@@ -575,7 +576,7 @@ function setLayersSelectable(layers: LayerInfo[] & {child?: LayerInfo[]}, select
  * 用于判断多媒体采集和旅行轨迹对象判断
  * @param {*} fieldInfo
  */
-function isMediaData(fieldInfo: FieldInfo1[]) {
+function isMediaData(fieldInfo: FieldInfo[]) {
   try {
     let tag = 0, isTourLine = false, hasMedia
     fieldInfo.forEach(item => {

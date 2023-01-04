@@ -22,9 +22,10 @@ import { getImage } from '../../../../../../../assets'
 import { CustomModal } from '@/components'
 import { Row } from '@/components/Row2'
 import { getCurrentLanguage, getLanguage } from '../../../../../../../language'
-import { TFieldType } from 'imobile_for_reactnative'
-import { FieldInfo1 } from 'imobile_for_reactnative/types/data'
+// import { TFieldType } from 'imobile_for_reactnative'
+// import { FieldInfo1 } from 'imobile_for_reactnative/types/data'
 import Button from '@/components/Button'
+import { FieldInfo, TFieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 interface MType {
   cn: string,
   en: string,
@@ -58,7 +59,7 @@ export interface AddResult {
 interface Props {
   // navigation: Object,
   device: any, //todo
-  data: FieldInfo1,
+  data: FieldInfo,
   // currentAttribute: Object,
   isDetail?: boolean,
   contentStyle?: StyleProp<ViewStyle>,
@@ -106,7 +107,7 @@ export default class LayerAttributeAdd extends React.Component<Props, State> {
     }
   }
 
-  dealData = (data: FieldInfo1, isDetail = this.props.isDetail): Omit<State, 'visible'>  => {
+  dealData = (data: FieldInfo, isDetail = this.props.isDetail): Omit<State, 'visible'>  => {
     const _data = data && data.fieldInfo
     if (!_data) return this.state
     if (_data && _data.type === 1) {
@@ -144,7 +145,7 @@ export default class LayerAttributeAdd extends React.Component<Props, State> {
     }
   }
 
-  setVisible = (visible: boolean, params?: {data: FieldInfo1, isDetail: boolean}) => {
+  setVisible = (visible: boolean, params?: {data: FieldInfo, isDetail: boolean}) => {
     if (params && params.data) {
       const _data = this.dealData(params.data, params.isDetail)
       if (JSON.stringify(_data) !== JSON.stringify(this.state)) {

@@ -23,9 +23,10 @@ import Row from './Row'
 
 import styles from './styles'
 import { getLanguage } from '../../../../../../../language'
-import { FieldInfo2 } from 'imobile_for_reactnative/types/data'
+// import { FieldInfo2 } from 'imobile_for_reactnative/types/data'
 import { AttributeHead } from '../../../../../../../utils/AttributeUtils'
 import { IndicatorLoading } from '@/components'
+import { FieldInfoValue } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 const COL_HEIGHT = scaleSize(80)
 
@@ -53,7 +54,7 @@ interface Props {
   checkable: boolean
   onChecked?: (selected: string[]) => void, // 表格多选框回调
   onPressHeader?: (params: {
-    fieldInfo: FieldInfo2,
+    fieldInfo: FieldInfoValue,
     index: number,
     pressView: TouchableOpacity | null,
   }) => void, // 点击属性字段的回调
@@ -288,7 +289,7 @@ export default class LayerAttributeTable extends React.Component<Props, State> {
     }
   }
 
-  _isSystomField = (fieldInfo: FieldInfo2) => {
+  _isSystomField = (fieldInfo: FieldInfoValue) => {
     return fieldInfo?.isSystemField || fieldInfo?.name?.toUpperCase().indexOf('SS_') === 0 || fieldInfo?.name?.toUpperCase().indexOf('SM') === 0
     || fieldInfo?.name?.toUpperCase().indexOf('AR_') === 0
   }

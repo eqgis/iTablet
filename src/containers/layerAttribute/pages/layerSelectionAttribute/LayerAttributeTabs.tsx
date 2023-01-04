@@ -22,10 +22,13 @@ import {
   TextStyle,
   GeometryType,
   SMediaCollector,
+  SData,
 } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import LayerAttributeAdd from '../layerAttributeAdd'
+import { DatasetInfo } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 
 const styles = StyleSheet.create({
   container: {
@@ -103,6 +106,7 @@ export default class LayerAttributeTabs extends React.Component {
     this.preToolbarType = params?.preType
     this.type = params?.type //我的里面会传一个type进来区分
     this.datasetName = params?.datasetName
+    this.datasourceName = params?.datasourceName
     // 初始化选择的图层和属性（关联后返回属性界面，找到对应的图层属性）
     const selectionAttribute = params && params.selectionAttribute
     if (
@@ -180,17 +184,18 @@ export default class LayerAttributeTabs extends React.Component {
       if (this.preAction && typeof this.preAction === 'function') {
         await this.preAction()
       }
-      let layerInfo
+      let layerInfo: LayerInfo
       if (this.state.isCollection) {
-        layerInfo =  {
-          path: this.props.currentLayer.path,
-          type: 149,
-          selectTable: true,
-          Visible: true,
-          editable: false,
-          caption: this.props.currentLayer.caption,
-          name: this.props.currentLayer.name,
-        }
+        layerInfo = await SMap.getLayerInfo(this.props.currentLayer.path)
+        // layerInfo =  {
+        //   path: this.props.currentLayer.path,
+        //   type: 149,
+        //   selectTable: true,
+        //   Visible: true,
+        //   editable: false,
+        //   caption: this.props.currentLayer.caption,
+        //   name: this.props.currentLayer.name,
+        // }
         // const layerInfo = this.props.selection[this.state.currentTabIndex].layerInfo
         let id = await SMap.getCurrentGeometryID(this.props.currentLayer.path)
         // let id = await SMap.getCurrentGeometryID(global.currentLayer.name)
@@ -199,6 +204,7 @@ export default class LayerAttributeTabs extends React.Component {
           ids: [id],
         }])
       } else if (this.type === 'MY_DATA') {
+        // layerInfo = await SMap.getLayerInfo(this.props.currentLayer.path)
         layerInfo = {
           path: this.datasetName,
           type: 149,
@@ -207,6 +213,8 @@ export default class LayerAttributeTabs extends React.Component {
           editable: false,
           caption: this.datasetName,
           name: this.datasetName,
+          datasetName:this.datasetName,
+          datasourceAlias:this.datasourceName,
         }
         let id = await SMap.getDatasetGeometryID(this.datasetName)
         this.props.setSelection && this.props.setSelection([{
@@ -214,7 +222,8 @@ export default class LayerAttributeTabs extends React.Component {
           ids: id,
         }])
       } else if (this.type === 'NAVIGATION') {
-        layerInfo = {
+        // layerInfo = await SMap.getLayerInfo(this.props.currentLayer.path)
+        let layerInfo:LayerInfo = {
           path: this.datasetName,
           type: 149,
           selectTable: true,
@@ -324,8 +333,7 @@ export default class LayerAttributeTabs extends React.Component {
     let myData = this.type === 'MY_DATA' ? true : false
     let isSelection = this.type === 'MY_DATA' ? false : true
     NavigationService.navigate('LayerAttributeSearch', {
-      layerPath: this.props.selection[this.state.currentTabIndex].layerInfo
-        .path,
+      layerInfo: this.props.selection[this.state.currentTabIndex].layerInfo,
       isSelection: isSelection,
       myData:myData,
     })
@@ -468,15 +476,29 @@ export default class LayerAttributeTabs extends React.Component {
       !this.currentTabRefs[this.state.currentTabIndex]
     )
       return
-    let layerPath = this.currentTabRefs[this.state.currentTabIndex].props
-      .layerSelection.layerInfo.path
+    let layerInfo:LayerInfo = this.currentTabRefs[this.state.currentTabIndex].props
+      .layerSelection.layerInfo
     let result
-    if (this.type === 'MY_DATA') {
-      result = await SMap.addAttributeFieldInfoByData(layerPath, fieldInfo)
-    }else if(this.type === 'NAVIGATION'){
-      result = await SMap.addNavigationAttributeFieldInfoByData(layerPath, fieldInfo)
+    /*if (this.type === 'MY_DATA') {
+
+      //to do @yangsl 处理layerinfo没有数据集信息
+      let datasetInfo: DatasetInfo = {datasourceName:layerInfo.datasourceAlias || '',
+      datasetName:layerInfo.datasetName || ''}
+      debugger
+      result = await SData.addFieldInfos(datasetInfo, [fieldInfo])
+      // result = await SMap.addAttributeFieldInfo(datasetInfo, fieldInfo)
+    }else*/ if(this.type === 'NAVIGATION'){
+      let datasetInfo: DatasetInfo = {datasourceName:layerInfo.datasetName || '',
+      datasetName:layerInfo.datasourceAlias || ''}
+      //to do @yangsl 这里需要换成导航获取数据集的逻辑，之前写到原生了。应该放到JS，需要沟通找到讨论
+      result = await SData.addFieldInfos(datasetInfo, [fieldInfo])
+      // result = await SMap.addNavigationAttributeFieldInfoByData(layerPath, fieldInfo)
     }else {
-      result = await SMap.addAttributeFieldInfo(layerPath, true, fieldInfo)
+      //to do @yangsl 处理layerinfo没有数据集信息，同时和上面MY_DATA逻辑看能否统一
+      let datasetInfo: DatasetInfo = {datasourceName:layerInfo.datasourceAlias|| '',
+      datasetName:layerInfo.datasetName || ''}
+      result = await SData.addFieldInfos(datasetInfo, [fieldInfo])
+      // result = await SMap.addAttributeFieldInfo(layerPath, true, fieldInfo)
     }
     if (result) {
       Toast.show(
@@ -755,30 +777,47 @@ export default class LayerAttributeTabs extends React.Component {
         type={'modal'}
         confirmAction={async () => {
           this.deleteFieldDialog.setDialogVisible(false)
-          let layerPath = this.currentTabRefs[this.state.currentTabIndex].props
-            .layerSelection.layerInfo.path
+          let layerInfo:LayerInfo = this.currentTabRefs[this.state.currentTabIndex].props
+            .layerSelection.layerInfo
 
           let result
 
-          if (this.type === 'MY_DATA') {
-            result = await SMap.removeRecordsetFieldInfoByData(
-              layerPath,
-              this.deleteFieldData.name,
-            )
-          }else if(this.type === 'NAVIGATION'){
-            result = await SMap.removeNavigationRecordsetFieldInfoByData(
-              layerPath,
-              this.deleteFieldData.name,
-            )
+          /*if (this.type === 'MY_DATA') {
+
+            //todo @yangsl 处理layerInfo没有数据集问题
+            debugger
+            let datasetInfo: DatasetInfo = {datasetName:layerInfo.datasetName || '',datasourceName :layerInfo.datasourceAlias || ''}
+            result = await SData.removeFieldInfos(datasetInfo, [this.deleteFieldData?.name])
+
+            // result = await SMap.removeRecordsetFieldInfoByData(
+            //   layerPath,
+            //   this.deleteFieldData.name,
+            // )
+          }else*/ if(this.type === 'NAVIGATION'){
+             //todo @yangsl 处理layerInfo没有数据集问题，接口也统一一下，removeNavigationRecordsetFieldInfoByData有部分业务逻辑需要调整到JS，需要找我讨论
+             debugger
+             let datasetInfo: DatasetInfo = {datasetName:layerInfo.datasetName || '',datasourceName :layerInfo.datasourceAlias || ''}
+    
+             result = await SData.removeFieldInfos(datasetInfo, [this.deleteFieldData?.name])
+            // result = await SMap.removeNavigationRecordsetFieldInfoByData(
+            //   layerPath,
+            //   this.deleteFieldData.name,
+            // )
             if(result){
               SMap.refreshMap()
             }
           } else {
-            result = await SMap.removeRecordsetFieldInfo(
-              layerPath,
-              false,
-              this.deleteFieldData.name,
-            )
+            //todo @yangsl 处理layerInfo没有数据集问题，逻辑看能否和MY_DATA统一
+            debugger
+            let datasetInfo: DatasetInfo = {datasetName:layerInfo.datasetName || '',datasourceName :layerInfo.datasourceAlias || ''}
+            
+            result = await SData.removeFieldInfos(datasetInfo, [this.deleteFieldData?.name])
+
+            // result = await SMap.removeRecordsetFieldInfo(
+            //   layerPath,
+            //   false,
+            //   this.deleteFieldData.name,
+            // )
           }
 
           if (result) {

@@ -864,7 +864,7 @@ export default class LayerSelectionAttribute extends React.Component {
           .setDataAttributes([
             {
               mapName: this.props.map.currentMap.name,
-              layerPath: this.props.layerSelection.layerInfo.path,
+              layerInfo: this.props.layerSelection.layerInfo,
               fieldInfo: [
                 {
                   name: isSingleData ? data.rowData.name : data.cellData.name,
@@ -982,7 +982,7 @@ export default class LayerSelectionAttribute extends React.Component {
           .setLayerAttributes([
             {
               mapName: this.props.map.currentMap.name,
-              layerPath: this.props.layerSelection.layerInfo.path,
+              layerInfo: this.props.layerSelection.layerInfo,
               fieldInfo: [
                 {
                   name: isSingleData ? data.rowData.name : data.cellData.name,

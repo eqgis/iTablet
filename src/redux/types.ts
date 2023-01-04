@@ -1,4 +1,5 @@
 import { FieldInfo2 } from 'imobile_for_reactnative'
+import { FieldInfoValue } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { reducer } from './store'
 
 export type RootState = ReturnType<typeof reducer>
@@ -12,7 +13,7 @@ export interface LayerHistory {
   layerPath: string,
   currentIndex: number,
   history: {
-    fieldInfo: FieldInfo2[],
+    fieldInfo: FieldInfoValue[],
     params: FilterParams,
   }[],
 }

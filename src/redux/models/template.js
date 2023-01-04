@@ -219,6 +219,7 @@ export const setCurrentTemplateInfo = (
     data = {
       ...params.$,
       layerPath: params.layerPath,
+      datasetInfo:{datasetName:params.datasetName,datasourceName:params.datasourceAlias},
       field: fieldInfo,
       originData: params,
     }

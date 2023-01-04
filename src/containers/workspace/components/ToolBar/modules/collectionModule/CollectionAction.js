@@ -6,6 +6,7 @@ import {
   GeoStyle,
   Action,
   SLocation,
+  SData,
 } from 'imobile_for_reactnative'
 import {
   ConstToolType,
@@ -18,6 +19,7 @@ import CollectionData from './CollectionData'
 import NavigationService from '../../../../../NavigationService'
 import { jsonUtil, Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
+import { Login } from '@/containers/tabs'
 
 function openTemplate(type) {
   const params = ToolbarModule.getParams()
@@ -281,10 +283,15 @@ async function collectionSubmit(type) {
         break
     }
     if (ToolbarModule.getParams().template.currentTemplateInfo.layerPath) {
-      SMap.setLayerFieldInfo(
-        ToolbarModule.getParams().template.currentTemplateInfo.layerPath,
+      SData.setFieldInfoValue(
+        ToolbarModule.getParams().template.currentTemplateInfo.datasetInfo,
         ToolbarModule.getParams().template.currentTemplateInfo.field,
+        {index:-1}
       )
+      // SMap.setLayerFieldInfo(
+      //   ToolbarModule.getParams().template.currentTemplateInfo.layerPath,
+      //   ToolbarModule.getParams().template.currentTemplateInfo.field,
+      // )
     }
     // 采集后 需要刷新属性表
     global.NEEDREFRESHTABLE = true

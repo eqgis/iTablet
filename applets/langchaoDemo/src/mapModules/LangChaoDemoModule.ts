@@ -12,7 +12,7 @@ import {
   collectionModule,
   TrackModule,
 } from '@/containers/workspace/components/ToolBar/modules'
-import { CallModule } from '../mapFunctionModules'
+import { CallModule, ChangeBaseLayerModule } from '../mapFunctionModules'
 import { getImage } from '../assets/Image'
 import { AppToolBar, NavigatorUtil } from '@/utils'
 import TourAction from '../mapFunctionModules/Langchao/TourAction'
@@ -41,8 +41,9 @@ export default class LangChaoDemoModule extends Module {
         // markModule(),       // 标注
         CallModule(),
         TrackModule,
-        CameraModule,
-        changeMapModule,
+        // CameraModule,
+        // changeMapModule,
+        ChangeBaseLayerModule(),
         toolModule,
         // Tour(),             // 创建轨迹
       ],

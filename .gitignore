@@ -88,6 +88,7 @@ ios/Build
 ios/Index
 ios/Pods
 ios/assets/base.zip
+ios/Podfile.lock
 
 package-lock.json
 yarn.lock

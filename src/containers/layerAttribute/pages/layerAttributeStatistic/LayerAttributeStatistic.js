@@ -10,7 +10,7 @@ import NavigationService from '../../../NavigationService'
 import { Container, TextBtn } from '../../../../components'
 import { getLanguage } from '../../../../language'
 import { Toast, LayerUtils ,scaleSize} from '../../../../utils'
-import { SMap, StatisticMode ,  FieldType,} from 'imobile_for_reactnative'
+import { SMap, StatisticMode ,  FieldType, SData,} from 'imobile_for_reactnative'
 import styles from './styles'
 import { color } from '../../../../styles'
 import {
@@ -188,9 +188,8 @@ export default class LayerAttributeStatistic extends React.Component {
         },
       )
     } else {
-      SMap.statistic(
-        this.layer.path,
-        false,
+      SData.statistic(
+        {datasetName:this.layer.datasetName,datasourceName:this.layer.datasourceAlias},
         this.fieldInfo.name,
         item.value,
       ).then(
@@ -210,6 +209,29 @@ export default class LayerAttributeStatistic extends React.Component {
           )
         },
       )
+
+      // SMap.statistic(
+      //   this.layer.path,
+      //   false,
+      //   this.fieldInfo.name,
+      //   item.value,
+      // ).then(
+      //   result => {
+      //     this.setState({
+      //       currentMethod: item,
+      //       result: result.toString(),
+      //     })
+      //   },
+      //   () => {
+      //     this.setState({
+      //       currentMethod: item,
+      //       result: '0.0',
+      //     })
+      //     Toast.show(
+      //       getLanguage(this.props.language).Prompt.NOT_SUPPORT_STATISTIC,
+      //     )
+      //   },
+      // )
     }
   }
 

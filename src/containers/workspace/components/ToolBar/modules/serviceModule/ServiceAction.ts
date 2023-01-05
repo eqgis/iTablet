@@ -759,6 +759,7 @@ async function exportData(name: string, datasourcePath: string, datasets: string
     )
     targetPath = tempPath + availableName
 
+    //todo @yangsl 测试下面两个接口
     if (dataType === 'WORKSPACE') {
       let workspaceServer = userPath + ConstPath.RelativePath.Temp + name + '/' + name + '.smwu'
       result = await SData.copyDatasetToNewWorkspace(datasourcePath, todatasourcePath, datasets, workspaceServer)

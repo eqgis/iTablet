@@ -85,6 +85,7 @@ class MyDatasource extends MyDataPage {
     //拷贝之前先把datasource的临时media删除 add xiezhy
     let toPath = udbPath.substring(0, udbPath.lastIndexOf('/') + 1) + "Media"
     await FileTools.deleteFile(toPath)
+    //todo @yangsl 测试下面的功能
     let mediaPath = await SData.copyMediaByDatasource({
       server: udbPath,
       engineType: EngineType.UDB,

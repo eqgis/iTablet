@@ -46,8 +46,9 @@ async function getUDBsAndMaps() {
       lastModifiedDate: item.mtime,
     }
   })
-
+debugger
   let _labelDatasets = await DataHandler.getLocalData(user, 'LABEL')
+  debugger
   let labelDatasets = []
   _labelDatasets.forEach(item => {
     if (item.type !== DatasetType.TABULAR) {

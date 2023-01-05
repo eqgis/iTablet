@@ -6,7 +6,8 @@
 
 import * as React from 'react'
 import { View, Text, TouchableOpacity, Image, Animated, Easing } from 'react-native'
-import { DatasetType, ThemeType, SMap } from 'imobile_for_reactnative'
+import {ThemeType, SMap } from 'imobile_for_reactnative'
+import { DatasetType} from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { Toast, scaleSize, LayerUtils, screen, setSpText } from '../../../../utils'
 import SwipeOut from 'react-native-swipeout'
 import styles from './styles'

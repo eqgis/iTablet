@@ -24,12 +24,13 @@ import {
 import { dataUtil, scaleSize, setSpText, Toast } from '../../utils'
 import color from '../../styles/color'
 import { getLanguage } from '../../language'
-import { SMap, DatasetType, SData } from 'imobile_for_reactnative'
+import { SMap, SData } from 'imobile_for_reactnative'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
 import ModalDropdown from 'react-native-modal-dropdown'
 import NavigationService from '../NavigationService'
 import ImageButton from '../../components/ImageButton'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 export default class CreateNavDataPage extends Component {
   props: {

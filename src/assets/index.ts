@@ -1,9 +1,10 @@
-import { SMap, DatasetType, ThemeType, TThemeType, TARLayerType, ARLayerType } from 'imobile_for_reactnative'
+import { SMap, ThemeType, TThemeType, TARLayerType, ARLayerType } from 'imobile_for_reactnative'
 import { ThemeType as AppThemeType } from '../constants'
 import LightTheme from './lightTheme'
 import publicTheme from './publicTheme'
 import PublicTheme from './publicTheme'
 import * as Mine from './Mine'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 const image = {
   ...LightTheme.analyst,

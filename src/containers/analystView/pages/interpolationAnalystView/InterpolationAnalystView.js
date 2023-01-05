@@ -12,11 +12,10 @@ import { getLanguage } from '../../../../language'
 import InterpolationParamsData from './interpolationParamsData'
 import {
   SMap,
-  EngineType,
-  DatasetType,
   FieldType,
   SData,
 } from 'imobile_for_reactnative'
+import { DatasetType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 const popTypes = {
   Method: 'Method',
@@ -154,7 +153,7 @@ export default class InterpolationAnalystView extends Component {
     let dss = []
     let dataSets = await SData.getDatasetsByDatasource(info)
 
-    dataSets.list.forEach(item => {
+    dataSets.forEach(item => {
       if (filter.typeFilter && filter.typeFilter.length > 0) {
         for (let type of filter.typeFilter) {
           if (type === item.datasetType) {

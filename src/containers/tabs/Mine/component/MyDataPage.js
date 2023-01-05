@@ -24,7 +24,8 @@ import { scaleSize, OnlineServicesUtils } from '../../../../utils'
 import NavigationService from '../../../NavigationService'
 import ModalBtns from './ModalBtns'
 import UserType from '../../../../constants/UserType'
-import { DatasetType, SMap, RNFS  } from 'imobile_for_reactnative'
+import { SMap, RNFS  } from 'imobile_for_reactnative'
+import { DatasetType, } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { getLanguage } from '../../../../language/index'
 import { MsgConstant, SimpleDialog } from '../../Friend'
 import { MineItem, BatchHeadBar } from '../component'
@@ -979,7 +980,7 @@ export default class MyDataPage extends Component {
         img = defaultImg
       }
     } else {
-      let name = info.item.name
+      let name = info.item?.name || info.item?.datasetName
       txtInfo =
         name.lastIndexOf('.') > 0
           ? name.substring(0, name.lastIndexOf('.'))

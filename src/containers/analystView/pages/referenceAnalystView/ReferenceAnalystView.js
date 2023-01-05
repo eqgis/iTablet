@@ -16,14 +16,11 @@ import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 import {
   SMap,
-  EngineType,
   SAnalyst,
-  DatasetType,
   Action,
-  GeometryType,
   SData,
 } from 'imobile_for_reactnative'
-
+import { DatasetType, EngineType,GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 const popTypes = {
   DataSource: 'DataSource',
   DataSet: 'DataSet',
@@ -291,7 +288,7 @@ export default class ReferenceAnalystView extends Component {
     let dss = []
     let dataSets = await SData.getDatasetsByDatasource(info)
 
-    dataSets.list.forEach(item => {
+    dataSets.forEach(item => {
       if (filter.typeFilter && filter.typeFilter.length > 0) {
         for (let type of filter.typeFilter) {
           if (type === item.datasetType) {

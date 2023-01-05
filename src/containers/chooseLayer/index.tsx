@@ -1,4 +1,4 @@
-import { DatasetType, SMap } from 'imobile_for_reactnative'
+import {SMap } from 'imobile_for_reactnative'
 import React from 'react'
 import { FlatList, Image, ListRenderItemInfo, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { connect, ConnectedProps } from 'react-redux'
@@ -7,6 +7,7 @@ import { dp } from '../../utils'
 import Container from '../../components/Container'
 import { setCurrentLayer } from '../../redux/models/layers'
 import { getLanguage } from '../../language'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 interface Props extends ReduxProps {
   navigation: any

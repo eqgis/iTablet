@@ -19,12 +19,12 @@ import {
   SMARMapView,
   SARMap,
   SMMeasureARGeneraView,
-  DatasetType,
   // SCollectSceneFormView,
   ARElementType,
   ARAction,
   SData,
 } from 'imobile_for_reactnative'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import PropTypes from 'prop-types'
 import {
   FunctionToolbar,

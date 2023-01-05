@@ -33,7 +33,7 @@ async function getDatasets(params = {}) {
     }
     let datasets = await SData.getDatasetsByDatasource(_data.DSParams)
     let baseLayers: { name: string; image: any; data: SMap.DatasetInfo; type: string }[] = []
-    datasets.list.forEach(element => {
+    datasets.forEach(element => {
       baseLayers.push({
         name: element.datasetName,
         image: getThemeAssets().dataType.icon_data_set,

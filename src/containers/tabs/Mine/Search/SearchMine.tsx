@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import { Container } from '../../../../components'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 import { FileTools, NativeMethod } from '../../../../native'
 import { color } from '../../../../styles'
 import { getLanguage } from '../../../../language'
@@ -19,6 +19,7 @@ import SearchItem from './SearchItem'
 import NavigationService from '../../../NavigationService'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
 import { scaleSize, Toast } from '../../../../utils'
+import { DatasourceConnectionInfo, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 const pointImg = require('../../../../assets/mapToolbar/dataset_type_point_black.png')
 const lineImg = require('../../../../assets/mapToolbar/dataset_type_line_black.png')
 const regionImg = require('../../../../assets/mapToolbar/dataset_type_region_black.png')
@@ -104,7 +105,7 @@ class SearchMine extends Component {
     }
     let result = []
     for (let i = 0; i < dataLength; i++) {
-      let name = data[i].name
+      let name = data[i]?.datasetName
       if (this.searchText !== '' && name.indexOf(this.searchText) > -1) {
         result.push({
           title: title,
@@ -179,7 +180,7 @@ class SearchMine extends Component {
   _getLabel = async () => {
     let path =
       this.userPath +
-      ConstPath.RelativePath.Datasource +
+      ConstPath.RelativePath.Label +
       'Label_' +
       this.props.user.currentUser.userName +
       '#.udb'
@@ -187,7 +188,12 @@ class SearchMine extends Component {
     if (!result) {
       return []
     }
-    return await SMap.getUDBNameOfLabel(path)
+    let dsInfo:DatasourceConnectionInfo = {server:path,alias:`Label_${
+      this.props.user.currentUser.userName}`,engineType:EngineType.UDB}
+    const list = await SData.getDatasetsByDatasource(dsInfo)
+
+    return list
+    // return await SMap.getUDBNameOfLabel(path)
   }
 
   _getTemplate = async () => {
@@ -284,7 +290,7 @@ class SearchMine extends Component {
   }
 
   renderItem = ({ item }) => {
-    let fileName = item.data.name
+    let fileName = item.data?.name || item.data?.datasetName
     let text
     let fileType
     let img = null

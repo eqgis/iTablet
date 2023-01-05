@@ -21,9 +21,9 @@ import styles from './styles'
 import { getThemeAssets } from '../../../../assets'
 import {
   SMap,
-  DatasetType,
   SARMap,
 } from 'imobile_for_reactnative'
+import { DatasetType, } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { color } from '../../../../styles'
 import NavigationService from '../../../../containers/NavigationService'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'

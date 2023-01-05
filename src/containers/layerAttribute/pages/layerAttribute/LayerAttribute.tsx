@@ -37,10 +37,7 @@ import {
   Action,
   GeoStyle,
   SMediaCollector,
-  FieldType,
-  DatasetType,
   TextStyle,
-  GeometryType,
   SData,
 } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
@@ -49,7 +46,7 @@ import ToolbarModule from '../../../workspace/components/ToolBar/modules/Toolbar
 import LayerAttributeAdd from '../layerAttributeAdd'
 import { Rect } from 'react-native-popover-view'
 import { LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
-import { DatasetInfo } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetInfo,DatasetType,GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 const SINGLE_ATTRIBUTE = 'singleAttribute'
 const PAGE_SIZE = 30

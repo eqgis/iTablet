@@ -1,8 +1,10 @@
-import { FileTools,  SMap, EngineType, ARLayerType, DatasetType, FiltedData, TDatasetType, TARLayerType, RNFS, FileInfo, SData } from 'imobile_for_reactnative'
+import { FileTools,  SMap, ARLayerType,FiltedData, TARLayerType, RNFS, FileInfo, SData } from 'imobile_for_reactnative'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { ConstPath } from '../../constants'
 import { NativeMethod } from '../../native'
 import { dataUtil } from '..'
 import { UserInfo, LocalDataType } from '../../types'
+import { DatasourceConnectionInfo, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 export interface ILocalData extends FiltedData {
   /** ai模型相关信息 */
@@ -196,7 +198,9 @@ async function _getLabelDataList(user: UserInfo) {
     // creatLabelDatasource(user, path)
     return []
   }
-  const list = await SMap.getUDBNameOfLabel(path)
+  let dsInfo:DatasourceConnectionInfo = {server:path,alias:`Label_${
+    user.userName}`,engineType:EngineType.UDB}
+  const list = await SData.getDatasetsByDatasource(dsInfo)
   return list
 }
 
@@ -479,7 +483,7 @@ async function createDefaultDatasource(
     if(result != "") {
     //检查打开的数据源中是否有默认的数据集
       const dsets = await SData.getDatasetsByDatasource({alias: datasourceName})
-      const defualtDset = dsets.list.filter(item => {
+      const defualtDset = dsets.filter(item => {
         return item.datasetName === datasetName
       })
       let bDsCreate = false

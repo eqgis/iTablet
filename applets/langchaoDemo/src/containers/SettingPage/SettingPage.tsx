@@ -45,6 +45,15 @@ class SettingPage extends Component<Props, State> {
     })
   }
 
+  componentDidUpdate = (prevProps: Readonly<Props>): void => {
+    if(this.props.language !== prevProps.language) {
+      const data = settingData.getThematicMapSettings()
+      this.setState({
+        data,
+      })
+    }
+  }
+
 
   _renderItem(item: settingDataType, index: number) {
     return (

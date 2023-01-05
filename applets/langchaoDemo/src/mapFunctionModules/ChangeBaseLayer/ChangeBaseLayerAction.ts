@@ -15,7 +15,7 @@ function layerManagerData() {
         return OpenData(ConstOnline.Google, 0)
       },
       data: [],
-      image: getImage().icon_ditu_3,
+      image: getImage().icon_map_normal,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -26,7 +26,7 @@ function layerManagerData() {
         return OpenData(ConstOnline.Google, 1)
       },
       data: [],
-      image: getImage().icon_ditu_3,
+      image: getImage().icon_map_image,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -37,7 +37,7 @@ function layerManagerData() {
         OpenData(ConstOnline.Google, 2)
       },
       data: [],
-      image: getImage().icon_ditu_3,
+      image: getImage().icon_map_terrain,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -97,7 +97,7 @@ function layerManagerData() {
         global.ToolBar?.close()
       },
       data: [],
-      image: getImage().icon_ditu_3,
+      image: getImage().icon_map_normal,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -124,7 +124,7 @@ function layerManagerData() {
         global.ToolBar?.close()
       },
       data: [],
-      image: getImage().icon_ditu_3,
+      image: getImage().icon_map_image,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -152,7 +152,7 @@ function layerManagerData() {
         global.ToolBar?.close()
       },
       data: [],
-      image: getImage().icon_ditu_3,
+      image: getImage().icon_map_terrain,
       type: DatasetType.IMAGE,
       themeType: -1,
     },

@@ -51,15 +51,15 @@ class ChangeBaseLayer extends Component<Props, State> {
         <View
           style={[{
             width: '100%',
-            height: dp(70),
+            height: dp(80),
             justifyContent: 'center',
             alignItems: 'center',
           }]}
         >
           <Image
             style={[{
-              width: dp(60),
-              height: dp(60),
+              width: dp(80),
+              height: dp(80),
             }]}
             source={item.image}
           />

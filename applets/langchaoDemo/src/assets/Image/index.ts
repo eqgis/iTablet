@@ -17,6 +17,10 @@ const icon_license_setting = require('./icon_license_setting.png')
 const icon_server_setting = require('./icon_server_setting.png')
 const icon_userInfo_setting = require('./icon_userInfo_setting.png')
 
+const icon_map_image = require('./icon_map_image.png')
+const icon_map_normal = require('./icon_map_normal.png')
+const icon_map_terrain = require('./icon_map_terrain.png')
+
 const image = {
   flight,
   telephone1,
@@ -35,6 +39,9 @@ const image = {
   icon_license_setting,
   icon_server_setting,
   icon_userInfo_setting,
+  icon_map_image,
+  icon_map_normal,
+  icon_map_terrain,
 }
 
 function getImage(): typeof image {

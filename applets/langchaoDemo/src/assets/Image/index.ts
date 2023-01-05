@@ -10,6 +10,13 @@ const icon_ditu_4 = require('./ditu_4.png')
 const icon_ditu_5 = require('./ditu_5.png')
 const exitApp = require('./icon_exit.png')
 
+const icon_base_setting = require('./icon_base_setting.png')
+const icon_contact_setting = require('./icon_contact_setting.png')
+const icon_language_setting = require('./icon_language_setting.png')
+const icon_license_setting = require('./icon_license_setting.png')
+const icon_server_setting = require('./icon_server_setting.png')
+const icon_userInfo_setting = require('./icon_userInfo_setting.png')
+
 const image = {
   flight,
   telephone1,
@@ -22,6 +29,12 @@ const image = {
   icon_ditu_4,
   icon_ditu_5,
   exitApp,
+  icon_base_setting,
+  icon_contact_setting,
+  icon_language_setting,
+  icon_license_setting,
+  icon_server_setting,
+  icon_userInfo_setting,
 }
 
 function getImage(): typeof image {

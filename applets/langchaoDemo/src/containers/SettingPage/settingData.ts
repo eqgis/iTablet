@@ -9,7 +9,7 @@ import { getImage } from "../../assets/Image"
 export const getThematicMapSettings = () => [
   {
     title: getLanguage(global.language).Map_Settings.ADDRESS_BOOK_SETTING,
-    leftImage: getImage().telephone1,
+    leftImage: getImage().icon_contact_setting,
     action: () => {
       // NavigationService.navigate('LocationSetting')
       NavigationService.navigate('ContactsList')
@@ -17,11 +17,11 @@ export const getThematicMapSettings = () => [
   },
   {
     title: getLanguage(global.language).Map_Settings.BASIC_SETTING,
-    leftImage: getThemeAssets().setting.icon_basic,
+    leftImage: getImage().icon_base_setting,
   },
   {
     title: getLanguage(global.language).Map_Settings.LICENSE_CENTER,
-    leftImage: getThemeAssets().setting.icon_legend,
+    leftImage: getImage().icon_license_setting,
     action: () => {
       const user = AppToolBar.getProps().user
       NavigationService.navigate('LicensePage', {
@@ -31,21 +31,21 @@ export const getThematicMapSettings = () => [
   },
   {
     title: getLanguage(global.language).Map_Settings.LANGUAGE_SETTING,
-    leftImage: getThemeAssets().setting.icon_coordinate,
+    leftImage: getImage().icon_language_setting,
     action: () => {
       NavigationService.navigate('LanguageSetting')
     },
   },
   {
     title: getLanguage(global.language).Map_Settings.SERVER_SETTING,
-    leftImage: getThemeAssets().setting.icon_range,
+    leftImage: getImage().icon_server_setting,
     action: () => {
       NavigationService.navigate('InputServer')
     },
   },
   {
     title: "用户信息维护",
-    leftImage: getThemeAssets().setting.icon_checkbox_style,
+    leftImage: getImage().icon_userInfo_setting,
     action: () => {
       NavigationService.navigate('UserInfoMaintenance')
     },

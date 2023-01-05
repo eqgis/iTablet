@@ -2104,7 +2104,7 @@ function getValve2(): {name: string,position: Vector3, rotation?: Vector3, scale
       name: 'valve_2_1',
       position: {
         x: -5.885,
-        y: 4.060 + offsetY,
+        y: 4.260 + offsetY,
         z: -0.694,
       },
       rotation,

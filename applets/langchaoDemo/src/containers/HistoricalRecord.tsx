@@ -319,8 +319,9 @@ class HistoricalRecord extends Component<Props, State> {
             alignContent: 'center',
             marginLeft: dp(10),
           }]}
-          onPress={() => {
-            !item.isUploaded && TourAction.uploadDialog(item.SmID, 'line')
+          onPress={async () => {
+            TourAction.uploadDialog(item.SmID, 'line')
+            await this.getAttributeData()
           }}
         >
           <Image
@@ -359,8 +360,9 @@ class HistoricalRecord extends Component<Props, State> {
           alignContent: 'center',
           marginLeft: dp(10),
         }]}
-        onPress={() => {
+        onPress={async () => {
           TourAction.uploadDialog(-1, 'all')
+          await this.getAttributeData()
         }}
       >
         <Image

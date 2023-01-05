@@ -5,6 +5,7 @@ import {
 import ContactsList from './ContactsList'
 import InputServer from './InputServer'
 import HistoricalRecord from './HistoricalRecord'
+import SettingPage from './SettingPage/SettingPage'
 
 const Stack = createNativeStackNavigator()
 
@@ -23,7 +24,12 @@ const _navigators = [
     headerShown: false,
     animation: 'none',
     presentation: 'containedTransparentModal',
-  }} />
+  }} />,
+  <Stack.Screen key="SettingPage" name="SettingPage" component={SettingPage} options={{
+    headerShown: false,
+    animation: 'none',
+    presentation: 'containedTransparentModal',
+  }} />,
 ]
 
 export default _navigators

@@ -24,6 +24,7 @@ import { langchao } from '../reduxModels'
 import RNFetchBlob from 'rn-fetch-blob'
 import { setAppColor } from '@/styles/color'
 import NavigationService from '@/containers/NavigationService'
+import { getThemeAssets } from '@/assets'
 /**
  * 首页显示的旅行轨迹模块
  */
@@ -88,14 +89,24 @@ export default class LangChaoDemoModule extends Module {
         key: module,
         title:  getLanguage(global.language).Map_Settings.HISTORICAL_RECORD,
         //'属性',
-        image: getImage().telephone1,
-        selectedImage: getImage().telephone2,
+        image: getThemeAssets().tabBar.tab_attribute,
+        selectedImage: getThemeAssets().tabBar.tab_attribute_selected,
         btnClick: () => {
           NavigationService.navigate('HistoricalRecord')
         },
       },
 
-      MapTabs.MapSetting,       // 系统自带Tab-设置
+      // MapTabs.MapSetting,       // 系统自带Tab-设置
+      {
+        key: module,
+        title:  getLanguage(global.language).Map_Settings.SETTING,
+        //'属性',
+        image: getThemeAssets().tabBar.tab_setting,
+        selectedImage: getThemeAssets().tabBar.tab_setting_selected,
+        btnClick: () => {
+          NavigationService.navigate('SettingPage')
+        },
+      },
     ]
 
     // 添加新的页面导航

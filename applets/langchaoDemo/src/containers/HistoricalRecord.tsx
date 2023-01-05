@@ -29,6 +29,8 @@ import CallDetailData from "../mapFunctionModules/CallDetail/CallDetailData"
 import { ToolbarType } from "@/constants"
 import CallDetailPage from "../components/CallDetailPage/CallDetailPage"
 import CallDetail from "../mapFunctionModules/CallDetail"
+import { getImage } from "../assets/Image"
+import TourAction from "../mapFunctionModules/Langchao/TourAction"
 interface fieldInfoType {
   caption: string,
   name: string,
@@ -248,55 +250,88 @@ class HistoricalRecord extends Component<Props, State> {
 
   _renderItem(item: callAttributeType, index: number) {
     return (
-      <TouchableOpacity
+      <View
         style={[{
-          width:'100%',
+          width: '100%',
           height: dp(60),
           flexDirection: 'row',
-          justifyContent: 'space-between',
           paddingHorizontal: dp(10),
           marginTop: dp(10),
           borderBottomColor: color.grayLight,
           borderBottomWidth: dp(1),
         }]}
-        onPress={() => {
-          this.callDetail(item)
-        }}
       >
-        <View
+        <TouchableOpacity
           style={[{
-            flex: 1,
-            height: '100%',
-            justifyContent: 'space-evenly',
+            flex:1,
+            height: dp(60),
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            // paddingHorizontal: dp(10),
+            // marginTop: dp(10),
+            // borderBottomColor: color.grayLight,
+            // borderBottomWidth: dp(1),
           }]}
+          onPress={() => {
+            this.callDetail(item)
+          }}
         >
-          <Text
+          <View
             style={[{
-              fontSize: dp(20),
+              flex: 1,
+              height: '100%',
+              justifyContent: 'space-evenly',
             }]}
           >
-            {item.callName || "无名氏"}
-          </Text>
-          <Text>{item.callPhoneNumber || "17711245121"}</Text>
-        </View>
+            <Text
+              style={[{
+                fontSize: dp(20),
+              }]}
+            >
+              {item.callName || "无名氏"}
+            </Text>
+            <Text>{item.callPhoneNumber || "17711245121"}</Text>
+          </View>
 
-        <View
-          style={[{
-            width:dp(150),
-            height: '100%',
-            justifyContent: 'space-evenly',
-            alignItems: 'flex-end'
-          }]}
-        >
-          <Text
+          <View
             style={[{
+              width:dp(150),
+              height: '100%',
+              justifyContent: 'space-evenly',
+              alignItems: 'flex-end'
             }]}
           >
-            {item.localTime_User}
-          </Text>
-          <Text>{`时长：${Number(item.duration).toFixed(2)} 分钟`}</Text>
-        </View>
-      </TouchableOpacity>
+            <Text
+              style={[{
+              }]}
+            >
+              {item.localTime_User}
+            </Text>
+            <Text>{`时长：${Number(item.duration).toFixed(2)} 分钟`}</Text>
+          </View>
+
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[{
+            width: dp(40),
+            height: '100%',
+            justifyContent: 'center',
+            alignContent: 'center',
+            marginLeft: dp(10),
+          }]}
+          onPress={() => {
+            !item.isUploaded && TourAction.uploadDialog(item.SmID, 'line')
+          }}
+        >
+          <Image
+            style={[{
+              width: dp(30),
+              height: dp(30),
+            }]}
+            source={item.isUploaded ? getImage().icon_upload_gray : getImage().icon_upload}
+          />
+        </TouchableOpacity>
+      </View>
     )
   }
 
@@ -311,6 +346,31 @@ class HistoricalRecord extends Component<Props, State> {
         keyExtractor={(item, index) => item.SmID + "-" + index}
         showsVerticalScrollIndicator={false}
       />
+    )
+  }
+
+  renderHeaderRight = () => {
+    return (
+      <TouchableOpacity
+        style={[{
+          width: dp(40),
+          height: '100%',
+          justifyContent: 'center',
+          alignContent: 'center',
+          marginLeft: dp(10),
+        }]}
+        onPress={() => {
+          TourAction.uploadDialog(-1, 'all')
+        }}
+      >
+        <Image
+          style={[{
+            width: dp(30),
+            height: dp(30),
+          }]}
+          source={getImage().icon_upload}
+        />
+      </TouchableOpacity>
     )
   }
 
@@ -335,7 +395,7 @@ class HistoricalRecord extends Component<Props, State> {
           title: getLanguage(global.language).Map_Settings.HISTORICAL_RECORD,
           // title: "设置服务地址",
           withoutBack: true,
-          // headerRight: this.renderHeaderRight(),
+          headerRight: this.renderHeaderRight(),
           navigation: this.props.navigation,
           headerStyle: {
             borderBottomWidth: dp(1),

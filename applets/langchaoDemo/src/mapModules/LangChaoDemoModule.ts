@@ -55,15 +55,15 @@ export default class LangChaoDemoModule extends Module {
     // 自定义地图右上角按钮
     this.headerButtons = [
       // MapHeaderButton 中自带功能
-      {
-        key: 'allUpload',// 位置上报
-        // image: getThemeAssets().publicAssets.icon_data_upload,
-        image: getImage().icon_upload,
-        action: () => {
-          // TourAction.positionUpload
-          TourAction.uploadDialog(-1, 'all')
-        },
-      },
+      // {
+      //   key: 'allUpload',// 位置上报
+      //   // image: getThemeAssets().publicAssets.icon_data_upload,
+      //   image: getImage().icon_upload,
+      //   action: () => {
+      //     // TourAction.positionUpload
+      //     TourAction.uploadDialog(-1, 'all')
+      //   },
+      // },
       // MapHeaderButton.Audio,  // 语音
       // MapHeaderButton.Undo,   // 回退
       MapHeaderButton.Search, // 搜索

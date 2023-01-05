@@ -1,34 +1,12 @@
 import React, { Component } from "react"
-import { SectionList, View, Text, TouchableOpacity, Image, StyleSheet, TextInput, FlatList, ImageSourcePropType } from "react-native"
+import { View, Text, TouchableOpacity, Image, StyleSheet, FlatList, ImageSourcePropType } from "react-native"
 import { connect, ConnectedProps } from "react-redux"
-import { Container, Dialog } from '../../../../../src/components'
+import { Container } from '../../../../../src/components'
 import { dp } from "imobile_for_reactnative/utils/size"
 import { getLanguage } from "@/language"
-import { setCurrentSymbol } from "@/redux/models/symbol"
 import { getPublicAssets } from "@/assets"
-import { setServerIP, setServerUserId, setServerUserName, setServerDepartmentId } from '../reduxModels/langchao'
-import { dateFormat, getToken, setSysOrgid, setUserId, setUserName, users } from "../utils/langchaoServer"
-import { LayerUtils, StyleUtils, Toast } from "@/utils"
 import { color } from "@/styles"
 import MapToolbar from "@/containers/workspace/components/MapToolbar"
-import ToolbarModule from "../../../../src/containers/workspace/components/ToolBar/modules/ToolbarModule"
-import ConstToolType from "@/constants/ConstToolType"
-// import { setServerIP, setServerUserId, setServerUserName, setServerDepartmentId } from "@/redux/models/langchao"
-import {
-  SMap,
-  Action,
-  GeoStyle,
-  SMediaCollector,
-  FieldType,
-  DatasetType,
-  TextStyle,
-  GeometryType,
-} from 'imobile_for_reactnative'
-import { AppletsToolType } from "../constants"
-import CallDetailData from "../mapFunctionModules/CallDetail/CallDetailData"
-import { ToolbarType } from "@/constants"
-import CallDetailPage from "../components/CallDetailPage/CallDetailPage"
-import CallDetail from "../mapFunctionModules/CallDetail"
 import settingData from "./settingData"
 import NavigationService from "@/containers/NavigationService"
 
@@ -36,7 +14,7 @@ import NavigationService from "@/containers/NavigationService"
 interface settingDataType {
 	title: string,
 	leftImage: ImageSourcePropType,
-	action: () => unknown,
+	action?: () => unknown,
 }
 
 interface Props extends ReduxProps {
@@ -112,7 +90,7 @@ class SettingPage extends Component<Props, State> {
           }]}
         >
           <Text
-					  style={[{
+            style={[{
               fontSize: dp(16),
               color: '#000'
             }]}

@@ -43,6 +43,13 @@ export const getThematicMapSettings = () => [
       NavigationService.navigate('InputServer')
     },
   },
+  {
+    title: "用户信息维护",
+    leftImage: getThemeAssets().setting.icon_checkbox_style,
+    action: () => {
+      NavigationService.navigate('UserInfoMaintenance')
+    },
+  },
 ]
 
 export default {

@@ -12,6 +12,8 @@ export const LANGCHAO_SET_USER_ID = "LANGCHAO_SET_USER_ID"
 export const LANGCHAO_SET_USER_NAME = "LANGCHAO_SET_USER_NAME"
 export const LANGCHAO_SET_DEPARTMENT_ID = "LANGCHAO_SET_DEPARTMENT_ID"
 export const LANGCHAO_ADD_CONTACT = "LANGCHAO_ADD_CONTACT"
+export const LANGCHAO_SET_COUNTRY = "LANGCHAO_SET_COUNTRY"
+export const LANGCHAO_SET_CITY = "LANGCHAO_SET_CITY"
 // Actions
 // ---------------------------------.3-----------------
 
@@ -99,6 +101,29 @@ export const addContact = (
   cb && cb()
 }
 
+
+export const setCountry = (
+  params = "",
+  cb = () => {},
+) => async (dispatch: (arg0: any) => any) => {
+  await dispatch({
+    type: LANGCHAO_SET_COUNTRY,
+    payload: params,
+  })
+  cb && cb()
+}
+
+export const setCity = (
+  params = "",
+  cb = () => {},
+) => async (dispatch: (arg0: any) => any) => {
+  await dispatch({
+    type: LANGCHAO_SET_CITY,
+    payload: params,
+  })
+  cb && cb()
+}
+
 export interface contactItemType {
   ID: number,
   userID: string,
@@ -141,6 +166,12 @@ export default handleActions(
     },
     [`${LANGCHAO_ADD_CONTACT}`]: (state: any, { payload }: any) => {
       return state.setIn(['contacts'], fromJS(payload))
+    },
+    [`${LANGCHAO_SET_COUNTRY}`]: (state: any, { payload }: any) => {
+      return state.setIn(['country'], fromJS(payload))
+    },
+    [`${LANGCHAO_SET_CITY}`]: (state: any, { payload }: any) => {
+      return state.setIn(['city'], fromJS(payload))
     },
     [REHYDRATE]: (state, { payload }) => {
       const langchao = getLastLaunchState()?.langchao

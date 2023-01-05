@@ -2030,18 +2030,25 @@ function getAlertPipe2(): {name: string,position: Vector3, scale?: number}[] {
 }
 
 //流向 1 阀门点
-function getValve1(): {name: string,position: Vector3,scale: number,isOpen: boolean}[] {
-  const scale = 0.3
-  const offsetY = -0.05
+function getValve1(): {name: string,position: Vector3, rotation?: Vector3, scale: number,isOpen: boolean}[] {
+  const scale = 0.5
+  const offsetY = 0.05
+
+  const rotation: Vector3 = {
+    x: 90,
+    y: 0,
+    z: 0,
+  }
 
   return [
     {
       name: 'valve_1_0',
       position: {
         x: -1.048,
-        y: -0.126 + offsetY,
+        y: -0.053 + offsetY,
         z: -0.106,
       },
+      rotation,
       scale,
       isOpen: true,
     },
@@ -2052,6 +2059,7 @@ function getValve1(): {name: string,position: Vector3,scale: number,isOpen: bool
         y: -0.126 + offsetY,
         z: 0.933,
       },
+      rotation,
       scale,
       isOpen: true,
     },
@@ -2062,6 +2070,7 @@ function getValve1(): {name: string,position: Vector3,scale: number,isOpen: bool
         y: -0.126 + offsetY,
         z: 1.728,
       },
+      rotation,
       scale,
       isOpen: true,
     }
@@ -2069,9 +2078,15 @@ function getValve1(): {name: string,position: Vector3,scale: number,isOpen: bool
 }
 
 //流向 2 阀门点
-function getValve2(): {name: string,position: Vector3,scale: number,isOpen: boolean}[] {
-  const scale = 0.5
-  const offsetY = -0.05
+function getValve2(): {name: string,position: Vector3, rotation?: Vector3, scale: number,isOpen: boolean}[] {
+  const scale = 1
+  const offsetY = 0
+
+  const rotation: Vector3 = {
+    x: 0,
+    y: 90,
+    z: 0,
+  }
 
   return [
     {
@@ -2081,6 +2096,7 @@ function getValve2(): {name: string,position: Vector3,scale: number,isOpen: bool
         y: 4.067 + offsetY,
         z: 4.918,
       },
+      rotation,
       scale,
       isOpen: true,
     },
@@ -2091,6 +2107,7 @@ function getValve2(): {name: string,position: Vector3,scale: number,isOpen: bool
         y: 4.060 + offsetY,
         z: -0.694,
       },
+      rotation,
       scale,
       isOpen: true,
     },
@@ -2101,6 +2118,7 @@ function getValve2(): {name: string,position: Vector3,scale: number,isOpen: bool
         y: 4.043 + offsetY,
         z: -3.295,
       },
+      rotation,
       scale,
       isOpen: true,
     }

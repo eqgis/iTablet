@@ -2896,4 +2896,12 @@ export const language_fr: typeof language_cn = {
   INPUT_CONTACT_ID: "The user id cannot be empty", // To be tanslated
   INPUT_CONTACT_NAME: "The contact name cannot be empty", // To be tanslated
   CHECK_CONTACT_NUMBER: " Type is digits and length is between 5 and 20", // To be tanslated
+  USER_INFO_MAINTENANCE: 'Employee infomation maintenance',
+  USER_CODE: 'User code', // To be tanslated
+  USER_GENDER: 'Gender', // To be tanslated
+  TARGET_COUNTRY: 'Target country',  // To be tanslated
+  TARGET_CITY: 'Target city',  // To be tanslated
+  ORGANIZATION: 'Organization',  // To be tanslated
+  PROJECT: 'Project', // To be tanslated
+
 }

@@ -2885,18 +2885,26 @@ export const language_cn = {
   CAMERA_TOOL: "相机", // Camera
   ADD_CONTACT: "添加联系人", // Add a contact
   CONTACT_NAME: "联系人姓名", // Contact name
-  CONTACT_NUMBER: "联系人电话", // Contact number
+  CONTACT_NUMBER: "手机号", // Contact number
   RECORDING: "记录中", // RECORDING
   ON_THE_RECORD: "正在记录中", // On the record
   SERVER_SETTING: "服务设置", // Server setting
   SERVICE_ADDRESS_SETTING: "设置服务地址", // Setting the server address
   USER_INFO: "用户信息", // User infomation
   USER_ID: "用户id", // User id
-  USER_NAME: "用户姓名", // User name
+  USER_NAME: "姓名", // User name
   DEPARTMENT_ID: "部门id", // Department id
   INPUT_CONTACT_ID: "用户id不能为空",
   INPUT_CONTACT_NAME: "联系人姓名不能为空",
   CHECK_CONTACT_NUMBER: "电话号码由数字组成，且长度在5到20之间",
+  USER_INFO_MAINTENANCE: '用户信息维护', // Employee infomation maintenance
+  USER_CODE: '用户编号', // User code
+  USER_GENDER: '性别', // Gender
+  TARGET_COUNTRY: '去往国家',  // Target country
+  TARGET_CITY: '去往城市',  // Target city
+  ORGANIZATION: '所属单位',// organization
+  PROJECT: '所属项目', // project
+
 
 
 

@@ -37,7 +37,6 @@ interface State {
 	country: string,
 	city: string,
 	organization: string,
-	department: string,
 	project: string,
 }
 
@@ -55,7 +54,6 @@ class UserInfoMaintenance extends Component<Props, State> {
       country: this.props.country || "",
       city: this.props.city || "",
       organization: '',
-      department: '',
       project: '',
     }
   }
@@ -91,7 +89,6 @@ class UserInfoMaintenance extends Component<Props, State> {
         gender: '男',
         phoneNumber: data?.phone || data?.mobilePhone || "",
         organization: data?.SysOrgName || '',
-        department: '部门',
         project: '项目',
       })
     }
@@ -206,7 +203,7 @@ class UserInfoMaintenance extends Component<Props, State> {
         style={[styles.partViewStyle]}
       >
         {/* 用户编号 */}
-        {this.renderItem("用户编号", this.state.userId)}
+        {this.renderItem(getLanguage(global.language).Map_Settings.USER_CODE, this.state.userId)}
       </View>
     )
   }
@@ -216,9 +213,9 @@ class UserInfoMaintenance extends Component<Props, State> {
       <View
         style={[styles.partViewStyle]}
       >
-        {this.renderItem("姓名", this.state.userName)}
-        {this.renderItem("性别", this.state.gender)}
-        {this.renderItem("手机号", this.state.phoneNumber)}
+        {this.renderItem(getLanguage(global.language).Map_Settings.USER_NAME, this.state.userName)}
+        {this.renderItem(getLanguage(global.language).Map_Settings.USER_GENDER, this.state.gender)}
+        {this.renderItem(getLanguage(global.language).Map_Settings.CONTACT_NUMBER, this.state.phoneNumber)}
       </View>
     )
   }
@@ -228,11 +225,10 @@ class UserInfoMaintenance extends Component<Props, State> {
       <View
         style={[styles.partViewStyle]}
       >
-        {this.renderInputItem("去往国家", this.state.country, this.countryChange, this.countryClear)}
-        {this.renderInputItem("去往城市", this.state.city, this.cityChange, this.cityClear)}
-        {this.renderItem("所属单位", this.state.organization)}
-        {this.renderItem("所属部门", this.state.department)}
-        {this.renderItem("所属项目", this.state.project)}
+        {this.renderInputItem(getLanguage(global.language).Map_Settings.TARGET_COUNTRY, this.state.country, this.countryChange, this.countryClear)}
+        {this.renderInputItem(getLanguage(global.language).Map_Settings.TARGET_CITY, this.state.city, this.cityChange, this.cityClear)}
+        {this.renderItem(getLanguage(global.language).Map_Settings.ORGANIZATION, this.state.organization)}
+        {this.renderItem(getLanguage(global.language).Map_Settings.PROJECT, this.state.project)}
       </View>
     )
   }
@@ -244,8 +240,8 @@ class UserInfoMaintenance extends Component<Props, State> {
         hideInBackground={false}
         showFullInMap={true}
         headerProps={{
-          // title: getLanguage(global.language).Map_Settings.SERVICE_ADDRESS_SETTING,
-          title: "用户信息维护",
+          title: getLanguage(global.language).Map_Settings.USER_INFO_MAINTENANCE,
+          // title: "用户信息维护",
           withoutBack: false,
           headerRight: this.renderHeaderRight(),
           navigation: this.props.navigation,

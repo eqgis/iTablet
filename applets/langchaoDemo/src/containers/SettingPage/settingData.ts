@@ -44,7 +44,7 @@ export const getThematicMapSettings = () => [
     },
   },
   {
-    title: "用户信息维护",
+    title: getLanguage(global.language).Map_Settings.USER_INFO_MAINTENANCE,
     leftImage: getImage().icon_userInfo_setting,
     action: () => {
       NavigationService.navigate('UserInfoMaintenance')

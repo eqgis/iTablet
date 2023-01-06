@@ -488,11 +488,17 @@ export default class LayerAttributeTabs extends React.Component {
       result = await SData.addFieldInfos(datasetInfo, [fieldInfo])
       // result = await SMap.addAttributeFieldInfo(datasetInfo, fieldInfo)
     }else*/ if(this.type === 'NAVIGATION'){
-      let datasetInfo: DatasetInfo = {datasourceName:layerInfo.datasetName || '',
-      datasetName:layerInfo.datasourceAlias || ''}
-      //to do @yangsl 这里需要换成导航获取数据集的逻辑，之前写到原生了。应该放到JS，需要沟通找到讨论
-      result = await SData.addFieldInfos(datasetInfo, [fieldInfo])
-      // result = await SMap.addNavigationAttributeFieldInfoByData(layerPath, fieldInfo)
+      // let datasetInfo: DatasetInfo = {datasourceName:layerInfo.datasetName || '',
+      // datasetName:layerInfo.datasourceAlias || ''}
+      // //to do @yangsl 这里需要换成导航获取数据集的逻辑，之前写到原生了。应该放到JS，需要沟通找到讨论
+      // result = await SData.addFieldInfos(datasetInfo, [fieldInfo])
+      // // result = await SMap.addNavigationAttributeFieldInfoByData(layerPath, fieldInfo)
+      const datasource = "default_increment_datasource@"+ this.props.currentUser.userName
+      const datasetInfo: DatasetInfo = {datasourceName:datasource|| '',
+      datasetName:layerInfo.datasetName || ''}
+      let array = []
+      array.push(fieldInfo)
+      result = await SData.addFieldInfos(datasetInfo,array)
     }else {
       //to do @yangsl 处理layerinfo没有数据集信息，同时和上面MY_DATA逻辑看能否统一
       let datasetInfo: DatasetInfo = {datasourceName:layerInfo.datasourceAlias|| '',
@@ -559,9 +565,15 @@ export default class LayerAttributeTabs extends React.Component {
         layerInfo.path,
         this.state.currentIndex)
     } else if (this.type === 'NAVIGATION') {
-      result = await LayerUtils.deleteNavigationAttributeByData(
-        layerInfo.path,
-        this.state.currentIndex)
+
+      const datasource = "default_increment_datasource@" + this.props.currentUser.userName
+      //todo @yangsl 处理layerInfo没有数据集问题，接口也统一一下，removeNavigationRecordsetFieldInfoByData有部分业务逻辑需要调整到JS，需要找我讨论
+      const datasetInfo: DatasetInfo = { datasetName: layerInfo.path || '', datasourceName: datasource || '' }
+
+      result = await SData.deleteFieldInfoValue(datasetInfo,{index:this.state.currentIndex})
+      // result = await LayerUtils.deleteNavigationAttributeByData(
+      //   layerInfo.path,
+      //   this.state.currentIndex)
       if (result) {
         SMap.refreshMap()
       }
@@ -793,23 +805,23 @@ export default class LayerAttributeTabs extends React.Component {
             //   layerPath,
             //   this.deleteFieldData.name,
             // )
-          }else*/ if(this.type === 'NAVIGATION'){
-             //todo @yangsl 处理layerInfo没有数据集问题，接口也统一一下，removeNavigationRecordsetFieldInfoByData有部分业务逻辑需要调整到JS，需要找我讨论
-             debugger
-             let datasetInfo: DatasetInfo = {datasetName:layerInfo.datasetName || '',datasourceName :layerInfo.datasourceAlias || ''}
-    
-             result = await SData.removeFieldInfos(datasetInfo, [this.deleteFieldData?.name])
+          }else*/ if (this.type === 'NAVIGATION') {
+            const datasource = "default_increment_datasource@" + this.props.currentUser.userName
+            //todo @yangsl 处理layerInfo没有数据集问题，接口也统一一下，removeNavigationRecordsetFieldInfoByData有部分业务逻辑需要调整到JS，需要找我讨论
+            const datasetInfo: DatasetInfo = { datasetName: layerInfo.datasetName || '', datasourceName: datasource || '' }
+
+            result = await SData.removeFieldInfos(datasetInfo, [this.deleteFieldData?.name])
             // result = await SMap.removeNavigationRecordsetFieldInfoByData(
             //   layerPath,
             //   this.deleteFieldData.name,
             // )
-            if(result){
+            if (result) {
               SMap.refreshMap()
             }
           } else {
             //todo @yangsl 处理layerInfo没有数据集问题，逻辑看能否和MY_DATA统一
-            let datasetInfo: DatasetInfo = {datasetName:layerInfo.datasetName || '',datasourceName :layerInfo.datasourceAlias || ''}
-            
+            const datasetInfo: DatasetInfo = { datasetName: layerInfo.datasetName || '', datasourceName: layerInfo.datasourceAlias || '' }
+
             result = await SData.removeFieldInfos(datasetInfo, [this.deleteFieldData?.name])
 
             // result = await SMap.removeRecordsetFieldInfo(

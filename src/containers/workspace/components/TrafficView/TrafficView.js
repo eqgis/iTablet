@@ -16,7 +16,7 @@ import {
 } from '../../../../utils'
 import { color } from '../../../../styles'
 import { Const, ConstOnline } from '../../../../constants'
-import { SMap } from 'imobile_for_reactnative'
+import { DatasetType, SData, SMap } from 'imobile_for_reactnative'
 import { getThemeAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 
@@ -60,7 +60,17 @@ export default class TrafficView extends React.Component {
     return null
   }
   incrementRoad = async () => {
-    let rel = await SMap.hasLineDataset()
+    // let rel = await SMap.hasLineDataset()
+    let rel = false
+    let datasources = await SData._getDatasetsByWorkspaceDatasource()
+    datasources.forEach(item => {
+      item.data.forEach(item2 => {
+        if(item2.datasetType === DatasetType.LINE){
+          rel = true
+        }
+      })
+    })
+
     if (rel) {
       this.props.incrementRoad()
     } else {

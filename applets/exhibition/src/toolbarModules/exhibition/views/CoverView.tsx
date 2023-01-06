@@ -2032,7 +2032,7 @@ function getAlertPipe2(): {name: string,position: Vector3, scale?: number}[] {
 //流向 1 阀门点
 function getValve1(): {name: string,position: Vector3, rotation?: Vector3, scale: number,isOpen: boolean}[] {
   const scale = 0.5
-  const offsetY = 0.05
+  const offsetY = 0.1
 
   const rotation: Vector3 = {
     x: 90,

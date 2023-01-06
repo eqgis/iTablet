@@ -16,8 +16,22 @@ export const getThematicMapSettings = () => [
     },
   },
   {
+    title: getLanguage(global.language).Map_Settings.USER_INFO_MAINTENANCE,
+    leftImage: getImage().icon_userInfo_setting,
+    action: () => {
+      NavigationService.navigate('UserInfoMaintenance')
+    },
+  },
+  {
     title: getLanguage(global.language).Map_Settings.BASIC_SETTING,
     leftImage: getImage().icon_base_setting,
+  },
+  {
+    title: getLanguage(global.language).Map_Settings.LANGUAGE_SETTING,
+    leftImage: getImage().icon_language_setting,
+    action: () => {
+      NavigationService.navigate('LanguageSetting')
+    },
   },
   {
     title: getLanguage(global.language).Map_Settings.LICENSE_CENTER,
@@ -30,24 +44,10 @@ export const getThematicMapSettings = () => [
     },
   },
   {
-    title: getLanguage(global.language).Map_Settings.LANGUAGE_SETTING,
-    leftImage: getImage().icon_language_setting,
-    action: () => {
-      NavigationService.navigate('LanguageSetting')
-    },
-  },
-  {
     title: getLanguage(global.language).Map_Settings.SERVER_SETTING,
     leftImage: getImage().icon_server_setting,
     action: () => {
       NavigationService.navigate('InputServer')
-    },
-  },
-  {
-    title: getLanguage(global.language).Map_Settings.USER_INFO_MAINTENANCE,
-    leftImage: getImage().icon_userInfo_setting,
-    action: () => {
-      NavigationService.navigate('UserInfoMaintenance')
     },
   },
 ]

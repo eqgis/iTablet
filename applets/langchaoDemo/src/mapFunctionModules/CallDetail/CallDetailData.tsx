@@ -9,6 +9,7 @@ import { getThemeAssets } from '@/assets'
 import NavigationService from '@/containers/NavigationService'
 import { SMap } from 'imobile_for_reactnative'
 import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
+import { Header } from '@/components'
 
 interface DataItem {
   key: string;
@@ -30,6 +31,7 @@ function getData(type: string | number) {
   let buttons: ToolBarBottomItem[] = []
   let customView = null
 
+
   switch(type) {
     case AppletsToolType.APPLETS_CALL_DETAIL_HOME:
       customView = (_data: callAttributeType) => (
@@ -37,22 +39,72 @@ function getData(type: string | number) {
           data={_data}
         />
       )
-      buttons = [
-        {
-          type: ToolbarBtnType.CANCEL,
-          image: getThemeAssets().toolbar.icon_toolbar_quit,
-          action: async () => {
-            await SMap.clearTrackingLayer()
-            NavigationService.navigate('HistoricalRecord')
-            global.ToolBar?.close()
-          },
-        },
-      ]
+      // buttons = [
+      //   {
+      //     type: ToolbarBtnType.CANCEL,
+      //     image: getThemeAssets().toolbar.icon_toolbar_quit,
+      //     action: async () => {
+      //       await SMap.clearTrackingLayer()
+      //       NavigationService.navigate('HistoricalRecord')
+      //       global.ToolBar?.close()
+      //     },
+      //   },
+      // ]
       break
   }
   return { data, buttons, customView }
 }
 
+/** 自定义Header数据 */
+function getHeaderData(type: string | number) {
+  const headerData = null
+  return headerData
+}
+
+
+function getHeaderView(type: string | number) {
+  let customHeadView = null
+  switch(type) {
+    case AppletsToolType.APPLETS_CALL_DETAIL_HOME:
+      customHeadView = (
+        <Header
+          // ref={ref => (this.containerHeader = ref)}
+          backAction={async () => {
+            await SMap.clearTrackingLayer()
+            NavigationService.navigate('HistoricalRecord')
+            global.ToolBar?.close()
+          }}
+          withoutBack={false}
+          // title={"呼叫详情"}
+          type={'fix'}
+          headerRight={[]}
+          headerRightStyle={[]}
+          // headerLeft={[]}
+          headerTitleViewStyle={[{
+            fontSize: dp(16),
+            textAlign: 'left',
+            backgroundColor: '#f00',
+          }]}
+        />
+      )
+      // customHeadView = (
+      //   <View
+      //     style={[{
+      //       width: '100%',
+      //       height: dp(60),
+      //       backgroundColor: '#fff',
+      //     }]}
+      //   >
+      //     {_headerLeft()}
+      //   </View>
+      // )
+      break
+  }
+  return customHeadView
+}
+
 export default {
   getData,
+  getHeaderData,
+  getHeaderView,
 }

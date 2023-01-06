@@ -23,6 +23,9 @@ class CallDetailModule extends CustomFunctionModule {
       image: any // 图片
       getData: (type: string | number) => { data: any[]; buttons: any[]; } // 当前Function模块获取数据的方法
       actions: any,
+      getHeaderData?: (type: string | number) => unknown,  // 类型参考Header
+      getHeaderView?: (type: string | number) => unknown,  // 返回一个组件
+
     }) {
     super(props)
   }
@@ -53,6 +56,8 @@ const _CallDetailModule = function () {
     title: "呼叫详情", // getLanguage(global.language).Prompt.CALL, // title
     size: 'large',                                      // 图片尺寸
     image: getImage().telephone1,             // 图片
+    // getHeaderData: CallDetailData.getHeaderData,
+    getHeaderView: CallDetailData.getHeaderView,
     getData: CallDetailData.getData,                          // 当前Function模块获取数据的方法
     actions: CallDetailAction,                                // 当前Function模块所有事件
   })

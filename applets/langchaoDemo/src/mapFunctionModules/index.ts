@@ -5,10 +5,10 @@ import CallDetailModule from './CallDetail'
 import ChangeBaseLayerModule from './ChangeBaseLayer'
 
 
-ToolbarModule.addAppletModule(CallModule)
-ToolbarModule.addAppletModule(PositionSubmitModule)
-ToolbarModule.addAppletModule(CallDetailModule)
-ToolbarModule.addAppletModule(ChangeBaseLayerModule)
+ToolbarModule.addAppletModule(CallModule())
+ToolbarModule.addAppletModule(PositionSubmitModule())
+ToolbarModule.addAppletModule(CallDetailModule())
+ToolbarModule.addAppletModule(ChangeBaseLayerModule())
 
 
 

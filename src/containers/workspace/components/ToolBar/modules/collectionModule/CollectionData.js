@@ -71,52 +71,20 @@ function getData(type) {
     type === SMCollectorType.LINE_GPS_PATH ||
     type === SMCollectorType.REGION_GPS_PATH
   ) {
-    data.push({
-      key: 'start',
-      title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
-      action: async () => {
-        await SCollector.startCollect(type)
-        const obj = {
-          key: 'start',
-          title: getLanguage(global.language).Map_Settings.RECORDING,
-          action: () => {
-            Toast.show(getLanguage(global.language).Map_Settings.ON_THE_RECORD)
-          },
-          size: 'large',
-          image: getThemeAssets().collection.icon_track_start,
-        }
-        global.ToolBar?.updateViewData(0,obj)
-
-      },
-      size: 'large',
-      image: getThemeAssets().collection.icon_track_start,
-    })
+    // data.push({
+    //   key: 'start',
+    //   title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
+    //   action: async () => {
+    //     await SCollector.startCollect(type)
+    //   },
+    //   size: 'large',
+    //   image: getThemeAssets().collection.icon_track_start,
+    // })
     // data.push({
     //   key: 'stop',
     //   title: getLanguage(global.language).Map_Main_Menu.COLLECTION_STOP,
     //   action: async () => {
     //     await SCollector.pauseCollect(type)
-    //     let obj = {
-    //       key: 'start',
-    //       title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
-    //       action: async () => {
-    //         await SCollector.startCollect(type)
-    //         const obj = {
-    //           key: 'start',
-    //           title: getLanguage(global.language).Map_Settings.RECORDING,
-    //           action: () => {
-    //             Toast.show(getLanguage(global.language).Map_Settings.ON_THE_RECORD)
-    //           },
-    //           size: 'large',
-    //           image: getThemeAssets().collection.icon_track_start,
-    //         }
-    //         global.ToolBar?.updateViewData(0,obj)
-
-    //       },
-    //       size: 'large',
-    //       image: getThemeAssets().collection.icon_track_start,
-    //     }
-    //     global.ToolBar?.updateViewData(0,obj)
     //   },
     //   size: 'large',
     //   image: getThemeAssets().collection.icon_track_stop,
@@ -141,43 +109,23 @@ function getData(type) {
       image: getThemeAssets().edit.icon_redo,
     })
   }
-  // data.push({
-  //   key: constants.CANCEL,
-  //   title: getLanguage(global.language).Map_Main_Menu.COLLECTION_CANCEL,
-  //   action: async () => {
-  //     await CollectionAction.cancel(type)
-  //     let obj = {
-  //       key: 'start',
-  //       title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
-  //       action: async () => {
-  //         await SCollector.startCollect(type)
-  //         const obj = {
-  //           key: 'start',
-  //           title: getLanguage(global.language).Map_Settings.RECORDING,
-  //           action: () => {
-  //             Toast.show(getLanguage(global.language).Map_Settings.ON_THE_RECORD)
-  //           },
-  //           size: 'large',
-  //           image: getThemeAssets().collection.icon_track_start,
-  //         }
-  //         global.ToolBar?.updateViewData(0,obj)
+  data.push({
+    key: constants.CANCEL,
+    title: getLanguage(global.language).Map_Main_Menu.COLLECTION_CANCEL,
+    action: async () => {
+      await CollectionAction.cancel(type)
+      global.ToolBar?.close()
 
-  //       },
-  //       size: 'large',
-  //       image: getThemeAssets().collection.icon_track_start,
-  //     }
-  //     global.ToolBar?.updateViewData(0,obj)
-
-  //     // 将数据恢复默认值
-  //     CollectionAction.setCallInfo({
-  //       name: '',
-  //       phoneNumber: '',
-  //       startTime: -1,
-  //     })
-  //   },
-  //   size: 'large',
-  //   image: getThemeAssets().publicAssets.icon_cancel,
-  // })
+      // 将数据恢复默认值
+      CollectionAction.setCallInfo({
+        name: '',
+        phoneNumber: '',
+        startTime: -1,
+      })
+    },
+    size: 'large',
+    image: getThemeAssets().publicAssets.icon_cancel,
+  })
   data.push({
     key: constants.SUBMIT,
     title: getLanguage(global.language).Map_Main_Menu.COLLECTION_SUBMIT,
@@ -185,27 +133,6 @@ function getData(type) {
       await CollectionAction.collectionSubmit(type)
       // langchao code
       {
-        let obj = {
-          key: 'start',
-          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
-          action: async () => {
-            await SCollector.startCollect(type)
-            const obj = {
-              key: 'start',
-              title: getLanguage(global.language).Map_Settings.RECORDING,
-              action: () => {
-                Toast.show(getLanguage(global.language).Map_Settings.ON_THE_RECORD)
-              },
-              size: 'large',
-              image: getThemeAssets().collection.icon_track_start,
-            }
-            global.ToolBar?.updateViewData(0,obj)
-
-          },
-          size: 'large',
-          image: getThemeAssets().collection.icon_track_start,
-        }
-        global.ToolBar?.updateViewData(0,obj)
         const date = new Date()
 
 

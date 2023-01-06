@@ -35,17 +35,6 @@ class TrackModule extends FunctionModule {
     collectionModule().actions.showCollection(type)
 
     const timer = setTimeout(async () => {
-      const obj = {
-        key: 'start',
-        title: getLanguage(global.language).Map_Settings.RECORDING,
-        action: () => {
-          Toast.show(getLanguage(global.language).Map_Settings.ON_THE_RECORD)
-        },
-        size: 'large',
-        image: getThemeAssets().collection.icon_track_start,
-      }
-      global.ToolBar?.updateViewData(0,obj)
-
       await SCollector.startCollect(type)
 
       clearTimeout(timer)

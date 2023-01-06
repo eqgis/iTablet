@@ -92,14 +92,13 @@ class MyDataset extends MyDataPage {
   }
 
   getData = async () => {
-    let userTempWorkspace = !this.isAlreadyOpen && this.from === 'MapView'
-    let dataset = await SData.getDatasetsByDatasource({
+    const userTempWorkspace = !this.isAlreadyOpen && this.from === 'MapView'
+    const data = await SData.getDatasetsByDatasource({
       alias: userTempWorkspace ? this.datasourceName : this.state.title,
       server: await FileTools.appendingHomeDirectory(this.state.data.path),
     })
-    let data = dataset
 
-    let sectionData = []
+    const sectionData = []
     sectionData.push({
       title: 'DATASET',
       data: data || [],

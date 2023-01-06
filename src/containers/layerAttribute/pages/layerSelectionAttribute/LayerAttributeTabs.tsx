@@ -495,7 +495,8 @@ export default class LayerAttributeTabs extends React.Component {
       // // result = await SMap.addNavigationAttributeFieldInfoByData(layerPath, fieldInfo)
       const datasource = "default_increment_datasource@"+ this.props.currentUser.userName
       const datasetInfo: DatasetInfo = {datasourceName:datasource|| '',
-      datasetName:layerInfo.datasetName || ''}
+      datasetName:layerInfo.name || ''}
+
       let array = []
       array.push(fieldInfo)
       result = await SData.addFieldInfos(datasetInfo,array)
@@ -808,7 +809,7 @@ export default class LayerAttributeTabs extends React.Component {
           }else*/ if (this.type === 'NAVIGATION') {
             const datasource = "default_increment_datasource@" + this.props.currentUser.userName
             //todo @yangsl 处理layerInfo没有数据集问题，接口也统一一下，removeNavigationRecordsetFieldInfoByData有部分业务逻辑需要调整到JS，需要找我讨论
-            const datasetInfo: DatasetInfo = { datasetName: layerInfo.datasetName || '', datasourceName: datasource || '' }
+            const datasetInfo: DatasetInfo = { datasetName: layerInfo.name || '', datasourceName: datasource || '' }
 
             result = await SData.removeFieldInfos(datasetInfo, [this.deleteFieldData?.name])
             // result = await SMap.removeNavigationRecordsetFieldInfoByData(

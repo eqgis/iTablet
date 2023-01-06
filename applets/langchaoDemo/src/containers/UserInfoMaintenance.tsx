@@ -11,8 +11,15 @@ import { dateFormat, getToken, setSysOrgid, setUserId, setUserName, users } from
 import { Toast } from "@/utils"
 import { color } from "@/styles"
 import NavigationService from "@/containers/NavigationService"
+import { Picker } from '@react-native-picker/picker'
+import { getJson } from "../assets/data"
 // import { setServerIP, setServerUserId, setServerUserName, setServerDepartmentId } from "@/redux/models/langchao"
 
+
+interface countryDataType {
+  name: string,
+  codeId: number
+}
 
 interface Props extends ReduxProps {
 	navigation: any,
@@ -197,6 +204,48 @@ class UserInfoMaintenance extends Component<Props, State> {
     )
   }
 
+  // {this.renderInputItem(getLanguage(global.language).Map_Settings.TARGET_COUNTRY, this.state.country, this.countryChange, this.countryClear)}
+  renderPickerItem = () => {
+    console.warn(getJson().contryCode)
+    return (
+      <View
+        style={[styles.itemContainerStyle]}
+      >
+        <View
+          style={[styles.itemTitleView]}
+        >
+          <Text
+            style={[styles.itemTitleText]}
+          >{getLanguage(global.language).Map_Settings.TARGET_COUNTRY}</Text>
+        </View>
+        <View
+          style={[styles.dialogInputContainer,
+            {
+              justifyContent: 'flex-start',
+            }
+          ]}
+        >
+          <Picker
+            selectedValue={this.state.country}
+            mode={'dropdown'}
+            style={[styles.pickerSize]}
+            onValueChange={value => {
+              this.setState({country: value})
+            } }
+          >
+            {getJson().contryCode.map((item: countryDataType, index: number) => {
+              return <Picker.Item
+                label={item.name} value={item.name}
+                key={item.codeId + index}
+              />
+            })}
+
+          </Picker>
+        </View>
+      </View>
+    )
+  }
+
   renderUserCodeView = () => {
     return (
       <View
@@ -225,7 +274,8 @@ class UserInfoMaintenance extends Component<Props, State> {
       <View
         style={[styles.partViewStyle]}
       >
-        {this.renderInputItem(getLanguage(global.language).Map_Settings.TARGET_COUNTRY, this.state.country, this.countryChange, this.countryClear)}
+        {this.renderPickerItem()}
+        {/* {this.renderInputItem(getLanguage(global.language).Map_Settings.TARGET_COUNTRY, this.state.country, this.countryChange, this.countryClear)} */}
         {this.renderInputItem(getLanguage(global.language).Map_Settings.TARGET_CITY, this.state.city, this.cityChange, this.cityClear)}
         {this.renderItem(getLanguage(global.language).Map_Settings.ORGANIZATION, this.state.organization)}
         {this.renderItem(getLanguage(global.language).Map_Settings.PROJECT, this.state.project)}
@@ -368,4 +418,11 @@ const styles = StyleSheet.create({
     fontSize: dp(16),
     fontWeight: '400'
   },
+
+  pickerSize: {
+    width: '100%',
+    height: dp(20),
+    fontSize: dp(16),
+    marginLeft: -dp(10),
+  }
 })

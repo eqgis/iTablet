@@ -77,23 +77,14 @@ function layerManagerData() {
     {
       title: '天地图底图', // 'Tianditu',
       action: ({callback}: {callback: () => any}) => {
-        global.SimpleDialog.set({
-          text: getLanguage(global.language).Map_Layer.IS_ADD_NOTATION_LAYER,
-          confirmText: getLanguage(global.language).Prompt.YES,
-          cancelText: getLanguage(global.language).Prompt.NO,
-          confirmAction: () => {
-            const data = []
-            if (global.language === 'CN') {
-              data.push(ConstOnline.tiandituCN())
-            } else {
-              data.push(ConstOnline.tiandituEN())
-            }
-            data.push(ConstOnline.tianditu())
-            OpenData(data, 0, callback)
-          },
-          cancelAction: () => OpenData(ConstOnline.tianditu(), 0, callback),
-        })
-        global.SimpleDialog.setVisible(true)
+        const data = []
+        if (global.language === 'CN') {
+          data.push(ConstOnline.tiandituCN())
+        } else {
+          data.push(ConstOnline.tiandituEN())
+        }
+        data.push(ConstOnline.tianditu())
+        OpenData(data, 0, callback)
         global.ToolBar?.close()
       },
       data: [],
@@ -104,23 +95,14 @@ function layerManagerData() {
     {
       title: '天地图-影像底图', //'Tianditu Image',
       action: ({callback}: {callback: () => any}) => {
-        global.SimpleDialog.set({
-          text: getLanguage(global.language).Map_Layer.IS_ADD_NOTATION_LAYER,
-          confirmText: getLanguage(global.language).Prompt.YES,
-          cancelText: getLanguage(global.language).Prompt.NO,
-          confirmAction: () => {
-            const data = []
-            if (global.language === 'CN') {
-              data.push(ConstOnline.tiandituImgCN())
-            } else {
-              data.push(ConstOnline.tiandituImgEN())
-            }
-            data.push(ConstOnline.tiandituImg())
-            OpenData(data, 0, callback)
-          },
-          cancelAction: () => OpenData(ConstOnline.tiandituImg(), 0, callback),
-        })
-        global.SimpleDialog.setVisible(true)
+        const data = []
+        if (global.language === 'CN') {
+          data.push(ConstOnline.tiandituImgCN())
+        } else {
+          data.push(ConstOnline.tiandituImgEN())
+        }
+        data.push(ConstOnline.tiandituImg())
+        OpenData(data, 0, callback)
         global.ToolBar?.close()
       },
       data: [],
@@ -131,24 +113,15 @@ function layerManagerData() {
     {
       title: '天地图-地形底图', // Tianditu Terrain
       action: ({callback}: {callback: () => any}) => {
-        global.SimpleDialog.set({
-          text: getLanguage(global.language).Map_Layer.IS_ADD_NOTATION_LAYER,
-          confirmText: getLanguage(global.language).Prompt.YES,
-          cancelText: getLanguage(global.language).Prompt.NO,
-          confirmAction: () => {
-            const data = []
-            // data.push(ConstOnline.tiandituTerCN())
-            if (global.language === 'CN') {
-              data.push(ConstOnline.tiandituImgCN())
-            } else {
-              data.push(ConstOnline.tiandituImgEN())
-            }
-            data.push(ConstOnline.tiandituTer())
-            OpenData(data, 0, callback)
-          },
-          cancelAction: () => OpenData(ConstOnline.tiandituTer(), 0, callback),
-        })
-        global.SimpleDialog.setVisible(true)
+        const data = []
+        // data.push(ConstOnline.tiandituTerCN())
+        if (global.language === 'CN') {
+          data.push(ConstOnline.tiandituImgCN())
+        } else {
+          data.push(ConstOnline.tiandituImgEN())
+        }
+        data.push(ConstOnline.tiandituTer())
+        OpenData(data, 0, callback)
         global.ToolBar?.close()
       },
       data: [],

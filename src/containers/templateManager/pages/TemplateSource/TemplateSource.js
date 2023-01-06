@@ -9,7 +9,8 @@ import { Container } from '../../../../components'
 import { getLayerIconByType } from '../../../../assets'
 import { ListSeparator } from '../../../../components'
 import NavigationService from '../../../../containers/NavigationService'
-import { DatasetType, SData } from 'imobile_for_reactnative'
+import {  SData } from 'imobile_for_reactnative'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
 import { SMap } from 'imobile_for_reactnative'
@@ -43,7 +44,7 @@ export default class TemplateSource extends React.Component {
     let data = []
     if (this.type && params.datasource) {
       // 选择数据集
-      let _data = (await SData.getDatasetsByDatasource(params.datasource)).list
+      let _data = (await SData.getDatasetsByDatasource(params.datasource))
       if (_data.length > 0) {
         for (let item of _data) {
           if (

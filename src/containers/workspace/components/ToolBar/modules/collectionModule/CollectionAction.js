@@ -2,12 +2,12 @@ import {
   SCollector,
   SMCollectorType,
   SMap,
-  DatasetType,
   GeoStyle,
   Action,
   SLocation,
   SData,
 } from 'imobile_for_reactnative'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import {
   ConstToolType,
   ConstPath,

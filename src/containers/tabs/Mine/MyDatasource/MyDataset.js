@@ -2,8 +2,6 @@ import React from 'react'
 import { MyDataPage } from '../component'
 import {
   SMap,
-  EngineType,
-  DatasetType,
   SProcess,
   SData,
 } from 'imobile_for_reactnative'
@@ -14,6 +12,7 @@ import { connect } from 'react-redux'
 import ExportList from '../component/ExportList'
 import { Platform } from 'react-native'
 import NavigationService from '../../../NavigationService'
+import { DatasetType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 class MyDataset extends MyDataPage {
   constructor(props) {
@@ -98,7 +97,7 @@ class MyDataset extends MyDataPage {
       alias: userTempWorkspace ? this.datasourceName : this.state.title,
       server: await FileTools.appendingHomeDirectory(this.state.data.path),
     })
-    let data = dataset.list
+    let data = dataset
 
     let sectionData = []
     sectionData.push({

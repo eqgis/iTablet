@@ -1,4 +1,4 @@
-import { SMap, DatasetType, SMediaCollector ,SMap2, SData} from 'imobile_for_reactnative'
+import { SMap, SMediaCollector ,SMap2, SData} from 'imobile_for_reactnative'
 import ConstOnline from './ConstOnline'
 import ConstToolType from './ConstToolType'
 import ToolbarType from './ToolbarType'
@@ -9,6 +9,7 @@ import { getThemeAssets } from '../assets'
 import {
   Platform,
 } from 'react-native'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 async function OpenData(data, index, callback) {
   global.Loading?.setLoading(true)

@@ -226,7 +226,7 @@ export default class SecondMapSettings extends Component {
           },
         )
         //  
-        dataset.list.map(val => {
+        dataset.map(val => {
           let obj = {}
           obj.title = val.datasetName
           obj.parentTitle = val.datasourceName

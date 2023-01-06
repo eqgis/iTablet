@@ -2,7 +2,8 @@ import xml2js from 'react-native-xml2js'
 const parser = new xml2js.Parser()
 const builder = new xml2js.Builder()
 import { FileTools} from '../../../native'
-import { DatasetType, RNFS as fs  } from 'imobile_for_reactnative'
+import { RNFS as fs  } from 'imobile_for_reactnative'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 /**
  * 读取xml文件内容

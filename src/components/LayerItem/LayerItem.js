@@ -7,10 +7,11 @@
 import * as React from 'react'
 import { Text, TouchableOpacity, Image, View } from 'react-native'
 import PropTypes from 'prop-types'
-import { DatasetType } from 'imobile_for_reactnative'
+// import { DatasetType } from 'imobile_for_reactnative'
 import { getLayerIconByType } from '../../assets'
 
 import styles from './styles'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 export default class LayerItem extends React.Component {
   static propTypes = {

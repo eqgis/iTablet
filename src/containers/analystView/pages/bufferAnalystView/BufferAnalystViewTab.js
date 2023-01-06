@@ -9,14 +9,13 @@ import { Toast } from '../../../../utils'
 import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
 import {
   SMap,
-  EngineType,
-  DatasetType,
   GeoStyle,
   SData,
 } from 'imobile_for_reactnative'
 import NavigationService from '../../../NavigationService'
 
 import styles from './styles'
+import { DatasetType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 const popTypes = {
   DataSource: 'DataSource',
@@ -255,7 +254,7 @@ export default class BufferAnalystViewTab extends Component {
     //todo @yangsl  {mode:'analyst'}为当前业务逻辑，不应加到原生接口
     // let dataSets = await SMap.getDatasetsByDatasource(info, true,{mode:'analyst'})
     let dataSets = await SData.getDatasetsByDatasource(info)
-    dataSets.list.forEach(item => {
+    dataSets.forEach(item => {
       item.key = item.datasetName
       item.value = item.key
       dss.push(item)

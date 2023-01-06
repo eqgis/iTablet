@@ -35,15 +35,11 @@ class MyLabel extends MyDataPage {
     let homePath = await FileTools.appendingHomeDirectory()
     let userPath =
       homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/'
-    let datasourcePath =
-      userPath +
-      ConstPath.RelativePath.Label +
-      'Label_' +
-      this.props.user.currentUser.userName +
-      '#.udb'
+    let datasourcePath = 'Label_' +
+      this.props.user.currentUser.userName
     return await SData.deleteDataset(
       datasourcePath,
-      this.itemInfo.item.name,
+      this.itemInfo.item?.datasetName,
     )
   }
 
@@ -96,7 +92,7 @@ class MyLabel extends MyDataPage {
       if (this.state.batchMode) {
         uploadList = this._getSelectedNames(this._getSelectedList())
       } else {
-        uploadList = [this.itemInfo.item.name]
+        uploadList = [this.itemInfo.item?.datasetName]
       }
 
       await SData.copyDataset(datasourcePath, todatasourcePath, uploadList, true)
@@ -109,7 +105,7 @@ class MyLabel extends MyDataPage {
   _getSelectedNames = itemList => {
     let list = []
     for (let i = 0; i < itemList.length; i++) {
-      list.push(itemList[i].item.name)
+      list.push(itemList[i].item?.datasetName)
     }
     return list
   }

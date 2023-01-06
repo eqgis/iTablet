@@ -3,10 +3,11 @@ import { View, FlatList, TouchableOpacity, Text, Image ,Platform,StyleSheet} fro
 import { scaleSize, setSpText, Toast, LayerUtils ,DialogUtils} from '../../utils'
 import { color } from '../../styles'
 import NavigationService from '../NavigationService'
-import { SMap, DatasetType } from 'imobile_for_reactnative'
+import { SMap } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import { Container } from '../../components'
 import { getThemeAssets,getLayerWhiteIconByType ,getPublicAssets,getLayerIconByType} from '../../assets'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 import { getLanguage } from '../../language'
 import { LayerManager_tolbar } from '../mtLayerManager/components/LayerManager_tolbar'

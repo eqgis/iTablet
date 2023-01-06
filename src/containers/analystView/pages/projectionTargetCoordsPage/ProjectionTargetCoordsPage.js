@@ -8,10 +8,11 @@ import { getThemeAssets } from '../../../../assets'
 import { color, size } from '../../../../styles'
 import { View, Text, SectionList, TouchableOpacity, Image, Platform } from 'react-native'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
-import { SMap, SProcess, DatasetType, SData } from 'imobile_for_reactnative'
+import { SMap, SProcess, SData } from 'imobile_for_reactnative'
 import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
 import ImageButton from '../../../../components/ImageButton'
 import NavigationService from '../../../NavigationService'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 const popTypes = {
   DataSource: 'DataSource',

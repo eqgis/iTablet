@@ -490,7 +490,7 @@ async function downloadService(url: string, messageIcon?:any) {
         let canAdd = true
         if(_datasets != null){
           canAdd = false
-          for (const _dataset of _datasets.list) {
+          for (const _dataset of _datasets) {
             if (_dataset.datasetName === dataset.datasetName && LayerUtils.availableServiceLayer(_dataset.datasetType)) {
               canAdd = true
               break

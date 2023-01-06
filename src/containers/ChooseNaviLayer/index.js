@@ -12,6 +12,7 @@ const mapStateToProps = state => ({
   language: state.setting.toJS().language,
   device: state.device.toJS().device,
   currentLayer: state.layers.toJS().currentLayer,
+  layers: state.layers.toJS().layers,
 })
 
 export default connect(

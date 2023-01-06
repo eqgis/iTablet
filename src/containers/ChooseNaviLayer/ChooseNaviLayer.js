@@ -3,7 +3,7 @@ import { View, FlatList, TouchableOpacity, Text, Image ,Platform,StyleSheet} fro
 import { scaleSize, setSpText, Toast, LayerUtils ,DialogUtils} from '../../utils'
 import { color } from '../../styles'
 import NavigationService from '../NavigationService'
-import { SMap } from 'imobile_for_reactnative'
+import { SMap ,SData} from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import { Container } from '../../components'
 import { getThemeAssets,getLayerWhiteIconByType ,getPublicAssets,getLayerIconByType} from '../../assets'
@@ -22,6 +22,7 @@ export default class ChooseNaviLayer extends React.Component {
     getLayers: PropTypes.func,
     device:PropTypes.object,
     currentLayer:PropTypes.object,
+    layers:PropTypes.array,
   }
 
   props: {
@@ -43,9 +44,40 @@ export default class ChooseNaviLayer extends React.Component {
   }
 
   getData = async () => {
-    let dataList = await SMap.getLineDataset()
+    let has = false
+    let array = []
+    let datasources = await SData._getDatasetsByWorkspaceDatasource()
+    datasources.forEach(item => {
+      if(item.alias === "default_increment_datasource@"+this.props.user.currentUser.userName){
+        has = true
+      }
+    })
+    if(!has){
+      const homePath = await FileTools.getHomeDirectory()
+      const udbpath = homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativePath.Temp + "default_increment_datasource@" + this.props.user.currentUser.userName + ".udb"
+      await SData.openDatasource({alias:"default_increment_datasource@"+this.props.user.currentUser.userName,server:udbpath,engineType:219})
+      datasources = await SData._getDatasetsByWorkspaceDatasource()
+    }
+
+    datasources.forEach(item => {
+      if(item.alias === "default_increment_datasource@"+this.props.user.currentUser.userName){
+        item.data.forEach(item2 => {
+          if(item2.datasetType === DatasetType.LINE){
+            let name = ""
+            this.props.layers.forEach(layer =>{
+              if(layer.datasetName === item2.datasetName){
+                name = layer.datasetName
+              }
+            })
+            array.push({layerName:name,datasetName:item2.datasetName,datasourceName:item2.datasourceName})
+          }
+        })
+      }
+    })
+
+    // let dataList = await SMap.getLineDataset()
     this.setState({
-      data: dataList,
+      data: array,
     })
   }
 

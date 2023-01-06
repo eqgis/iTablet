@@ -10,10 +10,12 @@ import ToolbarBtnType from "../../ToolbarBtnType"
 import { getThemeAssets} from "../../../../../../assets"
 import constants from "../../../../constants"
 import {getLanguage} from "../../../../../../language"
-import {ConstToolType} from "../../../../../../constants"
+import {ConstToolType,ConstPath} from "../../../../../../constants"
 import IncrementAction from "./IncrementAction"
-import {SMap} from 'imobile_for_reactnative'
+import {SData} from 'imobile_for_reactnative'
 import LineList from "./customView/LineList"
+import { FileTools } from '../../../../../../native'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 async function getData(type) {
   let data = []
@@ -208,7 +210,8 @@ async function getData(type) {
       ]
       break
     case ConstToolType.SM_MAP_INCREMENT_CHANGE_NETWORK:
-      data = await SMap.getLineDataset()
+      // data = await SMap.getLineDataset()
+      data = getDataset()
       //eslint-disable-next-line
       customView = props => <LineList data={data} device={props.device} selectedItem={global.INCREMENT_DATA}/>
       buttons = []
@@ -219,6 +222,41 @@ async function getData(type) {
   }
   return {data, buttons, customView}
 }
+
+async function getDataset(){
+  let has = false
+  let array = []
+  let datasources = await SData._getDatasetsByWorkspaceDatasource()
+  datasources.forEach(item => {
+    if(item.alias === "default_increment_datasource"+this.props.user.currentUser.userName){
+      has = true
+    }
+  })
+  if(!has){
+    const homePath = await FileTools.getHomeDirectory()
+    const udbpath = homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativePath.Temp + "default_increment_datasource@" + this.props.user.currentUser.userName + ".udb"
+    await SData.openDatasource({alias:"default_increment_datasource"+this.props.user.currentUser.userName,server:udbpath,engineType:219})
+    datasources = await SData._getDatasetsByWorkspaceDatasource()
+  }
+
+  datasources.forEach(item => {
+    if(item.alias === "default_increment_datasource"+this.props.user.currentUser.userName){
+      item.data.forEach(item2 => {
+        if(item2.datasetType === DatasetType.LINE){
+          let name = ""
+          this.props.layers.forEach(layer =>{
+            if(layer.datasetName === item2.datasetName){
+              name = layer.datasetName
+            }
+          })
+          array.push({layerName:name,datasetName:item2.datasetName,datasourceName:item2.datasourceName})
+        }
+      })
+    }
+  })
+  return array
+}
+
 export default {
   getData,
 }

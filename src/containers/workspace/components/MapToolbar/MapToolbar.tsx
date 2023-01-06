@@ -248,7 +248,7 @@ export default class MapToolbar extends React.Component<Props, State> {
         key={item.key}
         opacity={1}
         title={title || item.title}
-        textColor={color.bottomTabTextColor}
+        textColor={this.state.currentIndex === index ? color.bottomTabTextColorSelect : color.bottomTabTextColor}
         textStyle={{ fontSize: setSpText(18), marginTop: scaleSize(5), }}
         selected={this.state.currentIndex === index}
         imageStyle= {{width: scaleSize(48), height: scaleSize(48)}}

@@ -155,6 +155,7 @@ const defaultStyles = {
   // containerTextColor: '#fff',
   bottomTabBgColor: '#fff',
   bottomTabTextColor: '#505050',
+  bottomTabTextColorSelect: '#505050',
   rightListBgColor: '#fff',
   rightListTextColor: '#000',
   leftBottomBtnBgColor: '#fff',

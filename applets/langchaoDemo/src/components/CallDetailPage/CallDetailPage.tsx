@@ -422,16 +422,23 @@ class CallDetailPage extends Component<Props, State> {
             flex: 1,
             height: '100%',
             justifyContent: 'space-evenly',
-          }]}
+          },
+          item.callPhoneNumber === "" && {
+            justifyContent: 'center',
+          },
+          ]}
         >
           <Text
             style={[{
               fontSize: dp(20),
             }]}
           >
-            {item.callName || "无名氏"}
+            {item.callName || getLanguage(global.language).Map_Settings.MANUAL_ACQUISITION}
           </Text>
-          <Text>{item.callPhoneNumber || "17711245121"}</Text>
+          {item.callPhoneNumber !== "" && (
+            <Text>{item.callPhoneNumber}</Text>
+          )}
+          {/* <Text>{item.callPhoneNumber || ""}</Text> */}
         </View>
 
         <View

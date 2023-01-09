@@ -2904,6 +2904,7 @@ export const language_cn = {
   TARGET_CITY: '去往城市',  // Target city
   ORGANIZATION: '所属单位',// organization
   PROJECT: '所属项目', // project
+  MANUAL_ACQUISITION: '手动采集', // Manual acquisition
 
 
 

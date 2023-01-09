@@ -2905,5 +2905,6 @@ export const language_ja: typeof language_cn = {
   TARGET_CITY: 'Target city',  // To be tanslated
   ORGANIZATION: 'Organization',  // To be tanslated
   PROJECT: 'Project', // To be tanslated
+  MANUAL_ACQUISITION: 'Manual acquisition', // To be tanslated
 
 }

@@ -21,7 +21,7 @@ interface State {
 
 
 class ScanWrap extends React.Component<Props, State> {
-
+  timer:any
   scanRef: Scan | null = null
 
   constructor(props: Props) {
@@ -32,12 +32,16 @@ class ScanWrap extends React.Component<Props, State> {
   }
 
   componentDidMount = (): void => {
-    const timer = setTimeout(() => {
+    this.timer = setTimeout(() => {
       this.setState({
         hintText: '请调整距离将二维码放入扫描圈内',
       })
-      clearTimeout(timer)
-    },5000)
+      clearTimeout(this.timer)
+    }, 5000)
+  }
+
+  componentWillUnmount(): void {
+    clearTimeout(this.timer)
   }
 
   renderScan = () => {

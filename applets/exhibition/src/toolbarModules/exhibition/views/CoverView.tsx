@@ -1241,10 +1241,10 @@ class CoverView extends React.Component<Props, State> {
         hide={true}
         onHide={() => {
           this.timeoutTrigger?.onBackFromSecondMenu()
-          this.setState({
-            // secondMenuData: [],
-            isSecondaryShow: false,
-          })
+          // this.setState({
+          //   // secondMenuData: [],
+          //   isSecondaryShow: false,
+          // })
         }}
         data={this.state.secondMenuData}
         isRepeatClickCancelSelected

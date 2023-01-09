@@ -314,7 +314,8 @@ class HistoricalRecord extends Component<Props, State> {
             >
               {item.localTime_User}
             </Text>
-            <Text>{`时长：${Number(item.duration).toFixed(2)} 分钟`}</Text>
+            {/* <Text>{`时长：${Number(item.duration).toFixed(2)} 分钟`}</Text> */}
+            <Text>{`${getLanguage(global.language).Map_Settings.DURATION}：${Number(item.duration).toFixed(2)} ${getLanguage(global.language).Map_Settings.TIME_MINUTE}`}</Text>
           </View>
 
         </TouchableOpacity>

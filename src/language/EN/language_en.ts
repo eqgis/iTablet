@@ -2903,5 +2903,8 @@ export const language_en: typeof language_cn = {
   ORGANIZATION: 'Organization',  // To be tanslated
   PROJECT: 'Project', // To be tanslated
   MANUAL_ACQUISITION: 'Manual acquisition', // To be tanslated
+  MEDIA_INFO: 'Media infomation', // To be tanslated
+  CALL_DETAIL: 'Call detail', // To be tanslated
+  TIME_MINUTE: 'min', // Minute To be tanslated
 
 }

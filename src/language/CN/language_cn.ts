@@ -2905,6 +2905,9 @@ export const language_cn = {
   ORGANIZATION: '所属单位',// organization
   PROJECT: '所属项目', // project
   MANUAL_ACQUISITION: '手动采集', // Manual acquisition
+  MEDIA_INFO: '多媒体信息', // Media infomation
+  CALL_DETAIL: '呼叫详情', // Call detail
+  TIME_MINUTE: '分钟', // Minute
 
 
 

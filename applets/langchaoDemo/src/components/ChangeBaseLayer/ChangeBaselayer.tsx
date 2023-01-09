@@ -160,7 +160,7 @@ class ChangeBaseLayer extends Component<Props, State> {
               fontSize: dp(16),
               fontWeight: 'bold',
             }]}
-          >{"图层"}</Text>
+          >{getLanguage(global.language).Profile.LAYER}</Text>
         </View>
         {this.renderList()}
       </View>

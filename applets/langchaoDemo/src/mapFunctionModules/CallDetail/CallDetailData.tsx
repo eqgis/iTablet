@@ -13,6 +13,7 @@ import { Header } from '@/components'
 import { color } from '@/styles'
 import { getImage } from '../../assets/Image'
 import { AppEvent } from '@/utils'
+import { getLanguage } from '@/language'
 
 interface DataItem {
   key: string;
@@ -138,7 +139,7 @@ function getHeaderView(type: string | number) {
               style={[{
                 fontSize: dp(22),
               }]}
-            >{"呼叫详情"}</Text>
+            >{getLanguage(global.language).Map_Settings.CALL_DETAIL}</Text>
           </View>
           <TouchableOpacity
             style={[{

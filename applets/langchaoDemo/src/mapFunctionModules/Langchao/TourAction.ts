@@ -375,13 +375,14 @@ const uploadTrack = async (id: number, type: uploadType) => {
     // }, id, 'line')
     // console.warn("message result: " + result)
 
+    let result = false
     if(count > 0 && type !== 'media') {
       let uploadInfo = await uploadFile(path)
       if(uploadInfo !== null) {
         uploadInfo = JSON.parse(JSON.stringify(uploadInfo))
         const uuidF = uploadInfo.uuid
         // 图片的路径获取 图片的文件上传 图片的uuid
-        const result = await sendMessagePhone({
+        result = await sendMessagePhone({
           Trajectory: uuidF,
           Photo: photoUuids,
         }, id, 'line')
@@ -393,10 +394,12 @@ const uploadTrack = async (id: number, type: uploadType) => {
         }
       }
     }
+    return result
   } catch (error) {
     // to do
     printLog(`uploadTrack error: ${JSON.stringify(error)}`)
     global.SimpleDialog.setVisible(false)
+    return false
   }
 }
 
@@ -416,22 +419,28 @@ const uploadDialog = async (id: number, type: uploadType) => {
       confirmAction: async () => {
         global.SimpleDialog.setVisible(false)
         global.Loading.setLoading(true, getLanguage(global.language).Prompt.RESOURCE_UPLOADING)
+        let result = false
         switch(type) {
           case "line":
-            await uploadTrack(id, 'line')
+            result = await uploadTrack(id, 'line')
             break
           case "marker":
-            await uploadTrack(id, 'marker')
+            result = await uploadTrack(id, 'marker')
             break
           case "media":
-            await uploadTrack(id, 'media')
+            result = await uploadTrack(id, 'media')
             break
           case "all":
             await sendInfoAll()
+            result = true
             break
         }
         global.Loading.setLoading(false)
-        Toast.show(getLanguage(global.language).Prompt.RESOURCE_UPLOAD_SUCCESS)
+        if(result) {
+          Toast.show(getLanguage(global.language).Prompt.RESOURCE_UPLOAD_SUCCESS)
+        } else {
+          Toast.show(getLanguage(global.language).Prompt.RESOURCE_UPLOAD_FAILED)
+        }
       },
       cancelAction: () => {
         global.SimpleDialog.setVisible(false)

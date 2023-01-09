@@ -2,6 +2,7 @@ import { getThemeAssets } from "@/assets"
 import { ConstOnline } from "@/constants"
 import { OpenData } from "@/constants/FunctionToolbarModule"
 import { getLanguage } from "@/language"
+import { AppEvent } from "@/utils"
 import Toast from "@/utils/Toast"
 import { DatasetType } from "imobile_for_reactnative"
 import { getImage } from "../../assets/Image"
@@ -16,10 +17,12 @@ function layerManagerData() {
         const result = await OpenData(ConstOnline.Google, 0)
         if(result) {
           Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+          AppEvent.emitEvent("changeBaseLayer", "Google")
         }
       },
       data: [],
       image: getImage().icon_map_normal,
+      selectImage: getImage().icon_map_normal,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -30,10 +33,12 @@ function layerManagerData() {
         const result = await OpenData(ConstOnline.Google, 1)
         if(result) {
           Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+          AppEvent.emitEvent("changeBaseLayer", "Google Satellite")
         }
       },
       data: [],
       image: getImage().icon_map_image,
+      selectImage: getImage().icon_map_image,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -44,55 +49,57 @@ function layerManagerData() {
         const result = await OpenData(ConstOnline.Google, 2)
         if(result) {
           Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+          AppEvent.emitEvent("changeBaseLayer", 'Google Terrain')
         }
       },
       data: [],
       image: getImage().icon_map_terrain,
+      selectImage: getImage().icon_map_terrain,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
-    {
-      title: 'Google Hybrid',
-      action: async () => {
-        global.ToolBar?.close()
-        const result = await OpenData(ConstOnline.Google, 3)
-        if(result) {
-          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
-        }
-      },
-      data: [],
-      image: getThemeAssets().layerType.layer_image,
-      type: DatasetType.IMAGE,
-      themeType: -1,
-    },
-    {
-      title: 'Google labelmap',
-      action: async () => {
-        global.ToolBar?.close()
-        const result = await OpenData(ConstOnline.Google, 4)
-        if(result) {
-          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
-        }
-      },
-      data: [],
-      image: getImage().icon_ditu_3,
-      type: DatasetType.IMAGE,
-      themeType: -1,
-    },
-    {
-      title: "BingMap", // BingMap
-      action: async () => {
-        global.ToolBar?.close()
-        const result = await OpenData(ConstOnline.BingMap, 0)
-        if(result) {
-          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
-        }
-      },
-      data: [],
-      image: getImage().icon_ditu_3,
-      type: DatasetType.IMAGE,
-      themeType: -1,
-    },
+    // {
+    //   title: 'Google Hybrid',
+    //   action: async () => {
+    //     global.ToolBar?.close()
+    //     const result = await OpenData(ConstOnline.Google, 3)
+    //     if(result) {
+    //       Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+    //     }
+    //   },
+    //   data: [],
+    //   image: getThemeAssets().layerType.layer_image,
+    //   type: DatasetType.IMAGE,
+    //   themeType: -1,
+    // },
+    // {
+    //   title: 'Google labelmap',
+    //   action: async () => {
+    //     global.ToolBar?.close()
+    //     const result = await OpenData(ConstOnline.Google, 4)
+    //     if(result) {
+    //       Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+    //     }
+    //   },
+    //   data: [],
+    //   image: getImage().icon_ditu_3,
+    //   type: DatasetType.IMAGE,
+    //   themeType: -1,
+    // },
+    // {
+    //   title: "BingMap", // BingMap
+    //   action: async () => {
+    //     global.ToolBar?.close()
+    //     const result = await OpenData(ConstOnline.BingMap, 0)
+    //     if(result) {
+    //       Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+    //     }
+    //   },
+    //   data: [],
+    //   image: getImage().icon_ditu_3,
+    //   type: DatasetType.IMAGE,
+    //   themeType: -1,
+    // },
     {
       title: '天地图底图', // 'Tianditu',
       action: async ({callback}: {callback: () => any}) => {
@@ -106,11 +113,13 @@ function layerManagerData() {
         const result = await OpenData(data, 0, callback)
         if(result) {
           Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+          AppEvent.emitEvent("changeBaseLayer", '天地图底图')
         }
         global.ToolBar?.close()
       },
       data: [],
       image: getImage().icon_map_normal,
+      selectImage: getImage().icon_map_normal,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -127,11 +136,13 @@ function layerManagerData() {
         const result = await OpenData(data, 0, callback)
         if(result) {
           Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+          AppEvent.emitEvent("changeBaseLayer", '天地图-影像底图')
         }
         global.ToolBar?.close()
       },
       data: [],
       image: getImage().icon_map_image,
+      selectImage: getImage().icon_map_image,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -149,42 +160,44 @@ function layerManagerData() {
         const result = await OpenData(data, 0, callback)
         if(result) {
           Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+          AppEvent.emitEvent("changeBaseLayer", '天地图-地形底图')
         }
         global.ToolBar?.close()
       },
       data: [],
       image: getImage().icon_map_terrain,
+      selectImage: getImage().icon_map_terrain,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
-    {
-      title: "高德底图", // 'GaoDe',
-      action: async () => {
-        global.ToolBar?.close()
-        const result = await OpenData(ConstOnline.GAODE, 0)
-        if(result) {
-          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
-        }
-      },
-      data: [],
-      image: getImage().icon_ditu_3,
-      type: DatasetType.IMAGE,
-      themeType: -1,
-    },
-    {
-      title: "高德-影像底图", //'GaoDe Image',
-      action: async () => {
-        global.ToolBar?.close()
-        const result = await OpenData(ConstOnline.GAODE, 1)
-        if(result) {
-          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
-        }
-      },
-      data: [],
-      image: getImage().icon_ditu_3,
-      type: DatasetType.IMAGE,
-      themeType: -1,
-    },
+    // {
+    //   title: "高德底图", // 'GaoDe',
+    //   action: async () => {
+    //     global.ToolBar?.close()
+    //     const result = await OpenData(ConstOnline.GAODE, 0)
+    //     if(result) {
+    //       Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+    //     }
+    //   },
+    //   data: [],
+    //   image: getImage().icon_ditu_3,
+    //   type: DatasetType.IMAGE,
+    //   themeType: -1,
+    // },
+    // {
+    //   title: "高德-影像底图", //'GaoDe Image',
+    //   action: async () => {
+    //     global.ToolBar?.close()
+    //     const result = await OpenData(ConstOnline.GAODE, 1)
+    //     if(result) {
+    //       Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+    //     }
+    //   },
+    //   data: [],
+    //   image: getImage().icon_ditu_3,
+    //   type: DatasetType.IMAGE,
+    //   themeType: -1,
+    // },
     // {
     //   title: '全球矢量地图',
     //   action: () => {
@@ -215,19 +228,19 @@ function layerManagerData() {
     //   type: DatasetType.IMAGE,
     //   themeType: -1,
     // },
-    {
-      title: 'OSM',
-      action: async () => {
-        global.ToolBar?.close()
-        const result = await OpenData(ConstOnline.OSM, 0)
-        if(result) {
-          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
-        }
-      },
-      data: [],
-      image: getImage().icon_ditu_3, // getThemeAssets().layerType.layer_image,
-      themeType: -1,
-    },
+    // {
+    //   title: 'OSM',
+    //   action: async () => {
+    //     global.ToolBar?.close()
+    //     const result = await OpenData(ConstOnline.OSM, 0)
+    //     if(result) {
+    //       Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+    //     }
+    //   },
+    //   data: [],
+    //   image: getImage().icon_ditu_3, // getThemeAssets().layerType.layer_image,
+    //   themeType: -1,
+    // },
     // {
     //   title: 'CycleMap',
     //   action: () => {

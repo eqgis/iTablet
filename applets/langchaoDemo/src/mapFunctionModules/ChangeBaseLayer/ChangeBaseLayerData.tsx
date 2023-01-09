@@ -25,6 +25,7 @@ export interface layerManagerDataType {
 	action: () => unknown,
 	data: Array<unknown>,
 	image: ImageSourcePropType, // 图片
+  selectImage: ImageSourcePropType, // 选中后显示的图片
 	type: string,
 	themeType: number,
 }

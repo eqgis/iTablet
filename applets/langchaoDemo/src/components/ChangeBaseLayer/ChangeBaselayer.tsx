@@ -12,18 +12,21 @@ import { getPublicAssets, getThemeAssets } from "@/assets"
 import { SCollector, SMCollectorType } from "imobile_for_reactnative"
 import NavigationService from "@/containers/NavigationService"
 import ToolbarModule from "@/containers/workspace/components/ToolBar/modules/ToolbarModule"
-import { Toast } from "@/utils"
+import { AppEvent, Toast } from "@/utils"
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call'
 import { color } from "@/styles"
 import {layerManagerDataType } from '../../mapFunctionModules/ChangeBaseLayer/ChangeBaseLayerData'
+import { getLayers } from "@/redux/models/layers"
 
 
 interface Props extends ReduxProps {
   data: Array<layerManagerDataType>,
 }
 
+type selectTitleType = '天地图底图' | "天地图-影像底图" | "天地图-地形底图" | "Google" | "Google Satellite" | "Google Terrain" | ""
 interface State {
 	// to do
+  selectTitle: selectTitleType,
 }
 
 class ChangeBaseLayer extends Component<Props, State> {
@@ -31,8 +34,53 @@ class ChangeBaseLayer extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
+      selectTitle: '',
     }
 
+  }
+
+  componentDidMount = async (): void => {
+    const layers = await this.props.getLayers()
+    // console.warn("layers: " + JSON.stringify(layers))
+    const baselayer = layers[layers.length - 1]
+    const aliasSelect = baselayer.datasourceAlias
+    let selectTitle: selectTitleType = ''
+    switch(aliasSelect) {
+      case 'tianditu':
+        selectTitle = '天地图底图'
+        break
+      case 'tiandituImg':
+        selectTitle = '天地图-影像底图'
+        break
+      case 'tiandituTer':
+        selectTitle = '天地图-地形底图'
+        break
+      case 'GoogleMaps':
+        if(baselayer.datasetName === 'roadmap') {
+          selectTitle = 'Google'
+        } else if(baselayer.datasetName === 'satellite') {
+          selectTitle = 'Google Satellite'
+        } else if(baselayer.datasetName === 'terrain') {
+          selectTitle = 'Google Terrain'
+        }
+        break
+      default:
+        selectTitle = ''
+
+    }
+
+    this.setState({
+      selectTitle: selectTitle,
+    })
+
+    AppEvent.addListener("changeBaseLayer", this.setSelectBaseLayer)
+
+  }
+
+  setSelectBaseLayer = (selectTitle: selectTitleType) => {
+    this.setState({
+      selectTitle,
+    })
   }
 
   _renderItem = (item: layerManagerDataType, index: number) => {
@@ -61,7 +109,7 @@ class ChangeBaseLayer extends Component<Props, State> {
               width: dp(80),
               height: dp(80),
             }]}
-            source={item.image}
+            source={this.state.selectTitle === item.title ? item.selectImage : item.image}
           />
         </View>
         <View
@@ -129,6 +177,7 @@ const mapStateToProp = (state: RootState) => ({
 })
 
 const mapDispatch = {
+  getLayers,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

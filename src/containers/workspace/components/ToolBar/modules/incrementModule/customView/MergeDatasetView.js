@@ -22,11 +22,12 @@ import {
   Height,
 } from '../../../../../../../constants'
 import { getPublicAssets, getThemeAssets } from '../../../../../../../assets'
-import { SMap } from 'imobile_for_reactnative'
+import { SMap ,SData} from 'imobile_for_reactnative'
 import ModalDropdown from 'react-native-modal-dropdown'
 import { getLanguage } from '../../../../../../../language'
 import { Container } from '../../../../../../../components'
 import NavigationService from '../../../../../../NavigationService'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 export default class MergeDatasetView extends Component {
   props: {
@@ -73,7 +74,22 @@ export default class MergeDatasetView extends Component {
    * 获取所有线数据集，过滤需要合并的源数据集 zhangxt
    */
   _add = async () => {
-    let lineDataset = await SMap.getAllLineDatasets()
+    let datasources = await SData._getDatasetsByWorkspaceDatasource()
+    let datasourceArray = []
+    datasources.forEach(item => {
+      let datasetArray = []
+      item.data.forEach(item2 => {
+        if(item2.datasetType === DatasetType.LINE){
+          datasetArray.push({datasetName:item2.datasetName,datasourceName:item2.datasourceName})
+        }
+      })
+      if(datasetArray.length>0){
+        datasourceArray.push({title:item.alias,visible:true,data:datasetArray})
+      }
+    })
+
+    let lineDataset = datasourceArray
+    // let lineDataset = await SMap.getAllLineDatasets()
     let { datasourceName } = this.props.sourceData
     let filterData = lineDataset.filter(item => {
       return item.title !== datasourceName

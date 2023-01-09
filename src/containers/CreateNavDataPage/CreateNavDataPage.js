@@ -79,9 +79,23 @@ export default class CreateNavDataPage extends Component {
    * 获取工作空间内所有线数据集 zhangxt
    */
   getLineDatasets = async () => {
-    let lineDataset = await SMap.getAllLineDatasets()
+    let datasources = await SData._getDatasetsByWorkspaceDatasource()
+    let datasourceArray = []
+    datasources.forEach(item => {
+      let datasetArray = []
+      item.data.forEach(item2 => {
+        if(item2.datasetType === DatasetType.LINE){
+          datasetArray.push({datasetName:item2.datasetName,datasourceName:item2.datasourceName})
+        }
+      })
+      if(datasetArray.length>0){
+        datasourceArray.push({title:item.alias,visible:true,data:datasetArray})
+      }
+    })
+
+    // let lineDataset = await SMap.getAllLineDatasets()
     this.setState({
-      lineDataset: lineDataset,
+      lineDataset: datasourceArray,
     })
   }
 

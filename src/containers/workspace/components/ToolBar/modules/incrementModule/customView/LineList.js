@@ -22,7 +22,7 @@ import {
   getPublicAssets,
   getThemeAssets,
 } from '../../../../../../../assets'
-import { SMap, DatasetType } from 'imobile_for_reactnative'
+import { SMap, DatasetType ,SData} from 'imobile_for_reactnative'
 import { color } from '../../../../../../../styles'
 import ToolbarModule from '../../ToolbarModule'
 import { ToolbarType, Height } from '../../../../../../../constants'
@@ -170,7 +170,7 @@ export default class LineList extends Component {
       let selectedItem = JSON.parse(JSON.stringify(this.state.selectedItem))
       selectedItem.datasetName = text
       //更新datasteName
-      SMap.modifyDatasetName({
+      SData.renameDataset({
         datasourceName,
         datasetName,
         newDatasetName: text,

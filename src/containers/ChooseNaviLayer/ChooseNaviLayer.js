@@ -141,7 +141,7 @@ export default class ChooseNaviLayer extends React.Component {
         let selectedItem = JSON.parse(JSON.stringify(this.state.selectedItem))
         selectedItem.datasetName = text
         //更新datasteName
-        SMap.modifyDatasetName({
+        SData.renameDataset({
           datasourceName,
           datasetName,
           newDatasetName: text,

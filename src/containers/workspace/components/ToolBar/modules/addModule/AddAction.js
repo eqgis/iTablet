@@ -112,7 +112,7 @@ async function listAction(type, params = {}) {
         getLanguage(_params.language).Map_Main_Menu.PLOTS
     ) {
       const labelUDB = `Label_${_params.user.currentUser.userName}#`
-      const resultArr = await SMap.addLayers([params.item.name], labelUDB)
+      const resultArr = await SMap.addLayers([params.item.datasetName], labelUDB)
       if (resultArr.length > 0) {
         SMap.refreshMap()
         SMediaCollector.showMedia(resultArr[0].layerName, false)

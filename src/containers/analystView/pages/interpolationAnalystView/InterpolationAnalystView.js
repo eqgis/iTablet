@@ -11,11 +11,9 @@ import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 import InterpolationParamsData from './interpolationParamsData'
 import {
-  SMap,
-  FieldType,
   SData,
 } from 'imobile_for_reactnative'
-import { DatasetType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, EngineType, FieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 const popTypes = {
   Method: 'Method',

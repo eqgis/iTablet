@@ -318,8 +318,7 @@ export const exportWorkspace = (params, cb = () => { }) => async (
       const extra = params.extra || {}
 
       //接口统一 add xiezhy
-       
-      exportResult = await SData.exportWorkspaceByMap(params.maps[0],path,extra.exportMedia)
+      exportResult = await SData.exportWorkspaceByMap(params.maps[0], path, !!extra.exportMedia)
 
       // if (params.isOpenMap) { // isOpenMap需要打开地图后导出
       //   const isLogin =

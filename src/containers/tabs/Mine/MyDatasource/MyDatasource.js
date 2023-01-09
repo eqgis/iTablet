@@ -4,8 +4,9 @@ import { FileTools } from '../../../../native'
 import { getLanguage } from '../../../../language/index'
 import { ConstPath } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
-import { SMap, EngineType, SData } from 'imobile_for_reactnative'
+import { SData } from 'imobile_for_reactnative'
 import { Toast } from '../../../../utils'
+import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 class MyDatasource extends MyDataPage {
   constructor(props) {
@@ -85,7 +86,6 @@ class MyDatasource extends MyDataPage {
     //拷贝之前先把datasource的临时media删除 add xiezhy
     let toPath = udbPath.substring(0, udbPath.lastIndexOf('/') + 1) + "Media"
     await FileTools.deleteFile(toPath)
-    //todo @yangsl 测试下面的功能
     let mediaPath = await SData.copyMediaByDatasource({
       server: udbPath,
       engineType: EngineType.UDB,

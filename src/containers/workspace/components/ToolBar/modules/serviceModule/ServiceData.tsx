@@ -2,7 +2,7 @@
  * 获取地图工具数据
  */
 import React from 'react'
-import { SMap } from 'imobile_for_reactnative'
+import { SMap, SData } from 'imobile_for_reactnative'
 import { ConstToolType, ConstPath } from '../../../../../../constants'
 import { ImageButton } from '../../../../../../components'
 import { getThemeAssets } from '../../../../../../assets'

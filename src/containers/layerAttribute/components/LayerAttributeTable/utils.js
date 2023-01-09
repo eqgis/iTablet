@@ -1,4 +1,4 @@
-import { FieldType } from 'imobile_for_reactnative'
+import { FieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { Platform } from 'react-native'
 
 function getBoolean(value, defaultValue) {

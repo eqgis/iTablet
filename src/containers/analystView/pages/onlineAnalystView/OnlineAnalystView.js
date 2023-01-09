@@ -11,8 +11,9 @@ import AggregatePointsAnalystView from './AggregatePointsAnalystView'
 import DensityAnalystView from './DensityAnalystView'
 import onlineParamsData from './onlineParamsData'
 import AnalystEntryData from '../analystListEntry/AnalystEntryData'
-import { SMap, SAnalyst, EngineType } from 'imobile_for_reactnative'
+import { SMap, SAnalyst } from 'imobile_for_reactnative'
 import { AggregatePointParams, DensityParams } from '../../AnalystType'
+import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 export default class OnlineAnalystView extends Component {
   props: {

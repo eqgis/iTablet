@@ -1,7 +1,7 @@
 /**
  * 添加 数据
  */
-import { SThemeCartography, SMap, SMSymbolTable, DatasetType } from 'imobile_for_reactnative'
+import { SThemeCartography, SMap, SMSymbolTable } from 'imobile_for_reactnative'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { FileTools } from '../../../../../../native'
 import { dataUtil, scaleSize, Toast } from '../../../../../../utils'
@@ -16,6 +16,7 @@ import { color } from '../../../../../../styles'
 import { getThemeAssets } from '../../../../../../assets'
 import { View } from 'react-native'
 import AddAction from './AddAction'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 /**
  * 获取数据源和地图菜单
@@ -46,12 +47,12 @@ async function getUDBsAndMaps() {
       lastModifiedDate: item.mtime,
     }
   })
-debugger
+
   let _labelDatasets = await DataHandler.getLocalData(user, 'LABEL')
-  debugger
+
   let labelDatasets = []
   _labelDatasets.forEach(item => {
-    if (item.type !== DatasetType.TABULAR) {
+    if (item.datasetType !== DatasetType.TABULAR) {
       labelDatasets.push(item)
     }
   })

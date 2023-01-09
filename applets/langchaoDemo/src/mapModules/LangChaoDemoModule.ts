@@ -214,7 +214,6 @@ export default class LangChaoDemoModule extends Module {
       onMapLoad: this.action,
       isEnterHome: false,
       onMapOpenSuccess: this.onMapOpenSuccess,
-      preAction: this.preAction,
     }
   }
 

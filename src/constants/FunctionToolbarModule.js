@@ -22,6 +22,7 @@ async function OpenData(data, index, callback) {
   } else {
     isOpen = await SMap.isDatasourceOpen(data.DSParams)
   }
+  let returnValue = false
   // Layer index = 0 为顶层
   if (isOpen) {
     let info = await SMap.getMapInfo()
@@ -119,12 +120,14 @@ async function OpenData(data, index, callback) {
 
     AppToolBar.getProps().getLayers()
     // SMap.viewEntire()
-    Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+    // Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+    returnValue = true
   } else {
+    returnValue = false
     Toast.show(getLanguage(global.language).Prompt.NETWORK_REQUEST_FAILED)
   }
   global.Loading?.setLoading(false)
-  return true
+  return returnValue
 }
 
 async function OpenData2(data, index, callback) {

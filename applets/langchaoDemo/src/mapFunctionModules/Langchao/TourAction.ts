@@ -93,14 +93,14 @@ const getCountryCode = async (lon: number, lat: number) => {
       sizeY: 1,
     }
     const result = await SMap.query("country", "Country_84", bounds)
-    console.warn("result: " + JSON.stringify(result) + "\n bounds: " + JSON.stringify(bounds))
+    // console.warn("result: " + JSON.stringify(result) + "\n bounds: " + JSON.stringify(bounds))
     if(result && result.length > 0) {
       const length = result.length
       const countrycodeData = getJson().contryCode
       countrycodeData.map((item: countryCodeType) => {
         if(item.name === result[length - 1].Country) {
           code = item.codeId
-          console.warn("Country: " + result[length - 1].Country)
+          // console.warn("Country: " + result[length - 1].Country)
         }
       })
     }

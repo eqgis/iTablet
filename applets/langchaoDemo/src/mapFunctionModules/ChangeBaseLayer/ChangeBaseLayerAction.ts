@@ -2,6 +2,7 @@ import { getThemeAssets } from "@/assets"
 import { ConstOnline } from "@/constants"
 import { OpenData } from "@/constants/FunctionToolbarModule"
 import { getLanguage } from "@/language"
+import Toast from "@/utils/Toast"
 import { DatasetType } from "imobile_for_reactnative"
 import { getImage } from "../../assets/Image"
 
@@ -10,9 +11,12 @@ function layerManagerData() {
   let data = [
     {
       title: "Google",// 'Google RoadMap',
-      action: () => {
+      action: async () => {
         global.ToolBar?.close()
-        return OpenData(ConstOnline.Google, 0)
+        const result = await OpenData(ConstOnline.Google, 0)
+        if(result) {
+          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+        }
       },
       data: [],
       image: getImage().icon_map_normal,
@@ -21,9 +25,12 @@ function layerManagerData() {
     },
     {
       title: 'Google Satellite',
-      action: () => {
+      action: async () => {
         global.ToolBar?.close()
-        return OpenData(ConstOnline.Google, 1)
+        const result = await OpenData(ConstOnline.Google, 1)
+        if(result) {
+          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+        }
       },
       data: [],
       image: getImage().icon_map_image,
@@ -32,9 +39,12 @@ function layerManagerData() {
     },
     {
       title: 'Google Terrain',
-      action: () => {
+      action: async () => {
         global.ToolBar?.close()
-        OpenData(ConstOnline.Google, 2)
+        const result = await OpenData(ConstOnline.Google, 2)
+        if(result) {
+          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+        }
       },
       data: [],
       image: getImage().icon_map_terrain,
@@ -43,9 +53,12 @@ function layerManagerData() {
     },
     {
       title: 'Google Hybrid',
-      action: () => {
+      action: async () => {
         global.ToolBar?.close()
-        OpenData(ConstOnline.Google, 3)
+        const result = await OpenData(ConstOnline.Google, 3)
+        if(result) {
+          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+        }
       },
       data: [],
       image: getThemeAssets().layerType.layer_image,
@@ -54,9 +67,12 @@ function layerManagerData() {
     },
     {
       title: 'Google labelmap',
-      action: () => {
+      action: async () => {
         global.ToolBar?.close()
-        return OpenData(ConstOnline.Google, 4)
+        const result = await OpenData(ConstOnline.Google, 4)
+        if(result) {
+          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+        }
       },
       data: [],
       image: getImage().icon_ditu_3,
@@ -65,9 +81,12 @@ function layerManagerData() {
     },
     {
       title: "BingMap", // BingMap
-      action: () => {
+      action: async () => {
         global.ToolBar?.close()
-        return OpenData(ConstOnline.BingMap, 0)
+        const result = await OpenData(ConstOnline.BingMap, 0)
+        if(result) {
+          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+        }
       },
       data: [],
       image: getImage().icon_ditu_3,
@@ -76,7 +95,7 @@ function layerManagerData() {
     },
     {
       title: '天地图底图', // 'Tianditu',
-      action: ({callback}: {callback: () => any}) => {
+      action: async ({callback}: {callback: () => any}) => {
         const data = []
         if (global.language === 'CN') {
           data.push(ConstOnline.tiandituCN())
@@ -84,7 +103,10 @@ function layerManagerData() {
           data.push(ConstOnline.tiandituEN())
         }
         data.push(ConstOnline.tianditu())
-        OpenData(data, 0, callback)
+        const result = await OpenData(data, 0, callback)
+        if(result) {
+          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+        }
         global.ToolBar?.close()
       },
       data: [],
@@ -94,7 +116,7 @@ function layerManagerData() {
     },
     {
       title: '天地图-影像底图', //'Tianditu Image',
-      action: ({callback}: {callback: () => any}) => {
+      action: async ({callback}: {callback: () => any}) => {
         const data = []
         if (global.language === 'CN') {
           data.push(ConstOnline.tiandituImgCN())
@@ -102,7 +124,10 @@ function layerManagerData() {
           data.push(ConstOnline.tiandituImgEN())
         }
         data.push(ConstOnline.tiandituImg())
-        OpenData(data, 0, callback)
+        const result = await OpenData(data, 0, callback)
+        if(result) {
+          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+        }
         global.ToolBar?.close()
       },
       data: [],
@@ -112,7 +137,7 @@ function layerManagerData() {
     },
     {
       title: '天地图-地形底图', // Tianditu Terrain
-      action: ({callback}: {callback: () => any}) => {
+      action: async ({callback}: {callback: () => any}) => {
         const data = []
         // data.push(ConstOnline.tiandituTerCN())
         if (global.language === 'CN') {
@@ -121,7 +146,10 @@ function layerManagerData() {
           data.push(ConstOnline.tiandituImgEN())
         }
         data.push(ConstOnline.tiandituTer())
-        OpenData(data, 0, callback)
+        const result = await OpenData(data, 0, callback)
+        if(result) {
+          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+        }
         global.ToolBar?.close()
       },
       data: [],
@@ -131,9 +159,12 @@ function layerManagerData() {
     },
     {
       title: "高德底图", // 'GaoDe',
-      action: () => {
+      action: async () => {
         global.ToolBar?.close()
-        return OpenData(ConstOnline.GAODE, 0)
+        const result = await OpenData(ConstOnline.GAODE, 0)
+        if(result) {
+          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+        }
       },
       data: [],
       image: getImage().icon_ditu_3,
@@ -142,9 +173,12 @@ function layerManagerData() {
     },
     {
       title: "高德-影像底图", //'GaoDe Image',
-      action: () => {
+      action: async () => {
         global.ToolBar?.close()
-        return OpenData(ConstOnline.GAODE, 1)
+        const result = await OpenData(ConstOnline.GAODE, 1)
+        if(result) {
+          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+        }
       },
       data: [],
       image: getImage().icon_ditu_3,
@@ -183,9 +217,12 @@ function layerManagerData() {
     // },
     {
       title: 'OSM',
-      action: () => {
+      action: async () => {
         global.ToolBar?.close()
-        return OpenData(ConstOnline.OSM, 0)
+        const result = await OpenData(ConstOnline.OSM, 0)
+        if(result) {
+          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+        }
       },
       data: [],
       image: getImage().icon_ditu_3, // getThemeAssets().layerType.layer_image,

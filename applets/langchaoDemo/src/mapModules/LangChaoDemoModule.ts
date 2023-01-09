@@ -78,36 +78,7 @@ export default class LangChaoDemoModule extends Module {
     ]
 
     // 自定义地图底部Tab
-    this.tabModules = [
-      // 系统自带Tab
-      MapTabs.MapView,          // 系统自带Tab-地图
-      // MapTabs.LayerManager,     // 系统自带Tab-图层
-      // MapTabs.LayerAttribute,   // 系统自带Tab-属性
-
-      // todo 用户自定义Tab页面
-      {
-        key: module,
-        title:  getLanguage(global.language).Map_Settings.HISTORICAL_RECORD,
-        //'属性',
-        image: getThemeAssets().tabBar.tab_attribute,
-        selectedImage: getThemeAssets().tabBar.tab_attribute_selected,
-        btnClick: () => {
-          NavigationService.navigate('HistoricalRecord')
-        },
-      },
-
-      // MapTabs.MapSetting,       // 系统自带Tab-设置
-      {
-        key: module,
-        title:  getLanguage(global.language).Map_Settings.SETTING,
-        //'属性',
-        image: getThemeAssets().tabBar.tab_setting,
-        selectedImage: getThemeAssets().tabBar.tab_setting_selected,
-        btnClick: () => {
-          NavigationService.navigate('SettingPage')
-        },
-      },
-    ]
+    this.tabModules = this.getTabModules()
 
     // 添加新的页面导航
     NavigatorUtil.addNavigator(navigators)
@@ -137,6 +108,39 @@ export default class LangChaoDemoModule extends Module {
       // MTbtnUnderLayer: '#afeeee', // MtBtn类型的按钮按下时显示的背景色
     })
 
+  }
+
+  getTabModules = () => {
+    return [
+      // 系统自带Tab
+      MapTabs.MapView,          // 系统自带Tab-地图
+      // MapTabs.LayerManager,     // 系统自带Tab-图层
+      // MapTabs.LayerAttribute,   // 系统自带Tab-属性
+
+      // todo 用户自定义Tab页面
+      {
+        key: module,
+        title:  getLanguage(global.language).Map_Settings.HISTORICAL_RECORD,
+        //'属性',
+        image: getThemeAssets().tabBar.tab_attribute,
+        selectedImage: getThemeAssets().tabBar.tab_attribute_selected,
+        btnClick: () => {
+          NavigationService.navigate('HistoricalRecord')
+        },
+      },
+
+      // MapTabs.MapSetting,       // 系统自带Tab-设置
+      {
+        key: module,
+        title:  getLanguage(global.language).Map_Settings.SETTING,
+        //'属性',
+        image: getThemeAssets().tabBar.tab_setting,
+        selectedImage: getThemeAssets().tabBar.tab_setting_selected,
+        btnClick: () => {
+          NavigationService.navigate('SettingPage')
+        },
+      },
+    ]
   }
 
 

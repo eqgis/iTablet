@@ -5,11 +5,12 @@ import NavigationService from "@/containers/NavigationService"
 import { getLanguage } from "@/language"
 // import MediaItem from "@/containers/mediaEdit/MediaItem"
 import { RootState } from "@/redux/types"
-import { checkType, dp, Toast } from "@/utils"
+import { AppEvent, checkType, dp, Toast } from "@/utils"
 import { FileTools, SARMap, SMediaCollector } from "imobile_for_reactnative"
 import React, { Component } from "react"
 import { View, Text, StyleSheet, Platform, ScrollView } from "react-native"
 import { connect, ConnectedProps } from "react-redux"
+import TourAction from "../../mapFunctionModules/Langchao/TourAction"
 import MediaItem from "./MediaItem"
 import styles from './styles'
 
@@ -148,6 +149,7 @@ class CallDetailPage extends Component<Props, State> {
   }
   componentDidMount = (): void => {
     this.getMediaInfo()
+    AppEvent.addListener("uploadData", this.uploadData)
   }
 
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
@@ -158,6 +160,10 @@ class CallDetailPage extends Component<Props, State> {
         this.getMediaInfo()
       })
     }
+  }
+
+  uploadData = async () => {
+    TourAction.uploadDialog(this.state.data.SmID, 'line')
   }
 
   deleteMediaFile = async (index: number) => {

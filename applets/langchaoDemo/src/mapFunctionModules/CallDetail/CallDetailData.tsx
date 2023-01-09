@@ -2,14 +2,17 @@ import React from 'react'
 import ToolbarBtnType from "@/containers/workspace/components/ToolBar/ToolbarBtnType"
 import { ToolBarBottomItem } from "imobile_for_reactnative/components/ToolbarKit"
 import { dp } from "imobile_for_reactnative/utils/size"
-import { Text, View } from "react-native"
+import { Image, Text, TouchableOpacity, View } from "react-native"
 import CallDetailPage, { callAttributeType } from "../../components/CallDetailPage/CallDetailPage"
 import { AppletsToolType } from "../../constants"
-import { getThemeAssets } from '@/assets'
+import { getPublicAssets, getThemeAssets } from '@/assets'
 import NavigationService from '@/containers/NavigationService'
 import { SMap } from 'imobile_for_reactnative'
 import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
 import { Header } from '@/components'
+import { color } from '@/styles'
+import { getImage } from '../../assets/Image'
+import { AppEvent } from '@/utils'
 
 interface DataItem {
   key: string;
@@ -28,7 +31,7 @@ interface DataItem {
  */
 function getData(type: string | number) {
   const data: DataItem[] = []
-  let buttons: ToolBarBottomItem[] = []
+  const buttons: ToolBarBottomItem[] = []
   let customView = null
 
 
@@ -66,38 +69,100 @@ function getHeaderView(type: string | number) {
   let customHeadView = null
   switch(type) {
     case AppletsToolType.APPLETS_CALL_DETAIL_HOME:
-      customHeadView = (
-        <Header
-          // ref={ref => (this.containerHeader = ref)}
-          backAction={async () => {
-            await SMap.clearTrackingLayer()
-            NavigationService.navigate('HistoricalRecord')
-            global.ToolBar?.close()
-          }}
-          withoutBack={false}
-          // title={"呼叫详情"}
-          type={'fix'}
-          headerRight={[]}
-          headerRightStyle={[]}
-          // headerLeft={[]}
-          headerTitleViewStyle={[{
-            fontSize: dp(16),
-            textAlign: 'left',
-            backgroundColor: '#f00',
-          }]}
-        />
-      )
       // customHeadView = (
-      //   <View
-      //     style={[{
-      //       width: '100%',
-      //       height: dp(60),
-      //       backgroundColor: '#fff',
+      //   <Header
+      //     // ref={ref => (this.containerHeader = ref)}
+      //     backAction={async () => {
+      //       await SMap.clearTrackingLayer()
+      //       NavigationService.navigate('HistoricalRecord')
+      //       global.ToolBar?.close()
+      //     }}
+      //     withoutBack={false}
+      //     // title={"呼叫详情"}
+      //     type={'fix'}
+      //     headerRight={[]}
+      //     headerRightStyle={[]}
+      //     // headerLeft={[]}
+      //     headerTitleViewStyle={[{
+      //       fontSize: dp(16),
+      //       textAlign: 'left',
+      //       backgroundColor: '#f00',
       //     }]}
-      //   >
-      //     {_headerLeft()}
-      //   </View>
+      //   />
       // )
+      customHeadView = (
+        <View
+          style={[{
+            width: '100%',
+            height: dp(60),
+            backgroundColor: '#fff',
+            flexDirection: 'row',
+            // alignContent: 'center',
+            alignItems: 'center',
+            borderBottomColor: color.colorEF,
+            borderBottomWidth: dp(1),
+            paddingHorizontal: dp(10),
+          }]}
+        >
+          <TouchableOpacity
+            style={[{
+              width: dp(40),
+              height: dp(40),
+              justifyContent: 'center',
+              alignItems: 'center',
+              // backgroundColor: '#f00',
+            }]}
+            onPress={async () => {
+              await SMap.clearTrackingLayer()
+              NavigationService.navigate('HistoricalRecord')
+              global.ToolBar?.close()
+            }}
+          >
+            <Image
+              style={[{
+                width: dp(40),
+                height: dp(40),
+              }]}
+              source={getPublicAssets().common.icon_back}
+            />
+          </TouchableOpacity>
+          <View
+            style={[{
+              flex:1,
+              height: dp(40),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }]}
+          >
+            <Text
+              style={[{
+                fontSize: dp(22),
+              }]}
+            >{"呼叫详情"}</Text>
+          </View>
+          <TouchableOpacity
+            style={[{
+              width: dp(40),
+              height: dp(40),
+              justifyContent: 'center',
+              alignItems: 'center',
+              // backgroundColor: '#f00',
+            }]}
+            onPress={async () => {
+              // TourAction.uploadDialog(item.SmID, 'line')
+              AppEvent.emitEvent('uploadData')
+            }}
+          >
+            <Image
+              style={[{
+                width: dp(33),
+                height: dp(33),
+              }]}
+              source={getImage().icon_upload}
+            />
+          </TouchableOpacity>
+        </View>
+      )
       break
   }
   return customHeadView

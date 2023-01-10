@@ -42,8 +42,8 @@ interface State {
 let pose: SARMap.Pose | undefined
 let data:{name:string,x:string,y:string,route1:{names:[],flow:{start:[],end:[]},alert:[]},route2:{names:[],flow:{start:[],end:[]},alert:[]}}
 class CoverView extends React.Component<Props, State> {
-  currentRadiusx = 1
-  currentRadiusy = 1
+  currentRadiusx = 10
+  currentRadiusy = 10
   currentDepth = 1
   scanRef: Scan | null = null
   show = true
@@ -76,6 +76,46 @@ class CoverView extends React.Component<Props, State> {
       width:'',
       length:'',
       attributeShow:false,
+    }
+  }
+
+  valveListener: EmitterSubscription | null = null
+  route1ValveStatus: [boolean, boolean, boolean] = [true, true, true]
+  route2ValueStatus: [boolean, boolean, boolean] = [true, true, true]
+
+  componentDidMount(): void {
+    this.valveListener = SExhibition.addVavlePressListener(result =>{
+      console.log(result)
+      let route: 1 | 2 = 1
+      if(result.name === 'valve_1_0') {
+        this.route1ValveStatus[0] = result.isOpen
+      }
+      if(result.name === 'valve_1_1') {
+        this.route1ValveStatus[1] = result.isOpen
+      }
+      if(result.name === 'valve_1_2') {
+        this.route1ValveStatus[2] = result.isOpen
+      }
+      if(result.name === 'valve_2_0') {
+        this.route2ValueStatus[0] = result.isOpen
+        route = 2
+      }
+      if(result.name === 'valve_2_1') {
+        this.route2ValueStatus[1] = result.isOpen
+        route = 2
+      }
+      if(result.name === 'valve_2_2') {
+        this.route2ValueStatus[2] = result.isOpen
+        route = 2
+      }
+      this.onValveOpen(route)
+    })
+  }
+
+  componentWillUnmount(): void {
+    if(this.valveListener != null) {
+      this.valveListener.remove()
+      this.valveListener = null
     }
   }
 
@@ -421,11 +461,15 @@ class CoverView extends React.Component<Props, State> {
 
 
   _disableAlert = async () => {
+    this.route1ValveStatus = [true, true, true]
+    this.route2ValueStatus = [true, true, true]
     const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
     if(layer) {
       await SExhibition.hideBreakPoint(layer.name, [...data.route1.alert, ...data.route2.alert])
       await SExhibition.restorePipeMaterial(layer.name, [...data.route1.names, ...data.route2.names])
       await SExhibition.hidePipeFlow()
+      await SExhibition.hideValve(layer.name, getValve1())
+      await SExhibition.hideValve(layer.name, getValve2())
     }
   }
 
@@ -695,6 +739,32 @@ class CoverView extends React.Component<Props, State> {
       SExhibition.showPipeFlow(layer.name,
         index === 1 ? getFlowRoute1(true,data.route1.flow) : getFlowRoute2(true,data.route2.flow)
       )
+      SExhibition.showValve(layer.name, index === 1 ? getValve1() : getValve2())
+    }
+  }
+
+  onValveOpen = async (route: 1 | 2) => {
+    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+    if(layer) {
+      await SExhibition.hidePipeFlow()
+      if(route === 1) {
+        //三个阀门都打开才会流向爆管处
+        if(this.route1ValveStatus[0] && this.route1ValveStatus[1] && this.route1ValveStatus[2]) {
+          SExhibition.showBreakPoint(layer.name, getAlertPipe1())
+        } else {
+          SExhibition.hideBreakPoint(layer.name, getAlertPipe1())
+        }
+        SExhibition.showPipeFlow(layer.name, getBreakFlowRoute1(this.route1ValveStatus))
+      } else {
+        //第一个和第三个阀门打开才会流向爆管处
+        if(this.route2ValueStatus[0] && this.route2ValueStatus[2]) {
+          SExhibition.showBreakPoint(layer.name, getAlertPipe2())
+        } else {
+          SExhibition.hideBreakPoint(layer.name, getAlertPipe2())
+        }
+        SExhibition.showPipeFlow(layer.name, getBreakFlowRoute2(this.route2ValueStatus))
+      }
+
     }
   }
 
@@ -1016,14 +1086,14 @@ class CoverView extends React.Component<Props, State> {
               left={{ type: 'text', text: getLanguage().LENGTH }}
               defaultValue={this.currentRadiusx}
               right={{ type: 'indicator', unit: '' }}
-              range = {[0,5]}
+              range = {[0,30]}
               onMove={(value: number) => {
                 this.currentRadiusx = value
               }}
               onEnd={() => {
                 const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
                 if(layer){
-                  SARMap.setARCoverRadiusX(layer.name,this.currentRadiusx)
+                  SARMap.setARCoverRadiusX(layer.name,this.currentRadiusx/10)
                 }
               }}
             />
@@ -1065,14 +1135,14 @@ class CoverView extends React.Component<Props, State> {
               left={{ type: 'text', text: getLanguage().LEGEND_WIDTH }}
               defaultValue={this.currentRadiusy}
               right={{ type: 'indicator', unit: '' }}
-              range = {[0,5]}
+              range = {[0,30]}
               onMove={(value: number) => {
                 this.currentRadiusy = value
               }}
               onEnd={() => {
                 const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
                 if(layer){
-                  SARMap.setARCoverRadiusY(layer.name,this.currentRadiusy)
+                  SARMap.setARCoverRadiusY(layer.name,this.currentRadiusy/10)
                 }
               }}
             />
@@ -1155,7 +1225,7 @@ class CoverView extends React.Component<Props, State> {
           <SlideBar
             // ref={ref => this.scaleBar = ref}
             style={styles.slideBar}
-            range={[0, 5]}
+            range={[0, 30]}
             defaultMaxValue={this.currentRadiusx}
             barColor={'#FF6E51'}
             onMove={async (value: number) => {
@@ -1163,7 +1233,7 @@ class CoverView extends React.Component<Props, State> {
               this.currentRadiusx = value
               const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
               if(layer){
-                SARMap.setARCoverRadiusX(layer.name,this.currentRadiusx)
+                SARMap.setARCoverRadiusX(layer.name,this.currentRadiusx/10)
               }
             }}
           />
@@ -1174,14 +1244,14 @@ class CoverView extends React.Component<Props, State> {
           <SlideBar
             // ref={ref => this.scaleBar = ref}
             style={styles.slideBar}
-            range={[0, 5]}
+            range={[0, 30]}
             defaultMaxValue={this.currentRadiusy}
             barColor={'#FF6E51'}
             onMove={async (value: number) => {
               this.currentRadiusy = value
               const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
               if(layer){
-                SARMap.setARCoverRadiusY(layer.name,this.currentRadiusy)
+                SARMap.setARCoverRadiusY(layer.name,this.currentRadiusy/10)
               }
             }}
           />
@@ -1378,6 +1448,10 @@ const styles = StyleSheet.create({
 
 export default CoverView
 
+//流向 1
+function getFlowRoute1(): FlowParam[] {
+  return _getFlowRoute1Origin([true, true, true])
+}
 
 function getFlowRoute1(isBreak = false,info?:any): FlowParam[] {
   const speed = 0.49
@@ -1463,6 +1537,10 @@ function getFlowRoute1(isBreak = false,info?:any): FlowParam[] {
   // ]
 }
 
+//流向 2
+function getFlowRoute2(): FlowParam[] {
+  return _getFlowRoute2Origin([true, true, true])
+}
 
 function getFlowRoute2(isBreak = false,info?:any): FlowParam[] {
   const speed = 0.49
@@ -1546,6 +1624,8 @@ function getFlowRoute2(isBreak = false,info?:any): FlowParam[] {
 }
 
 
+
+//流向 1 管线名称 用来设置管线透明
 function getRoute1Names(): string[] {
   return [
     'DYRBF_18',
@@ -1573,6 +1653,7 @@ function getRoute1Names(): string[] {
   ]
 }
 
+//流向 2 管线名称 用来设置管线透明
 function getRoute2Names(): string[] {
   return [
     'DYRBF_20',
@@ -1648,6 +1729,7 @@ function getRoute2Names(): string[] {
 }
 
 
+//流向 1 爆管点
 function getAlertPipe1(): {name: string, offsetX?: number, offsetY?: number, offsetZ?: number, scale?: number}[] {
   return [
     {
@@ -1660,19 +1742,10 @@ function getAlertPipe1(): {name: string, offsetX?: number, offsetY?: number, off
       offsetY: -0.02, // -0.25,
       scale: 0.5,
     },
-    // {
-    //   name: '地下冷水管_29',
-    //   offsetY: -0.02, // -0.25,
-    //   scale: 0.5,
-    // },
-    // {
-    //   name: '地下冷水管_30',
-    //   offsetY: -0.02, // -0.25,
-    //   scale: 0.5,
-    // }
   ]
 }
 
+//流向 2 爆管点
 function getAlertPipe2(): {name: string, offsetX?: number, offsetY?: number, offsetZ?: number, scale?: number}[] {
   return [
     {
@@ -1685,16 +1758,83 @@ function getAlertPipe2(): {name: string, offsetX?: number, offsetY?: number, off
       offsetY: -0.02, // -0.25,
       scale: 0.5,
     },
-    // {
-    //   name: '墙面冷水管_116',
-    //   // offsetX: 0.2,
-    //   offsetY: -0.02, // -0.25,
-    //   scale: 0.5,
-    // },
-    // {
-    //   name: '墙面冷水管_44',
-    //   offsetY: -0.02,
-    //   scale: 0.5,
-    // }
+  ]
+}
+
+//流向 1 阀门点
+function getValve1(): {name: string,position: Vector3,scale: number,isOpen: boolean}[] {
+  const scale = 0.3
+  const offsetY = -0.05
+
+  return [
+    {
+      name: 'valve_1_0',
+      position: {
+        x: -1.048,
+        y: -0.126 + offsetY,
+        z: -0.106,
+      },
+      scale,
+      isOpen: true,
+    },
+    {
+      name: 'valve_1_1',
+      position: {
+        x: -0.335,
+        y: -0.126 + offsetY,
+        z: 0.933,
+      },
+      scale,
+      isOpen: true,
+    },
+    {
+      name: 'valve_1_2',
+      position: {
+        x: -0.340,
+        y: -0.126 + offsetY,
+        z: 1.728,
+      },
+      scale,
+      isOpen: true,
+    }
+  ]
+}
+
+//流向 2 阀门点
+function getValve2(): {name: string,position: Vector3,scale: number,isOpen: boolean}[] {
+  const scale = 0.5
+  const offsetY = -0.05
+
+  return [
+    {
+      name: 'valve_2_0',
+      position: {
+        x: -6.467,
+        y: 4.067 + offsetY,
+        z: 4.918,
+      },
+      scale,
+      isOpen: true,
+    },
+    {
+      name: 'valve_2_1',
+      position: {
+        x: -5.885,
+        y: 4.060 + offsetY,
+        z: -0.694,
+      },
+      scale,
+      isOpen: true,
+    },
+    {
+      name: 'valve_2_2',
+      position: {
+        x: -6.061,
+        y: 4.043 + offsetY,
+        z: -3.295,
+      },
+      scale,
+      isOpen: true,
+    }
   ]
 }

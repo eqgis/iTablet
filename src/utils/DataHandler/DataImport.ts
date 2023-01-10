@@ -1,9 +1,10 @@
-import { SData,SMap, EngineType, SScene, SARMap, AppInfo, FileInfo, SPlot } from 'imobile_for_reactnative'
+import { SData, SMap, SScene, SARMap, AppInfo, FileInfo } from 'imobile_for_reactnative'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
 import { ExternalDatasetType, UserInfo } from '@/types'
 import { IExternalData } from './DataExternal'
 import { AppUser } from '@/utils'
+import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 async function importExternalData(user: UserInfo, item: IExternalData): Promise<boolean> {
   let type = item.fileType
@@ -21,7 +22,7 @@ async function importExternalData(user: UserInfo, item: IExternalData): Promise<
       //数据集导入调用 importDataset
       result = false
       break
-    case 'online': 
+    case 'online':
       result = false
       break
     case 'plotting':
@@ -145,7 +146,7 @@ async function importWorkspace(item: IExternalData) {
  */
 async function importWorkspace3D(item: IExternalData) {
   try {
-    return await SScene.import3DWorkspace({server:item.filePath})
+    return await SScene.import3DWorkspace({ server: item.filePath })
   } catch (error) {
     return false
   }
@@ -362,7 +363,7 @@ async function _copyFile(item: IExternalData, desDir: string): Promise<boolean> 
   }
 }
 
-function _getAvailableName(name: string, fileList: FileInfo[], type: 'file' | 'directory', ext = '')  {
+function _getAvailableName(name: string, fileList: FileInfo[], type: 'file' | 'directory', ext = '') {
   let AvailabeName = name
   if (type === 'file' && ext !== '') {
     AvailabeName = `${name}.${ext}`

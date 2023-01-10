@@ -1,5 +1,4 @@
-import { FieldType } from 'imobile_for_reactnative'
-import { TFieldType } from 'imobile_for_reactnative/types/data'
+import { FieldType, TFieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { Platform, KeyboardTypeOptions } from 'react-native'
 
 type ValueType = boolean | string | number | undefined

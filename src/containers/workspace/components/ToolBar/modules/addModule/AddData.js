@@ -51,7 +51,7 @@ async function getUDBsAndMaps() {
   let _labelDatasets = await DataHandler.getLocalData(user, 'LABEL')
   let labelDatasets = []
   _labelDatasets.forEach(item => {
-    if (item.type !== DatasetType.TABULAR) {
+    if (item.datasetType !== DatasetType.TABULAR) {
       labelDatasets.push(item)
     }
   })

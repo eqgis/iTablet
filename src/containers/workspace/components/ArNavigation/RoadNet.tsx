@@ -1,4 +1,4 @@
-import { EngineType, FileTools, SData, SMap } from 'imobile_for_reactnative'
+import { FileTools, SData, SMap } from 'imobile_for_reactnative'
 import { NaviDataset } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import React from 'react'
 import { View, TouchableOpacity, Image, Text, FlatList, ListRenderItemInfo } from 'react-native'
@@ -10,6 +10,7 @@ import { getLanguage } from '../../../../language'
 import { scaleSize } from '../../../../../src/utils'
 import { ARNaviModule } from '../ArNavigationModule'
 import { NaviDatasetInfo, NaviDatasourceInfo } from '../ArNavigationModule/ARNaviModule'
+import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 
 interface Props {

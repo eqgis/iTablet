@@ -5,12 +5,12 @@
  */
 
 import * as React from 'react'
-import { View, Text, FlatList, TouchableOpacity, SectionList ,Image,Animated, ScrollView} from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, SectionList ,Image, Animated } from 'react-native'
 import NavigationService from '../../../NavigationService'
 import { Container, TextBtn } from '../../../../components'
 import { getLanguage } from '../../../../language'
 import { Toast, LayerUtils ,scaleSize} from '../../../../utils'
-import { SMap, StatisticMode ,  FieldType, SData,} from 'imobile_for_reactnative'
+import { SMap, StatisticMode , SData } from 'imobile_for_reactnative'
 import styles from './styles'
 import { color } from '../../../../styles'
 import {
@@ -18,6 +18,7 @@ import {
   getPublicAssets,
 } from '../../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
+import { FieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 const PREVIOUS = 'previous'
 const NEXT = 'next'

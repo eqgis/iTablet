@@ -39,7 +39,7 @@ class Home extends React.Component<Props, State> {
       for (const key in results) {
         isAllGranted = results[key] === 'granted' && isAllGranted
       }
-      await SData.setPermisson(true)
+      await SData.setPermission(true)
       await AppInfo.setRootPath('/iTablet')
       await SMap.initEnvironment('iTablet')
       await SLocation.openGPS()

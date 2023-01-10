@@ -1,4 +1,4 @@
-import { SThemeCartography, RangeMode, SMap, EngineType } from 'imobile_for_reactnative'
+import { SThemeCartography, RangeMode, SMap } from 'imobile_for_reactnative'
 import constants from '../../../../constants'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import {
@@ -14,6 +14,7 @@ import ToolbarModule from '../ToolbarModule'
 import ThemeData from './ThemeData'
 import ThemeAction from './ThemeAction'
 import NavigationService from '../../../../../NavigationService'
+import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 /**
  *

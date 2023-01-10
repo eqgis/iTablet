@@ -6,7 +6,7 @@ import { scaleSize, dp, setSpText,Toast} from '../../../../../../utils'
 import React from 'react'
 import { getThemeAssets ,getImage} from '../../../../../../assets'
 import { getLanguage } from '../../../../../../language'
-import { SARMap,FileTools,SMap,EngineType } from "imobile_for_reactnative"
+import { SARMap,FileTools,SMap } from "imobile_for_reactnative"
 import { ILocalData } from '../../../../../../utils/DataHandler/DataLocal'
 import NavigationService from '../../../../../NavigationService'
 import { Users } from '../../../../../../redux/models/user'
@@ -16,6 +16,7 @@ import {
   ConstToolType,
 } from '../../../../../../constants'
 import { AppToolBar } from "@/utils"
+import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 interface Props {
   language: string,

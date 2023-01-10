@@ -66,7 +66,7 @@ export default class AnimationNodeEditView extends React.Component {
   }
 
   getAnimationGoInfo = async () => {
-    let animationGoInfo = await SMap.getAnimationGoInfo(this.state.index)
+    let animationGoInfo = await SPlot.getAnimationGoInfo(this.state.index)
     this.setState({
       data: animationGoInfo,
       animationType: animationGoInfo.animationType,

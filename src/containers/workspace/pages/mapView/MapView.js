@@ -1834,10 +1834,13 @@ export default class MapView extends React.Component {
           )
           if (!hasDefaultTagging) {
             debugger
-            await SMap.newTaggingDataset(
-              `Default_Tagging_${this.props.user.currentUser.userName}`,
-              this.props.user.currentUser.userName,
-            )
+            let datasourceName = "Label_"+this.props.user.currentUser.userName+"#"
+            let datasetName =  `Default_Tagging_${this.props.user.currentUser.userName}`
+            await SMap._createTaggingLayer(datasourceName, datasetName)
+            // await SMap.newTaggingDataset(
+            //   `Default_Tagging_${this.props.user.currentUser.userName}`,
+            //   this.props.user.currentUser.userName,
+            // )
           }
           let layer = await SMap.getCurrentTaggingLayer(
             this.props.user.currentUser.userName,

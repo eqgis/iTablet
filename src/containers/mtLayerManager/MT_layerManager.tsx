@@ -799,10 +799,9 @@ export default class MT_layerManager extends React.Component {
             await SMap.setLabelColor()
             debugger
           //  await this._createTaggingLayer(value)
-            await SMap._createTaggingLayer(
-              `${value}_${this.props.user.currentUser.userName}`,
-              this.props.user.currentUser.userName,
-            )
+            let datasourceName = "Label_"+this.props.user.currentUser.userName+"#"
+            let datasetName =  `${value}_${this.props.user.currentUser.userName}`
+            await SMap._createTaggingLayer(datasourceName, datasetName)
             this.setRefreshing(true)
             this.getData()
             this.updateTagging()

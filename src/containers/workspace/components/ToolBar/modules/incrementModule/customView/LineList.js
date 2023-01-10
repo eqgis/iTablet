@@ -22,7 +22,8 @@ import {
   getPublicAssets,
   getThemeAssets,
 } from '../../../../../../../assets'
-import { SMap, DatasetType ,SData} from 'imobile_for_reactnative'
+import { SMap } from 'imobile_for_reactnative'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { color } from '../../../../../../../styles'
 import ToolbarModule from '../../ToolbarModule'
 import { ToolbarType, Height } from '../../../../../../../constants'

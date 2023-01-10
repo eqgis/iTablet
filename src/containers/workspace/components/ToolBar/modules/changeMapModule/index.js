@@ -5,7 +5,7 @@ import { getThemeAssets } from '../../../../../../assets'
 import { Toast } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import FunctionModule from '../../../../../../class/FunctionModule'
-import { DatasetType } from 'imobile_for_reactnative'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 class changeMapModule extends FunctionModule {
   constructor(props) {

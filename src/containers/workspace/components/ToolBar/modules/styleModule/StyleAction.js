@@ -1,4 +1,5 @@
-import { SCartography, SMap, DatasetType } from 'imobile_for_reactnative'
+import { SCartography, SMap } from 'imobile_for_reactnative'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import {
   ConstToolType,
   TouchType,

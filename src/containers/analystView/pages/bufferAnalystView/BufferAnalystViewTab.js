@@ -705,7 +705,7 @@ export default class BufferAnalystViewTab extends Component {
                 })
               }
               if (this.state.resultDataSource === null) {
-                let resultDatasetName = await SData._getAvailableDatasetName(
+                let resultDatasetName = await SData.availableDatasetName(
                   data.key,
                   'Buffer',
                 )

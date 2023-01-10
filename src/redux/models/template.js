@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
-import { SMap, WorkspaceType, RNFS as fs, SData } from 'imobile_for_reactnative'
+import { SMap, WorkspaceType, RNFS as fs, SData, SPlot } from 'imobile_for_reactnative'
 import xml2js from 'react-native-xml2js'
 import { FileTools } from '../../native'
 import { ConstInfo } from '../../constants'
@@ -166,7 +166,7 @@ export const importWorkspace = (params, cb = () => {}) => async (
 // 导入标绘库
 // export const importPlotLib= async (params) => {
 export const importPlotLib = (params, cb = () => {}) => async () => {
-  const result = await SMap.importPlotLibData(params.path)
+  const result = await SPlot.importPlotLibData(params.path)
   cb && cb({ result })
   return { result }
 }
@@ -317,7 +317,7 @@ export const getSymbolPlots = (params, cb = () => {}) => async (
         plotLibPaths.push(data[i].path)
       }
       // await SMap.addCadLayer('PlotEdit')
-      const resultArr = await SMap.initPlotSymbol(plotLibPaths, {layerPath: currentLayer.layerPath})
+      const resultArr = await SPlot.initPlotSymbol(plotLibPaths, {layerPath: currentLayer.layerPath})
       // const resultArr = await SMap.initPlotSymbolLibrary(
       //   plotLibPaths,
       //   isFirst,

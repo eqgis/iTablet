@@ -16,7 +16,8 @@ import {
 } from '../../../../utils'
 import { color } from '../../../../styles'
 import { Const, ConstOnline } from '../../../../constants'
-import { DatasetType, SData, SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { getThemeAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 

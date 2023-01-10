@@ -23,6 +23,7 @@ import {
   ARElementType,
   ARAction,
   SData,
+  SPlot,
 } from 'imobile_for_reactnative'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import PropTypes from 'prop-types'
@@ -1483,7 +1484,7 @@ export default class MapView extends React.Component {
       if (global.Type === ChunkType.MAP_PLOTTING) {
         const params = ToolbarModule.getParams()
         const libIds = params.template.plotLibIds
-        await SMap.removePlotSymbolLibraryArr(libIds)
+        await SPlot.removePlotSymbolLibraryArr(libIds)
       }
       LayerUtils.setMapLayerAttribute(undefined, undefined, true)
       this.setLoading(false)
@@ -1832,6 +1833,7 @@ export default class MapView extends React.Component {
             this.props.user.currentUser.userName,
           )
           if (!hasDefaultTagging) {
+            debugger
             await SMap.newTaggingDataset(
               `Default_Tagging_${this.props.user.currentUser.userName}`,
               this.props.user.currentUser.userName,

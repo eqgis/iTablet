@@ -506,6 +506,7 @@ function tour() {
       try {
         if (value !== '') {
           await SMap.setLabelColor()
+          debugger
           const tagginData = await SMap.newTaggingDataset(
             value,
             _params.user.currentUser.userName,

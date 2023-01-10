@@ -493,7 +493,7 @@ async function createDefaultDatasource(
       } else {
         //重名则创建新的数据集
         if(newDataset) {
-          datasetName = await SData._getAvailableDatasetName(datasourceName, datasetName)
+          datasetName = await SData.availableDatasetName(datasourceName, datasetName)
           bDsCreate = await SData.createDataset(datasourceName, datasetName, datastType)
         }
       }

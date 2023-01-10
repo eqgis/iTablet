@@ -12,7 +12,7 @@ import { color, size } from '../../../../../../../styles'
 import { Toast, scaleSize, setSpText } from '../../../../../../../utils'
 import { getLanguage } from '../../../../../../../language'
 import { getThemeAssets } from '../../../../../../../assets'
-import { SMap } from 'imobile_for_reactnative'
+import { SMap, SPlot } from 'imobile_for_reactnative'
 import NavigationService from '../../../../../../../containers/NavigationService'
 
 export default class AnimationNodeListView extends React.Component {
@@ -38,7 +38,7 @@ export default class AnimationNodeListView extends React.Component {
   }
 
   getAnimationNodeList = async () => {
-    let animationNodeData = await SMap.getAnimationNodeList()
+    let animationNodeData = await SPlot.getAnimationNodeList()
     let subData = []
     subData.push({ name: '动画', index: 0 })
     subData.push({ name: '动画2', index: 1 })
@@ -101,17 +101,17 @@ export default class AnimationNodeListView extends React.Component {
   }
 
   downMoveItem = async item => {
-    await SMap.moveAnimationNode(item.index, false)
+    await SPlot.moveAnimationNode(item.index, false)
     this.getAnimationNodeList()
   }
 
   upMoveItem = async item => {
-    await SMap.moveAnimationNode(item.index, true)
+    await SPlot.moveAnimationNode(item.index, true)
     this.getAnimationNodeList()
   }
 
   deleteAnimationNode = async item => {
-    SMap.deleteAnimationNode(item.name)
+    SPlot.deleteAnimationNode(item.name)
     this.getAnimationNodeList()
   }
 

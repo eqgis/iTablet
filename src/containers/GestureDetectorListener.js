@@ -3,6 +3,7 @@ import {
   SMap,
   STransportationAnalyst,
   Action,
+  SPlot,
   // SFacilityAnalyst,
 } from 'imobile_for_reactnative'
 import NavigationService from './NavigationService'
@@ -258,7 +259,7 @@ async function touchCallback(event) {
       )
       break
     case TouchType.ANIMATION_WAY:
-      SMap.addAnimationWayPoint(event.screenPoint, true)
+      SPlot.addAnimationWayPoint(event.screenPoint, true)
       break
     case TouchType.MAP_SELECT_POINT: {
       const point = await SMap.pixelPointToMap(event.screenPoint)

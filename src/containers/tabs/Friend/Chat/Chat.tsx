@@ -22,7 +22,8 @@ import {
   InputToolbar,
 } from 'react-native-gifted-chat'
 import { SimpleDialog, ImageViewer } from '../Component/index'
-import { SMap, EngineType, DatasetType,RNFS, SLocation, SData } from 'imobile_for_reactnative'
+import { SMap,RNFS, SLocation, SData } from 'imobile_for_reactnative'
+import { DatasetType,EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { Container, MTBtn } from '../../../../components'
 import { scaleSize } from '../../../../utils/screen'
 import NavigationService from '../../../NavigationService'

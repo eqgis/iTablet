@@ -10,11 +10,13 @@ import { Container, MTBtn, Dialog, Waitting, PopoverButtonsView } from '../../co
 import { Toast, scaleSize, LayerUtils } from '../../utils'
 import { MapToolbar, OverlayView } from '../workspace/components'
 import {
-  SMap,
+  
   ThemeType,
   SMediaCollector,
+  SData,
+  SMap,
 } from 'imobile_for_reactnative'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetInfo, DatasetType, FieldInfo, FieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { LayerManager_item, LayerManager_tolbar } from './components'
 import {
   ConstToolType,
@@ -744,6 +746,35 @@ export default class MT_layerManager extends React.Component {
     }
   }
 
+  _createTaggingLayer = async(value)=>{
+    let datasourceName = "Label_"+this.props.user.currentUser.userName+"#"
+    let datasetName =  `${value}_${this.props.user.currentUser.userName}`
+    datasetName = await SData.availableDatasetName(datasourceName,datasetName)
+    let datasetInfo:DatasetInfo = {datasourceName,
+      datasetName:datasetName,
+      description:"{type:normal}",
+      datasetType:DatasetType.CAD
+    }
+    const fieldInfos:FieldInfo[] = []
+    fieldInfos.push({name:"name",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
+    fieldInfos.push({name:"remark",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
+    fieldInfos.push({name:"address",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
+    fieldInfos.push({name:"MediaFilePaths",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
+    fieldInfos.push({name:"MediaServiceIds",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
+    fieldInfos.push({name:"MediaName",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
+    fieldInfos.push({name:"ModifiedDate",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
+    fieldInfos.push({name:"HttpAddress",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
+    fieldInfos.push({name:"Description",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
+    fieldInfos.push({name:"MediaData",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
+    fieldInfos.push({name:"SS_MediaType",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
+    
+    let bCreate = await SData.createDatasetWithParams(datasetInfo,fieldInfos)
+
+    if(bCreate){
+      await SMap.addLayers([datasetName],datasourceName)
+    }
+  }
+
   tool_row = async () => {
     let userPath =
       this.props.user.currentUser.userName &&
@@ -762,25 +793,28 @@ export default class MT_layerManager extends React.Component {
       value: newName,
       placeholder: getLanguage(this.props.language).Prompt.ENTER_NAME,
       type: 'name',
-      cb: async value => {
+      cb: value => {
         if (value !== '') {
-          (async function() {
+          (async () => {
             await SMap.setLabelColor()
-            await SMap.newTaggingDataset(
+            debugger
+          //  await this._createTaggingLayer(value)
+            await SMap._createTaggingLayer(
               `${value}_${this.props.user.currentUser.userName}`,
               this.props.user.currentUser.userName,
             )
-            // this.setRefreshing(true)
-            // this.getData()
+            this.setRefreshing(true)
+            this.getData()
             this.updateTagging()
             this.props.getLayers()
-          }.bind(this)())
+          })()
         }
         NavigationService.goBack()
       },
     })
   }
 
+ 
   hasBaseMap = () => {
     let hasBaseMap = false
     if (this.props.layers && this.props.layers.length > 0) {

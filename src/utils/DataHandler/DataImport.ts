@@ -1,4 +1,4 @@
-import { SData,SMap, EngineType, SScene, SARMap, AppInfo, FileInfo } from 'imobile_for_reactnative'
+import { SData,SMap, EngineType, SScene, SARMap, AppInfo, FileInfo, SPlot } from 'imobile_for_reactnative'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
 import { ExternalDatasetType, UserInfo } from '@/types'
@@ -117,7 +117,7 @@ async function importXmlTemplate(item: IExternalData) {
 
 async function importPlotLib(item: IExternalData) {
   try {
-    return await SMap.importPlotLibData(item.filePath)
+    return await SPlot.importPlotLibData(item.filePath)
   } catch (error) {
     return false
   }

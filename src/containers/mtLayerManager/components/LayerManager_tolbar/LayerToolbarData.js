@@ -1,4 +1,4 @@
-import { DatasetType } from 'imobile_for_reactnative'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { getLanguage } from '../../../../language'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
 import { ChunkType, ConstPath } from '../../../../constants'

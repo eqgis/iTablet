@@ -402,7 +402,10 @@ export const message = async (params: MessageInfoType) => {
 
 }
 
-
+/**
+ * 获取通讯录列表信息
+ * @returns 返回获取到的通讯录列表信息
+ */
 export const getTelBook = async () => {
   try {
     const IP = serverIP
@@ -467,6 +470,12 @@ export interface telBookItemInfoType {
 
 export type opType = "I" | "U" | "D"
 
+/**
+ * 对通讯录进行操作（增，删，改）
+ * @param telBookItem 操作的联系人项的信息
+ * @param type 操作类型 （"I": 增加 ， "U": 修改， "D": 删除）
+ * @returns 成功返回true和失败返回false
+ */
 export const upDateTelBook = async (telBookItem: telBookItemInfoType, type: opType ) => {
   try {
     const IP = serverIP

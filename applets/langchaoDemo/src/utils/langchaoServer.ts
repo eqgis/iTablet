@@ -465,7 +465,7 @@ export interface telBookItemInfoType {
   PostalCode: string,
   Address: string,
   // OpType: "I" | "U" | "D",
-  // uuid: string,
+  uuid: string,
 }
 
 export type opType = "I" | "U" | "D"
@@ -498,7 +498,7 @@ export const upDateTelBook = async (telBookItem: telBookItemInfoType, type: opTy
     }
 
     const params = {
-      uuid: getUUid(),
+      // uuid: getUUid(),
       opType: type,
       ...telBookItem,
 

@@ -20,7 +20,7 @@ import { Toast } from "@/utils"
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call'
 import { addContact } from "../reduxModels/langchao"
 import { color } from "@/styles"
-import { getTelBook, opType, telBookItemInfoType, upDateTelBook } from "../utils/langchaoServer"
+import { getTelBook, getUUid, opType, telBookItemInfoType, upDateTelBook } from "../utils/langchaoServer"
 import { getData } from "@/Toolbar/modules/arSandTable/Data"
 import { MainStackScreenRouteProp } from "@/types"
 import { VoidTypeAnnotation } from "@babel/types"
@@ -58,6 +58,7 @@ interface State {
   Email: string,
   PostalCode: string,
   Address: string,
+	uuid: string,
 	type: opType,
 
 	ContactsTipShow: boolean,
@@ -77,6 +78,7 @@ class EditContactItem extends Component<Props, State> {
       Email: '',
       PostalCode: '',
       Address: '',
+      uuid: "",
       type: this.props.route.params?.type || "I",
       ContactsTipShow: false,
       MobilePhoneTipShow: false,
@@ -96,6 +98,7 @@ class EditContactItem extends Component<Props, State> {
           Email: data.Email || "",
           PostalCode: data.PostalCode || "",
           Address: data.Address || "",
+          uuid: data.uuid || "",
         })
       }
     } catch (error) {
@@ -179,6 +182,7 @@ class EditContactItem extends Component<Props, State> {
         Email: this.state.Email,
         PostalCode: this.state.PostalCode,
         Address: this.state.Address,
+        uuid:  this.state.type === 'I' ? getUUid() : this.state.uuid,
       }
       const result = await upDateTelBook(param, this.state.type)
       if(result) {

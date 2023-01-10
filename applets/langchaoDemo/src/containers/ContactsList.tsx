@@ -34,7 +34,7 @@ interface telBookItemInfoType {
   PostalCode: string,
   Address: string,
   // OpType: "I" | "U" | "D",
-  // uuid: string,
+  uuid: string,
 }
 
 interface Props extends ReduxProps {

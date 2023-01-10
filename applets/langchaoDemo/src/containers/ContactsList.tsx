@@ -53,26 +53,26 @@ interface State {
   morePanShow: boolean,
 }
 
-const morckdata = [
-  {
-    UserId: '101',
-    Contacts: '张三',
-    Tel: '',
-    MobilePhone: '17711245121',
-    Email: '2648987605@qq.com',
-    PostalCode: '635000',
-    Address: '中国四川成都',
-  },
-  {
-    UserId: '102',
-    Contacts: '李四',
-    Tel: '',
-    MobilePhone: '17358999687',
-    Email: '1540546372@qq.com',
-    PostalCode: '635000',
-    Address: '中国四川达州',
-  },
-]
+// const morckdata = [
+//   {
+//     UserId: '101',
+//     Contacts: '张三',
+//     Tel: '',
+//     MobilePhone: '17711245121',
+//     Email: '2648987605@qq.com',
+//     PostalCode: '635000',
+//     Address: '中国四川成都',
+//   },
+//   {
+//     UserId: '102',
+//     Contacts: '李四',
+//     Tel: '',
+//     MobilePhone: '17358999687',
+//     Email: '1540546372@qq.com',
+//     PostalCode: '635000',
+//     Address: '中国四川达州',
+//   },
+// ]
 
 class ContactsList extends Component<Props, State> {
 
@@ -101,9 +101,9 @@ class ContactsList extends Component<Props, State> {
           contactData: telBookInfo,
         })
       }
-      this.setState({
-        contactData: morckdata,
-      })
+      // this.setState({
+      //   contactData: morckdata,
+      // })
     } catch (error) {
       // to do
     }

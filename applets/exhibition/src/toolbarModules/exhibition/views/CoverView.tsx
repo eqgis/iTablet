@@ -84,32 +84,32 @@ class CoverView extends React.Component<Props, State> {
   route2ValueStatus: [boolean, boolean, boolean] = [true, true, true]
 
   componentDidMount(): void {
-    this.valveListener = SExhibition.addVavlePressListener(result =>{
-      console.log(result)
-      let route: 1 | 2 = 1
-      if(result.name === 'valve_1_0') {
-        this.route1ValveStatus[0] = result.isOpen
-      }
-      if(result.name === 'valve_1_1') {
-        this.route1ValveStatus[1] = result.isOpen
-      }
-      if(result.name === 'valve_1_2') {
-        this.route1ValveStatus[2] = result.isOpen
-      }
-      if(result.name === 'valve_2_0') {
-        this.route2ValueStatus[0] = result.isOpen
-        route = 2
-      }
-      if(result.name === 'valve_2_1') {
-        this.route2ValueStatus[1] = result.isOpen
-        route = 2
-      }
-      if(result.name === 'valve_2_2') {
-        this.route2ValueStatus[2] = result.isOpen
-        route = 2
-      }
-      this.onValveOpen(route)
-    })
+    // this.valveListener = SExhibition.addVavlePressListener(result =>{
+    //   console.log(result)
+    //   let route: 1 | 2 = 1
+    //   if(result.name === 'valve_1_0') {
+    //     this.route1ValveStatus[0] = result.isOpen
+    //   }
+    //   if(result.name === 'valve_1_1') {
+    //     this.route1ValveStatus[1] = result.isOpen
+    //   }
+    //   if(result.name === 'valve_1_2') {
+    //     this.route1ValveStatus[2] = result.isOpen
+    //   }
+    //   if(result.name === 'valve_2_0') {
+    //     this.route2ValueStatus[0] = result.isOpen
+    //     route = 2
+    //   }
+    //   if(result.name === 'valve_2_1') {
+    //     this.route2ValueStatus[1] = result.isOpen
+    //     route = 2
+    //   }
+    //   if(result.name === 'valve_2_2') {
+    //     this.route2ValueStatus[2] = result.isOpen
+    //     route = 2
+    //   }
+    //   this.onValveOpen(route)
+    // })
   }
 
   componentWillUnmount(): void {
@@ -468,8 +468,8 @@ class CoverView extends React.Component<Props, State> {
       await SExhibition.hideBreakPoint(layer.name, [...data.route1.alert, ...data.route2.alert])
       await SExhibition.restorePipeMaterial(layer.name, [...data.route1.names, ...data.route2.names])
       await SExhibition.hidePipeFlow()
-      await SExhibition.hideValve(layer.name, getValve1())
-      await SExhibition.hideValve(layer.name, getValve2())
+      // await SExhibition.hideValve(layer.name, getValve1())
+      // await SExhibition.hideValve(layer.name, getValve2())
     }
   }
 
@@ -739,34 +739,34 @@ class CoverView extends React.Component<Props, State> {
       SExhibition.showPipeFlow(layer.name,
         index === 1 ? getFlowRoute1(true,data.route1.flow) : getFlowRoute2(true,data.route2.flow)
       )
-      SExhibition.showValve(layer.name, index === 1 ? getValve1() : getValve2())
+      // SExhibition.showValve(layer.name, index === 1 ? getValve1() : getValve2())
     }
   }
 
-  onValveOpen = async (route: 1 | 2) => {
-    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
-    if(layer) {
-      await SExhibition.hidePipeFlow()
-      if(route === 1) {
-        //三个阀门都打开才会流向爆管处
-        if(this.route1ValveStatus[0] && this.route1ValveStatus[1] && this.route1ValveStatus[2]) {
-          SExhibition.showBreakPoint(layer.name, getAlertPipe1())
-        } else {
-          SExhibition.hideBreakPoint(layer.name, getAlertPipe1())
-        }
-        SExhibition.showPipeFlow(layer.name, getBreakFlowRoute1(this.route1ValveStatus))
-      } else {
-        //第一个和第三个阀门打开才会流向爆管处
-        if(this.route2ValueStatus[0] && this.route2ValueStatus[2]) {
-          SExhibition.showBreakPoint(layer.name, getAlertPipe2())
-        } else {
-          SExhibition.hideBreakPoint(layer.name, getAlertPipe2())
-        }
-        SExhibition.showPipeFlow(layer.name, getBreakFlowRoute2(this.route2ValueStatus))
-      }
+  // onValveOpen = async (route: 1 | 2) => {
+  //   const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+  //   if(layer) {
+  //     await SExhibition.hidePipeFlow()
+  //     if(route === 1) {
+  //       //三个阀门都打开才会流向爆管处
+  //       if(this.route1ValveStatus[0] && this.route1ValveStatus[1] && this.route1ValveStatus[2]) {
+  //         SExhibition.showBreakPoint(layer.name, getAlertPipe1())
+  //       } else {
+  //         SExhibition.hideBreakPoint(layer.name, getAlertPipe1())
+  //       }
+  //       SExhibition.showPipeFlow(layer.name, getBreakFlowRoute1(this.route1ValveStatus))
+  //     } else {
+  //       //第一个和第三个阀门打开才会流向爆管处
+  //       if(this.route2ValueStatus[0] && this.route2ValueStatus[2]) {
+  //         SExhibition.showBreakPoint(layer.name, getAlertPipe2())
+  //       } else {
+  //         SExhibition.hideBreakPoint(layer.name, getAlertPipe2())
+  //       }
+  //       SExhibition.showPipeFlow(layer.name, getBreakFlowRoute2(this.route2ValueStatus))
+  //     }
 
-    }
-  }
+  //   }
+  // }
 
   attribute = () => {
     return (
@@ -1448,10 +1448,10 @@ const styles = StyleSheet.create({
 
 export default CoverView
 
-//流向 1
-function getFlowRoute1(): FlowParam[] {
-  return _getFlowRoute1Origin([true, true, true])
-}
+// //流向 1
+// function getFlowRoute1(): FlowParam[] {
+//   return _getFlowRoute1Origin([true, true, true])
+// }
 
 function getFlowRoute1(isBreak = false,info?:any): FlowParam[] {
   const speed = 0.49
@@ -1537,10 +1537,10 @@ function getFlowRoute1(isBreak = false,info?:any): FlowParam[] {
   // ]
 }
 
-//流向 2
-function getFlowRoute2(): FlowParam[] {
-  return _getFlowRoute2Origin([true, true, true])
-}
+// //流向 2
+// function getFlowRoute2(): FlowParam[] {
+//   return _getFlowRoute2Origin([true, true, true])
+// }
 
 function getFlowRoute2(isBreak = false,info?:any): FlowParam[] {
   const speed = 0.49
@@ -1761,80 +1761,80 @@ function getAlertPipe2(): {name: string, offsetX?: number, offsetY?: number, off
   ]
 }
 
-//流向 1 阀门点
-function getValve1(): {name: string,position: Vector3,scale: number,isOpen: boolean}[] {
-  const scale = 0.3
-  const offsetY = -0.05
+// //流向 1 阀门点
+// function getValve1(): {name: string,position: Vector3,scale: number,isOpen: boolean}[] {
+//   const scale = 0.3
+//   const offsetY = -0.05
 
-  return [
-    {
-      name: 'valve_1_0',
-      position: {
-        x: -1.048,
-        y: -0.126 + offsetY,
-        z: -0.106,
-      },
-      scale,
-      isOpen: true,
-    },
-    {
-      name: 'valve_1_1',
-      position: {
-        x: -0.335,
-        y: -0.126 + offsetY,
-        z: 0.933,
-      },
-      scale,
-      isOpen: true,
-    },
-    {
-      name: 'valve_1_2',
-      position: {
-        x: -0.340,
-        y: -0.126 + offsetY,
-        z: 1.728,
-      },
-      scale,
-      isOpen: true,
-    }
-  ]
-}
+//   return [
+//     {
+//       name: 'valve_1_0',
+//       position: {
+//         x: -1.048,
+//         y: -0.126 + offsetY,
+//         z: -0.106,
+//       },
+//       scale,
+//       isOpen: true,
+//     },
+//     {
+//       name: 'valve_1_1',
+//       position: {
+//         x: -0.335,
+//         y: -0.126 + offsetY,
+//         z: 0.933,
+//       },
+//       scale,
+//       isOpen: true,
+//     },
+//     {
+//       name: 'valve_1_2',
+//       position: {
+//         x: -0.340,
+//         y: -0.126 + offsetY,
+//         z: 1.728,
+//       },
+//       scale,
+//       isOpen: true,
+//     }
+//   ]
+// }
 
 //流向 2 阀门点
-function getValve2(): {name: string,position: Vector3,scale: number,isOpen: boolean}[] {
-  const scale = 0.5
-  const offsetY = -0.05
+// function getValve2(): {name: string,position: Vector3,scale: number,isOpen: boolean}[] {
+//   const scale = 0.5
+//   const offsetY = -0.05
 
-  return [
-    {
-      name: 'valve_2_0',
-      position: {
-        x: -6.467,
-        y: 4.067 + offsetY,
-        z: 4.918,
-      },
-      scale,
-      isOpen: true,
-    },
-    {
-      name: 'valve_2_1',
-      position: {
-        x: -5.885,
-        y: 4.060 + offsetY,
-        z: -0.694,
-      },
-      scale,
-      isOpen: true,
-    },
-    {
-      name: 'valve_2_2',
-      position: {
-        x: -6.061,
-        y: 4.043 + offsetY,
-        z: -3.295,
-      },
-      scale,
-      isOpen: true,
-    }
-  ]
-}
+//   return [
+//     {
+//       name: 'valve_2_0',
+//       position: {
+//         x: -6.467,
+//         y: 4.067 + offsetY,
+//         z: 4.918,
+//       },
+//       scale,
+//       isOpen: true,
+//     },
+//     {
+//       name: 'valve_2_1',
+//       position: {
+//         x: -5.885,
+//         y: 4.060 + offsetY,
+//         z: -0.694,
+//       },
+//       scale,
+//       isOpen: true,
+//     },
+//     {
+//       name: 'valve_2_2',
+//       position: {
+//         x: -6.061,
+//         y: 4.043 + offsetY,
+//         z: -3.295,
+//       },
+//       scale,
+//       isOpen: true,
+//     }
+//   ]
+// }

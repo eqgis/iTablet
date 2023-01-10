@@ -136,7 +136,7 @@ export const dateFormat = (format: string, date: Date) => {
       }
       formatstr = formatstr.replace("ss",second + "")
     }
-    console.warn("formatstr07: " + formatstr)
+    // console.warn("formatstr07: " + formatstr)
   }
   return formatstr
 }
@@ -400,6 +400,120 @@ export const message = async (params: MessageInfoType) => {
     return false
   }
 
+}
+
+
+export const getTelBook = async () => {
+  try {
+    const IP = serverIP
+    const token = serverToken
+    const clientId = serverClientid
+
+    const url = `http://${IP}/api/app/osa/v1.0/onecall/telbook/get`
+
+    printLog(`\n =========================== getTelBook 获取通讯录信息 =========================== 
+    \n getTelBook() \n url: ${url} \n clientid: ${clientId} token: ${token}`)
+
+    const date = new Date()
+    const timestamp = dateFormat("yyyy-MM-dd HH:mm:ss", date)
+
+    const headers = {
+      AccessToken: token,
+      ClientId: clientId,
+      sign: getSign(),
+      timestamp,
+    }
+
+    const params = {
+      UserId: userId,
+    }
+
+    const res = await axios.post(url, params, {
+      headers,
+    })
+    console.log('res', res)
+    printLog(`\n getTelBook res: ${JSON.stringify(res)}`)
+    let infos = null
+    let telbookInfo = []
+    if(res.status === 200) {
+      const data = JSON.parse(JSON.stringify(res.data))
+      if(data.ok === true) {
+        infos = JSON.parse(JSON.stringify(data.data))
+        telbookInfo = infos
+        printLog(`\n getTelBook infos: ${JSON.stringify(infos)}`)
+      }
+    }
+    return telbookInfo
+  } catch (error) {
+    console.log('error', error)
+    printLog(`\n getTelBook error : ${JSON.stringify(error)}`)
+    return []
+  }
+}
+
+
+export interface telBookItemInfoType {
+  UserId: string,
+  UserName: string,
+  Contacts: string,
+  Tel: string,
+  MobilePhone: string,
+  Email: string,
+  PostalCode: string,
+  Address: string,
+  // OpType: "I" | "U" | "D",
+  // uuid: string,
+}
+
+export type opType = "I" | "U" | "D"
+
+export const upDateTelBook = async (telBookItem: telBookItemInfoType, type: opType ) => {
+  try {
+    const IP = serverIP
+    const token = serverToken
+    const clientId = serverClientid
+
+    const url = `http://${IP}/api/app/osa/v1.0/onecall/telbook/add`
+
+    printLog(`\n =========================== upDateTelBook 对通讯录进行操作 =========================== 
+    \n upDateTelBook() \n url: ${url} \n clientid: ${clientId} token: ${token}`)
+
+    const date = new Date()
+    const timestamp = dateFormat("yyyy-MM-dd HH:mm:ss", date)
+
+    const headers = {
+      AccessToken: token,
+      ClientId: clientId,
+      sign: getSign(),
+      timestamp,
+    }
+
+    const params = {
+      uuid: getUUid(),
+      opType: type,
+      ...telBookItem,
+
+    }
+
+    const res = await axios.post(url, params, {
+      headers,
+    })
+    console.log('res', res)
+    printLog(`\n upDateTelBook res: ${JSON.stringify(res)}`)
+    let result = false
+    if(res.status === 200) {
+      const data = JSON.parse(JSON.stringify(res.data))
+      if(data.ok === true) {
+        result = true
+        printLog(`\n upDateTelBook ok: ${JSON.stringify(data.ok)}`)
+      }
+    }
+    return result
+  } catch (error) {
+    console.log('error', error)
+    printLog(`\n upDateTelBook error : ${JSON.stringify(error)}`)
+    return false
+  }
 }
 
 

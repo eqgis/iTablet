@@ -20,18 +20,22 @@ import { Toast } from "@/utils"
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call'
 import { addContact } from "../reduxModels/langchao"
 import { color } from "@/styles"
+import { getTelBook, upDateTelBook } from "../utils/langchaoServer"
+import { getData } from "@/Toolbar/modules/arSandTable/Data"
 
-export interface contactItemType {
-  ID: number,
-  userID: string,
-  name: string, // displayName
-  phone: string, // phoneNumbers[0].number
+
+interface telBookItemInfoType {
+  UserId: string,
+  // UserName: string,
+  Contacts: string,
+  Tel: string,
+  MobilePhone: string,
+  Email: string,
+  PostalCode: string,
+  Address: string,
+  // OpType: "I" | "U" | "D",
+  // uuid: string,
 }
-
-// interface contactDataType {
-//   title: string,
-//   data: Array<contactItemType>
-// }
 
 interface Props extends ReduxProps {
 	navigation: any,
@@ -44,40 +48,70 @@ interface Props extends ReduxProps {
 }
 
 interface State {
-	// to do
-  contactData: Array<contactItemType>
-  addName: string
-  addNumber: string
-  addUserID: string
-  selectItem: contactItemType | null,
+  contactData: Array<telBookItemInfoType>
+  selectItem: telBookItemInfoType | null,
   morePanShow: boolean,
-  phoneTip: boolean,
-  userIdTip: boolean,
-  contactNameTip: boolean,
 }
 
+const morckdata = [
+  {
+    UserId: '101',
+    Contacts: '张三',
+    Tel: '',
+    MobilePhone: '17711245121',
+    Email: '2648987605@qq.com',
+    PostalCode: '635000',
+    Address: '中国四川成都',
+  },
+  {
+    UserId: '102',
+    Contacts: '李四',
+    Tel: '',
+    MobilePhone: '17358999687',
+    Email: '1540546372@qq.com',
+    PostalCode: '635000',
+    Address: '中国四川达州',
+  },
+]
+
 class ContactsList extends Component<Props, State> {
-  _sectionList: SectionList | undefined | null = null
-  addDialog: Dialog | undefined | null = null
 
   constructor(props: Props) {
     super(props)
-    console.warn("this.props.contacts: "  + JSON.stringify(this.props.contacts))
     this.state = {
-      contactData: this.props.contacts || [],
-      addName: '',
-      addNumber: '',
-      addUserID: '',
+      contactData: [],
       selectItem: null,
       morePanShow: false,
-      phoneTip: false,
-      userIdTip: false,
-      contactNameTip: false,
+    }
+  }
+
+  componentDidMount = async (): void  => {
+    try {
+      await this.getData()
+    } catch (error) {
+      // to do
+    }
+  }
+
+  getData = async () => {
+    try {
+      const telBookInfo = await getTelBook()
+      if(telBookInfo.length > 0) {
+        this.setState({
+          contactData: telBookInfo,
+        })
+      }
+      this.setState({
+        contactData: morckdata,
+      })
+    } catch (error) {
+      // to do
     }
   }
 
   itemAction = async (telephone: string, name: string) => {
     try {
+      if(telephone === '') return
       NavigationService.navigate('MapView',{type: 'langchao'})
       const data = {"name":"专用公路","type":"line","id":965018}
       this.props.setCurrentSymbol(data)
@@ -111,101 +145,12 @@ class ContactsList extends Component<Props, State> {
     } catch (error) {
       console.warn("error：" + JSON.stringify(error))
     }
-
-    // Linking.canOpenURL(url).then((supported: boolean) => {
-    //   if (!supported) {
-    //     Toast.show('您的系统不支持打电话！')
-    //   } else {
-    //     return Linking.openURL(url)
-    //   }
-    // }).catch(err => {
-    //   console.log(err)
-    // })
   }
 
-  // 字母关联分组跳转
-  _onSectionselect = (key: number) => {
-    this._sectionList?.scrollToLocation({
-      itemIndex: 0,
-      sectionIndex: key,
-      viewOffset: 20,
-    })
-
-  }
 
   addBtnOnpress = () => {
-    this.addDialog?.setDialogVisible(true)
-  }
-
-  addConfirm = () => {
-    let isEnterRight = true
-    if(this.state.addUserID === "") {
-      this.setState({
-        userIdTip: true,
-      })
-      isEnterRight = false
-    }
-    if(this.state.addName === "") {
-      this.setState({
-        contactNameTip: true,
-      })
-      isEnterRight = false
-    }
-    const phone = this.state.addNumber
-
-    if(phone.length < 5 || phone.length > 20 || Number(phone).toString() === 'NaN') {
-      this.setState({
-        phoneTip: true,
-      })
-      isEnterRight = false
-    }
-
-    if(!isEnterRight) {
-      return
-    }
-
-    const newcontact = this.state.contactData
-    if(this.state.selectItem) {
-      const id = this.state.selectItem.ID
-      const newcontactItem = {
-        ID: id,
-        userID: this.state.addUserID,
-        name: this.state.addName,
-        phone: this.state.addNumber,
-      }
-      newcontact.splice(id, 1, newcontactItem)
-    } else {
-      const newcontactItem = {
-        ID: newcontact.length,
-        userID: this.state.addUserID,
-        name: this.state.addName,
-        phone: this.state.addNumber,
-      }
-      newcontact.push(newcontactItem)
-    }
-    this.props.addContact(newcontact)
-    this.addDialog?.setDialogVisible(false)
-    this.setState({
-      addName: '',
-      addNumber: '',
-      addUserID: '',
-      selectItem: null,
-      userIdTip: false,
-      contactNameTip: false,
-      phoneTip: false,
-    })
-  }
-
-  addCancel = () => {
-    this.addDialog?.setDialogVisible(false)
-    this.setState({
-      addName: '',
-      addNumber: '',
-      addUserID: '',
-      selectItem: null,
-      userIdTip: false,
-      contactNameTip: false,
-      phoneTip: false,
+    NavigationService.navigate('EditContactItem', {
+      type: 'I',
     })
   }
 
@@ -213,45 +158,34 @@ class ContactsList extends Component<Props, State> {
     // 编辑对象
     this.setState({
       morePanShow: false,
-      // selectItem: null,
-      addName: this.state.selectItem?.name || "",
-      addUserID: this.state.selectItem?.userID || "",
-      addNumber: this.state.selectItem?.phone || "",
     })
-    this.addDialog?.setDialogVisible(true)
+    const data = {
+      ...this.state.selectItem,
+      UserName: this.props.userName,
+    }
+    NavigationService.navigate('EditContactItem', {
+      type: 'U',
+      data,
+    })
   }
 
-  deleteItemAction = () => {
-    const id = this.state.selectItem?.ID
-    const newdata = JSON.parse(JSON.stringify(this.state.contactData))
-    let tempData = []
-    if(id !== undefined && id >= 0) {
-      // const newcontact = this.state.contactData.splice(id, 1)
-      // this.props.addContact(newcontact)
-      newdata.splice(id, 1)
-      for(let i = newdata.length - 1; i >= 0; i --) {
-        const item = {
-          ...newdata[i],
-          ID: i,
-        }
-        console.warn("item: " + i + " - " + JSON.stringify(item))
-        // obj.ID = i
-        tempData.unshift(item)
-      }
-
-
-      console.warn("tempData: " +  JSON.stringify(tempData))
-      this.props.addContact(tempData)
-    } else {
-      tempData = JSON.parse(JSON.stringify(newdata))
-    }
-
+  deleteItemAction = async () => {
     // 删除对象
     this.setState({
       morePanShow: false,
       selectItem: null,
-      contactData: tempData,
     })
+    const data = {
+      ...this.state.selectItem,
+      UserName: this.props.userName,
+    }
+    const result = await upDateTelBook(data, "D")
+    if(result) {
+      Toast.show("操作成功")
+      await this.getData()
+    } else {
+      Toast.show("操作失败")
+    }
   }
 
   /** 分隔线 */
@@ -265,8 +199,7 @@ class ContactsList extends Component<Props, State> {
     )
   }
 
-  _renderItem(item: contactItemType, index: number) {
-    const firstChar = item.name.substring(0, 1)
+  _renderItem(item: telBookItemInfoType, index: number) {
     return (
       <View
         style={[{
@@ -291,24 +224,9 @@ class ContactsList extends Component<Props, State> {
             // paddingHorizontal: dp(10),
           }]}
           onPress={() => {
-            this.itemAction(item.phone, item.name)
+            this.itemAction(item.MobilePhone || item.Tel || '', item.Contacts)
           }}
         >
-          <View style={[{
-            width: dp(50),
-            height: dp(50),
-            borderRadius: dp(8),
-            backgroundColor: '#ccc',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }]}>
-            <Text style={[{
-              color: '#fff',
-              fontSize: dp(30),
-              fontWeight: 'bold',
-            }]}>{firstChar}</Text>
-          </View>
-
           <View style={[{
             flex:1,
             height: dp(50),
@@ -320,11 +238,11 @@ class ContactsList extends Component<Props, State> {
             <Text style={[{
               color:'#333',
               fontSize: dp(18),
-            }]}>{item.name}</Text>
+            }]}>{item.Contacts}</Text>
             <Text style={[{
               color: '#999',
               fontSize: dp(14)
-            }]}>{item.phone}</Text>
+            }]}>{item.MobilePhone || item.Tel || ''}</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -356,31 +274,6 @@ class ContactsList extends Component<Props, State> {
     )
   }
 
-  _renderSectionHeader(sectionItem: { section: any }) {
-    // const section = sectionItem.section
-    return null
-    // return (
-    //   <View style={[
-    //     {
-    //       width: '100%',
-    //       height: dp(24),
-    //       backgroundColor: '#eee',
-    //       flexDirection: 'row',
-    //       justifyContent: 'flex-start',
-    //       alignContent: 'center',
-    //     },
-    //   ]}>
-    //     <Text style={[
-    //       {
-    //         color: '#666',
-    //         fontSize: dp(16),
-    //         marginLeft: dp(10),
-    //       },
-    //     ]}>{section.title.toUpperCase()}</Text>
-    //   </View>
-    // )
-  }
-
   renderList = () => {
     if(this.state.contactData.length <= 0) {
       return (
@@ -404,33 +297,12 @@ class ContactsList extends Component<Props, State> {
       <FlatList
         renderItem={({item, index}) => this._renderItem(item, index)}
         data={this.state.contactData}
-        keyExtractor={(item, index) => item.ID + "-" + index}
+        keyExtractor={(item, index) => item.UserId + "-" + index}
         showsVerticalScrollIndicator={false}
       />
     )
   }
 
-  renderRightItem = (item: string, index: number) => {
-    return(
-      <TouchableOpacity
-        style={[{
-          width: dp(20),
-          height: dp(20),
-          borderRadius: dp(5),
-          justifyContent: 'center',
-          alignItems: 'center',
-        }]}
-        onPress={() => {
-          this._onSectionselect(index)
-        }}
-      >
-        <Text style={[{
-          color: '#333',
-          fontSize: dp(12),
-        }]}>{item}</Text>
-      </TouchableOpacity>
-    )
-  }
 
   renderHeaderRight = () => {
     return (
@@ -440,192 +312,6 @@ class ContactsList extends Component<Props, State> {
       >
         <Image style={styles.imgStyle} source={getImage().add_round} />
       </TouchableOpacity>
-    )
-  }
-
-  renderAddDialog = () => {
-    return (
-      <Dialog
-        ref={ref => (this.addDialog = ref)}
-        type={'modal'}
-        confirmBtnTitle={getLanguage(this.props.language).Prompt.CONFIRM}
-        cancelBtnTitle={getLanguage(this.props.language).Prompt.CANCEL}
-        confirmAction={this.addConfirm}
-        cancelAction={this.addCancel}
-        opacity={1}
-        opacityStyle={[{
-          height: dp(298),
-          backgroundColor: '#fff',
-        },
-        ]}
-        style={[{
-          height: dp(298),
-          backgroundColor: '#fff',
-        },
-        ]}
-      >
-        {this.renderDialogChildren()}
-      </Dialog>
-    )
-  }
-
-  renderDialogChildren = () => {
-    return (
-      <View style={[{
-        width: '100%',
-        flexDirection: 'column',
-        justifyContent:'center',
-        alignItems: 'center',
-        paddingBottom: dp(20),
-      }]}>
-        {/* 标题 */}
-        <View style={[{
-          width: '96%',
-          height: dp(30),
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderBottomColor: '#ccc',
-          borderBottomWidth: dp(1),
-          marginVertical: dp(10),
-        }]} >
-          <Text style={[{
-            fontSize: dp(18),
-            color: '#333',
-          }]}>{getLanguage(global.language).Map_Settings.ADD_CONTACT}</Text>
-        </View>
-        {/* 联系人电话id */}
-        <View style={[styles.dialogInputContainer,
-          this.state.userIdTip && styles.dialogInputContainerAddStyle
-        ]}>
-          <TextInput
-            style = {[styles.dialogInput]}
-            placeholder = {getLanguage(global.language).Map_Settings.USER_ID}
-            value = {this.state.addUserID}
-            onChangeText = {(text:string) => {
-              this.setState({
-                addUserID: text,
-                userIdTip: text === '',
-              })
-            }}
-          />
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={styles.clearBtn}
-            onPress={() => {
-              this.setState({
-                addUserID: '',
-                userIdTip: true,
-              })
-            }}
-          >
-            <Image
-              style={styles.clearImg}
-              resizeMode={'contain'}
-              source={getPublicAssets().common.icon_close}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={[styles.tipStyle]}>
-          {this.state.userIdTip && (
-            <Text
-              style={[{
-                fontSize: dp(10),
-                color: '#f00',
-              }]}
-            >{getLanguage(this.props.language).Prompt.INPUT_CONTACT_ID}</Text>
-          )}
-        </View>
-        {/* 联系人姓名输入框 */}
-        <View style={[styles.dialogInputContainer,
-          this.state.contactNameTip && styles.dialogInputContainerAddStyle
-        ]}>
-          <TextInput
-            style = {[styles.dialogInput]}
-            placeholder = {getLanguage(global.language).Map_Settings.CONTACT_NAME}
-            value = {this.state.addName}
-            onChangeText = {(text:string) => {
-              this.setState({
-                addName: text,
-                contactNameTip: text === "",
-              })
-            }}
-          />
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={styles.clearBtn}
-            onPress={() => {
-              this.setState({
-                addName: '',
-                contactNameTip: true,
-              })
-            }}
-          >
-            <Image
-              style={styles.clearImg}
-              resizeMode={'contain'}
-              source={getPublicAssets().common.icon_close}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={[styles.tipStyle]}>
-          {this.state.contactNameTip && (
-            <Text
-              style={[{
-                fontSize: dp(10),
-                color: '#f00',
-              }]}
-            >{getLanguage(this.props.language).Prompt.INPUT_CONTACT_NAME}</Text>
-          )}
-        </View>
-        {/* 联系人电话输入框 */}
-        <View style={[styles.dialogInputContainer,
-          this.state.phoneTip && styles.dialogInputContainerAddStyle
-        ]}>
-          <TextInput
-            style = {[styles.dialogInput]}
-            placeholder = {getLanguage(global.language).Map_Settings.CONTACT_NUMBER}
-            value = {this.state.addNumber}
-            onChangeText = {(text:string) => {
-              let flag = true
-              if(Number(text).toString() !== 'NaN' && text.length >= 5 && text.length <= 20) {
-                flag = false
-              }
-
-              this.setState({
-                addNumber: text,
-                phoneTip: flag,
-              })
-            }}
-          />
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={styles.clearBtn}
-            onPress={() => {
-              this.setState({
-                addNumber: '',
-                phoneTip: true,
-              })
-            }}
-          >
-            <Image
-              style={styles.clearImg}
-              resizeMode={'contain'}
-              source={getPublicAssets().common.icon_close}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={[styles.tipStyle]}>
-          {this.state.phoneTip && (
-            <Text
-              style={[{
-                fontSize: dp(10),
-                color: '#f00',
-              }]}
-            >{getLanguage(this.props.language).Prompt.CHECK_CONTACT_NUMBER}</Text>
-          )}
-        </View>
-
-      </View>
     )
   }
 
@@ -725,7 +411,6 @@ class ContactsList extends Component<Props, State> {
       >
         {/* <Text>{"我是通讯录页面"}</Text> */}
         {this.renderList()}
-        {this.renderAddDialog()}
         {this.state.morePanShow && this.operationView()}
 
       </Container>
@@ -737,12 +422,13 @@ const mapStateToProp = (state: RootState) => ({
   mapModules: state.mapModules.toJS(),
   device: state.device.toJS().device,
   language: state.setting.toJS().language,
-  contacts: state.langchao.toJS().contacts,
+  // contacts: state.langchao.toJS().contacts,
+  userName: state.langchao.toJS().userName,
 })
 
 const mapDispatch = {
   setCurrentSymbol,
-  addContact,
+  // addContact,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

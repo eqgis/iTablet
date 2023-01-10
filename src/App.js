@@ -626,6 +626,8 @@ class AppRoot extends Component {
         clearInterval(this.loginTimer)
         this.loginTimer = undefined
       }
+
+      SIPortalService.init(this.props.user.currentUser.serverUrl)
       this.loginTimer = setInterval(() => {
         let url = this.props.user.currentUser.serverUrl
         let userName = this.props.user.currentUser.userName

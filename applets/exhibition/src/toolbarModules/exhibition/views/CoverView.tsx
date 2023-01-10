@@ -43,8 +43,8 @@ interface State {
 
 let pose: SARMap.Pose | undefined
 class CoverView extends React.Component<Props, State> {
-  currentRadiusx = 1
-  currentRadiusy = 1
+  currentRadiusx = 10
+  currentRadiusy = 10
   currentDepth = 1
   scanRef: Scan | null = null
   show = true
@@ -1149,14 +1149,14 @@ class CoverView extends React.Component<Props, State> {
               left={{ type: 'text', text: getLanguage().LENGTH }}
               defaultValue={this.currentRadiusx}
               right={{ type: 'indicator', unit: '' }}
-              range = {[0,5]}
+              range = {[0,30]}
               onMove={(value: number) => {
                 this.currentRadiusx = value
               }}
               onEnd={() => {
                 const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
                 if(layer){
-                  SARMap.setARCoverRadiusX(layer.name,this.currentRadiusx)
+                  SARMap.setARCoverRadiusX(layer.name,this.currentRadiusx/10)
                 }
               }}
             />
@@ -1198,14 +1198,14 @@ class CoverView extends React.Component<Props, State> {
               left={{ type: 'text', text: getLanguage().LEGEND_WIDTH }}
               defaultValue={this.currentRadiusy}
               right={{ type: 'indicator', unit: '' }}
-              range = {[0,5]}
+              range = {[0,30]}
               onMove={(value: number) => {
                 this.currentRadiusy = value
               }}
               onEnd={() => {
                 const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
                 if(layer){
-                  SARMap.setARCoverRadiusY(layer.name,this.currentRadiusy)
+                  SARMap.setARCoverRadiusY(layer.name,this.currentRadiusy/10)
                 }
               }}
             />
@@ -1288,7 +1288,7 @@ class CoverView extends React.Component<Props, State> {
           <SlideBar
             // ref={ref => this.scaleBar = ref}
             style={styles.slideBar}
-            range={[0, 5]}
+            range={[0, 30]}
             defaultMaxValue={this.currentRadiusx}
             barColor={'#FF6E51'}
             onMove={async (value: number) => {
@@ -1296,7 +1296,7 @@ class CoverView extends React.Component<Props, State> {
               this.currentRadiusx = value
               const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
               if(layer){
-                SARMap.setARCoverRadiusX(layer.name,this.currentRadiusx)
+                SARMap.setARCoverRadiusX(layer.name,this.currentRadiusx/10)
               }
             }}
           />
@@ -1307,14 +1307,14 @@ class CoverView extends React.Component<Props, State> {
           <SlideBar
             // ref={ref => this.scaleBar = ref}
             style={styles.slideBar}
-            range={[0, 5]}
+            range={[0, 30]}
             defaultMaxValue={this.currentRadiusy}
             barColor={'#FF6E51'}
             onMove={async (value: number) => {
               this.currentRadiusy = value
               const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
               if(layer){
-                SARMap.setARCoverRadiusY(layer.name,this.currentRadiusy)
+                SARMap.setARCoverRadiusY(layer.name,this.currentRadiusy/10)
               }
             }}
           />

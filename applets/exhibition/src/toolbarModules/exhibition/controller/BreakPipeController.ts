@@ -83,12 +83,12 @@ function stopPipeAnalysis() {
 async function addBreakPoint(point: BreakPointInfo) {
 
   //限制为同时显示一个爆管点
-  // if(routes.length > 0) {
-  //   routes.map(route => {
-  //     route.clear()
-  //   })
-  //   routes.splice(0)
-  // }
+  if(routes.length > 0) {
+    routes.map(route => {
+      route.clear()
+    })
+    routes.splice(0)
+  }
 
   //是否在已显示的路线中
   let isInExistRoute = false

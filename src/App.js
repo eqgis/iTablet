@@ -376,7 +376,7 @@ class AppRoot extends Component {
     //申请 android 11 读写权限
     let permisson11 = await AppUtils.requestStoragePermissionR()
     if (isAllGranted && permisson11) {
-      await SData.setPermisson(true)
+      await SData.setPermission(true)
       await this.init(true)
       global.Loading.setLoading(false)
     } else {

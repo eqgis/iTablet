@@ -338,16 +338,16 @@ class Home extends React.Component<Props, State> {
 
   getItems = (): Item[]  => {
     return [
-      {
-        image: getImage().ar_ccdoctor_unselected,
-        selectedImage: getImage().ar_ccdoctor_selected,
-        title: getLanguage().DOCTORCC,
-        desc: '虚拟人物互动，一件换装，合影留念',
-        action: () => {
-          AppEvent.emitEvent('show_ar_map', true)
-          AppToolBar.show('EXHIBITION', 'EXHIBITION_DR_SUPERMAP')
-        }
-      },
+      // {
+      //   image: getImage().ar_ccdoctor_unselected,
+      //   selectedImage: getImage().ar_ccdoctor_selected,
+      //   title: getLanguage().DOCTORCC,
+      //   desc: '虚拟人物互动，一件换装，合影留念',
+      //   action: () => {
+      //     AppEvent.emitEvent('show_ar_map', true)
+      //     AppToolBar.show('EXHIBITION', 'EXHIBITION_DR_SUPERMAP')
+      //   }
+      // },
       {
         image: getImage().ar_infra_unselected,
         selectedImage: getImage().ar_infra_selected,
@@ -379,26 +379,26 @@ class Home extends React.Component<Props, State> {
           AppToolBar.show('EXHIBITION', 'EXHIBITION_SANDBOX')
         }
       },
-      {
-        image: getImage().ar_3d_map_unselected,
-        selectedImage: getImage().ar_3d_map_selected,
-        title: getLanguage().AR3DMAP,
-        desc: '立体地图交互浏览，车辆模拟',
-        action: () => {
-          AppEvent.emitEvent('show_ar_map', true)
-          AppToolBar.show('EXHIBITION', 'EXHIBTION_AR_3D_MAP')
-        }
-      },
-      {
-        image: getImage().ar_flat_map_unselected,
-        selectedImage: getImage().ar_flat_map_selected,
-        title: getLanguage().ARFLATMAP,
-        desc: '二维地图浏览、配图、分析、查询',
-        action: () => {
-          AppEvent.emitEvent('show_ar_map', true)
-          AppToolBar.show('EXHIBITION', 'EXHIBITION_FLAT_MAP')
-        }
-      }
+      // {
+      //   image: getImage().ar_3d_map_unselected,
+      //   selectedImage: getImage().ar_3d_map_selected,
+      //   title: getLanguage().AR3DMAP,
+      //   desc: '立体地图交互浏览，车辆模拟',
+      //   action: () => {
+      //     AppEvent.emitEvent('show_ar_map', true)
+      //     AppToolBar.show('EXHIBITION', 'EXHIBTION_AR_3D_MAP')
+      //   }
+      // },
+      // {
+      //   image: getImage().ar_flat_map_unselected,
+      //   selectedImage: getImage().ar_flat_map_selected,
+      //   title: getLanguage().ARFLATMAP,
+      //   desc: '二维地图浏览、配图、分析、查询',
+      //   action: () => {
+      //     AppEvent.emitEvent('show_ar_map', true)
+      //     AppToolBar.show('EXHIBITION', 'EXHIBITION_FLAT_MAP')
+      //   }
+      // }
     ]
   }
 

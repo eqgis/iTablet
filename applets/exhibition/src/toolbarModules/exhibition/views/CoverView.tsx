@@ -1,4 +1,4 @@
-import { AppEvent, AppToolBar, Toast ,DataHandler} from '@/utils'
+import { AppEvent, AppToolBar, Toast ,DataHandler, AppLog} from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import React from 'react'
@@ -19,6 +19,7 @@ import { FlowParam } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SE
 import { getLanguage } from '@/language'
 import { Vector3 } from 'imobile_for_reactnative/types/data'
 import ARArrow from '../components/ARArrow'
+import BreakPipeController from '../controller/BreakPipeController'
 
 interface Props {
   windowSize: ScaledSize
@@ -82,33 +83,58 @@ class CoverView extends React.Component<Props, State> {
   valveListener: EmitterSubscription | null = null
   route1ValveStatus: [boolean, boolean, boolean] = [true, true, true]
   route2ValueStatus: [boolean, boolean, boolean] = [true, true, true]
+  pipePressListener: EmitterSubscription | null = null
 
   componentDidMount(): void {
     this.valveListener = SExhibition.addVavlePressListener(result =>{
-      console.log(result)
-      let route: 1 | 2 = 1
-      if(result.name === 'valve_1_0') {
-        this.route1ValveStatus[0] = result.isOpen
+      // let route: 1 | 2 = 1
+      // if(result.name === 'valve_1_0') {
+      //   this.route1ValveStatus[0] = result.isOpen
+      // }
+      // if(result.name === 'valve_1_1') {
+      //   this.route1ValveStatus[1] = result.isOpen
+      // }
+      // if(result.name === 'valve_1_2') {
+      //   this.route1ValveStatus[2] = result.isOpen
+      // }
+      // if(result.name === 'valve_2_0') {
+      //   this.route2ValueStatus[0] = result.isOpen
+      //   route = 2
+      // }
+      // if(result.name === 'valve_2_1') {
+      //   this.route2ValueStatus[1] = result.isOpen
+      //   route = 2
+      // }
+      // if(result.name === 'valve_2_2') {
+      //   this.route2ValueStatus[2] = result.isOpen
+      //   route = 2
+      // }
+      // this.onValveOpen(route)
+
+      const nodeId = parseInt(result.name)
+
+      BreakPipeController.onValvePress(nodeId, result.isOpen)
+
+    })
+    this.pipePressListener = SExhibition.addPipePressListener(async result => {
+      try {
+        if(this.breakEnable) {
+          const ids = await SExhibition.getPipeIdByName([{...result}])
+
+          if(ids.length === 0 || ids[0] < 0) return
+
+          BreakPipeController.addBreakPoint({
+            pipeName: result.name,
+            edgeId: ids[0],
+            breakPointId: Math.ceil(Math.random() * 100000),
+            position: result.position
+          })
+          // this.onShowBreakPoint(result.position)
+        }
+
+      } catch(e) {
+        AppLog.error(e)
       }
-      if(result.name === 'valve_1_1') {
-        this.route1ValveStatus[1] = result.isOpen
-      }
-      if(result.name === 'valve_1_2') {
-        this.route1ValveStatus[2] = result.isOpen
-      }
-      if(result.name === 'valve_2_0') {
-        this.route2ValueStatus[0] = result.isOpen
-        route = 2
-      }
-      if(result.name === 'valve_2_1') {
-        this.route2ValueStatus[1] = result.isOpen
-        route = 2
-      }
-      if(result.name === 'valve_2_2') {
-        this.route2ValueStatus[2] = result.isOpen
-        route = 2
-      }
-      this.onValveOpen(route)
     })
   }
 
@@ -116,6 +142,10 @@ class CoverView extends React.Component<Props, State> {
     if(this.valveListener != null) {
       this.valveListener.remove()
       this.valveListener = null
+    }
+    if(this.pipePressListener != null) {
+      this.pipePressListener.remove()
+      this.pipePressListener  = null
     }
   }
 
@@ -340,6 +370,7 @@ class CoverView extends React.Component<Props, State> {
     })
   }
 
+  breakEnable = false
   onAlertPress = (index: string) => {
     if(this.sideBarIndex === index) {
       this._disableAlert()
@@ -352,6 +383,16 @@ class CoverView extends React.Component<Props, State> {
     }
     this.sideBarIndex = index
 
+    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+    if(layer){
+      BreakPipeController.startPipeAnalysis(
+        '/sdcard/iTablet/Common/Exhibition/AR室内管线/pipeEx/pipeEx.udb',
+        'pipeEx',
+        'pipeNetwork',
+        layer.name
+      )
+    }
+
     this.timeoutTrigger?.onShowSecondMenu()
     this.stopCover()
     this.stopRolling()
@@ -359,11 +400,12 @@ class CoverView extends React.Component<Props, State> {
     this._disableAttribte()
     this._disableFlow()
     this.stopDrawLine()
+    this.breakEnable = !this.breakEnable
 
-    this.setState({
-      secondMenuData: this.getAlertMenu(),
-      isSecondaryShow: true
-    })
+    // this.setState({
+    //   secondMenuData: this.getAlertMenu(),
+    //   isSecondaryShow: true
+    // })
   }
 
   attribteEanbled = false
@@ -461,17 +503,22 @@ class CoverView extends React.Component<Props, State> {
 
 
   _disableAlert = async () => {
-    this.route1ValveStatus = [true, true, true]
-    this.route2ValueStatus = [true, true, true]
-    const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
-    if(layer) {
-      await SExhibition.hideBreakPoint(layer.name, [...getAlertPipe1(), ...getAlertPipe2()])
+    if(this.breakEnable) {
+      this.breakEnable = false
+      BreakPipeController.stopPipeAnalysis()
       await this.onHideBreakPoint()
-      await SExhibition.restorePipeMaterial(layer.name, [...getRoute1Names(), ...getRoute2Names()])
-      await SExhibition.hidePipeFlow()
-      await SExhibition.hideValve(layer.name, getValve1())
-      await SExhibition.hideValve(layer.name, getValve2())
     }
+    // this.route1ValveStatus = [true, true, true]
+    // this.route2ValueStatus = [true, true, true]
+    // const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
+    // if(layer) {
+    //   await SExhibition.hideBreakPoint(layer.name, [...getAlertPipe1(), ...getAlertPipe2()])
+    //   await this.onHideBreakPoint()
+    //   await SExhibition.restorePipeMaterial(layer.name, [...getRoute1Names(), ...getRoute2Names()])
+    //   await SExhibition.hidePipeFlow()
+    //   await SExhibition.hideValve(layer.name, getValve1())
+    //   await SExhibition.hideValve(layer.name, getValve2())
+    // }
   }
 
 
@@ -1005,6 +1052,7 @@ class CoverView extends React.Component<Props, State> {
       this._hideSlide()
       this.stopCover()
       this.stopRolling()
+      this._disableAlert()
 
       AppEvent.removeListener('ar_image_tracking_result')
       this.listeners && this.listeners.addListener?.remove()

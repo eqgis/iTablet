@@ -973,7 +973,10 @@ class CoverView extends React.Component<Props, State> {
       const props = AppToolBar.getProps()
       await props.closeARMap()
       await props.setCurrentARLayer()
-      this.setState({ showScan: true })
+      this.currentRadiusx = 10
+      this.currentRadiusy = 10
+      this.currentDepth = 1
+      this.setState({ showScan: true ,showSlider: false})
     }
   }
 

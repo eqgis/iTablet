@@ -244,16 +244,24 @@ export const setDataAttributes = (
 export const setNaviAttributes = (
   params = [],
   cb = () => { },
-) => async dispatch => {
+) => async (dispatch,getState) => {
   let bRes = false
   try {
     if (params && params.length > 0) {
       for (let i = 0; i < params.length; i++) {
-        bRes = await SMap.setNaviFieldInfo(
-          params[i].layerPath,
+        bRes = await SData.setFieldInfoValue(
+          {
+            datasourceName:"default_increment_datasource@"+getState().user.toJS().userName,
+            datasetName:params[i].layerPath
+          },
           params[i].fieldInfo,
           params[i].params,
         )
+        // bRes = await SMap.setNaviFieldInfo(
+        //   params[i].layerPath,
+        //   params[i].fieldInfo,
+        //   params[i].params,
+        // )
       }
     }
 

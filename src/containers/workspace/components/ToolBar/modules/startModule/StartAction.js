@@ -128,7 +128,7 @@ function openMap() {
 /** 判断是否保存 * */
 function isNeedToSave(cb = () => {}) {
   let isAnyMapOpened = true // 是否有打开的地图
-  SMap.mapIsModified().then(async result => {
+  SMap.isModified().then(async result => {
     isAnyMapOpened = await SMap.isAnyMapOpened()
     if (isAnyMapOpened && result) {
       setSaveViewVisible(true, cb)
@@ -225,7 +225,7 @@ function openTemplateList() {
 /** 新建 * */
 async function create() {
   // 不是从xml加载地图
-  global.IS_MAP_FROM_XML = false
+  // global.IS_MAP_FROM_XML = false
   if (global.Type === ChunkType.MAP_COLLECTION) {
     openTemplateList()
     return
@@ -438,12 +438,12 @@ function saveMap() {
       // ) {
       //   addition.Template = ToolbarModule.getParams().map.currentMap.Template
       // }
-      const isMapFromXML = global.IS_MAP_FROM_XML
-      global.IS_MAP_FROM_XML = false
+      // const isMapFromXML = global.IS_MAP_FROM_XML
+      // global.IS_MAP_FROM_XML = false
       const result = await ToolbarModule.getParams().saveMap({
         mapName,
         addition,
-        isMapFromXML,
+        // isMapFromXML,
       })
       ToolbarModule.getParams().setContainerLoading &&
         ToolbarModule.getParams().setContainerLoading(false)
@@ -544,7 +544,7 @@ function saveMapAs() {
 async function changeMap(item) {
   const params = ToolbarModule.getParams()
   // 不是从xml加载地图
-  global.IS_MAP_FROM_XML = false
+  // global.IS_MAP_FROM_XML = false
   try {
     if (params.map.currentMap && params.map.currentMap.path === item.path) {
       Toast.show(getLanguage(params.language).Prompt.THE_MAP_IS_OPENED)

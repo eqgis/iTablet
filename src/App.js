@@ -417,8 +417,9 @@ class AppRoot extends Component {
 
   initEnvironment = async () => {
     AppUtils.initApp()
-    await SMap.initEnvironment('iTablet')
-    await AppInfo.setRootPath('/' + ConstPath.AppPath.replace(/\//g, ''))
+    // await SMap.initEnvironment('iTablet')
+    await AppInfo.setRootPath('/' + config.alias.replace(/\//g, ''))
+    // await AppInfo.setRootPath('/' + ConstPath.AppPath.replace(/\//g, ''))
     SOnlineService.init()
     SIPortalService.init(this.props.user.currentUser.serverUrl)
     await this.initLicense()

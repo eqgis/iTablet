@@ -9,21 +9,24 @@ import { getThemeAssets } from '../assets'
 import {
   Platform,
 } from 'react-native'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, DatasourceConnectionInfo } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 async function OpenData(data, index, callback) {
   global.Loading?.setLoading(true)
   const layers = await SMap.getLayersByType()
-  let isOpen
+  let isOpen = ""
   if (data instanceof Array) {
     for (let i = 0; i < data.length; i++) {
-      isOpen = await SMap.isDatasourceOpen(data[i].DSParams)
+      // const dsInfo:DatasourceConnectionInfo = {server:}
+      isOpen = await SData.openDatasource(data[i].DSParams)
+      // isOpen = await SMap.isDatasourceOpen(data[i].DSParams)
     }
   } else {
-    isOpen = await SMap.isDatasourceOpen(data.DSParams)
+    isOpen = await SData.openDatasource(data.DSParams)
+    // isOpen = await SMap.isDatasourceOpen(data.DSParams)
   }
   // Layer index = 0 为顶层
-  if (isOpen) {
+  if (isOpen !== "") {
     let info = await SMap.getMapInfo()
     if(!data?.userAdd){  // 当是系统自带的底图时就移除，是用户自定义的底图时，就不移除原底图 lyx
       if (layers.length > 0) {

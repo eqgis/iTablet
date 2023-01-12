@@ -13,7 +13,7 @@ import { color, size } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
 import { Toast, scaleSize, dataUtil } from '../../../../utils'
 import { getLanguage } from '../../../../language'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 import { getLayerIconByType } from '../../../../assets'
 
 const radio_on = require('../../../../assets/public/radio_select.png')
@@ -84,9 +84,10 @@ export default class LoadServer extends Component {
           alias: alias,
         }
       }
-      let datasetInfo = await SMap.getDatasourceInfo(_DSParams)
-      if (datasetInfo.isCanOpen) {
-        let _datasetArr = datasetInfo.datasetArr
+      const datasets = await SData.getDatasetsByDatasource(_DSParams)
+      // let datasetInfo = await SMap.getDatasourceInfo(_DSParams)
+      if (datasets.length > 0) {
+        let _datasetArr = datasets
         this.setState({
           datasetArr: _datasetArr,
         })

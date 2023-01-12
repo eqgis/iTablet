@@ -1405,7 +1405,7 @@ function _isXmlTemplate(name: string) {
 
 
 async function _getLocalWorkspaceInfo(serverPath: string) {
-  return await SMap.getLocalWorkspaceInfo(serverPath)
+  return await SMap._getLocalWorkspaceInfo(serverPath)
 }
 
 // async function _getLayerInfo3D(serverUrl, currentPath) {

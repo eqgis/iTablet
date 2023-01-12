@@ -746,35 +746,6 @@ export default class MT_layerManager extends React.Component {
     }
   }
 
-  _createTaggingLayer = async(value)=>{
-    let datasourceName = "Label_"+this.props.user.currentUser.userName+"#"
-    let datasetName =  `${value}_${this.props.user.currentUser.userName}`
-    datasetName = await SData.availableDatasetName(datasourceName,datasetName)
-    let datasetInfo:DatasetInfo = {datasourceName,
-      datasetName:datasetName,
-      description:"{type:normal}",
-      datasetType:DatasetType.CAD
-    }
-    const fieldInfos:FieldInfo[] = []
-    fieldInfos.push({name:"name",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
-    fieldInfos.push({name:"remark",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
-    fieldInfos.push({name:"address",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
-    fieldInfos.push({name:"MediaFilePaths",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
-    fieldInfos.push({name:"MediaServiceIds",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
-    fieldInfos.push({name:"MediaName",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
-    fieldInfos.push({name:"ModifiedDate",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
-    fieldInfos.push({name:"HttpAddress",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
-    fieldInfos.push({name:"Description",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
-    fieldInfos.push({name:"MediaData",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
-    fieldInfos.push({name:"SS_MediaType",type:FieldType.TEXT,isRequired:false,defaultValue:"",maxLength:255})
-    
-    let bCreate = await SData.createDatasetWithParams(datasetInfo,fieldInfos)
-
-    if(bCreate){
-      await SMap.addLayers([datasetName],datasourceName)
-    }
-  }
-
   tool_row = async () => {
     let userPath =
       this.props.user.currentUser.userName &&

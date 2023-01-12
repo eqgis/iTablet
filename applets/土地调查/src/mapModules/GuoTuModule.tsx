@@ -233,14 +233,9 @@ export default class GuoTuModule extends Module {
       if (currentMap?.Template) {
         addition.Template = params.map.currentMap.Template
       }
-      SMap.saveMapName(
+      SMap.saveMapToWorkspace(
         currentMap.name,
-        params.nModule || '',
         params.addition,
-        false,
-        false,
-        false,
-        true,
       ).then(mapName => {
         Toast.show(mapName + '已保存')
       })

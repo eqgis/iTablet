@@ -20,8 +20,8 @@
 +(NSString*) getCookie;
 +(void) setMyServiceUrl:(NSString*)url;
 +(NSString*) getMyServiceUrl;
-+(void) setAppType:(NSString*)mtype;
-+(NSString *) getAppType;
+//+(void) setAppType:(NSString*)mtype;
+//+(NSString *) getAppType;
 +(UIWindow*)getKeyWindow;
 +(void)setKeyWindow:(UIWindow*)w;
 @end

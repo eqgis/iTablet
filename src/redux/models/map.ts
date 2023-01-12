@@ -183,14 +183,9 @@ export const saveMap = (params = {}, cb = () => { }) => async (
         params.addition.Template = currentMap.Template
       }
 
-      mapName = await SMap.saveMapName(
+      mapName = await SMap.saveMapToWorkspace(
         params.mapName,
-        params.nModule || '',
         params.addition,
-        params.isNew,
-        undefined,
-        undefined,
-        params.isMapFromXML,
       )
       path = `${ConstPath.UserPath + userName}/${ConstPath.RelativePath.Map}${mapName}.xml`
     } else {

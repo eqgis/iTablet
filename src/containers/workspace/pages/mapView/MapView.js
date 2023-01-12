@@ -402,7 +402,7 @@ export default class MapView extends React.Component {
       currentDatasource: [], //当前使用的数据源
       currentDataset: {}, //当前使用的数据集
     }
-    this.floorHiddenListener = null
+    // this.floorHiddenListener = null
     CoworkInfo.closeMapHandle = this.back
 
     this._panResponder = PanResponder.create({
@@ -514,7 +514,7 @@ export default class MapView extends React.Component {
 
   /** 添加楼层显隐监听 */
   addFloorHiddenListener = () => {
-    this.floorHiddenListener = SMap.addFloorHiddenListener(async result => {
+     SMap.addFloorHiddenListener(async result => {
       //在选点过程中/路径分析界面 不允许拖放改变FloorList、MapController的状态
       // 使用this.currentFloorID 使ID发生变化时只渲染一次
       if (
@@ -977,9 +977,10 @@ export default class MapView extends React.Component {
     }
     //unmount时置空 zhangxt
     global.Type = null
-    if (this.floorHiddenListener) {
-      this.floorHiddenListener.remove()
-    }
+    SMap.removeFloorHiddenListener()
+    // if (this.floorHiddenListener) {
+    //   this.floorHiddenListener.remove()
+    // }
     if (Platform.OS === 'android') {
       this.props.removeBackAction({
         key: this.props.route.name,
@@ -1670,7 +1671,7 @@ export default class MapView extends React.Component {
         }
       }
 
-      let result = await SMap.mapIsModified() // 是否保存普通地图
+      let result = await SMap.isModified() // 是否保存普通地图
       const needSaveARMap = global.Type === ChunkType.MAP_AR && this.props.armap.currentMap?.mapName // 是否保存AR地图
       if ((result || needSaveARMap) && !this.isExample) {
         this.setSaveViewVisible(true, null, async () => {

@@ -21,19 +21,19 @@ export default class LayerVisibilityView extends Component {
     this.state = {
       mapScale: props.mapScale,
     }
-    this.listener = null
+    // this.listener = null
     this.startTime = 0
     this.endTime = 0
   }
 
   componentDidMount() {
-    this.listener = SMap.addScaleChangeDelegate({
+    SMap.addScaleChangeDelegate({
       scaleViewChange: this._scaleViewChange,
     })
   }
 
   componentWillUnmount() {
-    SMap.removeScaleChangeDelegate(this.listener)
+    SMap.removeScaleChangeDelegate()
   }
 
   _scaleViewChange = data => {

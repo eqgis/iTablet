@@ -141,7 +141,7 @@ async function shareMap(type, list = [], name = '') {
 
 function isNeedToSave(cb = () => {}) {
   let isAnyMapOpened = true // 是否有打开的地图
-  SMap.mapIsModified().then(async result => {
+  SMap.isModified().then(async result => {
     isAnyMapOpened = await SMap.isAnyMapOpened()
     if (isAnyMapOpened && result) {
       if (!ToolbarModule.getParams().setSaveViewVisible) return

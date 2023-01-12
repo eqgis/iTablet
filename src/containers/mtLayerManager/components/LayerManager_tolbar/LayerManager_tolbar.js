@@ -803,7 +803,7 @@ export default class LayerManager_tolbar extends React.Component {
         if(res){
           this.props.getLayers()
           // 地图是否是xml加载而来，用于在保存地图时判断
-          global.IS_MAP_FROM_XML = true
+          // global.IS_MAP_FROM_XML = true
         }
       })
     }

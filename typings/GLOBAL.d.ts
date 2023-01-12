@@ -113,7 +113,7 @@ declare global {
   /** 离线场景 */
   var offlineScene: boolean
   /** 专题图-地图是否由xml加载 */
-  var IS_MAP_FROM_XML: boolean
+  // var IS_MAP_FROM_XML: boolean
   // 组件ref
   /** 地图界面-地图组件 MapView.js SMMapView */
   var mapView: any

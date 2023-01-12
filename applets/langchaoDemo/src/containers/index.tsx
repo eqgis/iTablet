@@ -8,6 +8,8 @@ import HistoricalRecord from './HistoricalRecord'
 import SettingPage from './SettingPage/SettingPage'
 import UserInfoMaintenance from './UserInfoMaintenance'
 import EditContactItem from './EditContactItem'
+import LangChaoLogin from './LangChaoLogin'
+import UpdatePassword from './UpdatePassword'
 
 const Stack = createNativeStackNavigator()
 
@@ -38,6 +40,16 @@ const _navigators = [
     presentation: 'containedTransparentModal',
   }} />,
   <Stack.Screen key="EditContactItem" name="EditContactItem" component={EditContactItem} options={{
+    headerShown: false,
+    animation: 'none',
+    presentation: 'containedTransparentModal',
+  }} />,
+  <Stack.Screen key="LangChaoLogin" name="LangChaoLogin" component={LangChaoLogin} options={{
+    headerShown: false,
+    animation: 'none',
+    presentation: 'containedTransparentModal',
+  }} />,
+  <Stack.Screen key="UpdatePassword" name="UpdatePassword" component={UpdatePassword} options={{
     headerShown: false,
     animation: 'none',
     presentation: 'containedTransparentModal',

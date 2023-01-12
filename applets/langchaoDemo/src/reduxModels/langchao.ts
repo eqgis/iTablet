@@ -14,6 +14,7 @@ export const LANGCHAO_SET_DEPARTMENT_ID = "LANGCHAO_SET_DEPARTMENT_ID"
 export const LANGCHAO_ADD_CONTACT = "LANGCHAO_ADD_CONTACT"
 export const LANGCHAO_SET_COUNTRY = "LANGCHAO_SET_COUNTRY"
 export const LANGCHAO_SET_CITY = "LANGCHAO_SET_CITY"
+export const LANGCHAO_SET_PASSWORD = "LANGCHAO_SET_PASSWORD"
 // Actions
 // ---------------------------------.3-----------------
 
@@ -124,6 +125,17 @@ export const setCity = (
   cb && cb()
 }
 
+export const setPassword = (
+  params = "",
+  cb = () => {},
+) => async (dispatch: (arg0: any) => any) => {
+  await dispatch({
+    type: LANGCHAO_SET_PASSWORD,
+    payload: params,
+  })
+  cb && cb()
+}
+
 export interface contactItemType {
   ID: number,
   userID: string,
@@ -142,6 +154,7 @@ const initialState = fromJS({
   userName: '',
   departmentId: '',
   contacts: [],
+  password: '',
 })
 
 export default handleActions(
@@ -172,6 +185,9 @@ export default handleActions(
     },
     [`${LANGCHAO_SET_CITY}`]: (state: any, { payload }: any) => {
       return state.setIn(['city'], fromJS(payload))
+    },
+    [`${LANGCHAO_SET_PASSWORD}`]: (state: any, { payload }: any) => {
+      return state.setIn(['password'], fromJS(payload))
     },
     [REHYDRATE]: (state, { payload }) => {
       const langchao = getLastLaunchState()?.langchao

@@ -4,6 +4,8 @@ import axios from 'axios'
 import FileTools from 'imobile_for_reactnative/NativeModule/utility/FileTools'
 import { Platform } from 'react-native'
 import RNFetchBlob from 'rn-fetch-blob'
+import JSEncrypt from 'jsencrypt'
+import { Base64 } from 'js-base64'
 
 function getSign(){
   return Math.round(Math.random() * 100)
@@ -19,6 +21,16 @@ let username = ""
 let sysOrgid = ""
 let userInfo: any[] = []
 
+//之前ssl生成的公钥，复制的时候要小心不要有空格
+let pubKey =  `MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDYdvhxlmpCV5iE3iaWv7M0Fe/x
+/L1qfXzDuBovOoWkzN78/pYpatRouPOSO634Hl9mekWbuUXFwI3hCoTDvk1M/Kbc
+pcXAgIiavv/KvGxgeIdaHMAFH7gzHaF0fsayF9DrLdrgyDttw+qeV3z//DVpxUn6
+Gdig1KA4pvB/3DhfsQIDAQAB`
+
+export const getPubKey = () => {
+  return pubKey
+}
+
 export const getUserInfo = () => {
   return userInfo
 }
@@ -30,6 +42,11 @@ export const getUserParam = () => {
     SysOrgid: sysOrgid,
   }
 }
+
+export const setPubKey = (key: string) => {
+  pubKey = key
+}
+
 export const setUserId = (id: string) => {
   userId = id
 }
@@ -485,7 +502,7 @@ export const upDateTelBook = async (telBookItem: telBookItemInfoType, type: opTy
     const url = `http://${IP}/api/app/osa/v1.0/onecall/telbook/add`
 
     printLog(`\n =========================== upDateTelBook 对通讯录进行操作 =========================== 
-    \n upDateTelBook() \n url: ${url} \n clientid: ${clientId} token: ${token}`)
+    \n upDateTelBook(telBookItem: ${JSON.stringify(telBookItem)}) \n url: ${url} \n clientid: ${clientId} token: ${token}`)
 
     const date = new Date()
     const timestamp = dateFormat("yyyy-MM-dd HH:mm:ss", date)
@@ -521,6 +538,153 @@ export const upDateTelBook = async (telBookItem: telBookItemInfoType, type: opTy
   } catch (error) {
     console.log('error', error)
     printLog(`\n upDateTelBook error : ${JSON.stringify(error)}`)
+    return false
+  }
+}
+
+/**
+ * 加密 先进行RSA加密，在进行base加密
+ * @param str 需要加密的字符串
+ * @returns 成功返回加密后的字符串， 失败返回原来的字符串
+ */
+export const Base64AndRSAEncode = (str: string) => {
+  try {
+    const encryptor = new JSEncrypt() // 创建加密对象实例
+    encryptor.setPublicKey(pubKey)//设置公钥
+    const rsaStr = encryptor.encrypt(str)  // 对内容进行加密
+
+    if(!rsaStr) return str
+
+    // const base64Passworld = btoa(password)
+    const base64Str = Base64.encode(rsaStr)
+    return base64Str
+  } catch (error) {
+    return str
+  }
+}
+
+
+/**
+ * 用密码登录账户
+ * @param userId 用户id
+ * @param password 用户密码（原始密码，未加密之前的密码）
+ */
+export const login = async (userId: string, password: string) => {
+  try {
+    const IP = serverIP
+    const token = serverToken
+    const clientId = serverClientid
+
+    const url = `http://${IP}/api/app/osa/v1.0/onecall/sso/loginbypwd`
+
+    printLog(`\n =========================== login 登录 =========================== 
+    \n login(userId: ${userId}, password: ${password})}) \n url: ${url} \n clientid: ${clientId} token: ${token}`)
+
+    const date = new Date()
+    const timestamp = dateFormat("yyyy-MM-dd HH:mm:ss", date)
+
+    const headers = {
+      AccessToken: token,
+      ClientId: clientId,
+      sign: getSign(),
+      timestamp,
+    }
+
+    // const encryptor = new JSEncrypt() // 创建加密对象实例
+    // encryptor.setPublicKey(pubKey)//设置公钥
+    // const rsaPassWord = encryptor.encrypt(password)  // 对内容进行加密
+
+    // if(!rsaPassWord) return null
+
+    // // const base64Passworld = btoa(password)
+    // const base64Passworld = Base64.encode(rsaPassWord)
+
+    const base64Passworld = Base64AndRSAEncode(password)
+
+    const params = {
+      userId: userId,
+      password: base64Passworld,
+    }
+
+    console.warn("params: " + JSON.stringify(params) + "\n password: " + password)
+    printLog("login params: " + JSON.stringify(params) + "\n origing password: " + password)
+    const res = await axios.post(url, params, {
+      headers,
+    })
+    console.log('res', res)
+    printLog(`\n login res: ${JSON.stringify(res)}`)
+    let infos = null
+    if(res.status === 200) {
+      const data = JSON.parse(JSON.stringify(res.data))
+      if(data.ok === true) {
+        infos = JSON.parse(JSON.stringify(data.data))
+        printLog(`\n login infos: ${JSON.stringify(infos)}`)
+      }
+    }
+    return infos
+  } catch (error) {
+    console.log('error', error)
+    printLog(`\n login error : ${JSON.stringify(error)}`)
+    return null
+  }
+}
+
+
+/**
+ * 修改密码
+ * @param userId 用户id
+ * @param password 用户密码（原始密码，未加密之前的密码）
+ */
+export const updatePassword = async (userId: string, oldPassword: string, newPassword: string) => {
+  try {
+    const IP = serverIP
+    const token = serverToken
+    const clientId = serverClientid
+
+    const url = `http://${IP}/api/app/osa/v1.0/onecall/sso/modifypwd`
+
+    printLog(`\n =========================== updatePassword 修改密码 =========================== 
+    \n updatePassword(userId: ${userId}, oldPassword: ${oldPassword}, newPassword: ${newPassword}) \n url: ${url} \n clientid: ${clientId} token: ${token}`)
+
+    const date = new Date()
+    const timestamp = dateFormat("yyyy-MM-dd HH:mm:ss", date)
+
+    const headers = {
+      AccessToken: token,
+      ClientId: clientId,
+      sign: getSign(),
+      timestamp,
+    }
+
+    const endodeOldPassworld = Base64AndRSAEncode(oldPassword)
+    const encodeNewPassword = Base64AndRSAEncode(newPassword)
+
+
+    const params = {
+      userId: userId,
+      Password: encodeNewPassword,
+      oldPassword: endodeOldPassworld,
+    }
+
+    console.warn("params: " + JSON.stringify(params) + "\n oldPassword: " + oldPassword + "\n newPassword: " + newPassword)
+    printLog("updatePassword params: " + JSON.stringify(params) + "\n oldPassword: " + oldPassword + "\n newPassword: " + newPassword)
+    const res = await axios.post(url, params, {
+      headers,
+    })
+    console.log('res', res)
+    printLog(`\n updatePassword res: ${JSON.stringify(res)}`)
+    let result = false
+    if(res.status === 200) {
+      const data = JSON.parse(JSON.stringify(res.data))
+      if(data.ok === true) {
+        result = true
+        printLog(`\n updatePassword infos: ${JSON.stringify(data.ok)}`)
+      }
+    }
+    return result
+  } catch (error) {
+    console.log('error', error)
+    printLog(`\n updatePassword error : ${JSON.stringify(error)}`)
     return false
   }
 }

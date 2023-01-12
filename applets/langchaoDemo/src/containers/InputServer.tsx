@@ -26,9 +26,9 @@ interface Props extends ReduxProps {
 
 interface State {
 	serverUrl: string,
-  userId:string,
-  userName: string,
-  sysOrgId: string,
+  // userId:string,
+  // userName: string,
+  // sysOrgId: string,
 }
 
 class InputServer extends Component<Props, State> {
@@ -39,9 +39,9 @@ class InputServer extends Component<Props, State> {
     super(props)
     this.state = {
       serverUrl: props.serverIP || "",
-      userId: props.userId || "",
-      userName: props.userName || "",
-      sysOrgId: props.departmentId || "",
+      // userId: props.userId || "",
+      // userName: props.userName || "",
+      // sysOrgId: props.departmentId || "",
     }
   }
 
@@ -59,29 +59,29 @@ class InputServer extends Component<Props, State> {
     // setUserId(this.state.userId)
     // setUserName(this.state.userName)
     // setSysOrgid(this.state.sysOrgId)
-    await this.props.setServerUserId(this.state.userId)
-    await this.props.setServerUserName(this.state.userName)
-    await this.props.setServerDepartmentId(this.state.sysOrgId)
+    // await this.props.setServerUserId(this.state.userId)
+    // await this.props.setServerUserName(this.state.userName)
+    // await this.props.setServerDepartmentId(this.state.sysOrgId)
     await getToken()
 
-    const date = new Date()
-    const timezone = 8 //目标时区时间，东八区(北京时间)   东时区正数 西市区负数
-    const offset_GMT = date.getTimezoneOffset() // 本地时间和格林威治的时间差，单位为分钟
-    const nowDate = date.getTime() // 本地时间距 1970 年 1 月 1 日午夜（GMT 时间）之间的毫秒数
-    const targetDate = new Date(nowDate + offset_GMT * 60 * 1000 + timezone * 60 * 60 * 1000)
-    // const beijingTime = targetDate.getTime()
-    // 格式化时间
-    // const formDateLocal = await dateFormat("yyyy-MM-dd HH:mm:ss", date)
-    const formDateBeijing = await dateFormat("yyyy-MM-dd HH:mm:ss", targetDate)
+    // const date = new Date()
+    // const timezone = 8 //目标时区时间，东八区(北京时间)   东时区正数 西市区负数
+    // const offset_GMT = date.getTimezoneOffset() // 本地时间和格林威治的时间差，单位为分钟
+    // const nowDate = date.getTime() // 本地时间距 1970 年 1 月 1 日午夜（GMT 时间）之间的毫秒数
+    // const targetDate = new Date(nowDate + offset_GMT * 60 * 1000 + timezone * 60 * 60 * 1000)
+    // // const beijingTime = targetDate.getTime()
+    // // 格式化时间
+    // // const formDateLocal = await dateFormat("yyyy-MM-dd HH:mm:ss", date)
+    // const formDateBeijing = await dateFormat("yyyy-MM-dd HH:mm:ss", targetDate)
 
-    const params = {
-      UserId: this.state.userId,
-      UserName: this.state.userName,
-      BeginTime: formDateBeijing,
-      EndTime: formDateBeijing,
-      SysOrgid: this.state.sysOrgId,
-    }
-    await users(params)
+    // const params = {
+    //   UserId: this.state.userId,
+    //   UserName: this.state.userName,
+    //   BeginTime: formDateBeijing,
+    //   EndTime: formDateBeijing,
+    //   SysOrgid: this.state.sysOrgId,
+    // }
+    // await users(params)
     Toast.show(getLanguage(global.language).Map_Settings.SETTING_SUCCESS)
   }
 
@@ -146,7 +146,7 @@ class InputServer extends Component<Props, State> {
           </TouchableOpacity>
         </View>
 
-        <View style={[{
+        {/* <View style={[{
           width: '100%',
           height: dp(40),
           backgroundColor: "#f3f3f3",
@@ -243,7 +243,7 @@ class InputServer extends Component<Props, State> {
               source={getPublicAssets().common.icon_close}
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
     )
   }

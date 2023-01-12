@@ -50,6 +50,20 @@ export const getThematicMapSettings = () => [
       NavigationService.navigate('InputServer')
     },
   },
+  {
+    title: getLanguage(global.language).Map_Settings.LEFT_TOP_LOG,
+    leftImage: getImage().icon_userInfo_setting,
+    action: () => {
+      NavigationService.navigate('LangChaoLogin')
+    },
+  },
+  {
+    title: "密码修改", // getLanguage(global.language).Map_Settings.LEFT_TOP_LOG,
+    leftImage: getImage().icon_license_setting,
+    action: () => {
+      NavigationService.navigate('UpdatePassword')
+    },
+  },
 ]
 
 export default {

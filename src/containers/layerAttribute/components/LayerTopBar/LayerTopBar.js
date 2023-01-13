@@ -135,17 +135,18 @@ export default class LayerTopBar extends React.Component {
     for (let i = 0; i < this.props.attributes.data[this.props.currentIndex].length; i++) {
       if (this.props.attributes.data[this.props.currentIndex][i].name === 'SmID') {
         smID = this.props.attributes.data[this.props.currentIndex][i].value
-      } else if (
-        this.props.attributes.data[this.props.currentIndex][i].name === 'MediaFilePaths'
-      ) {
-        let info = await SMediaCollector.getMediaInfo(this.props.layerInfo.name, smID)
-        let maxFiles = 9 - info.mediaFilePaths.length
-        limit = maxFiles
-        if(maxFiles <= 0){
-          Toast.show(getLanguage(global.language).Prompt.CANT_PICTURE)
-          return
-        }
       }
+      // else if (
+      //   this.props.attributes.data[this.props.currentIndex][i].name === 'MediaFilePaths'
+      // ) {
+      //   let info = await SMediaCollector.getMediaInfo(this.props.layerInfo.name, smID)
+      //   let maxFiles = 9 - info.mediaFilePaths.length
+      //   limit = maxFiles
+      //   if(maxFiles <= 0){
+      //     Toast.show(getLanguage(global.language).Prompt.CANT_PICTURE)
+      //     return
+      //   }
+      // }
     }
     const selectionAttribute = this.props.selectionAttribute
     const index = this.props.currentIndex

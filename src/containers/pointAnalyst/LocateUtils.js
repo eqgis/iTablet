@@ -74,7 +74,7 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
             y = parseFloat(_item.value)
           }
         }
-        let _location = await SMap.translateLocationToLongitudeLatitude({x, y})
+        let _location = await SMap._translateLocationToLongitudeLatitude({x, y})
         // SMap.getLoca
         resultList.push({
           pointName: name || '',

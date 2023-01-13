@@ -7,10 +7,10 @@
 
 import {
   SMap,
-  Action,
   SCollector,
   SMediaCollector,
 } from 'imobile_for_reactnative'
+import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { DatasetType,GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import ToolbarModule from '../ToolbarModule'
 import { LayerUtils, Toast, StyleUtils, SCoordinationUtils } from '../../../../../../utils'

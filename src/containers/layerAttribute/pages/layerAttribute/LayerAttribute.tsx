@@ -34,18 +34,18 @@ import { getThemeAssets } from '../../../../assets'
 import styles from './styles'
 import {
   SMap,
-  Action,
   GeoStyle,
   SMediaCollector,
   TextStyle,
   SData,
 } from 'imobile_for_reactnative'
+import { Action, LayerInfo,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { getLanguage } from '../../../../language'
 import { color } from '../../../../styles'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import LayerAttributeAdd from '../layerAttributeAdd'
 import { Rect } from 'react-native-popover-view'
-import { LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
+// import { LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import { DatasetInfo,DatasetType,GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 const SINGLE_ATTRIBUTE = 'singleAttribute'

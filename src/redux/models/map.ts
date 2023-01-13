@@ -118,10 +118,7 @@ export const openMap = (params, cb = () => { }) => async (
     const module = params.module || ''
     const fileName = params.name || params.title
     const isCustomerPath = params.path.indexOf(ConstPath.CustomerPath) >= 0
-    const openMapResult = await SMap.openMapName(fileName, {
-      Module: module,
-      IsPrivate: !isCustomerPath,
-    })
+    const openMapResult = await SMap.openMapName(fileName)
     const expFilePath = `${absolutePath.substr(
       0,
       absolutePath.lastIndexOf('.'),

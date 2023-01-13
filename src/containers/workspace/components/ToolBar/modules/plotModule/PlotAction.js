@@ -1,6 +1,7 @@
 /* global GLOBAL */
 import React from 'react'
-import { SMap, Action, SPlot } from 'imobile_for_reactnative'
+import { SMap, SPlot } from 'imobile_for_reactnative'
+import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import {
   ConstToolType,
   ConstInfo,

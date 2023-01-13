@@ -1,11 +1,11 @@
 /* global GLOBAL */
 import {
   SMap,
-  Action,
   SMediaCollector,
   SAIDetectView,
   FixColorMode,
 } from 'imobile_for_reactnative'
+import { Action, } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import {
   ConstToolType,
   ConstPath,

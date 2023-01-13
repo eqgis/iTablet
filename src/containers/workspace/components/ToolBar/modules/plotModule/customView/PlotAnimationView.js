@@ -15,7 +15,8 @@ import { scaleSize, setSpText } from '../../../../../../../utils'
 import { getLanguage } from '../../../../../../../language'
 import { getThemeAssets } from '../../../../../../../assets'
 // import { TextInput } from 'react-native-gesture-handler';
-import { SMap, Action, SPlot } from 'imobile_for_reactnative'
+import { SMap, SPlot } from 'imobile_for_reactnative'
+import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 var StartMode = {
   START_FOLLOW_LAST: 1,

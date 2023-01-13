@@ -12,11 +12,12 @@ import {
 } from '../../../../../../constants'
 import ToolbarModule from '../ToolbarModule'
 import { Toast, LayerUtils } from '../../../../../../utils'
-import {  SMap, Action } from 'imobile_for_reactnative'
+import {  SMap } from 'imobile_for_reactnative'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { constants } from '../../../index'
 import TopoEditData from './TopoEditData'
 import { getLanguage } from '../../../../../../language'
+import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 async function geometrySelected(event) {
   const _params = ToolbarModule.getParams()

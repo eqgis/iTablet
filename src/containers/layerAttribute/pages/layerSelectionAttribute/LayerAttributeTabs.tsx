@@ -17,7 +17,6 @@ import LayerSelectionAttribute from './LayerSelectionAttribute'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
 import {
   SMap,
-  Action,
   GeoStyle,
   TextStyle,
   GeometryType,
@@ -28,8 +27,7 @@ import { getLanguage } from '../../../../language'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import LayerAttributeAdd from '../layerAttributeAdd'
 import { DatasetInfo } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
-import { LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
-
+import { Action, LayerInfo,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 const styles = StyleSheet.create({
   container: {
     // backgroundColor: 'transparent',

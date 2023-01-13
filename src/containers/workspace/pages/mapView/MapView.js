@@ -8,7 +8,6 @@
 import * as React from 'react'
 import {
   SMMapView,
-  Action,
   SMap,
   SScene,
   SCollector,
@@ -25,6 +24,7 @@ import {
   SData,
   SPlot,
 } from 'imobile_for_reactnative'
+import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import PropTypes from 'prop-types'
 import {

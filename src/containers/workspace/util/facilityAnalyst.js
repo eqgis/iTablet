@@ -6,9 +6,9 @@ import {
   Point,
   GeoStyle,
   Size2D,
-  Action,
   GeoPoint,
 } from 'imobile_for_reactnative'
+import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { Toast } from '../../../utils'
 
 let mNodes = []

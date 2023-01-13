@@ -2,7 +2,6 @@
 import {
   SMap,
   STransportationAnalyst,
-  Action,
   SPlot,
   // SFacilityAnalyst,
 } from 'imobile_for_reactnative'

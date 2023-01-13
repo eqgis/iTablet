@@ -5,20 +5,18 @@ import { ConstPath } from '@/constants'
 import { AppToolBar, LayerUtils, Toast } from '@/utils'
 import { getLanguage } from '@/language'
 import { getJson } from '../../assets/data'
-import { uploadFile, MessageInfoType, message, getUserParam, printLog } from '../../utils/langchaoServer'
+import { uploadFile, MessageInfoType, message, getUserParam, printLog, getUUid } from '../../utils/langchaoServer'
 
 
 
 /** 时间格式化 "yyyy-MM-dd hh:mm:ss"（12小时制）  "yyyy-MM-dd HH:mm:ss"（24小时制） */
 const dateFormat = (format: string, date: Date) => {
   let formatstr = format
-  console.warn("formatstr01: " + formatstr + " - " + date.getFullYear())
   if(format != null && format != ""){
     //设置年
     if(formatstr.indexOf("yyyy") >=0 ){
       formatstr = formatstr.replace("yyyy",date.getFullYear() + "")
     }
-    console.warn("formatstr02: " + formatstr)
     //设置月
     if(formatstr.indexOf("MM") >=0 ){
       let month: number | string = date.getMonth() + 1
@@ -27,7 +25,6 @@ const dateFormat = (format: string, date: Date) => {
       }
       formatstr = formatstr.replace("MM",month + "")
     }
-    console.warn("formatstr03: " + formatstr)
     //设置日
     if(formatstr.indexOf("dd") >=0 ){
       let day: number | string = date.getDate()
@@ -36,7 +33,6 @@ const dateFormat = (format: string, date: Date) => {
       }
       formatstr = formatstr.replace("dd",day + "")
     }
-    console.warn("formatstr04: " + formatstr)
     //设置时 - 24小时
     let hours: number | string = date.getHours()
     if(formatstr.indexOf("HH") >=0 ){
@@ -55,7 +51,6 @@ const dateFormat = (format: string, date: Date) => {
       }
       formatstr = formatstr.replace("hh",hours + "")
     }
-    console.warn("formatstr05: " + formatstr)
     //设置分
     if(formatstr.indexOf("mm") >=0 ){
       let minute: number | string = date.getMinutes()
@@ -64,7 +59,6 @@ const dateFormat = (format: string, date: Date) => {
       }
       formatstr = formatstr.replace("mm",minute + "")
     }
-    console.warn("formatstr06: " + formatstr)
     //设置秒
     if(formatstr.indexOf("ss") >=0 ){
       let second: number | string = date.getSeconds()
@@ -73,7 +67,6 @@ const dateFormat = (format: string, date: Date) => {
       }
       formatstr = formatstr.replace("ss",second + "")
     }
-    console.warn("formatstr07: " + formatstr)
   }
   return formatstr
 }
@@ -125,12 +118,12 @@ interface uuidsType {
 type uploadType = "marker" | "line" | "media" | "all"
 /**
  * 上传信息
- * @param uuidInfo 附件的uuid的信息对象
+ * @param uuidInfo 附件的uuid的信息对象  uuidInfo: uuidsType,
  * @param id 记录的id
  * @param type 数据集的类型
  * @returns
  */
-const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadType) => {
+const sendMessagePhone = async (id: number, type: uploadType) => {
   try {
     printLog(`\n============================ sendMessagePhone ============================`)
     let layerpath = "marker_118081@langchao"
@@ -191,6 +184,13 @@ const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadTyp
 
     const smID = id
     let isUploadedIndex = 0
+    let uuidIndex = 0
+    let uuidTrackIndex = 0
+    let uuidMediaIndex = 0
+
+    let uuid = ""
+    let uuidTrack = ""
+    let uuidMedia = ""
 
     for(let j = 0; j < layerAttributedata.length; j ++) {
       const item = layerAttributedata[j]
@@ -213,8 +213,22 @@ const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadTyp
         bjTime = item.value
       } else if(item.name === "duration") {
         durationTime = item.value
+      } else if(item.name === 'uuid') {
+        uuid = item.value
+        uuidIndex = j
+      } else if (item.name === 'uuidTrack') {
+        uuidTrack = item.value
+        uuidTrackIndex = j
+      } else if (item.name === 'uuidMedia') {
+        uuidMedia = item.value
+        uuidMediaIndex = j
       }
     }
+    console.warn(" uuid01: " + uuid + "\n uuidIndex: " + uuidIndex + "\n uuidTrackIndex: " + uuidTrackIndex + "\n uuidMediaIndex: " + uuidMediaIndex)
+    if(uuid === "") {
+      uuid = getUUid()
+    }
+    console.warn(" uuid02: " + uuid)
     const MesContent = `-${myName}-  -${myPhoneNumber}- 呼叫    -${callName}-  -${callPhoneNumber}-  ${localTime}   ${bjTime}   时长-${durationTime}- 分钟`
     console.warn("04 MesContent: " + MesContent)
     printLog("\n04 MesContent: " + MesContent)
@@ -240,8 +254,128 @@ const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadTyp
     console.warn("06 userinfo: " + JSON.stringify(infos))
     printLog("\n06 userinfo: " + JSON.stringify(infos))
 
+
+
+    const layerName = layerpath
+    const info = await SMediaCollector.getMediaInfo(layerName, id)
+    console.warn("info: " + JSON.stringify(info))
+    printLog(`\n mediainfo： ${JSON.stringify(info)}`)
+    const mediaPaths = info?.mediaFilePaths || []
+    // 遍历将上传图片路径，获取uuid
+    let photoUuids = ""
+    // 要往数据集里存的数据 结构“[{fileName: muuid},{fileName: muuid},...]”
+    const mediaUUidsArr = []
+    const tempMediaUUidsArray = JSON.parse(JSON.stringify(uuidMedia))
+
+    console.warn("tempMediaUUidsArray: " + JSON.stringify(tempMediaUUidsArray))
+    printLog(`\n tempMediaUUidsArray ${JSON.stringify(tempMediaUUidsArray)}`)
+
+    console.warn("mediaPaths : " + JSON.stringify(mediaPaths))
+    printLog(`\n mediaPaths： ${JSON.stringify(mediaPaths)}`)
+    for(let i = 0; i < mediaPaths.length; i ++) {
+      const itemPath = homePath + mediaPaths[i]
+      console.warn("imagePAth: " + itemPath)
+      printLog(`\n imagePath ${itemPath}`)
+
+      const fileName = itemPath.substring(itemPath.lastIndexOf("/") + 1, itemPath.length)
+      console.warn("fileName : " + fileName)
+      let uuidM = ''
+      for(let j = 0; j < tempMediaUUidsArray.length; j ++) {
+        const obj = tempMediaUUidsArray[j]
+        if(obj[fileName]) {
+          uuidM = obj[fileName]
+          break
+        }
+      }
+      // 如果uuid存在，则不提交该附件， 不存在时才提交
+      if(uuidM !== "") {
+        if(photoUuids !== "") {
+          photoUuids += "," + uuidM
+        } else {
+          photoUuids = uuidM
+        }
+        mediaUUidsArr.push({[fileName]: uuidM})
+        continue
+      } else {
+        // uploadFileTest(itemPath)
+        const mediaUploadInfo = await uploadFile(itemPath)
+        if(mediaUploadInfo) {
+          const mUUID = mediaUploadInfo.uuid
+          if(photoUuids !== "") {
+            photoUuids += "," + mUUID
+          } else {
+            photoUuids = mUUID
+          }
+          mediaUUidsArr.push({[fileName]: mUUID})
+        }
+      }
+
+    }
+
+    printLog(`\n photoUuids ${photoUuids}`)
+    uuidMedia = JSON.stringify(mediaUUidsArr)
+    printLog(`\n uuidMedia dataset ${JSON.stringify(uuidMedia)}`)
+
+
+    // 当数据集里的轨迹uuid有值时，就是已经提交过了，不需要再次提交，没有值时就是尚未提交需要提交一下
+    if(uuidTrack !== "") {
+      let layerdatasetName = "marker_118081"
+      switch(type) {
+        case "line":
+          layerdatasetName = "line_965018"
+          break
+        case "marker":
+          layerdatasetName = "marker_118081"
+          break
+        case "media":
+          layerdatasetName = "marker_322"
+          break
+        default:
+          break
+      }
+
+      const homePath = await FileTools.getHomeDirectory()
+      const tempPath =
+      homePath +
+      ConstPath.UserPath +
+      AppToolBar.getProps().user.currentUser.userName +
+      '/' +
+      ConstPath.RelativePath.Temp
+      const path = tempPath + layerdatasetName + '_' + id + '.json'
+
+      const ids = []
+      ids.push(id)
+      // 删除文件
+      const jsonFileExist = await FileTools.fileIsExist(path)
+      if(jsonFileExist) {
+        await FileTools.deleteFile(path)
+      }
+
+      const count = await SMap.exportDatasetToGeoJsonFileByID("langchao", layerdatasetName, path, ids, false)
+
+      if(count > 0) {
+        let uploadInfo = await uploadFile(path)
+        if(uploadInfo !== null) {
+          uploadInfo = JSON.parse(JSON.stringify(uploadInfo))
+          const uuidF = uploadInfo.uuid
+
+          uuidTrack = uuidF
+          // 删除文件
+          const jsonFileExist = await FileTools.fileIsExist(path)
+          if(jsonFileExist) {
+            await FileTools.deleteFile(path)
+          }
+        }
+      }
+
+    }
+
+
+
     const params: MessageInfoType = {
-      ...uuidInfo,
+      // ...uuidInfo,
+      Photo: photoUuids,
+      Trajectory: uuidTrack,
       UserId: userid,
       UserName: name,
       LocalTime: formDateLocal,
@@ -252,7 +386,7 @@ const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadTyp
     }
     console.warn("07 MessageInfo: " + JSON.stringify(params))
     printLog("\n07 MessageInfo: " + JSON.stringify(params))
-    const isSuccessed = await message(params)
+    const isSuccessed = await message(params, uuid)
 
 
     if(isSuccessed) {
@@ -266,6 +400,27 @@ const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadTyp
               name: 'isUploaded',
               value: false,
               index: isUploadedIndex,
+              columnIndex: columnIndex,
+              smID: smID,
+            },
+            {
+              name: 'uuid',
+              value: uuid,
+              index: uuidIndex,
+              columnIndex: columnIndex,
+              smID: smID,
+            },
+            {
+              name: 'uuidTrack',
+              value: uuidTrack,
+              index: uuidTrackIndex,
+              columnIndex: columnIndex,
+              smID: smID,
+            },
+            {
+              name: 'uuidMedia',
+              value: uuidMedia,
+              index: uuidMediaIndex,
               columnIndex: columnIndex,
               smID: smID,
             },
@@ -299,39 +454,39 @@ const sendMessagePhone = async (uuidInfo: uuidsType, id: number, type: uploadTyp
 const uploadTrack = async (id: number, type: uploadType) => {
   try {
     printLog(`\n============================ uploadTrack ============================`)
-    let layerdatasetName = "marker_118081"
-    switch(type) {
-      case "line":
-        layerdatasetName = "line_965018"
-        break
-      case "marker":
-        layerdatasetName = "marker_118081"
-        break
-      case "media":
-        layerdatasetName = "marker_322"
-        break
-      default:
-        break
-    }
+    // let layerdatasetName = "marker_118081"
+    // switch(type) {
+    //   case "line":
+    //     layerdatasetName = "line_965018"
+    //     break
+    //   case "marker":
+    //     layerdatasetName = "marker_118081"
+    //     break
+    //   case "media":
+    //     layerdatasetName = "marker_322"
+    //     break
+    //   default:
+    //     break
+    // }
 
-    const homePath = await FileTools.getHomeDirectory()
-    const tempPath =
-      homePath +
-      ConstPath.UserPath +
-      AppToolBar.getProps().user.currentUser.userName +
-      '/' +
-      ConstPath.RelativePath.Temp
-    const path = tempPath + layerdatasetName + '_' + id + '.json'
+    // const homePath = await FileTools.getHomeDirectory()
+    // const tempPath =
+    //   homePath +
+    //   ConstPath.UserPath +
+    //   AppToolBar.getProps().user.currentUser.userName +
+    //   '/' +
+    //   ConstPath.RelativePath.Temp
+    // const path = tempPath + layerdatasetName + '_' + id + '.json'
 
-    const ids = []
-    ids.push(id)
-    // 删除文件
-    const jsonFileExist = await FileTools.fileIsExist(path)
-    if(jsonFileExist) {
-      await FileTools.deleteFile(path)
-    }
+    // const ids = []
+    // ids.push(id)
+    // // 删除文件
+    // const jsonFileExist = await FileTools.fileIsExist(path)
+    // if(jsonFileExist) {
+    //   await FileTools.deleteFile(path)
+    // }
 
-    const count = await SMap.exportDatasetToGeoJsonFileByID("langchao", layerdatasetName, path, ids, false)
+    // const count = await SMap.exportDatasetToGeoJsonFileByID("langchao", layerdatasetName, path, ids, false)
 
     /////////////////////////////////////////////////
     // const PathTemp = homePath +
@@ -343,31 +498,31 @@ const uploadTrack = async (id: number, type: uploadType) => {
     // uploadFileTest(path, 'image/foo')
     /////////////////////////////////////////////////
 
-    const layerName = layerdatasetName + "@langchao"
-    const info = await SMediaCollector.getMediaInfo(layerName, id)
-    console.warn("info: " + JSON.stringify(info))
-    printLog(`\n mediainfo： ${JSON.stringify(info)}`)
-    const mediaPaths = info?.mediaFilePaths || []
-    // 遍历将上传图片路径，获取uuid
-    let photoUuids = ""
-    printLog(`\n mediaPaths： ${JSON.stringify(mediaPaths)}`)
-    for(let i = 0; i < mediaPaths.length; i ++) {
-      const itemPath = homePath + mediaPaths[i]
-      console.warn("imagePAth: " + itemPath)
-      printLog(`\n imagePath ${itemPath}`)
-      // uploadFileTest(itemPath)
-      const mediaUploadInfo = await uploadFile(itemPath)
-      if(mediaUploadInfo) {
-        const mUUID = mediaUploadInfo.uuid
-        if(photoUuids !== "") {
-          photoUuids += "," + mUUID
-        } else {
-          photoUuids = mUUID
-        }
-      }
-    }
+    // const layerName = layerdatasetName + "@langchao"
+    // const info = await SMediaCollector.getMediaInfo(layerName, id)
+    // console.warn("info: " + JSON.stringify(info))
+    // printLog(`\n mediainfo： ${JSON.stringify(info)}`)
+    // const mediaPaths = info?.mediaFilePaths || []
+    // // 遍历将上传图片路径，获取uuid
+    // let photoUuids = ""
+    // printLog(`\n mediaPaths： ${JSON.stringify(mediaPaths)}`)
+    // for(let i = 0; i < mediaPaths.length; i ++) {
+    //   const itemPath = homePath + mediaPaths[i]
+    //   console.warn("imagePAth: " + itemPath)
+    //   printLog(`\n imagePath ${itemPath}`)
+    //   // uploadFileTest(itemPath)
+    //   const mediaUploadInfo = await uploadFile(itemPath)
+    //   if(mediaUploadInfo) {
+    //     const mUUID = mediaUploadInfo.uuid
+    //     if(photoUuids !== "") {
+    //       photoUuids += "," + mUUID
+    //     } else {
+    //       photoUuids = mUUID
+    //     }
+    //   }
+    // }
 
-    printLog(`\n photoUuids ${photoUuids}`)
+    // printLog(`\n photoUuids ${photoUuids}`)
 
     // const result = await sendMessagePhone({
     //   Trajectory: "1111111",
@@ -376,24 +531,25 @@ const uploadTrack = async (id: number, type: uploadType) => {
     // console.warn("message result: " + result)
 
     let result = false
-    if(count > 0 && type !== 'media') {
-      let uploadInfo = await uploadFile(path)
-      if(uploadInfo !== null) {
-        uploadInfo = JSON.parse(JSON.stringify(uploadInfo))
-        const uuidF = uploadInfo.uuid
-        // 图片的路径获取 图片的文件上传 图片的uuid
-        result = await sendMessagePhone({
-          Trajectory: uuidF,
-          Photo: photoUuids,
-        }, id, 'line')
+    result = await sendMessagePhone(id, 'line')
+    // if(count > 0 && type !== 'media') {
+    //   let uploadInfo = await uploadFile(path)
+    //   if(uploadInfo !== null) {
+    //     uploadInfo = JSON.parse(JSON.stringify(uploadInfo))
+    //     const uuidF = uploadInfo.uuid
+    //     // 图片的路径获取 图片的文件上传 图片的uuid
+    //     result = await sendMessagePhone({
+    //       Trajectory: uuidF,
+    //       Photo: photoUuids,
+    //     }, id, 'line')
 
-        // 删除文件
-        const jsonFileExist = await FileTools.fileIsExist(path)
-        if(jsonFileExist) {
-          await FileTools.deleteFile(path)
-        }
-      }
-    }
+    //     // 删除文件
+    //     const jsonFileExist = await FileTools.fileIsExist(path)
+    //     if(jsonFileExist) {
+    //       await FileTools.deleteFile(path)
+    //     }
+    //   }
+    // }
     return result
   } catch (error) {
     // to do
@@ -422,13 +578,13 @@ const uploadDialog = async (id: number, type: uploadType) => {
         let result = false
         switch(type) {
           case "line":
-            result = await uploadTrack(id, 'line')
+            result = await sendMessagePhone(id, 'line')
             break
           case "marker":
-            result = await uploadTrack(id, 'marker')
+            result = await sendMessagePhone(id, 'marker')
             break
           case "media":
-            result = await uploadTrack(id, 'media')
+            result = await sendMessagePhone(id, 'media')
             break
           case "all":
             await sendInfoAll()
@@ -467,21 +623,21 @@ const sendInfoAll = async() => {
       for(let i =0; i < datasetArrayLengthL; i ++) {
         const item = JSON.parse(JSON.stringify(datasetArrayL[i]))
         // ids.push(Number(item.SmID))
-        await uploadTrack(Number(item.SmID), 'line')
+        await sendMessagePhone(Number(item.SmID), 'line')
       }
     }
 
     // 多媒体的整体提交 to do
-    const datasetArrayM = await SMap.querybyAttributeValue("langchao", "marker_322", "isUploaded=0")
-    const datasetArrayLengthM = datasetArrayM.length
-    if(datasetArrayLengthM > 0) {
-      // const ids = []
-      for(let i =0; i < datasetArrayLengthM; i ++) {
-        const item = JSON.parse(JSON.stringify(datasetArrayM[i]))
-        // ids.push(Number(item.SmID))
-        await uploadTrack(Number(item.SmID), 'media')
-      }
-    }
+    // const datasetArrayM = await SMap.querybyAttributeValue("langchao", "marker_322", "isUploaded=0")
+    // const datasetArrayLengthM = datasetArrayM.length
+    // if(datasetArrayLengthM > 0) {
+    //   // const ids = []
+    //   for(let i =0; i < datasetArrayLengthM; i ++) {
+    //     const item = JSON.parse(JSON.stringify(datasetArrayM[i]))
+    //     // ids.push(Number(item.SmID))
+    //     await sendMessagePhone(Number(item.SmID), 'media')
+    //   }
+    // }
 
   } catch (error) {
     // to do

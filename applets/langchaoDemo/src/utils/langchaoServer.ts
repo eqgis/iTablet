@@ -370,7 +370,7 @@ export interface MessageInfoType {
  * @param params 呼叫的上传数据
  * @returns 成功返回true和失败返回false
  */
-export const message = async (params: MessageInfoType) => {
+export const message = async (params: MessageInfoType, uuid: string) => {
   try {
     const IP = serverIP
     const token = serverToken
@@ -392,7 +392,7 @@ export const message = async (params: MessageInfoType) => {
     }
 
     const paramData = {
-      uuid: getUUid(),
+      uuid: uuid,
       ...params
     }
 

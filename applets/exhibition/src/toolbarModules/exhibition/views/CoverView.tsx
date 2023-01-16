@@ -51,6 +51,7 @@ class CoverView extends React.Component<Props, State> {
     addListener:EmitterSubscription | undefined,
     infoListener:EmitterSubscription | undefined
   } | null = null
+  tractState: EmitterSubscription | null = null
 
   /** 第一次显示扫描界面是否完成 */
   scanFirstShow = false
@@ -117,6 +118,7 @@ class CoverView extends React.Component<Props, State> {
       this.valveListener.remove()
       this.valveListener = null
     }
+    this.tractState?.remove()
   }
 
   getMainMenuItem = (): Item[] => {
@@ -399,7 +401,7 @@ class CoverView extends React.Component<Props, State> {
       this.setState({ showSlider: false })
     }else{
       this.timeoutTrigger?.onShowSecondMenu()
-      this.setState({ showSlider: true, secondMenuData: [] })
+      this.setState({ showSlider: true ,isSecondaryShow:false})
     }
   }
 
@@ -513,6 +515,19 @@ class CoverView extends React.Component<Props, State> {
         }
       },
     })
+
+    this.tractState = SARMap.addTrackingStatePauseListener(state => {
+      if(state.pause){
+        this.setState({
+          showSlider:false,
+          attributeShow:false,
+          secondMenuData:[],
+          isSecondaryShow:false,
+        })
+      }
+    })
+
+
 
     AppEvent.addListener('ar_3dmap_attribute',result => {
       this.setState({name:result.name,length:result.length,width:result.width,attributeShow:result.show})

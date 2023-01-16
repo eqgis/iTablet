@@ -26,7 +26,7 @@ import { getLanguage } from '../../../../language'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import LayerAttributeAdd from '../layerAttributeAdd'
 import { DatasetInfo, GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
-import { Action, LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
+import { Action, LayerInfo } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 const styles = StyleSheet.create({
   container: {

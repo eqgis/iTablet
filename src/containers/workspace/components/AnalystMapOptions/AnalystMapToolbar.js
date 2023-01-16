@@ -7,7 +7,8 @@ import { Const, TouchType, ConstToolType } from '../../../../constants'
 import { getThemeAssets } from '../../../../assets'
 import { TextBtn } from '../../../../components'
 // import { Analyst_Types } from '../../../analystView/AnalystType'
-import { SMap, Action } from 'imobile_for_reactnative'
+import { SMap } from 'imobile_for_reactnative'
+import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 const styles = StyleSheet.create({
   buttons: {

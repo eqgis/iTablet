@@ -13,9 +13,10 @@ import { getLanguage } from '@/language'
 import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
 import { AppletsToolType } from '../../constants'
 import NavigationService from '@/containers/NavigationService'
-import { Action, LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
+// import { Action, LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import CheckData from './CheckData'
 import { FieldInfo, GeometryType, TGeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 function startCheck() {
   try {

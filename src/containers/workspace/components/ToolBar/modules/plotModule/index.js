@@ -1,4 +1,4 @@
-import { SMap, Action } from 'imobile_for_reactnative'
+import { SMap } from 'imobile_for_reactnative'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import PlotData from './PlotData'
 import PlotAction from './PlotAction'
@@ -9,6 +9,7 @@ import { getThemeAssets } from '../../../../../../assets'
 import { Toast } from '../../../../../../utils'
 import FunctionModule from '../../../../../../class/FunctionModule'
 import NavigationService from '../../../../../NavigationService'
+import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 class PlotModule extends FunctionModule {
   constructor(props) {

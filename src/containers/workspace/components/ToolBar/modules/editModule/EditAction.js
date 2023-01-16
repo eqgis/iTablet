@@ -2,13 +2,13 @@ import {
   SMap,
   Action,
   SMediaCollector,
-  GeometryType,
   SCollector,
 } from 'imobile_for_reactnative'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { StyleUtils, Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
+import { GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 async function commit(type) {
   const params = ToolbarModule.getParams()

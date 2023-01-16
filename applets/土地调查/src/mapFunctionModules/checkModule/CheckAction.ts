@@ -2,9 +2,9 @@ import {
   SMap,
   Action,
   SMediaCollector,
-  GeometryType,
+  // GeometryType,
   SCollector,
-  TGeometryType,
+  // TGeometryType,
   TAction,
   SData,
 } from 'imobile_for_reactnative'
@@ -14,9 +14,9 @@ import { getLanguage } from '@/language'
 import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
 import { AppletsToolType } from '../../constants'
 import NavigationService from '@/containers/NavigationService'
-import { FieldInfo, LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
+import { LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import CheckData from './CheckData'
-import { getImage } from '../../assets'
+import { FieldInfo, GeometryType, TGeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 function startCheck() {
   try {

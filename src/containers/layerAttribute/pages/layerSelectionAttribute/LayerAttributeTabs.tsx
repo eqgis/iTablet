@@ -20,14 +20,13 @@ import {
   Action,
   GeoStyle,
   TextStyle,
-  GeometryType,
   SMediaCollector,
   SData,
 } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import LayerAttributeAdd from '../layerAttributeAdd'
-import { DatasetInfo } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetInfo, GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 
 const styles = StyleSheet.create({

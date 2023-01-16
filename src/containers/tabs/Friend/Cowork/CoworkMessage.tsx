@@ -8,10 +8,10 @@ import { color } from '../../../../styles'
 import CoworkInfo from './CoworkInfo'
 import { connect } from 'react-redux'
 import MsgConstant from '../../../../constants/MsgConstant'
-import { GeometryType } from 'imobile_for_reactnative'
 import moment from 'moment'
 import NavigationService from '../../../NavigationService'
 import { ChunkType } from '@/constants'
+import { GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 
 interface Props {

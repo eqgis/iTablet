@@ -2079,7 +2079,7 @@ export default class MapView extends React.Component {
       return
     }
     try {
-      await SMap.openMapWithDatasource(wsData.DSParams, index, toHead)
+      await SMap.openMapWithDatasource(wsData.DSParams, index)
     } catch (e) {
       this.setLoading(false)
     }

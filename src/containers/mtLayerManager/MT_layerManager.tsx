@@ -190,7 +190,6 @@ export default class MT_layerManager extends React.Component {
           global.Type === ChunkType.MAP_COLLECTION
             ? 1
             : ConstOnline.Google.layerIndex,
-          false
         )
         allLayers = await this.props.getLayers()
         data = this.dealLayers(allLayers)

@@ -72,7 +72,7 @@ async function OpenData(data, index, callback) {
       // 当不是重复添加的底图时，就打开数据源(并添加图层)
       if(!isReAdd) {
         for (let i = 0; i < data.length; i++) {
-          await SMap.openMapWithDatasource(data[i].DSParams, index, false)
+          await SMap.openMapWithDatasource(data[i].DSParams, index)
         }
 
         // 当前底图为用户自定义的，并且layers的最后一个图层是系统自带的底图时，将用户的底图上移 lyx
@@ -91,7 +91,7 @@ async function OpenData(data, index, callback) {
     } else {
       // 当不是重复添加的底图时，就打开数据源(并添加图层)
       if(!isReAdd) {
-        await SMap.openMapWithDatasource(data.DSParams, index, false)
+        await SMap.openMapWithDatasource(data.DSParams, index)
         // 当前底图为用户自定义的，并且layers的最后一个图层是系统自带的底图时，将用户的底图上移 lyx
         if(data?.userAdd && isBaseLayerEnd){  
           for(let i = 0; i <  global.BaseMapSize; i++) {

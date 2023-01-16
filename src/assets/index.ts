@@ -1,5 +1,6 @@
-import { SMap, TThemeType, TARLayerType, ARLayerType } from 'imobile_for_reactnative'
+import { SMap, TARLayerType, ARLayerType } from 'imobile_for_reactnative'
 import { ThemeType as AppThemeType } from '../constants'
+import { ThemeType,TThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import LightTheme from './lightTheme'
 import publicTheme from './publicTheme'
 import PublicTheme from './publicTheme'

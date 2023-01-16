@@ -495,56 +495,7 @@ class AppRoot extends Component {
     if (!curUserBaseMaps) {
       curUserBaseMaps = this.props.baseMaps['default']
     }
-    let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser, curUserBaseMaps)
-    let list = []
-    // 当公有服务列表数组有元素时，就遍历这个数组
-    if (arrPublishServiceList.length > 0) {
-      for (let i = 0, n = arrPublishServiceList.length; i < n; i++) {
-        // 当公有服务列表的元素的地图名字和地图信息数组，以及地图信息数组的地图服务地址都存在时，更新当前用户的底图
-        if (arrPublishServiceList[i].restTitle && arrPublishServiceList[i].mapInfos[0] && arrPublishServiceList[i].mapInfos[0].mapUrl) {
-          list = await GetUserBaseMapUtil.addServer(arrPublishServiceList[i].restTitle, arrPublishServiceList[i].mapInfos[0].mapUrl)
-        }
-      }
-    }
-
-    let listResult = []
-    if(list.length > 0){
-      // 拿到本地数据里是用户添加的底图
-      let userLocalList = curUserBaseMaps.filter(item => {
-        return item.userAdd
-      })
-      // 拿到公有服务里是用户添加的底图
-      let tempList = list.filter(item => {
-        return item.userAdd
-      })
-      // 将公共底图和用户公有服务里的底图合并到目标数组
-      listResult = GetUserBaseMapUtil.getCommonBaseMap().concat(tempList)
-      let tempListArr = []
-      // 获取本地数据里，不属于服务的底图
-      userLocalList.map((tempItem) => {
-        let indexL = -1
-        list.map((item, index) => {
-          if(tempItem.mapName === item.mapName && JSON.stringify(tempItem.DSParams) === JSON.stringify(item.DSParams)) {
-            indexL = index
-          }
-        })
-        if(indexL === -1) {
-          tempListArr.push(tempItem)
-        }
-      })
-      // 将本地数据里，不属于服务的底图添加进目标数组
-      listResult =  listResult.concat(tempListArr)
-    } else {
-      let userLocalList = curUserBaseMaps.filter(item => {
-        return item.userAdd
-      })
-      listResult = GetUserBaseMapUtil.getCommonBaseMap().concat(userLocalList)
-    }
-
-    let count = listResult.length
-    for (let i = 0; i < count; i++) {
-      listResult[i].index = i
-    }
+    const listResult = await GetUserBaseMapUtil.getUserBaseMaps(this.props.user.currentUser, curUserBaseMaps)
     // 将更改完成后的当前用户的底图数组，进行持久化存储，此处会触发页面刷新（是其他地方能够拿到用户底图的关键）
     this.props.setBaseMap &&
     this.props.setBaseMap({

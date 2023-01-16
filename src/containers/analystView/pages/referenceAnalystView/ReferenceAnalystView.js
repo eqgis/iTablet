@@ -17,10 +17,10 @@ import { getLanguage } from '../../../../language'
 import {
   SMap,
   SAnalyst,
-  Action,
   SData,
 } from 'imobile_for_reactnative'
 import { DatasetType, EngineType,GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 const popTypes = {
   DataSource: 'DataSource',
   DataSet: 'DataSet',

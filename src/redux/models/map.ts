@@ -81,7 +81,7 @@ export const openWorkspace = (params, cb = () => { }) => async dispatch => {
 // 关闭工作空间
 export const closeWorkspace = (cb = () => { }) => async dispatch => {
   try {
-    const result = await SMap.closeWorkspace()
+    const result = await SMap._closeWorkspace()
     await dispatch({
       type: OPEN_WORKSPACE,
       payload: {},
@@ -118,10 +118,7 @@ export const openMap = (params, cb = () => { }) => async (
     const module = params.module || ''
     const fileName = params.name || params.title
     const isCustomerPath = params.path.indexOf(ConstPath.CustomerPath) >= 0
-    const openMapResult = await SMap.openMapName(fileName, {
-      Module: module,
-      IsPrivate: !isCustomerPath,
-    })
+    const openMapResult = await SMap.openMapName(fileName)
     const expFilePath = `${absolutePath.substr(
       0,
       absolutePath.lastIndexOf('.'),
@@ -184,12 +181,11 @@ export const saveMap = (params = {}, cb = () => { }) => async (
       }
 
       mapName = await SMap.saveMapToWorkspace(
-        params.mapName,
-        params.addition,
+        params.mapName
       )
       path = `${ConstPath.UserPath + userName}/${ConstPath.RelativePath.Map}${mapName}.xml`
     } else {
-      await SMap.saveMap(params.mapName, false, false)
+      await SMap.saveMap(params.mapName)
     }
 
     // 另存为 和 未打开一幅已命名的地图，则需要重新设置当前地图

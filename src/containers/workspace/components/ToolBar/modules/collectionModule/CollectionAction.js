@@ -3,7 +3,6 @@ import {
   SMCollectorType,
   SMap,
   GeoStyle,
-  Action,
   SLocation,
   SData,
 } from 'imobile_for_reactnative'
@@ -20,6 +19,7 @@ import NavigationService from '../../../../../NavigationService'
 import { jsonUtil, Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import { Login } from '@/containers/tabs'
+import { Action, } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 function openTemplate(type) {
   const params = ToolbarModule.getParams()

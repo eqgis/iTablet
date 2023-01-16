@@ -25,6 +25,7 @@ import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import CoworkInfo from '../../../../../tabs/Friend/Cowork/CoworkInfo'
 import DataHandler from '../../../../../../utils/DataHandler'
+import { LayerInfo } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 
 
@@ -1189,7 +1190,7 @@ async function commit() {
  * 先检测是否需要更新,然后再提交
  */
 async function uploadLayerService({ layerData }: {
-  layerData: SMap.LayerInfo,
+  layerData:LayerInfo,
 }) {
   // 检测是否可以提交服务
   if (!CheckService.checkServiceUpload()) {

@@ -1,4 +1,5 @@
-import { SMap, Action, STransportationAnalyst } from 'imobile_for_reactnative'
+import { SMap, STransportationAnalyst } from 'imobile_for_reactnative'
+import { Action, } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { ConstToolType } from '../../../../../../constants'
 import { AnalystTools } from '../../../../../../utils'
 import ToolbarModule from '../ToolbarModule'

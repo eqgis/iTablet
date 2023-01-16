@@ -13,7 +13,7 @@ import TouchProgress from '../TouchProgress'
 import ExtraDimensions from 'react-native-extra-dimensions-android'
 import ToolbarModuleDefault, { getToolbarModule } from './modules/ToolbarModule'
 import { View, Animated, Platform, TouchableOpacity, Image, ScaledSize, Text } from 'react-native'
-import { SMap, SScene, Action } from 'imobile_for_reactnative'
+import { SMap, SScene } from 'imobile_for_reactnative'
 import ToolbarBtnType from './ToolbarBtnType'
 import styles from './styles'
 import {
@@ -25,6 +25,7 @@ import Utils from './utils'
 import { ToolbarModuleKey } from './modules/modulesKeys'
 import { DEVICE } from '@/redux/models/device'
 import sceneInfoType from '@/redux/models/scenes'
+import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 interface ToolbarVisibleParam {
   /** 是否全屏， */

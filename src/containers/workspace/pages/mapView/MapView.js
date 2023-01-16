@@ -8,7 +8,6 @@
 import * as React from 'react'
 import {
   SMMapView,
-  Action,
   SMap,
   SScene,
   SCollector,
@@ -25,6 +24,7 @@ import {
   SData,
   SPlot,
 } from 'imobile_for_reactnative'
+import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import PropTypes from 'prop-types'
 import {
@@ -1851,7 +1851,7 @@ export default class MapView extends React.Component {
             layer.isVisible = await SMap.setLayerVisible(layer.name, true)
             this.props.setCurrentLayer(layer)
 
-            if (mapInfo) await SMap.saveMap('', false, false)
+            if (mapInfo) await SMap.saveMap('')
             // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
             let dataList = await SMap.getTaggingLayers(
               this.props.user.currentUser.userName,

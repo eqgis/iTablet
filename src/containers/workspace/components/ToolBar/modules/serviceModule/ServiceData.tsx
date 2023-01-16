@@ -14,8 +14,9 @@ import ServiceAction, { DataServiceUrlParams } from './ServiceAction'
 import { FileTools } from '../../../../../../native'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import CoworkInfo from '../../../../../tabs/Friend/Cowork/CoworkInfo'
+import { LayerInfo } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 interface ActionParams {
-  layerData: SMap.LayerInfo,
+  layerData: LayerInfo,
 }
 
 /**

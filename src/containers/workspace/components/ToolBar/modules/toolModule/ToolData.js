@@ -1,7 +1,7 @@
 /**
  * 获取地图工具数据
  */
-import { SMap, Action } from 'imobile_for_reactnative'
+import { SMap } from 'imobile_for_reactnative'
 import { ConstToolType } from '../../../../../../constants'
 import { getPublicAssets, getThemeAssets } from '../../../../../../assets'
 import { LayerUtils } from '../../../../../../utils'
@@ -11,6 +11,7 @@ import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import ToolAction from './ToolAction'
 import { pickerData } from './data'
+import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 /**
  * 获取工具操作

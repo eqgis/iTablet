@@ -137,7 +137,7 @@ export const importWorkspace = (params, cb = () => {}) => async (
       cb && cb({ mapsInfo, msg: ConstInfo.WORKSPACE_ALREADY_OPENED })
     } else {
       // 关闭所有地图
-      await SMap.closeMap()
+      await SMap.exitMap()
 
       let data
       if (params && params.mapName) {

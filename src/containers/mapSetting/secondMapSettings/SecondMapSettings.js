@@ -248,8 +248,8 @@ export default class SecondMapSettings extends Component {
 
     data[0].value = await SMap.getMapName()
     data[1].value = this.props.mapScaleView
-    data[2].value = await SMap.isEnableRotateTouch()
-    data[3].value = await SMap.isEnableSlantTouch()
+    data[2].value = SMap.isEnableRotateTouch()
+    data[3].value = SMap.isEnableSlantTouch()
     angle = await SMap.getMapAngle()
     Platform.OS === 'android' && (angle += '°')
     data[4].value = angle.toString().replace('.0', '')
@@ -281,7 +281,7 @@ export default class SecondMapSettings extends Component {
     data[10].value = await SMap.getFixedTextOrientation()
     data[11].value = await SMap.isOverlapDisplayed()
     data[12].value = await SMap.isMagnifierEnabled()
-    data[13].value = await SMap.isShowLocation()
+    data[13].value = await SMap._isShowLocation()
     data[14].value = this.props.isShowCompass
     data.splice(1,1)
 
@@ -365,7 +365,7 @@ export default class SecondMapSettings extends Component {
         this.props.showCompass(value)
         break
       case getLanguage(global.language).Map_Settings.SHOW_LOCATION:
-        await SMap.setShowLocation(value)
+        await SMap._setShowLocation(value)
         break
       case getLanguage(global.language).Map_Settings.ROTATION_GESTURE:
         await SMap.enableRotateTouch(value)

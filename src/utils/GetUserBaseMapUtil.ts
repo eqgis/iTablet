@@ -378,6 +378,7 @@ let getCommonBaseMap = () => {
 export default {
   loadUserBaseMaps,
   addServer,
+  getCommonBaseMap,
 }
 
 

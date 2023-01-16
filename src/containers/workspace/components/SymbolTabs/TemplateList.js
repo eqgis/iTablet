@@ -5,7 +5,8 @@ import { Toast } from '../../../../utils'
 import { color } from '../../../../styles'
 // import { ConstToolType } from '../../../../constants'
 
-import { ThemeType } from 'imobile_for_reactnative'
+// import { ThemeType } from 'imobile_for_reactnative'
+import { ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { getLanguage } from '../../../../language/index'
 export default class TemplateList extends React.Component {
   props: {

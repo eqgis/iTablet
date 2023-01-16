@@ -1,4 +1,5 @@
-import { SThemeCartography, SMap, ThemeType } from 'imobile_for_reactnative'
+import { SThemeCartography, SMap } from 'imobile_for_reactnative'
+import { ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import {
   ConstToolType,
   ToolbarType,

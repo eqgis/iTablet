@@ -36,13 +36,22 @@ import styles from '../../styles'
 import { getLanguage } from '../../../../language'
 import ConstPath from '../../../../constants/ConstPath'
 import FileTools from '../../../../native/FileTools'
-import { DatasetType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, DatasourceConnectionInfo, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { LayerInfo } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { Props } from 'imobile_for_reactnative/components/Slider'
 
 let COMPLETE = ''
 let EDIT = ''
 let CANCEL = ''
 
-export default class MapCut extends React.Component {
+interface Props {
+
+}
+
+interface State {
+
+}
+export default class MapCut extends React.Component<Props, State> {
   props: {
     language: string,
     navigation: Object,
@@ -62,8 +71,8 @@ export default class MapCut extends React.Component {
     CANCEL = getLanguage(this.props.language).Prompt.CANCEL
     this.state = {
       headerBtnTitle: EDIT,
-      selected: (new Map(): Map<string, boolean>),
-      extraData: (new Map(): Map<string, Object>),
+      selected: (new Map()),
+      extraData: (new Map()),
       isSelectAll: false,
       isSaveAs: false,
       saveAsName: '',
@@ -229,25 +238,25 @@ export default class MapCut extends React.Component {
             let DSName = this.state.datasources.map(item => item.alias)
             //不另存地图需要新建数据源 for of中await
             for (let item of this.state.selected) {
-              let layerInfo = {}
+              let layerInfo:LayerInfo = {}
               let info = this.state.extraData.get(item[0])
               if (
                 DSName.indexOf(info.datasourceName) === -1 &&
                 this.state.saveAsName === ''
               ) {
                 let newDatasourcePath = filePath + info.datasourceName + '.udb'
-                let datasourceParams = {}
+                let datasourceParams:DatasourceConnectionInfo = {}
                 datasourceParams.server = newDatasourcePath
                 datasourceParams.engineType = EngineType.UDB
                 let returnName = await SMap.isAvilableAlias(info.datasourceName)
                 datasourceParams.alias = returnName
                 let rel = await SData.createDatasource(datasourceParams)
-                if (rel === true) {
+                if (rel !== "") {
                   await SMap.openMapWithDatasource(datasourceParams,-1)
                   DSName.push(info.datasourceName)
                 }
               }
-              layerInfo.LayerName = item[0]
+              layerInfo.name = item[0]
               layerInfo.IsClipInRegion =
                 info.inRangeStatus === CheckStatus.CHECKED ||
                 info.inRangeStatus === CheckStatus.CHECKED_DISABLE
@@ -261,7 +270,7 @@ export default class MapCut extends React.Component {
                 layerInfo.IsExactClip =
                   info.exactCutStatus === CheckStatus.CHECKED
               }
-              layerInfo.DatasourceTarget =
+              layerInfo.datasourceAlias =
                 this.state.saveAsName !== ''
                   ? newDatasourceName
                   : info.datasourceName
@@ -272,9 +281,6 @@ export default class MapCut extends React.Component {
               this.state.points,
               layersInfo,
               this.state.saveAsName,
-              '',
-              addition,
-              true,
             ).then(
               () => {
                 if (this.state.saveAsName !== '') {

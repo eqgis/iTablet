@@ -191,7 +191,8 @@ export default class ReferenceAnalystView extends Component {
             if (this.state.selectRegionStatus === CheckStatus.CHECKED) {
               optionParameter = {
                 selectRegion: {
-                  layerPath: this.props.selection[0].layerInfo.path,
+                  datasetName: this.props.selection[0].layerInfo.datasetName,
+                  datasourceName: this.props.selection[0].layerInfo.datasourceAlias,
                   geoId: this.props.selection[0].ids[0],
                 },
               }

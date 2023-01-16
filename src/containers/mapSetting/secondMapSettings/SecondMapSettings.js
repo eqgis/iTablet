@@ -248,8 +248,8 @@ export default class SecondMapSettings extends Component {
 
     data[0].value = await SMap.getMapName()
     data[1].value = this.props.mapScaleView
-    data[2].value = await SMap.isEnableRotateTouch()
-    data[3].value = await SMap.isEnableSlantTouch()
+    data[2].value = SMap.isEnableRotateTouch()
+    data[3].value = SMap.isEnableSlantTouch()
     angle = await SMap.getMapAngle()
     Platform.OS === 'android' && (angle += '°')
     data[4].value = angle.toString().replace('.0', '')

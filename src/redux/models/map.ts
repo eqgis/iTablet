@@ -81,7 +81,7 @@ export const openWorkspace = (params, cb = () => { }) => async dispatch => {
 // 关闭工作空间
 export const closeWorkspace = (cb = () => { }) => async dispatch => {
   try {
-    const result = await SMap.closeWorkspace()
+    const result = await SMap._closeWorkspace()
     await dispatch({
       type: OPEN_WORKSPACE,
       payload: {},

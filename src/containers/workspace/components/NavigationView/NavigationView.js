@@ -13,7 +13,7 @@ import { TouchType } from '../../../../constants'
 import styles from './styles'
 import { color } from '../../../../styles'
 import PropTypes from 'prop-types'
-import { SMap } from 'imobile_for_reactnative'
+import { SMap, SNavigation } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import Loading from '../../../../components/Container/Loading'
 import { Dialog, Container } from '../../../../components'
@@ -72,7 +72,7 @@ export default class NavigationView extends React.Component {
     global.ENDX = undefined
     global.TouchType = TouchType.NORMAL
     global.ToolBar?.existFullMap()
-    await SMap.clearPoint()
+    await SNavigation.clearPoint()
     NavigationService.goBack()
   }
 
@@ -169,11 +169,11 @@ export default class NavigationView extends React.Component {
       let endPointInfo //终点所在室内数据源/室外数据集的数组
       try {
         //获取起点 终点 所在室内外的数据信息
-        startPointInfo = await SMap.getPointBelongs(
+        startPointInfo = await SNavigation.getPointBelongs(
           global.STARTX,
           global.STARTY,
         )
-        endPointInfo = await SMap.getPointBelongs(global.ENDX, global.ENDY)
+        endPointInfo = await SNavigation.getPointBelongs(global.ENDX, global.ENDY)
       } catch (e) {
         this.loading.setLoading(false)
         Toast.show(' 获取数据失败')
@@ -283,23 +283,23 @@ export default class NavigationView extends React.Component {
       if (commonIndoorInfo.length > 0) {
         try {
           //添加起点
-          await SMap.getStartPoint(
+          await SNavigation.getStartPoint(
             global.STARTX,
             global.STARTY,
             true,
             global.STARTPOINTFLOOR,
           )
           //添加终点
-          await SMap.getEndPoint(
+          await SNavigation.getEndPoint(
             global.ENDX,
             global.ENDY,
             true,
             global.ENDPOINTFLOOR,
           )
           //设置室内导航参数
-          await SMap.startIndoorNavigation(commonIndoorInfo[0].datasourceName)
+          await SNavigation.startIndoorNavigation(commonIndoorInfo[0].datasourceName)
           //进行室内导航路径分析
-          let rel = await SMap.beginIndoorNavigation()
+          let rel = await SNavigation.beginIndoorNavigation()
           if (!rel) {
             this.loading.setLoading(false)
             Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
@@ -311,8 +311,8 @@ export default class NavigationView extends React.Component {
           return
         }
         //获取路径长度、路径详情
-        pathLength = await SMap.getNavPathLength(true)
-        path = await SMap.getPathInfos(true)
+        pathLength = await SNavigation.getNavPathLength(true)
+        path = await SNavigation.getPathInfos(true)
         //设置当前导航模式为室内
         global.CURRENT_NAV_MODE = 'INDOOR'
         //存在室外公共数据集
@@ -331,7 +331,7 @@ export default class NavigationView extends React.Component {
             endY: global.ENDY,
             datasourceName: startIndoorInfo[0].datasourceName,
           }
-          let doorPoint = await SMap.getDoorPoint(params)
+          let doorPoint = await SNavigation.getDoorPoint(params)
           //临界点获取成功，存在坐标及楼层信息
           if (doorPoint.x && doorPoint.y && doorPoint.floorID) {
             //构建分段导航相关参数
@@ -362,34 +362,34 @@ export default class NavigationView extends React.Component {
             // 先进行室内导航
             try {
               //添加起点终点
-              await SMap.getStartPoint(
+              await SNavigation.getStartPoint(
                 global.STARTX,
                 global.STARTY,
                 true,
                 global.STARTPOINTFLOOR || doorPoint.floorID,
               )
-              await SMap.getEndPoint(
+              await SNavigation.getEndPoint(
                 doorPoint.x,
                 doorPoint.y,
                 true,
                 doorPoint.floorID,
               )
               //设置室内导航参数
-              await SMap.startIndoorNavigation(
+              await SNavigation.startIndoorNavigation(
                 startIndoorInfo[0].datasourceName,
               )
               //进行室内路径分析
-              let rel = await SMap.beginIndoorNavigation()
+              let rel = await SNavigation.beginIndoorNavigation()
               if (!rel) {
                 this.loading.setLoading(false)
                 Toast.show(
                   getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED,
                 )
-                SMap.clearPoint()
+                SNavigation.clearPoint()
                 return
               }
               //添加引导线到跟踪层 室内导航终点到室外导航终点
-              await SMap.addLineOnTrackingLayer(doorPoint, {
+              await SNavigation.addLineOnTrackingLayer(doorPoint, {
                 x: global.ENDX,
                 y: global.ENDY,
               })
@@ -402,8 +402,8 @@ export default class NavigationView extends React.Component {
             }
 
             //获取路径长度 路径信息
-            pathLength = await SMap.getNavPathLength(true)
-            path = await SMap.getPathInfos(true)
+            pathLength = await SNavigation.getNavPathLength(true)
+            path = await SNavigation.getPathInfos(true)
             //设置导航模式为室内
             global.CURRENT_NAV_MODE = 'INDOOR'
           } else {
@@ -421,7 +421,7 @@ export default class NavigationView extends React.Component {
             endY: global.ENDY,
             datasourceName: endIndoorInfo[0].datasourceName,
           }
-          let doorPoint = await SMap.getDoorPoint(params)
+          let doorPoint = await SNavigation.getDoorPoint(params)
           //获取成功，拿到坐标和楼层id
           if (doorPoint.x && doorPoint.y && doorPoint.floorID) {
             //构建分段导航参数
@@ -452,10 +452,10 @@ export default class NavigationView extends React.Component {
 
             try {
               //添加起点，添加终点 设置室外导航参数 进行室外路径分析
-              await SMap.getStartPoint(global.STARTX, global.STARTY, false)
-              await SMap.getEndPoint(global.ENDX, global.ENDY, false)
-              await SMap.startNavigation(global.NAV_PARAMS[0])
-              let canNav = await SMap.beginNavigation(
+              await SNavigation.getStartPoint(global.STARTX, global.STARTY, false)
+              await SNavigation.getEndPoint(global.ENDX, global.ENDY, false)
+              await SNavigation.startNavigation(global.NAV_PARAMS[0])
+              let canNav = await SNavigation.beginNavigation(
                 global.STARTX,
                 global.STARTY,
                 doorPoint.x,
@@ -469,7 +469,7 @@ export default class NavigationView extends React.Component {
                 return
               }
               //添加引导线到跟踪层 临界点到导航终点
-              await SMap.addLineOnTrackingLayer(doorPoint, {
+              await SNavigation.addLineOnTrackingLayer(doorPoint, {
                 x: global.ENDX,
                 y: global.ENDY,
               })
@@ -481,8 +481,8 @@ export default class NavigationView extends React.Component {
               return
             }
             //获取室外路径长度 路径信息
-            pathLength = await SMap.getNavPathLength(false)
-            path = await SMap.getPathInfos(false)
+            pathLength = await SNavigation.getNavPathLength(false)
+            path = await SNavigation.getPathInfos(false)
             //设置当前导航模式为室外
             global.CURRENT_NAV_MODE = 'OUTDOOR'
           } else {
@@ -495,8 +495,8 @@ export default class NavigationView extends React.Component {
           //直接导航
           try {
             //设置室外导航相关参数，进行室外导航路径分析
-            await SMap.startNavigation(commonOutdoorInfo[0])
-            let result = await SMap.beginNavigation(
+            await SNavigation.startNavigation(commonOutdoorInfo[0])
+            let result = await SNavigation.beginNavigation(
               global.STARTX,
               global.STARTY,
               global.ENDX,
@@ -504,8 +504,8 @@ export default class NavigationView extends React.Component {
             )
             if (result) {
               //室外路径分析成功 获取路径长度 路径信息
-              pathLength = await SMap.getNavPathLength(false)
-              path = await SMap.getPathInfos(false)
+              pathLength = await SNavigation.getNavPathLength(false)
+              path = await SNavigation.getPathInfos(false)
               //当前全局导航模式设置为室外
               global.CURRENT_NAV_MODE = 'OUTDOOR'
             } else {
@@ -585,8 +585,8 @@ export default class NavigationView extends React.Component {
       getLanguage(global.language).Prompt.ROUTE_ANALYSING,
     )
     //添加起点。终点
-    await SMap.getStartPoint(global.STARTX, global.STARTY, false)
-    await SMap.getEndPoint(global.ENDX, global.ENDY, false)
+    await SNavigation.getStartPoint(global.STARTX, global.STARTY, false)
+    await SNavigation.getEndPoint(global.ENDX, global.ENDY, false)
     let path, pathLength
     //js请求online，获取路径数据
     let result = await FetchUtils.routeAnalyst(
@@ -601,7 +601,7 @@ export default class NavigationView extends React.Component {
       pathLength = { length: result[0].pathLength }
       path = result[0].pathInfos
       //绘制路径到跟踪层 移动到起点
-      await SMap.drawOnlinePath(result[0].pathPoints)
+      await SNavigation.drawOnlinePath(result[0].pathPoints)
       await SMap.moveToPoint({ x: global.STARTX, y: global.STARTY })
     } else {
       Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
@@ -912,9 +912,9 @@ export default class NavigationView extends React.Component {
     global.STARTPOINTFLOOR = item.sFloor
     global.ENDPOINTFLOOR = item.eFloor
 
-    await SMap.getStartPoint(item.sx, item.sy, false, item.sFloor)
+    await SNavigation.getStartPoint(item.sx, item.sy, false, item.sFloor)
 
-    await SMap.getEndPoint(item.ex, item.ey, false, item.eFloor)
+    await SNavigation.getEndPoint(item.ex, item.ey, false, item.eFloor)
 
     this.historyclick = false
     this.setState({

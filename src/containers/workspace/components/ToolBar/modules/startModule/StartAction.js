@@ -5,6 +5,7 @@ import {
   SMap,
   SScene,
   SMediaCollector,
+  SNavigation,
 } from 'imobile_for_reactnative'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { color, size } from '../../../../../../styles'
@@ -581,7 +582,7 @@ async function changeMap(item) {
       )
       if (global.Type === ChunkType.MAP_NAVIGATION) {
         const floorListView = params.getFloorListView()
-        const datas = await SMap.getFloorData()
+        const datas = await SNavigation.getFloorData()
         if (datas.data && datas.data.length > 0) {
           let { data, datasource, currentFloorID } = datas
           //打开地图时比较楼层id来进行排序 zhangxt

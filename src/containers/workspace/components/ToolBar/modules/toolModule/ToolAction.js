@@ -4,6 +4,7 @@ import {
   SMediaCollector,
   SAIDetectView,
   FixColorMode,
+  SNavigation,
 } from 'imobile_for_reactnative'
 import { Action, } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import {
@@ -27,7 +28,7 @@ import LocateUtils from '../../../../../pointAnalyst/LocateUtils'
 
 function begin() {
   global.GPS = setInterval(() => {
-    SMap.gpsBegin()
+    SNavigation.gpsBegin()
   }, 2000)
 }
 
@@ -40,10 +41,10 @@ function stop() {
 function submit() {
   (async function() {
     if (ToolbarModule.getParams().type === ConstToolType.SM_MAP_TOOL_GPSINCREMENT) {
-      await SMap.addGPSRecordset()
+      await SNavigation.addGPSRecordset()
     }
     await SMap.submit()
-    await SMap.buildNetwork()
+    await SNavigation.buildNetwork()
   })()
 }
 
@@ -78,7 +79,7 @@ function viewEntire() {
   SMap.viewEntire().then(async () => {
     const params = ToolbarModule.getParams()
     params.setToolbarVisible && params.setToolbarVisible(false)
-    const currentFloorID = await SMap.getCurrentFloorID()
+    const currentFloorID = await SNavigation.getCurrentFloorID()
     params.changeFloorID && params.changeFloorID(currentFloorID || '')
   })
 }
@@ -842,7 +843,7 @@ async function close(type) {
     type === ConstToolType.SM_MAP_TOOL_GPSINCREMENT
   ) {
     global.FloorListView.setVisible(true)
-    await SMap.removeNetworkDataset()
+    await SNavigation.removeNetworkDataset()
     SMap.setAction(Action.PAN)
     _params.setToolbarVisible(false)
   } else if (type === ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER) {
@@ -893,7 +894,7 @@ async function close(type) {
   } else if (type === ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE) {
     // 返回图层属性界面，并清除属性关联选中的对象
     NavigationService.navigate('LayerAttribute')
-    await SMap.clearTrackingLayer()
+    await SNavigation.clearTrackingLayer()
     _params.currentLayer && SMap.selectObj(_params.currentLayer.path)
     _params.setToolbarVisible(false)
   } else if (type === ConstToolType.SM_MAP_TOOL_ATTRIBUTE_SELECTION_RELATE) {
@@ -910,7 +911,7 @@ async function close(type) {
           })
         }
         await _data?.actions?.select(_data.preType)
-        await SMap.clearTrackingLayer()
+        await SNavigation.clearTrackingLayer()
         await SMap.selectObjs(selection)
   
         global.toolBox &&

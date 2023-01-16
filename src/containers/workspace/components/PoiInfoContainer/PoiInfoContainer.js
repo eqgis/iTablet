@@ -12,7 +12,7 @@ import {
   FlatList,
   Image,
 } from 'react-native'
-import { SMap } from 'imobile_for_reactnative'
+import { SMap, SNavigation } from 'imobile_for_reactnative'
 import styles from './style'
 import { scaleSize, screen } from '../../../../utils'
 import PoiData from '../../../pointAnalyst/PoiData'
@@ -296,18 +296,18 @@ export default class PoiInfoContainer extends React.Component {
         global.STARTX = item.x
         global.STARTY = item.y
         global.STARTNAME = item.pointName
-        await SMap.getStartPoint(global.STARTX, global.STARTY, false)
+        await SNavigation.getStartPoint(global.STARTX, global.STARTY, false)
       } else {
         //设置终点
         global.ENDX = item.x
         global.ENDY = item.y
         global.ENDNAME = item.pointName
-        await SMap.getEndPoint(global.ENDX, global.ENDY, false)
+        await SNavigation.getEndPoint(global.ENDX, global.ENDY, false)
       }
       SMap.removeAllCallout()
       this.setVisible(false)
       global.PoiTopSearchBar && global.PoiTopSearchBar.setVisible(false)
-      global.STARTPOINTFLOOR = await SMap.getCurrentFloorID()
+      global.STARTPOINTFLOOR = await SNavigation.getCurrentFloorID()
       NavigationService.navigate('NavigationView', {
         changeNavPathInfo: this.props.changeNavPathInfo,
         getNavigationDatas: this.props.getNavigationDatas,
@@ -485,7 +485,7 @@ export default class PoiInfoContainer extends React.Component {
   }
 
   navitoHere = async () => {
-    SMap.clearTrackingLayer()
+    SNavigation.clearTrackingLayer()
     SMap.removePOICallout()
     let position = await SMap.getCurrentPosition()
     global.STARTX = position.x
@@ -500,8 +500,8 @@ export default class PoiInfoContainer extends React.Component {
       changeNavPathInfo: this.props.changeNavPathInfo,
       getNavigationDatas: this.props.getNavigationDatas,
     })
-    await SMap.getStartPoint(global.STARTX, global.STARTY, false)
-    await SMap.getEndPoint(global.ENDX, global.ENDY, false)
+    await SNavigation.getStartPoint(global.STARTX, global.STARTY, false)
+    await SNavigation.getEndPoint(global.ENDX, global.ENDY, false)
     global.PoiTopSearchBar && global.PoiTopSearchBar.setVisible(false)
     this.setInitialState()
   }

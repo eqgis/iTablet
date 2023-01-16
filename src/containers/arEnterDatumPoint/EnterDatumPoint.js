@@ -13,7 +13,7 @@ import { Container, Button } from '../../components'
 
 import { color } from '../../styles'
 import { getLanguage } from '../../language'
-import { SMap, SCollectSceneFormView, SData } from 'imobile_for_reactnative'
+import { SMap, SCollectSceneFormView, SData, SNavigation } from 'imobile_for_reactnative'
 import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { Toast, scaleSize } from '../../utils'
 import { ConstOnline, TouchType } from '../../constants'
@@ -65,7 +65,7 @@ export default class EnterDatumPoint extends Component {
   }
 
   getFloorData = async () => {
-    let result = await SMap.getFloorData()
+    let result = await SNavigation.getFloorData()
     this.setState({
       floorData: result.data,
     })

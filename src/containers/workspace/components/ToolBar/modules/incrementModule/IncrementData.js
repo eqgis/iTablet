@@ -210,7 +210,7 @@ async function getData(type) {
       ]
       break
     case ConstToolType.SM_MAP_INCREMENT_CHANGE_NETWORK:
-      // data = await SMap.getLineDataset()
+      // data = await SNavigation.getLineDataset()
       data = getDataset()
       //eslint-disable-next-line
       customView = props => <LineList data={data} device={props.device} selectedItem={global.INCREMENT_DATA}/>

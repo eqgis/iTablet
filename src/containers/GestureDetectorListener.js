@@ -3,6 +3,7 @@ import {
   SMap,
   STransportationAnalyst,
   SPlot,
+  SNavigation,
   // SFacilityAnalyst,
 } from 'imobile_for_reactnative'
 import NavigationService from './NavigationService'
@@ -48,7 +49,7 @@ async function magntouchCallback(event) {
     case TouchType.NORMAL:
       if (global.Type === ChunkType.MAP_NAVIGATION){
         (async function () {
-          await SMap.getStartPoint(event.LLPoint.x, event.LLPoint.y, false)
+          await SNavigation.getStartPoint(event.LLPoint.x, event.LLPoint.y, false)
           global.STARTX = event.LLPoint.x
           global.STARTY = event.LLPoint.y
           //显示选点界面的顶部 底部组件
@@ -69,7 +70,7 @@ async function magntouchCallback(event) {
       break
     case TouchType.NAVIGATION_TOUCH_END:
       (async function () {
-        await SMap.getEndPoint(event.LLPoint.x, event.LLPoint.y, false)
+        await SNavigation.getEndPoint(event.LLPoint.x, event.LLPoint.y, false)
         global.ENDX = event.LLPoint.x
         global.ENDY = event.LLPoint.y
       })()
@@ -92,7 +93,7 @@ async function magntouchCallback(event) {
         ...global.INCREMENT_DATA,
         secondLine: true,
       }
-      SMap.drawSelectedLineOnTrackingLayer(params)
+      SNavigation.drawSelectedLineOnTrackingLayer(params)
       global.bubblePane && global.bubblePane.clear()
       break
     }
@@ -105,7 +106,7 @@ async function longtouchCallback() {
       break
     //   if (global.Type === ChunkType.MAP_NAVIGATION){
     //     (async function () {
-    //       await SMap.getStartPoint(event.LLPoint.x, event.LLPoint.y, false)
+    //       await SNavigation.getStartPoint(event.LLPoint.x, event.LLPoint.y, false)
     //       global.STARTX = event.LLPoint.x
     //       global.STARTY = event.LLPoint.y
     //       //显示选点界面的顶部 底部组件
@@ -126,7 +127,7 @@ async function longtouchCallback() {
     //   break
     // case TouchType.NAVIGATION_TOUCH_END:
     //   (async function () {
-    //     await SMap.getEndPoint(event.LLPoint.x, event.LLPoint.y, false)
+    //     await SNavigation.getEndPoint(event.LLPoint.x, event.LLPoint.y, false)
     //     global.ENDX = event.LLPoint.x
     //     global.ENDY = event.LLPoint.y
     //   })()
@@ -139,14 +140,14 @@ async function touchCallback(event) {
   switch (global.TouchType) {
     // case TouchType.NAVIGATION_TOUCH_BEGIN:
     //   (async function() {
-    //     await SMap.getStartPoint(event.LLPoint.x, event.LLPoint.y, false)
+    //     await SNavigation.getStartPoint(event.LLPoint.x, event.LLPoint.y, false)
     //     global.STARTX = event.LLPoint.x
     //     global.STARTY = event.LLPoint.y
     //   })()
     //   break
     // case TouchType.NAVIGATION_TOUCH_END:
     //   (async function() {
-    //     await SMap.getEndPoint(event.LLPoint.x, event.LLPoint.y, false)
+    //     await SNavigation.getEndPoint(event.LLPoint.x, event.LLPoint.y, false)
     //     global.ENDX = event.LLPoint.x
     //     global.ENDY = event.LLPoint.y
     //   })()
@@ -159,7 +160,7 @@ async function touchCallback(event) {
       // ) {
       //   global.PoiInfoContainer.hidden()
       // }
-      guideInfo = await SMap.isGuiding()
+      guideInfo = await SNavigation.isGuiding()
       if (
         !guideInfo.isOutdoorGuiding &&
         !guideInfo.isIndoorGuiding &&
@@ -283,7 +284,7 @@ async function touchCallback(event) {
         ...global.INCREMENT_DATA,
         secondLine: true,
       }
-      SMap.drawSelectedLineOnTrackingLayer(params)
+      SNavigation.drawSelectedLineOnTrackingLayer(params)
       global.bubblePane && global.bubblePane.clear()
       break
     }

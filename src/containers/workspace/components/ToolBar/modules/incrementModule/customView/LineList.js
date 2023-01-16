@@ -22,7 +22,7 @@ import {
   getPublicAssets,
   getThemeAssets,
 } from '../../../../../../../assets'
-import { SMap } from 'imobile_for_reactnative'
+import { SMap, SNavigation } from 'imobile_for_reactnative'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { color } from '../../../../../../../styles'
 import ToolbarModule from '../../ToolbarModule'
@@ -97,7 +97,7 @@ export default class LineList extends Component {
         datasourceName: this.state.selectedItem.datasourceName,
         datasetName: this.state.selectedItem.datasetName,
       }
-      await SMap.setCurrentDataset(params)
+      await SNavigation.setCurrentDataset(params)
       global.INCREMENT_DATA = this.state.selectedItem
     }
     const params = ToolbarModule.getParams()
@@ -231,7 +231,7 @@ export default class LineList extends Component {
       removeLayer = true
       global.INCREMENT_DATA = {}
     }
-    SMap.deleteDatasetAndLayer({ datasourceName, datasetName, removeLayer })
+    SNavigation.deleteDatasetAndLayer({ datasourceName, datasetName, removeLayer })
     this.setState({
       data,
       selectedItem,

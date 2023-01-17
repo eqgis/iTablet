@@ -16,7 +16,7 @@ import ToolBarInput from 'imobile_for_reactnative/components/ToolbarKit/componen
 import { dp } from 'imobile_for_reactnative/utils/size'
 import { ToolBarSlideItem } from 'imobile_for_reactnative/components/ToolbarKit/component/ToolBarSlide'
 import { Platform } from 'react-native'
-import { IAnimationParam } from 'imobile_for_reactnative/types/interface/ar'
+import { IAnimationParam } from 'imobile_for_reactnative'
 
 interface SectionItemData {
   key: string,

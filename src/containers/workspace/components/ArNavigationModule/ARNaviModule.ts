@@ -3,7 +3,7 @@
  */
 
 import { SData, SMap } from "imobile_for_reactnative"
-import { POIInfo, POIInfoOnline, RouteAnalyzeResult } from "imobile_for_reactnative/types/interface/ar"
+import { POIInfo, POIInfoOnline, RouteAnalyzeResult } from "imobile_for_reactnative"
 
 /** 室外导航数据源及路网数据集信息*/
 export interface NaviDatasourceInfo {

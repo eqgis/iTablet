@@ -3,7 +3,7 @@ import { ARAnimatorType, ARElementType, ARNodeAnimatorType } from "imobile_for_r
 import { SARMap } from "imobile_for_reactnative"
 import { ARAnimatorSettingParam } from "./component/AnimatorParamSetting"
 import { AppToolBar } from "@/utils"
-import { ARElement } from "imobile_for_reactnative/types/interface/ar"
+import { ARElement } from "imobile_for_reactnative"
 import { ModelAnimation } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 
 let arAnimatorSettingParam: ARAnimatorSettingParam = initArAnimatorSettingParam()

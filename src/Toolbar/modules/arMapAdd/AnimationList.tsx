@@ -1,6 +1,6 @@
 import { ARElementType, SARMap } from 'imobile_for_reactnative'
 import { ModelAnimation } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
-import { ARElement } from 'imobile_for_reactnative/types/interface/ar'
+import { ARElement } from 'imobile_for_reactnative'
 import React from 'react'
 import { FlatList, ListRenderItemInfo, Text, TouchableOpacity, Animated, Easing } from 'react-native'
 import { getImage } from '../../../assets'

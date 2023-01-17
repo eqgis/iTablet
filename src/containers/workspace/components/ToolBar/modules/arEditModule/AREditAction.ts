@@ -5,7 +5,7 @@ import {
   ARLayerType,
   ARElementType,
 } from 'imobile_for_reactnative'
-import { IAnimationParam, ARElementLayer, AREffectLayer } from "imobile_for_reactnative/types/interface/ar"
+import { IAnimationParam, ARElementLayer, AREffectLayer } from "imobile_for_reactnative"
 import { IVector3 } from "imobile_for_reactnative/types/data"
 import {
   ConstToolType,

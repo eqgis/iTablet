@@ -1,5 +1,5 @@
 import { ARAction, ARElementType, SARMap } from "imobile_for_reactnative"
-import { ARElement, IAnimationParam } from "imobile_for_reactnative/types/interface/ar"
+import { ARElement, IAnimationParam } from "imobile_for_reactnative"
 import { ModuleList } from ".."
 import { getImage } from "../../../assets"
 import { getLanguage } from "../../../language"

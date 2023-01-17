@@ -5,7 +5,7 @@ import {  getImage } from '../../../assets'
 import { AppEvent, AppStyle, AppToolBar, dp } from '../../../utils'
 import { ModuleViewProps } from '../../../Toolbar'
 import AnimationList from './AnimationList'
-import { ARElement } from 'imobile_for_reactnative/types/interface/ar'
+import { ARElement } from 'imobile_for_reactnative'
 import * as ARMapModule from './ModuleData'
 import { ModelAnimation } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 type Props = ModuleViewProps<unknown>

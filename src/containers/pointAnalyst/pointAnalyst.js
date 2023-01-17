@@ -25,7 +25,7 @@ export default class PointAnalyst extends Component {
   props: {
     navigation: Object,
     mapSearchHistory: Array,
-    language: String,
+    language: string,
     setMapSearchHistory: () => {},
   }
 
@@ -60,16 +60,15 @@ export default class PointAnalyst extends Component {
   componentDidMount() {
     if (this.is3D) {
       SScene.initPointSearch()
-      SScene.setPointSearchListener({
-        callback: result => {
-          if (this.type === 'pointAnalyst') {
-            this.setState({ analystData: result })
-          } else {
-            this.setState({ searchData: result })
-            this.setLoading(false)
-          }
-        },
-      })
+      SScene.setPointSearchListener(result => {
+        if (this.type === 'pointAnalyst') {
+          this.setState({ analystData: result })
+        } else {
+          this.setState({ searchData: result })
+          this.setLoading(false)
+        }
+      },
+      )
     }
   }
 

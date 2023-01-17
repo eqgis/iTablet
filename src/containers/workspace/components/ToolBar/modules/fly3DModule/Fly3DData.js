@@ -85,7 +85,7 @@ function getToolFly() {
       key: 'startFly',
       title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
       action: () => {
-        SScene.flyStart()
+        SScene.startFly()
       },
       size: 'large',
       image: getThemeAssets().mapTools.icon_tool_play,
@@ -95,7 +95,7 @@ function getToolFly() {
       key: 'stop',
       title: getLanguage(global.language).Map_Main_Menu.COLLECTION_PAUSE,
       action: () => {
-        SScene.flyPause()
+        SScene.pauseFly()
       },
       size: 'large',
       image: getThemeAssets().mapTools.icon_tool_suspend,
@@ -113,7 +113,7 @@ function getNewFly() {
       title: getLanguage(global.language).Map_Main_Menu.FLY_ADD_STOPS,
       action: () => {
         try {
-          SScene.saveCurrentRoutStop().then(result => {
+          SScene.addRouteStop().then(result => {
             if (result) {
               Toast.show(getLanguage(global.language).Prompt.ADD_SUCCESS)
             }
@@ -131,7 +131,7 @@ function getNewFly() {
       title: getLanguage(global.language).Map_Main_Menu.FLY,
       action: () => {
         try {
-          SScene.saveRoutStop()
+          SScene.saveRouteStop()
         } catch (error) {
           Toast.show(getLanguage(global.language).Prompt.PLEASE_ADD_STOP)
         }
@@ -145,7 +145,7 @@ function getNewFly() {
       title: getLanguage(global.language).Map_Main_Menu.COLLECTION_PAUSE,
       action: () => {
         try {
-          SScene.pauseRoutStop()
+          SScene.pauseRouteStop()
         } catch (error) {
           Toast.show(getLanguage(global.language).Prompt.FIELD_TO_PAUSE)
         }

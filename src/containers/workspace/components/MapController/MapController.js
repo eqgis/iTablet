@@ -59,7 +59,7 @@ export default class MapController extends React.Component {
         this.compassInterval = null
       }
       this.compassInterval = setInterval(async () => {
-        let deg = await SScene.getcompass()
+        let deg = await SScene.getHeading()
         this.setCompass(deg)
       }, 600)
     } else {
@@ -278,12 +278,16 @@ export default class MapController extends React.Component {
     if (this.props.type === 'MAP_3D') {
       // 平面场景不进行当前点定位 add jiakai
       if(!(await SScene.isEarthScene())){
-        SScene.ensureVisibleLayer(await SScene.getVisableLayer())
+        const layers = await SScene.getLayers()
+        const visibleLayer = layers.filter(layer => layer.visible)
+        if(visibleLayer.length < 1) return
+        //这里原来接口遍历到了最后一个可见图层，暂时不改这个逻辑
+        SScene.ensureVisibleByLayer(visibleLayer[visibleLayer.length - 1])
         return
       }
       await SScene.setHeading()
       // 定位到当前位置
-      await SScene.location()
+      await SScene.flyToCurrent()
       // await SScene.resetCamera()
       this.setCompass(0)
       return

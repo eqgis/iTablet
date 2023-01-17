@@ -6,6 +6,7 @@ import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
+import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SSceneType'
 
 let isClickMeasurePoint = true // 用于量算判断是否是选择点，true为新选择点，false为撤销回退
 /** 距离量算 * */
@@ -16,29 +17,29 @@ function measureDistance() {
     // '请打开场景')
     return
   }
-  SScene.checkoutListener('startMeasure')
-  SScene.setMeasureLineAnalyst({
-    callback: result => {
-      if (!isClickMeasurePoint) {
-        isClickMeasurePoint = true
-        ToolbarModule.addData({ isFinished: true })
-      }
-      const pointArr = ToolbarModule.getData().pointArr || []
-      const redoArr = ToolbarModule.getData().redoArr || []
-      pointArr.indexOf(JSON.stringify(result)) === -1 &&
+  SScene.setOperation('startMeasure')
+  SScene.setAction(Action3D.MEASUREDISTANCE3D)
+  SScene.addMeasureLineListener(result => {
+    if (!isClickMeasurePoint) {
+      isClickMeasurePoint = true
+      ToolbarModule.addData({ isFinished: true })
+    }
+    const pointArr = ToolbarModule.getData().pointArr || []
+    const redoArr = ToolbarModule.getData().redoArr || []
+    pointArr.indexOf(JSON.stringify(result)) === -1 &&
         result.x !== 0 &&
         pointArr.push(JSON.stringify(result))
-      const newState = {}
-      if (pointArr.length > 0 && _params.toolbarStatus.canUndo === false)
-        newState.canUndo = true
-      if (_params.toolbarStatus.canRedo) newState.canRedo = false
-      Object.keys(newState).length > 0 && _params.setToolbarStatus(newState)
-      ToolbarModule.addData({ pointArr, redoArr, isFinished: true })
-      result.length = Number(result.length)
-      result.length = result.length > 0 ? result.length.toFixed(6) : 0
-      _params.measureShow(true, `${result.length}m`)
-    },
-  })
+    const newState = {}
+    if (pointArr.length > 0 && _params.toolbarStatus.canUndo === false)
+      newState.canUndo = true
+    if (_params.toolbarStatus.canRedo) newState.canRedo = false
+    Object.keys(newState).length > 0 && _params.setToolbarStatus(newState)
+    ToolbarModule.addData({ pointArr, redoArr, isFinished: true })
+    result.length = Number(result.length)
+    result.length = result.length > 0 ? result.length.toFixed(6) : 0
+    _params.measureShow(true, `${result.length}m`)
+  },
+  )
   showAnalystResult(ConstToolType.SM_MAP3D_TOOL_DISTANCE_MEASURE)
 }
 
@@ -50,29 +51,29 @@ function measureArea() {
     // '请打开场景')
     return
   }
-  SScene.checkoutListener('startMeasure')
-  SScene.setMeasureSquareAnalyst({
-    callback: result => {
-      if (!isClickMeasurePoint) {
-        isClickMeasurePoint = true
-        ToolbarModule.addData({ isFinished: true })
-      }
-      const pointArr = ToolbarModule.getData().pointArr || []
-      const redoArr = ToolbarModule.getData().redoArr || []
-      pointArr.indexOf(JSON.stringify(result)) === -1 &&
+  SScene.setOperation('startMeasure')
+  SScene.setAction(Action3D.MEASUREAREA3D)
+  SScene.addMeasureAreaListener(result => {
+    if (!isClickMeasurePoint) {
+      isClickMeasurePoint = true
+      ToolbarModule.addData({ isFinished: true })
+    }
+    const pointArr = ToolbarModule.getData().pointArr || []
+    const redoArr = ToolbarModule.getData().redoArr || []
+    pointArr.indexOf(JSON.stringify(result)) === -1 &&
         result.x !== 0 &&
         pointArr.push(JSON.stringify(result))
-      const newState = {}
-      if (pointArr.length > 0 && _params.toolbarStatus.canUndo === false)
-        newState.canUndo = true
-      if (_params.toolbarStatus.canRedo) newState.canRedo = false
-      Object.keys(newState).length > 0 && _params.setToolbarStatus(newState)
-      ToolbarModule.addData({ pointArr, redoArr, isFinished: true })
-      result.totalArea = Number(result.totalArea)
-      result.totalArea = result.totalArea > 0 ? result.totalArea.toFixed(6) : 0
-      _params.measureShow(true, `${result.totalArea}㎡`)
-    },
-  })
+    const newState = {}
+    if (pointArr.length > 0 && _params.toolbarStatus.canUndo === false)
+      newState.canUndo = true
+    if (_params.toolbarStatus.canRedo) newState.canRedo = false
+    Object.keys(newState).length > 0 && _params.setToolbarStatus(newState)
+    ToolbarModule.addData({ pointArr, redoArr, isFinished: true })
+    result.totalArea = Number(result.totalArea)
+    result.totalArea = result.totalArea > 0 ? result.totalArea.toFixed(6) : 0
+    _params.measureShow(true, `${result.totalArea}㎡`)
+  },
+  )
   showAnalystResult(ConstToolType.SM_MAP3D_TOOL_SURFACE_MEASURE)
 }
 
@@ -90,8 +91,8 @@ function pathAnalyst() {
 /** 点选 * */
 function select() {
   const params = ToolbarModule.getParams()
-  SScene.setAction('PANSELECT3D')
-  global.action3d = 'PANSELECT3D'
+  SScene.setAction(Action3D.PANSELECT3D)
+  global.action3d = Action3D.PANSELECT3D
   // this.showMap3DTool(ConstToolType.SM_MAP3D_TOOL_SELECT)
   const type = ConstToolType.SM_MAP3D_TOOL_SELECT
   params.setToolbarVisible(true, type, {
@@ -103,7 +104,7 @@ function select() {
 /** box裁剪 * */
 function boxClip() {
   const params = ToolbarModule.getParams()
-  global.action3d = 'PAN3D_FIX'
+  global.action3d = Action3D.PAN3D
   if (!global.openWorkspace) {
     Toast.show(getLanguage(params.language).Prompt.PLEASE_OPEN_SCENE)
     // '请打开场景')
@@ -288,7 +289,8 @@ function clearMeasure(type) {
   const _params = ToolbarModule.getParams()
   switch (type) {
     case ConstToolType.SM_MAP3D_TOOL_SURFACE_MEASURE:
-      SScene.clearSquareAnalyst()
+      //todo [check]
+      SScene.setAction(Action3D.MEASUREAREA3D)
       ToolbarModule.getParams().measureShow &&
         ToolbarModule.getParams().measureShow(true, '0㎡')
       ToolbarModule.addData({ pointArr: [], redoArr: [] })
@@ -299,7 +301,8 @@ function clearMeasure(type) {
       })
       break
     case ConstToolType.SM_MAP3D_TOOL_DISTANCE_MEASURE:
-      SScene.clearLineAnalyst()
+      //todo [check]
+      SScene.setAction(Action3D.MEASUREDISTANCE3D)
       ToolbarModule.getParams().measureShow &&
         ToolbarModule.getParams().measureShow(true, '0m')
       ToolbarModule.addData({ pointArr: [], redoArr: [] })
@@ -319,7 +322,7 @@ function clearMeasure(type) {
       // 清除裁剪面 返回上个界面
       _params.clearClip && _params.clearClip()
       // ToolbarModule.setData()
-      SScene.clipSenceClear()
+      SScene.clearClip()
       global.MapSurfaceView && global.MapSurfaceView.show()
       _params.setToolbarVisible(true, ConstToolType.SM_MAP3D_TOOL_BOX_CLIPPING, {
         isFullScreen: false,
@@ -329,7 +332,7 @@ function clearMeasure(type) {
     case ConstToolType.SM_MAP3D_TOOL_BOX_CLIP:
       // 清除裁剪面 返回上个界面
       _params.clearClip && _params.clearClip()
-      SScene.clipSenceClear()
+      SScene.clearClip()
       global.MapSurfaceView && global.MapSurfaceView.show()
       _params.setToolbarVisible(true, ConstToolType.SM_MAP3D_TOOL_BOX_CLIPPING, {
         isFullScreen: false,
@@ -347,7 +350,8 @@ async function close(type) {
     type === ConstToolType.SM_MAP3D_TOOL_DISTANCE_MEASURE ||
     type === ConstToolType.SM_MAP3D_TOOL_SURFACE_MEASURE
   ) {
-    SScene.closeAnalysis()
+    SScene.removeMeasureListeners()
+    SScene.setAction(Action3D.PANSELECT3D)
     _params.measureShow(false, '')
     _params.existFullMap && _params.existFullMap()
     _params.setToolbarVisible(false)
@@ -363,7 +367,7 @@ async function close(type) {
     _params.setToolbarVisible(false)
   } else if (type === ConstToolType.SM_MAP3D_TOOL_CIRCLE_FLY) {
     SScene.stopCircleFly()
-    SScene.clearCirclePoint()
+    SScene.clearCircleFlyPoint()
     _params.existFullMap && _params.existFullMap()
     _params.setToolbarVisible(false)
   } else if (
@@ -372,26 +376,26 @@ async function close(type) {
     type === ConstToolType.SM_MAP3D_TOOL_CROSS_CLIP ||
     type === ConstToolType.SM_MAP3D_TOOL_PLANE_CLIP
   ) {
-    await SScene.clipSenceClear()
+    await SScene.clearClip()
     global.MapSurfaceView && global.MapSurfaceView.show(false)
     _params.setToolbarVisible(false)
   } else {
-    SScene.checkoutListener('startTouchAttribute')
-    SScene.setAction('PAN3D')
-    global.action3d = 'PAN3D'
+    SScene.setOperation('startTouchAttribute')
+    SScene.setAction(Action3D.PAN3D)
+    global.action3d = Action3D.PAN3D
     ToolbarModule.setData()
     return false
   }
-  SScene.checkoutListener('startTouchAttribute')
-  SScene.setAction('PAN3D')
-  global.action3d = 'PAN3D'
+  SScene.setOperation('startTouchAttribute')
+  SScene.setAction(Action3D.PAN3D)
+  global.action3d = Action3D.PAN3D
   ToolbarModule.setData()
 }
 
 function circleFly() {
   const _params = ToolbarModule.getParams()
   _params.showFullMap && _params.showFullMap(true)
-  global.action3d = 'PAN3D_FIX'
+  global.action3d = Action3D.PAN3D
   SScene.stopCircleFly()
   _params.setToolbarVisible(true, ConstToolType.SM_MAP3D_TOOL_CIRCLE_FLY, {
     containerType: ToolbarType.table,
@@ -469,7 +473,7 @@ function layerChange(layers) {
 
 function closeClip() {
   const _params = ToolbarModule.getParams()
-  SScene.clipSenceClear()
+  SScene.clearClip()
   _params.setToolbarVisible(false)
   _params.existFullMap && _params.existFullMap()
   _params.setClipSetting && _params.setClipSetting({})

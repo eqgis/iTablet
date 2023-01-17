@@ -1,4 +1,5 @@
 import { SScene } from 'imobile_for_reactnative'
+import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SSceneType'
 import { getLanguage } from '../../language/index'
 
 async function getMap3DSettings() {
@@ -26,7 +27,7 @@ async function getMap3DSettings() {
         {
           name: getLanguage(global.language).Map_Setting.SCENE_OPERATION_STATUS,
           // '场景操作状态',
-          value: global.action3d ? global.action3d : 'NULL',
+          value: global.action3d ? global.action3d : Action3D.NULL,
           isShow: true,
           index: 0,
         },

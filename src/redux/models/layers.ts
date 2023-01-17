@@ -539,7 +539,7 @@ export const resetLayer3dList = () => async (dispatch) =>{
 
 export const refreshLayer3dList = (cb = () => {}) => async (dispatch, getState) => {
   let language = getState().setting.toJS().language
-  const result = await SScene.getLayerList()
+  const result = await SScene.getLayers()
   const basemaplist = []
   const layerlist = []
   const lablelist = []
@@ -556,7 +556,7 @@ export const refreshLayer3dList = (cb = () => {}) => async (dispatch, getState) 
     }
   }
 
-  const Terrains = await SScene.getTerrainLayerList()
+  const Terrains = await SScene.getTerrainLayers()
   for (let index = 0; index < Terrains.length; index++) {
     const element = Terrains[index]
     const item = { ...element, isShow: true }

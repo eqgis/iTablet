@@ -13,6 +13,7 @@ import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import NavigationService from '../../../../../NavigationService'
 import { getThemeAssets } from '../../../../../../assets'
+import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SSceneType'
 
 let onlineScenceData = [
   // {
@@ -260,17 +261,17 @@ function openScene(item) {
     return
   }
   _params.setCurSceneInfo(item)
-  SScene.openScence(item.name).then(async () => {
+  SScene.openScene(item.name).then(async () => {
     SScene.setNavigationControlVisible(false)
-    SScene.setListener()
-    SScene.getAttribute()
-    SScene.setCircleFly()
-    SScene.setAction('PAN3D')
+    SScene.initGestureListener()
+    SScene.initAttributeListener()
+    SScene.initCircleFlyListener()
+    SScene.setAction(Action3D.PAN3D)
     // 只有是球面场景时才添加底图 add jiakai
     if(await SScene.isEarthScene()){
       SScene.changeBaseLayer(1)
     }
-    global.action3d = 'PAN3D'
+    global.action3d = Action3D.PAN3D
     global.openWorkspace = true
     global.sceneName = item.name
     global.offlineScene = true
@@ -300,7 +301,7 @@ function openOnlineScene(item) {
       true,
       getLanguage(_params.language).Prompt.LOADING,
     )
-    SScene.openOnlineScene(item.name, item.server).then(async result => {
+    SScene.openOnlineScene(item.server, item.name).then(async result => {
       // SScene.openOnlineScene(name,server).then((result) => {
 
       _params.setCurSceneInfo(item)
@@ -312,12 +313,12 @@ function openOnlineScene(item) {
       }
   
       await SScene.setNavigationControlVisible(false)
-      await SScene.setListener()
-      await SScene.getAttribute()
-      await SScene.setCircleFly()
-      await SScene.setAction('PAN3D')
+      await SScene.initGestureListener()
+      await SScene.initAttributeListener()
+      await SScene.initCircleFlyListener()
+      await SScene.setAction(Action3D.PAN3D)
       await SScene.changeBaseLayer(1)
-      global.action3d = 'PAN3D'
+      global.action3d = Action3D.PAN3D
       global.openWorkspace = true
       global.sceneName = item.name
       global.offlineScene = false

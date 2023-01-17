@@ -49,6 +49,7 @@ import { BackHandlerUtil } from '../../util'
 import GuideViewMapSceneModel from '../../components/GuideViewMapSceneModel'
 import { Bar } from 'react-native-progress'
 import sceneInfoType from '../../../../redux/models/scenes'
+import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SSceneType'
 
 const SAVE_TITLE = '是否保存当前场景'
 export default class Map3D extends React.Component {
@@ -86,7 +87,7 @@ export default class Map3D extends React.Component {
     super(props)
     global.sceneName = ''
     global.openWorkspace = false
-    global.action3d = ''
+    global.action3d = Action3D.NULL
     global.offlineScene = false
     const params = this.props.route.params
     this.mapName = params.mapName || null
@@ -206,14 +207,14 @@ export default class Map3D extends React.Component {
     // 获取三维图层
     let layerlist
     try {
-      layerlist = await SScene.getLayerList()
+      layerlist = await SScene.getLayers()
     } catch (e) {
       layerlist = []
     }
     // 获取三维地形
     let terrainLayerList
     try {
-      terrainLayerList = await SScene.getTerrainLayerList()
+      terrainLayerList = await SScene.getTerrainLayers()
     } catch (e) {
       terrainLayerList = []
     }
@@ -227,45 +228,43 @@ export default class Map3D extends React.Component {
     })
   }
   initListener = async () => {
-    SScene.setListener().then(() => {
-      SScene.getAttribute()
-      SScene.setCircleFly()
-      SScene.setAction('PAN3D')
-      global.action3d = 'PAN3D'
+    SScene.initGestureListener().then(() => {
+      SScene.initAttributeListener()
+      SScene.initCircleFlyListener()
+      SScene.setAction(Action3D.PAN3D)
+      global.action3d = Action3D.PAN3D
     })
   }
 
   addAttributeListener = async () => {
-    this.attributeListener = await SScene.addAttributeListener({
-      callback: result => {
-        global.action3d === 'PAN3D' && this.showFullMap(!this.fullMap)
+    this.attributeListener = await SScene.addAttributeListener(result => {
+      global.action3d === Action3D.PAN3D && this.showFullMap(!this.fullMap)
 
-        let list = []
-        let arr = []
-        Object.keys(result).forEach(key => {
-          let item = {
-            fieldInfo: { caption: key },
-            name: key,
-            value: result[key],
-          }
-          if (key === 'id') {
-            arr.unshift(item)
-          } else {
-            arr.push(item)
-          }
-        })
-        list.push(arr)
-        this.props.setAttributes(list)
-      },
-    })
+      let list = []
+      let arr = []
+      Object.keys(result).forEach(key => {
+        let item = {
+          fieldInfo: { caption: key },
+          name: key,
+          value: result[key],
+        }
+        if (key === 'id') {
+          arr.unshift(item)
+        } else {
+          arr.push(item)
+        }
+      })
+      list.push(arr)
+      this.props.setAttributes(list)
+    },
+    )
   }
 
   addCircleFlyListen = async () => {
-    this.circleFlyListen = await SScene.addCircleFlyListen({
-      callback: () => {
-        tool3DModule().actions.circleFly()
-      },
-    })
+    this.circleFlyListen = SScene.addCircleFlyListener(() => {
+      tool3DModule().actions.circleFly()
+    }
+    )
   }
 
   _addScene = async () => {
@@ -303,7 +302,7 @@ export default class Map3D extends React.Component {
       return
     }
     try {
-      SScene.openScence(this.name).then(async result => {
+      SScene.openScene(this.name).then(async result => {
         if (!result) {
           this.container.setLoading(false)
           this.mapLoaded = true
@@ -481,7 +480,7 @@ export default class Map3D extends React.Component {
     try {
       if (global.isCircleFlying) {
         await SScene.stopCircleFly()
-        await SScene.clearCirclePoint()
+        await SScene.clearCircleFlyPoint()
       }
       if (Platform.OS === 'android') {
         if (this.state.showPanResponderView || this.state.showMenuDialog) {

@@ -153,7 +153,7 @@ async function _exportWS3D(data: FiltedData, targetPath: string): Promise<boolea
   await FileTools.deleteFile(tempDir)
 
   // export3DScenceName 把整个目录拷到目标目录 再进行压缩
-  let result = await SScene.export3DScenceName(sceneName, tempDir)
+  let result = await SScene.exportScene(sceneName, tempDir)
   result = result && await FileTools.zipFiles([tempDir], targetPath)
   result && await FileTools.deleteFile(tempDir)
   return result

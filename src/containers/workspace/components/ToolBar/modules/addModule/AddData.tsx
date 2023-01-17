@@ -1,7 +1,7 @@
 /**
  * 添加 数据
  */
-import { SThemeCartography, SMap, SMSymbolTable } from 'imobile_for_reactnative'
+import { SThemeCartography, SMap, SMSymbolTable, SData } from 'imobile_for_reactnative'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { FileTools } from '../../../../../../native'
 import { dataUtil, scaleSize, Toast } from '../../../../../../utils'
@@ -207,8 +207,7 @@ async function getSymbolPath() {
   let buttons = [ToolbarBtnType.TOOLBAR_BACK]
 
   let filePath = ToolbarModule.getData().currentSymbolFile
-  let groups = await SMap.findAllSymbolGroupFromFile(filePath)
-
+  let groups = await SData.getSymbols(filePath)
   let customView = () => (
     <TreeList
       style={{
@@ -266,13 +265,12 @@ async function getSymbolsFromFile() {
           if (!mapName || mapName === '') {
             mapName = 'DefaultMapLib'
           }
-          let isEixst = await SMap.isInSymbolLib(data.type, data.id)
+          let isEixst = await SData.isInSymbolLib(data.type, data.id)
           let addSymbol = async (mapName, filePath, id, isReplace) => {
-            let result = await SMap.addSymbolFromFile(
+            let result = await SData.addSymbol(
               mapName,
               filePath,
               id,
-              isReplace,
             )
             Toast.show(
               result

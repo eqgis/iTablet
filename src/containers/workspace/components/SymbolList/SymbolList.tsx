@@ -7,6 +7,7 @@ import {
   SMap,
   SCartography,
   SThemeCartography,
+  SData,
 } from 'imobile_for_reactnative'
 import { ConstToolType, ChunkType } from '../../../../constants'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
@@ -100,7 +101,7 @@ export default class SymbolList extends React.Component {
       switch (this.props.type) {
         case ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_SYMBOLS:
         case ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOLS:
-          SMap.findSymbolsByGroups('point', '').then(result => {
+          SData.getSymbolsByGroups('point', '').then(result => {
             result.forEach(item => {
               symbols.push(item)
             })
@@ -124,7 +125,7 @@ export default class SymbolList extends React.Component {
     }
     switch (symbolType) {
       case 3:
-        SMap.findSymbolsByGroups('line', '').then(result => {
+        SData.getSymbolsByGroups('line', '').then(result => {
           result.forEach(item => {
             symbols.push(item)
           })
@@ -132,7 +133,7 @@ export default class SymbolList extends React.Component {
         })
         break
       case 1:
-        SMap.findSymbolsByGroups('point', '').then(result => {
+        SData.getSymbolsByGroups('point', '').then(result => {
           result.forEach(item => {
             symbols.push(item)
           })
@@ -140,7 +141,7 @@ export default class SymbolList extends React.Component {
         })
         break
       case 5:
-        SMap.findSymbolsByGroups('fill', '').then(result => {
+        SData.getSymbolsByGroups('fill', '').then(result => {
           result.forEach(item => {
             symbols.push(item)
           })

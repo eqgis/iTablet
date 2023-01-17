@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 import { color } from '../../../../styles'
 import { TreeList } from '../../../../components'
 import { scaleSize } from '../../../../utils'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 
 export default class GroupTab extends React.Component {
@@ -25,7 +25,7 @@ export default class GroupTab extends React.Component {
   }
 
   componentDidMount() {
-    SMap.getSymbolGroups().then(result => {
+    SData.getSymbolGroups().then(result => {
       for (let i = 0; i < result.length; i++) {
         if (result[i].name === '点符号库') {
           result[i].name = getLanguage(
@@ -48,7 +48,7 @@ export default class GroupTab extends React.Component {
   }
 
   _onPress = ({ data }) => {
-    SMap.findSymbolsByGroups(data.type, data.path).then(result => {
+    SData.getSymbolsByGroups(data.type, data.path).then(result => {
       let symbols = result
       this.props.setCurrentSymbols && this.props.setCurrentSymbols(symbols)
       if (symbols.length > 0) {

@@ -21,12 +21,13 @@ import {
   TextStyle,
   SMediaCollector,
   SData,
+  SNavigation,
 } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import LayerAttributeAdd from '../layerAttributeAdd'
 import { DatasetInfo, GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
-import { Action, LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
+import { Action, LayerInfo } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 const styles = StyleSheet.create({
   container: {
@@ -230,7 +231,7 @@ export default class LayerAttributeTabs extends React.Component {
           caption: this.datasetName,
           name: this.datasetName,
         }
-        let id = await SMap.getNavigationDatasetGeometryID(this.datasetName)
+        let id = await SNavigation.getNavigationDatasetGeometryID(this.datasetName)
         this.props.setSelection && this.props.setSelection([{
           layerInfo: layerInfo,
           ids: id,
@@ -490,7 +491,7 @@ export default class LayerAttributeTabs extends React.Component {
       // datasetName:layerInfo.datasourceAlias || ''}
       // //to do @yangsl 这里需要换成导航获取数据集的逻辑，之前写到原生了。应该放到JS，需要沟通找到讨论
       // result = await SData.addFieldInfos(datasetInfo, [fieldInfo])
-      // // result = await SMap.addNavigationAttributeFieldInfoByData(layerPath, fieldInfo)
+      // // result = await SNavigation.addNavigationAttributeFieldInfoByData(layerPath, fieldInfo)
       const datasource = "default_increment_datasource@"+ this.props.currentUser.userName
       const datasetInfo: DatasetInfo = {datasourceName:datasource|| '',
       datasetName:layerInfo.name || ''}
@@ -810,7 +811,7 @@ export default class LayerAttributeTabs extends React.Component {
             const datasetInfo: DatasetInfo = { datasetName: layerInfo.name || '', datasourceName: datasource || '' }
 
             result = await SData.removeFieldInfos(datasetInfo, [this.deleteFieldData?.name])
-            // result = await SMap.removeNavigationRecordsetFieldInfoByData(
+            // result = await SNavigation.removeNavigationRecordsetFieldInfoByData(
             //   layerPath,
             //   this.deleteFieldData.name,
             // )

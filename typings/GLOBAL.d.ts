@@ -4,6 +4,7 @@
  */
 
 import { TChunkType } from '@/constants/custom/ChunkType'
+import { TAction3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SScene'
 import { orientation, specificOrientation } from 'react-native-orientation'
 
 declare global {
@@ -32,8 +33,8 @@ declare global {
   var Type: keyof TChunkType | null | string
   /** 地图触摸事件类型 */
   var TouchType: string
-  /** 三维Action PAN3D | PANSELECT3D | PAN3D_FIX */
-  var action3d: string
+  /** 三维Action*/
+  var action3d: TAction3D
   /** 当前导航模式 INDOOR | OUTDOOR */
   var CURRENT_NAV_MODE: string
   /** 网络请求数据的文本信息 */

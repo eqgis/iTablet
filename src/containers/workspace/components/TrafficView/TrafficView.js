@@ -16,7 +16,7 @@ import {
 } from '../../../../utils'
 import { color } from '../../../../styles'
 import { Const, ConstOnline } from '../../../../constants'
-import { SData, SMap } from 'imobile_for_reactnative'
+import { SData, SMap, SNavigation } from 'imobile_for_reactnative'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { getThemeAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
@@ -61,7 +61,7 @@ export default class TrafficView extends React.Component {
     return null
   }
   incrementRoad = async () => {
-    // let rel = await SMap.hasLineDataset()
+    // let rel = await SNavigation.hasLineDataset()
     let rel = false
     let datasources = await SData._getDatasetsByWorkspaceDatasource()
     datasources.forEach(item => {
@@ -99,7 +99,7 @@ export default class TrafficView extends React.Component {
     try {
       this.props.setLoading && this.props.setLoading(true, getLanguage(this.props.language).Prompt.CHANGING)
       if (this.state.hasAdded) {
-        await SMap.removeTrafficMap('tencent@TrafficMap')
+        await SNavigation.removeTrafficMap('tencent@TrafficMap')
       } else {
         let layers = await this.props.getLayers()
         let baseMap = layers.filter(layer =>
@@ -110,7 +110,7 @@ export default class TrafficView extends React.Component {
           baseMap.name !== 'baseMap' &&
           baseMap.isVisible
         ) {
-          await SMap.openTrafficMap(ConstOnline.TrafficMap.DSParams)
+          await SNavigation.openTrafficMap(ConstOnline.TrafficMap.DSParams)
         }
       }
       let hasAdded = !this.state.hasAdded

@@ -9,7 +9,7 @@ import { MTBtn } from '../../../../components'
 import { Const, ChunkType, TouchType } from '../../../../constants'
 import { scaleSize, Toast, screen } from '../../../../utils'
 import { getThemeAssets } from '../../../../assets'
-import { SMap, SScene } from 'imobile_for_reactnative'
+import { SMap, SNavigation, SScene } from 'imobile_for_reactnative'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
 
@@ -59,7 +59,7 @@ export default class MapController extends React.Component {
         this.compassInterval = null
       }
       this.compassInterval = setInterval(async () => {
-        let deg = await SScene.getcompass()
+        let deg = await SScene.getHeading()
         this.setCompass(deg)
       }, 600)
     } else {
@@ -278,12 +278,16 @@ export default class MapController extends React.Component {
     if (this.props.type === 'MAP_3D') {
       // 平面场景不进行当前点定位 add jiakai
       if(!(await SScene.isEarthScene())){
-        SScene.ensureVisibleLayer(await SScene.getVisableLayer())
+        const layers = await SScene.getLayers()
+        const visibleLayer = layers.filter(layer => layer.visible)
+        if(visibleLayer.length < 1) return
+        //这里原来接口遍历到了最后一个可见图层，暂时不改这个逻辑
+        SScene.ensureVisibleByLayer(visibleLayer[visibleLayer.length - 1])
         return
       }
       await SScene.setHeading()
       // 定位到当前位置
-      await SScene.location()
+      await SScene.flyToCurrent()
       // await SScene.resetCamera()
       this.setCompass(0)
       return
@@ -310,7 +314,7 @@ export default class MapController extends React.Component {
           && global.MAPSELECTPOINT.state.show
       ){
         // 导航采集里选择起始点
-        await SMap.getStartPoint(point.x, point.y, false)
+        await SNavigation.getStartPoint(point.x, point.y, false)
         global.STARTX = point.x
         global.STARTY = point.y
         //显示选点界面的顶部 底部组件
@@ -325,7 +329,7 @@ export default class MapController extends React.Component {
 
       } else if(global.TouchType === TouchType.NAVIGATION_TOUCH_END) {
         // 导航采集里选择结束点
-        await SMap.getEndPoint(point.x, point.y, false)
+        await SNavigation.getEndPoint(point.x, point.y, false)
         global.ENDX = point.x
         global.ENDY = point.y
       }

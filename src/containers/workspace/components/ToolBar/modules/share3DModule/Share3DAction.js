@@ -170,7 +170,7 @@ async function share3DMap(type, list = []) {
 }
 
 function show3DSaveDialog(type) {
-  SScene.getMapList().then(list => {
+  SScene.getScenes().then(list => {
     const data = [list[0].name]
     ToolbarModule.getParams().map = {
       ...ToolbarModule.getParams().map,
@@ -198,7 +198,7 @@ function show3DSaveDialog(type) {
       placeholder: getLanguage(global.language).Prompt.ENTER_MAP_NAME,
       type: 'name',
       cb: async value => {
-        const list = await SScene.getMapList()
+        const list = await SScene.getScenes()
         const data = [list[0].name]
         share3DMap(type, data, value)
         NavigationService.goBack()

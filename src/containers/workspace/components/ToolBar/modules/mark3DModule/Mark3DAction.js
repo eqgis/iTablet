@@ -9,6 +9,7 @@ import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import { ConstToolType ,ToolbarType} from '../../../../../../constants'
 import Mark3DData from './Mark3DData'
+import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SSceneType'
 
 /** 兴趣点 * */
 function createPoint() {
@@ -19,7 +20,7 @@ function createPoint() {
       // '请打开场景')
       return
     }
-    SScene.checkoutListener('startLabelOperate')
+    SScene.setOperation('startLabelOperate')
     SScene.startDrawFavorite(getLanguage(params.language).Prompt.POI)
     // this.showMap3DTool(ConstToolType.SM_MAP3D_MARK_POINT)
     params.setToolbarVisible(true, ConstToolType.SM_MAP3D_MARK_POINT, {
@@ -40,14 +41,13 @@ function createText() {
       // '请打开场景')
       return
     }
-    SScene.checkoutListener('startLabelOperate')
-    SScene.startDrawText({
-      callback: result => {
-        const dialog = params.dialog()
-        dialog.setDialogVisible(true)
-        ToolbarModule.addData({ point: result })
-      },
-    })
+    SScene.setOperation('startLabelOperate')
+    SScene.startDrawText(result => {
+      const dialog = params.dialog()
+      dialog.setDialogVisible(true)
+      ToolbarModule.addData({ point: result })
+    },
+    )
     // this.showMap3DTool(ConstToolType.SM_MAP3D_MARK_TEXT)
     params.setToolbarVisible(true, ConstToolType.SM_MAP3D_MARK_TEXT, {
       isFullScreen: false,
@@ -66,7 +66,7 @@ function createLine() {
     // '请打开场景')
     return
   }
-  SScene.checkoutListener('startLabelOperate')
+  SScene.setOperation('startLabelOperate')
   try {
     SScene.startDrawLine()
     // this.showMap3DTool(ConstToolType.SM_MAP3D_MARK_POINT_LINE)
@@ -88,7 +88,7 @@ function createRegion() {
       // '请打开场景')
       return
     }
-    SScene.checkoutListener('startLabelOperate')
+    SScene.setOperation('startLabelOperate')
     SScene.startDrawArea()
     // this.showMap3DTool(ConstToolType.SM_MAP3D_MARK_POINT_SURFACE)
     params.setToolbarVisible(true, ConstToolType.SM_MAP3D_MARK_POINT_SURFACE, {
@@ -137,9 +137,9 @@ async function close(type) {
       ..._data,
     })
   }
-  SScene.checkoutListener('startTouchAttribute')
-  SScene.setAction('PAN3D')
-  global.action3d = 'PAN3D'
+  SScene.setOperation('startTouchAttribute')
+  SScene.setAction(Action3D.PAN3D)
+  global.action3d = Action3D.PAN3D
   // ToolbarModule.setData()
 }
 

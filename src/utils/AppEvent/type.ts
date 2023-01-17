@@ -1,5 +1,5 @@
 import { NetInfoState } from "@react-native-community/netinfo"
-import { ARElement } from "imobile_for_reactnative/types/interface/ar"
+import { ARElement } from "imobile_for_reactnative"
 
 
 

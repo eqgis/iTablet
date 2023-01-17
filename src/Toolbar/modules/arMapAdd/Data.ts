@@ -1,5 +1,5 @@
 import { ARAction, SARMap, FileTools, ARLayerType } from "imobile_for_reactnative"
-import { ARLayer } from "imobile_for_reactnative/types/interface/ar"
+import { ARLayer } from "imobile_for_reactnative"
 import { Platform } from "react-native"
 import { getARLayerAssets, getARSceneAssets, getImage } from "@/assets"
 import { ToolbarTabItem, ToolBarBottomItem, ToolBarListItem, IToolbarOption, ToolbarOption ,ToolBarListOption } from "imobile_for_reactnative/components/ToolbarKit"

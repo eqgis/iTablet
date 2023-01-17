@@ -24,7 +24,7 @@ import {
 import { dataUtil, scaleSize, setSpText, Toast } from '../../utils'
 import color from '../../styles/color'
 import { getLanguage } from '../../language'
-import { SMap, SData } from 'imobile_for_reactnative'
+import { SMap, SData, SNavigation } from 'imobile_for_reactnative'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
 import ModalDropdown from 'react-native-modal-dropdown'
@@ -93,7 +93,7 @@ export default class CreateNavDataPage extends Component {
       }
     })
 
-    // let lineDataset = await SMap.getAllLineDatasets()
+    // let lineDataset = await SNavigation.getAllLineDatasets()
     this.setState({
       lineDataset: datasourceArray,
     })
@@ -198,7 +198,7 @@ export default class CreateNavDataPage extends Component {
       'udb',
     )
     availableName = availableName.substring(0, availableName.lastIndexOf('.'))
-    let rel = await SMap.createNavDatasource(availableName)
+    let rel = await SNavigation.createNavDatasource(availableName)
     if (rel) {
       this.getDatasource()
     } else {
@@ -273,7 +273,7 @@ export default class CreateNavDataPage extends Component {
           if (data[i].selectedFieldInfo) {
             sourceDataset.sourceDatasetFiled = data[i].selectedFieldInfo
           }
-          rel = await SMap.buildOutdoorNetwork({
+          rel = await SNavigation.buildOutdoorNetwork({
             ...sourceDataset,
             ...selectedDatasource,
             filePath,
@@ -542,7 +542,7 @@ class Item extends Component {
     let datasourceName = this.props.item.datasourceName
     //第一次点击先获取所有非系统的文字类型字段
     if (!this.props.item.fieldInfo) {
-      let needChangeData = await SMap.queryFieldInfos([
+      let needChangeData = await SNavigation.queryFieldInfos([
         { datasetName, datasourceName },
       ])
       if (needChangeData.length > 0) {

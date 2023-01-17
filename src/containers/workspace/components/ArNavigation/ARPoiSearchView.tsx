@@ -1,5 +1,5 @@
 import { ARAction, SARMap, SMap, SMARInterestView ,SSpeechRecognizer} from 'imobile_for_reactnative'
-import { POIInfo, POIInfoOnline, POISearchResult, RouteAnalyzeResult } from 'imobile_for_reactnative/types/interface/ar'
+import { POIInfo, POIInfoOnline, POISearchResult, RouteAnalyzeResult } from 'imobile_for_reactnative'
 import { Point } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import React from 'react'
 import { dismissKeyboard, Dimensions, FlatList, Image, ListRenderItemInfo, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'

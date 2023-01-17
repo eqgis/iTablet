@@ -99,7 +99,7 @@ class MyScene extends MyDataPage {
 
      
     //重构了部分代码，尽量使用原有接口， add 谢直言
-    let result = await SScene.export3DScenceName(name, targetPath)
+    let result = await SScene.exportScene(name, targetPath)
      
     if (result) {
       const zipPath = targetPath+'.zip'

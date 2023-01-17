@@ -1,6 +1,6 @@
 import { SMap2, SMMapView2, SARMap } from 'imobile_for_reactnative'
 import { Point2D } from 'imobile_for_reactnative/types/data'
-import { RouteAnalyzeResult } from 'imobile_for_reactnative/types/interface/ar'
+import { RouteAnalyzeResult } from 'imobile_for_reactnative'
 import React from 'react'
 import { View, Text ,StyleSheet} from 'react-native'
 import Button from './Button'

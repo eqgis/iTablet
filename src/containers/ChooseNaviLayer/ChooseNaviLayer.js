@@ -3,7 +3,7 @@ import { View, FlatList, TouchableOpacity, Text, Image ,Platform,StyleSheet} fro
 import { scaleSize, setSpText, Toast, LayerUtils ,DialogUtils} from '../../utils'
 import { color } from '../../styles'
 import NavigationService from '../NavigationService'
-import { SMap ,SData} from 'imobile_for_reactnative'
+import { SMap ,SData, SNavigation} from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import { Container } from '../../components'
 import { getThemeAssets,getLayerWhiteIconByType ,getPublicAssets,getLayerIconByType} from '../../assets'
@@ -75,7 +75,7 @@ export default class ChooseNaviLayer extends React.Component {
       }
     })
 
-    // let dataList = await SMap.getLineDataset()
+    // let dataList = await SNavigation.getLineDataset()
     this.setState({
       data: array,
     })
@@ -119,7 +119,7 @@ export default class ChooseNaviLayer extends React.Component {
       removeLayer = true
       global.INCREMENT_DATA = {}
     }
-    await SMap.deleteDatasetAndLayer({ datasourceName, datasetName, removeLayer })
+    await SNavigation.deleteDatasetAndLayer({ datasourceName, datasetName, removeLayer })
     this.setState({
       data,
       selectedItem,
@@ -159,7 +159,7 @@ export default class ChooseNaviLayer extends React.Component {
       let regExp = /^[a-zA-Z0-9@#_]+$/
       let isValid = regExp.test(text)
       if (isValid) {
-        await SMap.createNaviDataset(text,global.INCREMENT_DATA.layerName).then(async returnData => {
+        await SNavigation.createNaviDataset(text,global.INCREMENT_DATA.layerName).then(async returnData => {
           if (returnData.datasetName) {
             global.INCREMENT_DATA = returnData
             this.setState({selectedItem:returnData})
@@ -241,7 +241,7 @@ export default class ChooseNaviLayer extends React.Component {
             datasourceName: this.item.datasourceName,
             datasetName: this.item.datasetName,
           }
-          await SMap.setCurrentDataset(params)
+          await SNavigation.setCurrentDataset(params)
           global.INCREMENT_DATA = this.item
         }.bind(this)())
       }
@@ -388,7 +388,7 @@ export default class ChooseNaviLayer extends React.Component {
               datasourceName: this.state.selectedItem.datasourceName,
               datasetName: this.state.selectedItem.datasetName,
             }
-            await SMap.setCurrentDataset(params)
+            await SNavigation.setCurrentDataset(params)
             global.INCREMENT_DATA = this.state.selectedItem
           }.bind(this)())
         }

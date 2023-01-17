@@ -387,7 +387,7 @@ export const exportmap3DWorkspace = (params, cb = () => { }) => async (
       }`,
     )
 
-    let result = await SScene.export3DScenceName(params.name, path)
+    let result = await SScene.exportScene(params.name, path)
     if (result) {
       const zipPath = `${path}.zip`
       result = await FileTools.zipFile(path, zipPath)

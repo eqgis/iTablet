@@ -1,4 +1,4 @@
-import { FileTools, SData, SMap } from 'imobile_for_reactnative'
+import { FileTools, SData, SMap, SNavigation } from 'imobile_for_reactnative'
 import { NaviDataset } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import React from 'react'
 import { View, TouchableOpacity, Image, Text, FlatList, ListRenderItemInfo } from 'react-native'
@@ -53,7 +53,7 @@ class RoadNet extends React.Component<Props, State> {
         server: await FileTools.getHomeDirectory() + path,
         engineType: EngineType.UDB,
       })
-      const naviData = await SMap.getAllNavData()
+      const naviData = await SNavigation.getAllNavData()
       const naviDataset = naviData.filter(item => {
         return item.title === 'dataset'
       })

@@ -13,7 +13,7 @@ import Fly3DData from './Fly3DData'
 async function listAction(type, params = {}) {
   const _params = ToolbarModule.getParams()
   if (type === ConstToolType.SM_MAP3D_FLY_LIST) {
-    SScene.setPosition(params.index)
+    SScene.setFlyRoute(params.index)
     const type = ConstToolType.SM_MAP3D_FLY
     const { data, buttons } = await Fly3DData.getData(type)
     _params.showFullMap && _params.showFullMap(true)
@@ -74,15 +74,15 @@ async function getWorkspaceList() {
 async function close(type) {
   const params = ToolbarModule.getParams()
   if (type === ConstToolType.SM_MAP3D_FLY) {
-    SScene.checkoutListener('startTouchAttribute')
-    SScene.flyStop()
+    SScene.setOperation('startTouchAttribute')
+    SScene.stopFly()
     global.action3d && SScene.setAction(global.action3d)
     params.existFullMap && params.existFullMap()
     params.setToolbarVisible(false)
   } else if (type === ConstToolType.SM_MAP3D_FLY_NEW) {
-    SScene.checkoutListener('startTouchAttribute')
+    SScene.setOperation('startTouchAttribute')
     SScene.clearRoutStops()
-    SScene.flyStop()
+    SScene.stopFly()
     global.action3d && SScene.setAction(global.action3d)
     params.existFullMap && params.existFullMap()
     params.setToolbarVisible(false)

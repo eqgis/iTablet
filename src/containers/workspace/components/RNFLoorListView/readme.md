@@ -2,8 +2,8 @@
 * 说明
   - props传入id不存在，则隐藏，传入id存在，则显示，id由MapView的`SMap.addFloorHiddenListener`获取原生层返回的楼层id（当地图bounds、scale发生变化时，均会返回一个楼层id）
   - 点击楼层，将当前地图的楼层设置所点击的楼层
-  - 楼层所有的数据在`mapView`的`mapLoaded`之后（即地图加载完成之后），通过`SMap.getFloorData`获取
+  - 楼层所有的数据在`mapView`的`mapLoaded`之后（即地图加载完成之后），通过`SNavigation.getFloorData`获取
   - 存在以下情况时，不显示楼层控件
-    1. 通过`SMap.getFloorData`获取到的数据长度为0，即当前地图不存在室内地图
+    1. 通过`SNavigation.getFloorData`获取到的数据长度为0，即当前地图不存在室内地图
     2. 楼层id不存在，即当前窗口不在室内地图范围内，或者当前的比例尺太小
     3. 手机横屏状态下，并且在导航过程中（手机横屏时高度，为了避免遮盖原生组件）

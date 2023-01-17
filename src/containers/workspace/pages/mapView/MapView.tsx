@@ -23,6 +23,7 @@ import {
   ARAction,
   SData,
   SPlot,
+  SNavigation,
 } from 'imobile_for_reactnative'
 import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
@@ -528,7 +529,7 @@ export default class MapView extends React.Component {
         // )
       ) {
         this.currentFloorID = result.currentFloorID
-        let guideInfo = await SMap.isGuiding()
+        let guideInfo = await SNavigation.isGuiding()
         if (!guideInfo.isOutdoorGuiding) {
           this.setState({
             currentFloorID: result.currentFloorID,
@@ -559,7 +560,7 @@ export default class MapView extends React.Component {
     if (global.isLicenseValid) {
       if (global.Type === ChunkType.MAP_NAVIGATION) {
         this.addFloorHiddenListener()
-        SMap.setIndustryNavigationListener({
+        SNavigation.setIndustryNavigationListener({
           callback: async () => {
             if (
               global.NAV_PARAMS &&
@@ -572,10 +573,10 @@ export default class MapView extends React.Component {
             }
           },
         })
-        SMap.setStopNavigationListener({
+        SNavigation.setStopNavigationListener({
           callback: this._changeRouteCancel,
         })
-        SMap.setCurrentFloorIDListener({
+        SNavigation.setCurrentFloorIDListener({
           callback: currentFloorID => {
             this.changeFloorID(currentFloorID)
           },
@@ -920,7 +921,7 @@ export default class MapView extends React.Component {
 
     if (global.Type === ChunkType.MAP_NAVIGATION) {
       (async function () {
-        let currentFloorID = await SMap.getCurrentFloorID()
+        let currentFloorID = await SNavigation.getCurrentFloorID()
         this.changeFloorID(currentFloorID, () => {
           let { params } = this.props.route
           let preParams = prevProps.route.params
@@ -972,7 +973,7 @@ export default class MapView extends React.Component {
     // }
     if (global.Type === ChunkType.MAP_NAVIGATION) {
       (async function () {
-        SMap.destroySpeakPlugin()
+        SNavigation.destroySpeakPlugin()
       })()
     }
     //unmount时置空 zhangxt
@@ -1048,7 +1049,7 @@ export default class MapView extends React.Component {
                   if (global.Type === ChunkType.MAP_3D) {
                     await SScene.setHeading()
                     // 定位到当前位置
-                    await SScene.location()
+                    await SScene.flyToCurrent()
                     // await SScene.resetCamera()
                     this.mapController.setCompass(0)
                   } else {
@@ -1086,7 +1087,7 @@ export default class MapView extends React.Component {
     this.setLoading(true, getLanguage(global.language).Prompt.ROUTE_ANALYSING)
     let curNavInfos = global.NAV_PARAMS.filter(item => !item.hasNaved)
     let guideLines = global.NAV_PARAMS.filter(item => item.hasNaved)
-    await SMap.clearPath()
+    await SNavigation.clearPath()
     let params = JSON.parse(JSON.stringify(curNavInfos[0]))
     params.hasNaved = true
     let {
@@ -1100,10 +1101,10 @@ export default class MapView extends React.Component {
     } = params
     try {
       if (params.isIndoor) {
-        await SMap.getStartPoint(startX, startY, true, startFloor)
-        await SMap.getEndPoint(endX, endY, true, endFloor)
-        await SMap.startIndoorNavigation(datasourceName)
-        let rel = await SMap.beginIndoorNavigation()
+        await SNavigation.getStartPoint(startX, startY, true, startFloor)
+        await SNavigation.getEndPoint(endX, endY, true, endFloor)
+        await SNavigation.startIndoorNavigation(datasourceName)
+        let rel = await SNavigation.beginIndoorNavigation()
         if (!rel) {
           Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
           this.changeNavPathInfo({ path: '', pathLength: '' })
@@ -1112,27 +1113,27 @@ export default class MapView extends React.Component {
           return
         }
         for (let item of guideLines) {
-          await SMap.addLineOnTrackingLayer(
+          await SNavigation.addLineOnTrackingLayer(
             { x: item.startX, y: item.startY },
             { x: item.endX, y: item.endY },
           )
         }
-        await SMap.indoorNavigation(1)
+        await SNavigation.indoorNavigation(1)
         this.FloorListView?.setVisible(true)
         global.CURRENT_NAV_MODE = 'INDOOR'
       } else {
-        await SMap.startNavigation(params)
-        let result = await SMap.beginNavigation(startX, startY, endX, endY)
+        await SNavigation.startNavigation(params)
+        let result = await SNavigation.beginNavigation(startX, startY, endX, endY)
         if (result) {
           for (let item of guideLines) {
-            await SMap.addLineOnTrackingLayer(
+            await SNavigation.addLineOnTrackingLayer(
               { x: item.startX, y: item.startY },
               { x: item.endX, y: item.endY },
             )
           }
-          await SMap.outdoorNavigation(1)
+          await SNavigation.outdoorNavigation(1)
           this.FloorListView?.setVisible(false)
-          SMap.setCurrentFloorID('')
+          SNavigation.setCurrentFloorID('')
           global.CURRENT_NAV_MODE = 'OUTDOOR'
         } else {
           Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
@@ -1157,7 +1158,7 @@ export default class MapView extends React.Component {
   /** 取消切换，结束室内外一体化导航 清除所有导航信息 */
   _changeRouteCancel = () => {
     this.isGuiding = false
-    SMap.clearPoint()
+    SNavigation.clearPoint()
     this.showFullMap(false)
     this.props.setMapNavigation({ isShow: false, name: '' })
     global.STARTX = undefined
@@ -1445,8 +1446,8 @@ export default class MapView extends React.Component {
         if (global.Type === ChunkType.MAP_NAVIGATION) {
           //这里先处理下异常 add xiezhy
           try {
-            await SMap.stopGuide()
-            await SMap.clearPoint()
+            await SNavigation.stopGuide()
+            await SNavigation.clearPoint()
           } catch (e) {
             this.setLoading(false)
           }
@@ -1693,8 +1694,8 @@ export default class MapView extends React.Component {
           this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
           if (global.Type === ChunkType.MAP_NAVIGATION) {
             await this._removeNavigationListeners()
-            await SMap.clearPoint()
-            await SMap.stopGuide()
+            await SNavigation.clearPoint()
+            await SNavigation.stopGuide()
           }
           await this.closeMapHandler(params?.baskFrom)
         } catch (e) {
@@ -1793,9 +1794,9 @@ export default class MapView extends React.Component {
             `${userPath +
             ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.sym`,
           )
-          await SMap.importSymbolLibrary('DefaultMapLib', fillLibPath) // 导入面符号库
-          await SMap.importSymbolLibrary('DefaultMapLib', lineLibPath) // 导入线符号库
-          await SMap.importSymbolLibrary('DefaultMapLib', markerLibPath) // 导入点符号库
+          await SData.importSymbolLibrary('DefaultMapLib', fillLibPath) // 导入面符号库
+          await SData.importSymbolLibrary('DefaultMapLib', lineLibPath) // 导入线符号库
+          await SData.importSymbolLibrary('DefaultMapLib', markerLibPath) // 导入点符号库
         }
         if (global.Type === ChunkType.MAP_PLOTTING) {
           this.setLoading(
@@ -1919,10 +1920,10 @@ export default class MapView extends React.Component {
         SMap.setIsMagnifierEnabled(true)
         if (global.Type === ChunkType.MAP_NAVIGATION) {
           this.props.setMapNavigation({ isShow: false, name: '' })
-          SMap.getCurrentFloorID().then(currentFloorID => {
+          SNavigation.getCurrentFloorID().then(currentFloorID => {
             this.changeFloorID(currentFloorID)
           })
-          SMap.initSpeakPlugin()
+          SNavigation.initSpeakPlugin()
           global.STARTNAME = getLanguage(
             global.language,
           ).Map_Main_Menu.SELECT_START_POINT
@@ -3025,7 +3026,7 @@ export default class MapView extends React.Component {
 
   // //网络数据集和模型文件选择
   // showModelList = async () => {
-  //   // let hasNetworkDataset = await SMap.hasNetworkDataset()
+  //   // let hasNetworkDataset = await SNavigation.hasNetworkDataset()
   //   // if (!hasNetworkDataset) {
   //   //   Toast.show(getLanguage(this.props.language).Prompt.NO_NETWORK_DATASETS)
   //   //   return
@@ -3089,7 +3090,7 @@ export default class MapView extends React.Component {
   //         let selectList = global.SimpleSelectList
   //         let { networkModel, networkDataset } = selectList.state
   //         if (networkModel && networkDataset) {
-  //           SMap.startNavigation(networkDataset.datasetName, networkModel.path)
+  //           SNavigation.startNavigation(networkDataset.datasetName, networkModel.path)
   //           NavigationService.navigate('NavigationView', {
   //             changeNavPathInfo: this.changeNavPathInfo,
   //             showLocationView: true,
@@ -3658,7 +3659,7 @@ export default class MapView extends React.Component {
     try {
       if (!this.state.isRight) {
         let position = await SMap.getCurrentPosition()
-        let isIndoor = await SMap.isIndoorPoint(position.x, position.y)
+        let isIndoor = await SNavigation.isIndoorPoint(position.x, position.y)
         if (!isIndoor) {
           Toast.show(
             getLanguage(this.props.language).Prompt
@@ -3672,7 +3673,7 @@ export default class MapView extends React.Component {
       }
       //清空Toolbar数据
       ToolbarModule.setData({})
-      let rel = await SMap.addNetWorkDataset()
+      let rel = await SNavigation.addNetWorkDataset()
       let type
       if (rel) {
         this.FloorListView.setVisible(false)
@@ -3827,7 +3828,7 @@ export default class MapView extends React.Component {
     this.showFullMap(true)
     switch (type) {
       case ConstToolType.SM_MAP_INCREMENT_GPS_TRACK:
-        SMap.createDefaultDataset().then(async returnData => {
+        SNavigation.createDefaultDataset().then(async returnData => {
           if (returnData.datasetName) {
             params.setToolbarVisible(true, type, {
               containerType,
@@ -4154,7 +4155,7 @@ export default class MapView extends React.Component {
               global.ENDX = undefined
               global.MAPSELECTPOINT.setVisible(false)
               global.MAPSELECTPOINTBUTTON.setVisible(false)
-              await SMap.clearPoint()
+              await SNavigation.clearPoint()
               global.ToolBar?.existFullMap()
             } else {
               NavigationService.navigate('NavigationView', {
@@ -4180,7 +4181,7 @@ export default class MapView extends React.Component {
       global.ENDY,
     )
     if (result && result[0] && result[0].pathInfos) {
-      await SMap.drawOnlinePath(result[0].pathPoints)
+      await SNavigation.drawOnlinePath(result[0].pathPoints)
     } else {
       this.setLoading(false)
       Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
@@ -4194,7 +4195,7 @@ export default class MapView extends React.Component {
     global.NAVIGATIONSTARTHEAD.setVisible(true)
     global.MAPSELECTPOINTBUTTON.setVisible(false)
     global.MAPSELECTPOINT.setVisible(false)
-    global.STARTPOINTFLOOR = await SMap.getCurrentFloorID()
+    global.STARTPOINTFLOOR = await SNavigation.getCurrentFloorID()
 
     if (path && pathLength) {
       global.TouchType = TouchType.NORMAL

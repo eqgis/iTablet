@@ -2,7 +2,7 @@ import * as React from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { FetchUtils, scaleSize, setSpText, Toast } from '../../../../utils'
 import color from '../../../../styles/color'
-import { SMap } from 'imobile_for_reactnative'
+import { SMap, SNavigation } from 'imobile_for_reactnative'
 import NavigationService from '../../../../containers/NavigationService'
 import { getLanguage } from '../../../../language'
 import { TouchType } from '../../../../constants'
@@ -44,7 +44,7 @@ export default class MapSelectPointButton extends React.Component {
             getLanguage(global.language).Map_Main_Menu.START_POINT
           }(${global.STARTX.toFixed(6)},${global.STARTY.toFixed(6)})`
         if (this.state.firstpage) {
-          global.STARTPOINTFLOOR = await SMap.getCurrentFloorID()
+          global.STARTPOINTFLOOR = await SNavigation.getCurrentFloorID()
           global.TouchType = TouchType.NORMAL
           NavigationService.navigate('NavigationView', {
             changeNavPathInfo: this.props.changeNavPathInfo,
@@ -56,7 +56,7 @@ export default class MapSelectPointButton extends React.Component {
             show: false,
           })
         } else {
-          await SMap.getEndPoint(
+          await SNavigation.getEndPoint(
             global.ENDX,
             global.ENDY,
             false,
@@ -73,7 +73,7 @@ export default class MapSelectPointButton extends React.Component {
             getLanguage(global.language).Map_Main_Menu.END_POINT
           }(${global.ENDX.toFixed(6)},${global.ENDY.toFixed(6)})`
         if (this.state.firstpage) {
-          global.ENDPOINTFLOOR = await SMap.getCurrentFloorID()
+          global.ENDPOINTFLOOR = await SNavigation.getCurrentFloorID()
           global.TouchType = TouchType.NORMAL
           NavigationService.navigate('NavigationView', {
             changeNavPathInfo: this.props.changeNavPathInfo,
@@ -85,7 +85,7 @@ export default class MapSelectPointButton extends React.Component {
             show: false,
           })
         } else {
-          await SMap.getStartPoint(
+          await SNavigation.getStartPoint(
             global.STARTX,
             global.STARTY,
             false,
@@ -124,11 +124,11 @@ export default class MapSelectPointButton extends React.Component {
       let startPointInfo
       let endPointInfo
       try {
-        startPointInfo = await SMap.getPointBelongs(
+        startPointInfo = await SNavigation.getPointBelongs(
           global.STARTX,
           global.STARTY,
         )
-        endPointInfo = await SMap.getPointBelongs(global.ENDX, global.ENDY)
+        endPointInfo = await SNavigation.getPointBelongs(global.ENDX, global.ENDY)
       } catch (e) {
         this.props.setLoading(false)
         Toast.show(' 获取数据失败')
@@ -187,22 +187,22 @@ export default class MapSelectPointButton extends React.Component {
       if (commonIndoorInfo.length > 0) {
         // todo 室内点的问题 图标问题 最好统一js显示
         //有公共室内数据源，室内导航
-        // await SMap.clearPoint
+        // await SNavigation.clearPoint
         try {
-          await SMap.getStartPoint(
+          await SNavigation.getStartPoint(
             global.STARTX,
             global.STARTY,
             true,
             global.STARTPOINTFLOOR,
           )
-          await SMap.getEndPoint(
+          await SNavigation.getEndPoint(
             global.ENDX,
             global.ENDY,
             true,
             global.ENDPOINTFLOOR,
           )
-          await SMap.startIndoorNavigation(commonIndoorInfo[0].datasourceName)
-          let rel = await SMap.beginIndoorNavigation()
+          await SNavigation.startIndoorNavigation(commonIndoorInfo[0].datasourceName)
+          let rel = await SNavigation.beginIndoorNavigation()
           if (!rel) {
             this.props.setLoading(false)
             Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
@@ -213,8 +213,8 @@ export default class MapSelectPointButton extends React.Component {
           Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
           return
         }
-        pathLength = await SMap.getNavPathLength(true)
-        path = await SMap.getPathInfos(true)
+        pathLength = await SNavigation.getNavPathLength(true)
+        path = await SNavigation.getPathInfos(true)
         global.CURRENT_NAV_MODE = 'INDOOR'
       } else if (commonOutdoorInfo.length > 0) {
         //有公共室外数据集，分情况
@@ -230,7 +230,7 @@ export default class MapSelectPointButton extends React.Component {
             endY: global.ENDY,
             datasourceName: startIndoorInfo[0].datasourceName,
           }
-          let doorPoint = await SMap.getDoorPoint(params)
+          let doorPoint = await SNavigation.getDoorPoint(params)
           if (doorPoint.x && doorPoint.y && doorPoint.floorID) {
             global.NAV_PARAMS = [
               {
@@ -257,22 +257,22 @@ export default class MapSelectPointButton extends React.Component {
               },
             ]
             try {
-              await SMap.getStartPoint(
+              await SNavigation.getStartPoint(
                 global.STARTX,
                 global.STARTY,
                 true,
                 global.STARTPOINTFLOOR || doorPoint.floorID,
               )
-              await SMap.getEndPoint(
+              await SNavigation.getEndPoint(
                 doorPoint.x,
                 doorPoint.y,
                 true,
                 doorPoint.floorID,
               )
-              await SMap.startIndoorNavigation(
+              await SNavigation.startIndoorNavigation(
                 startIndoorInfo[0].datasourceName,
               )
-              let rel = await SMap.beginIndoorNavigation()
+              let rel = await SNavigation.beginIndoorNavigation()
               if (!rel) {
                 this.props.setLoading(false)
                 Toast.show(
@@ -280,7 +280,7 @@ export default class MapSelectPointButton extends React.Component {
                 )
                 return
               }
-              await SMap.addLineOnTrackingLayer(doorPoint, {
+              await SNavigation.addLineOnTrackingLayer(doorPoint, {
                 x: global.ENDX,
                 y: global.ENDY,
               })
@@ -289,12 +289,12 @@ export default class MapSelectPointButton extends React.Component {
               Toast.show(
                 getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED,
               )
-              SMap.clearPoint()
+              SNavigation.clearPoint()
               return
             }
 
-            pathLength = await SMap.getNavPathLength(true)
-            path = await SMap.getPathInfos(true)
+            pathLength = await SNavigation.getNavPathLength(true)
+            path = await SNavigation.getPathInfos(true)
             global.CURRENT_NAV_MODE = 'INDOOR'
           } else {
             //分析失败(找不到最近的门的情况（数据问题）) 进行在线路径分析
@@ -310,7 +310,7 @@ export default class MapSelectPointButton extends React.Component {
             endY: global.ENDY,
             datasourceName: endIndoorInfo[0].datasourceName,
           }
-          let doorPoint = await SMap.getDoorPoint(params)
+          let doorPoint = await SNavigation.getDoorPoint(params)
           if (doorPoint.x && doorPoint.y && doorPoint.floorID) {
             global.NAV_PARAMS = [
               {
@@ -338,16 +338,16 @@ export default class MapSelectPointButton extends React.Component {
             ]
 
             try {
-              await SMap.getStartPoint(global.STARTX, global.STARTY, false)
-              await SMap.getEndPoint(global.ENDX, global.ENDY, false)
-              await SMap.startNavigation(global.NAV_PARAMS[0])
-              await SMap.beginNavigation(
+              await SNavigation.getStartPoint(global.STARTX, global.STARTY, false)
+              await SNavigation.getEndPoint(global.ENDX, global.ENDY, false)
+              await SNavigation.startNavigation(global.NAV_PARAMS[0])
+              await SNavigation.beginNavigation(
                 global.STARTX,
                 global.STARTY,
                 doorPoint.x,
                 doorPoint.y,
               )
-              await SMap.addLineOnTrackingLayer(doorPoint, {
+              await SNavigation.addLineOnTrackingLayer(doorPoint, {
                 x: global.ENDX,
                 y: global.ENDY,
               })
@@ -358,8 +358,8 @@ export default class MapSelectPointButton extends React.Component {
               )
               return
             }
-            pathLength = await SMap.getNavPathLength(false)
-            path = await SMap.getPathInfos(false)
+            pathLength = await SNavigation.getNavPathLength(false)
+            path = await SNavigation.getPathInfos(false)
             global.CURRENT_NAV_MODE = 'OUTDOOR'
           } else {
             //分析失败(找不到最近的门的情况（数据问题）) 进行在线路径分析
@@ -370,16 +370,16 @@ export default class MapSelectPointButton extends React.Component {
           //无室内数据源  室外导航
           //直接导航
           try {
-            await SMap.startNavigation(commonOutdoorInfo[0])
-            let result = await SMap.beginNavigation(
+            await SNavigation.startNavigation(commonOutdoorInfo[0])
+            let result = await SNavigation.beginNavigation(
               global.STARTX,
               global.STARTY,
               global.ENDX,
               global.ENDY,
             )
             if (result) {
-              pathLength = await SMap.getNavPathLength(false)
-              path = await SMap.getPathInfos(false)
+              pathLength = await SNavigation.getNavPathLength(false)
+              path = await SNavigation.getPathInfos(false)
               global.CURRENT_NAV_MODE = 'OUTDOOR'
             } else {
               //分析失败(500m范围内找不到路网点的情况) 进行在线路径分析

@@ -26,6 +26,7 @@ import { ToolbarModuleKey } from './modules/modulesKeys'
 import { DEVICE } from '@/redux/models/device'
 import sceneInfoType from '@/redux/models/scenes'
 import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SSceneType'
 
 interface ToolbarVisibleParam {
   /** 是否全屏， */
@@ -872,9 +873,9 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
       // TODO savePlotAnimationNode
       // this.contentView.savePlotAnimationNode()
     } else if (this.state.type === ConstToolType.SM_MAP3D_FLY_LIST) {
-      SScene.checkoutListener('startTouchAttribute')
-      SScene.setAction('PAN3D')
-      global.action3d = 'PAN3D'
+      SScene.setOperation('startTouchAttribute')
+      SScene.setAction(Action3D.PAN3D)
+      global.action3d = Action3D.PAN3D
       this.setVisible(false)
     } else {
       this.setVisible(false)

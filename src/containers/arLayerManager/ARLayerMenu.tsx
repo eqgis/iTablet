@@ -3,7 +3,7 @@ import { Image, View, TouchableOpacity, Text } from 'react-native'
 import { DEVICE } from '../../../src/redux/models/device'
 import ToolBarSectionList from '../workspace/components/ToolBar/components/ToolBarSectionList'
 import { ARLayerType, SARMap } from 'imobile_for_reactnative'
-import { ARLayer } from 'imobile_for_reactnative/types/interface/ar'
+import { ARLayer } from 'imobile_for_reactnative'
 import { getThemeAssets } from '../../assets'
 import { dp } from '../../utils'
 

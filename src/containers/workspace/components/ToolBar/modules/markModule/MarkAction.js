@@ -9,6 +9,7 @@ import {
   SMap,
   SCollector,
   SMediaCollector,
+  SNavigation,
 } from 'imobile_for_reactnative'
 import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { DatasetType,GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
@@ -653,7 +654,7 @@ async function close(type) {
       isCollection:true,
       preType:_data.preType,
     })
-    await SMap.clearTrackingLayer()
+    await SNavigation.clearTrackingLayer()
     global.toolBox &&
         global.toolBox.setVisible(true, _data.preType, {
           containerType: 'table',

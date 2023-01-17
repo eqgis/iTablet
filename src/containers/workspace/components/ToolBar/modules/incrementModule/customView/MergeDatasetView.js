@@ -22,7 +22,7 @@ import {
   Height,
 } from '../../../../../../../constants'
 import { getPublicAssets, getThemeAssets } from '../../../../../../../assets'
-import { SMap ,SData} from 'imobile_for_reactnative'
+import { SMap ,SData, SNavigation} from 'imobile_for_reactnative'
 import ModalDropdown from 'react-native-modal-dropdown'
 import { getLanguage } from '../../../../../../../language'
 import { Container } from '../../../../../../../components'
@@ -89,7 +89,7 @@ export default class MergeDatasetView extends Component {
     })
 
     let lineDataset = datasourceArray
-    // let lineDataset = await SMap.getAllLineDatasets()
+    // let lineDataset = await SNavigation.getAllLineDatasets()
     let { datasourceName } = this.props.sourceData
     let filterData = lineDataset.filter(item => {
       return item.title !== datasourceName
@@ -145,7 +145,7 @@ export default class MergeDatasetView extends Component {
    * }]
    */
   mergeData = async selectedDatas => {
-    let result = await SMap.mergeDataset(
+    let result = await SNavigation.mergeDataset(
       { ...this.props.sourceData },
       selectedDatas,
     )
@@ -309,7 +309,7 @@ class Item extends Component {
     let datasourceName = this.props.item.datasourceName
     //第一次点击先获取所有非系统的文字类型字段
     if (!this.props.item.fieldInfo) {
-      let needChangeData = await SMap.queryFieldInfos([
+      let needChangeData = await SNavigation.queryFieldInfos([
         { datasetName, datasourceName },
       ])
       if (needChangeData.length > 0) {

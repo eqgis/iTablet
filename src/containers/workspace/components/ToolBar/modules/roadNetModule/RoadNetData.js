@@ -3,10 +3,10 @@
  * Author: Asort
  * https://github.com/AsortKeven
  */
-import { SMap } from 'imobile_for_reactnative'
+import { SMap, SNavigation } from 'imobile_for_reactnative'
 
 async function getData() {
-  const data = await SMap.getAllNavData()
+  const data = await SNavigation.getAllNavData()
   return data
 }
 

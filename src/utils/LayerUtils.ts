@@ -1,6 +1,6 @@
 /* global global */
 import { TOnlineData } from '@/constants/ConstOnline'
-import { SMap} from 'imobile_for_reactnative'
+import { SMap, SNavigation} from 'imobile_for_reactnative'
 import { DatasetType, FieldType, FieldInfo, FieldInfoValue } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { AttributesResp, LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import { ConstOnline } from '../constants'
@@ -153,7 +153,7 @@ async function getNavigationAttributeByData(
   size: number,
   type: GetAttributeType = 'loadMore',
 ) {
-  const data = await SMap.getNavigationAttributeByData(name, page, size)
+  const data = await SNavigation.getNavigationAttributeByData(name, page, size)
   return dealData(attributes, data, page, type)
 }
 
@@ -171,7 +171,7 @@ async function deleteAttributeByData(name: string, smID: number) {
 }
 
 async function deleteNavigationAttributeByData(name: string, smID: number) {
-  return await SMap.deleteNavigationAttributeByData(name, smID)
+  return await SNavigation.deleteNavigationAttributeByData(name, smID)
 }
 
 async function getCurrentGeometryID(path: string) {

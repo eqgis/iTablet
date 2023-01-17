@@ -4,7 +4,7 @@ import { scaleSize, setSpText } from '../../utils'
 import { color, size } from '../../styles'
 import { getARLayerAssets, getPublicAssets, getThemeAssets, getARLayerAssetsGray } from '../../assets'
 import { SARMap, ARLayerType } from 'imobile_for_reactnative'
-import { ARLayer } from 'imobile_for_reactnative/types/interface/ar'
+import { ARLayer } from 'imobile_for_reactnative'
 import { ARLayers, layerTypesObj } from './ARLayerManager'
 const styles = StyleSheet.create({
   rowOne: {

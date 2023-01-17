@@ -9,7 +9,7 @@ import {
 
 import { scaleSize, screen, setSpText } from '../../../../utils'
 import { color } from '../../../../styles'
-import { SMap } from 'imobile_for_reactnative'
+import { SMap, SNavigation } from 'imobile_for_reactnative'
 import { Const } from '../../../../constants'
 
 const DEFAULT_BOTTOM = scaleSize(135)
@@ -88,7 +88,7 @@ export default class RNFloorListView extends React.Component {
       this.props.mapLoaded &&
       this.props.mapLoaded !== prevProps.mapLoaded
     ) {
-      let datas = await SMap.getFloorData()
+      let datas = await SNavigation.getFloorData()
       if (datas.data && datas.data.length > 0) {
         let { data, datasource, currentFloorID } = datas
         data = data.sort(this.sortID)
@@ -187,7 +187,7 @@ export default class RNFloorListView extends React.Component {
 
   _onFloorPress = async item => {
     //change floor
-    await SMap.setCurrentFloorID(item.id)
+    await SNavigation.setCurrentFloorID(item.id)
     this.props.changeFloorID && this.props.changeFloorID(item.id)
   }
 

@@ -13,7 +13,7 @@ import {
 } from '../../../../../../constants'
 import { getThemeAssets } from '../../../../../../assets'
 import BackgroundTimer from 'react-native-background-timer'
-import { SMap } from 'imobile_for_reactnative'
+import { SMap, SNavigation } from 'imobile_for_reactnative'
 import { Toast, LayerUtils } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import NavigationService from '../../../../../NavigationService'
@@ -22,7 +22,7 @@ import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/
 async function start() {
   if (global.INCREMENT_DATA.datasetName) {
     BackgroundTimer.runBackgroundTimer(async () => {
-      await SMap.startGpsIncrement()
+      await SNavigation.startGpsIncrement()
     }, 2000)
   } else {
     Toast.show(getLanguage(global.language).Prompt.SELECT_LINE_DATASET)
@@ -38,10 +38,10 @@ async function cancel() {
   switch (type) {
     case ConstToolType.SM_MAP_INCREMENT_GPS_TRACK:
       BackgroundTimer.stopBackgroundTimer()
-      await SMap.clearIncrementPoints()
+      await SNavigation.clearIncrementPoints()
       break
     case ConstToolType.SM_MAP_INCREMENT_GPS_POINT:
-      await SMap.clearIncrementPoints()
+      await SNavigation.clearIncrementPoints()
       break
     case ConstToolType.SM_MAP_INCREMENT_POINTLINE:
       await SMap.cancel()
@@ -56,7 +56,7 @@ async function cancel() {
 
 async function addPoint() {
   if (global.INCREMENT_DATA.datasetName) {
-    await SMap.startGpsIncrement()
+    await SNavigation.startGpsIncrement()
   } else {
     Toast.show(getLanguage(global.language).Prompt.SELECT_LINE_DATASET)
   }
@@ -73,7 +73,7 @@ async function submit() {
       case ConstToolType.SM_MAP_INCREMENT_GPS_POINT:
       case ConstToolType.SM_MAP_INCREMENT_GPS_TRACK:
         BackgroundTimer.stopBackgroundTimer()
-        await SMap.submitIncrement()
+        await SNavigation.submitIncrement()
         break
       case ConstToolType.SM_MAP_INCREMENT_POINTLINE:
         await SMap.submit()
@@ -98,7 +98,7 @@ async function redo() {
   let type = _params.type
   switch (type) {
     case ConstToolType.SM_MAP_INCREMENT_GPS_POINT:
-      await SMap.redoIncrement()
+      await SNavigation.redoIncrement()
       break
     case ConstToolType.SM_MAP_INCREMENT_POINTLINE:
     case ConstToolType.SM_MAP_INCREMENT_FREELINE:
@@ -116,7 +116,7 @@ async function undo() {
   let type = _params.type
   switch (type) {
     case ConstToolType.SM_MAP_INCREMENT_GPS_POINT:
-      await SMap.undoIncrement()
+      await SNavigation.undoIncrement()
       break
     case ConstToolType.SM_MAP_INCREMENT_POINTLINE:
     case ConstToolType.SM_MAP_INCREMENT_FREELINE:
@@ -206,7 +206,7 @@ function getTypeImage(type) {
  */
 async function methodSelected(type) {
   //切换方式 清除上次增量的数据
-  await SMap.clearIncrementPoints()
+  await SNavigation.clearIncrementPoints()
   await SMap.setAction(Action.PAN)
   switch (type) {
     case ConstToolType.SM_MAP_INCREMENT_GPS_POINT:
@@ -234,8 +234,8 @@ function dialogConfirm() {
   const _params = ToolbarModule.getParams()
   if (global.INCREMENT_DATA.datasetName) {
     BackgroundTimer.stopBackgroundTimer()
-    SMap.clearIncrementPoints()
-    SMap.cancelIncrement(global.INCREMENT_DATA)
+    SNavigation.clearIncrementPoints()
+    SNavigation.cancelIncrement(global.INCREMENT_DATA)
   }
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(false)
@@ -253,7 +253,7 @@ async function topoEdit() {
   Toast.show(getLanguage(global.language).Prompt.PLEASE_SELECT_OBJECT)
   const _params = ToolbarModule.getParams()
   //切换方式 清除上次增量的数据
-  await SMap.clearIncrementPoints()
+  await SNavigation.clearIncrementPoints()
   SMap.submit()
   await SMap.setAction(Action.SELECT)
   _params.setToolbarVisible &&

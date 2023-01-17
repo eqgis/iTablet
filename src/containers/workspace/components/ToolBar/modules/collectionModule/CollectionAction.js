@@ -5,6 +5,7 @@ import {
   GeoStyle,
   SLocation,
   SData,
+  SNavigation,
 } from 'imobile_for_reactnative'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import {
@@ -352,7 +353,7 @@ async function close(type) {
     NavigationService.navigate('LayerSelectionAttribute', {
       isCollection:true,
     })
-    await SMap.clearTrackingLayer()
+    await SNavigation.clearTrackingLayer()
     let data = ToolbarModule.getData()
     showCollection(data.lastType, data.lastLayer)
   }else{

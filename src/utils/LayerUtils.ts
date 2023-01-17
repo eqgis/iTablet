@@ -320,7 +320,16 @@ const baseMapsOrigin = [
   'roadmap@GaoDeMap',
   'satellite@GaoDeMap',
 ]
-let baseMaps = [...baseMapsOrigin]
+// 系统底图数组
+const baseMaps = [...baseMapsOrigin]
+// 用户添加的底图数组
+let userBaseMap: Array<string> = []
+
+/**
+ * 是否是系统的底图
+ * @param {LayerInfo} layer 需要判断的图层的图层信息
+ * @returns {boolean} 是系统的底图返回true，不是返回false
+ */
 function isBaseLayer(layer: LayerInfo) {
   try {
     let name = layer.name
@@ -358,7 +367,11 @@ function isBaseLayer(layer: LayerInfo) {
   // }
   // return false
 }
-
+/**
+ * 是否是系统的底图图层数据源
+ * @param {string} datasourceName 数据源名称
+ * @returns {boolean} 是系统的底图图层数据源返回true，不是返回false
+ */
 function isBaseLayerDatasource(datasourceName: string) {
   try {
     for (let i = 0, n = baseMaps.length; i < n; i++) {
@@ -391,12 +404,32 @@ function isBaseLayerDatasource(datasourceName: string) {
   // return false
 }
 
+/**
+ * 是否是用户添加的底图图层数据源 lyx
+ * @param {string} datasourceName 数据源名称
+ * @returns {boolean} 是用户添加的底图图层数据源返回true，不是返回false
+ */
+function isUserBaseLayerDatasource(datasourceName: string) {
+  try {
+    for (let i = 0, n = userBaseMap.length; i < n; i++) {
+      const _dsName = userBaseMap[i].toUpperCase().split('@')[1]
+      if (datasourceName.toUpperCase() === _dsName) {
+        return true
+      }
+    }
+    return false
+  } catch (e) {
+    return false
+  }
+}
+
 function getBaseLayers(layers: LayerInfo[] = []) {
+  const baseMapTempArr = baseMaps.concat(userBaseMap)
   const arr = []
   for (let i = 0; i < layers.length; i++) {
     const { name } = layers[i]
-    for (let i = 0, n = baseMaps.length; i < n; i++) {
-      if (name.toUpperCase().indexOf(baseMaps[i].toUpperCase()) >= 0) {
+    for (let i = 0, n = baseMapTempArr.length; i < n; i++) {
+      if (name.toUpperCase().indexOf(baseMapTempArr[i].toUpperCase()) >= 0) {
         arr.push(layers[i])
       }
     }
@@ -421,10 +454,21 @@ function getBaseLayers(layers: LayerInfo[] = []) {
   return arr
 }
 
-function setBaseMap(baseMap: string[]) {
-  baseMaps = [...baseMapsOrigin]
-  baseMaps = baseMaps.concat(baseMap)
+// function setBaseMap(baseMap: string[]) {
+//   baseMaps = []
+//   baseMaps = baseMaps.concat(baseMap)
+// }
+
+/**
+ * 设置用户添加的底图 lyx
+ * @param {Array<string>} datasourceName 用户添加的底图的名称数组
+ * @returns {void}
+ */
+function setUserBaseMap(baseMap: string[]) {
+  userBaseMap = []
+  userBaseMap = userBaseMap.concat(baseMap)
 }
+
 async function addBaseMap(
   layers: LayerInfo[] = [],
   data: TOnlineData | TOnlineData[] = ConstOnline.Google,
@@ -696,8 +740,10 @@ export default {
 
   isBaseLayer,
   isBaseLayerDatasource,
+  isUserBaseLayerDatasource,
   addBaseMap,
-  setBaseMap,
+  // setBaseMap,
+  setUserBaseMap,
   openDefaultBaseMap,
   getDefaultBaseMapData,
   getLayerType,

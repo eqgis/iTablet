@@ -84,7 +84,7 @@ export default class MT_layerManager extends React.Component {
         userAddBase.push(this.curUserBaseMaps[i].layerName)
       }
     }
-    LayerUtils.setBaseMap(userAddBase)
+    LayerUtils.setUserBaseMap(userAddBase)
     this.state = {
       // datasourceList: [],
       mapName: '',
@@ -1050,7 +1050,7 @@ export default class MT_layerManager extends React.Component {
                     // 不发布标注图层
                     if (
                       datasourceAlias?.indexOf('Label_') === 0 && datasourceAlias?.indexOf('#') === datasourceAlias?.length - 1 || // 过滤标注数据源
-                      datasourceAlias && LayerUtils.isBaseLayerDatasource(datasourceAlias) // 过滤底图数据源
+                      datasourceAlias && (LayerUtils.isBaseLayerDatasource(datasourceAlias) || LayerUtils.isUserBaseLayerDatasource(datasourceAlias)) // 过滤底图数据源
                     ) {
                       continue
                     }

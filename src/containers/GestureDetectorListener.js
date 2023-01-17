@@ -20,7 +20,7 @@ let _params = {}
 let isDoubleTouchCome = false
 function setGestureDetectorListener(params) {
   (async function() {
-    await SMap.setGestureDetector({
+     SMap.setGestureDetector({
       singleTapHandler: touchCallback,
       longPressHandler: longtouchCallback,
       doubleTapHandler: doubleTouchCallback,

@@ -1794,9 +1794,9 @@ export default class MapView extends React.Component {
             `${userPath +
             ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.sym`,
           )
-          await SMap.importSymbolLibrary('DefaultMapLib', fillLibPath) // 导入面符号库
-          await SMap.importSymbolLibrary('DefaultMapLib', lineLibPath) // 导入线符号库
-          await SMap.importSymbolLibrary('DefaultMapLib', markerLibPath) // 导入点符号库
+          await SData.importSymbolLibrary('DefaultMapLib', fillLibPath) // 导入面符号库
+          await SData.importSymbolLibrary('DefaultMapLib', lineLibPath) // 导入线符号库
+          await SData.importSymbolLibrary('DefaultMapLib', markerLibPath) // 导入点符号库
         }
         if (global.Type === ChunkType.MAP_PLOTTING) {
           this.setLoading(

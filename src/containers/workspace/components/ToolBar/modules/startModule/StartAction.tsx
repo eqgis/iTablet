@@ -6,6 +6,7 @@ import {
   SScene,
   SMediaCollector,
   SNavigation,
+  SData,
 } from 'imobile_for_reactnative'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { color, size } from '../../../../../../styles'
@@ -282,9 +283,9 @@ async function create() {
           `${userPath +
             ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.sym`,
         )
-        await SMap.importSymbolLibrary(value, fillLibPath) // 导入面符号库
-        await SMap.importSymbolLibrary(value, lineLibPath) // 导入线符号库
-        await SMap.importSymbolLibrary(value, markerLibPath) // 导入点符号库
+        await SData.importSymbolLibrary(value, fillLibPath) // 导入面符号库
+        await SData.importSymbolLibrary(value, lineLibPath) // 导入线符号库
+        await SData.importSymbolLibrary(value, markerLibPath) // 导入点符号库
         // await params.setCurrentMap()
         // await SMap.removeAllLayer() // 移除所有图层
 

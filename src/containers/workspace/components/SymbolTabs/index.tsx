@@ -21,7 +21,7 @@ import {
 import { setEditLayer } from '../../../../redux/models/layers'
 import TemplateList from './TemplateList'
 import TemplateTab from './TemplateTab'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language/index'
 import PlotList from './PlotList'
 import PlotTab from './PlotTab'
@@ -116,11 +116,11 @@ class SymbolTabs extends React.Component {
   }
 
   initSymbols = () => {
-    SMap.getSymbolGroups().then(result => {
+    SData.getSymbolGroups().then(result => {
       let symbols = []
 
       let initSymbols = async function(data) {
-        SMap.findSymbolsByGroups(data[0].type, data[0].path).then(result => {
+        SData.getSymbolsByGroups(data[0].type, data[0].path).then(result => {
           symbols = result
           if (symbols && symbols.length > 0) {
             this.props.setCurrentSymbols &&

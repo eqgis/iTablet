@@ -546,7 +546,7 @@ class CallDetailPage extends Component<Props, State> {
                 }
 
                 const selectionAttribute = false
-                const index = this.state.data.SmID
+                const index = this.state.data.SmID - 1
                 const layerAttribute = true
 
                 NavigationService.navigate('Camera', {

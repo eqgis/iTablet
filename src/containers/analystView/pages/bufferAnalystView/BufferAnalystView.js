@@ -80,7 +80,7 @@ export default class BufferAnalystView extends Component {
               this.setLoading(false)
 
               Toast.show(
-                res.result
+                res
                   ? getLanguage(this.props.language).Analyst_Prompt
                     .ANALYSIS_SUCCESS
                   : getLanguage(this.props.language).Analyst_Prompt
@@ -88,7 +88,7 @@ export default class BufferAnalystView extends Component {
                 // : res.errorMsg || getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
               )
 
-              if (res.result) {
+              if (res) {
                 let layers = await this.props.getLayers()
                 layers.length > 0 &&
                   (await SMap.setLayerFullView(layers[0].path))
@@ -127,14 +127,14 @@ export default class BufferAnalystView extends Component {
               this.setLoading(false)
 
               Toast.show(
-                res.result
+                res
                   ? getLanguage(this.props.language).Analyst_Prompt
                     .ANALYSIS_SUCCESS
                   : getLanguage(this.props.language).Analyst_Prompt
                     .ANALYSIS_FAIL,
                 // : res.errorMsg || getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
               )
-              if (res.result) {
+              if (res) {
                 let layers = await this.props.getLayers()
                 layers.length > 0 &&
                   (await SMap.setLayerFullView(layers[0].path))

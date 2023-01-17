@@ -23,7 +23,7 @@ interface Props extends ReduxProps {
   data: Array<layerManagerDataType>,
 }
 
-type selectTitleType = '天地图底图' | "天地图-影像底图" | "天地图-地形底图" | "Google" | "Google Satellite" | "Google Terrain" | ""
+type selectTitleType = '天地图底图' | "天地图-影像底图" | "天地图-地形底图" | "Google" | "Google Satellite" | "Google Terrain" | "" | 'Google Hybrid'
 interface State {
 	// to do
   selectTitle: selectTitleType,
@@ -62,6 +62,8 @@ class ChangeBaseLayer extends Component<Props, State> {
           selectTitle = 'Google Satellite'
         } else if(baselayer.datasetName === 'terrain') {
           selectTitle = 'Google Terrain'
+        } else if(baselayer.datasetName === 'hybrid') {
+          selectTitle = 'Google Hybrid'
         }
         break
       default:

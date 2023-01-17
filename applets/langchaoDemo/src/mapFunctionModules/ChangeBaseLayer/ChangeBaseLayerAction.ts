@@ -22,7 +22,7 @@ function layerManagerData() {
       },
       data: [],
       image: getImage().icon_map_normal,
-      selectImage: getImage().icon_map_normal,
+      selectImage: getImage().icon_map_normal_select,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -38,40 +38,42 @@ function layerManagerData() {
       },
       data: [],
       image: getImage().icon_map_image,
-      selectImage: getImage().icon_map_image,
-      type: DatasetType.IMAGE,
-      themeType: -1,
-    },
-    {
-      title: 'Google Terrain',
-      action: async () => {
-        global.ToolBar?.close()
-        const result = await OpenData(ConstOnline.Google, 2)
-        if(result) {
-          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
-          AppEvent.emitEvent("changeBaseLayer", 'Google Terrain')
-        }
-      },
-      data: [],
-      image: getImage().icon_map_terrain,
-      selectImage: getImage().icon_map_terrain,
+      selectImage: getImage().icon_map_image_select,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
     // {
-    //   title: 'Google Hybrid',
+    //   title: 'Google Terrain',
     //   action: async () => {
     //     global.ToolBar?.close()
-    //     const result = await OpenData(ConstOnline.Google, 3)
+    //     const result = await OpenData(ConstOnline.Google, 2)
     //     if(result) {
     //       Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+    //       AppEvent.emitEvent("changeBaseLayer", 'Google Terrain')
     //     }
     //   },
     //   data: [],
-    //   image: getThemeAssets().layerType.layer_image,
+    //   image: getImage().icon_map_terrain,
+    //   selectImage: getImage().icon_map_terrain_select,
     //   type: DatasetType.IMAGE,
     //   themeType: -1,
     // },
+    {
+      title: 'Google Hybrid',
+      action: async () => {
+        global.ToolBar?.close()
+        const result = await OpenData(ConstOnline.Google, 3)
+        if(result) {
+          Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
+          AppEvent.emitEvent("changeBaseLayer", 'Google Hybrid')
+        }
+      },
+      data: [],
+      image: getImage().icon_map_terrain,
+      selectImage: getImage().icon_map_terrain_select,
+      type: DatasetType.IMAGE,
+      themeType: -1,
+    },
     // {
     //   title: 'Google labelmap',
     //   action: async () => {
@@ -119,7 +121,7 @@ function layerManagerData() {
       },
       data: [],
       image: getImage().icon_map_normal,
-      selectImage: getImage().icon_map_normal,
+      selectImage: getImage().icon_map_normal_select,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -142,7 +144,7 @@ function layerManagerData() {
       },
       data: [],
       image: getImage().icon_map_image,
-      selectImage: getImage().icon_map_image,
+      selectImage: getImage().icon_map_image_select,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -166,7 +168,7 @@ function layerManagerData() {
       },
       data: [],
       image: getImage().icon_map_terrain,
-      selectImage: getImage().icon_map_terrain,
+      selectImage: getImage().icon_map_terrain_select,
       type: DatasetType.IMAGE,
       themeType: -1,
     },
@@ -287,7 +289,7 @@ function layerManagerData() {
         && item.title.indexOf('天地图')
         && item.title.indexOf('高德') // Google Satellite
         // && item.title.indexOf('Google Satellite') === -1
-        && item.title.indexOf('Google Hybrid') === -1
+        // && item.title.indexOf('Google Hybrid') === -1
         && item.title.indexOf('Google labelmap') === -1
         && item.title.indexOf('BingMap')
         && item.title.indexOf('OSM') === -1

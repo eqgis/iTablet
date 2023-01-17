@@ -35,38 +35,38 @@ class ChangeBaseLayerModule extends CustomFunctionModule {
     // NavigationService.navigate('ContactsList')
 
 
-    const _params = ToolbarModule.getParams()
+    // const _params = ToolbarModule.getParams()
     //底图
-    let curUserBaseMaps = _params.baseMaps && _params.baseMaps[
-      _params.user.currentUser.userId
-    ]
-    if (!curUserBaseMaps) {
-      curUserBaseMaps = _params.baseMaps['default'] || []
-    }
+    // let curUserBaseMaps = _params.baseMaps && _params.baseMaps[
+    //   _params.user.currentUser.userId
+    // ]
+    // if (!curUserBaseMaps) {
+    //   curUserBaseMaps = _params.baseMaps['default'] || []
+    // }
     const layerManagerDataArr = [...(ChangeBaseLayerAction.layerManagerData())]
     console.warn("layerManagerDataArr: " + JSON.stringify(layerManagerDataArr))
-    for (let i = 0, n = curUserBaseMaps.length; i < n; i++) {
-      const baseMap = curUserBaseMaps[i]
-      //只保留用户添加的 zhangxt
-      if (
-        baseMap.DSParams.engineType === 227 ||
-        baseMap.DSParams.engineType === 223 ||
-        !baseMap.userAdd
-      ) {
-        continue
-      }
-      const layerManagerData = {
-        title: baseMap.mapName,
-        action: () => {
-          return OpenData(baseMap, baseMap.layerIndex)
-        },
-        data: [],
-        image: getThemeAssets().layerType.layer_image,
-        type: DatasetType.IMAGE,
-        themeType: -1,
-      }
-      layerManagerDataArr.push(layerManagerData)
-    }
+    // for (let i = 0, n = curUserBaseMaps.length; i < n; i++) {
+    //   const baseMap = curUserBaseMaps[i]
+    //   //只保留用户添加的 zhangxt
+    //   if (
+    //     baseMap.DSParams.engineType === 227 ||
+    //     baseMap.DSParams.engineType === 223 ||
+    //     !baseMap.userAdd
+    //   ) {
+    //     continue
+    //   }
+    //   const layerManagerData = {
+    //     title: baseMap.mapName,
+    //     action: () => {
+    //       return OpenData(baseMap, baseMap.layerIndex)
+    //     },
+    //     data: [],
+    //     image: getThemeAssets().layerType.layer_image,
+    //     type: DatasetType.IMAGE,
+    //     themeType: -1,
+    //   }
+    //   layerManagerDataArr.push(layerManagerData)
+    // }
 
 
 

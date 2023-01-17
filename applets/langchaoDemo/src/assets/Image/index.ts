@@ -20,6 +20,9 @@ const icon_userInfo_setting = require('./icon_userInfo_setting.png')
 const icon_map_image = require('./icon_map_image.png')
 const icon_map_normal = require('./icon_map_normal.png')
 const icon_map_terrain = require('./icon_map_terrain.png')
+const icon_map_image_select = require('./icon_map_image_select.png')
+const icon_map_normal_select = require('./icon_map_normal_select.png')
+const icon_map_terrain_select = require('./icon_map_terrain_select.png')
 
 const image = {
   flight,
@@ -42,6 +45,9 @@ const image = {
   icon_map_image,
   icon_map_normal,
   icon_map_terrain,
+  icon_map_image_select,
+  icon_map_normal_select,
+  icon_map_terrain_select,
 }
 
 function getImage(): typeof image {

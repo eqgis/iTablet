@@ -285,194 +285,194 @@ class Camera extends React.Component<Props, State> {
     if (await SMediaCollector.isTourLayer((this.props.currentLayer as LayerInfo).name) && !this.attribute) {
       result = await SMediaCollector.updateTour((this.props.currentLayer as LayerInfo).name)
     }
-    {
-      // langchao code
+    // {
+    //   // langchao code
 
-      const date = new Date()
+    //   const date = new Date()
 
-      const timezone = 8 //目标时区时间，东八区(北京时间)   东时区正数 西市区负数
-      const offset_GMT = date.getTimezoneOffset() // 本地时间和格林威治的时间差，单位为分钟
-      const nowDate = date.getTime() // 本地时间距 1970 年 1 月 1 日午夜（GMT 时间）之间的毫秒数
-      const targetDate = new Date(nowDate + offset_GMT * 60 * 1000 + timezone * 60 * 60 * 1000)
-      // const beijingTime = targetDate.getTime()
-      // 格式化时间
-      const formDateLocal = TourAction.dateFormat("yyyy-MM-dd HH:mm:ss", date)
-      const formDateBeijing = TourAction.dateFormat("yyyy-MM-dd HH:mm:ss", targetDate)
-      // console.warn("localDate: " + formDateLocal + "beijingdate: " + formDateBeijing)
+    //   const timezone = 8 //目标时区时间，东八区(北京时间)   东时区正数 西市区负数
+    //   const offset_GMT = date.getTimezoneOffset() // 本地时间和格林威治的时间差，单位为分钟
+    //   const nowDate = date.getTime() // 本地时间距 1970 年 1 月 1 日午夜（GMT 时间）之间的毫秒数
+    //   const targetDate = new Date(nowDate + offset_GMT * 60 * 1000 + timezone * 60 * 60 * 1000)
+    //   // const beijingTime = targetDate.getTime()
+    //   // 格式化时间
+    //   const formDateLocal = TourAction.dateFormat("yyyy-MM-dd HH:mm:ss", date)
+    //   const formDateBeijing = TourAction.dateFormat("yyyy-MM-dd HH:mm:ss", targetDate)
+    //   // console.warn("localDate: " + formDateLocal + "beijingdate: " + formDateBeijing)
 
-      // const callInfo = CollectionAction.getCallInfo()
-      // let durationTime = 0
-      // if(callInfo.startTime >= 0) {
-      //   durationTime = (nowDate - callInfo.startTime) / (60 * 1000)
-      // }
+    //   // const callInfo = CollectionAction.getCallInfo()
+    //   // let durationTime = 0
+    //   // if(callInfo.startTime >= 0) {
+    //   //   durationTime = (nowDate - callInfo.startTime) / (60 * 1000)
+    //   // }
 
-      let infos = getUserInfo()
-      infos = JSON.parse(JSON.stringify(infos))
-      console.warn("用户信息" + JSON.stringify(infos))
-      let name = '张三'
-      let phoneNumber = "17711245121"
-      if(infos && infos.length > 0) {
-        const itemTemp = infos[0]
-        name = itemTemp?.name
-        phoneNumber = itemTemp?.mobilePhone !== "" ? itemTemp?.mobilePhone : itemTemp?.phone
-      }
+    //   let infos = getUserInfo()
+    //   infos = JSON.parse(JSON.stringify(infos))
+    //   console.warn("用户信息" + JSON.stringify(infos))
+    //   let name = '张三'
+    //   let phoneNumber = "17711245121"
+    //   if(infos && infos.length > 0) {
+    //     const itemTemp = infos[0]
+    //     name = itemTemp?.name
+    //     phoneNumber = itemTemp?.mobilePhone !== "" ? itemTemp?.mobilePhone : itemTemp?.phone
+    //   }
 
-      const callContentsObj = {
-        myName: name,           // 呼叫人姓名
-        myPhoneNumber: phoneNumber,    // 呼叫人电话
-        callName: "",         // 被呼叫人姓名
-        callPhoneNumber: "",  // 被呼叫人电话
-        localTime: formDateLocal,        // 当地时间
-        bjTime: formDateBeijing,           // 北京时间
-        durationTime: 0,     // 时长
-      }
-      const callContentsStr = JSON.stringify(callContentsObj)
-      console.warn("callContentsStr: " + callContentsStr)
+    //   const callContentsObj = {
+    //     myName: name,           // 呼叫人姓名
+    //     myPhoneNumber: phoneNumber,    // 呼叫人电话
+    //     callName: "",         // 被呼叫人姓名
+    //     callPhoneNumber: "",  // 被呼叫人电话
+    //     localTime: formDateLocal,        // 当地时间
+    //     bjTime: formDateBeijing,           // 北京时间
+    //     durationTime: 0,     // 时长
+    //   }
+    //   const callContentsStr = JSON.stringify(callContentsObj)
+    //   console.warn("callContentsStr: " + callContentsStr)
 
-      const result = await LayerUtils.getLayerAttribute(
-        {
-          data: [],
-          head: [],
-        },
-        "marker_322@langchao",
-        0,
-        30,
-        {
-          // filter: this.filter,
-        },
-        "refresh",
-      )
+    //   const result = await LayerUtils.getLayerAttribute(
+    //     {
+    //       data: [],
+    //       head: [],
+    //     },
+    //     "marker_322@langchao",
+    //     0,
+    //     30,
+    //     {
+    //       // filter: this.filter,
+    //     },
+    //     "refresh",
+    //   )
 
-      const layerAttributedataArray = result.attributes.data
-      // const columnIndex = result.total !== 0 ? 0 : result.total
-      const columnIndex = layerAttributedataArray.length - 1
-      const layerAttributedata = layerAttributedataArray[columnIndex]
+    //   const layerAttributedataArray = result.attributes.data
+    //   // const columnIndex = result.total !== 0 ? 0 : result.total
+    //   const columnIndex = layerAttributedataArray.length - 1
+    //   const layerAttributedata = layerAttributedataArray[columnIndex]
 
-      let smID = 0
-      let myNameIndex = 0
-      let myPhoneNumberIndex = 0
-      let callNameIndex = 0
-      let callPhoneNumberIndex = 0
-      let localTimeIndex = 0
-      let bjTimeIndex = 0
-      let durationTimeIndex = 0
-      let isUploadedIndex = 0
+    //   let smID = 0
+    //   let myNameIndex = 0
+    //   let myPhoneNumberIndex = 0
+    //   let callNameIndex = 0
+    //   let callPhoneNumberIndex = 0
+    //   let localTimeIndex = 0
+    //   let bjTimeIndex = 0
+    //   let durationTimeIndex = 0
+    //   let isUploadedIndex = 0
 
-      const length = layerAttributedata.length
-      for(let i = 0; i < length; i ++) {
-        const item = layerAttributedata[i]
-        if(item.name === "SmID") {
-          smID = Number(item.value)
-        } else if(item.name === "isUploaded") {
-          isUploadedIndex = i
-        } else if(item.name === "myName") {
-          myNameIndex = i
-        } else if(item.name === "myPhoneNumber") {
-          myPhoneNumberIndex = i
-        } else if(item.name === "callName") {
-          callNameIndex = i
-        } else if(item.name === "callPhoneNumber") {
-          callPhoneNumberIndex = i
-        } else if(item.name === "localTime_User") {
-          localTimeIndex = i
-        } else if(item.name === "bjTime") {
-          bjTimeIndex = i
-        } else if(item.name === "duration") {
-          durationTimeIndex = i
-        }
-      }
+    //   const length = layerAttributedata.length
+    //   for(let i = 0; i < length; i ++) {
+    //     const item = layerAttributedata[i]
+    //     if(item.name === "SmID") {
+    //       smID = Number(item.value)
+    //     } else if(item.name === "isUploaded") {
+    //       isUploadedIndex = i
+    //     } else if(item.name === "myName") {
+    //       myNameIndex = i
+    //     } else if(item.name === "myPhoneNumber") {
+    //       myPhoneNumberIndex = i
+    //     } else if(item.name === "callName") {
+    //       callNameIndex = i
+    //     } else if(item.name === "callPhoneNumber") {
+    //       callPhoneNumberIndex = i
+    //     } else if(item.name === "localTime_User") {
+    //       localTimeIndex = i
+    //     } else if(item.name === "bjTime") {
+    //       bjTimeIndex = i
+    //     } else if(item.name === "duration") {
+    //       durationTimeIndex = i
+    //     }
+    //   }
 
-      const altData = [
-        {
-          mapName: "langchao",
-          layerPath: "marker_322@langchao",
-          fieldInfo:  [
-            // {
-            //   name: 'CallContents',
-            //   value: callContentsStr,
-            //   index: index,
-            //   columnIndex: columnIndex,
-            //   smID: smID,
-            // },
-            {
-              name: 'myName',
-              value: callContentsObj.myName,
-              index: myNameIndex,
-              columnIndex: columnIndex,
-              smID: smID,
-            },
-            {
-              name: 'myPhoneNumber',
-              value: callContentsObj.myPhoneNumber,
-              index: myPhoneNumberIndex,
-              columnIndex: columnIndex,
-              smID: smID,
-            },
-            {
-              name: 'callName',
-              value: callContentsObj.callName,
-              index: callNameIndex,
-              columnIndex: columnIndex,
-              smID: smID,
-            },
-            {
-              name: 'callPhoneNumber',
-              value: callContentsObj.callPhoneNumber,
-              index: callPhoneNumberIndex,
-              columnIndex: columnIndex,
-              smID: smID,
-            },
-            {
-              name: 'localTime_User',
-              value: callContentsObj.localTime,
-              index: localTimeIndex,
-              columnIndex: columnIndex,
-              smID: smID,
-            },
-            {
-              name: 'bjTime',
-              value: callContentsObj.bjTime,
-              index: bjTimeIndex,
-              columnIndex: columnIndex,
-              smID: smID,
-            },
-            {
-              name: 'duration',
-              value: callContentsObj.durationTime,
-              index: durationTimeIndex,
-              columnIndex: columnIndex,
-              smID: smID,
-            },
-            {
-              name: 'isUploaded',
-              value: false,
-              index: isUploadedIndex,
-              columnIndex: columnIndex,
-              smID: smID,
-            },
-          ],
-          params: {
-            // index: int,      // 当前对象所在记录集中的位置
-            filter: `SmID=${smID}`, // 过滤条件
-            cursorType: 2, // 2: DYNAMIC, 3: STATIC
-          },
-        },
-      ]
+    //   const altData = [
+    //     {
+    //       mapName: "langchao",
+    //       layerPath: "marker_322@langchao",
+    //       fieldInfo:  [
+    //         // {
+    //         //   name: 'CallContents',
+    //         //   value: callContentsStr,
+    //         //   index: index,
+    //         //   columnIndex: columnIndex,
+    //         //   smID: smID,
+    //         // },
+    //         {
+    //           name: 'myName',
+    //           value: callContentsObj.myName,
+    //           index: myNameIndex,
+    //           columnIndex: columnIndex,
+    //           smID: smID,
+    //         },
+    //         {
+    //           name: 'myPhoneNumber',
+    //           value: callContentsObj.myPhoneNumber,
+    //           index: myPhoneNumberIndex,
+    //           columnIndex: columnIndex,
+    //           smID: smID,
+    //         },
+    //         {
+    //           name: 'callName',
+    //           value: callContentsObj.callName,
+    //           index: callNameIndex,
+    //           columnIndex: columnIndex,
+    //           smID: smID,
+    //         },
+    //         {
+    //           name: 'callPhoneNumber',
+    //           value: callContentsObj.callPhoneNumber,
+    //           index: callPhoneNumberIndex,
+    //           columnIndex: columnIndex,
+    //           smID: smID,
+    //         },
+    //         {
+    //           name: 'localTime_User',
+    //           value: callContentsObj.localTime,
+    //           index: localTimeIndex,
+    //           columnIndex: columnIndex,
+    //           smID: smID,
+    //         },
+    //         {
+    //           name: 'bjTime',
+    //           value: callContentsObj.bjTime,
+    //           index: bjTimeIndex,
+    //           columnIndex: columnIndex,
+    //           smID: smID,
+    //         },
+    //         {
+    //           name: 'duration',
+    //           value: callContentsObj.durationTime,
+    //           index: durationTimeIndex,
+    //           columnIndex: columnIndex,
+    //           smID: smID,
+    //         },
+    //         {
+    //           name: 'isUploaded',
+    //           value: false,
+    //           index: isUploadedIndex,
+    //           columnIndex: columnIndex,
+    //           smID: smID,
+    //         },
+    //       ],
+    //       params: {
+    //         // index: int,      // 当前对象所在记录集中的位置
+    //         filter: `SmID=${smID}`, // 过滤条件
+    //         cursorType: 2, // 2: DYNAMIC, 3: STATIC
+    //       },
+    //     },
+    //   ]
 
-      await AppToolBar.getProps().setLayerAttributes(altData)
-      await TourAction.uploadDialog(smID, 'media')
+    //   await AppToolBar.getProps().setLayerAttributes(altData)
+    //   await TourAction.uploadDialog(smID, 'media')
 
-      const _params = ToolbarModule.getParams()
-      const layers = await (_params.getLayers())
+    //   const _params = ToolbarModule.getParams()
+    //   const layers = await (_params.getLayers())
 
-      const datasetName = "marker_322"
-      for(let i = 0; i < layers.length; i ++) {
-        const layerDatasetName = layers[i].datasetName
-        if(layerDatasetName === datasetName) {
-          ToolbarModule.getParams().setCurrentLayer(layers[i])
-        }
-      }
-    }
+    //   const datasetName = "marker_322"
+    //   for(let i = 0; i < layers.length; i ++) {
+    //     const layerDatasetName = layers[i].datasetName
+    //     if(layerDatasetName === datasetName) {
+    //       ToolbarModule.getParams().setCurrentLayer(layers[i])
+    //     }
+    //   }
+    // }
     if (this.atcb) {
       this.atcb({
         datasourceName: this.datasourceAlias,

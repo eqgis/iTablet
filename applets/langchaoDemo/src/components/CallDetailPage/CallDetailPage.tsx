@@ -1,12 +1,12 @@
 import { ImagePicker, MediaPager } from "@/components"
 import TableList from "@/components/TableList"
-import { ChunkType, ConstPath } from "@/constants"
+import { ChunkType, ConstPath, UserType } from "@/constants"
 import NavigationService from "@/containers/NavigationService"
 import { getLanguage } from "@/language"
 // import MediaItem from "@/containers/mediaEdit/MediaItem"
 import { RootState } from "@/redux/types"
-import { AppEvent, checkType, dp, Toast } from "@/utils"
-import { FileTools, SARMap, SMediaCollector } from "imobile_for_reactnative"
+import { AppEvent, checkType, dataUtil, dp, OnlineServicesUtils, Toast } from "@/utils"
+import { FileTools, RNFS, SARMap, SCoordination, SMap, SMediaCollector } from "imobile_for_reactnative"
 import React, { Component } from "react"
 import { View, Text, StyleSheet, Platform, ScrollView } from "react-native"
 import { connect, ConnectedProps } from "react-redux"
@@ -48,6 +48,12 @@ interface pathInfoType {
   type: string,
 }
 
+interface cameraReturnType {
+  datasourceName: string,
+  datasetName: string,
+  mediaPaths: Array<string>,
+}
+
 interface Props extends ReduxProps {
   data: callAttributeType,
 }
@@ -73,6 +79,8 @@ class CallDetailPage extends Component<Props, State> {
   _ids: Array<number> = []
   info: any
   showInfo: any
+  servicesUtils: SCoordination =  new SCoordination('online')
+  onlineServicesUtils: OnlineServicesUtils = new OnlineServicesUtils('online')
 
   constructor(props: Props) {
     super(props)
@@ -83,6 +91,16 @@ class CallDetailPage extends Component<Props, State> {
       showBg:false,
       showDelete: false,
       mediaServiceIds: [],
+    }
+
+    if (global.coworkMode && global.Type.indexOf('3D') < 0 && this.props.currentUser) {
+      if (UserType.isOnlineUser(this.props.currentUser)) {
+        this.servicesUtils = new SCoordination('online')
+        this.onlineServicesUtils = new OnlineServicesUtils('online')
+      } else if (UserType.isIPortalUser(this.props.currentUser)){
+        this.servicesUtils = new SCoordination('iportal')
+        this.onlineServicesUtils = new OnlineServicesUtils('iportal')
+      }
     }
   }
 
@@ -119,17 +137,18 @@ class CallDetailPage extends Component<Props, State> {
     const layerInfo = this.props.currentLayer
 
     const info = await SMediaCollector.getMediaInfo(layerInfo.name, smID)
+    console.warn("info: " + JSON.stringify(info))
     this.info = info
     this.showInfo = {
-      mediaName: this.info.mediaName || '',
-      coordinate: this.info.coordinate || '',
-      modifiedDate: this.info.modifiedDate || '',
-      description: this.info.description || '',
-      httpAddress: this.info.httpAddress || '',
-      mediaFilePaths: this.info.mediaFilePaths && this.info.mediaFilePaths !== '-' ? this.info.mediaFilePaths : [],
-      mediaServiceIds: this.info.mediaServiceIds && this.info.mediaServiceIds !== '-' ? this.info.mediaServiceIds : [],
-      mediaData: this.info.mediaData && this.info.mediaData !== '-' && (
-        typeof this.info.mediaData === 'string' ? JSON.parse(this.info.mediaData) : this.info.mediaData
+      mediaName: this.info?.mediaName || '',
+      coordinate: this.info?.coordinate || '',
+      modifiedDate: this.info?.modifiedDate || '',
+      description: this.info?.description || '',
+      httpAddress: this.info?.httpAddress || '',
+      mediaFilePaths: this.info?.mediaFilePaths && this.info?.mediaFilePaths !== '-' ? this.info?.mediaFilePaths : [],
+      mediaServiceIds: this.info?.mediaServiceIds && this.info?.mediaServiceIds !== '-' ? this.info?.mediaServiceIds : [],
+      mediaData: this.info?.mediaData && this.info?.mediaData !== '-' && (
+        typeof this.info?.mediaData === 'string' ? JSON.parse(this.info?.mediaData) : this.info?.mediaData
       ) || {},
       isRefresh: false,
     }
@@ -139,10 +158,10 @@ class CallDetailPage extends Component<Props, State> {
     //   Toast.show(getLanguage(global.language).Prompt.CANT_PICTURE)
     //   return
     // }
-    const paths = await this.dealData(info.mediaFilePaths)
+    const paths = await this.dealData(info?.mediaFilePaths || [])
     this.setState({
       paths,
-      mediaFilePaths: info.mediaFilePaths,
+      mediaFilePaths: info?.mediaFilePaths || [],
       mediaServiceIds:  this.showInfo.mediaServiceIds,
     })
 
@@ -189,7 +208,16 @@ class CallDetailPage extends Component<Props, State> {
     })
   }
 
-  addMediaFiles = async ({mediaPaths = []}) => {
+
+  addMediaFiles = async (data:cameraReturnType) => {
+    // {mediaPaths = []}
+    // datasourceName,
+    // datasetName,
+
+    const mediaPaths = data.mediaPaths
+    const datasourceName = data.datasourceName
+    const datasetName = data.datasetName
+
     let mediaFilePaths = [...this.state.mediaFilePaths]
 
     for (const item of mediaPaths) {
@@ -499,21 +527,159 @@ class CallDetailPage extends Component<Props, State> {
         index={rowIndex * COLUMNS + cellIndex}
         onPress={async ({ data, index }) => {
           if (data.uri === '+') {
-            const isAR = global.Type === ChunkType.MAP_AR_MAPPING || global.Type === ChunkType.MAP_AR || global.Type === ChunkType.MAP_AR_ANALYSIS
-            Platform.OS === 'android' && isAR && await SARMap.onPause() // Android相机和AR模块实景共用相机,要先暂停AR模块的相机,防止崩溃
-            NavigationService.navigate('Camera', {
-              limit: MAX_FILES - this.state.mediaFilePaths.length,
-              cb: async data => {
-                Platform.OS === 'android' && isAR && await SARMap.onResume()
-                await this.addMediaFiles(data)
-                await this.saveHandler()
-                await this.getMediaInfo()
+            if(this.state.mediaFilePaths.length <= 0) {
+
+              // to do
+
+              let layerInfo = this.props.currentLayer
+
+              if (layerInfo) {
+                let datasourceAlias = layerInfo?.datasourceAlias // 标注数据源名称
+                let datasetName = layerInfo?.datasetName // 标注图层名称
+                if (
+                  datasourceAlias === '' || datasourceAlias === undefined || datasourceAlias === null ||
+                  datasetName === '' || datasetName === undefined || datasetName === null
+                ) {
+                  layerInfo = await SMap.getLayerInfo(this.props.currentLayer.path)
+                  datasourceAlias = layerInfo.datasourceAlias // 标注数据源名称
+                  datasetName = layerInfo.datasetName // 标注图层名称
+                }
+
+                const selectionAttribute = false
+                const index = this.state.data.SmID
+                const layerAttribute = true
+
+                NavigationService.navigate('Camera', {
+                  datasourceAlias,
+                  datasetName,
+                  index,
+                  attribute: true,
+                  selectionAttribute,
+                  layerAttribute,
+                  limit: 9,
+                  cb: async ({
+                    datasourceName,
+                    datasetName,
+                    mediaPaths,
+                  }: cameraReturnType) => {
+                    // cb: async mediaPaths => {
+                    try {
+                      if (global.coworkMode) {
+                        const resourceIds = [],
+                          _mediaPaths = [] // 保存修改名称后的图片地址
+                        let name = '', suffix = ''
+                        let dest = await FileTools.appendingHomeDirectory(ConstPath.UserPath + this.props.currentUser.userName + '/' + ConstPath.RelativeFilePath.Media)
+                        const newPaths = await FileTools.copyFiles(mediaPaths, dest)
+                        for (let mediaPath of newPaths) {
+                          if (mediaPath.indexOf('assets-library://') === 0) { // 处理iOS相册文件
+                            suffix = dataUtil.getUrlQueryVariable(mediaPath, 'ext') || ''
+                            name = dataUtil.getUrlQueryVariable(mediaPath, 'id') || ''
+                            dest += `${name}.${suffix}`
+                            mediaPath = await RNFS.copyAssetsFileIOS(mediaPath, dest, 0, 0)
+                          } else if (mediaPath.indexOf('ph://') === 0) { // 处理iOS相册文件
+                            suffix = 'png'
+                            name = mediaPath.substr(mediaPath.lastIndexOf('/') + 1)
+                            dest += `${name}.${suffix}`
+                            mediaPath = await RNFS.copyAssetsFileIOS(mediaPath, dest, 0, 0)
+                          } else if (mediaPath.indexOf('content://') === 0) { // 处理android相册文件
+                            const filePath = await FileTools.getContentAbsolutePath(mediaPath)
+                            name = filePath.substring(filePath.lastIndexOf('/') + 1, filePath.lastIndexOf('.'))
+                            suffix = filePath.substr(filePath.lastIndexOf('.') + 1)
+                            dest += `${name}.${suffix}`
+                            await RNFS.copyFile(filePath, dest)
+                            mediaPath = dest
+                          } else { // 处理文件目录中的文件
+                            name = mediaPath.substring(mediaPath.lastIndexOf('/') + 1, mediaPath.lastIndexOf('.'))
+                            suffix = mediaPath.substr(mediaPath.lastIndexOf('.') + 1)
+                            dest += `${name}.${suffix}`
+                          }
+                          const resourceId = await this.onlineServicesUtils.uploadFileWithCheckCapacity(
+                            mediaPath,
+                            `${name}.${suffix}`,
+                            'PHOTOS',
+                          )
+                          // TODO是否删除原图
+                          if (resourceId) {
+                            resourceIds.push(resourceId)
+
+                            const _newPath = `${mediaPath.replace(name, resourceId)}`
+                            _mediaPaths.push(_newPath)
+                          }
+                        }
+                        if (resourceIds.length > 0) {
+                          const result = await SMediaCollector.addMedia({
+                            datasourceName,
+                            datasetName,
+                            mediaPaths,
+                            mediaIds: resourceIds,
+                          }, false, { index: index, selectionAttribute: selectionAttribute, ids: global.layerSelection?.ids ,layerAttribute: layerAttribute})
+                        } else {
+                          Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_FAILED)
+                        }
+                        // // 分享到群组中
+                        // if (resourceIds.length > 0 && this.props.currentTask?.groupID) {
+                        //   this.servicesUtils?.shareDataToGroup({
+                        //     groupId: this.props.currentTask.groupID,
+                        //     ids: resourceIds,
+                        //   }).then(result => {
+                        //     if (result.succeed) {
+                        //       Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_SUCCESS)
+                        //       this.cb && this.cb()
+                        //     } else {
+                        //       Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_FAILED)
+                        //     }
+                        //   }).catch(() => {
+                        //     Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_FAILED)
+                        //   })
+                        // }
+                      } else {
+                        const result = await SMediaCollector.addMedia({
+                          datasourceName: datasourceAlias,
+                          datasetName: datasetName,
+                          mediaPaths,
+                        }, false, { index: index, selectionAttribute: selectionAttribute, ids: global.layerSelection?.ids ,layerAttribute: layerAttribute})
+                      }
+                      // if (
+                      //   this.props.refreshAction &&
+                      // typeof this.props.refreshAction === 'function'
+                      // ) {
+                      //   this.props.refreshAction()
+                      // }
+                      if (await SMediaCollector.isMediaLayer(layerInfo.name)){
+                        await SMediaCollector.showMedia(layerInfo.name, false)
+                        await this.addMediaFiles({
+                          datasourceName,
+                          datasetName,
+                          mediaPaths,
+                        })
+                        await this.saveHandler()
+                        await this.getMediaInfo()
+                      }
+                    } catch (e) {
+                    // eslint-disable-next-line no-console
+                      __DEV__ && console.warn('error')
+                    }
+                  },
+                })
+              }
+            } else {
+              const isAR = global.Type === ChunkType.MAP_AR_MAPPING || global.Type === ChunkType.MAP_AR || global.Type === ChunkType.MAP_AR_ANALYSIS
+              Platform.OS === 'android' && isAR && await SARMap.onPause() // Android相机和AR模块实景共用相机,要先暂停AR模块的相机,防止崩溃
+              NavigationService.navigate('Camera', {
+                limit: MAX_FILES - this.state.mediaFilePaths.length,
+                cb: async data => {
+                  Platform.OS === 'android' && isAR && await SARMap.onResume()
+                  await this.addMediaFiles(data)
+                  await this.saveHandler()
+                  await this.getMediaInfo()
                 // NavigationService.goBack()
-              },
-              cancelCb: async () => {
-                Platform.OS === 'android' && isAR && await SARMap.onResume()
-              },
-            })
+                },
+                cancelCb: async () => {
+                  Platform.OS === 'android' && isAR && await SARMap.onResume()
+                },
+              })
+            }
+
 
           } else {
             // this.imageViewer &&
@@ -624,6 +790,7 @@ const mapStateToProp = (state: RootState) => ({
   // contacts: state.langchao.toJS().contacts,
   currentLayer: state.layers.toJS().currentLayer,
   user: state.user.toJS(),
+  currentUser: state.user.toJS().currentUser,
 })
 
 const mapDispatch = {

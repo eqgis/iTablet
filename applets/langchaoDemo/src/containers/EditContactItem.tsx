@@ -386,7 +386,7 @@ class EditContactItem extends Component<Props, State> {
     )
   }
 
-  renderInputItem = (title: string, value: string, changeTextAction: (text: string) => void, isRequired = false) => {
+  renderInputItem = (title: string, value: string, changeTextAction: (text: string) => void, isRequired = false, placeholder= "") => {
     return (
       <View
         style={[styles.itemContainerStyle]}
@@ -397,16 +397,26 @@ class EditContactItem extends Component<Props, State> {
           <Text
             style={[styles.itemTitleText]}
           >{title}</Text>
+          {isRequired && (
+            <Text style = {[{
+              color: '#f00',
+              fontSize: dp(10),
+              position: 'absolute',
+              left: dp(-10),
+              top: dp(5),
+            }]}>{"*"}</Text>
+          )}
+
         </View>
         <View style={[
           styles.dialogInputContainer,
-          value === "" && isRequired && {
-            borderColor: '#f00',
-          }
+          // value === "" && isRequired && {
+          //   borderColor: '#f00',
+          // }
         ]}>
           <TextInput
             style = {[styles.dialogInput]}
-            placeholder = {''}
+            placeholder = {placeholder}
             value = {value}
             onChangeText = {changeTextAction}
           />
@@ -434,9 +444,9 @@ class EditContactItem extends Component<Props, State> {
       <View
         style={[styles.partViewStyle]}
       >
-        {this.renderItem('用户ID', this.state.UserId)}
-        {this.renderItem('用户姓名', this.state.UserName)}
-        {this.renderInputItem("联系人", this.state.Contacts, this.changeContacts, true)}
+        {/* {this.renderItem('用户ID', this.state.UserId)}
+        {this.renderItem('用户姓名', this.state.UserName)} */}
+        {this.renderInputItem("联系人", this.state.Contacts, this.changeContacts, true, "请输入联系人")}
         {this.state.ContactsTipShow && (
           <View style={[styles.tipStyle]}>
             <Text
@@ -448,8 +458,8 @@ class EditContactItem extends Component<Props, State> {
           </View>
         )}
 
-        {this.renderInputItem("座机号", this.state.Tel, this.changeTel)}
-        {this.renderInputItem("手机号", this.state.MobilePhone, this.changeMobilePhone, true)}
+        {this.renderInputItem("座机号", this.state.Tel, this.changeTel, false, "请输入座机号")}
+        {this.renderInputItem("手机号", this.state.MobilePhone, this.changeMobilePhone, true, "请输入手机号")}
         {this.state.MobilePhoneTipShow && (
           <View style={[styles.tipStyle]}>
             <Text
@@ -460,9 +470,9 @@ class EditContactItem extends Component<Props, State> {
             >{getLanguage(this.props.language).Prompt.CHECK_CONTACT_NUMBER}</Text>
           </View>
         )}
-        {this.renderInputItem("邮箱", this.state.Email, this.changeEmail)}
-        {this.renderInputItem("邮编", this.state.PostalCode, this.changePostalCode)}
-        {this.renderInputItem("联系地址", this.state.Address, this.changeAddress)}
+        {this.renderInputItem("邮箱", this.state.Email, this.changeEmail, false, '请输入邮箱')}
+        {this.renderInputItem("邮编", this.state.PostalCode, this.changePostalCode, false, '请输入邮编')}
+        {this.renderInputItem("联系地址", this.state.Address, this.changeAddress, false, '请输入联系地址')}
       </View>
     )
   }

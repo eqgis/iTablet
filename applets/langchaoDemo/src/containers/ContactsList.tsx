@@ -20,7 +20,7 @@ import { Toast } from "@/utils"
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call'
 import { addContact } from "../reduxModels/langchao"
 import { color } from "@/styles"
-import { getTelBook, upDateTelBook } from "../utils/langchaoServer"
+import { getTelBook, getUUid, upDateTelBook } from "../utils/langchaoServer"
 import { getData } from "@/Toolbar/modules/arSandTable/Data"
 
 
@@ -56,12 +56,13 @@ interface State {
 // const morckdata = [
 //   {
 //     UserId: '101',
-//     Contacts: '张三',
+//     Contacts: '王五',
 //     Tel: '',
 //     MobilePhone: '17711245121',
 //     Email: '2648987605@qq.com',
 //     PostalCode: '635000',
 //     Address: '中国四川成都',
+//     uuid: getUUid(),
 //   },
 //   {
 //     UserId: '102',
@@ -71,6 +72,7 @@ interface State {
 //     Email: '1540546372@qq.com',
 //     PostalCode: '635000',
 //     Address: '中国四川达州',
+//     uuid: getUUid(),
 //   },
 // ]
 
@@ -289,7 +291,7 @@ class ContactsList extends Component<Props, State> {
               color: '#999',
               fontSize: dp(14),
             }]}
-          >{"当前设备的联系人为空"}</Text>
+          >{getLanguage(global.language).Map_Settings.NOT_CONTACTS}</Text>
         </View>
       )
     }
@@ -400,7 +402,10 @@ class ContactsList extends Component<Props, State> {
             borderBottomWidth: 0,
             backgroundColor: color.containerHeaderBgColor,
           },
-          responseHeaderTitleStyle: {color: color.containerTextColor},
+          responseHeaderTitleStyle: {
+            color: color.containerTextColor,
+            textAlign: 'center',
+          },
           isResponseHeader: true,
         }}
         // bottomBar={this.renderToolBar()}

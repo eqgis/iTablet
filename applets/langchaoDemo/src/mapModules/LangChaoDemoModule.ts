@@ -194,7 +194,7 @@ export default class LangChaoDemoModule extends Module {
     return {
       key: LangChaoDemoModule.key,
       // 根据语言获取地图模块名称
-      title: "浪潮呼叫中心",
+      title: "呼叫中心",
       // 模块图片
       moduleImage: getImage().flight,
       // 点击时模块高亮图片

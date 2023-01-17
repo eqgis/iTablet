@@ -5266,7 +5266,10 @@ export default class MapView extends React.Component {
                 : 0,
             backgroundColor: color.containerHeaderBgColor,
           },
-          responseHeaderTitleStyle: {color: color.containerTextColor},
+          responseHeaderTitleStyle: {
+            color: color.containerTextColor,
+            textAlign: 'center',
+          },
           backAction: async (event) => {
             // this.backPositon = {
             //   x: event?.nativeEvent.pageX,

@@ -478,8 +478,11 @@ class LicenseJoinCloud extends Component {
           headerStyle: {
             backgroundColor: color.containerHeaderBgColor,
           },
-          responseHeaderTitleStyle: {color: color.containerTextColor},
-          isResponseHeader: true,
+          responseHeaderTitleStyle: {
+            color: color.containerTextColor,
+            textAlign: 'center',
+          },
+          isResponseHeader: false,
         }}
       >
         <ScrollView style={{ flex: 1, backgroundColor: color.bgW }}>

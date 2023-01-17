@@ -156,8 +156,11 @@ class SettingPage extends Component<Props, State> {
             borderBottomWidth: dp(1),
             backgroundColor: color.containerHeaderBgColor,
           },
-          responseHeaderTitleStyle: {color: color.containerTextColor},
-          isResponseHeader: true,
+          responseHeaderTitleStyle: {
+            color: color.containerTextColor,
+            textAlign: 'center',
+          },
+          isResponseHeader: false,
         }}
         bottomBar={this.renderToolBar()}
         style={{

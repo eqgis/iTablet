@@ -493,7 +493,10 @@ class EditContactItem extends Component<Props, State> {
             borderBottomWidth: 0,
             backgroundColor: color.containerHeaderBgColor,
           },
-          responseHeaderTitleStyle: {color: color.containerTextColor},
+          responseHeaderTitleStyle: {
+            color: color.containerTextColor,
+            textAlign: 'center',
+          },
           isResponseHeader: true,
         }}
         // bottomBar={this.renderToolBar()}

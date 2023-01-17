@@ -1372,7 +1372,10 @@ export default class SecondMapSettings extends Component {
             headerStyle: {
               backgroundColor: color.containerHeaderBgColor,
             },
-            responseHeaderTitleStyle: {color: color.containerTextColor},
+            responseHeaderTitleStyle: {
+              color: color.containerTextColor,
+              textAlign: 'center',
+            },
             isResponseHeader: true,
           }}
         >
@@ -1393,7 +1396,10 @@ export default class SecondMapSettings extends Component {
             headerStyle: {
               backgroundColor: color.containerHeaderBgColor,
             },
-            responseHeaderTitleStyle: {color: color.containerTextColor},
+            responseHeaderTitleStyle: {
+              color: color.containerTextColor,
+              textAlign: 'center',
+            },
             isResponseHeader: true,
           }}
         >
@@ -1421,7 +1427,10 @@ export default class SecondMapSettings extends Component {
             headerStyle: {
               backgroundColor: color.containerHeaderBgColor,
             },
-            responseHeaderTitleStyle: {color: color.containerTextColor},
+            responseHeaderTitleStyle: {
+              color: color.containerTextColor,
+              textAlign: 'center',
+            },
             isResponseHeader: true,
           }}
         >
@@ -1451,7 +1460,10 @@ export default class SecondMapSettings extends Component {
             headerStyle: {
               backgroundColor: color.containerHeaderBgColor,
             },
-            responseHeaderTitleStyle: {color: color.containerTextColor},
+            responseHeaderTitleStyle: {
+              color: color.containerTextColor,
+              textAlign: 'center',
+            },
             isResponseHeader: true,
           }}
         >
@@ -1502,7 +1514,10 @@ export default class SecondMapSettings extends Component {
             headerStyle: {
               backgroundColor: color.containerHeaderBgColor,
             },
-            responseHeaderTitleStyle: {color: color.containerTextColor},
+            responseHeaderTitleStyle: {
+              color: color.containerTextColor,
+              textAlign: 'center',
+            },
           }}
         >
           <ScrollView>
@@ -1539,11 +1554,14 @@ export default class SecondMapSettings extends Component {
           headerRight: this.renderRight(),
           headerOnTop: this.state.showConfidence,
           // 国际版标题过长
-          isResponseHeader: true,
+          isResponseHeader: false,
           headerStyle: {
             backgroundColor: color.containerHeaderBgColor,
           },
-          responseHeaderTitleStyle: {color: color.containerTextColor},
+          responseHeaderTitleStyle: {
+            color: color.containerTextColor,
+            textAlign: 'center',
+          },
         }}
       >
         <FlatList

@@ -170,7 +170,10 @@ class LanguageSetting extends React.Component {
           headerStyle: {
             backgroundColor: color.containerHeaderBgColor,
           },
-          responseHeaderTitleStyle: {color: color.containerTextColor},
+          responseHeaderTitleStyle: {
+            color: color.containerTextColor,
+            textAlign: 'center',
+          },
           isResponseHeader: true,
         }}
       >

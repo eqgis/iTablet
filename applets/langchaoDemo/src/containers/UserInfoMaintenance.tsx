@@ -299,7 +299,10 @@ class UserInfoMaintenance extends Component<Props, State> {
             borderBottomWidth: dp(1),
             backgroundColor: color.containerHeaderBgColor,
           },
-          responseHeaderTitleStyle: {color: color.containerTextColor},
+          responseHeaderTitleStyle: {
+            color: color.containerTextColor,
+            textAlign: 'center',
+          },
           isResponseHeader: true,
         }}
         // bottomBar={this.renderToolBar()}

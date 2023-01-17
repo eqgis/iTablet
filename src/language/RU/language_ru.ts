@@ -2903,6 +2903,21 @@ export const language_en: typeof language_cn = {
   MANUAL_ACQUISITION: 'Manual acquisition', // To be tanslated
   MEDIA_INFO: 'Media infomation', // To be tanslated
   CALL_DETAIL: 'Call detail', // To be tanslated
-  TIME_MINUTE: 'min', // Minute To be tanslated
+  TIME_MINUTE: 'min', // To be tanslated
+  PLEASE_INPUT_CONTACT: "Please input contact name", // To be tanslated
+  LANDLINE_PHONE:'Landing phone', // To be tanslated
+  PLEASE_INPUT_LANDLINE_PHONE: "Please input landing phone", // To be tanslated
+  PLEASE_INPUT_MOBILE_PHONE: 'Please input imobile phone', // To be tanslated
+  EMAIL: 'Email', // To be tanslated
+  PLEASE_INPUT_EMAIL:'Please input email', // To be tanslated
+  POSTCODE: 'Postcode', // To be tanslated
+  PLEASE_INPUT_POSTCODE:'Please input postcode', // To be tanslated
+  CONTACT_ADDRESS: 'Contact Address', // To be tanslated
+  PLEASE_INPUT_CONTACT_ADDRESS: 'Please input contact Address', // To be tanslated
+  EDIT_CONTACT_INFO: 'Edit contact infomation', // To be tanslated
+  NOT_CONTACTS: "No contact yet", // To be tanslated
+  UPDATE_PASSWORD: 'Update password', // To be tanslated
+  OLD_PASSWORD: "Old password", // To be tanslated
+  NEW_PASSWORD: 'New password', // To be tanslated
 
 }

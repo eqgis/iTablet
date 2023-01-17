@@ -113,7 +113,7 @@ class UpdatePassword extends Component<Props, State> {
 
   }
 
-  renderInputItem = (title: string, value: string, changeTextAction: (text: string) => void, type?:inputType) => {
+  renderInputItem = (title: string, value: string, changeTextAction: (text: string) => void, type?:inputType, isRequired = false, placeholder = "") => {
     return (
       <View
         style={[styles.itemContainerStyle]}
@@ -124,16 +124,25 @@ class UpdatePassword extends Component<Props, State> {
           <Text
             style={[styles.itemTitleText]}
           >{title}</Text>
+          {isRequired && (
+            <Text style = {[{
+              color: '#f00',
+              fontSize: dp(10),
+              position: 'absolute',
+              left: dp(-10),
+              top: dp(5),
+            }]}>{"*"}</Text>
+          )}
         </View>
         <View style={[
           styles.dialogInputContainer,
-          value === "" && {
-            borderColor: '#f00',
-          }
+          // value === "" && {
+          //   borderColor: '#f00',
+          // }
         ]}>
           <TextInput
             style = {[styles.dialogInput]}
-            placeholder = {''}
+            placeholder = {placeholder}
             value = {value}
             textContentType={type}
             onChangeText = {changeTextAction}
@@ -161,9 +170,9 @@ class UpdatePassword extends Component<Props, State> {
       <View
         style={[styles.partViewStyle]}
       >
-        {this.renderInputItem(getLanguage(global.language).Map_Settings.USER_ID, this.state.userId, this.userIdChange)}
-        {this.renderInputItem("原密码", this.state.oldPassword, this.oldPasswordChange, 'password')}
-        {this.renderInputItem("新密码", this.state.password, this.passwordChange, 'password')}
+        {this.renderInputItem(getLanguage(global.language).Map_Settings.USER_ID, this.state.userId, this.userIdChange, undefined, true, getLanguage(global.language).Map_Settings.USER_ID)}
+        {this.renderInputItem(getLanguage(global.language).Map_Settings.OLD_PASSWORD, this.state.oldPassword, this.oldPasswordChange, 'password', true, getLanguage(global.language).Map_Settings.OLD_PASSWORD)}
+        {this.renderInputItem(getLanguage(global.language).Map_Settings.NEW_PASSWORD, this.state.password, this.passwordChange, 'password', true, getLanguage(global.language).Map_Settings.NEW_PASSWORD)}
       </View>
     )
   }
@@ -190,7 +199,7 @@ class UpdatePassword extends Component<Props, State> {
             style={[{
               color: '#fff',
             }]}
-          >{"确定"}</Text>
+          >{getLanguage(global.language).Map_Settings.CONFIRM}</Text>
         </TouchableOpacity>
       </View>
     )
@@ -203,8 +212,8 @@ class UpdatePassword extends Component<Props, State> {
         hideInBackground={false}
         showFullInMap={true}
         headerProps={{
-          // title: getLanguage(global.language).Map_Settings.USER_INFO_MAINTENANCE,
-          title: "密码修改",
+          title: getLanguage(global.language).Map_Settings.UPDATE_PASSWORD,
+          // title: "密码修改",
           withoutBack: false,
           // headerRight: this.renderHeaderRight(),
           navigation: this.props.navigation,

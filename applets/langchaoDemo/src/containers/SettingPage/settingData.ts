@@ -58,7 +58,7 @@ export const getThematicMapSettings = () => [
     },
   },
   {
-    title: "密码修改", // getLanguage(global.language).Map_Settings.LEFT_TOP_LOG,
+    title: getLanguage(global.language).Map_Settings.UPDATE_PASSWORD,
     leftImage: getImage().icon_license_setting,
     action: () => {
       NavigationService.navigate('UpdatePassword')

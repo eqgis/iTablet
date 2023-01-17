@@ -102,7 +102,7 @@ class LangChaoLogin extends Component<Props, State> {
 
   }
 
-  renderInputItem = (title: string, value: string, changeTextAction: (text: string) => void, type?:inputType) => {
+  renderInputItem = (title: string, value: string, changeTextAction: (text: string) => void, type?:inputType, isRequired = false, placeholder = "") => {
     return (
       <View
         style={[styles.itemContainerStyle]}
@@ -113,16 +113,25 @@ class LangChaoLogin extends Component<Props, State> {
           <Text
             style={[styles.itemTitleText]}
           >{title}</Text>
+          {isRequired && (
+            <Text style = {[{
+              color: '#f00',
+              fontSize: dp(10),
+              position: 'absolute',
+              left: dp(-10),
+              top: dp(5),
+            }]}>{"*"}</Text>
+          )}
         </View>
         <View style={[
           styles.dialogInputContainer,
-          value === "" && {
-            borderColor: '#f00',
-          }
+          // value === "" && {
+          //   borderColor: '#f00',
+          // }
         ]}>
           <TextInput
             style = {[styles.dialogInput]}
-            placeholder = {''}
+            placeholder = {placeholder}
             value = {value}
             textContentType={type}
             onChangeText = {changeTextAction}
@@ -150,8 +159,8 @@ class LangChaoLogin extends Component<Props, State> {
       <View
         style={[styles.partViewStyle]}
       >
-        {this.renderInputItem(getLanguage(global.language).Map_Settings.USER_ID, this.state.userId, this.userIdChange)}
-        {this.renderInputItem(getLanguage(global.language).Map_Settings.PASSWORD, this.state.password, this.passwordChange, 'password')}
+        {this.renderInputItem(getLanguage(global.language).Map_Settings.USER_ID, this.state.userId, this.userIdChange, undefined, true, getLanguage(global.language).Map_Settings.USER_ID)}
+        {this.renderInputItem(getLanguage(global.language).Map_Settings.PASSWORD, this.state.password, this.passwordChange, 'password', true, getLanguage(global.language).Map_Settings.PASSWORD)}
       </View>
     )
   }

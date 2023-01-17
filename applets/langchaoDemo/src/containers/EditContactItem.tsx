@@ -202,7 +202,8 @@ class EditContactItem extends Component<Props, State> {
         style={styles.addStyle}
         onPress={this.rightAction}
       >
-        <Image style={styles.imgStyle} source={getImage().add_round} />
+        {/* <Image style={styles.imgStyle} source={getImage().add_round} /> */}
+        <Text>{getLanguage(global.language).Map_Settings.SAVE}</Text>
       </TouchableOpacity>
     )
   }
@@ -446,20 +447,20 @@ class EditContactItem extends Component<Props, State> {
       >
         {/* {this.renderItem('用户ID', this.state.UserId)}
         {this.renderItem('用户姓名', this.state.UserName)} */}
-        {this.renderInputItem("联系人", this.state.Contacts, this.changeContacts, true, "请输入联系人")}
+        {this.renderInputItem(getLanguage(global.language).Map_Settings.CONTACT_NAME, this.state.Contacts, this.changeContacts, true, getLanguage(global.language).Map_Settings.PLEASE_INPUT_CONTACT)}
         {this.state.ContactsTipShow && (
           <View style={[styles.tipStyle]}>
             <Text
               style={[{
-                fontSize: dp(10),
+                fontSize: dp(8),
                 color: '#f00',
               }]}
             >{getLanguage(this.props.language).Prompt.INPUT_CONTACT_NAME}</Text>
           </View>
         )}
 
-        {this.renderInputItem("座机号", this.state.Tel, this.changeTel, false, "请输入座机号")}
-        {this.renderInputItem("手机号", this.state.MobilePhone, this.changeMobilePhone, true, "请输入手机号")}
+        {this.renderInputItem(getLanguage(global.language).Map_Settings.CONTACT_NAME, this.state.Tel, this.changeTel, false, getLanguage(global.language).Map_Settings.PLEASE_INPUT_LANDLINE_PHONE)}
+        {this.renderInputItem(getLanguage(global.language).Map_Settings.CONTACT_NUMBER, this.state.MobilePhone, this.changeMobilePhone, true, getLanguage(global.language).Map_Settings.PLEASE_INPUT_MOBILE_PHONE)}
         {this.state.MobilePhoneTipShow && (
           <View style={[styles.tipStyle]}>
             <Text
@@ -470,9 +471,9 @@ class EditContactItem extends Component<Props, State> {
             >{getLanguage(this.props.language).Prompt.CHECK_CONTACT_NUMBER}</Text>
           </View>
         )}
-        {this.renderInputItem("邮箱", this.state.Email, this.changeEmail, false, '请输入邮箱')}
-        {this.renderInputItem("邮编", this.state.PostalCode, this.changePostalCode, false, '请输入邮编')}
-        {this.renderInputItem("联系地址", this.state.Address, this.changeAddress, false, '请输入联系地址')}
+        {this.renderInputItem(getLanguage(this.props.language).Prompt.EMAIL, this.state.Email, this.changeEmail, false, getLanguage(this.props.language).Prompt.PLEASE_INPUT_EMAIL)}
+        {this.renderInputItem(getLanguage(this.props.language).Prompt.POSTCODE, this.state.PostalCode, this.changePostalCode, false, getLanguage(this.props.language).Prompt.PLEASE_INPUT_POSTCODE)}
+        {this.renderInputItem(getLanguage(this.props.language).Prompt.CONTACT_ADDRESS, this.state.Address, this.changeAddress, false, getLanguage(this.props.language).Prompt.PLEASE_INPUT_CONTACT_ADDRESS)}
       </View>
     )
   }
@@ -484,7 +485,7 @@ class EditContactItem extends Component<Props, State> {
         hideInBackground={false}
         showFullInMap={true}
         headerProps={{
-          title: getLanguage(global.language).Map_Settings.ADD_CONTACT,  // 新建联系人 / 修改联系人
+          title: this.state.type === 'I' ? getLanguage(global.language).Map_Settings.ADD_CONTACT : getLanguage(global.language).Map_Settings.EDIT_CONTACT_INFO,  // 新建联系人 / 修改联系人
           withoutBack: false,
           headerRight: this.renderHeaderRight(),
           navigation: this.props.navigation,

@@ -2908,8 +2908,19 @@ export const language_cn = {
   MEDIA_INFO: '多媒体信息', // Media infomation
   CALL_DETAIL: '呼叫详情', // Call detail
   TIME_MINUTE: '分钟', // Minute
-
-
-
-
+  PLEASE_INPUT_CONTACT: "请输入联系人姓名", // Please input contact name
+  LANDLINE_PHONE:'座机号', // Landing phone
+  PLEASE_INPUT_LANDLINE_PHONE: "请输入座机号", // Please input landing phone
+  PLEASE_INPUT_MOBILE_PHONE: '请输入手机号', // Please input imobile phone
+  EMAIL: '邮箱', // Email
+  PLEASE_INPUT_EMAIL:'请输入邮箱', // Please input email
+  POSTCODE: '邮编', // Postcode
+  PLEASE_INPUT_POSTCODE:'请输入邮编', // Please input postcode
+  CONTACT_ADDRESS: '联系地址', // Contact Address
+  PLEASE_INPUT_CONTACT_ADDRESS: '请输入联系地址', // Please input contact Address
+  EDIT_CONTACT_INFO: '编辑联系人信息', // Edit contact infomation
+  NOT_CONTACTS: "当前设备联系人为空", // No contact yet
+  UPDATE_PASSWORD: '密码修改', // Update password
+  OLD_PASSWORD: "原密码", // Old password
+  NEW_PASSWORD: '新密码', // New password
 }

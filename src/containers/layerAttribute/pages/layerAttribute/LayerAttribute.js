@@ -1425,7 +1425,7 @@ export default class LayerAttribute extends React.Component {
     //   buttonTitles = this.isMediaLayer ? [getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW, getLanguage(global.language).Map_Tools.VIEW] : []
     const tempData = this.state.attributes.head
     const langcahoDismissTitles = []
-    if (tempData.length > 0) {
+    if (this.type !== 'MAP_3D' && tempData.length > 0) {
       const arr = tempData
       for(const item of arr) {
         const name = item.value

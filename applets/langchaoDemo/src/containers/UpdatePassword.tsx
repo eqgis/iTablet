@@ -145,6 +145,7 @@ class UpdatePassword extends Component<Props, State> {
             placeholder = {placeholder}
             value = {value}
             textContentType={type}
+            secureTextEntry={type === 'password'}
             onChangeText = {changeTextAction}
           />
           <TouchableOpacity

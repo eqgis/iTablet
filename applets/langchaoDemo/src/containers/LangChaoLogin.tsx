@@ -143,6 +143,7 @@ class LangChaoLogin extends Component<Props, State> {
             placeholderTextColor={'rgba(255,255,255,.7)'}
             value = {value}
             textContentType={type}
+            secureTextEntry={type === 'password'}
             onChangeText = {changeTextAction}
           />
           <TouchableOpacity

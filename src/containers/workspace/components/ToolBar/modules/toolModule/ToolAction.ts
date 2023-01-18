@@ -314,13 +314,15 @@ function clearMeasure(type) {
 
 /** 量算功能 撤销事件 * */
 async function undo(type) {
-  if (ToolbarModule.getData().isFinished === false) return
+  const _data = ToolbarModule.getData()
+  // isFinished防止量算撤销回退没完成，再次触发事件，导致出错
+  if (_data.isFinished === false) return
   if (type === ConstToolType.SM_MAP_TOOL_INCREMENT) {
     await SMap.undo()
     return
   }
-  let pointArr = ToolbarModule.getData().pointArr || []
-  let redoArr = ToolbarModule.getData().redoArr || []
+  let pointArr = _data.pointArr || []
+  let redoArr = _data.redoArr || []
   const _params = ToolbarModule.getParams()
   if (!_params.toolbarStatus.canUndo) return
   const newState = {}
@@ -348,20 +350,22 @@ async function undo(type) {
       pointArr,
       redoArr,
       isUndo: true,
-      isFinished: pointArr.length === 0,
+      // isFinished: pointArr.length === 0,
     })
   })
 }
 
 /** 量算功能 重做事件 * */
 async function redo(type = null) {
-  if (ToolbarModule.getData().isFinished === false) return
+  const _data = ToolbarModule.getData()
+  // isFinished防止量算撤销回退没完成，再次触发事件，导致出错
+  if (_data.isFinished === false) return
   if (type === ConstToolType.SM_MAP_TOOL_INCREMENT) {
     await SMap.redo()
     return
   }
-  const pointArr = ToolbarModule.getData().pointArr || []
-  const redoArr = ToolbarModule.getData().redoArr || []
+  const pointArr = _data.pointArr || []
+  const redoArr = _data.redoArr || []
   const _params = ToolbarModule.getParams()
   if (!_params.toolbarStatus.canRedo || redoArr.length === 0) return
   const newState = {}
@@ -375,7 +379,7 @@ async function redo(type = null) {
     _params.setToolbarStatus(newState, async () => {
       await SMap.redo()
       // isFinished防止量算撤销回退没完成，再次触发事件，导致出错
-      ToolbarModule.addData({ pointArr, redoArr, isFinished: false, isRedo: true })
+      ToolbarModule.addData({ pointArr, redoArr, isRedo: true })
     })
 }
 

@@ -496,22 +496,13 @@ class AppRoot extends Component {
     if (!curUserBaseMaps) {
       curUserBaseMaps = this.props.baseMaps['default']
     }
-    let arrPublishServiceList = await GetUserBaseMapUtil.loadUserBaseMaps(this.props.user.currentUser, curUserBaseMaps)
-    // 当公有服务列表数组有元素时，就遍历这个数组
-    if (arrPublishServiceList.length > 0) {
-      for (let i = 0, n = arrPublishServiceList.length; i < n; i++) {
-        // 当公有服务列表的元素的地图名字和地图信息数组，以及地图信息数组的地图服务地址都存在时，更新当前用户的底图
-        if (arrPublishServiceList[i].restTitle && arrPublishServiceList[i].mapInfos[0] && arrPublishServiceList[i].mapInfos[0].mapUrl) {
-          let list = await GetUserBaseMapUtil.addServer(arrPublishServiceList[i].restTitle, arrPublishServiceList[i].mapInfos[0].mapUrl)
-          // 将更改完成后的当前用户的底图数组，进行持久化存储，此处会触发页面刷新（是其他地方能够拿到用户底图的关键）
-          this.props.setBaseMap &&
-            this.props.setBaseMap({
-              userId: currentUser.userId,
-              baseMaps: list,
-            })
-        }
-      }
-    }
+    const listResult = await GetUserBaseMapUtil.getUserBaseMaps(this.props.user.currentUser, curUserBaseMaps)
+    // 将更改完成后的当前用户的底图数组，进行持久化存储，此处会触发页面刷新（是其他地方能够拿到用户底图的关键）
+    this.props.setBaseMap &&
+    this.props.setBaseMap({
+      userId: this.props.user.currentUser.userId,
+      baseMaps: listResult,
+    })
 
   }
 
@@ -669,7 +660,7 @@ class AppRoot extends Component {
         let customPath = await FileTools.appendingHomeDirectory(
           ConstPath.CustomerPath +
           ConstPath.RelativeFilePath.Workspace[
-          this.props.language === 'CN' ? 'CN' : 'EN'
+            this.props.language === 'CN' ? 'CN' : 'EN'
           ],
         )
         this.props.deleteUser(this.props.user.currentUser)
@@ -809,7 +800,7 @@ class AppRoot extends Component {
   _getIs64System = async () => {
     try {
       global.SYSTEM_VERSION = "x64"
-      // if (Platform.OS === 'android') 
+      // if (Platform.OS === 'android')
       {
         let b64 = await AppUtils.is64Bit()
         if (b64 === false) {

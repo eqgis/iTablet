@@ -169,7 +169,7 @@ class LangChaoLogin extends Component<Props, State> {
         style={[{
           width: '100%',
           height: dp(100),
-          marginTop: dp(80),
+          marginTop: dp(70),
           justifyContent: 'center',
           alignItems: 'center',
 
@@ -238,13 +238,14 @@ class LangChaoLogin extends Component<Props, State> {
         showFullInMap={true}
         headerProps={{
           // title: getLanguage(global.language).Map_Settings.USER_INFO_MAINTENANCE,
-          title: getLanguage(global.language).Map_Settings.LEFT_TOP_LOG,
+          // title: getLanguage(global.language).Map_Settings.LEFT_TOP_LOG,
           withoutBack: false,
           // headerRight: this.renderHeaderRight(),
           navigation: this.props.navigation,
           headerStyle: {
-            borderBottomWidth: dp(1),
-            backgroundColor: color.containerHeaderBgColor,
+            borderBottomWidth: dp(0),
+            // backgroundColor: color.containerHeaderBgColor,
+            backgroundColor: '#add8e6',
           },
           responseHeaderTitleStyle: {
             color: color.containerTextColor,

@@ -137,7 +137,7 @@ function measureLength() {
   _params.showFullMap && _params.showFullMap(true)
   _params.showMeasureResult(true, '0m')
   StyleUtils.setDefaultMapControlStyle().then(() => {
-    SMap.measureLength(obj => {
+    SMap.setMeasureListener({lengthMeasured:obj => {
       const pointArr = ToolbarModule.getData().pointArr || []
       // redo/undo时也会走这里，且当切换横竖屏时，curPoint坐标会变换，导致redoArr被清空，所以加上isUndo标志 zcj
       const { isUndo = false, isRedo = false } = ToolbarModule.getData()
@@ -171,7 +171,7 @@ function measureLength() {
       }
       const rel = obj.curResult === 0 ? 0 : obj.curResult.toFixed(6)
       _params.showMeasureResult(true, `${rel}m`)
-    })
+    }})
   })
 
   _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOOL_MEASURE_LENGTH, {
@@ -189,7 +189,7 @@ function measureArea() {
   _params.showFullMap && _params.showFullMap(true)
   _params.showMeasureResult(true, '0㎡')
   StyleUtils.setDefaultMapControlStyle().then(() => {
-    SMap.measureArea(obj => {
+    SMap.setMeasureListener({areaMeasured:obj => {
       const pointArr = ToolbarModule.getData().pointArr || []
       // redo/undo时也会走这里，且当切换横竖屏时，curPoint坐标会变换，导致redoArr被清空，所以加上isUndo标志 zcj
       const { isUndo = false, isRedo = false } = ToolbarModule.getData()
@@ -224,7 +224,7 @@ function measureArea() {
       }
       const rel = obj.curResult === 0 ? 0 : obj.curResult.toFixed(6)
       _params.showMeasureResult(true, `${rel}㎡`)
-    })
+    }})
   })
 
   _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOOL_MEASURE_AREA, {
@@ -242,7 +242,7 @@ function measureAngle() {
   _params.showFullMap && _params.showFullMap(true)
   _params.showMeasureResult(true, '0°')
   StyleUtils.setDefaultMapControlStyle().then(() => {
-    SMap.measureAngle(obj => {
+    SMap.setMeasureListener({angleMeasured:obj => {
       const pointArr = ToolbarModule.getData().pointArr || []
       // redo/undo时也会走这里，且当切换横竖屏时，curPoint坐标会变换，导致redoArr被清空，所以加上isUndo标志 zcj
       const { isUndo = false, isRedo = false } = ToolbarModule.getData()
@@ -251,17 +251,6 @@ function measureAngle() {
         redoArr = ToolbarModule.getData().redoArr || []
         ToolbarModule.addData({ isUndo: false, isRedo: false })
       }
-      // 防止重复添加 add xiezhy
-      // let bAdd = true
-      // if(pointArr.length>0){
-      //   for(let i=pointArr.length-1;i>=0;i--){
-      //     let lastObj = JSON.parse(pointArr[i])
-      //     if (Math.abs(lastObj.x-obj.curPoint.x)<=2 && Math.abs(lastObj.y-obj.curPoint.y)<=2){
-      //       bAdd = false
-      //       break
-      //     }
-      //   } 
-      // }
       let bb = obj?.isUndoOrRedo
       if (/*bAdd && */bb!=true) {
         // 角度量算前两次打点不会触发回调，第三次打点添加一个标识，最后一次撤销直接清除当前所有点
@@ -282,7 +271,7 @@ function measureAngle() {
       } else {
         _params.showMeasureResult(true, '0°')
       }
-    })
+    }})
   })
 
   _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOOL_MEASURE_ANGLE, {

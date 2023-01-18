@@ -504,14 +504,14 @@ export default class FunctionToolbar extends React.Component {
   /** 设置监听 **/
   /** 选择事件监听 **/
   _addGeometrySelectedListener = async () => {
-    await SMap.addGeometrySelectedListener({
+    await SMap.setGeometrySelectedListener({
       geometrySelected: this.geometrySelected,
       geometryMultiSelected: this.geometryMultiSelected,
     })
   }
 
   _removeGeometrySelectedListener = async () => {
-    await SMap.removeGeometrySelectedListener()
+    await SMap.setGeometrySelectedListener(null)
   }
 
   geometrySelected = event => {

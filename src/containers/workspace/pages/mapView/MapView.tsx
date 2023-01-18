@@ -1012,7 +1012,7 @@ export default class MapView extends React.Component {
     this.props.navigation.removeListener('focus', this.unsubscribeDidFocus)
     // this.props.navigation.removeListener('blur', this.unsubscribeBlur)
     //移除手势监听
-    global.mapView && SMap.deleteGestureDetector()
+    global.mapView && SMap.setGestureDetector(null)
 
     BackHandler.removeEventListener('hardwareBackPress', this.backHandler)
   }
@@ -1381,7 +1381,7 @@ export default class MapView extends React.Component {
 
   /** 触摸事件监听 **/
   _addGeometrySelectedListener = async () => {
-    await SMap.addGeometrySelectedListener({
+    await SMap.setGeometrySelectedListener({
       geometrySelected: this.geometrySelected,
       geometryMultiSelected: this.geometryMultiSelected,
     })
@@ -1389,7 +1389,7 @@ export default class MapView extends React.Component {
 
   /** 移除触摸事件监听 */
   _removeGeometrySelectedListener = async () => {
-    await SMap.removeGeometrySelectedListener()
+    await SMap.setGeometrySelectedListener(null)
   }
 
   /** 移除导航相关监听（楼层控件） */

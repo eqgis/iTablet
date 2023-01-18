@@ -596,8 +596,8 @@ const uploadDialog = async (id: number, type: uploadType) => {
   try {
     console.warn("enter uploadDialog")
     global.SimpleDialog.set({
-      // text: getLanguage(global.language).Map_Layer.IS_ADD_NOTATION_LAYER,
-      text: "是否上传该数据",
+      text: getLanguage(global.language).Map_Layer.WHETHER_UPLOAD_DATA,
+      // text: "是否上传该数据",
       confirmText: getLanguage(global.language).Prompt.YES,
       cancelText: getLanguage(global.language).Prompt.NO,
       confirmAction: async () => {
@@ -623,10 +623,12 @@ const uploadDialog = async (id: number, type: uploadType) => {
               break
           }
           global.Loading.setLoading(false)
-          if(result) {
-            Toast.show(getLanguage(global.language).Prompt.RESOURCE_UPLOAD_SUCCESS)
-          } else {
-            Toast.show(getLanguage(global.language).Prompt.RESOURCE_UPLOAD_FAILED)
+          if(type !== 'all') {
+            if(result) {
+              Toast.show(getLanguage(global.language).Prompt.RESOURCE_UPLOAD_SUCCESS)
+            } else {
+              Toast.show(getLanguage(global.language).Prompt.RESOURCE_UPLOAD_FAILED)
+            }
           }
         }
 
@@ -647,7 +649,8 @@ const uploadDialog = async (id: number, type: uploadType) => {
 const sendInfoAll = async() => {
   try {
 
-    console.warn("enter send all ")
+    let successCount = 0
+    let failedCount = 0
     // 线的整体提交
     const datasetArrayL = await SMap.querybyAttributeValue("langchao", "line_965018", "isUploaded=0")
     const datasetArrayLengthL = datasetArrayL.length
@@ -656,8 +659,28 @@ const sendInfoAll = async() => {
       for(let i =0; i < datasetArrayLengthL; i ++) {
         const item = JSON.parse(JSON.stringify(datasetArrayL[i]))
         // ids.push(Number(item.SmID))
-        await sendMessagePhone(Number(item.SmID), 'line')
+        const result = await sendMessagePhone(Number(item.SmID), 'line')
+        if(result){
+          successCount += 1
+        } else {
+          failedCount += 1
+        }
       }
+    }
+
+    let str = ""
+    let tempStr = ""
+    if(successCount > 0) {
+      str += getLanguage(global.language).Prompt.RESOURCE_UPLOAD_SUCCESS + successCount + "条"
+      tempStr = ","
+    }
+
+    if(failedCount > 0) {
+      str += tempStr + getLanguage(global.language).Prompt.RESOURCE_UPLOAD_FAILED + failedCount + "条"
+    }
+
+    if(str !== "") {
+      Toast.show(str)
     }
 
     // 多媒体的整体提交 to do

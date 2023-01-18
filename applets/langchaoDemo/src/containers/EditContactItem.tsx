@@ -186,9 +186,18 @@ class EditContactItem extends Component<Props, State> {
       }
       const result = await upDateTelBook(param, this.state.type)
       if(result) {
-        Toast.show("操作成功")
+        // Toast.show("操作成功")
+        if(this.state.type === 'I') {
+          Toast.show(getLanguage(global.language).Map_Settings.ADD_CONTACT_SUCCESS)
+        } else {
+          Toast.show(getLanguage(global.language).Map_Settings.UPDATE_CONTACT_SUCCESS)
+        }
       } else {
-        Toast.show("操作失败")
+        if(this.state.type === 'I') {
+          Toast.show(getLanguage(global.language).Map_Settings.ADD_CONTACT_FAILED)
+        } else {
+          Toast.show(getLanguage(global.language).Map_Settings.UPDATE_CONTACT_FAILED)
+        }
       }
 
     } catch (error) {

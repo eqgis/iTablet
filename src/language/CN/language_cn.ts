@@ -2923,4 +2923,11 @@ export const language_cn = {
   UPDATE_PASSWORD: '密码修改', // Update password
   OLD_PASSWORD: "原密码", // Old password
   NEW_PASSWORD: '新密码', // New password
+  ADD_CONTACT_SUCCESS: "添加联系人成功", // Add Contact success
+  ADD_CONTACT_FAILED: "添加联系人失败",  // Add Contact failed
+  UPDATE_CONTACT_SUCCESS:'修改联系人信息成功', // Update contact infomation success
+  UPDATE_CONTACT_FAILED: "修改联系人信息失败", // Update contact infomation failed
+  UPDATE_PASSWORD_SUCCESS:'修改密码成功', // Update password success
+  UPDATE_PASSWORD_FAILED:"修改密码失败", // Update password failed
+  WHETHER_UPLOAD_DATA: '是否上传数据', // Whether to upload data
 }

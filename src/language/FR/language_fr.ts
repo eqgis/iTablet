@@ -2922,5 +2922,12 @@ export const language_fr: typeof language_cn = {
   UPDATE_PASSWORD: 'Update password', // To be tanslated
   OLD_PASSWORD: "Old password", // To be tanslated
   NEW_PASSWORD: 'New password', // To be tanslated
+  ADD_CONTACT_SUCCESS: "Add Contact success", // To be tanslated
+  ADD_CONTACT_FAILED: "Add Contact failed",  // To be tanslated
+  UPDATE_CONTACT_SUCCESS:'Update contact infomation success', // To be tanslated
+  UPDATE_CONTACT_FAILED: "Update contact infomation failed", // To be tanslated
+  UPDATE_PASSWORD_SUCCESS:'Update password success', // To be tanslated
+  UPDATE_PASSWORD_FAILED:"Update password failed", // To be tanslated
+  WHETHER_UPLOAD_DATA: 'Whether to upload data', // To be tanslated
 
 }

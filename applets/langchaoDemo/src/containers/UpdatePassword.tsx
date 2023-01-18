@@ -96,16 +96,18 @@ class UpdatePassword extends Component<Props, State> {
   }
 
   confirmAction = async () => {
-    if(this.state.userId !== "" && this.state.password !== "" && this.state.oldPassword) {
+    if(this.state.userId !== "" && this.state.password !== "" && this.state.oldPassword !== "") {
       const result = await updatePassword(this.state.userId, this.state.oldPassword, this.state.password)
 
       if(result) {
         // await this.props.setServerUserId(this.state.userId)
         // await this.props.setPassword(this.state.password)
         // NavigationService.goBack()
-        Toast.show("设置成功")
+        // Toast.show("设置成功")
+        Toast.show(getLanguage(global.language).Map_Settings.UPDATE_PASSWORD_SUCCESS)
       } else {
-        Toast.show("设置失败")
+        // Toast.show("设置失败")
+        Toast.show(getLanguage(global.language).Map_Settings.UPDATE_PASSWORD_FAILED)
       }
 
     }

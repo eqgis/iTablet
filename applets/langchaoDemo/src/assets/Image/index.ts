@@ -31,6 +31,9 @@ const icon_bottom_map = require('./icon_bottom_map.png')
 const icon_bottom_setting_select = require('./icon_bottom_setting_select.png')
 const icon_bottom_setting = require('./icon_bottom_setting.png')
 const icon_location = require('./icon_location.png')
+const icon_login_password = require('./icon_login_password.png')
+const icon_login_user = require('./icon_login_user.png')
+const icon_logo = require('./icon_logo.png')
 
 const image = {
   flight,
@@ -63,6 +66,9 @@ const image = {
   icon_bottom_setting_select,
   icon_bottom_setting,
   icon_location,
+  icon_login_password,
+  icon_login_user,
+  icon_logo,
 }
 
 function getImage(): typeof image {

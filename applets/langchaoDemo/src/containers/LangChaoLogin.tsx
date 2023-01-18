@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { SectionList, View, Text, TouchableOpacity, Image, StyleSheet, TextInput } from "react-native"
+import { SectionList, View, Text, TouchableOpacity, Image, StyleSheet, TextInput, ImageSourcePropType } from "react-native"
 import { connect, ConnectedProps } from "react-redux"
 import { Container, Dialog } from '../../../../src/components'
 import { dp } from "imobile_for_reactnative/utils/size"
@@ -13,6 +13,7 @@ import { color } from "@/styles"
 import NavigationService from "@/containers/NavigationService"
 import { Picker } from '@react-native-picker/picker'
 import { getJson } from "../assets/data"
+import { getImage } from "../assets/Image"
 // import { setServerIP, setServerUserId, setServerUserName, setServerDepartmentId } from "@/redux/models/langchao"
 
 
@@ -102,7 +103,7 @@ class LangChaoLogin extends Component<Props, State> {
 
   }
 
-  renderInputItem = (title: string, value: string, changeTextAction: (text: string) => void, type?:inputType, isRequired = false, placeholder = "") => {
+  renderInputItem = (imageSrc: ImageSourcePropType, value: string, changeTextAction: (text: string) => void, type?:inputType, placeholder = "") => {
     return (
       <View
         style={[styles.itemContainerStyle]}
@@ -110,7 +111,7 @@ class LangChaoLogin extends Component<Props, State> {
         <View
           style={[styles.itemTitleView]}
         >
-          <Text
+          {/* <Text
             style={[styles.itemTitleText]}
           >{title}</Text>
           {isRequired && (
@@ -121,7 +122,14 @@ class LangChaoLogin extends Component<Props, State> {
               left: dp(-10),
               top: dp(5),
             }]}>{"*"}</Text>
-          )}
+          )} */}
+          <Image
+            source={imageSrc}
+            style={[{
+              width: dp(30),
+              height: dp(30),
+            }]}
+          />
         </View>
         <View style={[
           styles.dialogInputContainer,
@@ -132,6 +140,7 @@ class LangChaoLogin extends Component<Props, State> {
           <TextInput
             style = {[styles.dialogInput]}
             placeholder = {placeholder}
+            placeholderTextColor={'rgba(255,255,255,.7)'}
             value = {value}
             textContentType={type}
             onChangeText = {changeTextAction}
@@ -154,13 +163,39 @@ class LangChaoLogin extends Component<Props, State> {
     )
   }
 
+  renderLogo =() => {
+    return(
+      <View
+        style={[{
+          width: '100%',
+          height: dp(100),
+          marginTop: dp(80),
+          justifyContent: 'center',
+          alignItems: 'center',
+
+        }]}
+      >
+        <Image
+          source={getImage().icon_logo}
+          style={[{
+            width: dp(80),
+            height: dp(80),
+            borderRadius: dp(15),
+            borderWidth: dp(3),
+            borderColor: 'rgba(255,255,255,1)'
+          }]}
+        />
+      </View>
+    )
+  }
+
   renderContentView = () => {
     return (
       <View
         style={[styles.partViewStyle]}
       >
-        {this.renderInputItem(getLanguage(global.language).Map_Settings.USER_ID, this.state.userId, this.userIdChange, undefined, true, getLanguage(global.language).Map_Settings.USER_ID)}
-        {this.renderInputItem(getLanguage(global.language).Map_Settings.PASSWORD, this.state.password, this.passwordChange, 'password', true, getLanguage(global.language).Map_Settings.PASSWORD)}
+        {this.renderInputItem(getImage().icon_login_user, this.state.userId, this.userIdChange, undefined, getLanguage(global.language).Map_Settings.USER_ID)}
+        {this.renderInputItem(getImage().icon_login_password, this.state.password, this.passwordChange, 'password', getLanguage(global.language).Map_Settings.PASSWORD)}
       </View>
     )
   }
@@ -175,11 +210,13 @@ class LangChaoLogin extends Component<Props, State> {
       >
         <TouchableOpacity
           style={[{
-            width: '80%',
+            width: '70%',
             height: dp(50),
-            backgroundColor: '#add8e6',
+            backgroundColor: 'rgba(80, 80, 255, 1)',
             justifyContent: 'center',
             alignItems: 'center',
+            borderWidth: dp(1),
+            borderColor: '#fff',
           }]}
           onPress={this.loginAction}
         >
@@ -218,10 +255,12 @@ class LangChaoLogin extends Component<Props, State> {
         // bottomBar={this.renderToolBar()}
         style={{
           flex: 1,
-          backgroundColor: 'rgba(245, 245, 245, 1)',
+          // backgroundColor: 'rgba(245, 245, 245, 1)',
+          backgroundColor: '#add8e6',
         }}
       >
         {/* <Text>{"我是用户登录页面"}</Text> */}
+        {this.renderLogo()}
         {this.renderContentView()}
         {this.renderBtn()}
 
@@ -258,19 +297,25 @@ const styles = StyleSheet.create({
   },
   partViewStyle:{
     width: '100%',
-    backgroundColor: '#fff',
-    marginTop: dp(10),
+    // backgroundColor: '#fff',
+    marginTop: dp(30),
     paddingLeft: dp(20),
     paddingRight: dp(10),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   itemContainerStyle: {
-    width: '100%',
+    width: '80%',
     height: dp(50),
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,.3)',
+    marginVertical: dp(8),
   },
   itemTitleView: {
-    width: dp(140),
+    width: dp(80),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   itemTitleText: {
     fontSize: dp(16),
@@ -291,8 +336,8 @@ const styles = StyleSheet.create({
     marginVertical: dp(5),
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: '#fff',
-    borderWidth: dp(1),
+    // borderColor: '#fff',
+    // borderWidth: dp(1),
   },
   dialogInput: {
     flex: 1,
@@ -300,6 +345,7 @@ const styles = StyleSheet.create({
     paddingVertical: dp(5),
     marginLeft: dp(-5),
     textAlign: 'left',
+    color: '#fff',
   },
 
   // 清空按钮

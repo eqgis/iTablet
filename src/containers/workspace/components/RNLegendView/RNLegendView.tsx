@@ -114,7 +114,7 @@ export default class RNLegendView extends React.Component {
   }
 
   componentWillUnmount() {
-    SMap.removeLegendListener()
+    SMap.setLegendListener(null)
   }
 
   /**
@@ -200,7 +200,7 @@ export default class RNLegendView extends React.Component {
    * @returns {Promise<void>}
    */
   getLegendData = async () => {
-    await SMap.addLegendListener({
+    SMap.setLegendListener({
       legendContentChange: this._contentChange,
     })
   }

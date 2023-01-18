@@ -5090,6 +5090,9 @@ export default class MapView extends React.Component {
       let isTianditu = false
       let isGaode  = false
       let length = this.props.layers.layers.length
+      if(length == 0){
+        return null
+      }
       const layer = this.props.layers.layers[length - 1]
       let isBaseMap = LayerUtils.isBaseLayer(layer)
       if(!isBaseMap) {

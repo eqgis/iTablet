@@ -6,12 +6,13 @@ import { getThemeAssets } from '../../../../../../assets'
 import { ConstToolType } from '../../../../../../constants'
 import CollectionAction from './CollectionAction'
 import ToolbarModule from '../ToolbarModule'
-import { AppToolBar, jsonUtil, LayerUtils } from '@/utils'
+import { AppToolBar, jsonUtil, LayerUtils, FetchUtils } from '@/utils'
 import TourAction from '../../../../../../../applets/langchaoDemo/src/mapFunctionModules/Langchao/TourAction'
 import { ConstPath } from '../../../../../../../src/constants'
 import { FileTools } from '../../../../../../../src/native'
 import App from '@/App'
 import { getUserInfo } from '../../../../../../../applets/langchaoDemo/src/utils/langchaoServer'
+import { location } from '@/redux/models'
 
 /**
  * 获取采集操作数据
@@ -207,6 +208,27 @@ function getData(type) {
         let bjTimeIndex = 0
         let durationTimeIndex = 0
         let isUploadedIndex = 0
+        let locationInfoIndex = 0
+
+        let position = await SMap.getCurrentLocation()
+        // position = {
+        //   longitude: -20.7143528,
+        //   latitude: 40.0059731,
+        // }
+        const data = await FetchUtils.getPointName(position.longitude, position.latitude)
+        let locationInfo = JSON.stringify(data)
+
+        const countryCode = await TourAction.getCountryCode(position.longitude, position.latitude)
+        const countryName = await TourAction.getCountryName(position.longitude, position.latitude)
+        // console.warn("countryCode: " + countryCode)
+        if(countryCode === 142 || countryCode === 143 || countryCode === 110 || countryCode === 121) {
+          locationInfo =  "中国-" + data
+        } else {
+          locationInfo = `${countryName} (${position.longitude},${position.latitude})`
+        }
+
+        console.warn("locationInfo: " + JSON.stringify(locationInfo))
+
 
         const length = layerAttributedata.length
         for(let i = 0; i < length; i ++) {
@@ -230,8 +252,12 @@ function getData(type) {
             durationTimeIndex = i
           } else if(item.name === "isUploaded") {
             isUploadedIndex = i
+          } else if(item.name === "locationInfo") {
+            locationInfoIndex = i
           }
         }
+
+        console.warn("locationInfoIndex: " + locationInfoIndex)
 
         const altData = [
           {
@@ -298,6 +324,13 @@ function getData(type) {
                 name: 'isUploaded',
                 value: false,
                 index: isUploadedIndex,
+                columnIndex: columnIndex,
+                smID: smID,
+              },
+              {
+                name: 'locationInfo',
+                value: locationInfo,
+                index: locationInfoIndex,
                 columnIndex: columnIndex,
                 smID: smID,
               },

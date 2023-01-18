@@ -58,6 +58,7 @@ interface callAttributeType {
   localTime_User: string,
   bjTime: string,
   duration: string | number,
+  locationInfo: string,
   attributeInfo: Array<attributeDataType>,
 }
 
@@ -123,6 +124,7 @@ class HistoricalRecord extends Component<Props, State> {
         localTime_User: '',
         bjTime: '',
         duration: 0,
+        locationInfo: "",
         attributeInfo: AttributedataItem,
       }
       for(let j = 0; j < AttributedataItem.length; j ++) {
@@ -147,6 +149,8 @@ class HistoricalRecord extends Component<Props, State> {
           itemObj.bjTime = item.value
         } else if(item.name === "duration") {
           itemObj.duration = item.value
+        } else if(item.name === "locationInfo") {
+          itemObj.locationInfo = item.value
         }
       }
 

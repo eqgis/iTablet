@@ -104,6 +104,33 @@ const getCountryCode = async (lon: number, lat: number) => {
   }
 }
 
+const getCountryName = async (lon: number, lat: number) => {
+  let info = ""
+  try {
+    const bounds = {
+      x: lon,
+      y: lat,
+      sizeX: 1,
+      sizeY: 1,
+    }
+    const result = await SMap.query("country", "Country_84", bounds)
+    // console.warn("result: " + JSON.stringify(result) + "\n bounds: " + JSON.stringify(bounds))
+    if(result && result.length > 0) {
+      const length = result.length
+      const countrycodeData = getJson().contryCode
+      countrycodeData.map((item: countryCodeType) => {
+        if(item.name === result[length - 1].Country) {
+          info = item.name
+          // console.warn("Country: " + result[length - 1].Country)
+        }
+      })
+    }
+    return info
+  } catch (error) {
+    return info
+  }
+}
+
 
 
 interface uuidsType {
@@ -655,6 +682,7 @@ const sendInfoAll = async() => {
 export default {
   dateFormat,
   getCountryCode,
+  getCountryName,
   sendInfoAll,
   uploadDialog,
   uploadTrack,

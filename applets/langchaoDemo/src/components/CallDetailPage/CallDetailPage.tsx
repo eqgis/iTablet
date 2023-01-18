@@ -40,6 +40,7 @@ export interface callAttributeType {
   localTime_User: string,
   bjTime: string,
   duration: string | number,
+  locationInfo: string,
   attributeInfo: Array<attributeDataType>,
 }
 
@@ -436,6 +437,29 @@ class CallDetailPage extends Component<Props, State> {
     }
   }
 
+  renderLocationInfo = () => {
+    return (
+      <View
+        style={[{
+          maxWidth:'90%',
+          flexDirection: 'row',
+          alignItems: 'center',
+        }]}
+      >
+        <Text
+          style={[{
+            fontSize: dp(10),
+            color: '#fff',
+            lineHeight: dp(15),
+            backgroundColor: 'rgba(0,0,0, .5)',
+            padding: dp(5),
+            minWidth: dp(100),
+          }]}
+        >{this.state.data.locationInfo}</Text>
+      </View>
+    )
+  }
+
   _renderCallInfo() {
     const item = this.state.data
     return (
@@ -445,8 +469,8 @@ class CallDetailPage extends Component<Props, State> {
           height: dp(60),
           flexDirection: 'row',
           justifyContent: 'space-between',
-          paddingHorizontal: dp(10),
-          marginVertical: dp(20),
+          paddingHorizontal: dp(20),
+          marginVertical: dp(10),
           // borderBottomColor: color.grayLight,
           // borderBottomWidth: dp(1),
         }]}
@@ -726,7 +750,7 @@ class CallDetailPage extends Component<Props, State> {
           // height: '100%',
           height: dp(88 * 6),
           backgroundColor: 'transparent',
-          paddingHorizontal: dp(10),
+          // paddingHorizontal: dp(10),
         }]}
       >
         <ScrollView
@@ -738,6 +762,7 @@ class CallDetailPage extends Component<Props, State> {
           }]}
         >
           {/* <Text>{"我是自定义的toolbar界面" + this.props.data.SmID}</Text> */}
+          {this.renderLocationInfo()}
           {this._renderCallInfo()}
           <View
             style={[{
@@ -745,7 +770,8 @@ class CallDetailPage extends Component<Props, State> {
               height: dp(24),
               borderLeftColor: '#add8e6',
               borderLeftWidth: dp(2),
-              paddingLeft: dp(5),
+              paddingLeft: dp(15),
+              paddingRight: dp(10),
               flexDirection: 'row',
               alignContent: 'flex-end',
             }]}

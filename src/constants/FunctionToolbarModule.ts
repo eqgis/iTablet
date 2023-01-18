@@ -10,6 +10,7 @@ import {
   Platform,
 } from 'react-native'
 import { DatasetType, DatasourceConnectionInfo } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { Point2D } from 'imobile_for_reactnative/types/data'
 
 async function OpenData(data, index, callback) {
   global.Loading?.setLoading(true)
@@ -118,7 +119,8 @@ async function OpenData(data, index, callback) {
     }
 
     //切换底图后设置比例尺中心点等 add jiakai
-    SMap.setMapInfo({scale:info.scale,centerx:info.center.x,centery:info.center.y,prjCoordSys:info.prjCoordSys})
+    const pt:Point2D = {x:info?.center?.x,y:info?.center?.y}
+    SMap.setMapInfo({scale:info.scale,center:pt,prjCoordSys:info.prjCoordSys})
 
     AppToolBar.getProps().getLayers()
     // SMap.viewEntire()

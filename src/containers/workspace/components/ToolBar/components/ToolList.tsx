@@ -232,7 +232,7 @@ export default class ToolList extends React.Component {
             setTimeout(async () => {
               this.props.setToolbarVisible(false)
               if (global.legend) {
-                await SMap.addLegendListener({
+                await SMap.setLegendListener({
                   legendContentChange: global.legend._contentChange,
                 })
               }

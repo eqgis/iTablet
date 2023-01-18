@@ -27,13 +27,13 @@ export default class LayerVisibilityView extends Component {
   }
 
   componentDidMount() {
-    SMap.addScaleChangeDelegate({
-      scaleViewChange: this._scaleViewChange,
+    SMap.setMapParameterChangedListener({
+      scaleChanged: this._scaleViewChange,
     })
   }
 
   componentWillUnmount() {
-    SMap.removeScaleChangeDelegate()
+    SMap.setMapParameterChangedListener(null)
   }
 
   _scaleViewChange = data => {

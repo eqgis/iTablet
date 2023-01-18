@@ -41,8 +41,8 @@ export default class ScaleView extends React.Component {
 
   componentDidMount() {
     if (!this.state.isAddedListener) {
-      SMap.addScaleChangeDelegate({
-        scaleViewChange: this.scaleViewChange,
+      SMap.setMapParameterChangedListener({
+        scaleChanged: this.scaleViewChange,
       })
       this.setState({
         isAddedListener: !this.state.isAddedListener,
@@ -65,9 +65,7 @@ export default class ScaleView extends React.Component {
 
   componentWillUnmount() {
     if (this.state.isAddedListener) {
-      SMap.addScaleChangeDelegate({
-        scaleViewChange: () => {},
-      })
+      SMap.setMapParameterChangedListener(null)
     }
   }
 

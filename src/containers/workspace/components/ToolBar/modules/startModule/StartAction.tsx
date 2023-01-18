@@ -330,7 +330,7 @@ async function create() {
 
         NavigationService.goBack()
         if (global.legend) {
-          await SMap.addLegendListener({
+          await SMap.setLegendListener({
             legendContentChange: global.legend._contentChange,
           })
         }
@@ -566,7 +566,8 @@ async function changeMap(item) {
     )
     //if (params.map.currentMap.name)
     {
-      await SMap.removeLegendListener()
+      await SMap.setLegendListener(null)
+      // await SMap.removeLegendListener()
       await params.closeMap()
     }
     // 移除地图上所有callout
@@ -608,7 +609,7 @@ async function changeMap(item) {
 
       // 切换地图后重新添加图例事件
       if (global.legend) {
-        await SMap.addLegendListener({
+        await SMap.setLegendListener({
           legendContentChange: global.legend._contentChange,
         })
       }
@@ -792,7 +793,7 @@ async function headerAction(type, section = {}) {
           setTimeout(async () => {
             params.setToolbarVisible(false)
             if (global.legend) {
-              await SMap.addLegendListener({
+              await SMap.setLegendListener({
                 legendContentChange: global.legend._contentChange,
               })
             }
@@ -942,7 +943,7 @@ async function openTemplate(item) {
       // setTimeout(async () => {
       // params.setToolbarVisible(false)
       if (global.legend) {
-        await SMap.addLegendListener({
+        await SMap.setLegendListener({
           legendContentChange: global.legend._contentChange,
         })
       }

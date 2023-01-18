@@ -2,6 +2,7 @@ import { getLanguage } from '@/language'
 import CustomFunctionModule from '@/class/CustomFunctionModule'
 import { getImage } from '../../assets/Image'
 import NavigationService from '@/containers/NavigationService'
+import { getUserParam } from '../../utils/langchaoServer'
 
 const defaultCallModule = function () {
   return _CallModule
@@ -24,7 +25,11 @@ class CallModule extends CustomFunctionModule {
 
   action = () => {
     // this.setModuleData(this.type)
-    NavigationService.navigate('ContactsList')
+    if(getUserParam().userId === "") {
+      NavigationService.navigate('LangChaoLogin')
+    } else {
+      NavigationService.navigate('ContactsList')
+    }
   }
 }
 

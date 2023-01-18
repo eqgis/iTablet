@@ -3,6 +3,7 @@ import NavigationService from "@/containers/NavigationService"
 import { getLanguage } from "@/language"
 import { AppToolBar } from "@/utils"
 import { getImage } from "../../assets/Image"
+import { getUserParam } from "../../utils/langchaoServer"
 
 
 // 地图设置 新菜单栏
@@ -12,14 +13,22 @@ export const getThematicMapSettings = () => [
     leftImage: getImage().icon_contact_setting,
     action: () => {
       // NavigationService.navigate('LocationSetting')
-      NavigationService.navigate('ContactsList')
+      if(getUserParam().userId === "") {
+        NavigationService.navigate('LangChaoLogin')
+      } else {
+        NavigationService.navigate('ContactsList')
+      }
     },
   },
   {
     title: getLanguage(global.language).Map_Settings.USER_INFO_MAINTENANCE,
     leftImage: getImage().icon_userInfo_setting,
     action: () => {
-      NavigationService.navigate('UserInfoMaintenance')
+      if(getUserParam().userId === "") {
+        NavigationService.navigate('LangChaoLogin')
+      } else {
+        NavigationService.navigate('UserInfoMaintenance')
+      }
     },
   },
   {
@@ -61,7 +70,11 @@ export const getThematicMapSettings = () => [
     title: getLanguage(global.language).Map_Settings.UPDATE_PASSWORD,
     leftImage: getImage().icon_license_setting,
     action: () => {
-      NavigationService.navigate('UpdatePassword')
+      if(getUserParam().userId === "") {
+        NavigationService.navigate('LangChaoLogin')
+      } else {
+        NavigationService.navigate('UpdatePassword')
+      }
     },
   },
 ]

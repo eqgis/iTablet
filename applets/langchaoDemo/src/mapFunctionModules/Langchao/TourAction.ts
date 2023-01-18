@@ -6,6 +6,7 @@ import { AppToolBar, LayerUtils, Toast } from '@/utils'
 import { getLanguage } from '@/language'
 import { getJson } from '../../assets/data'
 import { uploadFile, MessageInfoType, message, getUserParam, printLog, getUUid } from '../../utils/langchaoServer'
+import NavigationService from '@/containers/NavigationService'
 
 
 
@@ -573,30 +574,35 @@ const uploadDialog = async (id: number, type: uploadType) => {
       confirmText: getLanguage(global.language).Prompt.YES,
       cancelText: getLanguage(global.language).Prompt.NO,
       confirmAction: async () => {
-        global.SimpleDialog.setVisible(false)
-        global.Loading.setLoading(true, getLanguage(global.language).Prompt.RESOURCE_UPLOADING)
-        let result = false
-        switch(type) {
-          case "line":
-            result = await sendMessagePhone(id, 'line')
-            break
-          case "marker":
-            result = await sendMessagePhone(id, 'marker')
-            break
-          case "media":
-            result = await sendMessagePhone(id, 'media')
-            break
-          case "all":
-            await sendInfoAll()
-            result = true
-            break
-        }
-        global.Loading.setLoading(false)
-        if(result) {
-          Toast.show(getLanguage(global.language).Prompt.RESOURCE_UPLOAD_SUCCESS)
+        if(getUserParam().userId === "") {
+          NavigationService.navigate('LangChaoLogin')
         } else {
-          Toast.show(getLanguage(global.language).Prompt.RESOURCE_UPLOAD_FAILED)
+          global.SimpleDialog.setVisible(false)
+          global.Loading.setLoading(true, getLanguage(global.language).Prompt.RESOURCE_UPLOADING)
+          let result = false
+          switch(type) {
+            case "line":
+              result = await sendMessagePhone(id, 'line')
+              break
+            case "marker":
+              result = await sendMessagePhone(id, 'marker')
+              break
+            case "media":
+              result = await sendMessagePhone(id, 'media')
+              break
+            case "all":
+              await sendInfoAll()
+              result = true
+              break
+          }
+          global.Loading.setLoading(false)
+          if(result) {
+            Toast.show(getLanguage(global.language).Prompt.RESOURCE_UPLOAD_SUCCESS)
+          } else {
+            Toast.show(getLanguage(global.language).Prompt.RESOURCE_UPLOAD_FAILED)
+          }
         }
+
       },
       cancelAction: () => {
         global.SimpleDialog.setVisible(false)

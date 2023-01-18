@@ -122,8 +122,8 @@ export default class LangChaoDemoModule extends Module {
         key: module,
         title:  getLanguage(global.language).Map_Settings.HISTORICAL_RECORD,
         //'属性',
-        image: getThemeAssets().tabBar.tab_attribute,
-        selectedImage: getThemeAssets().tabBar.tab_attribute_selected,
+        image: getImage().icon_bottom_history, // getThemeAssets().tabBar.tab_attribute,
+        selectedImage: getImage().icon_bottom_history_select, // getThemeAssets().tabBar.tab_attribute_selected,
         btnClick: () => {
           NavigationService.navigate('HistoricalRecord')
         },
@@ -134,8 +134,8 @@ export default class LangChaoDemoModule extends Module {
         key: module,
         title:  getLanguage(global.language).Map_Settings.SETTING,
         //'属性',
-        image: getThemeAssets().tabBar.tab_setting,
-        selectedImage: getThemeAssets().tabBar.tab_setting_selected,
+        image: getImage().icon_bottom_setting, // getThemeAssets().tabBar.tab_setting,
+        selectedImage: getImage().icon_bottom_setting_select, // getThemeAssets().tabBar.tab_setting_selected,
         btnClick: () => {
           NavigationService.navigate('SettingPage')
         },

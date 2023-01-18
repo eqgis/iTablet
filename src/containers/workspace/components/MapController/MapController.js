@@ -12,6 +12,7 @@ import { getThemeAssets } from '../../../../assets'
 import { SMap, SScene } from 'imobile_for_reactnative'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
+import { getImage } from '../../../../../applets/langchaoDemo/src/assets/Image'
 
 const DEFAULT_BOTTOM = scaleSize(135)
 const DEFAULT_BOTTOM_LAND = scaleSize(26)
@@ -379,7 +380,8 @@ export default class MapController extends React.Component {
           key={'controller_location'}
           textColor={'black'}
           size={MTBtn.Size.NORMAL}
-          image={getThemeAssets().mapTools.icon_location}
+          // image={getThemeAssets().mapTools.icon_location}
+          image={getImage().icon_location}
           onPress={this.location}
         />
       )

@@ -24,6 +24,14 @@ const icon_map_image_select = require('./icon_map_image_select.png')
 const icon_map_normal_select = require('./icon_map_normal_select.png')
 const icon_map_terrain_select = require('./icon_map_terrain_select.png')
 
+const icon_bottom_history_select = require('./icon_bottom_history_select.png')
+const icon_bottom_history = require('./icon_bottom_history.png')
+const icon_bottom_map_select = require('./icon_bottom_map_select.png')
+const icon_bottom_map = require('./icon_bottom_map.png')
+const icon_bottom_setting_select = require('./icon_bottom_setting_select.png')
+const icon_bottom_setting = require('./icon_bottom_setting.png')
+const icon_location = require('./icon_location.png')
+
 const image = {
   flight,
   telephone1,
@@ -48,6 +56,13 @@ const image = {
   icon_map_image_select,
   icon_map_normal_select,
   icon_map_terrain_select,
+  icon_bottom_history_select,
+  icon_bottom_history,
+  icon_bottom_map_select,
+  icon_bottom_map,
+  icon_bottom_setting_select,
+  icon_bottom_setting,
+  icon_location,
 }
 
 function getImage(): typeof image {

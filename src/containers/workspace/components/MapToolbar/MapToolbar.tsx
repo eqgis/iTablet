@@ -10,6 +10,7 @@ import { getThemeAssets } from '../../../../assets'
 import { DEVICE } from '@/redux/models/device'
 import { Users } from '@/redux/models/user'
 import NavigationService from '@/containers/NavigationService'
+import { getImage } from '../../../../../applets/langchaoDemo/src/assets/Image'
 
 interface Props {
   language: string,
@@ -125,8 +126,8 @@ export default class MapToolbar extends React.Component<Props, State> {
                 ? getLanguage(global.language).Map_Label.AR_SCENE
                 : getLanguage(global.language).Map_Label.MAP,
             //'地图',
-            image: this.props.isAR ? getThemeAssets().tabBar.tab_ar_scene : getThemeAssets().tabBar.tab_map,
-            selectedImage: this.props.isAR ? getThemeAssets().tabBar.tab_ar_scene_selected : getThemeAssets().tabBar.tab_map_selected,
+            image: this.props.isAR ? getThemeAssets().tabBar.tab_ar_scene : getImage().icon_bottom_map, // getThemeAssets().tabBar.tab_map,
+            selectedImage: this.props.isAR ? getThemeAssets().tabBar.tab_ar_scene_selected : getImage().icon_bottom_map_select, // getThemeAssets().tabBar.tab_map_selected,
             btnClick: () => {
               AppToolBar.getCurrentOption() === undefined && global.ToolBar?.existFullMap()
               // this.props.navigation &&

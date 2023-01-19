@@ -54,9 +54,7 @@ export default class ScaleView extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.isShow && !prevProps.isShow) {
-      SMap.getScaleData().then(data => {
-        this.scaleViewChange(data)
-      })
+      this.scaleViewChange({width:0,title:""})
     }
     if (this.props.device.orientation !== prevProps.device.orientation) {
       this.onOrientationChange()
@@ -119,8 +117,7 @@ export default class ScaleView extends React.Component {
   }
 
   getInitialData = async () => {
-    let data = await SMap.getScaleData()
-    await this.scaleViewChange(data)
+    await this.scaleViewChange({"width":0,"title":""})
   }
 
   scaleViewChange = data => {

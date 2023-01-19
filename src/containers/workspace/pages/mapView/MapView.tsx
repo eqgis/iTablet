@@ -515,7 +515,7 @@ export default class MapView extends React.Component {
 
   /** 添加楼层显隐监听 */
   addFloorHiddenListener = () => {
-     SMap.setFloorHiddenListener(async (result:{currentFloorID:number}) => {
+      SMap.setFloorHiddenListener(async (result:{currentFloorID:number}) => {
       //在选点过程中/路径分析界面 不允许拖放改变FloorList、MapController的状态
       // 使用this.currentFloorID 使ID发生变化时只渲染一次
       if (
@@ -560,27 +560,20 @@ export default class MapView extends React.Component {
     if (global.isLicenseValid) {
       if (global.Type === ChunkType.MAP_NAVIGATION) {
         this.addFloorHiddenListener()
-        SNavigation.setIndustryNavigationListener({
-          callback: async () => {
-            if (
-              global.NAV_PARAMS &&
+        SNavigation.setIndustryNavigationListener(() => {
+          if (
+            global.NAV_PARAMS &&
               global.NAV_PARAMS.filter(item => !item.hasNaved).length > 0
-            ) {
-              global.changeRouteDialog &&
+          ) {
+            global.changeRouteDialog &&
                 global.changeRouteDialog.setDialogVisible(true)
-            } else {
-              this._changeRouteCancel()
-            }
-          },
-        })
-        SNavigation.setStopNavigationListener({
-          callback: this._changeRouteCancel,
-        })
-        SNavigation.setCurrentFloorIDListener({
-          callback: currentFloorID => {
-            this.changeFloorID(currentFloorID)
-          },
-        })
+          } else {
+            this._changeRouteCancel()
+          }
+        },
+        )
+        SNavigation.setStopNavigationListener(this._changeRouteCancel)
+        SNavigation.setCurrentFloorIDListener(this.changeFloorID)
       }
       this.container &&
         this.container.setLoading(
@@ -1012,7 +1005,7 @@ export default class MapView extends React.Component {
     this.props.navigation.removeListener('focus', this.unsubscribeDidFocus)
     // this.props.navigation.removeListener('blur', this.unsubscribeBlur)
     //移除手势监听
-    global.mapView && SMap.deleteGestureDetector()
+    global.mapView && SMap.setGestureDetector(null)
 
     BackHandler.removeEventListener('hardwareBackPress', this.backHandler)
   }
@@ -1381,7 +1374,7 @@ export default class MapView extends React.Component {
 
   /** 触摸事件监听 **/
   _addGeometrySelectedListener = async () => {
-    await SMap.addGeometrySelectedListener({
+    await SMap.setGeometrySelectedListener({
       geometrySelected: this.geometrySelected,
       geometryMultiSelected: this.geometryMultiSelected,
     })
@@ -1389,7 +1382,7 @@ export default class MapView extends React.Component {
 
   /** 移除触摸事件监听 */
   _removeGeometrySelectedListener = async () => {
-    await SMap.removeGeometrySelectedListener()
+    await SMap.setGeometrySelectedListener(null)
   }
 
   /** 移除导航相关监听（楼层控件） */
@@ -1401,7 +1394,7 @@ export default class MapView extends React.Component {
     if (this.FloorListView && this.FloorListView.listener) {
       listeners.push(this.FloorListView.listener)
     }
-    await SMap.removeFloorHiddenListener(listeners)
+    await SMap.setFloorHiddenListener(null)
   }
 
   /** 地图保存 */
@@ -3727,7 +3720,7 @@ export default class MapView extends React.Component {
    * @param {string} currentFloorID 楼层id
    * @param {*} cb 完成回调
    */
-  changeFloorID = (currentFloorID, cb) => {
+  changeFloorID = (currentFloorID:string, cb?: () => void) => {
     if (currentFloorID !== this.state.currentFloorID) {
       this.setState(
         {
@@ -3836,7 +3829,7 @@ export default class MapView extends React.Component {
     switch (type) {
       case ConstToolType.SM_MAP_INCREMENT_GPS_TRACK:
         SNavigation.createDefaultDataset().then(async returnData => {
-          if (returnData.datasetName) {
+          if (returnData && returnData.datasetName) {
             params.setToolbarVisible(true, type, {
               containerType,
               isFullScreen: false,

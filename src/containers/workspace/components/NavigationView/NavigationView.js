@@ -333,7 +333,7 @@ export default class NavigationView extends React.Component {
           }
           let doorPoint = await SNavigation.getDoorPoint(params)
           //临界点获取成功，存在坐标及楼层信息
-          if (doorPoint.x && doorPoint.y && doorPoint.floorID) {
+          if (doorPoint && doorPoint.x && doorPoint.y && doorPoint.floorID) {
             //构建分段导航相关参数
             global.NAV_PARAMS = [
               {
@@ -423,7 +423,7 @@ export default class NavigationView extends React.Component {
           }
           let doorPoint = await SNavigation.getDoorPoint(params)
           //获取成功，拿到坐标和楼层id
-          if (doorPoint.x && doorPoint.y && doorPoint.floorID) {
+          if (doorPoint && doorPoint.x && doorPoint.y && doorPoint.floorID) {
             //构建分段导航参数
             global.NAV_PARAMS = [
               {

@@ -3,10 +3,9 @@ import {
   SMap,
   SMediaCollector,
   SAIDetectView,
-  FixColorMode,
   SNavigation,
 } from 'imobile_for_reactnative'
-import { Action, } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { Action, FixColorMode, TFixColorMode, } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import {
   ConstToolType,
   ConstPath,
@@ -137,7 +136,7 @@ function measureLength() {
   _params.showFullMap && _params.showFullMap(true)
   _params.showMeasureResult(true, '0m')
   StyleUtils.setDefaultMapControlStyle().then(() => {
-    SMap.measureLength(obj => {
+    SMap.setMeasureListener({lengthMeasured:obj => {
       const pointArr = ToolbarModule.getData().pointArr || []
       // redo/undo时也会走这里，且当切换横竖屏时，curPoint坐标会变换，导致redoArr被清空，所以加上isUndo标志 zcj
       const { isUndo = false, isRedo = false } = ToolbarModule.getData()
@@ -155,9 +154,9 @@ function measureLength() {
       //       bAdd = false
       //       break
       //     }
-      //   } 
+      //   }
       // }
-      let bb = obj?.isUndoOrRedo
+      const bb = obj?.isUndoOrRedo
       if (/*bAdd &&*/ bb!=true) {
         pointArr.push(JSON.stringify(obj.curPoint))
         const newState = {}
@@ -171,7 +170,7 @@ function measureLength() {
       }
       const rel = obj.curResult === 0 ? 0 : obj.curResult.toFixed(6)
       _params.showMeasureResult(true, `${rel}m`)
-    })
+    }})
   })
 
   _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOOL_MEASURE_LENGTH, {
@@ -189,7 +188,7 @@ function measureArea() {
   _params.showFullMap && _params.showFullMap(true)
   _params.showMeasureResult(true, '0㎡')
   StyleUtils.setDefaultMapControlStyle().then(() => {
-    SMap.measureArea(obj => {
+    SMap.setMeasureListener({areaMeasured:obj => {
       const pointArr = ToolbarModule.getData().pointArr || []
       // redo/undo时也会走这里，且当切换横竖屏时，curPoint坐标会变换，导致redoArr被清空，所以加上isUndo标志 zcj
       const { isUndo = false, isRedo = false } = ToolbarModule.getData()
@@ -207,9 +206,9 @@ function measureArea() {
       //       bAdd = false
       //       break
       //     }
-      //   } 
+      //   }
       // }
-      let bb = obj?.isUndoOrRedo
+      const bb = obj?.isUndoOrRedo
       if (/*bAdd &&*/ bb!=true) {
         pointArr.push(JSON.stringify(obj.curPoint))
         // console.log("xzy push "+pointArr.length)
@@ -224,7 +223,7 @@ function measureArea() {
       }
       const rel = obj.curResult === 0 ? 0 : obj.curResult.toFixed(6)
       _params.showMeasureResult(true, `${rel}㎡`)
-    })
+    }})
   })
 
   _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOOL_MEASURE_AREA, {
@@ -242,7 +241,7 @@ function measureAngle() {
   _params.showFullMap && _params.showFullMap(true)
   _params.showMeasureResult(true, '0°')
   StyleUtils.setDefaultMapControlStyle().then(() => {
-    SMap.measureAngle(obj => {
+    SMap.setMeasureListener({angleMeasured:obj => {
       const pointArr = ToolbarModule.getData().pointArr || []
       // redo/undo时也会走这里，且当切换横竖屏时，curPoint坐标会变换，导致redoArr被清空，所以加上isUndo标志 zcj
       const { isUndo = false, isRedo = false } = ToolbarModule.getData()
@@ -251,18 +250,7 @@ function measureAngle() {
         redoArr = ToolbarModule.getData().redoArr || []
         ToolbarModule.addData({ isUndo: false, isRedo: false })
       }
-      // 防止重复添加 add xiezhy
-      // let bAdd = true
-      // if(pointArr.length>0){
-      //   for(let i=pointArr.length-1;i>=0;i--){
-      //     let lastObj = JSON.parse(pointArr[i])
-      //     if (Math.abs(lastObj.x-obj.curPoint.x)<=2 && Math.abs(lastObj.y-obj.curPoint.y)<=2){
-      //       bAdd = false
-      //       break
-      //     }
-      //   } 
-      // }
-      let bb = obj?.isUndoOrRedo
+      const bb = obj?.isUndoOrRedo
       if (/*bAdd && */bb!=true) {
         // 角度量算前两次打点不会触发回调，第三次打点添加一个标识，最后一次撤销直接清除当前所有点
         pointArr.indexOf('startLine') === -1 && pointArr.push('startLine')
@@ -282,7 +270,7 @@ function measureAngle() {
       } else {
         _params.showMeasureResult(true, '0°')
       }
-    })
+    }})
   })
 
   _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOOL_MEASURE_ANGLE, {
@@ -325,13 +313,15 @@ function clearMeasure(type) {
 
 /** 量算功能 撤销事件 * */
 async function undo(type) {
-  if (ToolbarModule.getData().isFinished === false) return
+  const _data = ToolbarModule.getData()
+  // isFinished防止量算撤销回退没完成，再次触发事件，导致出错
+  if (_data.isFinished === false) return
   if (type === ConstToolType.SM_MAP_TOOL_INCREMENT) {
     await SMap.undo()
     return
   }
-  let pointArr = ToolbarModule.getData().pointArr || []
-  let redoArr = ToolbarModule.getData().redoArr || []
+  let pointArr = _data.pointArr || []
+  let redoArr = _data.redoArr || []
   const _params = ToolbarModule.getParams()
   if (!_params.toolbarStatus.canUndo) return
   const newState = {}
@@ -359,20 +349,22 @@ async function undo(type) {
       pointArr,
       redoArr,
       isUndo: true,
-      isFinished: pointArr.length === 0,
+      // isFinished: pointArr.length === 0,
     })
   })
 }
 
 /** 量算功能 重做事件 * */
 async function redo(type = null) {
-  if (ToolbarModule.getData().isFinished === false) return
+  const _data = ToolbarModule.getData()
+  // isFinished防止量算撤销回退没完成，再次触发事件，导致出错
+  if (_data.isFinished === false) return
   if (type === ConstToolType.SM_MAP_TOOL_INCREMENT) {
     await SMap.redo()
     return
   }
-  const pointArr = ToolbarModule.getData().pointArr || []
-  const redoArr = ToolbarModule.getData().redoArr || []
+  const pointArr = _data.pointArr || []
+  const redoArr = _data.redoArr || []
   const _params = ToolbarModule.getParams()
   if (!_params.toolbarStatus.canRedo || redoArr.length === 0) return
   const newState = {}
@@ -386,7 +378,7 @@ async function redo(type = null) {
     _params.setToolbarStatus(newState, async () => {
       await SMap.redo()
       // isFinished防止量算撤销回退没完成，再次触发事件，导致出错
-      ToolbarModule.addData({ pointArr, redoArr, isFinished: false, isRedo: true })
+      ToolbarModule.addData({ pointArr, redoArr, isRedo: true })
     })
 }
 
@@ -565,7 +557,7 @@ function matchPictureStyle() {
             true,
             getLanguage(global.language).Prompt.IMAGE_RECOGNITION_ING,
           )
-        await SMap.matchPictureStyle(data[0].uri, res => {
+        await SMap.AIMatchPictureMap(data[0].uri, res => {
           ToolbarModule.getParams().setContainerLoading &&
             ToolbarModule.getParams().setContainerLoading(false)
           if (!res || !res.result) {
@@ -734,7 +726,7 @@ function commit(type) {
     })
   } else if (type === ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER) {
     // ToolbarPicker.hide()
-    SMap.resetMapFixColorsModeValue(false)
+    SMap.resetAIMapFixColorsModeValue(false)
     _params.setToolbarVisible(false, '', {
       cb: () => {
         SMap.setAction(Action.PAN)
@@ -770,7 +762,7 @@ async function showAttribute() {
   selectObjNums === 0 &&
     Toast.show(getLanguage(global.language).Prompt.NON_SELECTED_OBJ)
 
-  let params = {
+  const params = {
     preType: _params.type,
   }
   global.SelectedSelectionAttribute &&
@@ -780,7 +772,7 @@ async function showAttribute() {
 
 function showMenuBox() {
   const _params = ToolbarModule.getParams()
-  let { selectName } = ToolbarModule.getData()
+  const { selectName } = ToolbarModule.getData()
   _params.setToolbarVisible(
     true,
     ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER_PICKER,
@@ -847,7 +839,7 @@ async function close(type) {
     SMap.setAction(Action.PAN)
     _params.setToolbarVisible(false)
   } else if (type === ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER) {
-    await SMap.resetMapFixColorsModeValue(true)
+    await SMap.resetAIMapFixColorsModeValue(true)
     // _params.setToolbarVisible(false)
     return false
   } else if (
@@ -913,7 +905,7 @@ async function close(type) {
         await _data?.actions?.select(_data.preType)
         await SNavigation.clearTrackingLayer()
         await SMap.selectObjs(selection)
-  
+
         global.toolBox &&
         global.toolBox.setVisible(true, _data.preType, {
           containerType: 'table',
@@ -933,7 +925,7 @@ async function close(type) {
  * @returns {*}
  */
 function getMatchPictureMode(arr) {
-  let mode
+  let mode:TFixColorMode = FixColorMode.FCM_FB
   switch (arr[arr.length - 1]) {
     case getLanguage(global.language).Map_Main_Menu.STYLE_BRIGHTNESS:
       if (arr[0] === getLanguage(global.language).Map_Main_Menu.FILL) {
@@ -987,19 +979,19 @@ function getMatchPictureMode(arr) {
  * }>}
  */
 async function getTouchProgressInfo(title) {
-  let tips = ''
+  const tips = ''
   let range = [1, 100]
   let value = 0
-  let step = 1
-  let unit = '%'
+  const step = 1
+  const unit = '%'
   let _title = title
   // 智能配图 title 为数组
   if (title instanceof Array) {
     ToolbarModule.addData({ selectName: title })
     _title = title[title.length - 1]
     range = [-100, 100]
-    let mode = getMatchPictureMode(title)
-    value = await SMap.getMapFixColorsModeValue(mode)
+    const mode = getMatchPictureMode(title)
+    value = await SMap.getAIMapFixColorsModeValue(mode)
   }
   return { title: _title, value, tips, range, step, unit }
 }
@@ -1011,14 +1003,14 @@ async function getTouchProgressInfo(title) {
  * @param value
  */
 function setTouchProgressInfo(title, value) {
-  let range = [-100, 100]
+  const range = [-100, 100]
   if (value > range[1]) value = range[1]
   else if (value <= range[0]) value = range[0]
 
-  let arr = global.toolBox && global.toolBox.state && global.toolBox.state.selectName || ''
+  const arr = global.toolBox && global.toolBox.state && global.toolBox.state.selectName || ''
   if (arr instanceof Array) {
-    let mode = getMatchPictureMode(arr)
-    SMap.updateMapFixColorsMode(mode, value)
+    const mode = getMatchPictureMode(arr)
+    SMap.setAIMapFixColorsMode(mode, value)
   }
 }
 

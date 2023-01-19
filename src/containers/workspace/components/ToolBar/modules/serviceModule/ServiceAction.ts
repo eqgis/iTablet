@@ -1038,7 +1038,7 @@ async function publishMapService() {
       // 不发布标注图层
       if (
         isLabelDatasource(datasourceAlias) || // 过滤标注数据源
-        datasourceAlias && LayerUtils.isBaseLayerDatasource(datasourceAlias) // 过滤底图数据源
+        datasourceAlias && (LayerUtils.isBaseLayerDatasource(datasourceAlias) || LayerUtils.isUserBaseLayerDatasource(datasourceAlias)) // 过滤底图数据源
       ) {
         continue
       }

@@ -81,7 +81,7 @@ async function close(type) {
     params.setToolbarVisible(false)
   } else if (type === ConstToolType.SM_MAP3D_FLY_NEW) {
     SScene.setOperation('startTouchAttribute')
-    SScene.clearRoutStops()
+    SScene.clearRouteStops()
     SScene.stopFly()
     global.action3d && SScene.setAction(global.action3d)
     params.existFullMap && params.existFullMap()

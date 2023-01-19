@@ -450,14 +450,14 @@ export default class PoiInfoContainer extends React.Component {
   }
 
   clear = async () => {
-    let rel1 = await SMap.removePOICallout()
+    let rel1 = await SMap._removePOICallout()
     let rel2 = await SMap.removeAllCallout()
     return rel1 && rel2
   }
 
   close = () => {
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) return
-    SMap.removePOICallout()
+    SMap._removePOICallout()
     this.setVisible(false)
     this.props.setMapNavigation({
       isShow: false,
@@ -486,7 +486,7 @@ export default class PoiInfoContainer extends React.Component {
 
   navitoHere = async () => {
     SNavigation.clearTrackingLayer()
-    SMap.removePOICallout()
+    SMap._removePOICallout()
     let position = await SMap.getCurrentPosition()
     global.STARTX = position.x
     global.STARTY = position.y

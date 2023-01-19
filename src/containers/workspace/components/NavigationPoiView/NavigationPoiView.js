@@ -105,7 +105,7 @@ export default class NavigationPoiView extends React.Component {
 
   close = async () => {
     await SNavigation.clearTrackingLayer() //移除线，线在trackingLayer
-    await SMap.removePOICallout() //移除点，点在DynamicView或者callout
+    await SMap._removePOICallout() //移除点，点在DynamicView或者callout
     global.PoiInfoContainer.setVisible(false)
     this.props.setMapNavigation({
       isShow: false,

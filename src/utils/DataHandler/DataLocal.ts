@@ -198,7 +198,7 @@ async function _getLabelDataList(user: UserInfo) {
     // creatLabelDatasource(user, path)
     return []
   }
-  let dsInfo:DatasourceConnectionInfo = {server:path,alias:`Label_${
+  const dsInfo:DatasourceConnectionInfo = {server:path,alias:`Label_${
     user.userName}`,engineType:EngineType.UDB}
   const list = await SData.getDatasetsByDatasource(dsInfo)
   return list

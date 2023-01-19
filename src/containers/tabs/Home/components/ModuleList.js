@@ -440,7 +440,7 @@ class ModuleList extends Component {
             fileName +
             '.pxp'
         } else {
-          let maps = await SMap.getMapsByFile(filePath)
+          let maps = await SMap._getMapsByFile(filePath)
           let mapName = maps[0]
           filePath2 =
             this.homePath +

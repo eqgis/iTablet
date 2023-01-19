@@ -49,6 +49,7 @@ import FileTools from '../../../native/FileTools'
 import { mapSettingModule } from '../../workspace/components/ToolBar/modules'
 import { ConstToolType ,ChunkType} from '../../../constants'
 import SlideBar from 'imobile_for_reactnative/components/SlideBar'
+import { TMapColorMode } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 export default class SecondMapSettings extends Component {
   props: {
@@ -254,23 +255,13 @@ export default class SecondMapSettings extends Component {
     Platform.OS === 'android' && (angle += '°')
     data[4].value = angle.toString().replace('.0', '')
     //原生层返回的是中文，做一个映射，转换成对应语言
-    let colorMode = await SMap.getMapColorMode()
+    const colorMode:TMapColorMode = await SMap.getMapColorMode()
     let allColorMode = {
-      默认色彩模式: getLanguage(global.language).Map_Settings
-        .DEFAULT_COLOR_MODE,
-      DEFAULT: getLanguage(global.language).Map_Settings.DEFAULT_COLOR_MODE,
-      黑白模式: getLanguage(global.language).Map_Settings.BLACK_AND_WHITE,
-      BLACKWHITE: getLanguage(global.language).Map_Settings.BLACK_AND_WHITE,
-      灰度模式: getLanguage(global.language).Map_Settings.GRAY_SCALE_MODE,
-      GRAY: getLanguage(global.language).Map_Settings.GRAY_SCALE_MODE,
-      黑白反色模式: getLanguage(global.language).Map_Settings
-        .ANTI_BLACK_AND_WHITE,
-      BLACK_WHITE_REVERSE: getLanguage(global.language).Map_Settings
-        .ANTI_BLACK_AND_WHITE,
-      '黑白反色，其他颜色不变': getLanguage(global.language).Map_Settings
-        .ANTI_BLACK_AND_WHITE_2,
-      ONLY_BLACK_WHITE_REVERSE: getLanguage(global.language).Map_Settings
-        .ANTI_BLACK_AND_WHITE_2,
+      0: getLanguage(global.language).Map_Settings.DEFAULT_COLOR_MODE,
+      1: getLanguage(global.language).Map_Settings.BLACK_AND_WHITE,
+      2: getLanguage(global.language).Map_Settings.GRAY_SCALE_MODE,
+      3: getLanguage(global.language).Map_Settings.ANTI_BLACK_AND_WHITE,
+      4: getLanguage(global.language).Map_Settings.ANTI_BLACK_AND_WHITE_2,
     }
     data[5].value = allColorMode[colorMode]
     bgColor = await SMap.getMapBackgroundColor()
@@ -323,8 +314,8 @@ export default class SecondMapSettings extends Component {
   getCoordinateSystemData = async () => {
     let data = await coordinateSystemSettings()
     let transferMethod = await SMap.getCoordSysTransMethod()
-    data[0].value = await SMap.getPrjCoordSys()
-    let isDynamicProjection = await SMap.getMapDynamicProjection()
+    data[0].value = await SMap.getPrjCoordSysName()
+    let isDynamicProjection = await SMap.getDynamicProjection()
     data[2].value = isDynamicProjection
     data[3].value = isDynamicProjection
       ? transferMethod
@@ -377,12 +368,7 @@ export default class SecondMapSettings extends Component {
         await SMap.enableSlantTouch(value)
         break
       case getLanguage(global.language).Map_Settings.MAP_ANTI_ALIASING:
-        //IOS接口内写的是int类型的参数 所以转成数字
-        if (Platform.OS === 'ios') {
-          await SMap.setAntialias(+value)
-        } else {
-          await SMap.setAntialias(value)
-        }
+        await SMap.setAntialias(value)
         break
       case getLanguage(global.language).Map_Settings.FIX_SYMBOL_ANGLE:
         await SMap.setMarkerFixedAngle(value)
@@ -403,7 +389,7 @@ export default class SecondMapSettings extends Component {
         await SMap.setIsMagnifierEnabled(value)
         break
       case getLanguage(global.language).Map_Settings.DYNAMIC_PROJECTION:
-        await SMap.setMapDynamicProjection(value)
+        await SMap.setDynamicProjection(value)
         data[index + 1].value = value
           ? this.state.transferMethod
           : getLanguage(global.language).Map_Settings.OFF

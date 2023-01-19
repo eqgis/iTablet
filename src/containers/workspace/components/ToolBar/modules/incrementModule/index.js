@@ -33,7 +33,7 @@ class IncrementModule extends FunctionModule {
     })
     global.toolBox.showFullMap(true)
     SNavigation.createDefaultDataset().then(async returnData => {
-      if (returnData.datasetName) {
+      if (returnData && returnData.datasetName) {
         params.setToolbarVisible(true, ConstToolType.SM_MAP_INCREMENT_CHANGE_METHOD, {
           containerType,
           isFullScreen: false,

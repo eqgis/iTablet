@@ -16,7 +16,7 @@ import { size, color } from '../../../../styles'
 import { getThemeAssets } from '../../../../assets'
 import { SMap, SNavigation } from 'imobile_for_reactnative'
 
-interface MapInfo {
+interface MapInfoTmp {
   name: string,
   mapType: 'map' | 'ar',
   addition?: {[name: string]: any},
@@ -29,12 +29,12 @@ interface Props {
   saveMap: (data: { mapName: string, nModule: string, addition?: {Template?: string} }) => boolean,
   saveARMap: (name: string) => boolean,
 
-  getMaps: () => Promise<MapInfo[]>,
+  getMaps: () => Promise<MapInfoTmp[]>,
 }
 
 interface State {
-  selectedData: Map<string, MapInfo>,
-  maps: MapInfo[],
+  selectedData: Map<string, MapInfoTmp>,
+  maps: MapInfoTmp[],
 }
 
 const styles = StyleSheet.create({

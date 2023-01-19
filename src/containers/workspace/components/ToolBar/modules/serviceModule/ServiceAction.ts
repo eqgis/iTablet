@@ -82,7 +82,7 @@ async function addServiceLayer(datasetName: string, datasource?: string) {
     SMediaCollector.showMedia(resultArr[0].name, false)
     for (const layer of layers) {
       if (layer.name === resultArr[0].name) {
-        await SMap.resetModified(layer.path) // 提交服务后,重置图层修改信息
+        await SMap._resetModified(layer.path) // 提交服务后,重置图层修改信息
         break
       }
     }
@@ -278,7 +278,7 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
           const dsDescription = LayerUtils.getDatasetDescriptionByLayer(layer)
           if (dsDescription?.url && dsDescription?.type === 'onlineService' && res.content.urlDataset === dsDescription.url && layer.isModified) {
             hasResetLayer = true
-            await SMap.resetModified(layer.path) // 提交服务后,重置图层修改信息
+            await SMap._resetModified(layer.path) // 提交服务后,重置图层修改信息
           }
         }
         hasResetLayer && _params.getLayers()

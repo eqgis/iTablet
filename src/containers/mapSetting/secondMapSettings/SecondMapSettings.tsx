@@ -314,7 +314,7 @@ export default class SecondMapSettings extends Component {
   getCoordinateSystemData = async () => {
     let data = await coordinateSystemSettings()
     let transferMethod = await SMap.getCoordSysTransMethod()
-    data[0].value = await SMap.getPrjCoordSys()
+    data[0].value = await SMap.getPrjCoordSysName()
     let isDynamicProjection = await SMap.getMapDynamicProjection()
     data[2].value = isDynamicProjection
     data[3].value = isDynamicProjection
@@ -389,7 +389,7 @@ export default class SecondMapSettings extends Component {
         await SMap.setIsMagnifierEnabled(value)
         break
       case getLanguage(global.language).Map_Settings.DYNAMIC_PROJECTION:
-        await SMap.setMapDynamicProjection(value)
+        await SMap.setDynamicProjection(value)
         data[index + 1].value = value
           ? this.state.transferMethod
           : getLanguage(global.language).Map_Settings.OFF

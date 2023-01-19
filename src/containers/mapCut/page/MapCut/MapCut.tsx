@@ -94,12 +94,12 @@ export default class MapCut extends React.Component<Props, State> {
     (async function() {
       try {
         this.container && this.container.setLoading(true, getLanguage(this.props.language).Prompt.LOADING)
-        let layers = await this.props.getLayers()
+        const layers = await this.props.getLayers()
         SData.getDatasources().then(datasources => {
-          let reg = /^Label_(.*)((#$)|(#_\d+$)|(##\d+$))/
+          const reg = /^Label_(.*)((#$)|(#_\d+$)|(##\d+$))/
           datasources = datasources.filter(
             item =>
-            !item.alias.match(reg) &&
+              !item.alias.match(reg) &&
             item.engineType === EngineType.UDB
           )
           this.setState({
@@ -126,7 +126,7 @@ export default class MapCut extends React.Component<Props, State> {
                 datasourceName: item.datasourceAlias,
                 caption: '',
               }
-        
+
               // 为减少循环遍历并setState的临时方案，extraData为Map
               this.state.extraData.set(item.name, data)
             }
@@ -148,11 +148,11 @@ export default class MapCut extends React.Component<Props, State> {
   getAllLayers = async layers => {
     let _layers = []
     for (let i = 0; i < layers.length; i++) {
-      let item = layers[i]
+      const item = layers[i]
       if (item.type === 'layerGroup') {
-        let groupLayers = await SMap.getLayersByGroupPath(item.path)
+        const groupLayers = await SMap.getLayersByGroupPath(item.path)
         if (groupLayers.length > 0) {
-          let _layers_2 = await this.getAllLayers(groupLayers)
+          const _layers_2 = await this.getAllLayers(groupLayers)
           _layers = _layers.concat(_layers_2)
         }
       } else {
@@ -171,7 +171,7 @@ export default class MapCut extends React.Component<Props, State> {
   cut = () => {
     (async function() {
       try {
-        let isLegalName = this.state.isLegalName && this.state.isSaveAs && this.state.saveAsName !== '' || !this.state.isSaveAs
+        const isLegalName = this.state.isLegalName && this.state.isSaveAs && this.state.saveAsName !== '' || !this.state.isSaveAs
         if (this.isCutting || !isLegalName)
           return
         this.isCutting = true
@@ -184,10 +184,10 @@ export default class MapCut extends React.Component<Props, State> {
           )
         setTimeout(async () => {
           try {
-            let layersInfo = []
+            const layersInfo = []
             let newDatasourceName =
               this.props.currentUser.userName + '_Clip_Label#'
-            let filePath = await FileTools.appendingHomeDirectory(
+            const filePath = await FileTools.appendingHomeDirectory(
               ConstPath.AppPath +
                 'User/' +
                 this.props.currentUser.userName +
@@ -197,12 +197,12 @@ export default class MapCut extends React.Component<Props, State> {
             let newDatasourcePath = filePath + newDatasourceName + '.udb'
             let newDatasourceUDDPath = filePath + newDatasourceName + '.udd'
             //另存地图
-            let addition = {}
+            const addition = {}
             if (this.props.map.currentMap.Template) {
               addition.Template = this.props.map.currentMap.Template
             }
             if (this.state.saveAsName !== '') {
-              let datasourceParams = {}
+              const datasourceParams = {}
               let index = 0
               let flag = true
               newDatasourcePath = filePath + newDatasourceName + index + '.udb'
@@ -215,7 +215,7 @@ export default class MapCut extends React.Component<Props, State> {
                 flag = await FileTools.fileIsExist(newDatasourcePath)
               }
               //如果别名不可用 返回了新的别名 重新赋值
-              let returnName = await SMap.isAvilableAlias(newDatasourceName)
+              const returnName = await SMap.isAvilableAlias(newDatasourceName)
               if (returnName !== newDatasourceName) {
                 newDatasourcePath = filePath + returnName + '.udb'
                 newDatasourceUDDPath = filePath + returnName + '.udd'
@@ -224,33 +224,33 @@ export default class MapCut extends React.Component<Props, State> {
               datasourceParams.server = newDatasourcePath
               datasourceParams.engineType = EngineType.UDB
               datasourceParams.alias = newDatasourceName
-              let rel = await SData.createDatasource(datasourceParams)
+              const rel = await SData.createDatasource(datasourceParams)
               if (rel === true) {
                 await SMap.openMapWithDatasource(datasourceParams,-1)
               }
-              let prefix = `@Label_${this.props.currentUser.userName}#`
-              let regexp = new RegExp(prefix)
-              let layers = this.state.layers
+              const prefix = `@Label_${this.props.currentUser.userName}#`
+              const regexp = new RegExp(prefix)
+              const layers = this.state.layers
               addition.filterLayers = layers
                 .filter(item => item.name.match(regexp))
                 .map(val => val.name)
             }
-            let DSName = this.state.datasources.map(item => item.alias)
+            const DSName = this.state.datasources.map(item => item.alias)
             //不另存地图需要新建数据源 for of中await
-            for (let item of this.state.selected) {
-              let layerInfo:LayerInfo = {}
-              let info = this.state.extraData.get(item[0])
+            for (const item of this.state.selected) {
+              const layerInfo:LayerInfo = {}
+              const info = this.state.extraData.get(item[0])
               if (
                 DSName.indexOf(info.datasourceName) === -1 &&
                 this.state.saveAsName === ''
               ) {
-                let newDatasourcePath = filePath + info.datasourceName + '.udb'
-                let datasourceParams:DatasourceConnectionInfo = {}
+                const newDatasourcePath = filePath + info.datasourceName + '.udb'
+                const returnName = await SMap.isAvilableAlias(info.datasourceName)
+                const datasourceParams:DatasourceConnectionInfo = {server:newDatasourcePath,engineType:EngineType.UDB,alias:returnName}
                 datasourceParams.server = newDatasourcePath
                 datasourceParams.engineType = EngineType.UDB
-                let returnName = await SMap.isAvilableAlias(info.datasourceName)
-                datasourceParams.alias = returnName
-                let rel = await SData.createDatasource(datasourceParams)
+
+                const rel = await SData.createDatasource(datasourceParams)
                 if (rel !== "") {
                   await SMap.openMapWithDatasource(datasourceParams,-1)
                   DSName.push(info.datasourceName)
@@ -319,7 +319,7 @@ export default class MapCut extends React.Component<Props, State> {
   }
 
   _onChangeText = text => {
-    let { result, error } = dataUtil.isLegalName(text, this.props.language)
+    const { result, error } = dataUtil.isLegalName(text, this.props.language)
     if (!result && error) {
       Toast.show(error, Platform.OS === 'android' && {position: Toast.POSITION.CENTER})
       this.setState({
@@ -406,7 +406,7 @@ export default class MapCut extends React.Component<Props, State> {
    * @param item
    */
   changeRangeCut = item => {
-    let data = this.state.extraData.get(item.name)
+    const data = this.state.extraData.get(item.name)
     switch (data.inRangeStatus) {
       case CheckStatus.UN_CHECK:
         data.inRangeStatus = CheckStatus.CHECKED
@@ -429,7 +429,7 @@ export default class MapCut extends React.Component<Props, State> {
    * @param item
    */
   changeErase = item => {
-    let data = this.state.extraData.get(item.name)
+    const data = this.state.extraData.get(item.name)
     switch (data.eraseStatus) {
       case CheckStatus.UN_CHECK:
         data.eraseStatus = CheckStatus.CHECKED
@@ -452,7 +452,7 @@ export default class MapCut extends React.Component<Props, State> {
    * @param item
    */
   changeExactCut = item => {
-    let data = this.state.extraData.get(item.name)
+    const data = this.state.extraData.get(item.name)
     switch (data.exactCutStatus) {
       case CheckStatus.UN_CHECK:
         data.exactCutStatus = CheckStatus.CHECKED
@@ -485,7 +485,7 @@ export default class MapCut extends React.Component<Props, State> {
    * @param caption 新名字
    */
   changeCaption = (item, caption) => {
-    let data = this.state.extraData.get(item.name)
+    const data = this.state.extraData.get(item.name)
     this.setState(state => {
       const extraData = new Map(state.extraData)
       data.caption = caption
@@ -498,7 +498,7 @@ export default class MapCut extends React.Component<Props, State> {
     this.dsModal && this.dsModal.setVisible(false)
     if (this.changeDSData) {
       this.setState(state => {
-        let data = this.state.extraData.get(this.changeDSData.name)
+        const data = this.state.extraData.get(this.changeDSData.name)
         const extraData = new Map(state.extraData)
         data.datasourceName = item.alias
         extraData.set(item.alias, data)
@@ -513,8 +513,8 @@ export default class MapCut extends React.Component<Props, State> {
     this.setState(state => {
       const selected = new Map(state.selected)
       const extraData = new Map().clone(state.extraData)
-      let layers = []
-      let outLayers = JSON.parse(JSON.stringify(state.outLayers))
+      const layers = []
+      const outLayers = JSON.parse(JSON.stringify(state.outLayers))
 
       state.layers.forEach(item => {
         if (selected.get(item.name)) {
@@ -654,7 +654,7 @@ export default class MapCut extends React.Component<Props, State> {
   }
 
   _renderItem = ({ item }) => {
-    let data = this.state.extraData.get(item.name)
+    const data = this.state.extraData.get(item.name)
     return (
       <CutListItem
         data={item}
@@ -729,7 +729,7 @@ export default class MapCut extends React.Component<Props, State> {
         </View>
       )
     } else {
-      let isLegalName = this.state.isLegalName && this.state.isSaveAs && this.state.saveAsName !== '' || !this.state.isSaveAs
+      const isLegalName = this.state.isLegalName && this.state.isSaveAs && this.state.saveAsName !== '' || !this.state.isSaveAs
       return (
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' && 'padding'}
@@ -850,7 +850,7 @@ export default class MapCut extends React.Component<Props, State> {
             const extraData = new Map(state.extraData)
             // 只改变非disable的选项
             extraData.forEach((value, key) => {
-              let rowSelected = this.state.selected.get(key)
+              const rowSelected = this.state.selected.get(key)
               if (!rowSelected) return value
 
               if (settings.get('ds').selected) {
@@ -903,10 +903,10 @@ export default class MapCut extends React.Component<Props, State> {
             .CANCEL
         }
         configAction={addLayers => {
-          let layers = JSON.parse(JSON.stringify(this.state.layers))
+          const layers = JSON.parse(JSON.stringify(this.state.layers))
           const extraData = new Map(this.state.extraData)
           const selected = new Map(this.state.selected)
-          let outLayers = JSON.parse(JSON.stringify(this.state.outLayers))
+          const outLayers = JSON.parse(JSON.stringify(this.state.outLayers))
           addLayers.forEach(item => {
             for (let i = 0; i < outLayers.length; i++) {
               if (outLayers[i].name === item.name) {
@@ -916,7 +916,7 @@ export default class MapCut extends React.Component<Props, State> {
             }
             layers.push(item)
 
-            let data = {
+            const data = {
               inRangeStatus: CheckStatus.CHECKED,
               eraseStatus:
                 item.type !== DatasetType.Text && item.type !== DatasetType.GRID
@@ -947,7 +947,7 @@ export default class MapCut extends React.Component<Props, State> {
   }
 
   render() {
-    let headerL = {}
+    const headerL = {}
     this.state.headerBtnTitle === COMPLETE &&
       (headerL.headerLeft = (
         <TextBtn

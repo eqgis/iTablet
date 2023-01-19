@@ -188,7 +188,7 @@ class SearchMine extends Component {
     if (!result) {
       return []
     }
-    let dsInfo:DatasourceConnectionInfo = {server:path,alias:`Label_${
+    const dsInfo:DatasourceConnectionInfo = {server:path,alias:`Label_${
       this.props.user.currentUser.userName}`,engineType:EngineType.UDB}
     const list = await SData.getDatasetsByDatasource(dsInfo)
 

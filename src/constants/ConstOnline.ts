@@ -1,5 +1,8 @@
-import { TEngineType } from 'imobile_for_reactnative'
-import { DatasourceConnectionInfo } from 'imobile_for_reactnative/types/data'
+// import { TEngineType } from 'imobile_for_reactnative'
+
+import { DatasourceConnectionInfo } from "imobile_for_reactnative/NativeModule/interfaces/data/SDataType"
+
+// import { DatasourceConnectionInfo } from 'imobile_for_reactnative/types/data'
 export interface TOnlineData {
   type: 'Datasource' | 'Workspace' | 'Map',
   DSParams: DatasourceConnectionInfo,

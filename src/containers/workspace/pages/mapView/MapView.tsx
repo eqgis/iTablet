@@ -515,7 +515,7 @@ export default class MapView extends React.Component {
 
   /** 添加楼层显隐监听 */
   addFloorHiddenListener = () => {
-     SMap.setFloorHiddenListener(async (result:{currentFloorID:number}) => {
+      SMap.setFloorHiddenListener(async (result:{currentFloorID:number}) => {
       //在选点过程中/路径分析界面 不允许拖放改变FloorList、MapController的状态
       // 使用this.currentFloorID 使ID发生变化时只渲染一次
       if (
@@ -1401,7 +1401,7 @@ export default class MapView extends React.Component {
     if (this.FloorListView && this.FloorListView.listener) {
       listeners.push(this.FloorListView.listener)
     }
-    await SMap.removeFloorHiddenListener(listeners)
+    await SMap.setFloorHiddenListener(null)
   }
 
   /** 地图保存 */

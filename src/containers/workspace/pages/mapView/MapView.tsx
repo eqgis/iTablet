@@ -560,27 +560,20 @@ export default class MapView extends React.Component {
     if (global.isLicenseValid) {
       if (global.Type === ChunkType.MAP_NAVIGATION) {
         this.addFloorHiddenListener()
-        SNavigation.setIndustryNavigationListener({
-          callback: async () => {
-            if (
-              global.NAV_PARAMS &&
+        SNavigation.setIndustryNavigationListener(() => {
+          if (
+            global.NAV_PARAMS &&
               global.NAV_PARAMS.filter(item => !item.hasNaved).length > 0
-            ) {
-              global.changeRouteDialog &&
+          ) {
+            global.changeRouteDialog &&
                 global.changeRouteDialog.setDialogVisible(true)
-            } else {
-              this._changeRouteCancel()
-            }
-          },
-        })
-        SNavigation.setStopNavigationListener({
-          callback: this._changeRouteCancel,
-        })
-        SNavigation.setCurrentFloorIDListener({
-          callback: currentFloorID => {
-            this.changeFloorID(currentFloorID)
-          },
-        })
+          } else {
+            this._changeRouteCancel()
+          }
+        },
+        )
+        SNavigation.setStopNavigationListener(this._changeRouteCancel)
+        SNavigation.setCurrentFloorIDListener(this.changeFloorID)
       }
       this.container &&
         this.container.setLoading(
@@ -1401,7 +1394,7 @@ export default class MapView extends React.Component {
     if (this.FloorListView && this.FloorListView.listener) {
       listeners.push(this.FloorListView.listener)
     }
-    await SMap.removeFloorHiddenListener(listeners)
+    // await SMap.removeFloorHiddenListener(listeners)
   }
 
   /** 地图保存 */
@@ -3720,7 +3713,7 @@ export default class MapView extends React.Component {
    * @param {string} currentFloorID 楼层id
    * @param {*} cb 完成回调
    */
-  changeFloorID = (currentFloorID, cb) => {
+  changeFloorID = (currentFloorID:string, cb?: () => void) => {
     if (currentFloorID !== this.state.currentFloorID) {
       this.setState(
         {
@@ -3829,7 +3822,7 @@ export default class MapView extends React.Component {
     switch (type) {
       case ConstToolType.SM_MAP_INCREMENT_GPS_TRACK:
         SNavigation.createDefaultDataset().then(async returnData => {
-          if (returnData.datasetName) {
+          if (returnData && returnData.datasetName) {
             params.setToolbarVisible(true, type, {
               containerType,
               isFullScreen: false,

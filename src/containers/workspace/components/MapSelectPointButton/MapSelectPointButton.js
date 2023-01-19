@@ -231,7 +231,7 @@ export default class MapSelectPointButton extends React.Component {
             datasourceName: startIndoorInfo[0].datasourceName,
           }
           let doorPoint = await SNavigation.getDoorPoint(params)
-          if (doorPoint.x && doorPoint.y && doorPoint.floorID) {
+          if (doorPoint && doorPoint.x && doorPoint.y && doorPoint.floorID) {
             global.NAV_PARAMS = [
               {
                 startX: global.STARTX,
@@ -311,7 +311,7 @@ export default class MapSelectPointButton extends React.Component {
             datasourceName: endIndoorInfo[0].datasourceName,
           }
           let doorPoint = await SNavigation.getDoorPoint(params)
-          if (doorPoint.x && doorPoint.y && doorPoint.floorID) {
+          if (doorPoint && doorPoint.x && doorPoint.y && doorPoint.floorID) {
             global.NAV_PARAMS = [
               {
                 startX: global.STARTX,

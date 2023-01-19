@@ -160,7 +160,7 @@ export default class ChooseNaviLayer extends React.Component {
       let isValid = regExp.test(text)
       if (isValid) {
         await SNavigation.createNaviDataset(text,global.INCREMENT_DATA.layerName).then(async returnData => {
-          if (returnData.datasetName) {
+          if (returnData && returnData.datasetName) {
             global.INCREMENT_DATA = returnData
             this.setState({selectedItem:returnData})
             this.getData()

@@ -3,10 +3,9 @@ import {
   SMap,
   SMediaCollector,
   SAIDetectView,
-  FixColorMode,
   SNavigation,
 } from 'imobile_for_reactnative'
-import { Action, } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { Action, FixColorMode, TFixColorMode, } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import {
   ConstToolType,
   ConstPath,
@@ -155,9 +154,9 @@ function measureLength() {
       //       bAdd = false
       //       break
       //     }
-      //   } 
+      //   }
       // }
-      let bb = obj?.isUndoOrRedo
+      const bb = obj?.isUndoOrRedo
       if (/*bAdd &&*/ bb!=true) {
         pointArr.push(JSON.stringify(obj.curPoint))
         const newState = {}
@@ -207,9 +206,9 @@ function measureArea() {
       //       bAdd = false
       //       break
       //     }
-      //   } 
+      //   }
       // }
-      let bb = obj?.isUndoOrRedo
+      const bb = obj?.isUndoOrRedo
       if (/*bAdd &&*/ bb!=true) {
         pointArr.push(JSON.stringify(obj.curPoint))
         // console.log("xzy push "+pointArr.length)
@@ -251,7 +250,7 @@ function measureAngle() {
         redoArr = ToolbarModule.getData().redoArr || []
         ToolbarModule.addData({ isUndo: false, isRedo: false })
       }
-      let bb = obj?.isUndoOrRedo
+      const bb = obj?.isUndoOrRedo
       if (/*bAdd && */bb!=true) {
         // 角度量算前两次打点不会触发回调，第三次打点添加一个标识，最后一次撤销直接清除当前所有点
         pointArr.indexOf('startLine') === -1 && pointArr.push('startLine')
@@ -558,7 +557,7 @@ function matchPictureStyle() {
             true,
             getLanguage(global.language).Prompt.IMAGE_RECOGNITION_ING,
           )
-        await SMap.matchPictureStyle(data[0].uri, res => {
+        await SMap.AIMatchPictureMap(data[0].uri, res => {
           ToolbarModule.getParams().setContainerLoading &&
             ToolbarModule.getParams().setContainerLoading(false)
           if (!res || !res.result) {
@@ -727,7 +726,7 @@ function commit(type) {
     })
   } else if (type === ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER) {
     // ToolbarPicker.hide()
-    SMap.resetMapFixColorsModeValue(false)
+    SMap.resetAIMapFixColorsModeValue(false)
     _params.setToolbarVisible(false, '', {
       cb: () => {
         SMap.setAction(Action.PAN)
@@ -763,7 +762,7 @@ async function showAttribute() {
   selectObjNums === 0 &&
     Toast.show(getLanguage(global.language).Prompt.NON_SELECTED_OBJ)
 
-  let params = {
+  const params = {
     preType: _params.type,
   }
   global.SelectedSelectionAttribute &&
@@ -773,7 +772,7 @@ async function showAttribute() {
 
 function showMenuBox() {
   const _params = ToolbarModule.getParams()
-  let { selectName } = ToolbarModule.getData()
+  const { selectName } = ToolbarModule.getData()
   _params.setToolbarVisible(
     true,
     ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER_PICKER,
@@ -840,7 +839,7 @@ async function close(type) {
     SMap.setAction(Action.PAN)
     _params.setToolbarVisible(false)
   } else if (type === ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER) {
-    await SMap.resetMapFixColorsModeValue(true)
+    await SMap.resetAIMapFixColorsModeValue(true)
     // _params.setToolbarVisible(false)
     return false
   } else if (
@@ -906,7 +905,7 @@ async function close(type) {
         await _data?.actions?.select(_data.preType)
         await SNavigation.clearTrackingLayer()
         await SMap.selectObjs(selection)
-  
+
         global.toolBox &&
         global.toolBox.setVisible(true, _data.preType, {
           containerType: 'table',
@@ -926,7 +925,7 @@ async function close(type) {
  * @returns {*}
  */
 function getMatchPictureMode(arr) {
-  let mode
+  let mode:TFixColorMode = FixColorMode.FCM_FB
   switch (arr[arr.length - 1]) {
     case getLanguage(global.language).Map_Main_Menu.STYLE_BRIGHTNESS:
       if (arr[0] === getLanguage(global.language).Map_Main_Menu.FILL) {
@@ -980,19 +979,19 @@ function getMatchPictureMode(arr) {
  * }>}
  */
 async function getTouchProgressInfo(title) {
-  let tips = ''
+  const tips = ''
   let range = [1, 100]
   let value = 0
-  let step = 1
-  let unit = '%'
+  const step = 1
+  const unit = '%'
   let _title = title
   // 智能配图 title 为数组
   if (title instanceof Array) {
     ToolbarModule.addData({ selectName: title })
     _title = title[title.length - 1]
     range = [-100, 100]
-    let mode = getMatchPictureMode(title)
-    value = await SMap.getMapFixColorsModeValue(mode)
+    const mode = getMatchPictureMode(title)
+    value = await SMap.getAIMapFixColorsModeValue(mode)
   }
   return { title: _title, value, tips, range, step, unit }
 }
@@ -1004,14 +1003,14 @@ async function getTouchProgressInfo(title) {
  * @param value
  */
 function setTouchProgressInfo(title, value) {
-  let range = [-100, 100]
+  const range = [-100, 100]
   if (value > range[1]) value = range[1]
   else if (value <= range[0]) value = range[0]
 
-  let arr = global.toolBox && global.toolBox.state && global.toolBox.state.selectName || ''
+  const arr = global.toolBox && global.toolBox.state && global.toolBox.state.selectName || ''
   if (arr instanceof Array) {
-    let mode = getMatchPictureMode(arr)
-    SMap.updateMapFixColorsMode(mode, value)
+    const mode = getMatchPictureMode(arr)
+    SMap.setAIMapFixColorsMode(mode, value)
   }
 }
 

@@ -130,7 +130,7 @@ export const openMap = (params, cb = () => { }) => async (
       if (expIsExist) {
         const data = await fs.readFile(expFilePath)
         Object.assign(mapInfo, JSON.parse(data), { path: params.path })
-        await SMap.resetMapFixColorsModeValue(true)
+        await SMap.resetAIMapFixColorsModeValue(true)
         await dispatch({
           type: SET_CURRENT_MAP,
           payload: mapInfo || {},

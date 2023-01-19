@@ -79,9 +79,9 @@ async function addServiceLayer(datasetName: string, datasource?: string) {
   if (resultArr.length > 0) {
     SMap.refreshMap()
     const layers = await _params.getLayers()
-    SMediaCollector.showMedia(resultArr[0].layerName, false)
+    SMediaCollector.showMedia(resultArr[0].name, false)
     for (const layer of layers) {
-      if (layer.name === resultArr[0].layerName) {
+      if (layer.name === resultArr[0].name) {
         await SMap.resetModified(layer.path) // 提交服务后,重置图层修改信息
         break
       }

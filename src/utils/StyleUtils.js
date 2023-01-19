@@ -21,7 +21,7 @@ async function setSelectionStyle(layerPath = '', geoStyle = null) {
     geoStyle.setMarkerSize(5)
     // geoStyle.setMarkerColor(255, 0, 0)
   }
-  SMap.setSelectionStyle(layerPath, geoStyle)
+  SMap.setLayerSelectionStyle(layerPath, geoStyle)
 }
 
 /** 点选（单选）选择集样式 */
@@ -31,7 +31,7 @@ async function setSingleSelectionStyle(layerPath = '') {
   geoStyle.setLineWidth(0.1)
   geoStyle.setLineColor(0, 0, 255)
   geoStyle.setMarkerSize(2.4)
-  SMap.setSelectionStyle(layerPath, geoStyle)
+  SMap.setLayerSelectionStyle(layerPath, geoStyle)
 }
 
 async function setDefaultMapControlStyle() {

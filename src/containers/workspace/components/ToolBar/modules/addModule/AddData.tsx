@@ -27,7 +27,7 @@ async function getUDBsAndMaps() {
   const buttons = [ToolbarBtnType.CANCEL]
   // 过滤掉标注和标绘匹配正则
   const checkLabelAndPlot = /^(Label_|PlotEdit_(.*)@)(.*)((#$)|(#_\d+$)|(##\d+$))/
-  let user = ToolbarModule.getParams().user.currentUser
+  let user = ToolbarModule.getParams().user?.currentUser
 
   let userUDBs = await DataHandler.getLocalData(user, 'DATA')
   // 过滤掉标注和标绘

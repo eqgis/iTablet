@@ -115,7 +115,7 @@ async function listAction(type, params = {}) {
       const resultArr = await SMap.addLayers([params.item.datasetName], labelUDB)
       if (resultArr.length > 0) {
         SMap.refreshMap()
-        SMediaCollector.showMedia(resultArr[0].layerName, false)
+        SMediaCollector.showMedia(resultArr[0].name, false)
         Toast.show(getLanguage(global.language).Prompt.ADD_SUCCESS)
         _params.setToolbarVisible(false)
       } else {
@@ -198,7 +198,7 @@ async function commit() {
         JSON.parse(resultArr[i].description)
       if (description && description.geoStyle) {
         await SMap.setLayerStyle(
-          resultArr[i].layerName,
+          resultArr[i].name,
           JSON.stringify(description.geoStyle),
         )
       }

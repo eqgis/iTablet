@@ -82,7 +82,7 @@ export const getLayers = (params = -1, cb = () => {}) => async dispatch => {
       currentLayerIndex: params.currentLayerIndex || -1,
     }
   }
-  const layers = await SMap.getLayersByType(params.type)
+  const layers = await SMap.getLayersInfo(params.type)
   await dispatch({
     type: GET_LAYERS,
     payload:

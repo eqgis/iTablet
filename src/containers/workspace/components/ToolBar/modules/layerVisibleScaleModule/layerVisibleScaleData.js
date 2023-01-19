@@ -52,8 +52,8 @@ async function getVisibleScalePickerData() {
   let customMin = data.min
   let customMax = data.max
   let layerData = data.layerData
-  let min = await SMap.getMinVisibleScale(layerData.path)
-  let max = await SMap.getMaxVisibleScale(layerData.path)
+  let min = await SMap.getLayerMinVisibleScale(layerData.path)
+  let max = await SMap.getLayerMaxVisibleScale(layerData.path)
   let pickerData = await getBasicData(min, max, customMin, customMax)
   return pickerData
 }

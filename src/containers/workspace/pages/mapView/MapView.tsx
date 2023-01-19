@@ -1539,7 +1539,7 @@ export default class MapView extends React.Component {
             result = result && (await SMediaCollector.removeByIds(item.ids, item.layerInfo.name))
             if (result && global.coworkMode) {
               // 在线协作-成功删除数据,修改图层状态
-              await SMap.setLayerModified(this.props.currentLayer.path, true)
+              await SMap._setLayerModified(this.props.currentLayer.path, true)
             }
             // 若果删除的是旅行轨迹的多媒体对象,则更新旅行轨迹
             if (await SMediaCollector.isTourLayer(item.layerInfo.name)) {

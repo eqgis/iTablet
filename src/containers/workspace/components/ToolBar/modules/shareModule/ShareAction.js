@@ -29,7 +29,7 @@ async function shareMap(type, list = [], name = '') {
         progress: 0,
       })
 
-      const layers = await SMap.getLayersByType()
+      const layers = await SMap.getLayersInfo(-1)
       const notExportMapIndexes = []
       for (let i = 1; i <= global.BaseMapSize; i++) {
         if (LayerUtils.isBaseLayer(layers[layers.length - i])) {
@@ -142,7 +142,7 @@ async function shareMap(type, list = [], name = '') {
 function isNeedToSave(cb = () => {}) {
   let isAnyMapOpened = true // 是否有打开的地图
   SMap.isModified().then(async result => {
-    isAnyMapOpened = await SMap.isAnyMapOpened()
+    isAnyMapOpened = await SMap._isAnyMapOpened()
     if (isAnyMapOpened && result) {
       if (!ToolbarModule.getParams().setSaveViewVisible) return
       global.SaveMapView && global.SaveMapView.setVisible(true, {

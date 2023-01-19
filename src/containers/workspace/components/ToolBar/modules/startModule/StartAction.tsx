@@ -131,7 +131,7 @@ function openMap() {
 function isNeedToSave(cb = () => {}) {
   let isAnyMapOpened = true // 是否有打开的地图
   SMap.isModified().then(async result => {
-    isAnyMapOpened = await SMap.isAnyMapOpened()
+    isAnyMapOpened = await SMap._isAnyMapOpened()
     if (isAnyMapOpened && result) {
       setSaveViewVisible(true, cb)
     } else {

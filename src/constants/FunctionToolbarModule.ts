@@ -6,15 +6,11 @@ import ToolbarBtnType from '../containers/workspace/components/ToolBar/ToolbarBt
 import { getLanguage } from '../language/index'
 import { Toast, LayerUtils, AppToolBar } from '../utils'
 import { getThemeAssets } from '../assets'
-import {
-  Platform,
-} from 'react-native'
-import { DatasetType, DatasourceConnectionInfo } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
-import { Point2D } from 'imobile_for_reactnative/types/data'
+import { DatasetType, Point2D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 async function OpenData(data, index, callback) {
   global.Loading?.setLoading(true)
-  const layers = await SMap.getLayersByType()
+  const layers = await SMap.getLayersInfo(-1)
   let isOpen = ""
   if (data instanceof Array) {
     for (let i = 0; i < data.length; i++) {

@@ -167,7 +167,7 @@ export const saveMap = (params = {}, cb = () => { }) => async (
     if (!params.notSaveToXML) {
       // const prefix = `@Label_${userName}#`
       // const regexp = new RegExp(prefix)
-      // const layers = await SMap.getLayersByType(-1)
+      // const layers = await SMap.getLayersInfo(-1)
       // params.addition.filterLayers = layers
       //   .filter(item => {
       //     if (item.name.match(regexp)) {

@@ -257,7 +257,7 @@ class Chat extends React.Component {
   //   }
   //   let mapOpen
   //   try {
-  //     mapOpen = await SMap.isAnyMapOpened()
+  //     mapOpen = await SMap._isAnyMapOpened()
   //   } catch (error) {
   //     mapOpen = false
   //   }
@@ -1019,7 +1019,7 @@ class Chat extends React.Component {
     }
     let mapOpen
     try {
-      mapOpen = await SMap.isAnyMapOpened()
+      mapOpen = await SMap._isAnyMapOpened()
     } catch (error) {
       mapOpen = false
     }
@@ -1131,7 +1131,7 @@ class Chat extends React.Component {
     }
     let mapOpen
     try {
-      mapOpen = await SMap.isAnyMapOpened()
+      mapOpen = await SMap._isAnyMapOpened()
     } catch (error) {
       mapOpen = false
     }
@@ -1300,7 +1300,7 @@ class Chat extends React.Component {
               onPress={async () => {
                 // let mapOpen
                 // try {
-                //   mapOpen = await SMap.isAnyMapOpened()
+                //   mapOpen = await SMap._isAnyMapOpened()
                 // } catch (error) {
                 //   mapOpen = false
                 // }

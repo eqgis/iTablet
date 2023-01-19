@@ -1,4 +1,4 @@
-import { SMap, SARMap, SMediaCollector } from 'imobile_for_reactnative'
+import { SMap, SARMap, SMediaCollector ,SData,SPlot} from 'imobile_for_reactnative'
 import NavigationService from '../../../../../NavigationService'
 import { ConstToolType, ConstPath } from '../../../../../../constants'
 import { LayerUtils } from '../../../../../../utils'
@@ -20,9 +20,16 @@ async function getTaggingLayerData() {
   }
   let taggingLayerData
   if (!isTaggingLayer) {
-    let hasDefaultTagging = await SMap.hasDefaultTagging(
-      _params.user.currentUser.userName,
-    )
+    // let hasDefaultTagging = await SMap.hasDefaultTagging(
+    //   _params.user.currentUser.userName,
+    // )
+    let hasDefaultTagging = false
+    const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+_params.user.currentUser.userName+"#"})
+    datasets.forEach(item => {
+      if (item.datasetName === "Default_Tagging_"+_params.user.currentUser.userName) {
+        hasDefaultTagging = true
+      }
+    })
     if (!hasDefaultTagging) {
       await SMap.newTaggingDataset(
         `Default_Tagging_${_params.user.currentUser.userName}`,

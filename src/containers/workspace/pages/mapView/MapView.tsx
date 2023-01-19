@@ -1831,9 +1831,16 @@ export default class MapView extends React.Component {
         // 示例地图不加载标注图层
         if (!this.isExample && !global.coworkMode) {
           await SMap.openTaggingDataset(this.props.user.currentUser.userName)
-          let hasDefaultTagging = await SMap.hasDefaultTagging(
-            this.props.user.currentUser.userName,
-          )
+          // let hasDefaultTagging = await SMap.hasDefaultTagging(
+          //   this.props.user.currentUser.userName,
+          // )
+          let hasDefaultTagging = false
+          const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+this.props.user.currentUser.userName+"#"})
+          datasets.forEach(item => {
+            if (item.datasetName === "Default_Tagging_"+this.props.user.currentUser.userName) {
+              hasDefaultTagging = true
+            }
+          })
           if (!hasDefaultTagging) {
             debugger
             let datasourceName = "Label_"+this.props.user.currentUser.userName+"#"

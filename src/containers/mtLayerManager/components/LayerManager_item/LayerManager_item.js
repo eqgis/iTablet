@@ -6,7 +6,7 @@
 
 import * as React from 'react'
 import { View, Text, TouchableOpacity, Image, Animated, Easing } from 'react-native'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 import { ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { DatasetType} from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { Toast, scaleSize, LayerUtils, screen, setSpText } from '../../../../utils'
@@ -563,11 +563,20 @@ export default class LayerManager_item extends React.Component {
         (async function() {
           await SMap.moveToTop(layer.path)
           if (layer.path.indexOf('/') === -1) {
-            let count = await SMap.getTaggingLayerCount(
-              (this.props.user.currentUser &&
-                this.props.user.currentUser.userName) ||
-                'Customer',
-            )
+            // let count = await SMap.getTaggingLayerCount(
+            //   (this.props.user.currentUser &&
+            //     this.props.user.currentUser.userName) ||
+            //     'Customer',
+            // )
+            let datasets = await SData.getDatasetsByDatasource({alias:"Label_"+(this.props.user.currentUser &&
+              this.props.user.currentUser.userName) ||
+              'Customer'+"#"})
+            let count = 0
+            if (datasets) {
+              count = datasets.length
+            }
+
+
             for (let i = 0; i < count; i++) {
               await SMap.moveToTop(layer.path)
             }

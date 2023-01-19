@@ -22,6 +22,8 @@ import { getThemeAssets } from '../../../../assets'
 import {
   SMap,
   SARMap,
+  SData,
+  SPlot,
 } from 'imobile_for_reactnative'
 import { DatasetType, } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { color } from '../../../../styles'
@@ -707,9 +709,17 @@ export default class ArMappingButton extends React.Component {
     }
 
     if (isDrawTaggingLayer) {
-      let hasDefaultTagging = await SMap.hasDefaultTagging(
-        _params.user.currentUser.userName,
-      )
+      // let hasDefaultTagging = await SMap.hasDefaultTagging(
+      //   _params.user.currentUser.userName,
+      // )
+      let hasDefaultTagging = false
+      const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+_params.user.currentUser.userName+"#"})
+      datasets.forEach(item => {
+        if (item.datasetName === "Default_Tagging_"+_params.user.currentUser.userName) {
+          hasDefaultTagging = true
+        }
+      })
+
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
           `Default_Tagging_${_params.user.currentUser.userName}`,
@@ -772,9 +782,16 @@ export default class ArMappingButton extends React.Component {
       isDrawTaggingLayer = true
     }
     if (isDrawTaggingLayer) {
-      let hasDefaultTagging = await SMap.hasDefaultTagging(
-        _params.user.currentUser.userName,
-      )
+      // let hasDefaultTagging = await SMap.hasDefaultTagging(
+      //   _params.user.currentUser.userName,
+      // )
+      let hasDefaultTagging = false
+      const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+_params.user.currentUser.userName+"#"})
+      datasets.forEach(item => {
+        if (item.datasetName === "Default_Tagging_"+_params.user.currentUser.userName) {
+          hasDefaultTagging = true
+        }
+      })
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
           `Default_Tagging_${_params.user.currentUser.userName}`,
@@ -839,9 +856,16 @@ export default class ArMappingButton extends React.Component {
     }
 
     if (isDrawTaggingLayer) {
-      let hasDefaultTagging = await SMap.hasDefaultTagging(
-        _params.user.currentUser.userName,
-      )
+      // let hasDefaultTagging = await SMap.hasDefaultTagging(
+      //   _params.user.currentUser.userName,
+      // )
+      let hasDefaultTagging = false
+      const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+_params.user.currentUser.userName+"#"})
+      datasets.forEach(item => {
+        if (item.datasetName === "Default_Tagging_"+_params.user.currentUser.userName) {
+          hasDefaultTagging = true
+        }
+      })
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
           `Default_Tagging_${_params.user.currentUser.userName}`,
@@ -904,9 +928,16 @@ export default class ArMappingButton extends React.Component {
     }
 
     if (isDrawTaggingLayer) {
-      let hasDefaultTagging = await SMap.hasDefaultTagging(
-        _params.user.currentUser.userName,
-      )
+      // let hasDefaultTagging = await SMap.hasDefaultTagging(
+      //   _params.user.currentUser.userName,
+      // )
+      let hasDefaultTagging = false
+      const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+_params.user.currentUser.userName+"#"})
+      datasets.forEach(item => {
+        if (item.datasetName === "Default_Tagging_"+_params.user.currentUser.userName) {
+          hasDefaultTagging = true
+        }
+      })
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
           `Default_Tagging_${_params.user.currentUser.userName}`,
@@ -969,9 +1000,16 @@ export default class ArMappingButton extends React.Component {
     }
 
     if (isDrawTaggingLayer) {
-      let hasDefaultTagging = await SMap.hasDefaultTagging(
-        _params.user.currentUser.userName,
-      )
+      // let hasDefaultTagging = await SMap.hasDefaultTagging(
+      //   _params.user.currentUser.userName,
+      // )
+      let hasDefaultTagging = false
+      const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+_params.user.currentUser.userName+"#"})
+      datasets.forEach(item => {
+        if (item.datasetName === "Default_Tagging_"+_params.user.currentUser.userName) {
+          hasDefaultTagging = true
+        }
+      })
       if (!hasDefaultTagging) {
         await SMap.newTaggingDataset(
           `Default_Tagging_${_params.user.currentUser.userName}`,

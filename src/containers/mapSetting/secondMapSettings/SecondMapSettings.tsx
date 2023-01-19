@@ -315,7 +315,7 @@ export default class SecondMapSettings extends Component {
     let data = await coordinateSystemSettings()
     let transferMethod = await SMap.getCoordSysTransMethod()
     data[0].value = await SMap.getPrjCoordSysName()
-    let isDynamicProjection = await SMap.getMapDynamicProjection()
+    let isDynamicProjection = await SMap.getDynamicProjection()
     data[2].value = isDynamicProjection
     data[3].value = isDynamicProjection
       ? transferMethod

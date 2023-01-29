@@ -26,7 +26,7 @@ interface Props extends ReduxProps {
 type selectTitleType = '普通地图' | "影像地图" | "地形地图" | "Google" | "Google Satellite" | "Google Terrain" | "" | 'Google Hybrid'
 interface State {
 	// to do
-  selectTitle: selectTitleType,
+  selectTitle: string, // selectTitleType,
 }
 
 class ChangeBaseLayer extends Component<Props, State> {
@@ -44,26 +44,27 @@ class ChangeBaseLayer extends Component<Props, State> {
     // console.warn("layers: " + JSON.stringify(layers))
     const baselayer = layers[layers.length - 1]
     const aliasSelect = baselayer.datasourceAlias
-    let selectTitle: selectTitleType = ''
+    // let selectTitle: selectTitleType = ''
+    let selectTitle = ''
     switch(aliasSelect) {
       case 'tianditu':
-        selectTitle = '普通地图'
+        selectTitle = getLanguage(global.language).Prompt.ORDINARY_MAP // '普通地图'
         break
       case 'tiandituImg':
-        selectTitle = '影像地图'
+        selectTitle = getLanguage(global.language).Prompt.IMAGE_MAP // '影像地图'
         break
       case 'tiandituTer':
-        selectTitle = '地形地图'
+        selectTitle = getLanguage(global.language).Prompt.TOPOGRAPHIC_MAP // '地形地图'
         break
       case 'GoogleMaps':
         if(baselayer.datasetName === 'roadmap') {
-          selectTitle = 'Google'
+          selectTitle = getLanguage(global.language).Prompt.GOOGLE_MAP // 'Google'
         } else if(baselayer.datasetName === 'satellite') {
-          selectTitle = 'Google Satellite'
+          selectTitle = getLanguage(global.language).Prompt.GOOGLE_IMAGE_MAP // 'Google Satellite'
         } else if(baselayer.datasetName === 'terrain') {
-          selectTitle = 'Google Terrain'
+          selectTitle = getLanguage(global.language).Prompt.GOOGLE_TOPOGRAPHIC_MAP //  'Google Terrain'
         } else if(baselayer.datasetName === 'hybrid') {
-          selectTitle = 'Google Hybrid'
+          selectTitle = getLanguage(global.language).Prompt.GOOGLE_TOPOGRAPHIC_MAP // 'Google Hybrid'
         }
         break
       default:
@@ -79,7 +80,8 @@ class ChangeBaseLayer extends Component<Props, State> {
 
   }
 
-  setSelectBaseLayer = (selectTitle: selectTitleType) => {
+  // selectTitleType
+  setSelectBaseLayer = (selectTitle: string) => {
     this.setState({
       selectTitle,
     })
@@ -134,6 +136,7 @@ class ChangeBaseLayer extends Component<Props, State> {
         renderItem={({item, index}) => this._renderItem(item, index)}
         data={this.props.data}
         keyExtractor={(item, index) => item.type + "-" + index}
+        showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         horizontal={true}
         style={[{

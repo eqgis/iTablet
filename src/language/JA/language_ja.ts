@@ -2932,4 +2932,10 @@ export const language_ja: typeof language_cn = {
   UPDATE_PASSWORD_FAILED:"Update password failed", // To be tanslated
   WHETHER_UPLOAD_DATA: 'Whether to upload data', // To be tanslated
   REFRESH_FAILED: "Refresh failed", // To be tanslated
+  ORDINARY_MAP: "Prdinary map" , // To be tanslated
+  IMAGE_MAP:"Image map", // To be tanslated
+  TOPOGRAPHIC_MAP:"Topographic map",// To be tanslated
+  GOOGLE_MAP: "Google" , // To be tanslated
+  GOOGLE_IMAGE_MAP:"Google Satellite", // To be tanslated
+  GOOGLE_TOPOGRAPHIC_MAP: 'Google Hybrid',// To be tanslated
 }

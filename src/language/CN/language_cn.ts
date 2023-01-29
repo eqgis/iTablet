@@ -2931,4 +2931,10 @@ export const language_cn = {
   UPDATE_PASSWORD_FAILED:"修改密码失败", // Update password failed
   WHETHER_UPLOAD_DATA: '是否上传数据', // Whether to upload data
   REFRESH_FAILED: "刷新失败", // Refresh failed
+  ORDINARY_MAP: "普通地图" , // Prdinary map
+  IMAGE_MAP:"影像地图", // Image map
+  TOPOGRAPHIC_MAP:"地形地图",// Topographic map
+  GOOGLE_MAP: "谷歌地图" , // Google map
+  GOOGLE_IMAGE_MAP:"谷歌影像地图", // Google imager map
+  GOOGLE_TOPOGRAPHIC_MAP: "谷歌地形地图",// Google topographic map
 }

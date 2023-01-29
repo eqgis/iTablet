@@ -11,13 +11,13 @@ import { getImage } from "../../assets/Image"
 function layerManagerData() {
   let data = [
     {
-      title: "Google",// 'Google RoadMap',
+      title: getLanguage(global.language).Prompt.GOOGLE_MAP, // "Google",// 'Google RoadMap',
       action: async () => {
         global.ToolBar?.close()
         const result = await OpenData(ConstOnline.Google, 0)
         if(result) {
           Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
-          AppEvent.emitEvent("changeBaseLayer", "Google")
+          AppEvent.emitEvent("changeBaseLayer", getLanguage(global.language).Prompt.GOOGLE_MAP)
         }
       },
       data: [],
@@ -27,13 +27,13 @@ function layerManagerData() {
       themeType: -1,
     },
     {
-      title: 'Google Satellite',
+      title: getLanguage(global.language).Prompt.GOOGLE_IMAGE_MAP, // 'Google Satellite',
       action: async () => {
         global.ToolBar?.close()
         const result = await OpenData(ConstOnline.Google, 1)
         if(result) {
           Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
-          AppEvent.emitEvent("changeBaseLayer", "Google Satellite")
+          AppEvent.emitEvent("changeBaseLayer", getLanguage(global.language).Prompt.GOOGLE_IMAGE_MAP)
         }
       },
       data: [],
@@ -59,13 +59,13 @@ function layerManagerData() {
     //   themeType: -1,
     // },
     {
-      title: 'Google Hybrid',
+      title: getLanguage(global.language).Prompt.GOOGLE_TOPOGRAPHIC_MAP, // 'Google Hybrid',
       action: async () => {
         global.ToolBar?.close()
         const result = await OpenData(ConstOnline.Google, 3)
         if(result) {
           Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
-          AppEvent.emitEvent("changeBaseLayer", 'Google Hybrid')
+          AppEvent.emitEvent("changeBaseLayer", getLanguage(global.language).Prompt.GOOGLE_TOPOGRAPHIC_MAP)
         }
       },
       data: [],
@@ -103,7 +103,7 @@ function layerManagerData() {
     //   themeType: -1,
     // },
     {
-      title: '普通地图', // 'Tianditu', 天地图底图
+      title: getLanguage(global.language).Prompt.ORDINARY_MAP, //'普通地图', // 'Tianditu', 天地图底图
       action: async ({callback}: {callback: () => any}) => {
         const data = []
         if (global.language === 'CN') {
@@ -115,7 +115,7 @@ function layerManagerData() {
         const result = await OpenData(data, 0, callback)
         if(result) {
           Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
-          AppEvent.emitEvent("changeBaseLayer", '普通地图')
+          AppEvent.emitEvent("changeBaseLayer", getLanguage(global.language).Prompt.ORDINARY_MAP)
         }
         global.ToolBar?.close()
       },
@@ -126,7 +126,7 @@ function layerManagerData() {
       themeType: -1,
     },
     {
-      title: '影像地图', //'Tianditu Image', 天地图-影像底图
+      title: getLanguage(global.language).Prompt.IMAGE_MAP, // '影像地图', //'Tianditu Image', 天地图-影像底图
       action: async ({callback}: {callback: () => any}) => {
         const data = []
         if (global.language === 'CN') {
@@ -138,7 +138,7 @@ function layerManagerData() {
         const result = await OpenData(data, 0, callback)
         if(result) {
           Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
-          AppEvent.emitEvent("changeBaseLayer", '影像地图')
+          AppEvent.emitEvent("changeBaseLayer", getLanguage(global.language).Prompt.IMAGE_MAP)
         }
         global.ToolBar?.close()
       },
@@ -149,7 +149,7 @@ function layerManagerData() {
       themeType: -1,
     },
     {
-      title: '地形地图', // Tianditu Terrain 天地图-地形底图
+      title: getLanguage(global.language).Prompt.TOPOGRAPHIC_MAP, // '地形地图', // Tianditu Terrain 天地图-地形底图
       action: async ({callback}: {callback: () => any}) => {
         const data = []
         // data.push(ConstOnline.tiandituTerCN())
@@ -162,7 +162,7 @@ function layerManagerData() {
         const result = await OpenData(data, 0, callback)
         if(result) {
           Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
-          AppEvent.emitEvent("changeBaseLayer", '地形地图')
+          AppEvent.emitEvent("changeBaseLayer", getLanguage(global.language).Prompt.TOPOGRAPHIC_MAP)
         }
         global.ToolBar?.close()
       },

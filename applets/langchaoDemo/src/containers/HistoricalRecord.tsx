@@ -373,8 +373,10 @@ class HistoricalRecord extends Component<Props, State> {
           marginLeft: dp(10),
         }]}
         onPress={async () => {
-          TourAction.uploadDialog(-1, 'all')
-          await this.getAttributeData()
+          if(this.state.attributeData.length > 0) {
+            TourAction.uploadDialog(-1, 'all')
+            await this.getAttributeData()
+          }
         }}
       >
         <Image
@@ -382,7 +384,7 @@ class HistoricalRecord extends Component<Props, State> {
             width: dp(30),
             height: dp(30),
           }]}
-          source={getImage().icon_upload}
+          source={this.state.attributeData.length > 0 ? getImage().icon_upload : getImage().icon_upload_gray}
         />
       </TouchableOpacity>
     )

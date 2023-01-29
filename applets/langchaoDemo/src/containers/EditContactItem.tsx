@@ -568,6 +568,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     // backgroundColor: '#f00'
+    borderBottomColor: color.colorEF,
+    borderBottomWidth: dp(1),
   },
   itemTitleView: {
     width: dp(140),

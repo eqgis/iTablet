@@ -213,12 +213,14 @@ class ContactsList extends Component<Props, State> {
       <View
         style={[{
           width: '100%',
-          height: dp(60),
+          height: dp(61),
           backgroundColor: '#fff',
           flexDirection: 'row',
           justifyContent:'flex-start',
           alignItems: 'center',
           paddingHorizontal: dp(10),
+          borderBottomColor: color.colorEF,
+          borderBottomWidth: dp(1),
         }]}
       >
         <TouchableOpacity

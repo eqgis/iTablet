@@ -379,6 +379,8 @@ const styles = StyleSheet.create({
     height: dp(50),
     flexDirection: 'row',
     alignItems: 'center',
+    borderBottomColor: color.colorEF,
+    borderBottomWidth: dp(1),
   },
   itemTitleView: {
     width: dp(140),

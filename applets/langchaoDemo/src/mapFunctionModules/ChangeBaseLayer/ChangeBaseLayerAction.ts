@@ -274,25 +274,25 @@ function layerManagerData() {
     //   themeType: -1,
     // },
   ]
-  data = data.filter(item => {
-    if (global.language === 'CN') {
-      return (
-        item.title.indexOf('Google') === -1
-      )
-    } else {
-      return (
-        item.title.indexOf('GaoDe') === -1 &&
-        item.title.indexOf('Tianditu') === -1
-        && item.title.indexOf('地图') === -1
-        && item.title.indexOf('高德') // Google Satellite
-        // && item.title.indexOf('Google Satellite') === -1
-        // && item.title.indexOf('Google Hybrid') === -1
-        && item.title.indexOf('Google labelmap') === -1
-        && item.title.indexOf('BingMap')
-        && item.title.indexOf('OSM') === -1
-      )
-    }
-  })
+  // data = data.filter(item => {
+  //   if (global.language === 'CN') {
+  //     return (
+  //       item.title.indexOf('Google') === -1
+  //     )
+  //   } else {
+  //     return (
+  //       item.title.indexOf('GaoDe') === -1 &&
+  //       item.title.indexOf('Tianditu') === -1
+  //       && item.title.indexOf('地图') === -1
+  //       && item.title.indexOf('高德') // Google Satellite
+  //       // && item.title.indexOf('Google Satellite') === -1
+  //       // && item.title.indexOf('Google Hybrid') === -1
+  //       && item.title.indexOf('Google labelmap') === -1
+  //       && item.title.indexOf('BingMap')
+  //       && item.title.indexOf('OSM') === -1
+  //     )
+  //   }
+  // })
 
   return data
 }

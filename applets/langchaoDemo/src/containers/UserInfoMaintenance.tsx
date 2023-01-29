@@ -58,7 +58,7 @@ class UserInfoMaintenance extends Component<Props, State> {
       userName: "",
       gender: '',
       phoneNumber: "",
-      country: this.props.country || "",
+      country: this.props.country || "阿富汗",
       city: this.props.city || "",
       organization: '',
       project: '',
@@ -105,7 +105,7 @@ class UserInfoMaintenance extends Component<Props, State> {
     if(this.state.country !== "" && this.state.city !== "") {
       this.props.setCountry(this.state.country)
       this.props.setCity(this.state.city)
-      Toast.show(getLanguage(global.language).Map_Settings.SETTING_SUCCESS)
+      Toast.show(getLanguage(global.language).Map_Settings.MAP_AR_AI_SAVE_SUCCESS)
       NavigationService.goBack()
     }
   }
@@ -140,7 +140,11 @@ class UserInfoMaintenance extends Component<Props, State> {
         style={styles.addStyle}
         onPress={this.confirm}
       >
-        <Text>{getLanguage(global.language).Map_Settings.SAVE}</Text>
+        <Text
+          style={[{
+            color:'#0B82FF',
+          }]}
+        >{getLanguage(global.language).Map_Settings.SAVE}</Text>
       </TouchableOpacity>
     )
   }

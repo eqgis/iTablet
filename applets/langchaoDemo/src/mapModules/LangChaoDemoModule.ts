@@ -100,7 +100,7 @@ export default class LangChaoDemoModule extends Module {
       // containerTextColor: '#fff',   // 页面顶部容器的标题颜色
       // bottomTabBgColor: '#add8e6',  // 页面底部tab的背景色
       // bottomTabTextColor: '#add8e6', // 页面底部tab的文字颜色
-      bottomTabTextColorSelect: '#add8e6', // 页面底部tab的文字选中颜色
+      bottomTabTextColorSelect: '#0B82FF', // 页面底部tab的文字选中颜色
       // rightListBgColor: '#add8e6',  //（右）侧边栏列表的背景色
       // rightListTextColor: '#fff',  //（右）侧边栏列表的文字万册
       // leftBottomBtnBgColor: '#add8e6', // 左下角的按钮背景色

@@ -103,7 +103,7 @@ function layerManagerData() {
     //   themeType: -1,
     // },
     {
-      title: '天地图底图', // 'Tianditu',
+      title: '普通地图', // 'Tianditu', 天地图底图
       action: async ({callback}: {callback: () => any}) => {
         const data = []
         if (global.language === 'CN') {
@@ -115,7 +115,7 @@ function layerManagerData() {
         const result = await OpenData(data, 0, callback)
         if(result) {
           Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
-          AppEvent.emitEvent("changeBaseLayer", '天地图底图')
+          AppEvent.emitEvent("changeBaseLayer", '普通地图')
         }
         global.ToolBar?.close()
       },
@@ -126,7 +126,7 @@ function layerManagerData() {
       themeType: -1,
     },
     {
-      title: '天地图-影像底图', //'Tianditu Image',
+      title: '影像地图', //'Tianditu Image', 天地图-影像底图
       action: async ({callback}: {callback: () => any}) => {
         const data = []
         if (global.language === 'CN') {
@@ -138,7 +138,7 @@ function layerManagerData() {
         const result = await OpenData(data, 0, callback)
         if(result) {
           Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
-          AppEvent.emitEvent("changeBaseLayer", '天地图-影像底图')
+          AppEvent.emitEvent("changeBaseLayer", '影像地图')
         }
         global.ToolBar?.close()
       },
@@ -149,7 +149,7 @@ function layerManagerData() {
       themeType: -1,
     },
     {
-      title: '天地图-地形底图', // Tianditu Terrain
+      title: '地形地图', // Tianditu Terrain 天地图-地形底图
       action: async ({callback}: {callback: () => any}) => {
         const data = []
         // data.push(ConstOnline.tiandituTerCN())
@@ -162,7 +162,7 @@ function layerManagerData() {
         const result = await OpenData(data, 0, callback)
         if(result) {
           Toast.show(getLanguage(global.language).Prompt.CHANGE_SUCCESS)
-          AppEvent.emitEvent("changeBaseLayer", '天地图-地形底图')
+          AppEvent.emitEvent("changeBaseLayer", '地形地图')
         }
         global.ToolBar?.close()
       },
@@ -277,16 +277,13 @@ function layerManagerData() {
   data = data.filter(item => {
     if (global.language === 'CN') {
       return (
-        item.title.indexOf('Google') === -1 &&
-        item.title.indexOf('OSM') === -1
-        && item.title.indexOf('高德')
-        && item.title.indexOf('BingMap')
+        item.title.indexOf('Google') === -1
       )
     } else {
       return (
         item.title.indexOf('GaoDe') === -1 &&
         item.title.indexOf('Tianditu') === -1
-        && item.title.indexOf('天地图')
+        && item.title.indexOf('地图') === -1
         && item.title.indexOf('高德') // Google Satellite
         // && item.title.indexOf('Google Satellite') === -1
         // && item.title.indexOf('Google Hybrid') === -1

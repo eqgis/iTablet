@@ -212,7 +212,11 @@ class EditContactItem extends Component<Props, State> {
         onPress={this.rightAction}
       >
         {/* <Image style={styles.imgStyle} source={getImage().add_round} /> */}
-        <Text>{getLanguage(global.language).Map_Settings.SAVE}</Text>
+        <Text
+          style={[{
+            color: '#0B82FF',
+          }]}
+        >{getLanguage(global.language).Map_Settings.SAVE}</Text>
       </TouchableOpacity>
     )
   }

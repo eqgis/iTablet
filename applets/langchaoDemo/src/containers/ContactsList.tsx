@@ -43,6 +43,7 @@ interface Props extends ReduxProps {
   device: any,
   language: string,
   contacts: any,
+  userId: string,
   setCurrentSymbol: (param: any) => void,
   addContact: (paran: any) => void
 }
@@ -247,31 +248,34 @@ class ContactsList extends Component<Props, State> {
             }]}>{item.MobilePhone || item.Tel || ''}</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[{
-            width: dp(60),
-            height: dp(60),
-            justifyContent:'center',
-            alignItems: 'flex-end',
-            paddingRight: dp(10),
-            // backgroundColor: '#ccc',
-          }]}
-          onPress={() => {
-            this.setState({
-              morePanShow: true,
-              selectItem: item,
-            })
-          }}
-        >
-          {/* <Text>{"更多"}</Text> */}
-          <Image
-            source={getPublicAssets().common.icon_more}
+        {item.UserId === this.props.userId && (
+          <TouchableOpacity
             style={[{
-              width: dp(16),
-              height: dp(16),
+              width: dp(60),
+              height: dp(60),
+              justifyContent:'center',
+              alignItems: 'flex-end',
+              paddingRight: dp(10),
+            // backgroundColor: '#ccc',
             }]}
-          />
-        </TouchableOpacity>
+            onPress={() => {
+              this.setState({
+                morePanShow: true,
+                selectItem: item,
+              })
+            }}
+          >
+            {/* <Text>{"更多"}</Text> */}
+            <Image
+              source={getPublicAssets().common.icon_more}
+              style={[{
+                width: dp(16),
+                height: dp(16),
+              }]}
+            />
+          </TouchableOpacity>
+        )}
+
       </View>
     )
   }
@@ -429,6 +433,7 @@ const mapStateToProp = (state: RootState) => ({
   language: state.setting.toJS().language,
   // contacts: state.langchao.toJS().contacts,
   userName: state.langchao.toJS().userName,
+  userId: state.langchao.toJS().userId,
 })
 
 const mapDispatch = {

@@ -1,7 +1,7 @@
 import MapToolbar from "@/containers/workspace/components/MapToolbar"
 import { RootState } from "@/redux/types"
 import React, { Component } from "react"
-import { SectionList, PermissionsAndroid, View, Text, TouchableOpacity, Linking, FlatList, Image, StyleSheet, TextInput } from "react-native"
+import { SectionList, PermissionsAndroid, View, Text, TouchableOpacity, Linking, FlatList, Image, StyleSheet, TextInput, RefreshControl } from "react-native"
 import { connect, ConnectedProps } from "react-redux"
 import { Container, Dialog } from '../../../../src/components'
 import Contacts from 'react-native-contacts'
@@ -52,6 +52,7 @@ interface State {
   contactData: Array<telBookItemInfoType>
   selectItem: telBookItemInfoType | null,
   morePanShow: boolean,
+  isRefreshing: boolean,
 }
 
 // const morckdata = [
@@ -85,6 +86,7 @@ class ContactsList extends Component<Props, State> {
       contactData: [],
       selectItem: null,
       morePanShow: false,
+      isRefreshing: false,
     }
   }
 
@@ -102,10 +104,12 @@ class ContactsList extends Component<Props, State> {
       if(telBookInfo.length > 0) {
         this.setState({
           contactData: telBookInfo,
+          isRefreshing: false,
         })
       }
       // this.setState({
       //   contactData: morckdata,
+      //   isRefreshing: false,
       // })
     } catch (error) {
       // to do
@@ -154,6 +158,7 @@ class ContactsList extends Component<Props, State> {
   addBtnOnpress = () => {
     NavigationService.navigate('EditContactItem', {
       type: 'I',
+      callback: this.getData,
     })
   }
 
@@ -169,6 +174,7 @@ class ContactsList extends Component<Props, State> {
     NavigationService.navigate('EditContactItem', {
       type: 'U',
       data,
+      callback: this.getData,
     })
   }
 
@@ -305,6 +311,28 @@ class ContactsList extends Component<Props, State> {
         data={this.state.contactData}
         keyExtractor={(item, index) => item.UserId + "-" + index}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.isRefreshing}
+            onRefresh={async () => {
+              try {
+                this.setState({ isRefreshing: true })
+                // 加载底图
+                // this.loadUserBaseMaps().then(() => {
+                //   this.setState({ isRefreshing: false })
+                // })
+                await this.getData()
+              } catch (error) {
+                Toast.show(getLanguage(global.language).Map_Settings.REFRESH_FAILED)
+              }
+            }}
+            colors={['#0B82FF']}
+            titleColor={'#0B82FF'}
+            tintColor={'#0B82FF'}
+            title={getLanguage(global.language).Map_Settings.REFRESHING}
+            enabled={true}
+          />
+        }
       />
     )
   }

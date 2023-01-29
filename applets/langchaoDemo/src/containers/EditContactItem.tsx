@@ -192,6 +192,10 @@ class EditContactItem extends Component<Props, State> {
         } else {
           Toast.show(getLanguage(global.language).Map_Settings.UPDATE_CONTACT_SUCCESS)
         }
+
+        if (this.props.route.params?.callback && typeof this.props.route.params?.callback === 'function') {
+          this.props.route.params.callback()
+        }
         NavigationService.goBack()
       } else {
         if(this.state.type === 'I') {

@@ -2953,5 +2953,6 @@ export const language_ar: typeof language_cn = {
   UPDATE_PASSWORD_SUCCESS:'Update password success', // To be tanslated
   UPDATE_PASSWORD_FAILED:"Update password failed", // To be tanslated
   WHETHER_UPLOAD_DATA: 'Whether to upload data', // To be tanslated
+  REFRESH_FAILED: "Refresh failed", // To be tanslated
 
 }

@@ -2930,4 +2930,5 @@ export const language_cn = {
   UPDATE_PASSWORD_SUCCESS:'修改密码成功', // Update password success
   UPDATE_PASSWORD_FAILED:"修改密码失败", // Update password failed
   WHETHER_UPLOAD_DATA: '是否上传数据', // Whether to upload data
+  REFRESH_FAILED: "刷新失败", // Refresh failed
 }

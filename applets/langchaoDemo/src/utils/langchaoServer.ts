@@ -22,10 +22,7 @@ let sysOrgid = ""
 let userInfo: any[] = []
 
 //之前ssl生成的公钥，复制的时候要小心不要有空格
-let pubKey =  `MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDYdvhxlmpCV5iE3iaWv7M0Fe/x
-/L1qfXzDuBovOoWkzN78/pYpatRouPOSO634Hl9mekWbuUXFwI3hCoTDvk1M/Kbc
-pcXAgIiavv/KvGxgeIdaHMAFH7gzHaF0fsayF9DrLdrgyDttw+qeV3z//DVpxUn6
-Gdig1KA4pvB/3DhfsQIDAQAB`
+let pubKey =  ''
 
 export const getPubKey = () => {
   return pubKey
@@ -686,6 +683,62 @@ export const updatePassword = async (userId: string, oldPassword: string, newPas
     console.log('error', error)
     printLog(`\n updatePassword error : ${JSON.stringify(error)}`)
     return false
+  }
+}
+
+
+/**
+ * 获取公钥
+ * @returns 返回公钥字符串
+ */
+export const getServerPubKeyUtil = async () => {
+  try {
+    const IP = serverIP
+    const token = serverToken
+    const clientId = serverClientid
+
+    const url = `http://${IP}/api/app/osa/v1.0/onecall/sso/pubkey`
+
+    printLog(`\n =========================== getServerPubKey 获取公钥 =========================== 
+    \n getServerPubKey() \n url: ${url} \n clientid: ${clientId} token: ${token}`)
+
+    const date = new Date()
+    const timestamp = dateFormat("yyyy-MM-dd HH:mm:ss", date)
+
+    const headers = {
+      AccessToken: token,
+      ClientId: clientId,
+      sign: getSign(),
+      timestamp,
+    }
+
+    const params = {
+      UserId: userId,
+    }
+
+    const res = await axios.post(url, params, {
+      headers,
+    })
+    console.log('res', res)
+    printLog(`\n getServerPubKey res: ${JSON.stringify(res)}`)
+    let infos = null
+    let resultKey = ''
+    if(res.status === 200) {
+      const data = JSON.parse(JSON.stringify(res.data))
+      if(data.ok === true) {
+        // 编码后的公钥
+        infos = JSON.stringify(data.data)
+        // 解码后的公钥
+        resultKey = Base64.decode(infos)
+        setPubKey(resultKey)
+        printLog(`\n getServerPubKey data: ${JSON.stringify(infos)} \n pubkey: ${resultKey}`)
+      }
+    }
+    return resultKey
+  } catch (error) {
+    console.log('error', error)
+    printLog(`\n getServerPubKey error : ${JSON.stringify(error)}`)
+    return ''
   }
 }
 

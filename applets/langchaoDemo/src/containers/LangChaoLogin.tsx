@@ -6,8 +6,8 @@ import { dp } from "imobile_for_reactnative/utils/size"
 import { getLanguage } from "@/language"
 import { setCurrentSymbol } from "@/redux/models/symbol"
 import { getPublicAssets } from "@/assets"
-import { setServerUserId, setPassword, setServerUserName } from '../reduxModels/langchao'
-import { dateFormat, getToken, login, setSysOrgid, setUserId, setUserName, users } from "../utils/langchaoServer"
+import { setServerUserId, setPassword, setServerUserName, setServerPubkey } from '../reduxModels/langchao'
+import { dateFormat, getServerPubKeyUtil, getToken, login, setSysOrgid, setUserId, setUserName, users } from "../utils/langchaoServer"
 import { Toast } from "@/utils"
 import { color } from "@/styles"
 import NavigationService from "@/containers/NavigationService"
@@ -90,13 +90,17 @@ class LangChaoLogin extends Component<Props, State> {
 
   loginAction = async () => {
     if(this.state.userId !== "" && this.state.password !== "") {
-      const result = await login(this.state.userId, this.state.password)
+      const pubkey = await getServerPubKeyUtil()
+      if(pubkey !== "") {
+        this.props.setServerPubkey(pubkey)
+        const result = await login(this.state.userId, this.state.password)
 
-      if(result) {
-        await this.props.setServerUserId(this.state.userId)
-        await this.props.setPassword(this.state.password)
-        await this.props.setServerUserName(result.UserName)
-        NavigationService.goBack()
+        if(result) {
+          await this.props.setServerUserId(this.state.userId)
+          await this.props.setPassword(this.state.password)
+          await this.props.setServerUserName(result.UserName)
+          NavigationService.goBack()
+        }
       }
     }
 
@@ -277,6 +281,7 @@ const mapStateToProp = (state: any) => ({
   serverIP: state.langchao.toJS().serverIP,
   userId: state.langchao.toJS().userId,
   password: state.langchao.toJS().password,
+  pubkey: state.langchao.toJS().pubkey,
 })
 
 const mapDispatch = {
@@ -284,6 +289,7 @@ const mapDispatch = {
   setServerUserId,
   setPassword,
   setServerUserName,
+  setServerPubkey,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

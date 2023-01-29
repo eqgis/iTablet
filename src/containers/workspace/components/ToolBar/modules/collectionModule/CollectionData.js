@@ -407,11 +407,11 @@ function getData(type) {
   ]
 
 
-  buttons.push({
-    type: ToolbarBtnType.SHOW_ATTRIBUTE,
-    action: () => CollectionAction.showAttribute(),
-    image: getThemeAssets().publicAssets.icon_bar_attribute_selected,
-  })
+  // buttons.push({
+  //   type: ToolbarBtnType.SHOW_ATTRIBUTE,
+  //   action: () => CollectionAction.showAttribute(),
+  //   image: getThemeAssets().publicAssets.icon_bar_attribute_selected,
+  // })
 
 
   // const _params = ToolbarModule.getParams()

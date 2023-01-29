@@ -168,7 +168,7 @@ class UserInfoMaintenance extends Component<Props, State> {
     )
   }
 
-  renderInputItem = (title: string, value: string, changeTextAction: (text: string) => void, clearAction: () => void) => {
+  renderInputItem = (title: string, placeholder:string, value: string, changeTextAction: (text: string) => void, clearAction: () => void, isRequired = false) => {
     return (
       <View
         style={[styles.itemContainerStyle]}
@@ -179,16 +179,25 @@ class UserInfoMaintenance extends Component<Props, State> {
           <Text
             style={[styles.itemTitleText]}
           >{title}</Text>
+          {isRequired && (
+            <Text style = {[{
+              color: '#f00',
+              fontSize: dp(10),
+              position: 'absolute',
+              left: dp(-10),
+              top: dp(5),
+            }]}>{"*"}</Text>
+          )}
         </View>
         <View style={[
           styles.dialogInputContainer,
-          value === "" && {
-            borderColor: '#f00',
-          }
+          // value === "" && {
+          //   borderColor: '#f00',
+          // }
         ]}>
           <TextInput
             style = {[styles.dialogInput]}
-            placeholder = {''}
+            placeholder = {placeholder || ''}
             value = {value}
             onChangeText = {changeTextAction}
           />
@@ -280,7 +289,7 @@ class UserInfoMaintenance extends Component<Props, State> {
       >
         {this.renderPickerItem()}
         {/* {this.renderInputItem(getLanguage(global.language).Map_Settings.TARGET_COUNTRY, this.state.country, this.countryChange, this.countryClear)} */}
-        {this.renderInputItem(getLanguage(global.language).Map_Settings.TARGET_CITY, this.state.city, this.cityChange, this.cityClear)}
+        {this.renderInputItem(getLanguage(global.language).Map_Settings.TARGET_CITY, getLanguage(global.language).Map_Settings.TARGET_CITY, this.state.city, this.cityChange, this.cityClear, true)}
         {this.renderItem(getLanguage(global.language).Map_Settings.ORGANIZATION, this.state.organization)}
         {this.renderItem(getLanguage(global.language).Map_Settings.PROJECT, this.state.project)}
       </View>

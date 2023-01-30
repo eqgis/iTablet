@@ -76,6 +76,37 @@ interface State {
 //     Address: '中国四川达州',
 //     uuid: getUUid(),
 //   },
+//   {
+//     UserId: '103',
+//     Contacts: '田七',
+//     Tel: '',
+//     MobilePhone: '15882929792',
+//     Email: '1540546372@qq.com',
+//     PostalCode: '635000',
+//     Address: '中国四川达州',
+//     uuid: getUUid(),
+//   },
+//   {
+//     UserId: '101',
+//     Contacts: '赵六',
+//     Tel: '',
+//     MobilePhone: '13408188995',
+//     Email: '1540546372@qq.com',
+//     PostalCode: '635000',
+//     Address: '中国四川达州',
+//     uuid: getUUid(),
+//   },
+//   {
+//     UserId: '101',
+//     Contacts: '王六',
+//     Tel: '',
+//     MobilePhone: '13408188995',
+//     Email: '1540546372@qq.com',
+//     PostalCode: '635000',
+//     Address: '中国四川达州',
+//     uuid: getUUid(),
+//   },
+
 // ]
 
 class ContactsList extends Component<Props, State> {
@@ -101,9 +132,34 @@ class ContactsList extends Component<Props, State> {
   getData = async () => {
     try {
       const telBookInfo = await getTelBook()
+      // const telBookInfo = morckdata
       if(telBookInfo.length > 0) {
+        let telBookTemp = []
+        const userTelBook = []
+        for(let i = 0; i < telBookInfo.length; i ++) {
+          if(telBookInfo[i].UserId !== this.props.userId) {
+            // 是系统预置的联系人
+            telBookTemp.push(telBookInfo[i])
+          } else {
+            userTelBook.push(telBookInfo[i])
+          }
+        }
+
+        userTelBook.sort(function (pre, next) {
+          const prestr = getPinYin(pre.Contacts, "", true)
+          const nextstr = getPinYin(next.Contacts, "", true)
+          if(prestr < nextstr) {
+            return -1
+          } else if(prestr > nextstr) {
+            return 1
+          }
+          return 0
+        })
+
+        telBookTemp = telBookTemp.concat(userTelBook)
+
         this.setState({
-          contactData: telBookInfo,
+          contactData: telBookTemp,
           isRefreshing: false,
         })
       }

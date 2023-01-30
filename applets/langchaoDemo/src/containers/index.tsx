@@ -10,6 +10,7 @@ import UserInfoMaintenance from './UserInfoMaintenance'
 import EditContactItem from './EditContactItem'
 import LangChaoLogin from './LangChaoLogin'
 import UpdatePassword from './UpdatePassword'
+import LangchaoProtocol from './langchaoProtocol'
 
 const Stack = createNativeStackNavigator()
 
@@ -50,6 +51,11 @@ const _navigators = [
     presentation: 'containedTransparentModal',
   }} />,
   <Stack.Screen key="UpdatePassword" name="UpdatePassword" component={UpdatePassword} options={{
+    headerShown: false,
+    animation: 'none',
+    presentation: 'containedTransparentModal',
+  }} />,
+  <Stack.Screen key="LangchaoProtocol" name="LangchaoProtocol" component={LangchaoProtocol} options={{
     headerShown: false,
     animation: 'none',
     presentation: 'containedTransparentModal',

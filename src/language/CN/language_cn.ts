@@ -2937,4 +2937,5 @@ export const language_cn = {
   GOOGLE_MAP: "谷歌地图" , // Google map
   GOOGLE_IMAGE_MAP:"谷歌影像地图", // Google imager map
   GOOGLE_TOPOGRAPHIC_MAP: "谷歌地形地图",// Google topographic map
+  AGREE_PRIVACY_POLICY: "登录即表示同意一键呼叫的《隐私政策》", // The Privacy policy where you sign in and consent to one-click call
 }

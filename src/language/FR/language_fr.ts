@@ -2936,5 +2936,6 @@ export const language_fr: typeof language_cn = {
   GOOGLE_MAP: "Google" , // To be tanslated
   GOOGLE_IMAGE_MAP:"Google Satellite", // To be tanslated
   GOOGLE_TOPOGRAPHIC_MAP: 'Google Hybrid',// To be tanslated
+  AGREE_PRIVACY_POLICY: "The Privacy policy where you sign in and consent to one-click call", // To be tanslated
 
 }

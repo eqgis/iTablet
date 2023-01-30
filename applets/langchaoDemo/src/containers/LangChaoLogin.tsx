@@ -235,6 +235,35 @@ class LangChaoLogin extends Component<Props, State> {
     )
   }
 
+  renderOther = () => {
+    return (
+      <View
+        style={[{
+          position: 'absolute',
+          bottom: dp(16),
+          left: 0,
+          width: '100%',
+          alignItems: 'center',
+        }]}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            NavigationService.navigate("LangchaoProtocol")
+          }}
+        >
+          <Text
+            style={[styles.otherText]}
+          >{getLanguage(global.language).Map_Settings.AGREE_PRIVACY_POLICY}</Text>
+        </TouchableOpacity>
+        {/* <View>
+          <Text
+            style={[styles.otherText]}
+          >{"客服电话" + ": 400-211-121212"}</Text>
+        </View> */}
+      </View>
+    )
+  }
+
   render() {
     return (
       <Container
@@ -269,6 +298,7 @@ class LangChaoLogin extends Component<Props, State> {
         {this.renderLogo()}
         {this.renderContentView()}
         {this.renderBtn()}
+        {this.renderOther()}
 
       </Container>
     )
@@ -383,5 +413,10 @@ const styles = StyleSheet.create({
     height: dp(20),
     fontSize: dp(16),
     marginLeft: -dp(10),
-  }
+  },
+  otherText: {
+    color: '#fff',
+    fontSize: dp(10),
+    lineHeight: dp(20)
+  },
 })

@@ -12,8 +12,10 @@ import { scaleSize } from '../../utils'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import { color } from '../../styles'
+import { getImage } from '../../../applets/langchaoDemo/src/assets/Image'
 
-const radio_on = require('../../assets/public/radio_select.png')
+// const radio_on = require('../../assets/public/radio_select.png')
+const radio_on = getImage().radio_select_blue
 const radio_off = require('../../assets/public/radio_select_no.png')
 const option = {
   auto: 'AUTO',
@@ -142,7 +144,7 @@ class LanguageSetting extends React.Component {
     if (this.state.currentOption === this.prevOption) {
       textColor = '#A0A0A0'
     } else {
-      textColor = '#000000'
+      textColor = '#0B82FF'
     }
     return (
       <View>

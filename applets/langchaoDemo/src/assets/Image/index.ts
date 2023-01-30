@@ -34,6 +34,7 @@ const icon_location = require('./icon_location.png')
 const icon_login_password = require('./icon_login_password.png')
 const icon_login_user = require('./icon_login_user.png')
 const icon_logo = require('./icon_logo.png')
+const radio_select_blue = require('./radio_select_blue.png')
 
 const image = {
   flight,
@@ -69,6 +70,7 @@ const image = {
   icon_login_password,
   icon_login_user,
   icon_logo,
+  radio_select_blue,
 }
 
 function getImage(): typeof image {

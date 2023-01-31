@@ -2932,9 +2932,12 @@ export const language_en: typeof language_cn = {
   ORDINARY_MAP: "Prdinary map" , // To be tanslated
   IMAGE_MAP:"Image map", // To be tanslated
   TOPOGRAPHIC_MAP:"Topographic map",// To be tanslated
-  GOOGLE_MAP: "Google" , // To be tanslated
+  GOOGLE_MAP: "Google map" , // To be tanslated
   GOOGLE_IMAGE_MAP:"Google Satellite", // To be tanslated
   GOOGLE_TOPOGRAPHIC_MAP: 'Google Hybrid',// To be tanslated
   AGREE_PRIVACY_POLICY: "The Privacy policy where you sign in and consent to one-click call", // To be tanslated
+  TIANDITU_MAP: 'Tianditu map', // To be tanslated
+  PLAN_2D: '2D plan map', // To be tanslated
+  SATELLITE_MAP: 'Satellite map', // To be tanslated
 
 }

@@ -143,7 +143,7 @@ class ChangeBaseLayerModule extends CustomFunctionModule {
     const data = {}
     switch (additional.type) {
       case AppletsToolType.APPLETS_CHANGE_BASE_LAYER_HOME:
-        data.height = dp(88) * 2
+        data.height = dp(88) * 4
         break
       default:
         data.height = 0

@@ -25,6 +25,7 @@ function layerManagerData() {
       selectImage: getImage().icon_map_normal_select,
       type: DatasetType.IMAGE,
       themeType: -1,
+      baseMapType: "google",
     },
     {
       title: getLanguage(global.language).Prompt.GOOGLE_IMAGE_MAP, // 'Google Satellite',
@@ -41,6 +42,7 @@ function layerManagerData() {
       selectImage: getImage().icon_map_image_select,
       type: DatasetType.IMAGE,
       themeType: -1,
+      baseMapType: "google",
     },
     // {
     //   title: 'Google Terrain',
@@ -73,6 +75,7 @@ function layerManagerData() {
       selectImage: getImage().icon_map_terrain_select,
       type: DatasetType.IMAGE,
       themeType: -1,
+      baseMapType: "google",
     },
     // {
     //   title: 'Google labelmap',
@@ -124,6 +127,7 @@ function layerManagerData() {
       selectImage: getImage().icon_map_normal_select,
       type: DatasetType.IMAGE,
       themeType: -1,
+      baseMapType: "tianditu",
     },
     {
       title: getLanguage(global.language).Prompt.IMAGE_MAP, // '影像地图', //'Tianditu Image', 天地图-影像底图
@@ -147,6 +151,7 @@ function layerManagerData() {
       selectImage: getImage().icon_map_image_select,
       type: DatasetType.IMAGE,
       themeType: -1,
+      baseMapType: "tianditu",
     },
     {
       title: getLanguage(global.language).Prompt.TOPOGRAPHIC_MAP, // '地形地图', // Tianditu Terrain 天地图-地形底图
@@ -171,6 +176,7 @@ function layerManagerData() {
       selectImage: getImage().icon_map_terrain_select,
       type: DatasetType.IMAGE,
       themeType: -1,
+      baseMapType: "tianditu",
     },
     // {
     //   title: "高德底图", // 'GaoDe',

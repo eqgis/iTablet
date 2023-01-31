@@ -28,6 +28,7 @@ export interface layerManagerDataType {
   selectImage: ImageSourcePropType, // 选中后显示的图片
 	type: string,
 	themeType: number,
+  baseMapType: string,
 }
 
 /**

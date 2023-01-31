@@ -27,6 +27,8 @@ type selectTitleType = '普通地图' | "影像地图" | "地形地图" | "Googl
 interface State {
 	// to do
   selectTitle: string, // selectTitleType,
+  tiandituMap: Array<layerManagerDataType>,
+  googleMap: Array<layerManagerDataType>,
 }
 
 class ChangeBaseLayer extends Component<Props, State> {
@@ -35,6 +37,8 @@ class ChangeBaseLayer extends Component<Props, State> {
     super(props)
     this.state = {
       selectTitle: '',
+      tiandituMap:[],
+      googleMap:[],
     }
 
   }
@@ -72,14 +76,25 @@ class ChangeBaseLayer extends Component<Props, State> {
 
     }
 
+    const tempTiandituMap: Array<layerManagerDataType> = []
+    const tempGoogleMap: Array<layerManagerDataType> = []
+    this.props.data.map((item: layerManagerDataType) => {
+      if(item.baseMapType === 'tianditu') {
+        tempTiandituMap.push(item)
+      } else {
+        tempGoogleMap.push(item)
+      }
+    })
+
     this.setState({
       selectTitle: selectTitle,
+      tiandituMap: tempTiandituMap,
+      googleMap: tempGoogleMap,
     })
 
     AppEvent.addListener("changeBaseLayer", this.setSelectBaseLayer)
 
   }
-
   // selectTitleType
   setSelectBaseLayer = (selectTitle: string) => {
     this.setState({
@@ -88,6 +103,19 @@ class ChangeBaseLayer extends Component<Props, State> {
   }
 
   _renderItem = (item: layerManagerDataType, index: number) => {
+    let text = ""
+    switch(index){
+      case 0:
+        text = getLanguage(global.language).Prompt.PLAN_2D
+        break
+      case 1:
+        text = getLanguage(global.language).Prompt.SATELLITE_MAP
+        break
+      case 2:
+        text = getLanguage(global.language).Prompt.TOPOGRAPHIC_MAP
+        break
+
+    }
     return (
       <TouchableOpacity
         style={[{
@@ -124,17 +152,17 @@ class ChangeBaseLayer extends Component<Props, State> {
             alignItems: 'center',
           }]}
         >
-          <Text>{item.title}</Text>
+          <Text>{text}</Text>
         </View>
       </TouchableOpacity>
     )
   }
 
-  renderList = () => {
+  renderList = (data: Array<layerManagerDataType>) => {
     return (
       <FlatList
         renderItem={({item, index}) => this._renderItem(item, index)}
-        data={this.props.data}
+        data={data}
         keyExtractor={(item, index) => item.type + "-" + index}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
@@ -144,10 +172,66 @@ class ChangeBaseLayer extends Component<Props, State> {
           height: dp(120),
           flexDirection: 'row',
           alignContent: 'center',
+          marginTop: dp(10),
         }]}
       />
     )
   }
+
+  // renderRowView = (data: Array<layerManagerDataType>) => {
+  //   return (
+  //     <View
+  //       style={[{
+  //         width: '100%',
+  //         height:dp(120),
+  //         flexDirection: 'row',
+  //         alignContent: 'center',
+  //       }]}
+  //     >
+  //       {data.map((item: layerManagerDataType, index: number) => {
+  //         return this._renderItem(item, index)
+  //       })}
+  //     </View>
+  //   )
+  // }
+
+  // renderContent = () => {
+  //   console.warn("length: " + this.props.data.length)
+  //   let row = parseInt(this.props.data.length / 3 + "")
+  //   if(this.props.data.length % 3 !== 0) {
+  //     row += 1
+  //   }
+  //   console.warn("row: " + row)
+
+  //   let tempData = []
+  //   for(let i = 0; i < row; i ++) {
+  //     let rowdata = []
+  //     let len = 3
+  //     if(i === row - 1) {
+  //       len = this.props.data.length % 3
+  //     }
+
+  //     for(let j = 0; j < len; j ++) {
+  //       rowdata.push(this.props.data[(row - 1) * 3 + j])
+  //     }
+
+  //     tempData.push(rowdata)
+  //   }
+
+  //   console.warn("tempData: " + JSON.stringify(tempData))
+
+  //   return(
+  //     <View
+  //       style={[{
+  //         width: '100%',
+  //         flex: 1,
+  //         // alignContent: 'center',
+  //         backgroundColor: '#f00',
+  //       }]}
+  //     >
+  //     </View>
+  //   )
+  // }
 
   render() {
     return (
@@ -157,7 +241,10 @@ class ChangeBaseLayer extends Component<Props, State> {
         <View
           style={[{
             width: '100%',
-            height: dp(24),
+            height: dp(30),
+            // backgroundColor: '#f00',
+            flexDirection: 'row',
+            alignItems:'center',
           }]}
         >
           <Text
@@ -165,9 +252,36 @@ class ChangeBaseLayer extends Component<Props, State> {
               fontSize: dp(16),
               fontWeight: 'bold',
             }]}
-          >{getLanguage(global.language).Profile.LAYER}</Text>
+          >{getLanguage(global.language).Profile.TIANDITU_MAP}</Text>
         </View>
-        {this.renderList()}
+        {this.renderList(this.state.tiandituMap)}
+
+        <View
+          style={[{
+            width: '100%',
+            height: dp(1),
+            backgroundColor: '#eee'
+          }]}
+        ></View>
+
+        <View
+          style={[{
+            width: '100%',
+            height: dp(30),
+            marginTop: dp(10),
+            flexDirection: 'row',
+            alignItems:'center',
+          }]}
+        >
+          <Text
+            style={[{
+              fontSize: dp(16),
+              fontWeight: 'bold',
+            }]}
+          >{getLanguage(global.language).Profile.GOOGLE_MAP}</Text>
+        </View>
+        {this.renderList(this.state.googleMap)}
+        {/* {this.renderContent()} */}
       </View>
     )
   }

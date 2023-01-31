@@ -14,11 +14,11 @@ export interface Attributes {
 }
 
 export interface AttributesResp {
-  attributes: Attributes,
+  attributes?: Attributes,
   total: number,
   currentPage: number,
   startIndex: number,
-  resLength: number,
+  resLength?: number,
 }
 
 export type GetAttributeType = 'loadMore' | 'refresh' | 'reset'

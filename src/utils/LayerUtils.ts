@@ -1,10 +1,12 @@
 /* global global */
 import { TOnlineData } from '@/constants/ConstOnline'
-import { SMap, SNavigation} from 'imobile_for_reactnative'
-import { DatasetType, FieldType, FieldInfo, FieldInfoValue } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
-import { AttributesResp, LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
+import { SData, SMap, SNavigation} from 'imobile_for_reactnative'
+import { DatasetType, FieldType, FieldInfo, FieldInfoValue, QueryParameter, DatasetInfo } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+// import { AttributesResp} from 'imobile_for_reactnative/types/interface/mapping/SMap'
+import { AttributesResp } from "@/utils/AttributeUtils"
 import { ConstOnline } from '../constants'
 import { getLanguage } from '../language'
+import { LayerInfo } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 export interface AttributeHead {
   value: string,
@@ -40,15 +42,26 @@ export type GetAttributeType = 'loadMore' | 'refresh' | 'reset'
  */
 async function getLayerAttribute(
   attributes: Attributes,
-  path: string,
+  layerInfo: LayerInfo,
   page: number,
   size: number,
   params?: {filter?: string, groupBy?: string},
   type: GetAttributeType = 'loadMore',
 ) {
-  const data = await SMap.getLayerAttribute(path, page, size, params)
+  //查询接口替换为下面SData
+  // const data1111 = await SMap.getLayerAttribute(layerInfo.path, page, size, params)
 
-  return dealData(attributes, data, page, type)
+  const datasetInfo:DatasetInfo = {datasetName:layerInfo.datasetName,datasourceName:layerInfo.datasourceAlias}
+  const groups = params?.groupBy?.split(",")
+  const orders = params?.filter?.split(",")
+  const para:QueryParameter = {orderBy:orders,groupBy:groups}
+  const head = await SData.getFieldInfos(datasetInfo)
+  const data1 = await SData.queryWithParameter(datasetInfo,para )
+  const startIndex =  page*size
+  const total = data1.length
+  const data  = data1.slice(startIndex,startIndex+(total-startIndex>size?size:total-startIndex))
+  const dataShow = {currentPage:page,head,startIndex,total,data}
+  return dealData(attributes, dataShow, page, type)
 }
 
 /**
@@ -63,14 +76,14 @@ async function getLayerAttribute(
  */
 async function searchLayerAttribute(
   attributes: Attributes,
-  path: string,
+  layerInfo: LayerInfo,
   params: {filter?: string, groupBy?: string},
   page: number,
   size: number,
   type: GetAttributeType = 'loadMore',
 ) {
   // let data = await SMap.getLayerAttribute(path, page, size)
-  const data = await SMap.searchLayerAttribute(path, params, page, size)
+  const data = await SMap.searchLayerAttribute(layerInfo.path, params, page, size)
 
   return dealData(attributes, data, page, type)
 }

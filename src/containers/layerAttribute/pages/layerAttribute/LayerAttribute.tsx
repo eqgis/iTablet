@@ -387,7 +387,7 @@ export default class LayerAttribute extends React.Component {
           let checkData = this.checkToolIsViable()
           result = await LayerUtils.getLayerAttribute(
             JSON.parse(JSON.stringify(this.state.attributes)),
-            this.props.currentLayer.path,
+            this.props.currentLayer,
             currentPage,
             pageSize !== undefined ? pageSize : PAGE_SIZE,
             {

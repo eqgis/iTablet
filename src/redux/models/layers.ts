@@ -95,46 +95,6 @@ export const getLayers = (params = -1, cb = () => {}) => async dispatch => {
   return layers
 }
 
-// 获取图层属性
-// export const getAttributes = (params, cb = () => {}) => async (
-//   dispatch,
-//   getState,
-// ) => {
-//   try {
-//     // 当page为0时，则为刷新
-//     let path,
-//       page = 0,
-//       size = 20
-//     if (params) {
-//       if (!params.path && getState().layers.toJS().currentLayer.path) {
-//         path = getState().layers.toJS().currentLayer.path
-//       } else {
-//         path = params.path
-//       }
-//       if (params.page >= 0) {
-//         page = params.page
-//       }
-//       if (params.size >= 0) {
-//         size = params.size
-//       }
-//     }
-//     let attribute = await SMap.getLayerAttribute(path, page, size)
-//
-//     let action = page === 0 ? GET_ATTRIBUTES_REFRESH : GET_ATTRIBUTES_LOAD
-//     await dispatch({
-//       type: action,
-//       payload: attribute || [],
-//     })
-//     cb && cb(attribute)
-//     return attribute
-//   } catch (e) {
-//     await dispatch({
-//       type: GET_ATTRIBUTES_FAILED,
-//     })
-//     cb && cb()
-//     return e
-//   }
-// }
 
 export const setAttributes = (data = [], cb = () => {}) => async dispatch => {
   await dispatch({

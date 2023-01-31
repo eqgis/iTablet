@@ -18,7 +18,7 @@ import {
   getPublicAssets,
 } from '../../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
-import { FieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetInfo, FieldType, QueryParameter } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 const PREVIOUS = 'previous'
 const NEXT = 'next'
@@ -163,17 +163,19 @@ export default class LayerAttributeStatistic extends React.Component {
       return
     }
     if (item.key === 'COUNT_UNIQUE') {
-      SMap.getLayerAttribute(this.layer.path, 0, 100000000000, {
-        groupBy: this.fieldInfo.name,
-      }).then(
+      const datasetInfo:DatasetInfo = {datasetName:this.layer.datasetName,datasourceName:this.layer.datasourceAlias}
+      const groups = this.fieldInfo.name?.split(",")
+      const para:QueryParameter = {groupBy:groups}
+      SData.queryWithParameter(datasetInfo,para ).then(
         result => {
-          const downShow = this.showarraw(result.data.length)
+          if(result.length == 0) return
+          const downShow = this.showarraw(result.length)
           this.setState({
             currentMethod: item,
-            result: result.total.toString(),
-            resultData:result.data,
+            result: result.length.toString(),
+            resultData:result,
             sectionData:[{
-              data: result.data,
+              data: result,
               visible:true,
             }],
             isShowUpDown: downShow,
@@ -188,6 +190,31 @@ export default class LayerAttributeStatistic extends React.Component {
           )
         },
       )
+      // SMap.getLayerAttribute(this.layer.path, 0, 100000000000, {
+      //   groupBy: this.fieldInfo.name,
+      // }).then(
+      //   result => {
+      //     const downShow = this.showarraw(result.data.length)
+      //     this.setState({
+      //       currentMethod: item,
+      //       result: result.total.toString(),
+      //       resultData:result.data,
+      //       sectionData:[{
+      //         data: result.data,
+      //         visible:true,
+      //       }],
+      //       isShowUpDown: downShow,
+      //     })
+      //   },
+      //   () => {
+      //     this.setState({
+      //       currentMethod: item,
+      //     })
+      //     Toast.show(
+      //       getLanguage(this.props.language).Prompt.NOT_SUPPORT_STATISTIC,
+      //     )
+      //   },
+      // )
     } else {
       SData.statistic(
         {datasetName:this.layer.datasetName,datasourceName:this.layer.datasourceAlias},

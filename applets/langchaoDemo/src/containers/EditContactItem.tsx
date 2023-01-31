@@ -477,7 +477,7 @@ class EditContactItem extends Component<Props, State> {
           </View>
         )}
 
-        {this.renderInputItem(getLanguage(global.language).Map_Settings.CONTACT_NAME, this.state.Tel, this.changeTel, false, getLanguage(global.language).Map_Settings.PLEASE_INPUT_LANDLINE_PHONE)}
+        {this.renderInputItem(getLanguage(global.language).Map_Settings.LANDLINE_PHONE, this.state.Tel, this.changeTel, false, getLanguage(global.language).Map_Settings.PLEASE_INPUT_LANDLINE_PHONE)}
         {this.renderInputItem(getLanguage(global.language).Map_Settings.CONTACT_NUMBER, this.state.MobilePhone, this.changeMobilePhone, true, getLanguage(global.language).Map_Settings.PLEASE_INPUT_MOBILE_PHONE)}
         {this.state.MobilePhoneTipShow && (
           <View style={[styles.tipStyle]}>

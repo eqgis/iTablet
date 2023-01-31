@@ -884,7 +884,7 @@ async function close(type) {
   } else if (type === ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE) {
     // 返回图层属性界面，并清除属性关联选中的对象
     NavigationService.navigate('LayerAttribute')
-    await SNavigationInner.clearTrackingLayer()
+    await SMap.clearTrackingLayer()
     _params.currentLayer && SMap.selectObj(_params.currentLayer.path)
     _params.setToolbarVisible(false)
   } else if (type === ConstToolType.SM_MAP_TOOL_ATTRIBUTE_SELECTION_RELATE) {
@@ -901,7 +901,7 @@ async function close(type) {
           })
         }
         await _data?.actions?.select(_data.preType)
-        await SNavigationInner.clearTrackingLayer()
+        await SMap.clearTrackingLayer()
         await SMap.selectObjs(selection)
 
         global.toolBox &&

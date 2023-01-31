@@ -155,17 +155,6 @@ function showAttribute() {
  */
 function changeNetwork() {
   NavigationService.navigate('ChooseNaviLayer')
-  // const _params = ToolbarModule.getParams()
-  // let type = _params.type
-  // _params.setToolbarVisible(true, ConstToolType.SM_MAP_INCREMENT_CHANGE_NETWORK, {
-  //   isFullScreen: false,
-  //   containerType: ToolbarType.list,
-  //   height:
-  //     _params.device.orientation === 'PORTRAIT'
-  //       ? Height.LIST_HEIGHT_P
-  //       : Height.LIST_HEIGHT_L,
-  // })
-  // ToolbarModule.addData({ preType: type })
 }
 
 //底部增量方式图片

@@ -23,7 +23,6 @@ import {
 import { getLanguage } from '../../../../../../language'
 import Utils from '../../utils'
 import NavigationService from '../../../../../NavigationService'
-import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 async function point() {
   const _params = ToolbarModule.getParams()
@@ -654,7 +653,7 @@ async function close(type) {
       isCollection:true,
       preType:_data.preType,
     })
-    await SNavigationInner.clearTrackingLayer()
+    await SMap.clearTrackingLayer()
     global.toolBox &&
         global.toolBox.setVisible(true, _data.preType, {
           containerType: 'table',

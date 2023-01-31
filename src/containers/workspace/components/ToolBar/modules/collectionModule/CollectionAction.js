@@ -21,7 +21,6 @@ import { jsonUtil, Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import { Login } from '@/containers/tabs'
 import { Action, } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
-import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 function openTemplate(type) {
   const params = ToolbarModule.getParams()
@@ -354,7 +353,7 @@ async function close(type) {
     NavigationService.navigate('LayerSelectionAttribute', {
       isCollection:true,
     })
-    await SNavigationInner.clearTrackingLayer()
+    await SMap.clearTrackingLayer()
     let data = ToolbarModule.getData()
     showCollection(data.lastType, data.lastLayer)
   }else{

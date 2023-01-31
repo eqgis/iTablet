@@ -16,7 +16,6 @@ import NavigationService from '@/containers/NavigationService'
 import CheckData from './CheckData'
 import { FieldInfo, GeometryType, TGeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { Action,TAction } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
-import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 function startCheck() {
   try {
@@ -186,7 +185,7 @@ async function close(type: string) {
       }
 
       showAttribute(data.preType)
-      await SNavigationInner.clearTrackingLayer()
+      await SMap.clearTrackingLayer()
 
       return
     }

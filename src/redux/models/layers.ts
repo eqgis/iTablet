@@ -424,7 +424,6 @@ export const setAttributeHistory = (params = {}, cb = () => {}) => async (
 
     if (currentHistory && currentHistory && currentHistory.length > 0) {
       for (let i = 0; i < currentHistory.length; i++) {
-        debugger
         await SData.setFieldInfoValue(
           layerHistory.datasetInfo,
           currentHistory[i].fieldInfo,

@@ -55,8 +55,8 @@ async function getLayerAttribute(
   const groups = params?.groupBy?.split(",")
   const orders = params?.filter?.split(",")
   const para:QueryParameter = {orderBy:orders,groupBy:groups}
-  const head = await SData.getFieldInfos(datasetInfo)
   const data1 = await SData.queryWithParameter(datasetInfo,para )
+  const head = await SData.getFieldInfos(datasetInfo)
   const startIndex =  page*size
   const total = data1.length
   const data  = data1.slice(startIndex,startIndex+(total-startIndex>size?size:total-startIndex))
@@ -82,7 +82,6 @@ async function searchLayerAttribute(
   size: number,
   type: GetAttributeType = 'loadMore',
 ) {
-  // let data = await SMap.getLayerAttribute(path, page, size)
   const data = await SMap.searchLayerAttribute(layerInfo.path, params, page, size)
 
   return dealData(attributes, data, page, type)
@@ -136,27 +135,43 @@ async function searchSelectionAttribute(
 
 async function getSelectionAttributeByLayer(
   attributes: Attributes,
-  path: string,
+  layerInfo: LayerInfo,
   page: number,
   size: number,
   type: GetAttributeType = 'loadMore',
   isCollection: boolean = false
 ) {
-  const data = await SMap.getSelectionAttributeByLayer(path, page, size, isCollection)
+  const data1 = await SMap.getLayerSelectionAttribute(layerInfo?.path||"")
 
-  return dealData(attributes, data, page, type)
+  const datasetInfo:DatasetInfo = {datasetName:layerInfo.datasetName,datasourceName:layerInfo.datasourceAlias}
+  // const para:QueryParameter = {}
+  // const data1 = await SData.queryWithParameter(datasetInfo,para )
+  const head = await SData.getFieldInfos(datasetInfo)
+  const startIndex =  page*size
+  const total = data1.length
+  const data  = data1.slice(startIndex,startIndex+(total-startIndex>size?size:total-startIndex))
+  const dataShow = {currentPage:page,head,startIndex,total,data}
+  return dealData(attributes, dataShow, page, type)
 }
 
 async function getSelectionAttributeByData(
   attributes: Attributes,
-  name: string,
+  datasetInfo: DatasetInfo,
   page: number,
   size: number,
   type: GetAttributeType = 'loadMore',
 ) {
-  const data = await SMap.getSelectionAttributeByData(name, page, size)
+  debugger
+  // const data = await SMap.getSelectionAttributeByData(name, page, size)
+  const para:QueryParameter = {}
+  const data1 = await SData.queryWithParameter(datasetInfo,para )
+  const head = await SData.getFieldInfos(datasetInfo)
+  const startIndex =  page*size
+  const total = data1.length
+  const data  = data1.slice(startIndex,startIndex+(total-startIndex>size?size:total-startIndex))
+  const dataShow = {currentPage:page,head,startIndex,total,data}
 
-  return dealData(attributes, data, page, type)
+  return dealData(attributes, dataShow, page, type)
 }
 
 async function getNavigationAttributeByData(

@@ -49,11 +49,12 @@ export default class LayerSelectionAttribute extends React.Component {
     refreshCurrent: () => {},
     type?: String,
     datasetName?:String,
+    datasourceName?:String,
   }
 
   constructor(props) {
     super(props)
-    const { params } = this.props.route
+    const { params } =props.route
     this.checkToolIsViable()
     this.state = {
       attributes: {
@@ -169,7 +170,7 @@ export default class LayerSelectionAttribute extends React.Component {
       if(this.props.type === 'MY_DATA'){
         result = await LayerUtils.getSelectionAttributeByData(
           JSON.parse(JSON.stringify(this.state.attributes)),
-          this.props.datasetName,
+          {datasetName:this.props.route?.params?.datasetName,datasourceName:this.props.route?.params.datasourceName},
           currentPage,
           pageSize !== undefined ? pageSize : PAGE_SIZE,
           type,
@@ -187,7 +188,7 @@ export default class LayerSelectionAttribute extends React.Component {
       }else if(this.state.isCollection){
         result = await LayerUtils.getSelectionAttributeByLayer(
           JSON.parse(JSON.stringify(this.state.attributes)),
-          global.currentLayer.name,
+          global.currentLayer,
           currentPage,
           pageSize !== undefined ? pageSize : PAGE_SIZE,
           type,
@@ -196,7 +197,7 @@ export default class LayerSelectionAttribute extends React.Component {
       }else{
         result = await LayerUtils.getSelectionAttributeByLayer(
           JSON.parse(JSON.stringify(this.state.attributes)),
-          this.props.layerSelection.layerInfo.path,
+          this.props.layerSelection.layerInfo,
           currentPage,
           pageSize !== undefined ? pageSize : PAGE_SIZE,
           type,

@@ -160,8 +160,13 @@ class MyDataset extends MyDataPage {
 
   showAttribute = () => {
     global.NEEDREFRESHTABLE = true
-    // console.log(this.itemInfo.item)
-    NavigationService.navigate('LayerSelectionAttribute',{type:'MY_DATA',datasetName:this.itemInfo.item.datasetName,datasourceName:this.itemInfo.item.datasourceName})
+    const para = {
+      type:'MY_DATA',
+      datasetName:this.itemInfo.item.datasetName,
+      datasourceName:this.itemInfo.item.datasourceName
+    }
+    // console.log(para)
+    NavigationService.navigate('LayerSelectionAttribute',para)
   }
 
   setProjection = () => {

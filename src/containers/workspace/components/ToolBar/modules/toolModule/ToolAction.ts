@@ -4,6 +4,7 @@ import {
   SMediaCollector,
   SAIDetectView,
   SNavigation,
+  SData,
 } from 'imobile_for_reactnative'
 import { Action, FixColorMode, TFixColorMode, } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import {
@@ -24,6 +25,7 @@ import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import { TYPE } from '../../../../../camera/types'
 import LocateUtils from '../../../../../pointAnalyst/LocateUtils'
+import { DatasetInfo, QueryParameter } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 function begin() {
   global.GPS = setInterval(() => {
@@ -745,12 +747,8 @@ async function showAttribute() {
     return
   }
 
-  const attributes = await SMap.getSelectionAttributeByLayer(
-    _selection[0].layerInfo.path,
-    0,
-    1,
-  )
-  if (attributes.total === 0) {
+  const attributes = await SMap.getLayerSelectionAttribute(_selection[0].layerInfo.path)
+  if (attributes.length === 0) {
     Toast.show(getLanguage(global.language).Prompt.NON_SELECTED_OBJ)
     return
   }

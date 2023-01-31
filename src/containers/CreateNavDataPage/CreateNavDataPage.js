@@ -31,7 +31,7 @@ import ModalDropdown from 'react-native-modal-dropdown'
 import NavigationService from '../NavigationService'
 import ImageButton from '../../components/ImageButton'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
-
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 export default class CreateNavDataPage extends Component {
   props: {
     navigation: Object,
@@ -198,7 +198,7 @@ export default class CreateNavDataPage extends Component {
       'udb',
     )
     availableName = availableName.substring(0, availableName.lastIndexOf('.'))
-    let rel = await SNavigation.createNavDatasource(availableName)
+    let rel = await SNavigationInner.createNavDatasource(availableName)
     if (rel) {
       this.getDatasource()
     } else {
@@ -542,7 +542,7 @@ class Item extends Component {
     let datasourceName = this.props.item.datasourceName
     //第一次点击先获取所有非系统的文字类型字段
     if (!this.props.item.fieldInfo) {
-      let needChangeData = await SNavigation.queryFieldInfos([
+      let needChangeData = await SNavigationInner.queryFieldInfos([
         { datasetName, datasourceName },
       ])
       if (needChangeData.length > 0) {

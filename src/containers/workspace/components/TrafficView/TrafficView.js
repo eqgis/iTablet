@@ -20,6 +20,7 @@ import { SData, SMap, SNavigation } from 'imobile_for_reactnative'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { getThemeAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 export default class TrafficView extends React.Component {
   props: {
@@ -99,7 +100,7 @@ export default class TrafficView extends React.Component {
     try {
       this.props.setLoading && this.props.setLoading(true, getLanguage(this.props.language).Prompt.CHANGING)
       if (this.state.hasAdded) {
-        await SNavigation.removeTrafficMap('tencent@TrafficMap')
+        await SNavigationInner.removeTrafficMap('tencent@TrafficMap')
       } else {
         let layers = await this.props.getLayers()
         let baseMap = layers.filter(layer =>
@@ -110,7 +111,7 @@ export default class TrafficView extends React.Component {
           baseMap.name !== 'baseMap' &&
           baseMap.isVisible
         ) {
-          await SNavigation.openTrafficMap(ConstOnline.TrafficMap.DSParams)
+          await SNavigationInner.openTrafficMap(ConstOnline.TrafficMap.DSParams)
         }
       }
       let hasAdded = !this.state.hasAdded

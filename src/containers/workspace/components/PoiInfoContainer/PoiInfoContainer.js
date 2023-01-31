@@ -22,6 +22,7 @@ import { ChunkType, TouchType } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
 import LocateUtils from '../../../pointAnalyst/LocateUtils'
 import { ScrollView } from 'react-native-gesture-handler'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 export default class PoiInfoContainer extends React.Component {
   props: {
@@ -296,13 +297,13 @@ export default class PoiInfoContainer extends React.Component {
         global.STARTX = item.x
         global.STARTY = item.y
         global.STARTNAME = item.pointName
-        await SNavigation.getStartPoint(global.STARTX, global.STARTY, false)
+        await SNavigationInner.getStartPoint(global.STARTX, global.STARTY, false)
       } else {
         //设置终点
         global.ENDX = item.x
         global.ENDY = item.y
         global.ENDNAME = item.pointName
-        await SNavigation.getEndPoint(global.ENDX, global.ENDY, false)
+        await SNavigationInner.getEndPoint(global.ENDX, global.ENDY, false)
       }
       SMap.removeAllCallout()
       this.setVisible(false)
@@ -485,7 +486,7 @@ export default class PoiInfoContainer extends React.Component {
   }
 
   navitoHere = async () => {
-    SNavigation.clearTrackingLayer()
+    SNavigationInner.clearTrackingLayer()
     SMap._removePOICallout()
     let position = await SMap.getCurrentPosition()
     global.STARTX = position.x
@@ -500,8 +501,8 @@ export default class PoiInfoContainer extends React.Component {
       changeNavPathInfo: this.props.changeNavPathInfo,
       getNavigationDatas: this.props.getNavigationDatas,
     })
-    await SNavigation.getStartPoint(global.STARTX, global.STARTY, false)
-    await SNavigation.getEndPoint(global.ENDX, global.ENDY, false)
+    await SNavigationInner.getStartPoint(global.STARTX, global.STARTY, false)
+    await SNavigationInner.getEndPoint(global.ENDX, global.ENDY, false)
     global.PoiTopSearchBar && global.PoiTopSearchBar.setVisible(false)
     this.setInitialState()
   }

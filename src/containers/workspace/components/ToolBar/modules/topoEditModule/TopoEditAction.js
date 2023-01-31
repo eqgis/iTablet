@@ -18,6 +18,7 @@ import { constants } from '../../../index'
 import TopoEditData from './TopoEditData'
 import { getLanguage } from '../../../../../../language'
 import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 async function geometrySelected(event) {
   const _params = ToolbarModule.getParams()
@@ -128,7 +129,7 @@ async function geometrySelected(event) {
         ...global.INCREMENT_DATA,
         secondLine,
       }
-      SNavigation.drawSelectedLineOnTrackingLayer(params)
+      SNavigationInner.drawSelectedLineOnTrackingLayer(params)
     }
   }
 }
@@ -146,7 +147,7 @@ function commit() {
 
 function dialogConfirm() {
   const _params = ToolbarModule.getParams()
-  SNavigation.cancelIncrement(global.INCREMENT_DATA)
+  SNavigationInner.cancelIncrement(global.INCREMENT_DATA)
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(false)
   let layers = _params.layers.layers
@@ -154,7 +155,7 @@ function dialogConfirm() {
   global.FloorListView?.setVisible(true)
   global.mapController?.setVisible(true)
   global.TouchType = TouchType.NORMAL
-  SNavigation.clearTrackingLayer()
+  SNavigationInner.clearTrackingLayer()
   global.bubblePane && global.bubblePane.clear()
 }
 /**
@@ -180,7 +181,7 @@ async function changeEditType() {
   if (_params.type === ConstToolType.SM_MAP_TOPO_SWITCH_TYPE) {
     return
   }
-  SNavigation.clearTrackingLayer()
+  SNavigationInner.clearTrackingLayer()
   global.TouchType = TouchType.NULL
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOPO_SWITCH_TYPE, {
@@ -242,7 +243,7 @@ async function switchType(item) {
         ...global.INCREMENT_DATA,
         secondLine: false,
       }
-      SNavigation.drawSelectedLineOnTrackingLayer(params)
+      SNavigationInner.drawSelectedLineOnTrackingLayer(params)
       type = ConstToolType.SM_MAP_TOPO_SPLIT_LINE
       await SMap.setAction(Action.SELECT)
       title= getLanguage(global.language).Prompt.SELECT_LINE_WITH_INTERRUPT
@@ -253,7 +254,7 @@ async function switchType(item) {
         ...global.INCREMENT_DATA,
         secondLine: false,
       }
-      SNavigation.drawSelectedLineOnTrackingLayer(params)
+      SNavigationInner.drawSelectedLineOnTrackingLayer(params)
       type = ConstToolType.SM_MAP_TOPO_SPLIT
       touchType = TouchType.MAP_TOPO_SPLIT_BY_POINT
       await SMap.setAction(Action.PAN)
@@ -267,7 +268,7 @@ async function switchType(item) {
         ...global.INCREMENT_DATA,
         secondLine: false,
       }
-      SNavigation.drawSelectedLineOnTrackingLayer(params)
+      SNavigationInner.drawSelectedLineOnTrackingLayer(params)
       type = ConstToolType.SM_MAP_TOPO_EXTEND_LINE
       await SMap.setAction(Action.PAN)
       setTimeout(() => {
@@ -281,7 +282,7 @@ async function switchType(item) {
         ...global.INCREMENT_DATA,
         secondLine: false,
       }
-      SNavigation.drawSelectedLineOnTrackingLayer(params)
+      SNavigationInner.drawSelectedLineOnTrackingLayer(params)
       type = ConstToolType.SM_MAP_TOPO_TRIM_LINE
       await SMap.setAction(Action.PAN)
       setTimeout(() => {
@@ -382,7 +383,7 @@ async function close() {
     nextType = ConstToolType.SM_MAP_TOPO_EDIT
     SMap.setAction(Action.SELECT)
   }
-  SNavigation.clearTrackingLayer()
+  SNavigationInner.clearTrackingLayer()
   _params.setToolbarVisible(true, nextType, {
     containerType,
     isFullScreen: false,
@@ -454,7 +455,7 @@ async function pointSplitLine(point) {
     global.TouchType = TouchType.NULL
     const _params = ToolbarModule.getParams()
     await SMap.setAction(Action.SELECT)
-    SNavigation.clearTrackingLayer()
+    SNavigationInner.clearTrackingLayer()
     _params.setToolbarVisible &&
       _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOPO_EDIT, {
         isFullScreen: false,
@@ -609,7 +610,7 @@ async function changeLineDirection() {
 }
 
 function editConfirm() {
-  SNavigation.clearTrackingLayer()
+  SNavigationInner.clearTrackingLayer()
   const _params = ToolbarModule.getParams()
   let type = _params.type
   switch (type) {
@@ -642,7 +643,7 @@ async function editCancel() {
       break
   }
   global.TouchType = TouchType.NULL
-  SNavigation.clearTrackingLayer()
+  SNavigationInner.clearTrackingLayer()
   _params.setToolbarVisible &&
     _params.setToolbarVisible(true, ConstToolType.SM_MAP_TOPO_EDIT, {
       isFullScreen: false,

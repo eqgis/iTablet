@@ -7,6 +7,7 @@ import { AttributesResp } from "@/utils/AttributeUtils"
 import { ConstOnline } from '../constants'
 import { getLanguage } from '../language'
 import { LayerInfo } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 export interface AttributeHead {
   value: string,
@@ -177,11 +178,11 @@ async function getSelectionAttributeByData(
 async function getNavigationAttributeByData(
   attributes: Attributes,
   name: string,
-  page: number,
-  size: number,
+  page = 0,
+  size = 20,
   type: GetAttributeType = 'loadMore',
 ) {
-  const data = await SNavigation.getNavigationAttributeByData(name, page, size)
+  const data = await SNavigationInner.getNavigationAttributeByData(name, page, size)
   return dealData(attributes, data, page, type)
 }
 

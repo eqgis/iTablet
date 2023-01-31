@@ -1,4 +1,4 @@
-import { FileTools, SData, SMap, SNavigation } from 'imobile_for_reactnative'
+import { FileTools, SData, SMap } from 'imobile_for_reactnative'
 import { NaviDataset } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import React from 'react'
 import { View, TouchableOpacity, Image, Text, FlatList, ListRenderItemInfo } from 'react-native'
@@ -11,7 +11,7 @@ import { scaleSize } from '../../../../../src/utils'
 import { ARNaviModule } from '../ArNavigationModule'
 import { NaviDatasetInfo, NaviDatasourceInfo } from '../ArNavigationModule/ARNaviModule'
 import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
-
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 interface Props {
   navigation: any,
@@ -53,7 +53,7 @@ class RoadNet extends React.Component<Props, State> {
         server: await FileTools.getHomeDirectory() + path,
         engineType: EngineType.UDB,
       })
-      const naviData = await SNavigation.getAllNavData()
+      const naviData = await SNavigationInner.getAllNavData()
       const naviDataset = naviData.filter(item => {
         return item.title === 'dataset'
       })

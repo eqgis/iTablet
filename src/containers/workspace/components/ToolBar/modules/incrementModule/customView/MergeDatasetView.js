@@ -22,12 +22,13 @@ import {
   Height,
 } from '../../../../../../../constants'
 import { getPublicAssets, getThemeAssets } from '../../../../../../../assets'
-import { SMap ,SData, SNavigation} from 'imobile_for_reactnative'
+import { SMap ,SData, SNavigation } from 'imobile_for_reactnative'
 import ModalDropdown from 'react-native-modal-dropdown'
 import { getLanguage } from '../../../../../../../language'
 import { Container } from '../../../../../../../components'
 import NavigationService from '../../../../../../NavigationService'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 export default class MergeDatasetView extends Component {
   props: {
@@ -309,7 +310,7 @@ class Item extends Component {
     let datasourceName = this.props.item.datasourceName
     //第一次点击先获取所有非系统的文字类型字段
     if (!this.props.item.fieldInfo) {
-      let needChangeData = await SNavigation.queryFieldInfos([
+      let needChangeData = await SNavigationInner.queryFieldInfos([
         { datasetName, datasourceName },
       ])
       if (needChangeData.length > 0) {

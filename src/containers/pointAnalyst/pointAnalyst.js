@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from 'react-native'
 import { Container, SearchBar } from '../../components'
-import { SScene, SMap, SNavigation } from 'imobile_for_reactnative'
+import { SScene, SMap } from 'imobile_for_reactnative'
 import NavigationService from '../NavigationService'
 import { scaleSize, screen, setSpText, Toast } from '../../utils'
 import styles from './styles'
@@ -20,6 +20,7 @@ import color from '../../styles/color'
 import { TouchType, ChunkType } from '../../constants'
 import { getThemeAssets } from '../../assets'
 import LocateUtils from './LocateUtils'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 export default class PointAnalyst extends Component {
   props: {
@@ -126,18 +127,18 @@ export default class PointAnalyst extends Component {
         global.STARTX = item.x
         global.STARTY = item.y
         global.STARTNAME = item.pointName
-        await SNavigation.getStartPoint(global.STARTX, global.STARTY, false)
+        await SNavigationInner.getStartPoint(global.STARTX, global.STARTY, false)
         if (global.ENDX && global.ENDY) {
-          await SNavigation.getEndPoint(global.ENDX, global.ENDY, false)
+          await SNavigationInner.getEndPoint(global.ENDX, global.ENDY, false)
         }
       } else {
         //设置终点
         global.ENDX = item.x
         global.ENDY = item.y
         global.ENDNAME = item.pointName
-        await SNavigation.getEndPoint(global.ENDX, global.ENDY, false)
+        await SNavigationInner.getEndPoint(global.ENDX, global.ENDY, false)
         if (global.STARTX && global.STARTY) {
-          await SNavigation.getStartPoint(global.STARTX, global.STARTY, false)
+          await SNavigationInner.getStartPoint(global.STARTX, global.STARTY, false)
         }
       }
       NavigationService.navigate('NavigationView', {
@@ -246,7 +247,7 @@ export default class PointAnalyst extends Component {
         let address = item.address
         this.setState({ searchValue: pointName, searchData: [] })
         if (global.Type === ChunkType.MAP_NAVIGATION) {
-          await SNavigation.clearTrackingLayer()
+          await SNavigationInner.clearTrackingLayer()
           this.props.setMapNavigation({
             isShow: true,
             name: pointName,
@@ -527,7 +528,7 @@ export default class PointAnalyst extends Component {
                 if (!this.is3D) {
                   if (global.Type === ChunkType.MAP_NAVIGATION) {
                     global.TouchType = TouchType.NORMAL
-                    await SNavigation.clearTrackingLayer()
+                    await SNavigationInner.clearTrackingLayer()
                     // this.props.setNavigationChangeAR(true)
                     this.props.setMapNavigation({
                       isShow: true,

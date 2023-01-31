@@ -12,11 +12,9 @@ import FunctionModule from '../../../../../../class/FunctionModule'
 import { ConstToolType ,ToolbarType,TouchType} from '../../../../../../constants'
 import ToolbarModule from '../../../../components/ToolBar/modules/ToolbarModule'
 import {
-  SMap, SNavigation,
-} from 'imobile_for_reactnative'
-import {
   StyleUtils,
 } from '../../../../../../utils'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 class IncrementModule extends FunctionModule {
   constructor(props) {
@@ -32,7 +30,7 @@ class IncrementModule extends FunctionModule {
       data: _data.data,
     })
     global.toolBox.showFullMap(true)
-    SNavigation.createDefaultDataset().then(async returnData => {
+    SNavigationInner.createDefaultDataset().then(async returnData => {
       if (returnData && returnData.datasetName) {
         params.setToolbarVisible(true, ConstToolType.SM_MAP_INCREMENT_CHANGE_METHOD, {
           containerType,

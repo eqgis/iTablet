@@ -18,6 +18,7 @@ import { Toast, LayerUtils } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import NavigationService from '../../../../../NavigationService'
 import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 async function start() {
   if (global.INCREMENT_DATA.datasetName) {
@@ -235,7 +236,7 @@ function dialogConfirm() {
   if (global.INCREMENT_DATA.datasetName) {
     BackgroundTimer.stopBackgroundTimer()
     SNavigation.clearIncrementPoints()
-    SNavigation.cancelIncrement(global.INCREMENT_DATA)
+    SNavigationInner.cancelIncrement(global.INCREMENT_DATA)
   }
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(false)

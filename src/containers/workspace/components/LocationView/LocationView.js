@@ -10,9 +10,9 @@ import { StyleSheet, TouchableOpacity, Image, Animated } from 'react-native'
 import { constUtil, FetchUtils, scaleSize } from '../../../../utils'
 import { getThemeAssets } from '../../../../assets'
 import { color } from '../../../../styles'
-import { SMap, SNavigation } from 'imobile_for_reactnative'
+import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
-
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 export default class LocationView extends React.Component {
   props: {
     getNavigationDatas: () => {},
@@ -30,7 +30,7 @@ export default class LocationView extends React.Component {
     if (this.isStart) {
       global.STARTX = point.x
       global.STARTY = point.y
-      await SNavigation.getStartPoint(global.STARTX, global.STARTY, false)
+      await SNavigationInner.getStartPoint(global.STARTX, global.STARTY, false)
       global.STARTNAME =
         (await FetchUtils.getPointName(global.STARTX, global.STARTY)) ||
         `${
@@ -39,7 +39,7 @@ export default class LocationView extends React.Component {
     } else {
       global.ENDX = point.x
       global.ENDY = point.y
-      await SNavigation.getEndPoint(global.ENDX, global.ENDY, false)
+      await SNavigationInner.getEndPoint(global.ENDX, global.ENDY, false)
       global.ENDNAME =
         (await FetchUtils.getPointName(global.ENDX, global.ENDY)) ||
         `${

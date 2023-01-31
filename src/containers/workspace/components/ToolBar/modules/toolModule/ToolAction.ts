@@ -25,7 +25,7 @@ import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import { TYPE } from '../../../../../camera/types'
 import LocateUtils from '../../../../../pointAnalyst/LocateUtils'
-import { DatasetInfo, QueryParameter } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 function begin() {
   global.GPS = setInterval(() => {
@@ -833,7 +833,7 @@ async function close(type) {
     type === ConstToolType.SM_MAP_TOOL_GPSINCREMENT
   ) {
     global.FloorListView.setVisible(true)
-    await SNavigation.removeNetworkDataset()
+    await SNavigationInner.removeNetworkDataset()
     SMap.setAction(Action.PAN)
     _params.setToolbarVisible(false)
   } else if (type === ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER) {
@@ -884,7 +884,7 @@ async function close(type) {
   } else if (type === ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE) {
     // 返回图层属性界面，并清除属性关联选中的对象
     NavigationService.navigate('LayerAttribute')
-    await SNavigation.clearTrackingLayer()
+    await SNavigationInner.clearTrackingLayer()
     _params.currentLayer && SMap.selectObj(_params.currentLayer.path)
     _params.setToolbarVisible(false)
   } else if (type === ConstToolType.SM_MAP_TOOL_ATTRIBUTE_SELECTION_RELATE) {
@@ -901,7 +901,7 @@ async function close(type) {
           })
         }
         await _data?.actions?.select(_data.preType)
-        await SNavigation.clearTrackingLayer()
+        await SNavigationInner.clearTrackingLayer()
         await SMap.selectObjs(selection)
 
         global.toolBox &&

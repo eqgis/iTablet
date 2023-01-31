@@ -14,6 +14,8 @@ import { SMap, SARMap, SNavigation } from 'imobile_for_reactnative'
 import { getThemeAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 import NavigationService from '../../../NavigationService'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
+
 const HEADER_HEIGHT = Platform.OS === 'ios' ? scaleSize(295) : scaleSize(270)
 export default class NavigationStartButton extends React.Component {
   props: {
@@ -217,9 +219,9 @@ export default class NavigationStartButton extends React.Component {
       }
       let position = await SMap.getCurrentPosition()
       if (global.CURRENT_NAV_MODE === 'INDOOR') {
-        let isindoor = await SNavigation.isIndoorPoint(position.x, position.y)
+        let isindoor = await SNavigationInner.isIndoorPoint(position.x, position.y)
         if (isindoor) {
-          await SNavigation.indoorNavigation(type)
+          await SNavigationInner.indoorNavigation(type)
           this.setVisible(false)
           global.NAVIGATIONSTARTHEAD.setVisible(false)
           this.props.onNavigationStart()
@@ -229,13 +231,13 @@ export default class NavigationStartButton extends React.Component {
       } else if (global.CURRENT_NAV_MODE === 'OUTDOOR') {
         let naviData = this.props.getNavigationDatas()
         //判断是否在当前导航的室外数据集范围内
-        let isInBounds = await SNavigation.isInBounds(
+        let isInBounds = await SNavigationInner.isInBounds(
           position,
           naviData.currentDataset.datasetName,
         )
         if (isInBounds) {
           global.mapController?.setGuiding(true)
-          await SNavigation.outdoorNavigation(type)
+          await SNavigationInner.outdoorNavigation(type)
           this.setVisible(false)
           global.NAVIGATIONSTARTHEAD.setVisible(false)
           this.props.onNavigationStart()
@@ -259,10 +261,10 @@ export default class NavigationStartButton extends React.Component {
       }
       if (global.CURRENT_NAV_MODE === 'OUTDOOR') {
         global.mapController?.setVisible(false)
-        await SNavigation.outdoorNavigation(1)
+        await SNavigationInner.outdoorNavigation(1)
       } else if (global.CURRENT_NAV_MODE === 'INDOOR') {
         global.FloorListView?.setGuiding(true)
-        await SNavigation.indoorNavigation(1)
+        await SNavigationInner.indoorNavigation(1)
       }
       global.mapController?.setGuiding(true)
       this.setVisible(false)

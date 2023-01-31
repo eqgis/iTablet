@@ -19,9 +19,9 @@ import { getPublicAssets, getThemeAssets } from '../../assets'
 import { scaleSize, setSpText } from '../../utils'
 import color from '../../styles/color'
 import { getLanguage } from '../../language'
-import { SMap, SNavigation } from 'imobile_for_reactnative'
 import ImageButton from '../../components/ImageButton'
 import NavigationService from '../NavigationService'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 export default class NavigationDataChangePage extends Component {
   props: {
     navigation: Object,
@@ -142,7 +142,7 @@ export default class NavigationDataChangePage extends Component {
 
   update =  async () => {
     try {
-      let datas = await SNavigation.getAllNavData()
+      let datas = await SNavigationInner.getAllNavData()
       const mapDatasource = datas[0]
       const mapDataset = datas[1]
       mapDatasource.data.map(item => {

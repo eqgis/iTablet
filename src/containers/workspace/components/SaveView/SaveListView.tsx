@@ -15,6 +15,7 @@ import { scaleSize } from '../../../../utils'
 import { size, color } from '../../../../styles'
 import { getThemeAssets } from '../../../../assets'
 import { SMap, SNavigation } from 'imobile_for_reactnative'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 interface MapInfoTmp {
   name: string,
@@ -161,7 +162,7 @@ export default class SaveListView extends React.Component<Props, State> {
         //这里先处理下异常 add xiezhy
         try {
           await SNavigation.stopGuide()
-          await SNavigation.clearPoint()
+          await SNavigationInner.clearPoint()
         } catch (e) {
           this._setLoading && this._setLoading(false)
         }

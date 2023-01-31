@@ -21,14 +21,13 @@ import {
   TextStyle,
   SMediaCollector,
   SData,
-  SNavigation,
 } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import LayerAttributeAdd from '../layerAttributeAdd'
 import { DatasetInfo, GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { Action, LayerInfo } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
-
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 const styles = StyleSheet.create({
   container: {
     // backgroundColor: 'transparent',
@@ -231,7 +230,7 @@ export default class LayerAttributeTabs extends React.Component {
           caption: this.datasetName,
           name: this.datasetName,
         }
-        let id = await SNavigation.getNavigationDatasetGeometryID(this.datasetName)
+        let id = await SNavigationInner.getNavigationDatasetGeometryID(this.datasetName)
         this.props.setSelection && this.props.setSelection([{
           layerInfo: layerInfo,
           ids: id,

@@ -143,6 +143,7 @@ import { onAddARAnimation } from '@/Toolbar/modules/arAnimation/Actions'
 import { CommonActions } from '@react-navigation/native'
 import { Module } from '@/class'
 import PositionStateView from '../../components/PositionStateView'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 global.markerTag = 118082
 
@@ -529,7 +530,7 @@ export default class MapView extends React.Component {
         // )
       ) {
         this.currentFloorID = result.currentFloorID
-        let guideInfo = await SNavigation.isGuiding()
+        let guideInfo = await SNavigationInner.isGuiding()
         if (!guideInfo.isOutdoorGuiding) {
           this.setState({
             currentFloorID: result.currentFloorID,
@@ -1080,7 +1081,7 @@ export default class MapView extends React.Component {
     this.setLoading(true, getLanguage(global.language).Prompt.ROUTE_ANALYSING)
     let curNavInfos = global.NAV_PARAMS.filter(item => !item.hasNaved)
     let guideLines = global.NAV_PARAMS.filter(item => item.hasNaved)
-    await SNavigation.clearPath()
+    await SNavigationInner.clearPath()
     let params = JSON.parse(JSON.stringify(curNavInfos[0]))
     params.hasNaved = true
     let {
@@ -1094,10 +1095,10 @@ export default class MapView extends React.Component {
     } = params
     try {
       if (params.isIndoor) {
-        await SNavigation.getStartPoint(startX, startY, true, startFloor)
-        await SNavigation.getEndPoint(endX, endY, true, endFloor)
-        await SNavigation.startIndoorNavigation(datasourceName)
-        let rel = await SNavigation.beginIndoorNavigation()
+        await SNavigationInner.getStartPoint(startX, startY, true, startFloor)
+        await SNavigationInner.getEndPoint(endX, endY, true, endFloor)
+        await SNavigationInner.startIndoorNavigation(datasourceName)
+        let rel = await SNavigationInner.beginIndoorNavigation()
         if (!rel) {
           Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
           this.changeNavPathInfo({ path: '', pathLength: '' })
@@ -1106,25 +1107,25 @@ export default class MapView extends React.Component {
           return
         }
         for (let item of guideLines) {
-          await SNavigation.addLineOnTrackingLayer(
+          await SNavigationInner.addLineOnTrackingLayer(
             { x: item.startX, y: item.startY },
             { x: item.endX, y: item.endY },
           )
         }
-        await SNavigation.indoorNavigation(1)
+        await SNavigationInner.indoorNavigation(1)
         this.FloorListView?.setVisible(true)
         global.CURRENT_NAV_MODE = 'INDOOR'
       } else {
-        await SNavigation.startNavigation(params)
-        let result = await SNavigation.beginNavigation(startX, startY, endX, endY)
+        await SNavigationInner.startNavigation(params)
+        let result = await SNavigationInner.beginNavigation(startX, startY, endX, endY)
         if (result) {
           for (let item of guideLines) {
-            await SNavigation.addLineOnTrackingLayer(
+            await SNavigationInner.addLineOnTrackingLayer(
               { x: item.startX, y: item.startY },
               { x: item.endX, y: item.endY },
             )
           }
-          await SNavigation.outdoorNavigation(1)
+          await SNavigationInner.outdoorNavigation(1)
           this.FloorListView?.setVisible(false)
           SNavigation.setCurrentFloorID('')
           global.CURRENT_NAV_MODE = 'OUTDOOR'
@@ -1151,7 +1152,7 @@ export default class MapView extends React.Component {
   /** 取消切换，结束室内外一体化导航 清除所有导航信息 */
   _changeRouteCancel = () => {
     this.isGuiding = false
-    SNavigation.clearPoint()
+    SNavigationInner.clearPoint()
     this.showFullMap(false)
     this.props.setMapNavigation({ isShow: false, name: '' })
     global.STARTX = undefined
@@ -1440,7 +1441,7 @@ export default class MapView extends React.Component {
           //这里先处理下异常 add xiezhy
           try {
             await SNavigation.stopGuide()
-            await SNavigation.clearPoint()
+            await SNavigationInner.clearPoint()
           } catch (e) {
             this.setLoading(false)
           }
@@ -1687,7 +1688,7 @@ export default class MapView extends React.Component {
           this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
           if (global.Type === ChunkType.MAP_NAVIGATION) {
             await this._removeNavigationListeners()
-            await SNavigation.clearPoint()
+            await SNavigationInner.clearPoint()
             await SNavigation.stopGuide()
           }
           await this.closeMapHandler(params?.baskFrom)
@@ -3659,7 +3660,7 @@ export default class MapView extends React.Component {
     try {
       if (!this.state.isRight) {
         let position = await SMap.getCurrentPosition()
-        let isIndoor = await SNavigation.isIndoorPoint(position.x, position.y)
+        let isIndoor = await SNavigationInner.isIndoorPoint(position.x, position.y)
         if (!isIndoor) {
           Toast.show(
             getLanguage(this.props.language).Prompt
@@ -3673,7 +3674,7 @@ export default class MapView extends React.Component {
       }
       //清空Toolbar数据
       ToolbarModule.setData({})
-      let rel = await SNavigation.addNetWorkDataset()
+      let rel = await SNavigationInner.addNetWorkDataset()
       let type
       if (rel) {
         this.FloorListView.setVisible(false)
@@ -3828,7 +3829,7 @@ export default class MapView extends React.Component {
     this.showFullMap(true)
     switch (type) {
       case ConstToolType.SM_MAP_INCREMENT_GPS_TRACK:
-        SNavigation.createDefaultDataset().then(async returnData => {
+        SNavigationInner.createDefaultDataset().then(async returnData => {
           if (returnData && returnData.datasetName) {
             params.setToolbarVisible(true, type, {
               containerType,
@@ -4155,7 +4156,7 @@ export default class MapView extends React.Component {
               global.ENDX = undefined
               global.MAPSELECTPOINT.setVisible(false)
               global.MAPSELECTPOINTBUTTON.setVisible(false)
-              await SNavigation.clearPoint()
+              await SNavigationInner.clearPoint()
               global.ToolBar?.existFullMap()
             } else {
               NavigationService.navigate('NavigationView', {
@@ -4181,7 +4182,7 @@ export default class MapView extends React.Component {
       global.ENDY,
     )
     if (result && result[0] && result[0].pathInfos) {
-      await SNavigation.drawOnlinePath(result[0].pathPoints)
+      await SNavigationInner.drawOnlinePath(result[0].pathPoints)
     } else {
       this.setLoading(false)
       Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)

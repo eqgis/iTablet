@@ -22,7 +22,6 @@ import {
   getPublicAssets,
   getThemeAssets,
 } from '../../../../../../../assets'
-import { SMap, SNavigation } from 'imobile_for_reactnative'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { color } from '../../../../../../../styles'
 import ToolbarModule from '../../ToolbarModule'
@@ -30,6 +29,7 @@ import { ToolbarType, Height } from '../../../../../../../constants'
 import IncrementData from '../IncrementData'
 import { getLanguage } from '../../../../../../../language'
 import MergeDatasetView from './MergeDatasetView'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 export default class LineList extends Component {
   props: {
@@ -97,7 +97,7 @@ export default class LineList extends Component {
         datasourceName: this.state.selectedItem.datasourceName,
         datasetName: this.state.selectedItem.datasetName,
       }
-      await SNavigation.setCurrentDataset(params)
+      await SNavigationInner.setCurrentDataset(params)
       global.INCREMENT_DATA = this.state.selectedItem
     }
     const params = ToolbarModule.getParams()
@@ -231,7 +231,7 @@ export default class LineList extends Component {
       removeLayer = true
       global.INCREMENT_DATA = {}
     }
-    SNavigation.deleteDatasetAndLayer({ datasourceName, datasetName, removeLayer })
+    SNavigationInner.deleteDatasetAndLayer({ datasourceName, datasetName, removeLayer })
     this.setState({
       data,
       selectedItem,

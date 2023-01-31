@@ -387,7 +387,7 @@ class UserInfoMaintenance extends Component<Props, State> {
             style={[{
               flex: 1,
               width: '100%',
-              paddingHorizontal: dp(10),
+              // paddingHorizontal: dp(10),
               marginVertical: dp(10),
             }]}
             renderItem={({item, index}) => this._renderItem(item, index)}
@@ -408,7 +408,12 @@ class UserInfoMaintenance extends Component<Props, State> {
           height: dp(30),
           width: '100%',
           justifyContent:'center',
-        }]}
+          paddingHorizontal: dp(10),
+        },
+        item.name === this.state.country && {
+          backgroundColor: '#0B82FF',
+        }
+        ]}
         onPress={() => {
           this.setState({
             isCountryListViewShow: false,

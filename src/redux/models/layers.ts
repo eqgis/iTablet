@@ -130,7 +130,7 @@ export const setLayerAttributes = (
       for (let i = 0; i < params.length; i++) {
         
         let layerInfo:LayerInfo = params[i].layerInfo
-        bRes = await SData.setFieldInfoValue(
+        bRes = await SData.setRecordsetValue(
           {datasetName:layerInfo.datasetName||'',datasourceName:layerInfo.datasourceAlias||''},
           params[i].fieldInfo,
           {index: params[i].params?.index,filter: params[i].params?.filter}
@@ -178,7 +178,7 @@ export const setDataAttributes = (
   try {
     if (params && params.length > 0) {
       for (let i = 0; i < params.length; i++) {
-        bRes = await SData.setFieldInfoValue(
+        bRes = await SData.setRecordsetValue(
           {datasetName:params[i].layerInfo.datasetName,datasourceName:params[i].layerInfo.datasourceAlias},
           params[i].fieldInfo,
           params[i].params,
@@ -210,7 +210,7 @@ export const setNaviAttributes = (
   try {
     if (params && params.length > 0) {
       for (let i = 0; i < params.length; i++) {
-        bRes = await SData.setFieldInfoValue(
+        bRes = await SData.setRecordsetValue(
           {
             datasourceName:"default_increment_datasource@"+getState().user.toJS().userName,
             datasetName:params[i].layerPath
@@ -424,7 +424,7 @@ export const setAttributeHistory = (params = {}, cb = () => {}) => async (
 
     if (currentHistory && currentHistory && currentHistory.length > 0) {
       for (let i = 0; i < currentHistory.length; i++) {
-        await SData.setFieldInfoValue(
+        await SData.setRecordsetValue(
           layerHistory.datasetInfo,
           currentHistory[i].fieldInfo,
           currentHistory[i].params,

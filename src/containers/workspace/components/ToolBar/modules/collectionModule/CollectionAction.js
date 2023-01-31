@@ -285,7 +285,7 @@ async function collectionSubmit(type) {
         break
     }
     if (ToolbarModule.getParams().template.currentTemplateInfo.layerPath) {
-      SData.setFieldInfoValue(
+      SData.setRecordsetValue(
         ToolbarModule.getParams().template.currentTemplateInfo.datasetInfo,
         ToolbarModule.getParams().template.currentTemplateInfo.field,
         {index:-1}

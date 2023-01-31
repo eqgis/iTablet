@@ -83,7 +83,7 @@ async function searchLayerAttribute(
   size: number,
   type: GetAttributeType = 'loadMore',
 ) {
-  const data = await SMap.searchLayerAttribute(layerInfo.path, params, page, size)
+  const data = await SMap._searchLayerAttribute(layerInfo.path, params, page, size)
 
   return dealData(attributes, data, page, type)
 }
@@ -106,7 +106,7 @@ async function searchMyDataAttribute(
   size: number,
   type: GetAttributeType = 'loadMore',
 ) {
-  const data = await SMap.searchMyDataAttribute(path, params, page, size)
+  const data = await SMap._searchMyDataAttribute(path, params, page, size)
 
   return dealData(attributes, data, page, type)
 }
@@ -129,7 +129,7 @@ async function searchSelectionAttribute(
   size: number,
   type: GetAttributeType = 'loadMore',
 ) {
-  const data = await SMap.searchSelectionAttribute(path, searchKey, page, size)
+  const data = await SMap._searchSelectionAttribute(path, searchKey, page, size)
 
   return dealData(attributes, data, page, type)
 }
@@ -162,7 +162,6 @@ async function getSelectionAttributeByData(
   size: number,
   type: GetAttributeType = 'loadMore',
 ) {
-  debugger
   // const data = await SMap.getSelectionAttributeByData(name, page, size)
   const para:QueryParameter = {}
   const data1 = await SData.queryWithParameter(datasetInfo,para )
@@ -188,16 +187,18 @@ async function getNavigationAttributeByData(
 
 
 async function deleteSelectionAttributeByLayer(path: string, index: number, isCollection: boolean) {
-  return await SMap.deleteSelectionAttributeByLayer(path, index, isCollection)
+  return await SMap.deleteLayerSelectionAttribute(path, index)
 }
 
-async function deleteAttributeByLayer(path: string, smID: number, isCollection: boolean) {
-  return await SMap.deleteAttributeByLayer(path, smID, isCollection)
+async function deleteAttributeByLayer(layerInfo: LayerInfo, smID: number, isCollection: boolean) {    
+  // return await SMap.deleteAttributeByLayer(path, smID, isCollection)
+  return await SData.deleteRecordsetValue({datasetName:layerInfo.datasetName,datasourceName:layerInfo.datasourceAlias},{index:smID})
 }
 
-async function deleteAttributeByData(name: string, smID: number) {
-  return await SMap.deleteAttributeByData(name, smID)
-}
+// async function deleteAttributeByData(name: string, smID: number) {
+//   debugger
+//   return await SMap.deleteAttributeByData(name, smID)
+// }
 
 async function deleteNavigationAttributeByData(name: string, smID: number) {
   return await SNavigation.deleteNavigationAttributeByData(name, smID)
@@ -783,7 +784,7 @@ export default {
   isMediaData,
 
   getSelectionAttributeByData,
-  deleteAttributeByData,
+  // deleteAttributeByData,
   getNavigationAttributeByData,
   deleteNavigationAttributeByData,
 

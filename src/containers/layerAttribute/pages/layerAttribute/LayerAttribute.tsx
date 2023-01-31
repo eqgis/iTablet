@@ -934,7 +934,7 @@ export default class LayerAttribute extends React.Component {
       } else {
         index = this.state.currentIndex
       }
-      result = await LayerUtils.deleteAttributeByLayer(this.props.currentLayer.name, index, false)
+      result = await LayerUtils.deleteAttributeByLayer(this.props.currentLayer, index, false)
     }
     if (result) {
       if (global.coworkMode) {

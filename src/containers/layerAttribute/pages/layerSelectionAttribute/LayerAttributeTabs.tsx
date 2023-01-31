@@ -555,21 +555,17 @@ export default class LayerAttributeTabs extends React.Component {
     // 若包含多媒体图片，则删除
     if (hasMedia && smID >= 0) {
       result = await SMediaCollector.deleteMedia(layerInfo.path, smID)
-    } else if (this.state.isCollection) { // 删除当前图层中的最后一条数据，用于绘图后立即查看属性
+    } else if (this.state.isCollection || this.type === 'MY_DATA') { // 删除当前图层中的最后一条数据，用于绘图后立即查看属性
       result = await LayerUtils.deleteAttributeByLayer(
-        layerInfo.path,
+        layerInfo,
         this.state.currentIndex, this.state.isCollection)
-    }else if(this.type === 'MY_DATA'){
-      result = await LayerUtils.deleteAttributeByData(
-        layerInfo.path,
-        this.state.currentIndex)
     } else if (this.type === 'NAVIGATION') {
 
       const datasource = "default_increment_datasource@" + this.props.currentUser.userName
       //todo @yangsl 处理layerInfo没有数据集问题，接口也统一一下，removeNavigationRecordsetFieldInfoByData有部分业务逻辑需要调整到JS，需要找我讨论
       const datasetInfo: DatasetInfo = { datasetName: layerInfo.path || '', datasourceName: datasource || '' }
 
-      result = await SData.deleteFieldInfoValue(datasetInfo,{index:this.state.currentIndex})
+      result = await SData.deleteRecordsetValue(datasetInfo,{index:this.state.currentIndex})
       // result = await LayerUtils.deleteNavigationAttributeByData(
       //   layerInfo.path,
       //   this.state.currentIndex)

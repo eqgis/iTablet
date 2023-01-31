@@ -1,11 +1,11 @@
 import React, { Component } from "react"
-import { SectionList, View, Text, TouchableOpacity, Image, StyleSheet, TextInput } from "react-native"
+import { SectionList, View, Text, TouchableOpacity, Image, StyleSheet, TextInput, FlatList } from "react-native"
 import { connect, ConnectedProps } from "react-redux"
 import { Container, Dialog } from '../../../../src/components'
 import { dp } from "imobile_for_reactnative/utils/size"
 import { getLanguage } from "@/language"
 import { setCurrentSymbol } from "@/redux/models/symbol"
-import { getPublicAssets } from "@/assets"
+import { getPublicAssets, getThemeAssets } from "@/assets"
 import { setServerIP, setServerUserId, setServerUserName, setServerDepartmentId, setCountry, setCity } from '../reduxModels/langchao'
 import { dateFormat, getToken, setSysOrgid, setUserId, setUserName, users } from "../utils/langchaoServer"
 import { Toast } from "@/utils"
@@ -13,6 +13,7 @@ import { color } from "@/styles"
 import NavigationService from "@/containers/NavigationService"
 import { Picker } from '@react-native-picker/picker'
 import { getJson } from "../assets/data"
+import { ScrollView } from "react-native-gesture-handler"
 // import { setServerIP, setServerUserId, setServerUserName, setServerDepartmentId } from "@/redux/models/langchao"
 
 
@@ -45,11 +46,13 @@ interface State {
 	city: string,
 	organization: string,
 	project: string,
+  isCountryListViewShow: boolean,
 }
 
 class UserInfoMaintenance extends Component<Props, State> {
   _sectionList: SectionList | undefined | null = null
   addDialog: Dialog | undefined | null = null
+  countryListView: View | undefined | null = null
 
   constructor(props: Props) {
     super(props)
@@ -62,6 +65,7 @@ class UserInfoMaintenance extends Component<Props, State> {
       city: this.props.city || "",
       organization: '',
       project: '',
+      isCountryListViewShow: false,
     }
   }
 
@@ -238,7 +242,7 @@ class UserInfoMaintenance extends Component<Props, State> {
             }
           ]}
         >
-          <Picker
+          {/* <Picker
             selectedValue={this.state.country}
             mode={'dropdown'}
             style={[styles.pickerSize]}
@@ -253,9 +257,167 @@ class UserInfoMaintenance extends Component<Props, State> {
               />
             })}
 
-          </Picker>
+          </Picker> */}
+          <TouchableOpacity
+            style={[{
+              flex:1,
+              height:dp(20),
+              flexDirection:'row',
+              alignItems:'center',
+            }]}
+            onPress={() => {
+              this.setState({
+                isCountryListViewShow: true,
+              })
+            }}
+          >
+            <View
+              style={[{
+                flex: 1,
+                height: dp(20),
+                alignContent:'center',
+                marginLeft: -dp(3),
+              }]}
+            >
+              <Text
+                style={[{
+                  color: '#000',
+                }]}
+              >{this.state.country}</Text>
+            </View>
+            <View
+              style={[{
+                width: dp(24),
+                height: dp(24),
+                justifyContent:'center',
+                alignItems:'center',
+                paddingRight: dp(10),
+              }]}
+            >
+              <Image
+                style={[{
+                  width: dp(24),
+                  height: dp(24),
+                }]}
+                resizeMode={'contain'}
+                source={getThemeAssets().publicAssets.icon_drop_down}
+              />
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
+    )
+  }
+
+  renderCountryList = () => {
+    return (
+      <View
+        ref={ref => (this.countryListView = ref)}
+        style={[{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor:'rgba(0,0,0,.5)',
+        }]}
+      >
+        <TouchableOpacity
+          style={[{
+            width: '100%',
+            flex: 1,
+          }]}
+          onPress={()=>{
+            this.setState({
+              isCountryListViewShow: false,
+            })
+          }}
+        ></TouchableOpacity>
+        <View
+          style={[{
+            width: '100%',
+            height: '80%',
+            backgroundColor: '#fff'
+          }]}
+        >
+          <View
+            style={[{
+              width: '100%',
+              height: dp(40),
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderBottomColor: '#eee',
+              borderBottomWidth: dp(1),
+            }]}
+          >
+            <Text
+              style={[{
+                color: '#000',
+                fontSize: dp(16),
+              }]}
+            >{getLanguage(global.language).Map_Settings.TARGET_COUNTRY}</Text>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={[{
+                width: dp(20),
+                height: dp(20),
+                position: 'absolute',
+                top: dp(10),
+                right: dp(10),
+                justifyContent: 'center',
+                alignItems: 'center',
+              }]}
+              onPress={() => {
+                this.setState({
+                  isCountryListViewShow: false,
+                })
+              }}
+            >
+              <Image
+                style={[{
+                  width: dp(24),
+                  height: dp(24),
+                }]}
+                resizeMode={'contain'}
+                source={getPublicAssets().common.icon_close}
+              />
+            </TouchableOpacity>
+          </View>
+          <FlatList
+            style={[{
+              flex: 1,
+              width: '100%',
+              paddingHorizontal: dp(10),
+              marginVertical: dp(10),
+            }]}
+            renderItem={({item, index}) => this._renderItem(item, index)}
+            data={getJson().contryCode}
+            keyExtractor={(item, index) => item.codeId + "-" + index}
+            showsVerticalScrollIndicator={true}
+          />
+        </View>
+
+      </View>
+    )
+  }
+
+  _renderItem = (item: countryDataType, index: number) => {
+    return (
+      <TouchableOpacity
+        style={[{
+          height: dp(30),
+          width: '100%',
+          justifyContent:'center',
+        }]}
+        onPress={() => {
+          this.setState({
+            isCountryListViewShow: false,
+            country: item.name,
+          })
+        }}
+      >
+        <Text>{item.name}</Text>
+      </TouchableOpacity>
     )
   }
 
@@ -328,6 +490,7 @@ class UserInfoMaintenance extends Component<Props, State> {
         {this.renderUserCodeView()}
         {this.renderUserInfo()}
         {this.renderOtherInfo()}
+        {this.state.isCountryListViewShow && this.renderCountryList()}
 
       </Container>
     )

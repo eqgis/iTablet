@@ -29,7 +29,7 @@ import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interface
 
 function begin() {
   global.GPS = setInterval(() => {
-    SNavigation.gpsBegin()
+    SNavigationInner.gpsBegin()
   }, 2000)
 }
 
@@ -42,10 +42,10 @@ function stop() {
 function submit() {
   (async function() {
     if (ToolbarModule.getParams().type === ConstToolType.SM_MAP_TOOL_GPSINCREMENT) {
-      await SNavigation.addGPSRecordset()
+      await SNavigationInner.addGPSRecordset()
     }
     await SMap.submit()
-    await SNavigation.buildNetwork()
+    await SNavigationInner.buildNetwork()
   })()
 }
 
@@ -80,7 +80,7 @@ function viewEntire() {
   SMap.viewEntire().then(async () => {
     const params = ToolbarModule.getParams()
     params.setToolbarVisible && params.setToolbarVisible(false)
-    const currentFloorID = await SNavigation.getCurrentFloorID()
+    const currentFloorID = await SNavigationInner.getCurrentFloorID()
     params.changeFloorID && params.changeFloorID(currentFloorID || '')
   })
 }

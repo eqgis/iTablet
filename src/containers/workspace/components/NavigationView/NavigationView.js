@@ -332,7 +332,7 @@ export default class NavigationView extends React.Component {
             endY: global.ENDY,
             datasourceName: startIndoorInfo[0].datasourceName,
           }
-          let doorPoint = await SNavigation.getDoorPoint(params)
+          let doorPoint = await SNavigationInner.getDoorPoint(params)
           //临界点获取成功，存在坐标及楼层信息
           if (doorPoint && doorPoint.x && doorPoint.y && doorPoint.floorID) {
             //构建分段导航相关参数
@@ -422,7 +422,7 @@ export default class NavigationView extends React.Component {
             endY: global.ENDY,
             datasourceName: endIndoorInfo[0].datasourceName,
           }
-          let doorPoint = await SNavigation.getDoorPoint(params)
+          let doorPoint = await SNavigationInner.getDoorPoint(params)
           //获取成功，拿到坐标和楼层id
           if (doorPoint && doorPoint.x && doorPoint.y && doorPoint.floorID) {
             //构建分段导航参数

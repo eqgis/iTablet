@@ -44,7 +44,7 @@ export default class MapSelectPointButton extends React.Component {
             getLanguage(global.language).Map_Main_Menu.START_POINT
           }(${global.STARTX.toFixed(6)},${global.STARTY.toFixed(6)})`
         if (this.state.firstpage) {
-          global.STARTPOINTFLOOR = await SNavigation.getCurrentFloorID()
+          global.STARTPOINTFLOOR = await SNavigationInner.getCurrentFloorID()
           global.TouchType = TouchType.NORMAL
           NavigationService.navigate('NavigationView', {
             changeNavPathInfo: this.props.changeNavPathInfo,
@@ -73,7 +73,7 @@ export default class MapSelectPointButton extends React.Component {
             getLanguage(global.language).Map_Main_Menu.END_POINT
           }(${global.ENDX.toFixed(6)},${global.ENDY.toFixed(6)})`
         if (this.state.firstpage) {
-          global.ENDPOINTFLOOR = await SNavigation.getCurrentFloorID()
+          global.ENDPOINTFLOOR = await SNavigationInner.getCurrentFloorID()
           global.TouchType = TouchType.NORMAL
           NavigationService.navigate('NavigationView', {
             changeNavPathInfo: this.props.changeNavPathInfo,
@@ -231,7 +231,7 @@ export default class MapSelectPointButton extends React.Component {
             endY: global.ENDY,
             datasourceName: startIndoorInfo[0].datasourceName,
           }
-          let doorPoint = await SNavigation.getDoorPoint(params)
+          let doorPoint = await SNavigationInner.getDoorPoint(params)
           if (doorPoint && doorPoint.x && doorPoint.y && doorPoint.floorID) {
             global.NAV_PARAMS = [
               {
@@ -311,7 +311,7 @@ export default class MapSelectPointButton extends React.Component {
             endY: global.ENDY,
             datasourceName: endIndoorInfo[0].datasourceName,
           }
-          let doorPoint = await SNavigation.getDoorPoint(params)
+          let doorPoint = await SNavigationInner.getDoorPoint(params)
           if (doorPoint && doorPoint.x && doorPoint.y && doorPoint.floorID) {
             global.NAV_PARAMS = [
               {

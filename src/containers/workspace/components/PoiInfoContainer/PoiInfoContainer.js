@@ -308,7 +308,7 @@ export default class PoiInfoContainer extends React.Component {
       SMap.removeAllCallout()
       this.setVisible(false)
       global.PoiTopSearchBar && global.PoiTopSearchBar.setVisible(false)
-      global.STARTPOINTFLOOR = await SNavigation.getCurrentFloorID()
+      global.STARTPOINTFLOOR = await SNavigationInner.getCurrentFloorID()
       NavigationService.navigate('NavigationView', {
         changeNavPathInfo: this.props.changeNavPathInfo,
         getNavigationDatas: this.props.getNavigationDatas,

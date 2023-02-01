@@ -146,7 +146,7 @@ export default class MergeDatasetView extends Component {
    * }]
    */
   mergeData = async selectedDatas => {
-    let result = await SNavigation.mergeDataset(
+    let result = await SNavigationInner.mergeDataset(
       { ...this.props.sourceData },
       selectedDatas,
     )

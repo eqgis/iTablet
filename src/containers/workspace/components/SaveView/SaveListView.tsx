@@ -161,7 +161,7 @@ export default class SaveListView extends React.Component<Props, State> {
       if (global.Type === ChunkType.MAP_NAVIGATION) {
         //这里先处理下异常 add xiezhy
         try {
-          await SNavigation.stopGuide()
+          await SNavigationInner.stopGuide()
           await SNavigationInner.clearPoint()
         } catch (e) {
           this._setLoading && this._setLoading(false)

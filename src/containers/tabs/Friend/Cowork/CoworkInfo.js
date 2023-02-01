@@ -156,7 +156,7 @@ export default class CoworkInfo {
           if (message.message.themeType === ThemeType.GRAPH) {
             index = -1
           }
-          result = await SMap.insertXMLLayer(index, message.message.layer)
+          result = await SMap.insertLayerFromXml(index, message.message.layer)
           result && SMap.refreshMap()
         }
         if (result) {
@@ -234,7 +234,7 @@ export default class CoworkInfo {
           if (message.message.themeType === ThemeType.GRAPH) {
             index = -1
           }
-          result = await SMap.insertXMLLayer(index, message.message.layer)
+          result = await SMap.insertLayerFromXml(index, message.message.layer)
           result && SMap.refreshMap()
         }
         if (result) {

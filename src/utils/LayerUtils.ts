@@ -145,8 +145,6 @@ async function getSelectionAttributeByLayer(
   const data1 = await SMap.getLayerSelectionAttribute(layerInfo?.path||"")
 
   const datasetInfo:DatasetInfo = {datasetName:layerInfo.datasetName,datasourceName:layerInfo.datasourceAlias}
-  // const para:QueryParameter = {}
-  // const data1 = await SData.queryWithParameter(datasetInfo,para )
   const head = await SData.getFieldInfos(datasetInfo)
   const startIndex =  page*size
   const total = data1.length
@@ -204,9 +202,9 @@ async function deleteNavigationAttributeByData(name: string, smID: number) {
   return await SNavigation.deleteNavigationAttributeByData(name, smID)
 }
 
-async function getCurrentGeometryID(path: string) {
-  return await SMap.getCurrentGeometryID(path)
-}
+// async function getCurrentGeometryID(path: string) {
+//   return await SMap.getCurrentGeometryID(path)
+// }
 
 function dealData(attributes: Attributes, result: AttributesResp, page: number, type: GetAttributeType) {
   const tableHead: {
@@ -779,7 +777,7 @@ export default {
 
   setLayersSelectable,
 
-  getCurrentGeometryID,
+  // getCurrentGeometryID,
 
   isMediaData,
 

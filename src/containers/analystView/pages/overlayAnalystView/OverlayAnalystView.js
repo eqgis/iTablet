@@ -12,7 +12,7 @@ import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 import {
   SMap,
-  SAnalyst,
+  SOverlayAnalyst,
   GeoStyle,
   SData,
 } from 'imobile_for_reactnative'
@@ -174,7 +174,7 @@ export default class OverlayAnalystView extends Component {
           result = false
         switch (this.state.title) {
           case getLanguage(this.props.language).Analyst_Methods.CLIP:
-            result = await SAnalyst.clip(
+            result = await SOverlayAnalyst.clip(
               sourceData,
               targetData,
               resultData,
@@ -182,7 +182,7 @@ export default class OverlayAnalystView extends Component {
             )
             break
           case getLanguage(this.props.language).Analyst_Methods.ERASE:
-            result = await SAnalyst.erase(
+            result = await SOverlayAnalyst.erase(
               sourceData,
               targetData,
               resultData,
@@ -190,7 +190,7 @@ export default class OverlayAnalystView extends Component {
             )
             break
           case getLanguage(this.props.language).Analyst_Methods.IDENTITY:
-            result = await SAnalyst.identity(
+            result = await SOverlayAnalyst.identity(
               sourceData,
               targetData,
               resultData,
@@ -198,7 +198,7 @@ export default class OverlayAnalystView extends Component {
             )
             break
           case getLanguage(this.props.language).Analyst_Methods.INTERSECT:
-            result = await SAnalyst.intersect(
+            result = await SOverlayAnalyst.intersect(
               sourceData,
               targetData,
               resultData,
@@ -206,7 +206,7 @@ export default class OverlayAnalystView extends Component {
             )
             break
           case getLanguage(this.props.language).Analyst_Methods.UNION:
-            result = await SAnalyst.union(
+            result = await SOverlayAnalyst.union(
               sourceData,
               targetData,
               resultData,
@@ -214,7 +214,7 @@ export default class OverlayAnalystView extends Component {
             )
             break
           case getLanguage(this.props.language).Analyst_Methods.UPDATE:
-            result = await SAnalyst.update(
+            result = await SOverlayAnalyst.update(
               sourceData,
               targetData,
               resultData,
@@ -222,7 +222,7 @@ export default class OverlayAnalystView extends Component {
             )
             break
           case getLanguage(this.props.language).Analyst_Methods.XOR:
-            result = await SAnalyst.xOR(
+            result = await SOverlayAnalyst.xOR(
               sourceData,
               targetData,
               resultData,

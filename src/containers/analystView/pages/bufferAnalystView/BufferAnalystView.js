@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import { InteractionManager } from 'react-native'
 import { Container } from '../../../../components'
 import { ChunkType } from '../../../../constants'
 import { MapToolbar } from '../../../workspace/components'
 import styles from './styles'
 import { Toast } from '../../../../utils'
 import { getLanguage } from '../../../../language'
-import { SAnalyst, SMap } from 'imobile_for_reactnative'
+import { SBufferAnalyst, SMap } from 'imobile_for_reactnative'
 import NavigationService from '../../../NavigationService'
 
 import BufferAnalystViewTab from './BufferAnalystViewTab'
@@ -68,7 +67,7 @@ export default class BufferAnalystView extends Component {
             isAttributeRetained,
             optionParameter,
           } = await this.currentTab.getAnalystParams()
-          SAnalyst.createBuffer(
+          SBufferAnalyst.createBuffer(
             sourceData,
             resultData,
             bufferParameter,
@@ -112,7 +111,7 @@ export default class BufferAnalystView extends Component {
         } else {
           // let { sourceData, resultData, bufferRadiuses, bufferRadiusUnit, semicircleSegments, isUnion, isAttributeRetained, isRing, optionParameter } = this.currentTab.getAnalystParams()
           let params = await this.currentTab.getAnalystParams()
-          SAnalyst.createMultiBuffer(
+          SBufferAnalyst.createMultiBuffer(
             params.sourceData,
             params.resultData,
             params.bufferRadiuses,

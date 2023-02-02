@@ -192,7 +192,7 @@ class UpdatePassword extends Component<Props, State> {
           style={[{
             width: '80%',
             height: dp(50),
-            backgroundColor: '#add8e6',
+            backgroundColor: '#0B82FF',
             justifyContent: 'center',
             alignItems: 'center',
           }]}

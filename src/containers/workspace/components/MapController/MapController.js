@@ -403,22 +403,32 @@ export default class MapController extends React.Component {
         <View style={[styles.topView, styles.shadow]}>
           <MTBtn
             style={styles.btn}
-            imageStyle={styles.btnImg}
+            imageStyle={[styles.btnImg,
+              {
+                width: scaleSize(32),
+                height: scaleSize(32),
+              }]}
             key={'controller_plus'}
             textColor={'black'}
             size={MTBtn.Size.NORMAL}
-            image={getThemeAssets().mapTools.icon_enlarge}
+            // image={getThemeAssets().mapTools.icon_enlarge}
+            image={getImage().icon_zoomUp}
             onPress={this.plus}
             onPressIn={this.map3Dplus}
             onPressOut={this.cloestimer}
           />
           <MTBtn
             style={styles.btn}
-            imageStyle={styles.btnImg}
+            imageStyle={[styles.btnImg,
+              {
+                width: scaleSize(32),
+                height: scaleSize(32),
+              }]}
             key={'controller_minus'}
             textColor={'black'}
             size={MTBtn.Size.NORMAL}
-            image={getThemeAssets().mapTools.icon_narrow}
+            // image={getThemeAssets().mapTools.icon_narrow}
+            image={getImage().icon_zoomDown}
             onPress={this.minus}
             onPressIn={this.map3Dminus}
             onPressOut={this.cloestimer}

@@ -159,7 +159,8 @@ const _ChangeBaseLayerModule = function () {
     type: AppletsToolType.APPLETS_CHANGE_BASE_LAYER_HOME,                               // 自定义类型
     title: getLanguage(global.language).Profile.LAYER, // title
     size: 'large',                                      // 图片尺寸
-    image: getThemeAssets().mine.my_basemap,             // 图片
+    // image: getThemeAssets().mine.my_basemap,             // 图片
+    image: getImage().icon_layer,
     getData: ChangeBaseLayerData.getData,                          // 当前Function模块获取数据的方法
     actions: ChangeBaseLayerAction,                                // 当前Function模块所有事件
   })

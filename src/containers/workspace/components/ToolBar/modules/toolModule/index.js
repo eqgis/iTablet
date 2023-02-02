@@ -5,6 +5,7 @@ import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
+import { getImage } from '../../../../../../../applets/langchaoDemo/src/assets/Image'
 
 class ToolModule extends FunctionModule {
   constructor(props) {
@@ -42,7 +43,8 @@ export default function() {
     type: ConstToolType.SM_MAP_TOOL,
     title: getLanguage(global.language).Map_Main_Menu.TOOLS,
     size: 'large',
-    image: getThemeAssets().functionBar.icon_tool_tools,
+    // image: getThemeAssets().functionBar.icon_tool_tools,
+    image: getImage().icon_until,
     getData: ToolData.getData,
     actions: ToolAction,
   })

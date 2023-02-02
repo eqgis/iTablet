@@ -1,6 +1,6 @@
 import FunctionModule from '../../../../../../class/FunctionModule'
-import TourAction from 'applets/langchaoDemo/src/mapFunctionModules/Langchao/TourAction'
-import { getImage } from 'applets/langchaoDemo/src/assets'
+// import TourAction from 'applets/langchaoDemo/src/mapFunctionModules/Langchao/TourAction'
+import { getImage } from '../../../../../../../applets/langchaoDemo/src/assets/Image'
 import Toast from '@/utils/Toast'
 import { SCollector, SMap, SMCollectorType } from 'imobile_for_reactnative'
 import { getThemeAssets } from '@/assets'
@@ -49,6 +49,7 @@ export default function() {
     type: "POSITIONSUBMIT",
     title: getLanguage(global.language).Prompt.TRACK_TOOL,
     size: 'large',
-    image: getThemeAssets().module.icon_map_navigation,
+    // image: getThemeAssets().module.icon_map_navigation,
+    image: getImage().icon_track,
   })
 }

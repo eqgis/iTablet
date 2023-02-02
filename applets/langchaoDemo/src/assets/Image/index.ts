@@ -36,6 +36,13 @@ const icon_login_user = require('./icon_login_user.png')
 const icon_logo = require('./icon_logo.png')
 const radio_select_blue = require('./radio_select_blue.png')
 
+const icon_layer = require('./layer.png')
+const icon_search = require('./search.png')
+const icon_track = require('./track.png')
+const icon_until = require('./until.png')
+const icon_zoomDown = require('./zoomDown.png')
+const icon_zoomUp = require('./zoomUp.png')
+
 const image = {
   flight,
   telephone1,
@@ -71,6 +78,12 @@ const image = {
   icon_login_user,
   icon_logo,
   radio_select_blue,
+  icon_layer,
+  icon_search,
+  icon_track,
+  icon_until,
+  icon_zoomDown,
+  icon_zoomUp,
 }
 
 function getImage(): typeof image {

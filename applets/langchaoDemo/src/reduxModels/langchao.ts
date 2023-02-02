@@ -168,11 +168,11 @@ const initialState = fromJS({
   departmentId: '',
   contacts: [],
   password: '',
-  // pubkey: `MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDYdvhxlmpCV5iE3iaWv7M0Fe/x
-  // /L1qfXzDuBovOoWkzN78/pYpatRouPOSO634Hl9mekWbuUXFwI3hCoTDvk1M/Kbc
-  // pcXAgIiavv/KvGxgeIdaHMAFH7gzHaF0fsayF9DrLdrgyDttw+qeV3z//DVpxUn6
-  // Gdig1KA4pvB/3DhfsQIDAQAB`,
-  pubkey: "",
+  pubkey: `MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDYdvhxlmpCV5iE3iaWv7M0Fe/x
+  /L1qfXzDuBovOoWkzN78/pYpatRouPOSO634Hl9mekWbuUXFwI3hCoTDvk1M/Kbc
+  pcXAgIiavv/KvGxgeIdaHMAFH7gzHaF0fsayF9DrLdrgyDttw+qeV3z//DVpxUn6
+  Gdig1KA4pvB/3DhfsQIDAQAB`,
+  // pubkey: "",
 })
 
 export default handleActions(

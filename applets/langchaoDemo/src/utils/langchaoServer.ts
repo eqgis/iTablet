@@ -22,7 +22,10 @@ let sysOrgid = ""
 let userInfo: any[] = []
 
 //之前ssl生成的公钥，复制的时候要小心不要有空格
-let pubKey =  ''
+let pubKey =  `MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDYdvhxlmpCV5iE3iaWv7M0Fe/x
+/L1qfXzDuBovOoWkzN78/pYpatRouPOSO634Hl9mekWbuUXFwI3hCoTDvk1M/Kbc
+pcXAgIiavv/KvGxgeIdaHMAFH7gzHaF0fsayF9DrLdrgyDttw+qeV3z//DVpxUn6
+Gdig1KA4pvB/3DhfsQIDAQAB`
 
 export const getPubKey = () => {
   return pubKey
@@ -546,14 +549,21 @@ export const upDateTelBook = async (telBookItem: telBookItemInfoType, type: opTy
  */
 export const Base64AndRSAEncode = (str: string) => {
   try {
+    console.warn("str: " + str)
+    printLog(`\n \n Base64AndRSAEncode str : ${str}`)
     const encryptor = new JSEncrypt() // 创建加密对象实例
+    printLog(`\n Base64AndRSAEncode pubKey : ${pubKey}`)
     encryptor.setPublicKey(pubKey)//设置公钥
     const rsaStr = encryptor.encrypt(str)  // 对内容进行加密
+    console.warn("rsaStr: " + rsaStr)
+    printLog(`\n Base64AndRSAEncode rsaStr : ${rsaStr}`)
 
     if(!rsaStr) return str
 
     // const base64Passworld = btoa(password)
     const base64Str = Base64.encode(rsaStr)
+    printLog(`\n Base64AndRSAEncode base64Str : ${base64Str} \n`)
+    console.warn("base64Str: " + base64Str)
     return base64Str
   } catch (error) {
     return str
@@ -595,7 +605,8 @@ export const login = async (userId: string, password: string) => {
 
     // // const base64Passworld = btoa(password)
     // const base64Passworld = Base64.encode(rsaPassWord)
-
+    console.warn("login pubKey: " + pubKey)
+    printLog(`\n login pubKey : ${JSON.stringify(pubKey)}`)
     const base64Passworld = Base64AndRSAEncode(password)
 
     const params = {
@@ -653,6 +664,8 @@ export const updatePassword = async (userId: string, oldPassword: string, newPas
       timestamp,
     }
 
+    console.warn("updatePassword pubKey: " + pubKey)
+    printLog(`\n updatePassword pubKey : ${JSON.stringify(pubKey)}`)
     const endodeOldPassworld = Base64AndRSAEncode(oldPassword)
     const encodeNewPassword = Base64AndRSAEncode(newPassword)
 
@@ -716,6 +729,10 @@ export const getServerPubKeyUtil = async () => {
       UserId: userId,
     }
 
+    // const tempPubkey = "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS1NSUdmTUEwR0NTcUdTSWIzRFFFQkFRVUFBNEdOQURD\r\nQmlRS0JnUURZZHZoeGxtcENWNWlFM2lhV3Y3TTBGZS94L0wxcWZYekR1Qm92T29Xa3pONzgvcFlw\r\nYXRSb3VQT1NPNjM0SGw5bWVrV2J1VVhGd0kzaENvVER2azFNL0tiY3BjWEFnSWlhdnYvS3ZHeGdl\r\nSWRhSE1BRkg3Z3pIYUYwZnNheUY5RHJMZHJneUR0dHcrcWVWM3ovL0RWcHhVbjZHZGlnMUtBNHB2\r\nQi8zRGhmc1FJREFRQUItLS0tLUVORCBQVUJMSUMgS0VZLS0tLS0="
+    // const decodePubKey = Base64.decode(tempPubkey)
+    // console.warn("decodePubKey: " + decodePubKey)
+
     const res = await axios.post(url, params, {
       headers,
     })
@@ -727,7 +744,7 @@ export const getServerPubKeyUtil = async () => {
       const data = JSON.parse(JSON.stringify(res.data))
       if(data.ok === true) {
         // 编码后的公钥
-        infos = JSON.stringify(data.data)
+        infos = data.data
         // 解码后的公钥
         resultKey = Base64.decode(infos)
         setPubKey(resultKey)
@@ -739,6 +756,7 @@ export const getServerPubKeyUtil = async () => {
     console.log('error', error)
     printLog(`\n getServerPubKey error : ${JSON.stringify(error)}`)
     return ''
+    // return "-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDYdvhxlmpCV5iE3iaWv7M0Fe/x/L1qfXzDuBovOoWkzN78/pYpatRouPOSO634Hl9mekWbuUXFwI3hCoTDvk1M/KbcpcXAgIiavv/KvGxgeIdaHMAFH7gzHaF0fsayF9DrLdrgyDttw+qeV3z//DVpxUn6Gdig1KA4pvB/3DhfsQIDAQAB-----END PUBLIC KEY-----"
   }
 }
 

@@ -217,7 +217,7 @@ class LangChaoLogin extends Component<Props, State> {
           style={[{
             width: '70%',
             height: dp(50),
-            backgroundColor: 'rgba(80, 80, 255, 1)',
+            backgroundColor: '#0B82FF',
             justifyContent: 'center',
             alignItems: 'center',
             borderWidth: dp(1),
@@ -240,7 +240,7 @@ class LangChaoLogin extends Component<Props, State> {
       <View
         style={[{
           position: 'absolute',
-          bottom: dp(16),
+          bottom: dp(32),
           left: 0,
           width: '100%',
           alignItems: 'center',
@@ -279,7 +279,8 @@ class LangChaoLogin extends Component<Props, State> {
           headerStyle: {
             borderBottomWidth: dp(0),
             // backgroundColor: color.containerHeaderBgColor,
-            backgroundColor: '#add8e6',
+            // backgroundColor: '#add8e6',
+            backgroundColor: '#transparent',
           },
           responseHeaderTitleStyle: {
             color: color.containerTextColor,

@@ -602,7 +602,7 @@ export default class FunctionToolbar extends React.Component {
           key={index}
           title={item.getTitle()}
           textColor={color.rightListTextColor} // 'black'
-          textStyle={{ fontSize: scaleSize(20), marginTop: scaleSize(8) }}
+          textStyle={{ fontSize: scaleSize(20), marginTop: scaleSize(2) }}
           size={MTBtn.Size.NORMAL}
           image={item.image}
           onPress={item.action}
@@ -638,6 +638,12 @@ export default class FunctionToolbar extends React.Component {
         {/*progress={this.props.online.share[0].progress}*/}
         {/*indeterminate={false}*/}
         {/*/>*/}
+        <View style={[{
+          width: '60%',
+          height: scaleSize(1),
+          backgroundColor: '#efefef',
+          marginTop:scaleSize(6),
+        }]}></View>
       </View>
     )
   }

@@ -375,7 +375,13 @@ export default class MapController extends React.Component {
     } else {
       return (
         <MTBtn
-          style={[styles.btn, styles.separator, styles.shadow]}
+          style={[styles.btn, styles.separator, styles.shadow,{
+            elevation: 5,
+            shadowOffset: { width: 0, height: 0 },
+            shadowColor: 'rgba(0, 0, 0, 1)',
+            shadowOpacity: 1,
+            shadowRadius: scaleSize(10),
+          }]}
           imageStyle={styles.btnImg}
           key={'controller_location'}
           textColor={'black'}
@@ -400,7 +406,13 @@ export default class MapController extends React.Component {
           this.props.bottomHeight&&{ bottom: this.props.bottomHeight},
         ]}
       >
-        <View style={[styles.topView, styles.shadow]}>
+        <View style={[styles.topView, styles.shadow,{
+          elevation: 5,
+          shadowOffset: { width: 0, height: 0 },
+          shadowColor: 'rgba(0, 0, 0, 1)',
+          shadowOpacity: 1,
+          shadowRadius: scaleSize(10),
+        }]}>
           <MTBtn
             style={styles.btn}
             imageStyle={[styles.btnImg,

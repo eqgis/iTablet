@@ -8,7 +8,7 @@ export const BOTTOM_LANDSCAPE = scaleSize(26)
 export const ITEM_VIEW_WIDTH_L = scaleSize(126)  // 横屏时宽度
 export const ITEM_VIEW_HEIGHT_L = scaleSize(88)  // 横屏时高度
 // export const ITEM_VIEW_WIDTH_P = scaleSize(88)  // 竖屏时高度
-export const ITEM_VIEW_HEIGHT_P = scaleSize(100) // 竖屏时高度
+export const ITEM_VIEW_HEIGHT_P = scaleSize(90) // 竖屏时高度
 export const INDICATOR_VIEW_SIZE = scaleSize(50) // 箭头高宽尺寸
 export const PADDING_L = scaleSize(20) // 横屏时两边
 // scaleSize(774) 横屏时最大宽度

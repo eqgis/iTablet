@@ -121,8 +121,8 @@ function getHeaderView(type: string | number) {
           >
             <Image
               style={[{
-                width: dp(40),
-                height: dp(40),
+                width: dp(32),
+                height: dp(32),
               }]}
               source={getPublicAssets().common.icon_back}
             />

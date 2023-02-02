@@ -138,7 +138,7 @@ class NavigationHeader extends Component {
       global.getDevice().orientation &&
       global.getDevice().orientation.indexOf('LANDSCAPE') === 0
         ? scaleSize(40)
-        : scaleSize(60)
+        : scaleSize(50)
 
     let backStyle = styles.backBtn
     let TitleViewStyle = headerTitleViewStyle

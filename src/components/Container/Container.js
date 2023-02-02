@@ -13,6 +13,8 @@ import {
   Dimensions,
   BackHandler,
   Platform,
+  ImageBackground,
+  ImageSourcePropType,
 } from 'react-native'
 import Header from '../Header'
 import Loading from './Loading'
@@ -40,12 +42,13 @@ export default class Container extends Component {
     dialogInfo?: boolean, // 加载的文字
     scrollable?: boolean, // 内容是ScrollView或者View
     showFullInMap?: boolean, // 横屏时，地图上层界面是否显示半屏
-    blankOpacity?: Number, // 横屏时，半屏遮罩透明度
+    blankOpacity?: number, // 横屏时，半屏遮罩透明度
     hideInBackground?: boolean, // 在mapview和map3d中,StackNavigator中有新页面时是否隐藏本页面
-    orientation?: String, // redux中的实时横竖屏数据
+    orientation?: string, // redux中的实时横竖屏数据
     onOverlayPress?: () => {}, // 横屏时，半屏遮罩点击事件
     isOverlayBefore?: boolean, // 横屏是，遮罩的位置，true为左，反之为右
-    backActions?: {key: string, action: () => void}[]
+    backActions?: {key: string, action: () => void}[],
+    containerBgImage?:ImageSourcePropType, // container的背景图片
   }
 
   static defaultProps = {
@@ -386,55 +389,121 @@ export default class Container extends Component {
       inputRange: [0, 1],
       outputRange: ['0%', '1%'],
     })
-    return (
-      <AnimatedView
-        style={[
-          styles.view,
-          { transform: [{ translateX: this.viewX }] },
-          Platform.OS === 'android' && { flex: 1 },
-          Platform.OS === 'ios' && {
-            width: screen.getScreenSafeWidth(this.props.device.orientation),
-            height: screen.getScreenSafeHeight(this.props.device.orientation),
-          }]}
-      >
-        {this.props.isOverlayBefore && (
-          <AnimatedView style={{ width: width }}>
-            <TouchableOpacity
-              onPress={this.onOverlayPress}
-              activeOpacity={this.props.blankOpacity}
-              style={[styles.overlay, { opacity: 0.5 }]}
+
+    if(this.props.containerBgImage) {
+      return (
+        <AnimatedView
+          style={[
+            styles.view,
+            { transform: [{ translateX: this.viewX }] },
+            Platform.OS === 'android' && { flex: 1 },
+            Platform.OS === 'ios' && {
+              width: screen.getScreenSafeWidth(this.props.device.orientation),
+              height: screen.getScreenSafeHeight(this.props.device.orientation),
+            }]}
+        >
+          {this.props.isOverlayBefore && (
+            <AnimatedView style={{ width: width }}>
+              <TouchableOpacity
+                onPress={this.onOverlayPress}
+                activeOpacity={this.props.blankOpacity}
+                style={[styles.overlay, { opacity: 0.5 }]}
+              />
+            </AnimatedView>
+          )}
+          <View style={[{ flex: 1 }]}>
+            <StatusBar animated={true} hidden={global.getDevice().orientation.indexOf('LANDSCAPE') === 0} />
+            {headerOnTop && this.renderHeader(fixHeader)}
+            <View style={[{ flex: 1, overflow: 'hidden' }, direction]}>
+              <ContainerView style={[styles.container]}>
+                <View style={[styles.container, this.props.style]}>
+                  <ImageBackground
+                    style={[{
+                      width: '100%',
+                      height: '100%',
+                    }]}
+                    source={this.props.containerBgImage}
+                  >
+                    {!headerOnTop && this.renderHeader(fixHeader)}
+                    {this.props.children}
+                  </ImageBackground>
+                </View>
+                {/*{fixBottom && this.renderBottom(fixBottom)}*/}
+              </ContainerView>
+              {this.renderBottom(fixBottom)}
+            </View>
+            <Loading
+              ref={ref => (this.loading = ref)}
+              info={this.props.dialogInfo}
+              initLoading={this.props.initWithLoading}
             />
-          </AnimatedView>
-        )}
-        <View style={[{ flex: 1 }]}>
-          <StatusBar animated={true} hidden={global.getDevice().orientation.indexOf('LANDSCAPE') === 0} />
-          {headerOnTop && this.renderHeader(fixHeader)}
-          <View style={[{ flex: 1, overflow: 'hidden' }, direction]}>
-            <ContainerView style={[styles.container]}>
-              <View style={[styles.container, this.props.style]}>
-                {!headerOnTop && this.renderHeader(fixHeader)}
-                {this.props.children}
-              </View>
-              {/*{fixBottom && this.renderBottom(fixBottom)}*/}
-            </ContainerView>
-            {this.renderBottom(fixBottom)}
           </View>
-          <Loading
-            ref={ref => (this.loading = ref)}
-            info={this.props.dialogInfo}
-            initLoading={this.props.initWithLoading}
-          />
-        </View>
-        {!this.props.isOverlayBefore && (
-          <AnimatedView style={{ width: width }}>
-            <TouchableOpacity
-              onPress={this.onOverlayPress}
-              activeOpacity={this.props.blankOpacity}
-              style={[styles.overlay, { opacity: this.props.blankOpacity }]}
+          {!this.props.isOverlayBefore && (
+            <AnimatedView style={{ width: width }}>
+              <TouchableOpacity
+                onPress={this.onOverlayPress}
+                activeOpacity={this.props.blankOpacity}
+                style={[styles.overlay, { opacity: this.props.blankOpacity }]}
+              />
+            </AnimatedView>
+          )}
+
+        </AnimatedView>
+      )
+    } else {
+      return (
+        <AnimatedView
+          style={[
+            styles.view,
+            { transform: [{ translateX: this.viewX }] },
+            Platform.OS === 'android' && { flex: 1 },
+            Platform.OS === 'ios' && {
+              width: screen.getScreenSafeWidth(this.props.device.orientation),
+              height: screen.getScreenSafeHeight(this.props.device.orientation),
+            }]}
+        >
+          {this.props.isOverlayBefore && (
+            <AnimatedView style={{ width: width }}>
+              <TouchableOpacity
+                onPress={this.onOverlayPress}
+                activeOpacity={this.props.blankOpacity}
+                style={[styles.overlay, { opacity: 0.5 }]}
+              />
+            </AnimatedView>
+          )}
+          <View style={[{ flex: 1 }]}>
+            <StatusBar animated={true} hidden={global.getDevice().orientation.indexOf('LANDSCAPE') === 0} />
+            {headerOnTop && this.renderHeader(fixHeader)}
+            <View style={[{ flex: 1, overflow: 'hidden' }, direction]}>
+              <ContainerView style={[styles.container]}>
+                <View style={[styles.container, this.props.style]}>
+                  {!headerOnTop && this.renderHeader(fixHeader)}
+                  {this.props.children}
+                </View>
+                {/*{fixBottom && this.renderBottom(fixBottom)}*/}
+              </ContainerView>
+              {this.renderBottom(fixBottom)}
+            </View>
+            <Loading
+              ref={ref => (this.loading = ref)}
+              info={this.props.dialogInfo}
+              initLoading={this.props.initWithLoading}
             />
-          </AnimatedView>
-        )}
-      </AnimatedView>
-    )
+          </View>
+          {!this.props.isOverlayBefore && (
+            <AnimatedView style={{ width: width }}>
+              <TouchableOpacity
+                onPress={this.onOverlayPress}
+                activeOpacity={this.props.blankOpacity}
+                style={[styles.overlay, { opacity: this.props.blankOpacity }]}
+              />
+            </AnimatedView>
+          )}
+  
+        </AnimatedView>
+      )
+    }
+
+    
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { SectionList, View, Text, TouchableOpacity, Image, StyleSheet, TextInput, ImageSourcePropType } from "react-native"
+import { SectionList, View, Text, TouchableOpacity, Image, StyleSheet, TextInput, ImageSourcePropType} from "react-native"
 import { connect, ConnectedProps } from "react-redux"
 import { Container, Dialog } from '../../../../src/components'
 import { dp } from "imobile_for_reactnative/utils/size"
@@ -8,7 +8,6 @@ import { setCurrentSymbol } from "@/redux/models/symbol"
 import { getPublicAssets } from "@/assets"
 import { setServerUserId, setPassword, setServerUserName, setServerPubkey } from '../reduxModels/langchao'
 import { dateFormat, getServerPubKeyUtil, getToken, login, setSysOrgid, setUserId, setUserName, users } from "../utils/langchaoServer"
-import { Toast } from "@/utils"
 import { color } from "@/styles"
 import NavigationService from "@/containers/NavigationService"
 import { Picker } from '@react-native-picker/picker'
@@ -346,11 +345,11 @@ class LangChaoLogin extends Component<Props, State> {
           isResponseHeader: false,
           backAction:this.backAction,
         }}
+        containerBgImage={getImage().bg_login}
         // bottomBar={this.renderToolBar()}
         style={{
           flex: 1,
-          // backgroundColor: 'rgba(245, 245, 245, 1)',
-          backgroundColor: '#add8e6',
+          backgroundColor: 'transparent',
         }}
       >
         {/* <Text>{"我是用户登录页面"}</Text> */}
@@ -358,7 +357,6 @@ class LangChaoLogin extends Component<Props, State> {
         {this.renderContentView()}
         {this.renderBtn()}
         {this.renderOther()}
-
       </Container>
     )
   }

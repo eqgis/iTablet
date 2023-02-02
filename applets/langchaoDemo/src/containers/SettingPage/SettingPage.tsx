@@ -9,6 +9,9 @@ import { color } from "@/styles"
 import MapToolbar from "@/containers/workspace/components/MapToolbar"
 import settingData from "./settingData"
 import NavigationService from "@/containers/NavigationService"
+import { getImage } from "../../assets/Image"
+import { setServerUserId } from "../../reduxModels/langchao"
+import Toast from "@/utils/Toast"
 
 
 interface settingDataType {
@@ -22,6 +25,7 @@ interface Props extends ReduxProps {
 	mapModules: any,
   device: any,
   language: string,
+  userId: string,
 }
 
 interface State {
@@ -39,19 +43,56 @@ class SettingPage extends Component<Props, State> {
   }
 
   componentDidMount = async (): Promise<void> => {
-    const data = settingData.getThematicMapSettings()
+    this.getData()
+  }
+
+  componentDidUpdate = (prevProps: Readonly<Props>): void => {
+    if(this.props.language !== prevProps.language ||
+      this.props.userId !== prevProps.userId
+    ) {
+      this.getData()
+    }
+  }
+
+  getData = () => {
+    const data = settingData.getThematicMapSettings(this.props.userId !== "")
     this.setState({
       data,
     })
   }
 
-  componentDidUpdate = (prevProps: Readonly<Props>): void => {
-    if(this.props.language !== prevProps.language) {
-      const data = settingData.getThematicMapSettings()
-      this.setState({
-        data,
+
+  loginAction = () => {
+    if(this.props.userId === "") {
+      NavigationService.navigate('LangChaoLogin',{
+        type: 'setting'
       })
+    } else {
+      // 登出
+      this.props.setServerUserId("")
+      this.getData()
+      Toast.show("已退出登录")
     }
+
+  }
+
+  renderHeaderRight = () => {
+    return (
+      <View
+      >
+        <TouchableOpacity
+          onPress={this.loginAction}
+        >
+          <Image
+            style={[{
+              width: dp(30),
+              height: dp(30),
+            }]}
+            source={getImage().login}
+          />
+        </TouchableOpacity>
+      </View>
+    )
   }
 
 
@@ -150,7 +191,7 @@ class SettingPage extends Component<Props, State> {
         headerProps={{
           title: getLanguage(global.language).Map_Settings.SETTING,
           withoutBack: true,
-          // headerRight: this.renderHeaderRight(),
+          headerRight: this.renderHeaderRight(),
           navigation: this.props.navigation,
           headerStyle: {
             borderBottomWidth: dp(1),
@@ -180,9 +221,11 @@ const mapStateToProp = (state: any) => ({
   mapModules: state.mapModules.toJS(),
   device: state.device.toJS().device,
   language: state.setting.toJS().language,
+  userId: state.langchao.toJS().userId,
 })
 
 const mapDispatch = {
+  setServerUserId,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

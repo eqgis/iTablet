@@ -42,6 +42,10 @@ const icon_track = require('./track.png')
 const icon_until = require('./until.png')
 const icon_zoomDown = require('./zoomDown.png')
 const icon_zoomUp = require('./zoomUp.png')
+const app_start_bg = require('./app_start_bg.png')
+const bg_login = require('./bg_login.png')
+const login_setting = require('./login_setting.png')
+const login = require('./login.png')
 
 const image = {
   flight,
@@ -84,6 +88,10 @@ const image = {
   icon_until,
   icon_zoomDown,
   icon_zoomUp,
+  app_start_bg,
+  bg_login,
+  login_setting,
+  login,
 }
 
 function getImage(): typeof image {

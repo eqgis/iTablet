@@ -37,6 +37,7 @@ class NavigationHeader extends Component {
     darkBackBtn?: boolean, // 黑色透明背景，返回按钮
     headerCenter?: any, // 自定义Header中间View
     backImg?: any, // 返回按钮图片
+    backBtnImgStyle?: StyleSheet, // 返回按钮图片的样式
     statusVisible?: boolean, // 状态栏是否可见
     isResponseHeader?: boolean, // 是否使用flex三栏布局（标题响应宽度）
     responseHeaderTitleStyle?: StyleSheet //  三栏布局时Title的覆盖样式
@@ -125,6 +126,7 @@ class NavigationHeader extends Component {
       headerCenter,
       backImg,
       responseHeaderTitleStyle,
+      backBtnImgStyle,
     } = this.props
 
     let fontSize =
@@ -154,7 +156,7 @@ class NavigationHeader extends Component {
         count={count}
         darkBackBtn={darkBackBtn}
         image={backBtnSource}
-        imageStyle={[styles.backIcon, { width: imgSize, height: imgSize }]}
+        imageStyle={[styles.backIcon, { width: imgSize, height: imgSize }, backBtnImgStyle || {}]}
         activeOpacity={activeOpacity}
         onPress={event => {
           return this.handleBack(navigation, event)

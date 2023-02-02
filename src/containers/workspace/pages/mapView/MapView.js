@@ -3207,7 +3207,7 @@ export default class MapView extends React.Component {
     if (this.props.analyst.params || (global.Type === ChunkType.MAP_AR_MAPPING ? this.props.isAR : this.state.showAIDetect))
       return null
     let size =
-      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50
+      this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 48
 
     const currentMapModule = this.props.mapModules.modules[this.props.user.currentUser.userName].find(item => {
       return item.key === this.type
@@ -3329,7 +3329,8 @@ export default class MapView extends React.Component {
             case MapHeaderButton.Search:
               info = {
                 key: MapHeaderButton.Search,
-                image: getThemeAssets().nav.icon_nav_search,
+                // image: getThemeAssets().nav.icon_nav_search,
+                image: getImage().icon_search,
                 action: async () => {
                   if (global.Type === ChunkType.MAP_NAVIGATION) {
                     let layers =
@@ -5254,6 +5255,10 @@ export default class MapView extends React.Component {
           title: this.state.mapTitle,
           navigation: this.props.navigation,
           backImg: getImage().exitApp,
+          backBtnImgStyle: {
+            width: scaleSize(48),
+            height: scaleSize(48),
+          },
           headerTitleViewStyle: {
             // justifyContent: 'flex-start',
             // marginLeft: scaleSize(90),

@@ -20,6 +20,7 @@ import { ConstOnline, TouchType } from '../../constants'
 import constants from '../../containers/workspace/constants'
 import NavigationService from '../../containers/NavigationService'
 import MapSelectPointLatitudeAndLongitude from '../workspace/components/MapSelectPointLatitudeAndLongitude/MapSelectPointLatitudeAndLongitude'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 export default class EnterDatumPoint extends Component {
   props: {
@@ -65,7 +66,7 @@ export default class EnterDatumPoint extends Component {
   }
 
   getFloorData = async () => {
-    let result = await SNavigation.getFloorData()
+    let result = await SNavigationInner.getFloorData()
     this.setState({
       floorData: result.data,
     })

@@ -70,7 +70,7 @@ function search(content = '') {
         // if (global.Type !== ChunkType.MAP_3D) {
         //   if (global.Type === ChunkType.MAP_NAVIGATION) {
         //     global.TouchType = TouchType.NORMAL
-        //     await SNavigation.clearTrackingLayer()
+        //     await SMap.clearTrackingLayer()
         //     // this.props.setNavigationChangeAR(true)
         //     this.props.setMapNavigation({
         //       isShow: true,

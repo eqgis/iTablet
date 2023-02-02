@@ -13,7 +13,6 @@ import { SMap, SNavigation } from 'imobile_for_reactnative'
 import { scaleSize } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import { getThemeAssets } from '../../../../assets'
-import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 // import { color } from '../../../../styles'
 
 export default class NavigationPoiView extends React.Component {
@@ -105,7 +104,7 @@ export default class NavigationPoiView extends React.Component {
   }
 
   close = async () => {
-    await SNavigationInner.clearTrackingLayer() //移除线，线在trackingLayer
+    await SMap.clearTrackingLayer() //移除线，线在trackingLayer
     await SMap._removePOICallout() //移除点，点在DynamicView或者callout
     global.PoiInfoContainer.setVisible(false)
     this.props.setMapNavigation({

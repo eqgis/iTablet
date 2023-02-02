@@ -55,7 +55,7 @@ export default class NavigationStartHead extends React.Component {
   }
 
   close = async () => {
-    await SNavigationInner.clearTrackingLayer()
+    await SMap.clearTrackingLayer()
     this.setVisible(false)
     let { orientation } = this.props.device
     global.NAVIGATIONSTARTBUTTON.setState({
@@ -114,7 +114,7 @@ export default class NavigationStartHead extends React.Component {
     )
     this.setVisible(false)
     global.NAVIGATIONSTARTBUTTON.setVisible(false)
-    await SNavigationInner.clearTrackingLayer()
+    await SMap.clearTrackingLayer()
     await SNavigationInner.clearPoint()
     if (isStart) {
       global.STARTX = null

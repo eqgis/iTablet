@@ -1149,7 +1149,7 @@ class Chat extends React.Component {
       for (let i = 0; i < fileList.length; i++) {
         if (fileList[i].path.indexOf('.xml') !== -1) {
           layer = await FileTools.readFile(homePath + fileList[i].path)
-          await SMap.insertXMLLayer(0, layer)
+          await SMap.insertLayerFromXml(0, layer)
         }
       }
     }

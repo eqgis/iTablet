@@ -273,7 +273,7 @@ export default class CreateNavDataPage extends Component {
           if (data[i].selectedFieldInfo) {
             sourceDataset.sourceDatasetFiled = data[i].selectedFieldInfo
           }
-          rel = await SNavigation.buildOutdoorNetwork({
+          rel = await SNavigationInner.buildOutdoorNetwork({
             ...sourceDataset,
             ...selectedDatasource,
             filePath,

@@ -29,7 +29,7 @@ import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interface
 
 function begin() {
   global.GPS = setInterval(() => {
-    SNavigation.gpsBegin()
+    SNavigationInner.gpsBegin()
   }, 2000)
 }
 
@@ -42,10 +42,10 @@ function stop() {
 function submit() {
   (async function() {
     if (ToolbarModule.getParams().type === ConstToolType.SM_MAP_TOOL_GPSINCREMENT) {
-      await SNavigation.addGPSRecordset()
+      await SNavigationInner.addGPSRecordset()
     }
     await SMap.submit()
-    await SNavigation.buildNetwork()
+    await SNavigationInner.buildNetwork()
   })()
 }
 
@@ -80,7 +80,7 @@ function viewEntire() {
   SMap.viewEntire().then(async () => {
     const params = ToolbarModule.getParams()
     params.setToolbarVisible && params.setToolbarVisible(false)
-    const currentFloorID = await SNavigation.getCurrentFloorID()
+    const currentFloorID = await SNavigationInner.getCurrentFloorID()
     params.changeFloorID && params.changeFloorID(currentFloorID || '')
   })
 }
@@ -884,8 +884,8 @@ async function close(type) {
   } else if (type === ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE) {
     // 返回图层属性界面，并清除属性关联选中的对象
     NavigationService.navigate('LayerAttribute')
-    await SNavigationInner.clearTrackingLayer()
-    _params.currentLayer && SMap.selectObj(_params.currentLayer.path)
+    await SMap.clearTrackingLayer()
+    // _params.currentLayer && SMap.addToLayerSelection(_params.currentLayer?.path||"",[])
     _params.setToolbarVisible(false)
   } else if (type === ConstToolType.SM_MAP_TOOL_ATTRIBUTE_SELECTION_RELATE) {
     // 返回框选/点选属性界面，并清除属性关联选中的对象
@@ -901,8 +901,8 @@ async function close(type) {
           })
         }
         await _data?.actions?.select(_data.preType)
-        await SNavigationInner.clearTrackingLayer()
-        await SMap.selectObjs(selection)
+        await SMap.clearTrackingLayer()
+        // await SMap.selectObjs(selection)
 
         global.toolBox &&
         global.toolBox.setVisible(true, _data.preType, {

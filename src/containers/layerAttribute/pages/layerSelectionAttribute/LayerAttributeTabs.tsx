@@ -195,8 +195,13 @@ export default class LayerAttributeTabs extends React.Component {
         //   name: this.props.currentLayer.name,
         // }
         // const layerInfo = this.props.selection[this.state.currentTabIndex].layerInfo
-        let id = await SMap.getCurrentGeometryID(this.props.currentLayer.path)
-        // let id = await SMap.getCurrentGeometryID(global.currentLayer.name)
+        const datasetInfo:DatasetInfo = {datasetName:this.props.currentLayer.datasetName,datasourceName:this.props.currentLayer.datasourceAlias}
+        const para:QueryParameter = {}
+        const res = await SData.queryRecordsetWithParameter(datasetInfo,para)
+        const id = res[res.length-1].geometryID
+        // debugger
+        // let id = await SMap.getCurrentGeometryID(this.props.currentLayer.path)
+        await SMap.addToLayerSelection(layerInfo.path,[id])
         this.props.setSelection && this.props.setSelection([{
           layerInfo: layerInfo,
           ids: [id],
@@ -214,10 +219,17 @@ export default class LayerAttributeTabs extends React.Component {
           datasetName:this.datasetName,
           datasourceAlias:this.datasourceName,
         }
-        let id = await SMap.getDatasetGeometryID(this.datasetName)
+        const datasetInfo:DatasetInfo = {datasetName:layerInfo.datasetName,datasourceName:layerInfo.datasourceAlias}
+        const para:QueryParameter = {}
+        const res = await SData.queryRecordsetWithParameter(datasetInfo,para)
+        const ids = []
+        for(let i=0;i<res.length;i++){
+          ids.push(res[i].geometryID)
+        }
+        // let id = await SMap.getDatasetGeometryID(this.datasetName)
         this.props.setSelection && this.props.setSelection([{
           layerInfo: layerInfo,
-          ids: id,
+          ids: ids,
         }])
       } else if (this.type === 'NAVIGATION') {
         // layerInfo = await SMap.getLayerInfo(this.props.currentLayer.path)
@@ -555,21 +567,17 @@ export default class LayerAttributeTabs extends React.Component {
     // 若包含多媒体图片，则删除
     if (hasMedia && smID >= 0) {
       result = await SMediaCollector.deleteMedia(layerInfo.path, smID)
-    } else if (this.state.isCollection) { // 删除当前图层中的最后一条数据，用于绘图后立即查看属性
+    } else if (this.state.isCollection || this.type === 'MY_DATA') { // 删除当前图层中的最后一条数据，用于绘图后立即查看属性
       result = await LayerUtils.deleteAttributeByLayer(
-        layerInfo.path,
+        layerInfo,
         this.state.currentIndex, this.state.isCollection)
-    }else if(this.type === 'MY_DATA'){
-      result = await LayerUtils.deleteAttributeByData(
-        layerInfo.path,
-        this.state.currentIndex)
     } else if (this.type === 'NAVIGATION') {
 
       const datasource = "default_increment_datasource@" + this.props.currentUser.userName
       //todo @yangsl 处理layerInfo没有数据集问题，接口也统一一下，removeNavigationRecordsetFieldInfoByData有部分业务逻辑需要调整到JS，需要找我讨论
       const datasetInfo: DatasetInfo = { datasetName: layerInfo.path || '', datasourceName: datasource || '' }
 
-      result = await SData.deleteFieldInfoValue(datasetInfo,{index:this.state.currentIndex})
+      result = await SData.deleteRecordsetValue(datasetInfo,{index:this.state.currentIndex})
       // result = await LayerUtils.deleteNavigationAttributeByData(
       //   layerInfo.path,
       //   this.state.currentIndex)
@@ -634,7 +642,7 @@ export default class LayerAttributeTabs extends React.Component {
       if (!selection || !selection.data) return
 
       SMap.setLayerEditable(layerPath, false)
-      let objs = []
+      let objs = {}
       let geoStyle = new GeoStyle()
       geoStyle.setFillForeColor(0, 255, 0, 0.5)
       geoStyle.setLineWidth(1)
@@ -656,8 +664,8 @@ export default class LayerAttributeTabs extends React.Component {
             }
           }
 
-          objs.push({
-            layerPath: layerPath,
+          objs = {
+            layerInfo: this.props.selection[i].layerInfo,
             // ids: [selection.data[0].value],
             ids: [
               selection.data[0].name === 'SmID'
@@ -665,50 +673,52 @@ export default class LayerAttributeTabs extends React.Component {
                 : selection.data[1].value,
             ], // 多条数据有序号时：0为序号，1为SmID；无序号时0为SmID
             style: JSON.stringify(geoStyle),
-          })
+          }
         } else {
-          objs.push({
-            layerPath: this.props.selection[i].layerInfo.path,
+          objs = {
+            layerInfo: this.props.selection[i].layerInfo,
             ids: [],
-          })
+          }
         }
       }
 
       SMap.setAction(Action.PAN)
 
-      SMap.clearSelection().then(() => {
-        // SMap.selectObjs(objs).then(data => {
-        SMap.setTrackingLayer(objs, true).then(data => {
-          // TODO 选中对象跳转到地图
-          // this.props.navigation && this.props.navigation.navigate('MapView')
-          // NavigationService.navigate('MapView')
-          global.toolBox &&
-            global.toolBox.setVisible(
-              true,
-              ConstToolType.SM_MAP_TOOL_ATTRIBUTE_SELECTION_RELATE,
-              {
-                isFullScreen: false,
-                // height: 0,
-                cb: () => {
-                  this.props.navigation.goBack()
-                  this.setLoading(false)
-                }
-              },
-            )
-          global.toolBox && global.toolBox.showFullMap()
-          ToolbarModule.addData({ preType: this.preToolbarType })
-          StyleUtils.setSelectionStyle(
-            // this.props.currentLayer.path || objs[0].layerPath,
-            layerPath,
+      // SMap.clearSelection().then(() => {
+      // SMap.selectObjs(objs).then(data => {
+      const datasetInfo: DatasetInfo = { datasetName: objs.layerInfo.datasetName, datasourceName: objs.layerInfo.datasourceAlias }
+      SMap.addGeometryToTrackingLayerByIDs(datasetInfo, objs.ids, objs.style).then(() => {
+        // SMap.setTrackingLayer(objs, true).then(() => {
+        // TODO 选中对象跳转到地图
+        // this.props.navigation && this.props.navigation.navigate('MapView')
+        // NavigationService.navigate('MapView')
+        global.toolBox &&
+          global.toolBox.setVisible(
+            true,
+            ConstToolType.SM_MAP_TOOL_ATTRIBUTE_SELECTION_RELATE,
+            {
+              isFullScreen: false,
+              // height: 0,
+              cb: () => {
+                this.props.navigation.goBack()
+                this.setLoading(false)
+              }
+            },
           )
-          if (data instanceof Array && data.length > 0) {
-            SMap.moveToPoint({
-              x: data[0].x,
-              y: data[0].y,
-            })
-          }
-        })
+        global.toolBox && global.toolBox.showFullMap()
+        ToolbarModule.addData({ preType: this.preToolbarType })
+        StyleUtils.setSelectionStyle(
+          // this.props.currentLayer.path || objs[0].layerPath,
+          layerPath,
+        )
+        // if (data instanceof Array && data.length > 0) {
+        //   SMap.moveToPoint({
+        //     x: data[0].x,
+        //     y: data[0].y,
+        //   })
+        // }
       })
+      // })
     } catch (error) {
       this.setLoading(false)
     }

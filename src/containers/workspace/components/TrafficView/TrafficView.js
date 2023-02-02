@@ -100,7 +100,7 @@ export default class TrafficView extends React.Component {
     try {
       this.props.setLoading && this.props.setLoading(true, getLanguage(this.props.language).Prompt.CHANGING)
       if (this.state.hasAdded) {
-        await SNavigationInner.removeTrafficMap('tencent@TrafficMap')
+        await SMap.removeLayer('tencent@TrafficMap')
       } else {
         let layers = await this.props.getLayers()
         let baseMap = layers.filter(layer =>
@@ -111,7 +111,15 @@ export default class TrafficView extends React.Component {
           baseMap.name !== 'baseMap' &&
           baseMap.isVisible
         ) {
-          await SNavigationInner.openTrafficMap(ConstOnline.TrafficMap.DSParams)
+          if(!await SData.isDatasourceOpened(ConstOnline.TrafficMap.DSParams.alias)) {
+            await SData.openDatasource(ConstOnline.TrafficMap.DSParams)
+          }
+          const scale = await SMap.getMapScale()
+          const center = await SMap.getMapCenter()
+          await SMap.addLayer(ConstOnline.TrafficMap.DSParams.alias, 0)
+          await SMap.setMapScale(1 / parseFloat(scale))
+          await SMap.setMapCenter(center.x, center.y)
+          SMap.refreshMap()
         }
       }
       let hasAdded = !this.state.hasAdded

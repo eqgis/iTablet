@@ -119,7 +119,10 @@ export default class ChooseNaviLayer extends React.Component {
       removeLayer = true
       global.INCREMENT_DATA = {}
     }
-    await SNavigationInner.deleteDatasetAndLayer({ datasourceName, datasetName, removeLayer })
+    if(removeLayer) {
+      await SMap.removeLayer({datasourceAlias: datasourceName, datasetName: datasourceName})
+    }
+    await SData.deleteDataset(datasourceName, datasetName)
     this.setState({
       data,
       selectedItem,

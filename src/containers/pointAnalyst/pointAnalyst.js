@@ -247,7 +247,7 @@ export default class PointAnalyst extends Component {
         let address = item.address
         this.setState({ searchValue: pointName, searchData: [] })
         if (global.Type === ChunkType.MAP_NAVIGATION) {
-          await SNavigationInner.clearTrackingLayer()
+          await SMap.clearTrackingLayer()
           this.props.setMapNavigation({
             isShow: true,
             name: pointName,
@@ -528,7 +528,7 @@ export default class PointAnalyst extends Component {
                 if (!this.is3D) {
                   if (global.Type === ChunkType.MAP_NAVIGATION) {
                     global.TouchType = TouchType.NORMAL
-                    await SNavigationInner.clearTrackingLayer()
+                    await SMap.clearTrackingLayer()
                     // this.props.setNavigationChangeAR(true)
                     this.props.setMapNavigation({
                       isShow: true,

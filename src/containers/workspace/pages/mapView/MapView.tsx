@@ -561,7 +561,7 @@ export default class MapView extends React.Component {
     if (global.isLicenseValid) {
       if (global.Type === ChunkType.MAP_NAVIGATION) {
         this.addFloorHiddenListener()
-        SNavigation.setIndustryNavigationListener(() => {
+        SNavigationInner.setIndustryNavigationListener(() => {
           if (
             global.NAV_PARAMS &&
               global.NAV_PARAMS.filter(item => !item.hasNaved).length > 0
@@ -573,8 +573,8 @@ export default class MapView extends React.Component {
           }
         },
         )
-        SNavigation.setStopNavigationListener(this._changeRouteCancel)
-        SNavigation.setCurrentFloorIDListener(this.changeFloorID)
+        SNavigationInner.setStopNavigationListener(this._changeRouteCancel)
+        SNavigationInner.setCurrentFloorIDListener(this.changeFloorID)
       }
       this.container &&
         this.container.setLoading(
@@ -915,7 +915,7 @@ export default class MapView extends React.Component {
 
     if (global.Type === ChunkType.MAP_NAVIGATION) {
       (async function () {
-        let currentFloorID = await SNavigation.getCurrentFloorID()
+        let currentFloorID = await SNavigationInner.getCurrentFloorID()
         this.changeFloorID(currentFloorID, () => {
           let { params } = this.props.route
           let preParams = prevProps.route.params
@@ -967,7 +967,7 @@ export default class MapView extends React.Component {
     // }
     if (global.Type === ChunkType.MAP_NAVIGATION) {
       (async function () {
-        SNavigation.destroySpeakPlugin()
+        SNavigationInner.destroySpeakPlugin()
       })()
     }
     //unmount时置空 zhangxt
@@ -1127,7 +1127,7 @@ export default class MapView extends React.Component {
           }
           await SNavigationInner.outdoorNavigation(1)
           this.FloorListView?.setVisible(false)
-          SNavigation.setCurrentFloorID('')
+          SNavigationInner.setCurrentFloorID('')
           global.CURRENT_NAV_MODE = 'OUTDOOR'
         } else {
           Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
@@ -1440,7 +1440,7 @@ export default class MapView extends React.Component {
         if (global.Type === ChunkType.MAP_NAVIGATION) {
           //这里先处理下异常 add xiezhy
           try {
-            await SNavigation.stopGuide()
+            await SNavigationInner.stopGuide()
             await SNavigationInner.clearPoint()
           } catch (e) {
             this.setLoading(false)
@@ -1689,7 +1689,7 @@ export default class MapView extends React.Component {
           if (global.Type === ChunkType.MAP_NAVIGATION) {
             await this._removeNavigationListeners()
             await SNavigationInner.clearPoint()
-            await SNavigation.stopGuide()
+            await SNavigationInner.stopGuide()
           }
           await this.closeMapHandler(params?.baskFrom)
         } catch (e) {
@@ -1921,10 +1921,10 @@ export default class MapView extends React.Component {
         SMap.setIsMagnifierEnabled(true)
         if (global.Type === ChunkType.MAP_NAVIGATION) {
           this.props.setMapNavigation({ isShow: false, name: '' })
-          SNavigation.getCurrentFloorID().then(currentFloorID => {
+          SNavigationInner.getCurrentFloorID().then(currentFloorID => {
             this.changeFloorID(currentFloorID)
           })
-          SNavigation.initSpeakPlugin()
+          SNavigationInner.initSpeakPlugin()
           global.STARTNAME = getLanguage(
             global.language,
           ).Map_Main_Menu.SELECT_START_POINT
@@ -4196,7 +4196,7 @@ export default class MapView extends React.Component {
     global.NAVIGATIONSTARTHEAD.setVisible(true)
     global.MAPSELECTPOINTBUTTON.setVisible(false)
     global.MAPSELECTPOINT.setVisible(false)
-    global.STARTPOINTFLOOR = await SNavigation.getCurrentFloorID()
+    global.STARTPOINTFLOOR = await SNavigationInner.getCurrentFloorID()
 
     if (path && pathLength) {
       global.TouchType = TouchType.NORMAL

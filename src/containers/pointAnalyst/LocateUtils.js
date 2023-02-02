@@ -49,7 +49,7 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
     const key = (item.title || item.content)?.substring(0, 20) || ''
     if (!key) return
     if (global.currentLayer?.path) {
-      result = await SMap.searchLayerAttribute(global.currentLayer.path, {
+      result = await SMap._searchLayerAttribute(global.currentLayer.path, {
         key: key,
       }, 0, 100)
     }

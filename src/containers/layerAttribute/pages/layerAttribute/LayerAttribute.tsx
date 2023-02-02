@@ -934,7 +934,7 @@ export default class LayerAttribute extends React.Component {
       } else {
         index = this.state.currentIndex
       }
-      result = await LayerUtils.deleteAttributeByLayer(this.props.currentLayer.name, index, false)
+      result = await LayerUtils.deleteAttributeByLayer(this.props.currentLayer, index, false)
     }
     if (result) {
       if (global.coworkMode) {
@@ -1019,20 +1019,28 @@ export default class LayerAttribute extends React.Component {
           break
         }
       }
-      SMap.setTrackingLayer(
-        [
-          {
-            layerPath: this.props.currentLayer.path + '',
-            ids: [
-              (this.state.currentFieldInfo[0].name === 'SmID'
-                ? this.state.currentFieldInfo[0].value
-                : this.state.currentFieldInfo[1].value) + 1 - 1,
-            ],
-            style: JSON.stringify(geoStyle),
-          },
-        ],
-        true,
-      ).then(data => {
+      // SMap.setTrackingLayer(
+      //   [
+      //     {
+      //       layerPath: this.props.currentLayer.path + '',
+      //       ids: [
+      //         (this.state.currentFieldInfo[0].name === 'SmID'
+      //           ? this.state.currentFieldInfo[0].value
+      //           : this.state.currentFieldInfo[1].value) + 1 - 1,
+      //       ],
+      //       style: JSON.stringify(geoStyle),
+      //     },
+      //   ],
+      //   true,
+      // ).then(() => {
+        const datasetInfo: DatasetInfo = { datasetName: this.props.currentLayer.datasetName, datasourceName: this.props.currentLayer.datasourceAlias }
+        SMap.addGeometryToTrackingLayerByIDs(
+          datasetInfo,
+            [(this.state.currentFieldInfo[0].name === 'SmID'
+            ? this.state.currentFieldInfo[0].value
+            : this.state.currentFieldInfo[1].value) + 1 - 1],
+            JSON.stringify(geoStyle),
+          ).then(() => {
         ToolbarModule.setToolBarData(
           ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE,
         ).then(() => {
@@ -1061,12 +1069,12 @@ export default class LayerAttribute extends React.Component {
         }
 
         StyleUtils.setSelectionStyle(this.props.currentLayer.path)
-        if (data instanceof Array && data.length > 0) {
-          SMap.moveToPoint({
-            x: data[0].x,
-            y: data[0].y,
-          })
-        }
+        // if (data instanceof Array && data.length > 0) {
+        //   SMap.moveToPoint({
+        //     x: data[0].x,
+        //     y: data[0].y,
+        //   })
+        // }
       })
       // SMap.selectObj(this.props.currentLayer.path, [
       //   this.state.currentFieldInfo[0].value,

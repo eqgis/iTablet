@@ -48,9 +48,11 @@ type inputType = 'none'
 
 
 interface Props extends ReduxProps {
+  route: MainStackScreenRouteProp<'LangChaoLogin'>
 	navigation: any,
   device: any,
   language: string,
+  serverIP: string,
 
 }
 
@@ -87,24 +89,76 @@ class LangChaoLogin extends Component<Props, State> {
       password: text,
     })
   }
+  backAction = () => {
+    const type: string | undefined = this.props.route.params?.type
+    if(type === "setting") {
+      NavigationService.navigate('SettingPage')
+    } else {
+      NavigationService.goBack()
+    }
+  }
 
   loginAction = async () => {
-    if(this.state.userId !== "" && this.state.password !== "") {
-      const pubkey = await getServerPubKeyUtil()
-      if(pubkey !== "") {
-        this.props.setServerPubkey(pubkey)
-        const result = await login(this.state.userId, this.state.password)
+    if(this.props.serverIP === "") {
+      Toast.show(getLanguage(global.language).Map_Settings.FIRST_SETTING_SERVER_IP)
+      return
+    }
+    if(this.state.userId !== "") {
+      if(this.state.password !== "") {
+        const pubkey = await getServerPubKeyUtil()
+        if(pubkey !== "") {
+          this.props.setServerPubkey(pubkey)
+          const result = await login(this.state.userId, this.state.password)
 
-        if(result) {
-          await this.props.setServerUserId(this.state.userId)
-          await this.props.setPassword(this.state.password)
-          await this.props.setServerUserName(result.UserName)
-          NavigationService.goBack()
+          if(result) {
+            await this.props.setServerUserId(this.state.userId)
+            await this.props.setPassword(this.state.password)
+            await this.props.setServerUserName(result.UserName)
+            // NavigationService.goBack()
+            const type: string | undefined = this.props.route.params?.type
+            if(type === "setting") {
+              NavigationService.navigate('SettingPage')
+            } else {
+              NavigationService.goBack()
+            }
+          }
+        } else {
+          Toast.show(getLanguage(global.language).Map_Settings.FAILED_TO_LOG)
         }
+      } else {
+        Toast.show(getLanguage(global.language).Map_Settings.ENTER_PASSWORD)
       }
+
+    } else {
+      Toast.show(getLanguage(global.language).Map_Settings.ENTER_USERNAME2)
     }
 
 
+  }
+
+  settingAction = () => {
+    NavigationService.navigate('InputServer',{
+      type: 'login'
+    })
+  }
+
+  renderHeaderRight = () => {
+    return (
+      <View
+      >
+        <TouchableOpacity
+          onPress={this.settingAction}
+        >
+          <Image
+            style={[{
+              width: dp(30),
+              height: dp(30),
+            }]}
+            source={getImage().icon_bottom_setting}
+          />
+        </TouchableOpacity>
+      </View>
+    )
   }
 
   renderInputItem = (imageSrc: ImageSourcePropType, value: string, changeTextAction: (text: string) => void, type?:inputType, placeholder = "") => {
@@ -274,7 +328,7 @@ class LangChaoLogin extends Component<Props, State> {
           // title: getLanguage(global.language).Map_Settings.USER_INFO_MAINTENANCE,
           // title: getLanguage(global.language).Map_Settings.LEFT_TOP_LOG,
           withoutBack: false,
-          // headerRight: this.renderHeaderRight(),
+          headerRight: this.renderHeaderRight(),
           navigation: this.props.navigation,
           headerStyle: {
             borderBottomWidth: dp(0),
@@ -287,6 +341,7 @@ class LangChaoLogin extends Component<Props, State> {
             textAlign: 'center',
           },
           isResponseHeader: false,
+          backAction:this.backAction,
         }}
         // bottomBar={this.renderToolBar()}
         style={{

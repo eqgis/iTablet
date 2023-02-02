@@ -2937,5 +2937,8 @@ export const language_en: typeof language_cn = {
   TIANDITU_MAP: 'Tianditu map', // To be tanslated
   PLAN_2D: '2D plan map', // To be tanslated
   SATELLITE_MAP: 'Satellite map', // To be tanslated
+  FIRST_SETTING_SERVER_IP: "Set the service address first and then login", // To be tanslated
+  LOGIN_SUCCESS:"Login success", // To be tanslated
+  USERNAME_OR_PASSWORD_ERROR:"The user name or password is incorrect", // To be tanslated
 
 }

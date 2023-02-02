@@ -63,7 +63,9 @@ export const getThematicMapSettings = () => [
     title: getLanguage(global.language).Map_Settings.LEFT_TOP_LOG,
     leftImage: getImage().icon_userInfo_setting,
     action: () => {
-      NavigationService.navigate('LangChaoLogin')
+      NavigationService.navigate('LangChaoLogin',{
+        type: 'setting'
+      })
     },
   },
   {

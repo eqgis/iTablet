@@ -10,10 +10,13 @@ import { setServerIP, setServerUserId, setServerUserName, setServerDepartmentId 
 import { dateFormat, getToken, setSysOrgid, setUserId, setUserName, users } from "../utils/langchaoServer"
 import { Toast } from "@/utils"
 import { color } from "@/styles"
+import NavigationService from "@/containers/NavigationService"
+import { MainStackScreenRouteProp } from "@/types/NavigationTypes"
 // import { setServerIP, setServerUserId, setServerUserName, setServerDepartmentId } from "@/redux/models/langchao"
 
 
 interface Props extends ReduxProps {
+  route: MainStackScreenRouteProp<'InputServer'>
 	navigation: any,
   device: any,
   language: string,
@@ -26,9 +29,9 @@ interface Props extends ReduxProps {
 
 interface State {
 	serverUrl: string,
-  userId:string,
-  userName: string,
-  sysOrgId: string,
+  // userId:string,
+  // userName: string,
+  // sysOrgId: string,
 }
 
 class InputServer extends Component<Props, State> {
@@ -39,9 +42,9 @@ class InputServer extends Component<Props, State> {
     super(props)
     this.state = {
       serverUrl: props.serverIP || "",
-      userId: props.userId || "",
-      userName: props.userName || "",
-      sysOrgId: props.departmentId || "",
+      // userId: props.userId || "",
+      // userName: props.userName || "",
+      // sysOrgId: props.departmentId || "",
     }
   }
 
@@ -59,9 +62,10 @@ class InputServer extends Component<Props, State> {
     // setUserId(this.state.userId)
     // setUserName(this.state.userName)
     // setSysOrgid(this.state.sysOrgId)
-    await this.props.setServerUserId(this.state.userId)
-    await this.props.setServerUserName(this.state.userName)
-    await this.props.setServerDepartmentId(this.state.sysOrgId)
+
+    // await this.props.setServerUserId(this.state.userId)
+    // await this.props.setServerUserName(this.state.userName)
+    // await this.props.setServerDepartmentId(this.state.sysOrgId)
     await getToken()
 
     // const date = new Date()
@@ -83,6 +87,9 @@ class InputServer extends Component<Props, State> {
     // }
     // await users(params)
     Toast.show(getLanguage(global.language).Map_Settings.SETTING_SUCCESS)
+    await this.props.setServerUserId("")
+    NavigationService.navigate('LangChaoLogin')
+
   }
 
   renderHeaderRight = () => {
@@ -146,7 +153,7 @@ class InputServer extends Component<Props, State> {
           </TouchableOpacity>
         </View>
 
-        <View style={[{
+        {/* <View style={[{
           width: '100%',
           height: dp(40),
           backgroundColor: "#f3f3f3",
@@ -243,7 +250,7 @@ class InputServer extends Component<Props, State> {
               source={getPublicAssets().common.icon_close}
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
     )
   }

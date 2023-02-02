@@ -6,6 +6,7 @@ import { Platform } from 'react-native'
 import RNFetchBlob from 'rn-fetch-blob'
 import JSEncrypt from 'jsencrypt'
 import { Base64 } from 'js-base64'
+import { getLanguage } from '@/language'
 
 function getSign(){
   return Math.round(Math.random() * 100)
@@ -626,13 +627,23 @@ export const login = async (userId: string, password: string) => {
       const data = JSON.parse(JSON.stringify(res.data))
       if(data.ok === true) {
         infos = JSON.parse(JSON.stringify(data.data))
+        Toast.show(getLanguage(global.language).Map_Settings.LOGIN_SUCCESS)
         printLog(`\n login infos: ${JSON.stringify(infos)}`)
+      } else {
+        if(data.code === '500') {
+          Toast.show(getLanguage(global.language).Map_Settings.USERNAME_OR_PASSWORD_ERROR)
+        } else {
+          Toast.show(getLanguage(global.language).Map_Settings.FAILED_TO_LOG)
+        }
       }
+    } else {
+      Toast.show(getLanguage(global.language).Map_Settings.NETWORK_ERROR)
     }
     return infos
   } catch (error) {
     console.log('error', error)
     printLog(`\n login error : ${JSON.stringify(error)}`)
+    Toast.show(getLanguage(global.language).Map_Settings.FAILED_TO_LOG)
     return null
   }
 }

@@ -2941,4 +2941,7 @@ export const language_cn = {
   TIANDITU_MAP: '天地图地图', // Tianditu map
   PLAN_2D: '2D平面图', // 2D plan map
   SATELLITE_MAP: '卫星图', // Satellite map
+  FIRST_SETTING_SERVER_IP: "请优先设置服务地址，再进行登录", // Set the service address first and then login
+  LOGIN_SUCCESS:"登录成功", // Login success
+  USERNAME_OR_PASSWORD_ERROR:"用户名或密码错误", // The user name or password is incorrect
 }

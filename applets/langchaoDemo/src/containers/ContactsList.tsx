@@ -501,7 +501,8 @@ class ContactsList extends Component<Props, State> {
         // bottomBar={this.renderToolBar()}
         style={{
           flex: 1,
-          backgroundColor: '#f3f3f3',
+          // backgroundColor: '#f3f3f3',
+          backgroundColor: 'rgba(245, 245, 245, 1)',
         }}
       >
         {/* <Text>{"我是通讯录页面"}</Text> */}

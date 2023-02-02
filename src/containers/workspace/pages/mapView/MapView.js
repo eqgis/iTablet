@@ -2469,6 +2469,14 @@ export default class MapView extends React.Component {
     return (
       <FunctionToolbar
         language={this.props.language}
+        style={{
+          elevation: 5,
+          shadowOffset: { width: 0, height: 0 },
+          shadowColor: 'rgba(0, 0, 0, 1)',
+          shadowOpacity: 1,
+          shadowRadius: scaleSize(10),
+          width: scaleSize(80),
+        }}
         ref={ref => (this.functionToolbar = ref)}
         type={this.type}
         getToolRef={() => this.toolBox}

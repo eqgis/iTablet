@@ -220,7 +220,7 @@ export default handleActions(
         setUserId(data.userId)
         setUserName(data.userName)
         setSysOrgid(data.departmentId)
-        setPubKey(data.pubKey)
+        setPubKey(data.pubkey)
       }
       // console.warn(" ======================= langchao demo   ==============================")
       // console.warn("langchao redux: " + JSON.stringify(langchao))

@@ -16,7 +16,7 @@ import { CallModule, ChangeBaseLayerModule } from '../mapFunctionModules'
 import { getImage } from '../assets/Image'
 import { AppToolBar, NavigatorUtil } from '@/utils'
 import TourAction from '../mapFunctionModules/Langchao/TourAction'
-import { FileTools, SMap } from 'imobile_for_reactnative'
+import { FileTools, SMap, SMediaCollector } from 'imobile_for_reactnative'
 import navigators from '../containers/index'
 import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
 import { injectReducer } from "@/redux/store"
@@ -161,6 +161,14 @@ export default class LangChaoDemoModule extends Module {
         if(layerDatasetName === datasetName) {
           ToolbarModule.getParams().setCurrentLayer(layers[i])
           await SMap.setLayerVisible(layers[i].path, false)
+
+          const isMediaLayer = await SMediaCollector.isMediaLayer(layers[i].name)
+          console.warn("isMediaLayer: " + isMediaLayer)
+          if (isMediaLayer){
+            const isShow = await SMediaCollector.hideMedia(layers[i].name, false)
+            console.warn("isShow: " + isShow)
+          }
+
         }
       }
     }

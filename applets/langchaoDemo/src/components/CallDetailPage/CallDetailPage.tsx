@@ -670,7 +670,7 @@ class CallDetailPage extends Component<Props, State> {
                       //   this.props.refreshAction()
                       // }
                       if (await SMediaCollector.isMediaLayer(layerInfo.name)){
-                        await SMediaCollector.showMedia(layerInfo.name, false)
+                        await SMediaCollector.hideMedia(layerInfo.name, false)
                         await this.addMediaFiles({
                           datasourceName,
                           datasetName,

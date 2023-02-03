@@ -105,7 +105,7 @@ class LangChaoLogin extends Component<Props, State> {
     if(this.state.userId !== "") {
       if(this.state.password !== "") {
 
-        await this.props.setServerUserId(this.state.userId)
+        // await this.props.setServerUserId(this.state.userId)
 
         const pubkey = await getServerPubKeyUtil()
         if(pubkey !== "") {

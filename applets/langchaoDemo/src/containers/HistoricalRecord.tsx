@@ -85,12 +85,12 @@ class HistoricalRecord extends Component<Props, State> {
   }
 
   componentDidMount = async (): Promise<void> => {
-    await SMap.setLayerVisible(this.props.currentLayer.path, true)
+    // await SMap.setLayerVisible(this.props.currentLayer.path, true)
     await this.getAttributeData()
   }
 
   componentDidUpdate = (prevProps: Readonly<Props>, prevState: Readonly<State>): void => {
-    SMap.setLayerVisible(this.props.currentLayer.path, true)
+    // SMap.setLayerVisible(this.props.currentLayer.path, true)
   }
 
   getAttributeData = async () => {

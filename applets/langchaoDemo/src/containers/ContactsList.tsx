@@ -12,7 +12,7 @@ import { getImage } from "imobile_for_reactnative/components/ToolbarKit/ToolbarR
 import { getLanguage } from "@/language"
 import { getPublicAssets, getThemeAssets } from "@/assets"
 import { setCurrentSymbol } from "@/redux/models/symbol"
-import { SCollector, SMCollectorType } from "imobile_for_reactnative"
+import { SCollector, SMap, SMCollectorType } from "imobile_for_reactnative"
 import NavigationService from "@/containers/NavigationService"
 import { collectionModule } from "@/containers/workspace/components/ToolBar/modules"
 import ToolbarModule from "@/containers/workspace/components/ToolBar/modules/ToolbarModule"
@@ -195,6 +195,10 @@ class ContactsList extends Component<Props, State> {
       })
 
       const timer = setTimeout(async () => {
+        const layer = ToolbarModule.getParams().currentLayer
+        if(layer) {
+          await SMap.setLayerVisible(layer.path, false)
+        }
         await SCollector.startCollect(type)
 
         // const url = 'tel:' + telephone

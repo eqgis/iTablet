@@ -19,22 +19,26 @@ class TrackModule extends FunctionModule {
     const data = {"name":"专用公路","type":"line","id":965018}
 
     // 将点采集图层设为当前图层
-    const _params = ToolbarModule.getParams()
-    const layers = await (_params.getLayers())
+    // const _params = ToolbarModule.getParams()
+    // const layers = await (_params.getLayers())
 
-    const datasetName = "line_965018"
-    for(let i = 0; i < layers.length; i ++) {
-      const layerDatasetName = layers[i].datasetName
-      if(layerDatasetName === datasetName) {
-        ToolbarModule.getParams().setCurrentLayer(layers[i])
-      }
-    }
+    // const datasetName = "line_965018"
+    // for(let i = 0; i < layers.length; i ++) {
+    //   const layerDatasetName = layers[i].datasetName
+    //   if(layerDatasetName === datasetName) {
+    //     ToolbarModule.getParams().setCurrentLayer(layers[i])
+    //   }
+    // }
 
     AppToolBar.getProps().setCurrentSymbol(data)
     const type = SMCollectorType.LINE_GPS_PATH
     collectionModule().actions.showCollection(type)
 
     const timer = setTimeout(async () => {
+      const layer = ToolbarModule.getParams().currentLayer
+      if(layer) {
+        await SMap.setLayerVisible(layer.path, false)
+      }
       await SCollector.startCollect(type)
 
       clearTimeout(timer)

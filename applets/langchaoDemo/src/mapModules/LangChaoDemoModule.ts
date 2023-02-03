@@ -160,6 +160,7 @@ export default class LangChaoDemoModule extends Module {
         const layerDatasetName = layers[i].datasetName
         if(layerDatasetName === datasetName) {
           ToolbarModule.getParams().setCurrentLayer(layers[i])
+          await SMap.setLayerVisible(layers[i].path, false)
         }
       }
     }

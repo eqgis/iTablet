@@ -291,7 +291,7 @@ async function create() {
         // await SMap.removeAllLayer() // 移除所有图层
 
         LayerUtils.openDefaultBaseMap()
-        await SMap.openTaggingDataset(params.user.currentUser.userName)
+        await SMap._openTaggingDataset(params.user.currentUser.userName)
 
         let layers = (params.getLayers && (await params.getLayers())) || []
         let _currentLayer = null
@@ -631,7 +631,7 @@ async function changeMap(item) {
       } else {
         await params.setTemplate()
       }
-      await SMap.openTaggingDataset(params.user.currentUser.userName)
+      await SMap._openTaggingDataset(params.user.currentUser.userName)
       await params.getLayers(-1, async layers => {
         layers.map(layer => {
           if (layer.isVisible) {
@@ -760,7 +760,7 @@ async function headerAction(type, section = {}) {
           LayerUtils.openDefaultBaseMap()
 
           const layers = await params.getLayers()
-          await SMap.openTaggingDataset(params.user.currentUser.userName)
+          await SMap._openTaggingDataset(params.user.currentUser.userName)
           // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
           await SMap.getTaggingLayers(params.user.currentUser.userName).then(
             dataList => {
@@ -912,7 +912,7 @@ async function openTemplate(item) {
 
               // 没有标注图层,则默认打开一个
               if (taggingLayers.length === 0) {
-                await SMap.openTaggingDataset(params.user.currentUser.userName)
+                await SMap._openTaggingDataset(params.user.currentUser.userName)
               }
 
               // params.setContainerLoading(false)

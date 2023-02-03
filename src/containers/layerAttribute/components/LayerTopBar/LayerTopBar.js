@@ -168,7 +168,7 @@ export default class LayerTopBar extends React.Component {
         datasetName = layerInfo.datasetName // 标注图层名称
       }
       if(this.props.islayerSelection){
-        let info = await SMap.getDataNameByLayer(global.SelectedSelectionAttribute.layerInfo.path)
+        let info = await SMap._getDataNameByLayer(global.SelectedSelectionAttribute.layerInfo.path)
         datasetName = info.datasetName
         datasourceAlias = info.datasourceAlias
       }

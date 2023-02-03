@@ -709,9 +709,6 @@ export default class ArMappingButton extends React.Component {
     }
 
     if (isDrawTaggingLayer) {
-      // let hasDefaultTagging = await SMap.hasDefaultTagging(
-      //   _params.user.currentUser.userName,
-      // )
       let hasDefaultTagging = false
       const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+_params.user.currentUser.userName+"#"})
       datasets.forEach(item => {
@@ -721,7 +718,7 @@ export default class ArMappingButton extends React.Component {
       })
 
       if (!hasDefaultTagging) {
-        await SMap.newTaggingDataset(
+        await SMap._newTaggingDataset(
           `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
@@ -782,9 +779,6 @@ export default class ArMappingButton extends React.Component {
       isDrawTaggingLayer = true
     }
     if (isDrawTaggingLayer) {
-      // let hasDefaultTagging = await SMap.hasDefaultTagging(
-      //   _params.user.currentUser.userName,
-      // )
       let hasDefaultTagging = false
       const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+_params.user.currentUser.userName+"#"})
       datasets.forEach(item => {
@@ -793,7 +787,7 @@ export default class ArMappingButton extends React.Component {
         }
       })
       if (!hasDefaultTagging) {
-        await SMap.newTaggingDataset(
+        await SMap._newTaggingDataset(
           `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
@@ -856,9 +850,6 @@ export default class ArMappingButton extends React.Component {
     }
 
     if (isDrawTaggingLayer) {
-      // let hasDefaultTagging = await SMap.hasDefaultTagging(
-      //   _params.user.currentUser.userName,
-      // )
       let hasDefaultTagging = false
       const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+_params.user.currentUser.userName+"#"})
       datasets.forEach(item => {
@@ -867,7 +858,7 @@ export default class ArMappingButton extends React.Component {
         }
       })
       if (!hasDefaultTagging) {
-        await SMap.newTaggingDataset(
+        await SMap._newTaggingDataset(
           `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
@@ -928,9 +919,6 @@ export default class ArMappingButton extends React.Component {
     }
 
     if (isDrawTaggingLayer) {
-      // let hasDefaultTagging = await SMap.hasDefaultTagging(
-      //   _params.user.currentUser.userName,
-      // )
       let hasDefaultTagging = false
       const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+_params.user.currentUser.userName+"#"})
       datasets.forEach(item => {
@@ -939,7 +927,7 @@ export default class ArMappingButton extends React.Component {
         }
       })
       if (!hasDefaultTagging) {
-        await SMap.newTaggingDataset(
+        await SMap._newTaggingDataset(
           `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
@@ -1000,9 +988,6 @@ export default class ArMappingButton extends React.Component {
     }
 
     if (isDrawTaggingLayer) {
-      // let hasDefaultTagging = await SMap.hasDefaultTagging(
-      //   _params.user.currentUser.userName,
-      // )
       let hasDefaultTagging = false
       const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+_params.user.currentUser.userName+"#"})
       datasets.forEach(item => {
@@ -1011,7 +996,7 @@ export default class ArMappingButton extends React.Component {
         }
       })
       if (!hasDefaultTagging) {
-        await SMap.newTaggingDataset(
+        await SMap._newTaggingDataset(
           `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )

@@ -502,7 +502,7 @@ function tour() {
         if (value !== '') {
           await SMap.setLabelColor()
           debugger
-          const tagginData = await SMap.newTaggingDataset(
+          const tagginData = await SMap._newTaggingDataset(
             value,
             _params.user.currentUser.userName,
             false, // 轨迹图层都设置为不可编辑

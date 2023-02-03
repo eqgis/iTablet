@@ -204,7 +204,7 @@ export default class ToolList extends React.Component {
             )
 
             let layers = await this.props.getLayers()
-            await SMap.openTaggingDataset(this.props.user.currentUser.userName)
+            await SMap._openTaggingDataset(this.props.user.currentUser.userName)
             // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
             await SMap.getTaggingLayers(
               this.props.user.currentUser.userName,

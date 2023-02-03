@@ -25,7 +25,7 @@ import Utils from './utils'
 import { ToolbarModuleKey } from './modules/modulesKeys'
 import { DEVICE } from '@/redux/models/device'
 import sceneInfoType from '@/redux/models/scenes'
-import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { Action, LayerInfo } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SSceneType'
 
 interface ToolbarVisibleParam {
@@ -74,7 +74,7 @@ export interface Props extends Partial<DefaultProps> {
   online: Object,
   collection: Object,
   template: Object,
-  currentLayer: Object,
+  currentLayer: LayerInfo,
   selection: Array,
   device: DEVICE,
   windowSize: ScaledSize,

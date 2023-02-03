@@ -62,9 +62,6 @@ async function getTaggingLayerData() {
   }
   let taggingLayerData
   if (!isTaggingLayer) {
-    // let hasDefaultTagging = await SMap.hasDefaultTagging(
-    //   _params.user.currentUser.userName,
-    // )
     let hasDefaultTagging = false
     const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+_params.user.currentUser.userName+"#"})
     datasets.forEach(item => {
@@ -73,7 +70,7 @@ async function getTaggingLayerData() {
       }
     })
     if (!hasDefaultTagging) {
-      await SMap.newTaggingDataset(
+      await SMap._newTaggingDataset(
         `Default_Tagging_${_params.user.currentUser.userName}`,
         _params.user.currentUser.userName,
       )

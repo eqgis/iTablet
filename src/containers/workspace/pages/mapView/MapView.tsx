@@ -1824,10 +1824,7 @@ export default class MapView extends React.Component {
         await SMap.setLabelColor()
         // 示例地图不加载标注图层
         if (!this.isExample && !global.coworkMode) {
-          await SMap.openTaggingDataset(this.props.user.currentUser.userName)
-          // let hasDefaultTagging = await SMap.hasDefaultTagging(
-          //   this.props.user.currentUser.userName,
-          // )
+          await SMap._openTaggingDataset(this.props.user.currentUser.userName)
           let hasDefaultTagging = false
           const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+this.props.user.currentUser.userName+"#"})
           datasets.forEach(item => {
@@ -1836,14 +1833,10 @@ export default class MapView extends React.Component {
             }
           })
           if (!hasDefaultTagging) {
-            debugger
-            let datasourceName = "Label_"+this.props.user.currentUser.userName+"#"
-            let datasetName =  `Default_Tagging_${this.props.user.currentUser.userName}`
-            await SMap._createTaggingLayer(datasourceName, datasetName)
-            // await SMap.newTaggingDataset(
-            //   `Default_Tagging_${this.props.user.currentUser.userName}`,
-            //   this.props.user.currentUser.userName,
-            // )
+            await SMap._newTaggingDataset(
+              `Default_Tagging_${this.props.user.currentUser.userName}`,
+              this.props.user.currentUser.userName,
+            )
           }
           let layer = await SMap.getCurrentTaggingLayer(
             this.props.user.currentUser.userName,

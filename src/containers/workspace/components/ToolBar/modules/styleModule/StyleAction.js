@@ -35,7 +35,7 @@ async function close() {
 
   const _data = ToolbarModule.getData()
   if (_data.currentLayerStyle) {
-    await SCartography.setLayerStyle(
+    await SCartography.setLayerStyleXml(
       _params.currentLayer.name,
       _data.currentLayerStyle,
     )

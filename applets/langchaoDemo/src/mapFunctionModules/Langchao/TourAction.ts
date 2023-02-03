@@ -7,6 +7,7 @@ import { getLanguage } from '@/language'
 import { getJson } from '../../assets/data'
 import { uploadFile, MessageInfoType, message, getUserParam, printLog, getUUid } from '../../utils/langchaoServer'
 import NavigationService from '@/containers/NavigationService'
+import CollectionAction from '@/containers/workspace/components/ToolBar/modules/collectionModule/CollectionAction'
 
 
 
@@ -604,6 +605,15 @@ const uploadDialog = async (id: number, type: uploadType) => {
         if(getUserParam().userId === "") {
           NavigationService.navigate('LangChaoLogin')
         } else {
+          global.ToolBar?.close()
+          // 将数据恢复默认值
+          CollectionAction.setCallInfo({
+            name: '',
+            phoneNumber: '',
+            startTime: -1,
+          })
+          NavigationService.navigate('HistoricalRecord')
+
           global.SimpleDialog.setVisible(false)
           global.Loading.setLoading(true, getLanguage(global.language).Prompt.RESOURCE_UPLOADING)
           let result = false
@@ -634,6 +644,15 @@ const uploadDialog = async (id: number, type: uploadType) => {
 
       },
       cancelAction: () => {
+        global.ToolBar?.close()
+        // 将数据恢复默认值
+        CollectionAction.setCallInfo({
+          name: '',
+          phoneNumber: '',
+          startTime: -1,
+        })
+        NavigationService.navigate('HistoricalRecord')
+
         global.SimpleDialog.setVisible(false)
       },
     })

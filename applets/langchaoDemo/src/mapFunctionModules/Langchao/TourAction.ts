@@ -254,6 +254,8 @@ const sendMessagePhone = async (id: number, type: uploadType) => {
       }
     }
     console.warn(" uuid01: " + uuid + "\n uuidIndex: " + uuidIndex + "\n uuidTrackIndex: " + uuidTrackIndex + "\n uuidMediaIndex: " + uuidMediaIndex)
+    printLog("\n uuid01: " + uuid + "\n uuidTrack: " + uuidTrack + "\n uuidMedia: " + uuidMedia)
+
     if(uuid === "") {
       uuid = getUUid()
     }
@@ -382,13 +384,18 @@ const sendMessagePhone = async (id: number, type: uploadType) => {
 
       const count = await SMap.exportDatasetToGeoJsonFileByID("langchao", layerdatasetName, path, ids, false)
 
+      console.warn("track count:" + count + " \n path: " + path)
+      printLog("\n track count:" + count + " \n path: " + path)
+
       if(count > 0) {
         let uploadInfo = await uploadFile(path)
+        printLog(`\n track uploadInfo ${JSON.stringify(uploadInfo)}`)
         if(uploadInfo !== null) {
           uploadInfo = JSON.parse(JSON.stringify(uploadInfo))
           const uuidF = uploadInfo.uuid
 
           uuidTrack = uuidF
+          printLog(`\n track uuidF ${uuidF} ---- uuidTrack ${uuidTrack}`)
           // 删除文件
           const jsonFileExist = await FileTools.fileIsExist(path)
           if(jsonFileExist) {
@@ -670,9 +677,12 @@ const sendInfoAll = async() => {
 
     let successCount = 0
     let failedCount = 0
+
+    const userparam =  getUserParam()
     // 线的整体提交
-    const datasetArrayL = await SMap.querybyAttributeValue("langchao", "line_965018", "isUploaded=0")
+    const datasetArrayL = await SMap.querybyAttributeValue("langchao", "line_965018", "isUploaded=0 AND langchaoUser=" + userparam.userId)
     const datasetArrayLengthL = datasetArrayL.length
+    console.warn("dataser Arr: " + JSON.stringify(datasetArrayL) + " \n length: " + datasetArrayLengthL)
     if(datasetArrayLengthL > 0) {
       // const ids = []
       for(let i =0; i < datasetArrayLengthL; i ++) {

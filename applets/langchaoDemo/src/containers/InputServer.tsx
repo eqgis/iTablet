@@ -66,7 +66,7 @@ class InputServer extends Component<Props, State> {
     // await this.props.setServerUserId(this.state.userId)
     // await this.props.setServerUserName(this.state.userName)
     // await this.props.setServerDepartmentId(this.state.sysOrgId)
-    await getToken()
+    getToken()
 
     // const date = new Date()
     // const timezone = 8 //目标时区时间，东八区(北京时间)   东时区正数 西市区负数
@@ -86,9 +86,14 @@ class InputServer extends Component<Props, State> {
     //   SysOrgid: this.state.sysOrgId,
     // }
     // await users(params)
-    Toast.show(getLanguage(global.language).Map_Settings.SETTING_SUCCESS)
+    Toast.show(getLanguage(global.language).Map_Settings.SETTING_SUCCESS,{
+      duration: 2000,
+    })
     await this.props.setServerUserId("")
-    NavigationService.navigate('LangChaoLogin')
+    const timer =  setTimeout(() => {
+      NavigationService.navigate('LangChaoLogin')
+      clearTimeout(timer)
+    }, 2000)
 
   }
 

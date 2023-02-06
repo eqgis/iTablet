@@ -89,8 +89,11 @@ class HistoricalRecord extends Component<Props, State> {
     await this.getAttributeData()
   }
 
-  componentDidUpdate = (prevProps: Readonly<Props>, prevState: Readonly<State>): void => {
+  componentDidUpdate = async (prevProps: Readonly<Props>, prevState: Readonly<State>): void => {
     // SMap.setLayerVisible(this.props.currentLayer.path, true)
+    if( this.props.userId !== prevProps.userId) {
+      await this.getAttributeData()
+    }
   }
 
   getAttributeData = async () => {
@@ -127,6 +130,7 @@ class HistoricalRecord extends Component<Props, State> {
         locationInfo: "",
         attributeInfo: AttributedataItem,
       }
+      let createUserId = ""
       for(let j = 0; j < AttributedataItem.length; j ++) {
         // 记录对象的每一个属性和他的值
         const item = AttributedataItem[j]
@@ -151,10 +155,13 @@ class HistoricalRecord extends Component<Props, State> {
           itemObj.duration = item.value
         } else if(item.name === "locationInfo") {
           itemObj.locationInfo = item.value
+        } else if(item.name === 'langchaoUser') {
+          createUserId = item.value
         }
       }
 
-      if(itemObj.SmID !== -1) {
+      console.warn("createUserId: " + createUserId + " - userId: " + this.props.userId)
+      if(itemObj.SmID !== -1 && createUserId === this.props.userId) {
         TempData.push(itemObj)
       }
     }
@@ -442,6 +449,7 @@ const mapStateToProp = (state: any) => ({
   device: state.device.toJS().device,
   language: state.setting.toJS().language,
   currentLayer: state.layers.toJS().currentLayer,
+  userId: state.langchao.toJS().userId,
 })
 
 const mapDispatch = {

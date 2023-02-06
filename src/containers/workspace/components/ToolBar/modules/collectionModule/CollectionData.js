@@ -11,7 +11,7 @@ import TourAction from '../../../../../../../applets/langchaoDemo/src/mapFunctio
 import { ConstPath } from '../../../../../../../src/constants'
 import { FileTools } from '../../../../../../../src/native'
 import App from '@/App'
-import { getUserInfo } from '../../../../../../../applets/langchaoDemo/src/utils/langchaoServer'
+import { getUserInfo, getUserParam } from '../../../../../../../applets/langchaoDemo/src/utils/langchaoServer'
 import { location } from '@/redux/models'
 
 /**
@@ -170,6 +170,10 @@ function getData(type) {
           phoneNumber = itemTemp.mobilePhone !== "" ? itemTemp.mobilePhone : itemTemp.phone
         }
 
+        const userParam = getUserParam()
+        console.warn("userParam: " + JSON.stringify(userParam))
+        const langchaoUserId = userParam.userId || ""
+
         const callContentsObj = {
           myName: name,           // 呼叫人姓名
           myPhoneNumber: phoneNumber,    // 呼叫人电话
@@ -215,6 +219,7 @@ function getData(type) {
         let durationTimeIndex = 0
         let isUploadedIndex = 0
         let locationInfoIndex = 0
+        let langchaoUserIdIndex = 0
 
         let position = await SMap.getCurrentLocation()
         // position = {
@@ -239,6 +244,7 @@ function getData(type) {
         const length = layerAttributedata.length
         for(let i = 0; i < length; i ++) {
           let item = layerAttributedata[i]
+          console.warn("item info : " + item.name + " - " + i)
           if(item.name === "SmID") {
             smID = item.value
           }
@@ -260,6 +266,8 @@ function getData(type) {
             isUploadedIndex = i
           } else if(item.name === "locationInfo") {
             locationInfoIndex = i
+          } else if(item.name === 'langchaoUser') {
+            langchaoUserIdIndex = i
           }
         }
 
@@ -337,6 +345,13 @@ function getData(type) {
                 name: 'locationInfo',
                 value: locationInfo,
                 index: locationInfoIndex,
+                columnIndex: columnIndex,
+                smID: smID,
+              },
+              {
+                name: 'langchaoUser',
+                value: langchaoUserId,
+                index: langchaoUserIdIndex,
                 columnIndex: columnIndex,
                 smID: smID,
               },

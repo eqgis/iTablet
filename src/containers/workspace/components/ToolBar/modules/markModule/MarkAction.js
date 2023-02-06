@@ -179,7 +179,7 @@ async function commit(type) {
         global.HAVEATTRIBUTE = true
       }
       let currentLayer = _params.currentLayer
-      SMap.setTaggingGrid(
+      SMap._setTaggingGrid(
         currentLayer.datasetName,
         _params.user.currentUser.userName,
       )

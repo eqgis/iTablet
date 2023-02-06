@@ -105,7 +105,7 @@ async function OpenData(data, index, callback) {
     }
 
     // 切换底图，坐标系可能变化，导致多媒体callout位置错误，重新加载一次
-    let taggingLayers = await SMap.getTaggingLayers(global.currentUser.userName)
+    let taggingLayers = await SMap._getTaggingLayers(global.currentUser.userName)
     for (let _layer of taggingLayers) {
       let isMediaLayer = await SMediaCollector.isMediaLayer(_layer.name)
       if (_layer.isVisible && isMediaLayer) {

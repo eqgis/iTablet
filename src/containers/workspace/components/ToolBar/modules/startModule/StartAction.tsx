@@ -654,7 +654,7 @@ async function changeMap(item) {
       })
 
       // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
-      SMap.getTaggingLayers(params.user.currentUser.userName).then(dataList => {
+      SMap._getTaggingLayers(params.user.currentUser.userName).then(dataList => {
         dataList.forEach(item => {
           if (item.isVisible) {
             SMediaCollector.showMedia(item.name)
@@ -762,7 +762,7 @@ async function headerAction(type, section = {}) {
           const layers = await params.getLayers()
           await SMap._openTaggingDataset(params.user.currentUser.userName)
           // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
-          await SMap.getTaggingLayers(params.user.currentUser.userName).then(
+          await SMap._getTaggingLayers(params.user.currentUser.userName).then(
             dataList => {
               dataList.forEach(item => {
                 if (item.isVisible) {
@@ -901,7 +901,7 @@ async function openTemplate(item) {
               }
 
               // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
-              let taggingLayers = await SMap.getTaggingLayers(
+              let taggingLayers = await SMap._getTaggingLayers(
                 params.user.currentUser.userName,
               )
               for (let item of taggingLayers) {

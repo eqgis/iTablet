@@ -8,6 +8,19 @@ import JSEncrypt from 'jsencrypt'
 import { Base64 } from 'js-base64'
 import { getLanguage } from '@/language'
 
+export interface userInfoType {
+  id: string,
+  code: string,
+  name: string,
+  sysOrgName: string,
+  email: string,
+  phone: string,
+  gender: string,
+  proCode: string,
+  proName: string,
+  mobilePhone: string,
+}
+
 function getSign(){
   return Math.round(Math.random() * 100)
 }
@@ -20,7 +33,7 @@ let serverClientid = "Gvvy19yU"
 let userId = ""
 let username = ""
 let sysOrgid = ""
-let userInfo: any[] = []
+let userInfo: userInfoType | null | undefined = null
 
 //之前ssl生成的公钥，复制的时候要小心不要有空格
 let pubKey =  `MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDYdvhxlmpCV5iE3iaWv7M0Fe/x
@@ -46,6 +59,10 @@ export const getUserParam = () => {
 
 export const setPubKey = (key: string) => {
   pubKey = key
+}
+
+export const setUserInfo = (info: userInfoType | null | undefined) => {
+  userInfo = info
 }
 
 export const setUserId = (id: string) => {
@@ -343,6 +360,18 @@ export const users = async (params: UserInfoType) => {
     console.log('error', error)
     printLog(`\n users error : ${JSON.stringify(error)}`)
     return null
+    // return {
+    //   id: 'hhh',
+    //   code: '101',
+    //   name: '章三',
+    //   sysOrgName: '11111',
+    //   email: '',
+    //   phone: '12345678910',
+    //   gender: '男',
+    //   proCode: '101',
+    //   proName: '22222',
+    //   mobilePhone: '12345678910',
+    // }
   }
 
 }

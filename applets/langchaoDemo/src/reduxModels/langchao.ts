@@ -2,7 +2,7 @@ import { getLastLaunchState } from '@/redux/store'
 import { fromJS } from 'immutable'
 import { handleActions } from 'redux-actions'
 import { REHYDRATE } from 'redux-persist'
-import { setServerIPUtil, setServerTokenUtil, setServerClientidUtil, setUserId, setUserName, setSysOrgid, setPubKey, getServerPubKeyUtil } from '../utils/langchaoServer'
+import { setServerIPUtil, setServerTokenUtil, setServerClientidUtil, setUserId, setUserName, setSysOrgid, setPubKey, getServerPubKeyUtil, setUserInfo } from '../utils/langchaoServer'
 // Constants
 // --------------------------------------------------
 export const LANGCHAO_SET_SERVER_IP = "LANGCHAO_SET_SERVER_IP"
@@ -16,6 +16,7 @@ export const LANGCHAO_SET_COUNTRY = "LANGCHAO_SET_COUNTRY"
 export const LANGCHAO_SET_CITY = "LANGCHAO_SET_CITY"
 export const LANGCHAO_SET_PASSWORD = "LANGCHAO_SET_PASSWORD"
 export const LANGCHAO_SET_PUBKEY = "LANGCHAO_SET_PUBKEY"
+export const LANGCHAO_SET_USERINFO = "LANGCHAO_SET_USERINFO"
 // Actions
 // ---------------------------------.3-----------------
 
@@ -149,6 +150,18 @@ export const setServerPubkey = (
   cb && cb()
 }
 
+export const setLangchaoUserInfo = (
+  params = null,
+  cb = () => {},
+) => async (dispatch: (arg0: any) => any) => {
+  setUserInfo(params)
+  await dispatch({
+    type: LANGCHAO_SET_USERINFO,
+    payload: params,
+  })
+  cb && cb()
+}
+
 export interface contactItemType {
   ID: number,
   userID: string,
@@ -173,6 +186,7 @@ const initialState = fromJS({
   pcXAgIiavv/KvGxgeIdaHMAFH7gzHaF0fsayF9DrLdrgyDttw+qeV3z//DVpxUn6
   Gdig1KA4pvB/3DhfsQIDAQAB`,
   // pubkey: "",
+  langchaoUserInfo: null,
 })
 
 export default handleActions(
@@ -210,6 +224,9 @@ export default handleActions(
     [`${LANGCHAO_SET_PUBKEY}`]: (state: any, { payload }: any) => {
       return state.setIn(['pubkey'], fromJS(payload))
     },
+    [`${LANGCHAO_SET_USERINFO}`]: (state: any, { payload }: any) => {
+      return state.setIn(['langchaoUserInfo'], fromJS(payload))
+    },
     [REHYDRATE]: (state, { payload }) => {
       const langchao = getLastLaunchState()?.langchao
       if(langchao) {
@@ -221,6 +238,7 @@ export default handleActions(
         setUserName(data.userName)
         setSysOrgid(data.departmentId)
         setPubKey(data.pubkey)
+        setUserInfo(data.langchaoUserInfo)
       }
       // console.warn(" ======================= langchao demo   ==============================")
       // console.warn("langchao redux: " + JSON.stringify(langchao))

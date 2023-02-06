@@ -158,8 +158,14 @@ function getData(type) {
         console.warn("用户信息" + JSON.stringify(infos))
         let name = '张三'
         let phoneNumber = "17711245121"
-        if(infos && infos.length > 0) {
-          const itemTemp = infos[0]
+        // if(infos && infos.length > 0) {
+        //   const itemTemp = infos[0]
+        //   name = itemTemp.name
+        //   phoneNumber = itemTemp.mobilePhone !== "" ? itemTemp.mobilePhone : itemTemp.phone
+        // }
+
+        if(infos) {
+          const itemTemp = infos
           name = itemTemp.name
           phoneNumber = itemTemp.mobilePhone !== "" ? itemTemp.mobilePhone : itemTemp.phone
         }

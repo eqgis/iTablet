@@ -1838,9 +1838,20 @@ export default class MapView extends React.Component {
               this.props.user.currentUser.userName,
             )
           }
-          let layer = await SMap.getCurrentTaggingLayer(
-            this.props.user.currentUser.userName,
-          )
+
+          const datasourceName = "Label_"+this.props.user.currentUser.userName+"#"
+          const layersInfo = await SMap.getLayersInfo(DatasetType.CAD)
+          let layer
+          for(let i=0;i<layersInfo.length;i++){
+            const layerInfo = layersInfo[i]
+            if(layerInfo?.caption&&layerInfo.caption.indexOf(datasourceName)!=-1){
+              layer = layerInfo
+              break
+            }
+          }
+          // let layer = await SMap.getCurrentTaggingLayer(
+          //   this.props.user.currentUser.userName,
+          // )
           if (layer) {
             layer.isEdit = await SMap.setLayerEditable(layer.name, true)
             layer.isVisible = await SMap.setLayerVisible(layer.name, true)
@@ -1848,7 +1859,7 @@ export default class MapView extends React.Component {
 
             if (mapInfo) await SMap.saveMap('')
             // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
-            let dataList = await SMap.getTaggingLayers(
+            let dataList = await SMap._getTaggingLayers(
               this.props.user.currentUser.userName,
             )
             dataList.forEach(item => {

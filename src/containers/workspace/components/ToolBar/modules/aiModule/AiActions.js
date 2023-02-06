@@ -17,7 +17,7 @@ let isDownload = true // 目标分类默认文件下载判断
 function illegallyParkCollect() {
   (async function() {
     const _params = ToolbarModule.getParams()
-    const dataList = await SMap.getTaggingLayers(
+    const dataList = await SMap._getTaggingLayers(
       _params.user.currentUser.userName,
     )
     global.toolBox && global.toolBox.removeAIDetect(true)
@@ -27,7 +27,7 @@ function illegallyParkCollect() {
         ;(await global.toolBox) && global.toolBox.switchAr()
       }
       let taggingLayerData = await getTaggingLayerData()
-      const dataList = await SMap.getTaggingLayers(
+      const dataList = await SMap._getTaggingLayers(
         _params.user.currentUser.userName,
       )
       for (let i = 0; i < dataList.length; i++) {
@@ -113,7 +113,7 @@ function aiClassify() {
           ;(await global.toolBox) && global.toolBox.switchAr()
         }
         let taggingLayerData = await getTaggingLayerData()
-        const dataList = await SMap.getTaggingLayers(
+        const dataList = await SMap._getTaggingLayers(
           _params.user.currentUser.userName,
         )
         for (let i = 0; i < dataList.length; i++) {
@@ -210,7 +210,7 @@ function aiDetect() {
       ;(await global.toolBox) && global.toolBox.switchAr()
     }
     let taggingLayerData = await getTaggingLayerData()
-    const dataList = await SMap.getTaggingLayers(
+    const dataList = await SMap._getTaggingLayers(
       _params.user.currentUser.userName,
     )
     for (let i = 0; i < dataList.length; i++) {
@@ -266,7 +266,7 @@ function polymerizeCollect() {
       ;(await global.toolBox) && global.toolBox.switchAr()
     }
     let taggingLayerData = await getTaggingLayerData()
-    const dataList = await SMap.getTaggingLayers(
+    const dataList = await SMap._getTaggingLayers(
       _params.user.currentUser.userName,
     )
     for (let i = 0; i < dataList.length; i++) {

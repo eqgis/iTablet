@@ -200,7 +200,7 @@ export default class MT_layerManager extends React.Component {
       // 若无标注图层，则去加载
       // if (taggingLayers.length === 0) {
       if (data?.[0].title === getLanguage(this.props.language).Map_Layer.MY_PLOTS && data?.[0].data.length === 0) {
-        taggingLayers = await SMap.getTaggingLayers(
+        taggingLayers = await SMap._getTaggingLayers(
           this.props.user.currentUser.userName,
         )
         data[0].data = taggingLayers
@@ -392,7 +392,7 @@ export default class MT_layerManager extends React.Component {
 
   updateTagging = async () => {
     // this.setRefreshing(true)
-    let dataList = await SMap.getTaggingLayers(
+    let dataList = await SMap._getTaggingLayers(
       this.props.user.currentUser.userName,
     )
     for (let item of dataList) {

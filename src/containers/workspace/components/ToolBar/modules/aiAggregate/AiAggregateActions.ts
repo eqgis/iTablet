@@ -56,7 +56,7 @@ function polymerizeCollect() {
     const _params: any = ToolbarModule.getParams()
     global.toolBox && global.toolBox.removeAIDetect(false)
     let taggingLayerData = await getTaggingLayerData()
-    const dataList = await SMap.getTaggingLayers(
+    const dataList = await SMap._getTaggingLayers(
       _params.user.currentUser.userName,
     )
     for (let layer of dataList) {

@@ -23,13 +23,13 @@ async function close() {
 // 违章采集
 async function illegallyParkCollect() {
   const _params: any = ToolbarModule.getParams()
-  const dataList = await SMap.getTaggingLayers(
+  const dataList = await SMap._getTaggingLayers(
     _params.user.currentUser.userName,
   )
   global.toolBox && global.toolBox.removeAIDetect(true)
   if (dataList.length > 0) {
     let taggingLayerData = await getTaggingLayerData()
-    const dataList = await SMap.getTaggingLayers(
+    const dataList = await SMap._getTaggingLayers(
       _params.user.currentUser.userName,
     )
     for (let layer of dataList) {

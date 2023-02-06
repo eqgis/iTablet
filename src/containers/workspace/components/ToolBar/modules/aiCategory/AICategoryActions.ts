@@ -32,7 +32,7 @@ async function aiClassify() {
       (await FileTools.fileIsExist(dustbin_txt))
     if (isDustbin) {
       let taggingLayerData = await getTaggingLayerData()
-      const dataList = await SMap.getTaggingLayers(
+      const dataList = await SMap._getTaggingLayers(
         _params.user.currentUser.userName,
       )
       for (let layer of dataList) {

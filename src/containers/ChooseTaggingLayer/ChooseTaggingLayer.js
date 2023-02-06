@@ -40,7 +40,7 @@ export default class ChooseTaggingLayer extends React.Component {
   }
 
   getData = async () => {
-    let dataList = await SMap.getTaggingLayers(
+    let dataList = await SMap._getTaggingLayers(
       this.props.user.currentUser.userName,
     )
     this.setState({

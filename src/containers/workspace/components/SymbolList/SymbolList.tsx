@@ -58,19 +58,28 @@ export default class SymbolList extends React.Component {
     if (this.props.type === ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_LINE) {
       SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
     } else if (this.props.layerData.type === 3) {
-      SCartography.setLineSymbolID(data.id, this.props.layerData.name)
+      // SCartography.setLineSymbolID(data.id, this.props.layerData.name)
+      SCartography.setLayerStyle(this.props.layerData.name, {
+        MarkerSymbolID: data.id,
+      })
     }
 
     if (this.props.type === ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT) {
       SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
     } else if (this.props.layerData.type === 1) {
-      SCartography.setMakerSymbolID(data.id, this.props.layerData.name)
+      // SCartography.setMakerSymbolID(data.id, this.props.layerData.name)
+      SCartography.setLayerStyle(this.props.layerData.name, {
+        MarkerSymbolID: data.id,
+      })
     }
 
     if (this.props.type === ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION) {
       SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
     } else if (this.props.layerData.type === 5) {
-      SCartography.setFillSymbolID(data.id, this.props.layerData.name)
+      // SCartography.setFillSymbolID(data.id, this.props.layerData.name)
+      SCartography.setLayerStyle(this.props.layerData.name, {
+        MarkerSymbolID: data.id,
+      })
     }
   }
 

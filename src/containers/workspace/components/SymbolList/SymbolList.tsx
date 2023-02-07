@@ -8,6 +8,7 @@ import {
   SCartography,
   SThemeCartography,
   SData,
+  GeoStyle,
 } from 'imobile_for_reactnative'
 import { ConstToolType, ChunkType } from '../../../../constants'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
@@ -56,7 +57,25 @@ export default class SymbolList extends React.Component {
     let event = this.props.getToolbarModule().getData().event
 
     if (this.props.type === ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_LINE) {
-      SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
+      SMap.addDataToMapHistory(event.layerInfo.path,[event.id],1).then((res)=>{
+        if(res){
+          const geoStyle = new GeoStyle()
+          geoStyle.setMarkerSize(6)
+          geoStyle.setMarkerStyle(data.id)
+          geoStyle.setLineStyle(data.id)
+          geoStyle.setFillStyle(data.id)
+          SData.setGeometryStyle(
+            {datasetName:event.layerInfo.datasetName||"",datasourceName:event.layerInfo.datasourceAlias||""},
+            event.id,
+            geoStyle,
+          ).then((res)=>{
+            if(res){
+              SMap.refreshMap()
+            }
+          })
+        }
+        // SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
+      })
     } else if (this.props.layerData.type === 3) {
       // SCartography.setLineSymbolID(data.id, this.props.layerData.name)
       SCartography.setLayerStyle(this.props.layerData.name, {
@@ -65,7 +84,26 @@ export default class SymbolList extends React.Component {
     }
 
     if (this.props.type === ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT) {
-      SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
+      SMap.addDataToMapHistory(event.layerInfo.path,[event.id],1).then((res)=>{
+        if(res){
+          const geoStyle = new GeoStyle()
+          geoStyle.setMarkerSize(6)
+          geoStyle.setMarkerStyle(data.id)
+          geoStyle.setLineStyle(data.id)
+          geoStyle.setFillStyle(data.id)
+          SData.setGeometryStyle(
+            {datasetName:event.layerInfo.datasetName||"",datasourceName:event.layerInfo.datasourceAlias||""},
+            event.id,
+            geoStyle,
+          ).then((res)=>{
+            if(res){
+              SMap.refreshMap()
+            }
+          })
+        }
+        // SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
+      })
+      // SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
     } else if (this.props.layerData.type === 1) {
       // SCartography.setMakerSymbolID(data.id, this.props.layerData.name)
       SCartography.setLayerStyle(this.props.layerData.name, {
@@ -74,7 +112,26 @@ export default class SymbolList extends React.Component {
     }
 
     if (this.props.type === ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION) {
-      SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
+      SMap.addDataToMapHistory(event.layerInfo.path,[event.id],1).then((res)=>{
+        if(res){
+          const geoStyle = new GeoStyle()
+          geoStyle.setMarkerSize(6)
+          geoStyle.setMarkerStyle(data.id)
+          geoStyle.setLineStyle(data.id)
+          geoStyle.setFillStyle(data.id)
+          SData.setGeometryStyle(
+            {datasetName:event.layerInfo.datasetName||"",datasourceName:event.layerInfo.datasourceAlias||""},
+            event.id,
+            geoStyle,
+          ).then((res)=>{
+            if(res){
+              SMap.refreshMap()
+            }
+          })
+        }
+        // SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
+      })
+      // SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
     } else if (this.props.layerData.type === 5) {
       // SCartography.setFillSymbolID(data.id, this.props.layerData.name)
       SCartography.setLayerStyle(this.props.layerData.name, {

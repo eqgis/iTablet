@@ -9,6 +9,8 @@ import {
   SMap,
   SCollector,
   SMediaCollector,
+  SData,
+  GeoStyle,
 } from 'imobile_for_reactnative'
 import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { DatasetType,GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
@@ -169,20 +171,53 @@ async function freecover() {
     Toast.show(getLanguage(global.language).Prompt.PLEASE_SELECT_PLOT_LAYER)
   }
 }
+const fillColors = [
+  {R:224, G:207, B:226},
+  {R:151, G:191, B:242},
+  {R:242, G:242, B:186},
+  {R:190, G:255, B:232},
+  {R:255, G:190, B:232},
+  {R:255, G:190, B:190},
+  {R:255, G:235, B:175},
+  {R:233, G:255, B:190},
+  {R:234, G:225, B:168},
+  {R:174, G:241, B:176},
+]
 async function commit(type) {
   try {
     const _params = ToolbarModule.getParams()
     if (type === ConstToolType.SM_MAP_MARKS_DRAW) {
-      let have = await SMap.haveCurrentGeometry()
+      const have = await SMap.haveCurrentGeometry()
       if(have){
         // 是否有新的采集或标注
         global.HAVEATTRIBUTE = true
       }
-      let currentLayer = _params.currentLayer
-      SMap._setTaggingGrid(
-        currentLayer.datasetName,
-        _params.user.currentUser.userName,
+      const currentLayer = _params.currentLayer
+      SMap.setMapGeometryChangeListener(
+        {mapGeometryChange:async (result)=>{
+
+          if(result.type === 1){
+            const geoStyle = new GeoStyle()
+            geoStyle.setLineColor(0, 191, 255)
+            geoStyle.setMarkerSize(10)
+            const i = Math.round(Math.random()*(fillColors.length-1))
+            const color = fillColors[i]
+            geoStyle.setFillForeColor(color.R, color.G, color.B)
+            geoStyle.setFillOpaqueRate(50)
+            await SData.setGeometryStyle(
+              {datasetName:result.layerInfo.datasetName||"",datasourceName:result.layerInfo.datasourceAlias||""},
+              result.geoID,
+              geoStyle,
+            )
+          }
+          SMap.setMapGeometryChangeListener(null)
+          // console.log(result)
+        }}
       )
+      // SMap._setTaggingGrid(
+      //   currentLayer.datasetName,
+      //   _params.user.currentUser.userName,
+      // )
       SMap.setLayerEditable(currentLayer.name, true).then(() => {
         SMap.submit().then(result => {
           if (result) {

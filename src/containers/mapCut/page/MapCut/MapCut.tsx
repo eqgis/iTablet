@@ -285,8 +285,8 @@ export default class MapCut extends React.Component<Props, State> {
               () => {
                 if (this.state.saveAsName !== '') {
                   SData.closeDatasource(newDatasourceName)
-                  SData.deleteDatasource(newDatasourcePath)
-                  SData.deleteDatasource(newDatasourceUDDPath)
+                  SData._deleteDatasource(newDatasourcePath)
+                  SData._deleteDatasource(newDatasourceUDDPath)
                 }
                 this.container && this.container.setLoading(false)
                 this.isCutting = false

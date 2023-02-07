@@ -14,7 +14,7 @@ import { getLanguage } from '../../../../language'
 import { scaleSize } from '../../../../utils'
 import { size, color } from '../../../../styles'
 import { getThemeAssets } from '../../../../assets'
-import { SMap, SNavigation } from 'imobile_for_reactnative'
+import { SIndoorNavigation, SMap, SNavigation } from 'imobile_for_reactnative'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 interface MapInfoTmp {
@@ -161,7 +161,8 @@ export default class SaveListView extends React.Component<Props, State> {
       if (global.Type === ChunkType.MAP_NAVIGATION) {
         //这里先处理下异常 add xiezhy
         try {
-          await SNavigationInner.stopGuide()
+          await SNavigation.stopGuide()
+          await SIndoorNavigation.stopGuide()
           await SNavigationInner.clearPoint()
         } catch (e) {
           this._setLoading && this._setLoading(false)

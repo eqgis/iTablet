@@ -27,7 +27,7 @@ import ModalDropdown from 'react-native-modal-dropdown'
 import { getLanguage } from '../../../../../../../language'
 import { Container } from '../../../../../../../components'
 import NavigationService from '../../../../../../NavigationService'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, FieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 export default class MergeDatasetView extends Component {
@@ -310,9 +310,23 @@ class Item extends Component {
     let datasourceName = this.props.item.datasourceName
     //第一次点击先获取所有非系统的文字类型字段
     if (!this.props.item.fieldInfo) {
-      let needChangeData = await SNavigationInner.queryFieldInfos([
-        { datasetName, datasourceName },
-      ])
+      const infos = await SData.getFieldInfos({datasourceName, datasetName})
+      const names = []
+      infos.map(info => {
+        if (!info.isSystemField && (info.type == FieldType.CHAR || info.type === FieldType.TEXT)) {
+          names.push(info.name)
+        }
+      })
+      let needChangeData = []
+      if(names.length > 0) {
+        needChangeData = [
+          {
+            datasetName: datasetName,
+            datasourceName: datasourceName,
+            fieldName: names
+          }
+        ]
+      }
       if (needChangeData.length > 0) {
         this.props.item.fieldInfo = needChangeData[0].fieldName
         //已有‘RoadName’字段直接使用，不用再选择

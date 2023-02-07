@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 import { scaleSize, screen, setSpText, Toast } from '../../../../utils'
 import color from '../../../../styles/color'
-import { SMap, SARMap, SNavigation } from 'imobile_for_reactnative'
+import { SMap, SARMap, SNavigation, SIndoorNavigation } from 'imobile_for_reactnative'
 import { getThemeAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 import NavigationService from '../../../NavigationService'
@@ -221,7 +221,7 @@ export default class NavigationStartButton extends React.Component {
       if (global.CURRENT_NAV_MODE === 'INDOOR') {
         let isindoor = await SNavigationInner.isIndoorPoint(position.x, position.y)
         if (isindoor) {
-          await SNavigationInner.indoorNavigation(type)
+          await SIndoorNavigation.startGuide(type)
           this.setVisible(false)
           global.NAVIGATIONSTARTHEAD.setVisible(false)
           this.props.onNavigationStart()
@@ -237,7 +237,7 @@ export default class NavigationStartButton extends React.Component {
         )
         if (isInBounds) {
           global.mapController?.setGuiding(true)
-          await SNavigationInner.outdoorNavigation(type)
+          await SNavigation.startGuide(type)
           this.setVisible(false)
           global.NAVIGATIONSTARTHEAD.setVisible(false)
           this.props.onNavigationStart()
@@ -261,10 +261,10 @@ export default class NavigationStartButton extends React.Component {
       }
       if (global.CURRENT_NAV_MODE === 'OUTDOOR') {
         global.mapController?.setVisible(false)
-        await SNavigationInner.outdoorNavigation(1)
+        await SNavigation.startGuide(1)
       } else if (global.CURRENT_NAV_MODE === 'INDOOR') {
         global.FloorListView?.setGuiding(true)
-        await SNavigationInner.indoorNavigation(1)
+        await SIndoorNavigation.startGuide(1)
       }
       global.mapController?.setGuiding(true)
       this.setVisible(false)

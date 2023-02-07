@@ -7,13 +7,13 @@ import {
   FlatList,
   Platform,
 } from 'react-native'
-import { FetchUtils, scaleSize, setSpText, Toast } from '../../../../utils'
+import { AppUser, FetchUtils, scaleSize, setSpText, Toast } from '../../../../utils'
 import NavigationService from '../../../../containers/NavigationService'
 import { TouchType } from '../../../../constants'
 import styles from './styles'
 import { color } from '../../../../styles'
 import PropTypes from 'prop-types'
-import { SMap, SNavigation } from 'imobile_for_reactnative'
+import { FileTools, SIndoorNavigation, SMap, SNavigation } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import Loading from '../../../../components/Container/Loading'
 import { Dialog, Container } from '../../../../components'
@@ -298,22 +298,26 @@ export default class NavigationView extends React.Component {
             global.ENDPOINTFLOOR,
           )
           //设置室内导航参数
-          await SNavigationInner.startIndoorNavigation(commonIndoorInfo[0].datasourceName)
+          await SIndoorNavigation.setRouteAnalyzeData({datasourceAlias: commonIndoorInfo[0].datasourceName})
           //进行室内导航路径分析
-          let rel = await SNavigationInner.beginIndoorNavigation()
+          let rel = await SIndoorNavigation.routeAnalyst()
           if (!rel) {
             this.loading.setLoading(false)
             Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
             return
           }
+          pathLength = {length: parseInt(rel.naviPath.length + '')}
+          path = rel.naviPath.naviStep.map(step => {
+            return {
+              roadLength: step.length,
+              turnType: step.dirToSwerve
+            }
+          })
         } catch (e) {
           this.loading.setLoading(false)
           Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
           return
         }
-        //获取路径长度、路径详情
-        pathLength = await SNavigationInner.getNavPathLength(true)
-        path = await SNavigationInner.getPathInfos(true)
         //设置当前导航模式为室内
         global.CURRENT_NAV_MODE = 'INDOOR'
         //存在室外公共数据集
@@ -376,11 +380,9 @@ export default class NavigationView extends React.Component {
                 doorPoint.floorID,
               )
               //设置室内导航参数
-              await SNavigationInner.startIndoorNavigation(
-                startIndoorInfo[0].datasourceName,
-              )
+              await SIndoorNavigation.setRouteAnalyzeData({datasourceAlias: startIndoorInfo[0].datasourceName})
               //进行室内路径分析
-              let rel = await SNavigationInner.beginIndoorNavigation()
+              let rel = await SIndoorNavigation.routeAnalyst()
               if (!rel) {
                 this.loading.setLoading(false)
                 Toast.show(
@@ -389,6 +391,13 @@ export default class NavigationView extends React.Component {
                 SNavigationInner.clearPoint()
                 return
               }
+              pathLength = {length: parseInt(rel.naviPath.length + '')}
+              path = rel.naviPath.naviStep.map(step => {
+                return {
+                  roadLength: step.length,
+                  turnType: step.dirToSwerve
+                }
+              })
               //添加引导线到跟踪层 室内导航终点到室外导航终点
               await SNavigationInner.addLineOnTrackingLayer(doorPoint, {
                 x: global.ENDX,
@@ -402,9 +411,6 @@ export default class NavigationView extends React.Component {
               return
             }
 
-            //获取路径长度 路径信息
-            pathLength = await SNavigationInner.getNavPathLength(true)
-            path = await SNavigationInner.getPathInfos(true)
             //设置导航模式为室内
             global.CURRENT_NAV_MODE = 'INDOOR'
           } else {
@@ -455,20 +461,39 @@ export default class NavigationView extends React.Component {
               //添加起点，添加终点 设置室外导航参数 进行室外路径分析
               await SNavigationInner.getStartPoint(global.STARTX, global.STARTY, false)
               await SNavigationInner.getEndPoint(global.ENDX, global.ENDY, false)
-              await SNavigationInner.startNavigation(global.NAV_PARAMS[0])
-              let canNav = await SNavigationInner.beginNavigation(
-                global.STARTX,
-                global.STARTY,
-                doorPoint.x,
-                doorPoint.y,
-              )
-              if (!canNav) {
+
+              const homePath = await FileTools.getHomeDirectory()
+              const userName = AppUser.getCurrentUser().userName
+              const modelPath = `${homePath}/iTablet/User/${userName}/Data/Datasource/${global.NAV_PARAMS[0].modelFileName}.snm`
+              await SNavigation.setRouteAnalyzeData({
+                networkDataset: {
+                  datasourceAlias: global.NAV_PARAMS[0].datasourceName,
+                  datasetName:  global.NAV_PARAMS[0].datasetName
+                },
+                modelPath: modelPath
+              })
+              await SNavigation.setRouteAnalyzePoints({
+                startPoint: {x: global.STARTX, y: global.STARTY},
+                destinationPoint: {x: doorPoint.x, y: doorPoint.y}
+              })
+              const result = await SNavigation.routeAnalyst()
+              if(result) {
+                //todo 添加分析起终点到参数起终点之间的虚线
+              }
+              if (!result) {
                 Toast.show(
                   '当前选点不在路网数据集范围内,请重新选点或者重设路网数据集',
                 )
                 this.loading.setLoading(false)
                 return
               }
+              pathLength = {length: parseInt(result.naviPath.length + '')}
+              path = result.naviPath.naviStep.map(step => {
+                return {
+                  roadLength: step.length,
+                  turnType: step.dirToSwerve
+                }
+              })
               //添加引导线到跟踪层 临界点到导航终点
               await SNavigationInner.addLineOnTrackingLayer(doorPoint, {
                 x: global.ENDX,
@@ -481,9 +506,6 @@ export default class NavigationView extends React.Component {
               )
               return
             }
-            //获取室外路径长度 路径信息
-            pathLength = await SNavigationInner.getNavPathLength(false)
-            path = await SNavigationInner.getPathInfos(false)
             //设置当前导航模式为室外
             global.CURRENT_NAV_MODE = 'OUTDOOR'
           } else {
@@ -496,17 +518,33 @@ export default class NavigationView extends React.Component {
           //直接导航
           try {
             //设置室外导航相关参数，进行室外导航路径分析
-            await SNavigationInner.startNavigation(commonOutdoorInfo[0])
-            let result = await SNavigationInner.beginNavigation(
-              global.STARTX,
-              global.STARTY,
-              global.ENDX,
-              global.ENDY,
-            )
+            const homePath = await FileTools.getHomeDirectory()
+            const userName = AppUser.getCurrentUser().userName
+            const modelPath = `${homePath}/iTablet/User/${userName}/Data/Datasource/${commonOutdoorInfo[0].modelFileName}.snm`
+            await SNavigation.setRouteAnalyzeData({
+              networkDataset: {
+                datasourceAlias: commonOutdoorInfo[0].datasourceName,
+                datasetName:  commonOutdoorInfo[0].datasetName
+              },
+              modelPath: modelPath
+            })
+            await SNavigation.setRouteAnalyzePoints({
+              startPoint: {x: global.STARTX, y: global.STARTY},
+              destinationPoint: {x: global.ENDX, y: global.ENDY}
+            })
+            const result = await SNavigation.routeAnalyst()
+            if(result) {
+              //todo 添加分析起终点到参数起终点之间的虚线
+            }
             if (result) {
               //室外路径分析成功 获取路径长度 路径信息
-              pathLength = await SNavigationInner.getNavPathLength(false)
-              path = await SNavigationInner.getPathInfos(false)
+              pathLength = {length: parseInt(result.naviPath.length + '')}
+              path = result.naviPath.naviStep.map(step => {
+                return {
+                  roadLength: step.length,
+                  turnType: step.dirToSwerve
+                }
+              })
               //当前全局导航模式设置为室外
               global.CURRENT_NAV_MODE = 'OUTDOOR'
             } else {

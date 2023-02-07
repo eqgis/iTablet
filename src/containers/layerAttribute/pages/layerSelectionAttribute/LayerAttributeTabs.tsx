@@ -8,7 +8,7 @@ import * as React from 'react'
 import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native'
 import { Container, MTBtn, Dialog, PopModal } from '../../../../components'
 import { ConstToolType } from '../../../../constants'
-import { Toast, scaleSize, StyleUtils, LayerUtils, screen } from '../../../../utils'
+import { Toast, scaleSize, StyleUtils, LayerUtils, screen, AppUser } from '../../../../utils'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
 import { color, zIndexLevel, size } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
@@ -242,10 +242,18 @@ export default class LayerAttributeTabs extends React.Component {
           caption: this.datasetName,
           name: this.datasetName,
         }
-        let id = await SNavigationInner.getNavigationDatasetGeometryID(this.datasetName)
+        const userName = AppUser.getCurrentUser().userName
+        const res = await SData.queryRecordsetWithParameter({
+          datasourceName: 'default_increment_datasource@' + userName,
+          datasetName: this.datasetName
+        })
+        const ids = []
+        for(let i=0;i<res.length;i++){
+          ids.push(res[i].geometryID)
+        }
         this.props.setSelection && this.props.setSelection([{
           layerInfo: layerInfo,
-          ids: id,
+          ids: ids,
         }])
       }else {
         layerInfo = this.props.selection[this.state.currentTabIndex].layerInfo

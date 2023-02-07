@@ -3,6 +3,8 @@ import {
   SMap,
   STransportationAnalyst,
   SPlot,
+  SNavigation,
+  SIndoorNavigation,
   // SFacilityAnalyst,
 } from 'imobile_for_reactnative'
 import NavigationService from './NavigationService'
@@ -136,7 +138,6 @@ async function longtouchCallback() {
 }
 let isfull = false
 async function touchCallback(event) {
-  let guideInfo
   switch (global.TouchType) {
     // case TouchType.NAVIGATION_TOUCH_BEGIN:
     //   (async function() {
@@ -160,10 +161,9 @@ async function touchCallback(event) {
       // ) {
       //   global.PoiInfoContainer.hidden()
       // }
-      guideInfo = await SNavigationInner.isGuiding()
       if (
-        !guideInfo.isOutdoorGuiding &&
-        !guideInfo.isIndoorGuiding &&
+        !(await SNavigation.isGuiding()) &&
+        !(await SIndoorNavigation.isGuiding()) &&
         (!global.NAVIGATIONSTARTHEAD ||
           !global.NAVIGATIONSTARTHEAD.state.show) &&
         !global.PoiInfoContainer.state.visible &&

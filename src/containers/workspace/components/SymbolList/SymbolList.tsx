@@ -78,7 +78,7 @@ export default class SymbolList extends React.Component {
       })
     } else if (this.props.layerData.type === 3) {
       // SCartography.setLineSymbolID(data.id, this.props.layerData.name)
-      SCartography.setLayerStyle(this.props.layerData.name, {
+      SMap.setLayerStyle(this.props.layerData.name, {
         MarkerSymbolID: data.id,
       })
     }
@@ -106,7 +106,7 @@ export default class SymbolList extends React.Component {
       // SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
     } else if (this.props.layerData.type === 1) {
       // SCartography.setMakerSymbolID(data.id, this.props.layerData.name)
-      SCartography.setLayerStyle(this.props.layerData.name, {
+      SMap.setLayerStyle(this.props.layerData.name, {
         MarkerSymbolID: data.id,
       })
     }
@@ -134,7 +134,7 @@ export default class SymbolList extends React.Component {
       // SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
     } else if (this.props.layerData.type === 5) {
       // SCartography.setFillSymbolID(data.id, this.props.layerData.name)
-      SCartography.setLayerStyle(this.props.layerData.name, {
+      SMap.setLayerStyle(this.props.layerData.name, {
         MarkerSymbolID: data.id,
       })
     }

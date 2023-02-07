@@ -24,7 +24,7 @@ function getData(type, params) {
         ToolbarModule.getParams().currentLayer &&
         !ToolbarModule.getData().currentLayerStyle
       ) {
-        SCartography.getLayerStyleXml(
+        SMap.getLayerStyleXml(
           ToolbarModule.getParams().currentLayer.name,
         ).then(value => {
           ToolbarModule.addData({

@@ -35,7 +35,7 @@ async function close() {
 
   const _data = ToolbarModule.getData()
   if (_data.currentLayerStyle) {
-    await SCartography.setLayerStyleXml(
+    await SMap.setLayerStyleXml(
       _params.currentLayer.name,
       _data.currentLayerStyle,
     )
@@ -49,37 +49,37 @@ async function tableAction(type, params) {
   switch (type) {
     case ConstToolType.SM_MAP_STYLE_LINE_COLOR:
       // result = await SCartography.setLineColor(params.key, params.layerName)
-      result = await SCartography.setLayerStyle(params.layerName, {
+      result = await SMap.setLayerStyle(params.layerName, {
         LineColor: params.key,
       })
       break
     case ConstToolType.SM_MAP_STYLE_POINT_COLOR:
       // result = await SCartography.setMarkerColor(params.key, params.layerName)
-      result = await SCartography.setLayerStyle(params.layerName, {
+      result = await SMap.setLayerStyle(params.layerName, {
         LineColor: params.key,
       })
       break
     case ConstToolType.SM_MAP_STYLE_REGION_BEFORE_COLOR:
       // result = await SCartography.setFillForeColor(params.key, params.layerName)
-      result = await SCartography.setLayerStyle(params.layerName, {
+      result = await SMap.setLayerStyle(params.layerName, {
         FillForeColor: params.key,
       })
       break
     case ConstToolType.SM_MAP_STYLE_REGION_AFTER_COLOR:
       // result = await SCartography.setFillBackColor(params.key, params.layerName)
-      result = await SCartography.setLayerStyle(params.layerName, {
+      result = await SMap.setLayerStyle(params.layerName, {
         FillBackColor: params.key,
       })
       break
     case ConstToolType.SM_MAP_STYLE_REGION_BORDER_COLOR:
       // result = await SCartography.setFillBorderColor(params.key, params.layerName)
-      result = await SCartography.setLayerStyle(params.layerName, {
+      result = await SMap.setLayerStyle(params.layerName, {
         setLineColor: params.key,
       })
       break
     case ConstToolType.SM_MAP_STYLE_TEXT_COLOR:
       // result = await SCartography.setTextColorOfLayer(params.key, params.layerName)
-      result = await SCartography.setLayerTextStyle(params.layerName, {
+      result = await SMap.setLayerTextStyle(params.layerName, {
         TextColor: params.key,
       })
       break
@@ -130,37 +130,37 @@ function setTextFont(param) {
   switch (param.title) {
     case getLanguage(global.language).Map_Main_Menu.STYLE_BOLD:
       // SCartography.setTextFontOfLayer('BOLD', layerName)
-      SCartography.setLayerTextStyle(layerName, {
+      SMap.setLayerTextStyle(layerName, {
         TextFont: ['BOLD'],
       })
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_ITALIC:
       // SCartography.setTextFontOfLayer('ITALIC', layerName)
-      SCartography.setLayerTextStyle(layerName, {
+      SMap.setLayerTextStyle(layerName, {
         TextFont: ['ITALIC'],
       })
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_UNDERLINE:
       // SCartography.setTextFontOfLayer('UNDERLINE', layerName)
-      SCartography.setLayerTextStyle(layerName, {
+      SMap.setLayerTextStyle(layerName, {
         TextFont: ['UNDERLINE'],
       })
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_STRIKEOUT:
       // SCartography.setTextFontOfLayer('STRIKEOUT', layerName)
-      SCartography.setLayerTextStyle(layerName, {
+      SMap.setLayerTextStyle(layerName, {
         TextFont: ['STRIKEOUT'],
       })
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_SHADOW:
       // SCartography.setTextFontOfLayer('SHADOW', layerName)
-      SCartography.setLayerTextStyle(layerName, {
+      SMap.setLayerTextStyle(layerName, {
         TextFont: ['SHADOW'],
       })
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_OUTLINE:
       // SCartography.setTextFontOfLayer('OUTLINE', layerName)
-      SCartography.setLayerTextStyle(layerName, {
+      SMap.setLayerTextStyle(layerName, {
         TextFont: ['OUTLINE'],
       })
       break
@@ -292,20 +292,20 @@ async function getTouchProgressInfo(title) {
     case getLanguage(_params.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
       range = [1, 100]
       // value = await SCartography.getMarkerSize(_params.currentLayer.name)
-      value = (await SCartography.getLayerStyle(_params.currentLayer.name)).MarkerSize.width
+      value = (await SMap.getLayerStyle(_params.currentLayer.name)).MarkerSize.width
       unit = 'mm'
       break
     case getLanguage(_params.language).Map_Main_Menu.STYLE_TRANSPARENCY:
       range = [0, 100]
       if (layerType === DatasetType.POINT) {
         // value = await SCartography.getMarkerAlpha(_params.currentLayer.name)
-        value = (await SCartography.getLayerStyle(_params.currentLayer.name)).FillOpaqueRate
+        value = (await SMap.getLayerStyle(_params.currentLayer.name)).FillOpaqueRate
       } else if (layerType === DatasetType.REGION) {
         // value = await SCartography.getFillOpaqueRate(_params.currentLayer.name)
-        value = (await SCartography.getLayerStyle(_params.currentLayer.name)).FillOpaqueRate
+        value = (await SMap.getLayerStyle(_params.currentLayer.name)).FillOpaqueRate
       } else if (layerType === DatasetType.GRID) {
         // value = await SCartography.getGridOpaqueRate(_params.currentLayer.name)
-        value = (await SCartography.getLayerGridStyle(_params.currentLayer.name)).OpaqueRate
+        value = (await SMap.getLayerGridStyle(_params.currentLayer.name)).OpaqueRate
       }
       unit = '%'
       break
@@ -313,41 +313,41 @@ async function getTouchProgressInfo(title) {
       range = [0, 360]
       if (layerType === DatasetType.POINT) {
         // value = await SCartography.getMarkerAngle(_params.currentLayer.name)
-        value = (await SCartography.getLayerStyle(_params.currentLayer.name)).MarkerAngle
+        value = (await SMap.getLayerStyle(_params.currentLayer.name)).MarkerAngle
       } else if (layerType === DatasetType.TEXT) {
         // value = await SCartography.getTextAngleOfLayer(_params.currentLayer.name)
-        value = (await SCartography.getLayerTextStyle(_params.currentLayer.name)).TextAngle
+        value = (await SMap.getLayerTextStyle(_params.currentLayer.name)).TextAngle
       }
       unit = '°'
       break
     case getLanguage(_params.language).Map_Main_Menu.STYLE_LINE_WIDTH:
       range = [1, 20]
       // value = await SCartography.getLineWidth(_params.currentLayer.name)
-      value = (await SCartography.getLayerStyle(_params.currentLayer.name)).LineWidth
+      value = (await SMap.getLayerStyle(_params.currentLayer.name)).LineWidth
       unit = 'mm'
       break
     case getLanguage(_params.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
       range = [0, 100]
       // value = await SCartography.getLineWidth(_params.currentLayer.name)
-      value = (await SCartography.getLayerStyle(_params.currentLayer.name)).LineWidth
+      value = (await SMap.getLayerStyle(_params.currentLayer.name)).LineWidth
       unit = 'mm'
       break
     case getLanguage(_params.language).Map_Main_Menu.STYLE_FONT_SIZE:
       range = [1, 20]
       // value = await SCartography.getTextSizeOfLayer(_params.currentLayer.name)
-      value = (await SCartography.getLayerTextStyle(_params.currentLayer.name)).TextSize
+      value = (await SMap.getLayerTextStyle(_params.currentLayer.name)).TextSize
       break
     case getLanguage(_params.language).Map_Main_Menu.STYLE_BRIGHTNESS:
       range = [0, 200]
       // 亮度范围是 -100 至 100
       // value = await SCartography.getGridBrightness(_params.currentLayer.name) + 100
-      value = (await SCartography.getLayerGridStyle(_params.currentLayer.name)).Brightness + 100
+      value = (await SMap.getLayerGridStyle(_params.currentLayer.name)).Brightness + 100
       break
     case getLanguage(_params.language).Map_Main_Menu.CONTRAST:
       range = [0, 200]
       // 对比度范围是 -100 至 100
       // value = await SCartography.getGridContrast(_params.currentLayer.name) + 100
-      value = (await SCartography.getLayerGridStyle(_params.currentLayer.name)).Contrast + 100
+      value = (await SMap.getLayerGridStyle(_params.currentLayer.name)).Contrast + 100
       break
   }
   return { title, value, tips, range, step, unit }
@@ -369,7 +369,7 @@ function setTouchProgressInfo(title, value) {
       if (value > range[1]) value = range[1]
       else if (value <= range[0]) value = range[0]
       // SCartography.setMarkerSize(value, _params.currentLayer.name)
-      SCartography.setLayerStyle(_params.currentLayer.name, {
+      SMap.setLayerStyle(_params.currentLayer.name, {
         MarkerSize: {height: value, width: value},
       })
       break
@@ -380,17 +380,17 @@ function setTouchProgressInfo(title, value) {
       else if (value <= range[0]) value = range[0]
       if (layerType === DatasetType.POINT) {
         // SCartography.setMarkerAlpha(value, _params.currentLayer.name)
-        SCartography.setLayerStyle(_params.currentLayer.name, {
+        SMap.setLayerStyle(_params.currentLayer.name, {
           FillOpaqueRate: 100 - value,
         })
       } else if (layerType === DatasetType.REGION) {
         // SCartography.setFillOpaqueRate(value, _params.currentLayer.name)
-        SCartography.setLayerStyle(_params.currentLayer.name, {
+        SMap.setLayerStyle(_params.currentLayer.name, {
           FillOpaqueRate: 100 - value,
         })
       } else if (layerType === DatasetType.GRID) {
         // SCartography.setGridOpaqueRate(value, _params.currentLayer.name)
-        SCartography.setLayerGridStyle(_params.currentLayer.name, {
+        SMap.setLayerGridStyle(_params.currentLayer.name, {
           OpaqueRate: 100 - value,
         })
       }
@@ -401,12 +401,12 @@ function setTouchProgressInfo(title, value) {
       else if (value <= range[0]) value = range[0]
       if (layerType === DatasetType.POINT) {
         // SCartography.setMarkerAngle(value, _params.currentLayer.name)
-        SCartography.setLayerStyle(_params.currentLayer.name, {
+        SMap.setLayerStyle(_params.currentLayer.name, {
           MarkerAngle: value,
         })
       } else if (layerType === DatasetType.TEXT) {
         // SCartography.setTextAngleOfLayer(value, _params.currentLayer.name)
-        SCartography.setLayerTextStyle(_params.currentLayer.name, {
+        SMap.setLayerTextStyle(_params.currentLayer.name, {
           TextAngle: value,
         })
       }
@@ -416,7 +416,7 @@ function setTouchProgressInfo(title, value) {
       if (value > range[1]) value = range[1]
       else if (value <= range[0]) value = range[0]
       // SCartography.setLineWidth(value, _params.currentLayer.name)
-      SCartography.setLayerStyle(_params.currentLayer.name, {
+      SMap.setLayerStyle(_params.currentLayer.name, {
         LineWidth: value,
       })
       break
@@ -425,7 +425,7 @@ function setTouchProgressInfo(title, value) {
       if (value > range[1]) value = range[1]
       else if (value <= range[0]) value = range[0]
       // SCartography.setLineWidth(value, _params.currentLayer.name)
-      SCartography.setLayerStyle(_params.currentLayer.name, {
+      SMap.setLayerStyle(_params.currentLayer.name, {
         LineWidth: value,
       })
       break
@@ -434,7 +434,7 @@ function setTouchProgressInfo(title, value) {
       if (value > range[1]) value = range[1]
       else if (value <= range[0]) value = range[0]
       // SCartography.setTextSizeOfLayer(value, _params.currentLayer.name)
-      SCartography.setLayerTextStyle(_params.currentLayer.name, {
+      SMap.setLayerTextStyle(_params.currentLayer.name, {
         TextFont: value,
       })
       break
@@ -446,7 +446,7 @@ function setTouchProgressInfo(title, value) {
       value -= 100 // 亮度范围是 -100 至 100
       
       // SCartography.setGridBrightness(value, _params.currentLayer.name)
-      SCartography.setLayerGridStyle(_params.currentLayer.name, {
+      SMap.setLayerGridStyle(_params.currentLayer.name, {
         Brightness: value,
       })
       break
@@ -458,7 +458,7 @@ function setTouchProgressInfo(title, value) {
       value -= 100 // 对比度范围是 -100 至 100
       
       // SCartography.setGridContrast(value, _params.currentLayer.name)
-      SCartography.setLayerGridStyle(_params.currentLayer.name, {
+      SMap.setLayerGridStyle(_params.currentLayer.name, {
         Contrast: value,
       })
       break

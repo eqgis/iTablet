@@ -24,6 +24,7 @@ import {
   SData,
   SPlot,
   SNavigation,
+  SIndoorNavigation,
 } from 'imobile_for_reactnative'
 import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
@@ -87,6 +88,7 @@ import {
   SCoordinationUtils,
   AppToolBar,
   AppEvent,
+  AppUser,
 } from '../../../../utils'
 import { color, zIndexLevel } from '../../../../styles'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
@@ -530,8 +532,7 @@ export default class MapView extends React.Component {
         // )
       ) {
         this.currentFloorID = result.currentFloorID
-        let guideInfo = await SNavigationInner.isGuiding()
-        if (!guideInfo.isOutdoorGuiding) {
+        if (!await SNavigation.isGuiding()) {
           this.setState({
             currentFloorID: result.currentFloorID,
           })
@@ -561,20 +562,37 @@ export default class MapView extends React.Component {
     if (global.isLicenseValid) {
       if (global.Type === ChunkType.MAP_NAVIGATION) {
         this.addFloorHiddenListener()
-        SNavigationInner.setIndustryNavigationListener(() => {
-          if (
-            global.NAV_PARAMS &&
-              global.NAV_PARAMS.filter(item => !item.hasNaved).length > 0
-          ) {
-            global.changeRouteDialog &&
-                global.changeRouteDialog.setDialogVisible(true)
-          } else {
-            this._changeRouteCancel()
-          }
-        },
-        )
-        SNavigationInner.setStopNavigationListener(this._changeRouteCancel)
-        SNavigationInner.setCurrentFloorIDListener(this.changeFloorID)
+        SNavigation.setNaviListener({
+          onStartNavi: () => {},
+          onStopNavi: this._changeRouteCancel,
+          onArrivedDestination: () => {
+            if (
+              global.NAV_PARAMS &&
+                global.NAV_PARAMS.filter(item => !item.hasNaved).length > 0
+            ) {
+              global.changeRouteDialog &&
+                  global.changeRouteDialog.setDialogVisible(true)
+            } else {
+              this._changeRouteCancel()
+            }
+          },
+        })
+        SIndoorNavigation.setNaviListener({
+          onStartNavi: () => {},
+          onStopNavi: this._changeRouteCancel,
+          onArrivedDestination: () => {
+            if (
+              global.NAV_PARAMS &&
+                global.NAV_PARAMS.filter(item => !item.hasNaved).length > 0
+            ) {
+              global.changeRouteDialog &&
+                  global.changeRouteDialog.setDialogVisible(true)
+            } else {
+              this._changeRouteCancel()
+            }
+          },
+        })
+        SIndoorNavigation.setFloorChangeListener(this.changeFloorID)
       }
       this.container &&
         this.container.setLoading(
@@ -965,11 +983,7 @@ export default class MapView extends React.Component {
     //     SAIDetectView.dispose()
     //   })()
     // }
-    if (global.Type === ChunkType.MAP_NAVIGATION) {
-      (async function () {
-        SNavigationInner.destroySpeakPlugin()
-      })()
-    }
+
     //unmount时置空 zhangxt
     global.Type = null
     SMap.setFloorHiddenListener(null)
@@ -1081,7 +1095,9 @@ export default class MapView extends React.Component {
     this.setLoading(true, getLanguage(global.language).Prompt.ROUTE_ANALYSING)
     let curNavInfos = global.NAV_PARAMS.filter(item => !item.hasNaved)
     let guideLines = global.NAV_PARAMS.filter(item => item.hasNaved)
-    await SNavigationInner.clearPath()
+    await SMap.clearTrackingLayer()
+    await SNavigation.clearPath()
+    await SIndoorNavigation.clearPath()
     let params = JSON.parse(JSON.stringify(curNavInfos[0]))
     params.hasNaved = true
     let {
@@ -1097,8 +1113,8 @@ export default class MapView extends React.Component {
       if (params.isIndoor) {
         await SNavigationInner.getStartPoint(startX, startY, true, startFloor)
         await SNavigationInner.getEndPoint(endX, endY, true, endFloor)
-        await SNavigationInner.startIndoorNavigation(datasourceName)
-        let rel = await SNavigationInner.beginIndoorNavigation()
+        await SIndoorNavigation.setRouteAnalyzeData({datasourceAlias: datasourceName})
+        let rel = await SIndoorNavigation.routeAnalyst()
         if (!rel) {
           Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
           this.changeNavPathInfo({ path: '', pathLength: '' })
@@ -1112,12 +1128,28 @@ export default class MapView extends React.Component {
             { x: item.endX, y: item.endY },
           )
         }
-        await SNavigationInner.indoorNavigation(1)
+        await SIndoorNavigation.startGuide(1)
         this.FloorListView?.setVisible(true)
         global.CURRENT_NAV_MODE = 'INDOOR'
       } else {
-        await SNavigationInner.startNavigation(params)
-        let result = await SNavigationInner.beginNavigation(startX, startY, endX, endY)
+        const homePath = await FileTools.getHomeDirectory()
+        const userName = AppUser.getCurrentUser().userName
+        const modelPath = `${homePath}/iTablet/User/${userName}/Data/Datasource/${params.modelFileName}.snm`
+        await SNavigation.setRouteAnalyzeData({
+          networkDataset: {
+            datasourceAlias: params.datasourceName,
+            datasetName:  params.datasetName
+          },
+          modelPath: modelPath
+        })
+        await SNavigation.setRouteAnalyzePoints({
+          startPoint: {x: startX, y: startY},
+          destinationPoint: {x: endX, y: endY}
+        })
+        const result = await SNavigation.routeAnalyst()
+        if(result) {
+          //todo 添加分析起终点到参数起终点之间的虚线
+        }
         if (result) {
           for (let item of guideLines) {
             await SNavigationInner.addLineOnTrackingLayer(
@@ -1125,7 +1157,7 @@ export default class MapView extends React.Component {
               { x: item.endX, y: item.endY },
             )
           }
-          await SNavigationInner.outdoorNavigation(1)
+          await SNavigation.startGuide(1)
           this.FloorListView?.setVisible(false)
           SNavigationInner.setCurrentFloorID('')
           global.CURRENT_NAV_MODE = 'OUTDOOR'
@@ -1440,7 +1472,8 @@ export default class MapView extends React.Component {
         if (global.Type === ChunkType.MAP_NAVIGATION) {
           //这里先处理下异常 add xiezhy
           try {
-            await SNavigationInner.stopGuide()
+            await SNavigation.stopGuide()
+            await SIndoorNavigation.stopGuide()
             await SNavigationInner.clearPoint()
           } catch (e) {
             this.setLoading(false)
@@ -1689,7 +1722,8 @@ export default class MapView extends React.Component {
           if (global.Type === ChunkType.MAP_NAVIGATION) {
             await this._removeNavigationListeners()
             await SNavigationInner.clearPoint()
-            await SNavigationInner.stopGuide()
+            await SNavigation.stopGuide()
+            await SIndoorNavigation.stopGuide()
           }
           await this.closeMapHandler(params?.baskFrom)
         } catch (e) {
@@ -1928,7 +1962,6 @@ export default class MapView extends React.Component {
           SNavigationInner.getCurrentFloorID().then(currentFloorID => {
             this.changeFloorID(currentFloorID)
           })
-          SNavigationInner.initSpeakPlugin()
           global.STARTNAME = getLanguage(
             global.language,
           ).Map_Main_Menu.SELECT_START_POINT

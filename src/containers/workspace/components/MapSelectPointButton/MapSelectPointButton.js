@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
-import { FetchUtils, scaleSize, setSpText, Toast } from '../../../../utils'
+import { AppUser, FetchUtils, scaleSize, setSpText, Toast } from '../../../../utils'
 import color from '../../../../styles/color'
-import { SMap, SNavigation } from 'imobile_for_reactnative'
+import { FileTools, SIndoorNavigation, SMap, SNavigation } from 'imobile_for_reactnative'
 import NavigationService from '../../../../containers/NavigationService'
 import { getLanguage } from '../../../../language'
 import { TouchType } from '../../../../constants'
@@ -202,20 +202,25 @@ export default class MapSelectPointButton extends React.Component {
             true,
             global.ENDPOINTFLOOR,
           )
-          await SNavigationInner.startIndoorNavigation(commonIndoorInfo[0].datasourceName)
-          let rel = await SNavigationInner.beginIndoorNavigation()
+          await SIndoorNavigation.setRouteAnalyzeData({datasourceAlias: commonIndoorInfo[0].datasourceName})
+          let rel = await SIndoorNavigation.routeAnalyst()
           if (!rel) {
             this.props.setLoading(false)
             Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
             return
           }
+          pathLength = {length: parseInt(rel.naviPath.length + '')}
+          path = rel.naviPath.naviStep.map(step => {
+            return {
+              roadLength: step.length,
+              turnType: step.dirToSwerve
+            }
+          })
         } catch (e) {
           this.props.setLoading(false)
           Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
           return
         }
-        pathLength = await SNavigationInner.getNavPathLength(true)
-        path = await SNavigationInner.getPathInfos(true)
         global.CURRENT_NAV_MODE = 'INDOOR'
       } else if (commonOutdoorInfo.length > 0) {
         //有公共室外数据集，分情况
@@ -270,10 +275,8 @@ export default class MapSelectPointButton extends React.Component {
                 true,
                 doorPoint.floorID,
               )
-              await SNavigationInner.startIndoorNavigation(
-                startIndoorInfo[0].datasourceName,
-              )
-              let rel = await SNavigationInner.beginIndoorNavigation()
+              await SIndoorNavigation.setRouteAnalyzeData({datasourceAlias: startIndoorInfo[0].datasourceName})
+              let rel = await SIndoorNavigation.routeAnalyst()
               if (!rel) {
                 this.props.setLoading(false)
                 Toast.show(
@@ -281,6 +284,13 @@ export default class MapSelectPointButton extends React.Component {
                 )
                 return
               }
+              pathLength = {length: parseInt(rel.naviPath.length + '')}
+              path = rel.naviPath.naviStep.map(step => {
+                return {
+                  roadLength: step.length,
+                  turnType: step.dirToSwerve
+                }
+              })
               await SNavigationInner.addLineOnTrackingLayer(doorPoint, {
                 x: global.ENDX,
                 y: global.ENDY,
@@ -294,8 +304,6 @@ export default class MapSelectPointButton extends React.Component {
               return
             }
 
-            pathLength = await SNavigationInner.getNavPathLength(true)
-            path = await SNavigationInner.getPathInfos(true)
             global.CURRENT_NAV_MODE = 'INDOOR'
           } else {
             //分析失败(找不到最近的门的情况（数据问题）) 进行在线路径分析
@@ -341,16 +349,34 @@ export default class MapSelectPointButton extends React.Component {
             try {
               await SNavigationInner.getStartPoint(global.STARTX, global.STARTY, false)
               await SNavigationInner.getEndPoint(global.ENDX, global.ENDY, false)
-              await SNavigationInner.startNavigation(global.NAV_PARAMS[0])
-              await SNavigationInner.beginNavigation(
-                global.STARTX,
-                global.STARTY,
-                doorPoint.x,
-                doorPoint.y,
-              )
+              const homePath = await FileTools.getHomeDirectory()
+              const userName = AppUser.getCurrentUser().userName
+              const modelPath = `${homePath}/iTablet/User/${userName}/Data/Datasource/${global.NAV_PARAMS[0].modelFileName}.snm`
+              await SNavigation.setRouteAnalyzeData({
+                networkDataset: {
+                  datasourceAlias: global.NAV_PARAMS[0].datasourceName,
+                  datasetName:  global.NAV_PARAMS[0].datasetName
+                },
+                modelPath: modelPath
+              })
+              await SNavigation.setRouteAnalyzePoints({
+                startPoint: {x: global.STARTX, y: global.STARTY},
+                destinationPoint: {x: doorPoint.x, y: doorPoint.y}
+              })
+              const r = await SNavigation.routeAnalyst()
+              if(r) {
+                //todo 添加分析起终点到参数起终点之间的虚线
+              }
               await SNavigationInner.addLineOnTrackingLayer(doorPoint, {
                 x: global.ENDX,
                 y: global.ENDY,
+              })
+              pathLength = {length: parseInt(r.naviPath.length + '')}
+              path = r.naviPath.naviStep.map(step => {
+                return {
+                  roadLength: step.length,
+                  turnType: step.dirToSwerve
+                }
               })
             } catch (e) {
               this.props.setLoading(false)
@@ -359,8 +385,6 @@ export default class MapSelectPointButton extends React.Component {
               )
               return
             }
-            pathLength = await SNavigationInner.getNavPathLength(false)
-            path = await SNavigationInner.getPathInfos(false)
             global.CURRENT_NAV_MODE = 'OUTDOOR'
           } else {
             //分析失败(找不到最近的门的情况（数据问题）) 进行在线路径分析
@@ -371,16 +395,33 @@ export default class MapSelectPointButton extends React.Component {
           //无室内数据源  室外导航
           //直接导航
           try {
-            await SNavigationInner.startNavigation(commonOutdoorInfo[0])
-            let result = await SNavigationInner.beginNavigation(
-              global.STARTX,
-              global.STARTY,
-              global.ENDX,
-              global.ENDY,
-            )
+            const homePath = await FileTools.getHomeDirectory()
+            const userName = AppUser.getCurrentUser().userName
+            const modelPath = `${homePath}/iTablet/User/${userName}/Data/Datasource/${commonOutdoorInfo[0].modelFileName}.snm`
+            await SNavigation.setRouteAnalyzeData({
+              networkDataset: {
+                datasourceAlias: commonOutdoorInfo[0].datasourceName,
+                datasetName:  commonOutdoorInfo[0].datasetName
+              },
+              modelPath: modelPath
+            })
+
+            await SNavigation.setRouteAnalyzePoints({
+              startPoint: {x: global.STARTX, y: global.STARTY},
+              destinationPoint: {x: global.ENDX, y: global.ENDY}
+            })
+            const result = await SNavigation.routeAnalyst()
+            if(result) {
+              //todo 添加分析起终点到参数起终点之间的虚线
+            }
             if (result) {
-              pathLength = await SNavigationInner.getNavPathLength(false)
-              path = await SNavigationInner.getPathInfos(false)
+              pathLength = {length: parseInt(result.naviPath.length + '')}
+              path = result.naviPath.naviStep.map(step => {
+                return {
+                  roadLength: step.length,
+                  turnType: step.dirToSwerve
+                }
+              })
               global.CURRENT_NAV_MODE = 'OUTDOOR'
             } else {
               //分析失败(500m范围内找不到路网点的情况) 进行在线路径分析

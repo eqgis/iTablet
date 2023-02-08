@@ -349,7 +349,7 @@ const sendMessagePhone = async (id: number, type: uploadType) => {
 
 
     // 当数据集里的轨迹uuid有值时，就是已经提交过了，不需要再次提交，没有值时就是尚未提交需要提交一下
-    if(uuidTrack !== "") {
+    if(uuidTrack === "") {
       let layerdatasetName = "marker_118081"
       switch(type) {
         case "line":

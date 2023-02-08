@@ -6,7 +6,7 @@ import { dp } from "imobile_for_reactnative/utils/size"
 import { getLanguage } from "@/language"
 import { setCurrentSymbol } from "@/redux/models/symbol"
 import { getPublicAssets } from "@/assets"
-import { setServerUserId, setPassword, setServerUserName } from '../reduxModels/langchao'
+import { setServerUserId, setPassword, setServerUserName, setLangchaoUserInfo } from '../reduxModels/langchao'
 import { dateFormat, getToken, login, setSysOrgid, setUserId, setUserName, updatePassword, users } from "../utils/langchaoServer"
 import { Toast } from "@/utils"
 import { color } from "@/styles"
@@ -104,7 +104,18 @@ class UpdatePassword extends Component<Props, State> {
         // await this.props.setPassword(this.state.password)
         // NavigationService.goBack()
         // Toast.show("设置成功")
-        Toast.show(getLanguage(global.language).Map_Settings.UPDATE_PASSWORD_SUCCESS)
+        Toast.show(getLanguage(global.language).Map_Settings.UPDATE_PASSWORD_SUCCESS,{
+          duration: 2000,
+        })
+        const timer =  setTimeout(async () => {
+          // 登出
+          await this.props.setServerUserId("")
+          await this.props.setLangchaoUserInfo(null)
+          NavigationService.navigate('LangChaoLogin', {
+            type:'setting',
+          })
+          clearTimeout(timer)
+        }, 2000)
       } else {
         // Toast.show("设置失败")
         Toast.show(getLanguage(global.language).Map_Settings.UPDATE_PASSWORD_FAILED)
@@ -168,12 +179,32 @@ class UpdatePassword extends Component<Props, State> {
     )
   }
 
+  renderItem = (title: string, value: string) => {
+    return (
+      <View
+        style={[styles.itemContainerStyle]}
+      >
+        <View
+          style={[styles.itemTitleView]}
+        >
+          <Text
+            style={[styles.itemTitleText]}
+          >{title}</Text>
+        </View>
+        <View>
+          <Text>{value}</Text>
+        </View>
+      </View>
+    )
+  }
+
   renderContentView = () => {
     return (
       <View
         style={[styles.partViewStyle]}
       >
-        {this.renderInputItem(getLanguage(global.language).Map_Settings.USER_ID, this.state.userId, this.userIdChange, undefined, true, getLanguage(global.language).Map_Settings.USER_ID)}
+        {this.renderItem(getLanguage(global.language).Map_Settings.USER_ID, this.state.userId)}
+        {/* {this.renderInputItem(getLanguage(global.language).Map_Settings.USER_ID, this.state.userId, this.userIdChange, undefined, true, getLanguage(global.language).Map_Settings.USER_ID)} */}
         {this.renderInputItem(getLanguage(global.language).Map_Settings.OLD_PASSWORD, this.state.oldPassword, this.oldPasswordChange, 'password', true, getLanguage(global.language).Map_Settings.OLD_PASSWORD)}
         {this.renderInputItem(getLanguage(global.language).Map_Settings.NEW_PASSWORD, this.state.password, this.passwordChange, 'password', true, getLanguage(global.language).Map_Settings.NEW_PASSWORD)}
       </View>
@@ -258,6 +289,7 @@ const mapDispatch = {
   setServerUserId,
   setPassword,
   setServerUserName,
+  setLangchaoUserInfo,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

@@ -48,45 +48,48 @@ export const getThematicMapSettings = (hasUser = false) => {
     // },
   ]
 
-  const userData = [
-    {
-      title: getLanguage(global.language).Map_Settings.ADDRESS_BOOK_SETTING,
-      leftImage: getImage().icon_contact_setting,
-      action: () => {
-        // NavigationService.navigate('LocationSetting')
-        if(getUserParam().userId === "") {
-          NavigationService.navigate('LangChaoLogin')
-        } else {
-          NavigationService.navigate('ContactsList')
-        }
-      },
+  const contacts = {
+    title: getLanguage(global.language).Map_Settings.ADDRESS_BOOK_SETTING,
+    leftImage: getImage().icon_contact_setting,
+    action: () => {
+      // NavigationService.navigate('LocationSetting')
+      if(getUserParam().userId === "") {
+        NavigationService.navigate('LangChaoLogin')
+      } else {
+        NavigationService.navigate('ContactsList')
+      }
     },
-    {
-      title: getLanguage(global.language).Map_Settings.USER_INFO_MAINTENANCE,
-      leftImage: getImage().icon_userInfo_setting,
-      action: () => {
-        if(getUserParam().userId === "") {
-          NavigationService.navigate('LangChaoLogin')
-        } else {
-          NavigationService.navigate('UserInfoMaintenance')
-        }
-      },
+  }
+
+  const userInfo = {
+    title: getLanguage(global.language).Map_Settings.USER_INFO_MAINTENANCE,
+    leftImage: getImage().icon_userInfo_setting,
+    action: () => {
+      if(getUserParam().userId === "") {
+        NavigationService.navigate('LangChaoLogin')
+      } else {
+        NavigationService.navigate('UserInfoMaintenance')
+      }
     },
-    {
-      title: getLanguage(global.language).Map_Settings.UPDATE_PASSWORD,
-      leftImage: getImage().icon_license_setting,
-      action: () => {
-        if(getUserParam().userId === "") {
-          NavigationService.navigate('LangChaoLogin')
-        } else {
-          NavigationService.navigate('UpdatePassword')
-        }
-      },
+  }
+
+  const passwordUpdate = {
+    title: getLanguage(global.language).Map_Settings.UPDATE_PASSWORD,
+    leftImage: getImage().icon_license_setting,
+    action: () => {
+      if(getUserParam().userId === "") {
+        NavigationService.navigate('LangChaoLogin')
+      } else {
+        NavigationService.navigate('UpdatePassword')
+      }
     },
-  ]
+  }
 
   if(hasUser) {
-    data = data.concat(userData)
+    // data = data.concat(userData)
+    data.unshift(userInfo)
+    data.unshift(contacts)
+    data.push(passwordUpdate)
   }
   return data
 }

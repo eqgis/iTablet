@@ -91,7 +91,9 @@ class InputServer extends Component<Props, State> {
     })
     await this.props.setServerUserId("")
     const timer =  setTimeout(() => {
-      NavigationService.navigate('LangChaoLogin')
+      NavigationService.navigate('LangChaoLogin', {
+        type:'setting',
+      })
       clearTimeout(timer)
     }, 2000)
 

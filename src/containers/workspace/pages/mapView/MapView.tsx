@@ -1184,7 +1184,7 @@ export default class MapView extends React.Component {
     this.setLoading(false)
   }
   /** 取消切换，结束室内外一体化导航 清除所有导航信息 */
-  _changeRouteCancel = () => {
+  _changeRouteCancel = async () => {
     this.isGuiding = false
     await SNavigation.clearPath()
     await SIndoorNavigation.clearPath()

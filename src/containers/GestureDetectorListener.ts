@@ -52,7 +52,7 @@ async function magntouchCallback(event) {
       if (global.Type === ChunkType.MAP_NAVIGATION){
         (async function () {
           await SMap.removeCallout('startPoint')
-          await SMap.addCallout('startPoint', event.LLPoint, {type: 'image', resource: 'start_point'})
+          await SMap.addCallout('startPoint', event.mapPoint, {type: 'image', resource: 'start_point'})
           global.STARTX = event.LLPoint.x
           global.STARTY = event.LLPoint.y
           //显示选点界面的顶部 底部组件
@@ -74,7 +74,7 @@ async function magntouchCallback(event) {
     case TouchType.NAVIGATION_TOUCH_END:
       (async function () {
         await SMap.removeCallout('endPoint')
-        await SMap.addCallout('endPoint', event.LLPoint, {type: 'image', resource: 'destination_point'})
+        await SMap.addCallout('endPoint', event.mapPoint, {type: 'image', resource: 'destination_point'})
         global.ENDX = event.LLPoint.x
         global.ENDY = event.LLPoint.y
       })()

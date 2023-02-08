@@ -1222,7 +1222,7 @@ async function commit(type) {
           resultArr[i].description !== 'NULL' &&
           JSON.parse(resultArr[i].description)
         if (description && description.geoStyle) {
-          await SMap.setLayerStyle(
+          await SMap._setLayerStyle(
             resultArr[i].name,
             JSON.stringify(description.geoStyle),
           )

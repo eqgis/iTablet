@@ -225,12 +225,12 @@ async function commit(type) {
             //提交标注后 需要刷新属性表
             global.NEEDREFRESHTABLE = true
             if (global.coworkMode && global.getFriend) {
-              let currentTaskInfo = _params.coworkInfo?.[_params.user.currentUser.userName]?.[_params.currentTask.groupID]?.[_params.currentTask.id]
-              let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
+              const currentTaskInfo = _params.coworkInfo?.[_params.user.currentUser.userName]?.[_params.currentTask.groupID]?.[_params.currentTask.id]
+              const isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
               if (isRealTime) {
-                let layerType = LayerUtils.getLayerType(currentLayer)
+                const layerType = LayerUtils.getLayerType(currentLayer)
                 if (layerType !== 'TAGGINGLAYER') {
-                  let friend = global.getFriend()
+                  const friend = global.getFriend()
                   friend.onGeometryAdd(currentLayer)
                 }
               }
@@ -244,13 +244,13 @@ async function commit(type) {
           const type = ConstToolType.SM_MAP_MARKS_TAGGING_SELECT
           try {
             if (global.coworkMode && global.getFriend) {
-              let currentTaskInfo = _params.coworkInfo?.[_params.user.currentUser.userName]?.[_params.currentTask.groupID]?.[_params.currentTask.id]
-              let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
+              const currentTaskInfo = _params.coworkInfo?.[_params.user.currentUser.userName]?.[_params.currentTask.groupID]?.[_params.currentTask.id]
+              const isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
               if (isRealTime) {
-                let event = ToolbarModule.getData().event
-                let layerType = LayerUtils.getLayerType(event.layerInfo)
+                const event = ToolbarModule.getData().event
+                const layerType = LayerUtils.getLayerType(event.layerInfo)
                 if (layerType !== 'TAGGINGLAYER') {
-                  let friend = global.getFriend()
+                  const friend = global.getFriend()
                   friend.onGeometryEdit(
                     event.layerInfo,
                     event.fieldInfo,
@@ -275,7 +275,7 @@ async function commit(type) {
               await SMediaCollector.isMediaLayer(_params.selection[0].layerInfo.name)
             ) {
               // 编辑多媒体对象后，更新位置
-              let geoID = _params.selection[0].ids[0] || -1
+              const geoID = _params.selection[0].ids[0] || -1
               geoID > -1 &&
               (await SMediaCollector.updateMedia(_params.selection[0].layerInfo.name, [geoID]))
             }
@@ -297,7 +297,7 @@ async function commit(type) {
 }
 
 async function showAttribute() {
-  let have = await SMap.haveCurrentGeometry()
+  const have = await SMap.haveCurrentGeometry()
   if(have){
     Toast.show(getLanguage(global.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
   }else{
@@ -309,7 +309,7 @@ async function showAttribute() {
 }
 
 async function showAttribute1() {
-  let have = await SMap.haveCurrentGeometry()
+  const have = await SMap.haveCurrentGeometry()
   if(have){
     Toast.show(getLanguage(global.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
   }else{
@@ -359,8 +359,8 @@ function back() {
   _params.setToolbarVisible(true, ConstToolType.SM_MAP_MARKS, {
     isFullScreen: true,
   })
-   // 是否有新的采集或标注
-   global.HAVEATTRIBUTE = false
+  // 是否有新的采集或标注
+  global.HAVEATTRIBUTE = false
 }
 /**
  * 显示编辑标注菜单
@@ -405,7 +405,7 @@ function selectLabelToEdit(toolType = '') {
 
   // const column = 4
   // let height = ConstToolType.HEIGHT[3]
-  let containerType = ToolbarType.table
+  const containerType = ToolbarType.table
   let type = ''
 
   if (toolType === '') {
@@ -528,7 +528,7 @@ async function deleteLabel() {
     let result = true
     //使用for循环等待，在forEach里await没有用
     for (let i = 0; i < _selection.length; i++) {
-      let item = _selection[i]
+      const item = _selection[i]
       if (item.ids.length > 0) {
         result = result && (await SCollector.removeByIds(item.ids, item.layerInfo.path))
         result = result && (await SMediaCollector.removeByIds(item.ids, item.layerInfo.name))
@@ -549,19 +549,104 @@ async function deleteLabel() {
     //
   }
 }
+function translate16ToRgb(str:string){
+  const reg = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/
+  if(!reg.test(str)){return}
+  let newStr = (str.toLowerCase()).replace(/\#/g,'')
+  const len = newStr.length
+  if(len == 3){
+    let t = ''
+    for(let i=0;i<len;i++){
+      t += newStr.slice(i,i+1).concat(newStr.slice(i,i+1))
+    }
+    newStr = t
+  }
+  const arr = [] //将字符串分隔，两个两个的分隔
+  for(let i =0;i<6;i=i+2){
+    const s = newStr.slice(i,i+2)
+    arr.push(parseInt("0x" + s))
+  }
+  return {r:arr[0],g:arr[1],b:arr[2]}
+}
 function colorAction(params) {
   const { event } = ToolbarModule.getData()
   switch (params.type) {
-    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET:
-      SMap.setTaggingMarkerColor(params.key, event.layerInfo.path, event.id)
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET:{
+      // SMap.setTaggingMarkerColor(params.key, event.layerInfo.path, event.id)
+      SMap.addDataToMapHistory(event.layerInfo.path,[event.id],1).then((res)=>{
+        const rgb = translate16ToRgb(params.key)
+        if(res&&rgb){
+          const geoStyle = new GeoStyle()
+          geoStyle.setMarkerSize(6)
+          geoStyle.setMarkerStyle(0)
+          geoStyle.setLineColor(rgb.r,rgb.g,rgb.b)
+          SData.setGeometryStyle(
+            {datasetName:event.layerInfo.datasetName||"",datasourceName:event.layerInfo.datasourceAlias||""},
+            event.id,
+            geoStyle,
+          ).then((res)=>{
+            if(res){
+              SMap.refreshMap()
+            }
+          })
+        }
+        // SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
+      })
       break
+    }
     case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_LINE_COLOR_SET:
-    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET:
-      SMap.setTaggingLineColor(params.key, event.layerInfo.path, event.id)
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET:{
+      // SMap.setTaggingLineColor(params.key, event.layerInfo.path, event.id)
+      SMap.addDataToMapHistory(event.layerInfo.path,[event.id],1).then((res)=>{
+        const rgb = translate16ToRgb(params.key)
+        if(res){
+          const geoStyle = new GeoStyle()
+          if(rgb){
+            geoStyle.setLineStyle(0)
+            geoStyle.setLineColor(rgb.r,rgb.g,rgb.b)
+          }else{
+            geoStyle.setLineStyle(5)
+          }
+          SData.setGeometryStyle(
+            {datasetName:event.layerInfo.datasetName||"",datasourceName:event.layerInfo.datasourceAlias||""},
+            event.id,
+            geoStyle,
+          ).then((res)=>{
+            if(res){
+              SMap.refreshMap()
+            }
+          })
+        }
+        // SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
+      })
       break
-    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET:
-      SMap.setTaggingFillForeColor(params.key, event.layerInfo.path, event.id)
+    }
+    case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET:{
+      // SMap.setTaggingFillForeColor(params.key, event.layerInfo.path, event.id)
+      SMap.addDataToMapHistory(event.layerInfo.path,[event.id],1).then((res)=>{
+        const rgb = translate16ToRgb(params.key)
+        if(res){
+          const geoStyle = new GeoStyle()
+          if(rgb){
+            geoStyle.setFillStyle(0)
+            geoStyle.setFillForeColor(rgb.r,rgb.g,rgb.b)
+          }else{
+            geoStyle.setFillStyle(1)
+          }
+          SData.setGeometryStyle(
+            {datasetName:event.layerInfo.datasetName||"",datasourceName:event.layerInfo.datasourceAlias||""},
+            event.id,
+            geoStyle,
+          ).then((res)=>{
+            if(res){
+              SMap.refreshMap()
+            }
+          })
+        }
+        // SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
+      })
       break
+    }
     case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT_COLOR_SET:
       SMap.setTaggingTextColor(params.key, event.layerInfo.path, event.id)
       break
@@ -612,7 +697,7 @@ function geometrySelected(event) {
     if (!geoType) {
       geoType = layerType
     }
-    let containerType = ''
+    const containerType = ''
     // let height = ConstToolType.THEME_HEIGHT[3]
     switch (geoType) {
       case DatasetType.POINT:
@@ -814,13 +899,13 @@ function toolbarBack() {
  */
 async function getTouchProgressInfo() {
   const data = ToolbarModule.getData()
-  let event = data.event
-  let tips = ''
+  const event = data.event
+  const tips = ''
   let range = [1, 100]
   let value = 0
-  let step = 1
+  const step = 1
   let unit = ''
-  let title = global.toolBox?.state?.selectName
+  const title = global.toolBox?.state?.selectName
   switch (title) {
     //线宽 边框宽度
     case getLanguage(global.language).Map_Main_Menu.STYLE_LINE_WIDTH:
@@ -869,7 +954,7 @@ async function getTouchProgressInfo() {
  */
 function setTouchProgressInfo(title, value) {
   const data = ToolbarModule.getData()
-  let event = data.event
+  const event = data.event
   // switch (global.ToolBar?.state?.selectName) {
   switch (title) {
     case getLanguage(global.language).Map_Main_Menu.STYLE_LINE_WIDTH:

@@ -30,7 +30,10 @@ export default class LocationView extends React.Component {
     if (this.isStart) {
       global.STARTX = point.x
       global.STARTY = point.y
-      await SNavigationInner.getStartPoint(global.STARTX, global.STARTY, false)
+
+      await SMap.removeCallout('startPoint')
+      await SMap.addCallout('startPoint', {x: global.STARTX, y: global.STARTY}, {type: 'image', resource: 'start_point'})
+    
       global.STARTNAME =
         (await FetchUtils.getPointName(global.STARTX, global.STARTY)) ||
         `${
@@ -39,7 +42,10 @@ export default class LocationView extends React.Component {
     } else {
       global.ENDX = point.x
       global.ENDY = point.y
-      await SNavigationInner.getEndPoint(global.ENDX, global.ENDY, false)
+    
+      await SMap.removeCallout('endPoint')
+      await SMap.addCallout('endPoint', {x: global.ENDX, y: global.ENDY}, {type: 'image', resource: 'destination_point'})
+     
       global.ENDNAME =
         (await FetchUtils.getPointName(global.ENDX, global.ENDY)) ||
         `${

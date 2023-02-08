@@ -1111,8 +1111,10 @@ export default class MapView extends React.Component {
     } = params
     try {
       if (params.isIndoor) {
-        await SNavigationInner.getStartPoint(startX, startY, true, startFloor)
-        await SNavigationInner.getEndPoint(endX, endY, true, endFloor)
+        await SIndoorNavigation.setRouteAnalyzePoints({
+          startPoint: {x: startX, y: startY, floorID: startFloor},
+          destinationPoint: {x: endX, y: endY, floorID: endFloor}
+        })
         await SIndoorNavigation.setRouteAnalyzeData({datasourceAlias: datasourceName})
         let rel = await SIndoorNavigation.routeAnalyst()
         if (!rel) {
@@ -1184,7 +1186,11 @@ export default class MapView extends React.Component {
   /** 取消切换，结束室内外一体化导航 清除所有导航信息 */
   _changeRouteCancel = () => {
     this.isGuiding = false
-    SNavigationInner.clearPoint()
+    await SNavigation.clearPath()
+    await SIndoorNavigation.clearPath()
+    await SMap.clearTrackingLayer()
+    await SMap.removeCallout('startPoint')
+    await SMap.removeCallout('endPoint')
     this.showFullMap(false)
     this.props.setMapNavigation({ isShow: false, name: '' })
     global.STARTX = undefined
@@ -1474,7 +1480,11 @@ export default class MapView extends React.Component {
           try {
             await SNavigation.stopGuide()
             await SIndoorNavigation.stopGuide()
-            await SNavigationInner.clearPoint()
+            await SNavigation.clearPath()
+            await SIndoorNavigation.clearPath()
+            await SMap.clearTrackingLayer()
+            await SMap.removeCallout('startPoint')
+            await SMap.removeCallout('endPoint')
           } catch (e) {
             this.setLoading(false)
           }
@@ -1721,7 +1731,11 @@ export default class MapView extends React.Component {
           this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
           if (global.Type === ChunkType.MAP_NAVIGATION) {
             await this._removeNavigationListeners()
-            await SNavigationInner.clearPoint()
+            await SNavigation.clearPath()
+            await SIndoorNavigation.clearPath()
+            await SMap.clearTrackingLayer()
+            await SMap.removeCallout('startPoint')
+            await SMap.removeCallout('endPoint')
             await SNavigation.stopGuide()
             await SIndoorNavigation.stopGuide()
           }
@@ -4193,7 +4207,11 @@ export default class MapView extends React.Component {
               global.ENDX = undefined
               global.MAPSELECTPOINT.setVisible(false)
               global.MAPSELECTPOINTBUTTON.setVisible(false)
-              await SNavigationInner.clearPoint()
+              await SNavigation.clearPath()
+              await SIndoorNavigation.clearPath()
+              await SMap.clearTrackingLayer()
+              await SMap.removeCallout('startPoint')
+              await SMap.removeCallout('endPoint')
               global.ToolBar?.existFullMap()
             } else {
               NavigationService.navigate('NavigationView', {

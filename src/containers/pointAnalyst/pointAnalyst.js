@@ -127,18 +127,22 @@ export default class PointAnalyst extends Component {
         global.STARTX = item.x
         global.STARTY = item.y
         global.STARTNAME = item.pointName
-        await SNavigationInner.getStartPoint(global.STARTX, global.STARTY, false)
+        await SMap.removeCallout('startPoint')
+        await SMap.addCallout('startPoint', {x: global.STARTX, y: global.STARTY}, {type: 'image', resource: 'start_point'})
         if (global.ENDX && global.ENDY) {
-          await SNavigationInner.getEndPoint(global.ENDX, global.ENDY, false)
+          await SMap.removeCallout('endPoint')
+          await SMap.addCallout('endPoint', {x: global.ENDX, y: global.ENDY}, {type: 'image', resource: 'destination_point'})
         }
       } else {
         //设置终点
         global.ENDX = item.x
         global.ENDY = item.y
         global.ENDNAME = item.pointName
-        await SNavigationInner.getEndPoint(global.ENDX, global.ENDY, false)
+        await SMap.removeCallout('endPoint')
+        await SMap.addCallout('endPoint', {x: global.ENDX, y: global.ENDY}, {type: 'image', resource: 'destination_point'})
         if (global.STARTX && global.STARTY) {
-          await SNavigationInner.getStartPoint(global.STARTX, global.STARTY, false)
+          await SMap.removeCallout('startPoint')
+          await SMap.addCallout('startPoint', {x: global.STARTX, y: global.STARTY}, {type: 'image', resource: 'start_point'})
         }
       }
       NavigationService.navigate('NavigationView', {

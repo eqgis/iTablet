@@ -56,12 +56,10 @@ export default class MapSelectPointButton extends React.Component {
             show: false,
           })
         } else {
-          await SNavigationInner.getEndPoint(
-            global.ENDX,
-            global.ENDY,
-            false,
-            global.ENDPOINTFLOOR,
-          )
+
+          await SMap.removeCallout('endPoint')
+          await SMap.addCallout('endPoint', {x: global.ENDX, y: global.ENDY}, {type: 'image', resource: 'destination_point'})
+
           this.routeAnalyst()
         }
       }
@@ -85,12 +83,9 @@ export default class MapSelectPointButton extends React.Component {
             show: false,
           })
         } else {
-          await SNavigationInner.getStartPoint(
-            global.STARTX,
-            global.STARTY,
-            false,
-            global.STARTPOINTFLOOR,
-          )
+          await SMap.removeCallout('startPoint')
+          await SMap.addCallout('startPoint', {x: global.STARTX, y: global.STARTY}, {type: 'image', resource: 'start_point'})
+
           this.routeAnalyst()
         }
       } else {
@@ -190,18 +185,10 @@ export default class MapSelectPointButton extends React.Component {
         //有公共室内数据源，室内导航
         // await SNavigation.clearPoint
         try {
-          await SNavigationInner.getStartPoint(
-            global.STARTX,
-            global.STARTY,
-            true,
-            global.STARTPOINTFLOOR,
-          )
-          await SNavigationInner.getEndPoint(
-            global.ENDX,
-            global.ENDY,
-            true,
-            global.ENDPOINTFLOOR,
-          )
+          await SIndoorNavigation.setRouteAnalyzePoints({
+            startPoint: {x: global.STARTX, y: global.STARTY, floorID: global.STARTPOINTFLOOR},
+            destinationPoint: {x: global.ENDX, y: global.ENDY, floorID: global.ENDPOINTFLOOR}
+          })
           await SIndoorNavigation.setRouteAnalyzeData({datasourceAlias: commonIndoorInfo[0].datasourceName})
           let rel = await SIndoorNavigation.routeAnalyst()
           if (!rel) {
@@ -263,18 +250,10 @@ export default class MapSelectPointButton extends React.Component {
               },
             ]
             try {
-              await SNavigationInner.getStartPoint(
-                global.STARTX,
-                global.STARTY,
-                true,
-                global.STARTPOINTFLOOR || doorPoint.floorID,
-              )
-              await SNavigationInner.getEndPoint(
-                doorPoint.x,
-                doorPoint.y,
-                true,
-                doorPoint.floorID,
-              )
+              await SIndoorNavigation.setRouteAnalyzePoints({
+                startPoint: {x: global.STARTX, y: global.STARTY, floorID: global.STARTPOINTFLOOR || doorPoint.floorID},
+                destinationPoint: {x: doorPoint.x, y: doorPoint.y, floorID: doorPoint.floorID}
+              })
               await SIndoorNavigation.setRouteAnalyzeData({datasourceAlias: startIndoorInfo[0].datasourceName})
               let rel = await SIndoorNavigation.routeAnalyst()
               if (!rel) {
@@ -300,7 +279,11 @@ export default class MapSelectPointButton extends React.Component {
               Toast.show(
                 getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED,
               )
-              SNavigationInner.clearPoint()
+              SNavigation.clearPath()
+              SIndoorNavigation.clearPath()
+              SMap.clearTrackingLayer()
+              SMap.removeCallout('startPoint')
+              SMap.removeCallout('endPoint')
               return
             }
 
@@ -347,8 +330,12 @@ export default class MapSelectPointButton extends React.Component {
             ]
 
             try {
-              await SNavigationInner.getStartPoint(global.STARTX, global.STARTY, false)
-              await SNavigationInner.getEndPoint(global.ENDX, global.ENDY, false)
+              await SMap.removeCallout('startPoint')
+              await SMap.addCallout('startPoint', {x: global.STARTX, y: global.STARTY}, {type: 'image', resource: 'start_point'})
+
+              await SMap.removeCallout('endPoint')
+              await SMap.addCallout('endPoint', {x: global.ENDX, y: global.ENDY}, {type: 'image', resource: 'destination_point'})
+
               const homePath = await FileTools.getHomeDirectory()
               const userName = AppUser.getCurrentUser().userName
               const modelPath = `${homePath}/iTablet/User/${userName}/Data/Datasource/${global.NAV_PARAMS[0].modelFileName}.snm`

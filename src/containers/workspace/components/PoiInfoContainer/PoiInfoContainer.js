@@ -297,15 +297,21 @@ export default class PoiInfoContainer extends React.Component {
         global.STARTX = item.x
         global.STARTY = item.y
         global.STARTNAME = item.pointName
-        await SNavigationInner.getStartPoint(global.STARTX, global.STARTY, false)
+
+        await SMap.removeCallout('startPoint')
+        await SMap.addCallout('startPoint', {x: global.STARTX, y: global.STARTY}, {type: 'image', resource: 'start_point'})
+
       } else {
         //设置终点
         global.ENDX = item.x
         global.ENDY = item.y
         global.ENDNAME = item.pointName
-        await SNavigationInner.getEndPoint(global.ENDX, global.ENDY, false)
+
+        await SMap.removeCallout('endPoint')
+        await SMap.addCallout('endPoint', {x: global.ENDX, y: global.ENDY}, {type: 'image', resource: 'destination_point'})
+
       }
-      SMap.removeAllCallout()
+      SMap._removeAllCallout()
       this.setVisible(false)
       global.PoiTopSearchBar && global.PoiTopSearchBar.setVisible(false)
       global.STARTPOINTFLOOR = await SNavigationInner.getCurrentFloorID()
@@ -452,7 +458,7 @@ export default class PoiInfoContainer extends React.Component {
 
   clear = async () => {
     let rel1 = await SMap._removePOICallout()
-    let rel2 = await SMap.removeAllCallout()
+    let rel2 = await SMap._removeAllCallout()
     return rel1 && rel2
   }
 
@@ -501,8 +507,13 @@ export default class PoiInfoContainer extends React.Component {
       changeNavPathInfo: this.props.changeNavPathInfo,
       getNavigationDatas: this.props.getNavigationDatas,
     })
-    await SNavigationInner.getStartPoint(global.STARTX, global.STARTY, false)
-    await SNavigationInner.getEndPoint(global.ENDX, global.ENDY, false)
+
+    await SMap.removeCallout('startPoint')
+    await SMap.addCallout('startPoint', {x: global.STARTX, y: global.STARTY}, {type: 'image', resource: 'start_point'})
+
+    await SMap.removeCallout('endPoint')
+    await SMap.addCallout('endPoint', {x: global.ENDX, y: global.ENDY}, {type: 'image', resource: 'destination_point'})
+
     global.PoiTopSearchBar && global.PoiTopSearchBar.setVisible(false)
     this.setInitialState()
   }

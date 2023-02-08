@@ -73,7 +73,11 @@ export default class NavigationView extends React.Component {
     global.ENDX = undefined
     global.TouchType = TouchType.NORMAL
     global.ToolBar?.existFullMap()
-    await SNavigationInner.clearPoint()
+    await SNavigation.clearPath()
+    await SIndoorNavigation.clearPath()
+    await SMap.clearTrackingLayer()
+    await SMap.removeCallout('startPoint')
+    await SMap.removeCallout('endPoint')
     NavigationService.goBack()
   }
 
@@ -283,20 +287,10 @@ export default class NavigationView extends React.Component {
       //有公共室内数据源，室内导航
       if (commonIndoorInfo.length > 0) {
         try {
-          //添加起点
-          await SNavigationInner.getStartPoint(
-            global.STARTX,
-            global.STARTY,
-            true,
-            global.STARTPOINTFLOOR,
-          )
-          //添加终点
-          await SNavigationInner.getEndPoint(
-            global.ENDX,
-            global.ENDY,
-            true,
-            global.ENDPOINTFLOOR,
-          )
+          await SIndoorNavigation.setRouteAnalyzePoints({
+            startPoint: {x: global.STARTX, y: global.STARTY, floorID: global.STARTPOINTFLOOR},
+            destinationPoint: {x: global.ENDX, y: global.ENDY, floorID: global.ENDPOINTFLOOR}
+          })
           //设置室内导航参数
           await SIndoorNavigation.setRouteAnalyzeData({datasourceAlias: commonIndoorInfo[0].datasourceName})
           //进行室内导航路径分析
@@ -366,19 +360,10 @@ export default class NavigationView extends React.Component {
             ]
             // 先进行室内导航
             try {
-              //添加起点终点
-              await SNavigationInner.getStartPoint(
-                global.STARTX,
-                global.STARTY,
-                true,
-                global.STARTPOINTFLOOR || doorPoint.floorID,
-              )
-              await SNavigationInner.getEndPoint(
-                doorPoint.x,
-                doorPoint.y,
-                true,
-                doorPoint.floorID,
-              )
+              await SIndoorNavigation.setRouteAnalyzePoints({
+                startPoint: {x: global.STARTX, y: global.STARTY, floorID: global.STARTPOINTFLOOR || doorPoint.floorID},
+                destinationPoint: {x: doorPoint.x, y: doorPoint.y, floorID: doorPoint.floorID}
+              })
               //设置室内导航参数
               await SIndoorNavigation.setRouteAnalyzeData({datasourceAlias: startIndoorInfo[0].datasourceName})
               //进行室内路径分析
@@ -388,7 +373,11 @@ export default class NavigationView extends React.Component {
                 Toast.show(
                   getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED,
                 )
-                SNavigationInner.clearPoint()
+                SNavigation.clearPath()
+                SIndoorNavigation.clearPath()
+                SMap.clearTrackingLayer()
+                SMap.removeCallout('startPoint')
+                SMap.removeCallout('endPoint')
                 return
               }
               pathLength = {length: parseInt(rel.naviPath.length + '')}
@@ -459,8 +448,10 @@ export default class NavigationView extends React.Component {
 
             try {
               //添加起点，添加终点 设置室外导航参数 进行室外路径分析
-              await SNavigationInner.getStartPoint(global.STARTX, global.STARTY, false)
-              await SNavigationInner.getEndPoint(global.ENDX, global.ENDY, false)
+              await SMap.addCallout('startPoint', {x: global.STARTX, y: global.STARTY}, {type: 'image', resource: 'start_point'})
+
+              await SMap.removeCallout('endPoint')
+              await SMap.addCallout('endPoint', {x: global.ENDX, y: global.ENDY}, {type: 'image', resource: 'destination_point'})
 
               const homePath = await FileTools.getHomeDirectory()
               const userName = AppUser.getCurrentUser().userName
@@ -624,8 +615,12 @@ export default class NavigationView extends React.Component {
       getLanguage(global.language).Prompt.ROUTE_ANALYSING,
     )
     //添加起点。终点
-    await SNavigationInner.getStartPoint(global.STARTX, global.STARTY, false)
-    await SNavigationInner.getEndPoint(global.ENDX, global.ENDY, false)
+    await SMap.removeCallout('startPoint')
+    await SMap.addCallout('startPoint', {x: global.STARTX, y: global.STARTY}, {type: 'image', resource: 'start_point'})
+
+    await SMap.removeCallout('endPoint')
+    await SMap.addCallout('endPoint', {x: global.ENDX, y: global.ENDY}, {type: 'image', resource: 'destination_point'})
+
     let path, pathLength
     //js请求online，获取路径数据
     let result = await FetchUtils.routeAnalyst(
@@ -951,9 +946,11 @@ export default class NavigationView extends React.Component {
     global.STARTPOINTFLOOR = item.sFloor
     global.ENDPOINTFLOOR = item.eFloor
 
-    await SNavigationInner.getStartPoint(item.sx, item.sy, false, item.sFloor)
+    await SMap.removeCallout('startPoint')
+    await SMap.addCallout('startPoint', {x: item.sx, y: item.sy}, {type: 'image', resource: 'start_point'})
 
-    await SNavigationInner.getEndPoint(item.ex, item.ey, false, item.eFloor)
+    await SMap.removeCallout('endPoint')
+    await SMap.addCallout('endPoint', {x: item.ex, y: item.ey}, {type: 'image', resource: 'destination_point'})
 
     this.historyclick = false
     this.setState({

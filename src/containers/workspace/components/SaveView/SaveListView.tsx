@@ -163,7 +163,11 @@ export default class SaveListView extends React.Component<Props, State> {
         try {
           await SNavigation.stopGuide()
           await SIndoorNavigation.stopGuide()
-          await SNavigationInner.clearPoint()
+          await SNavigation.clearPath()
+          await SIndoorNavigation.clearPath()
+          await SMap.clearTrackingLayer()
+          await SMap.removeCallout('startPoint')
+          await SMap.removeCallout('endPoint')
         } catch (e) {
           this._setLoading && this._setLoading(false)
         }

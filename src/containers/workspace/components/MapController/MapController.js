@@ -315,7 +315,10 @@ export default class MapController extends React.Component {
           && global.MAPSELECTPOINT.state.show
       ){
         // 导航采集里选择起始点
-        await SNavigationInner.getStartPoint(point.x, point.y, false)
+
+        await SMap.removeCallout('startPoint')
+        await SMap.addCallout('startPoint', {x: point.x, y: point.y}, {type: 'image', resource: 'start_point'})
+
         global.STARTX = point.x
         global.STARTY = point.y
         //显示选点界面的顶部 底部组件
@@ -330,7 +333,10 @@ export default class MapController extends React.Component {
 
       } else if(global.TouchType === TouchType.NAVIGATION_TOUCH_END) {
         // 导航采集里选择结束点
-        await SNavigationInner.getEndPoint(point.x, point.y, false)
+
+        await SMap.removeCallout('endPoint')
+        await SMap.addCallout('endPoint', {x: point.x, y: point.y}, {type: 'image', resource: 'destination_point'})
+
         global.ENDX = point.x
         global.ENDY = point.y
       }

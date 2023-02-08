@@ -905,18 +905,28 @@ async function getTouchProgressInfo() {
   let value = 0
   const step = 1
   let unit = ''
+  const style = await SData.getGeometryStyle({ datasetName: event.layerInfo.datasetName || "", datasourceName: event.layerInfo.datasourceAlias || "" },
+    event.id
+  )
   const title = global.toolBox?.state?.selectName
   switch (title) {
     //线宽 边框宽度
     case getLanguage(global.language).Map_Main_Menu.STYLE_LINE_WIDTH:
-    case getLanguage(global.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
-      value = await SMap.getTaggingLineWidth(event.layerInfo.path, event.id)
+    case getLanguage(global.language).Map_Main_Menu.STYLE_BORDER_WIDTH:{
+      if(style !== null){
+        value = style.getLineWidth()
+      }
+      // value = await SMap.getTaggingLineWidth(event.layerInfo.path, event.id)
       range = [1, 20]
       unit = 'mm'
       break
+    }
     //符号大小
     case getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
-      value = await SMap.getTaggingMarkerSize(event.layerInfo.path, event.id)
+      // value = await SMap.getTaggingMarkerSize(event.layerInfo.path, event.id)
+      if(style !== null){
+        value = style.getMarkerSize()
+      }
       range = [1, 100]
       unit = 'mm'
       break
@@ -926,14 +936,20 @@ async function getTouchProgressInfo() {
         //文本旋转角度
         value = await SMap.getTaggingTextAngle(event.layerInfo.path, event.id)
       } else {
-        value = await SMap.getTaggingAngle(event.layerInfo.path, event.id)
+        if(style !== null){
+          value = style.getMarkerAngle()
+        }
+        // value = await SMap.getTaggingAngle(event.layerInfo.path, event.id)
       }
       range = [0, 360]
       unit = '°'
       break
     //透明度
     case getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY:
-      value = await SMap.getTaggingAlpha(event.layerInfo.path, event.id)
+      if(style !== null){
+        value = 100 - style.getFillOpaqueRate()
+      }
+      // value = await SMap.getTaggingAlpha(event.layerInfo.path, event.id)
       range = [0, 100]
       unit = '%'
       break
@@ -958,22 +974,85 @@ function setTouchProgressInfo(title, value) {
   // switch (global.ToolBar?.state?.selectName) {
   switch (title) {
     case getLanguage(global.language).Map_Main_Menu.STYLE_LINE_WIDTH:
-    case getLanguage(global.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
-      SMap.setTaggingLineWidth(value, event.layerInfo.path, event.id)
+    case getLanguage(global.language).Map_Main_Menu.STYLE_BORDER_WIDTH:{
+      SMap.addDataToMapHistory(event.layerInfo.path,[event.id],1).then((res)=>{
+        if(res){
+          const geoStyle = new GeoStyle()
+          geoStyle.setLineWidth(value/10.0)
+          SData.setGeometryStyle(
+            {datasetName:event.layerInfo.datasetName||"",datasourceName:event.layerInfo.datasourceAlias||""},
+            event.id,
+            geoStyle,
+          ).then((res)=>{
+            if(res){
+              SMap.refreshMap()
+            }
+          })
+        }
+      })
+      // SMap.setTaggingLineWidth(value, event.layerInfo.path, event.id)
       break
-    case getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
-      SMap.setTaggingMarkerSize(value, event.layerInfo.path, event.id)
+    }
+    case getLanguage(global.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:{
+      // SMap.setTaggingMarkerSize(value, event.layerInfo.path, event.id)
+      SMap.addDataToMapHistory(event.layerInfo.path,[event.id],1).then((res)=>{
+        if(res){
+          const geoStyle = new GeoStyle()
+          geoStyle.setMarkerSize(value)
+          SData.setGeometryStyle(
+            {datasetName:event.layerInfo.datasetName||"",datasourceName:event.layerInfo.datasourceAlias||""},
+            event.id,
+            geoStyle,
+          ).then((res)=>{
+            if(res){
+              SMap.refreshMap()
+            }
+          })
+        }
+      })
       break
+    }
     case getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION:
       if (event.geometryType === GeometryType.GEOTEXT) {
         SMap.setTaggingTextAngle(value, event.layerInfo.path, event.id)
       } else {
-        SMap.setTaggingAngle(value, event.layerInfo.path, event.id)
+        // SMap.setTaggingAngle(value, event.layerInfo.path, event.id)
+        SMap.addDataToMapHistory(event.layerInfo.path,[event.id],1).then((res)=>{
+          if(res){
+            const geoStyle = new GeoStyle()
+            geoStyle.setMarkerAngle(value)
+            SData.setGeometryStyle(
+              {datasetName:event.layerInfo.datasetName||"",datasourceName:event.layerInfo.datasourceAlias||""},
+              event.id,
+              geoStyle,
+            ).then((res)=>{
+              if(res){
+                SMap.refreshMap()
+              }
+            })
+          }
+        })
       }
       break
-    case getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY:
-      SMap.setTaggingAlpha(value, event.layerInfo.path, event.id)
+    case getLanguage(global.language).Map_Main_Menu.STYLE_TRANSPARENCY:{
+      // SMap.setTaggingAlpha(value, event.layerInfo.path, event.id)
+      SMap.addDataToMapHistory(event.layerInfo.path,[event.id],1).then((res)=>{
+        if(res){
+          const geoStyle = new GeoStyle()
+          geoStyle.setFillOpaqueRate(100-value)
+          SData.setGeometryStyle(
+            {datasetName:event.layerInfo.datasetName||"",datasourceName:event.layerInfo.datasourceAlias||""},
+            event.id,
+            geoStyle,
+          ).then((res)=>{
+            if(res){
+              SMap.refreshMap()
+            }
+          })
+        }
+      })
       break
+    }
     case getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE:
       SMap.setTaggingTextSize(value, event.layerInfo.path, event.id)
       break

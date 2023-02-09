@@ -956,7 +956,10 @@ async function getTouchProgressInfo() {
     case getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION:
       if (event.geometryType === GeometryType.GEOTEXT) {
         //文本旋转角度
-        value = await SMap.getTaggingTextAngle(event.layerInfo.path, event.id)
+        const geoTextStyle = await SData.getGeoTextStyle({ datasetName: event.layerInfo.datasetName || "", datasourceName: event.layerInfo.datasourceAlias || "" },
+          event.id)
+        if (geoTextStyle.TextAngle) value = geoTextStyle.TextAngle
+        // value = await SMap.getTaggingTextAngle(event.layerInfo.path, event.id)
       } else {
         if(style !== null){
           value = style.getMarkerAngle()
@@ -976,11 +979,15 @@ async function getTouchProgressInfo() {
       unit = '%'
       break
     //字号
-    case getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE:
-      value = await SMap.getTaggingTextSize(event.layerInfo.path, event.id)
+    case getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE:{
+      const geoTextStyle = await SData.getGeoTextStyle({ datasetName: event.layerInfo.datasetName || "", datasourceName: event.layerInfo.datasourceAlias || "" },
+        event.id)
+      if(geoTextStyle.TextSize) value =  geoTextStyle.TextSize
+      // value = await SMap.getTaggingTextSize(event.layerInfo.path, event.id)
       range = [1, 20]
       unit = 'mm'
       break
+    }
   }
   return { title, value, tips, range, step, unit }
 }
@@ -1036,7 +1043,21 @@ function setTouchProgressInfo(title, value) {
     }
     case getLanguage(global.language).Map_Main_Menu.STYLE_ROTATION:
       if (event.geometryType === GeometryType.GEOTEXT) {
-        SMap.setTaggingTextAngle(value, event.layerInfo.path, event.id)
+        // SMap.setTaggingTextAngle(value, event.layerInfo.path, event.id)
+        SMap.addDataToMapHistory(event.layerInfo.path, [event.id], 1).then((res) => {
+          if (res) {
+            const geoTextStyle: GeoTextStyle = { TextAngle: value }
+            SData.setGeoTextStyle(
+              { datasetName: event.layerInfo.datasetName || "", datasourceName: event.layerInfo.datasourceAlias || "" },
+              event.id,
+              geoTextStyle,
+            ).then((res) => {
+              if (res) {
+                SMap.refreshMap()
+              }
+            })
+          }
+        })
       } else {
         // SMap.setTaggingAngle(value, event.layerInfo.path, event.id)
         SMap.addDataToMapHistory(event.layerInfo.path,[event.id],1).then((res)=>{
@@ -1075,9 +1096,24 @@ function setTouchProgressInfo(title, value) {
       })
       break
     }
-    case getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE:
-      SMap.setTaggingTextSize(value, event.layerInfo.path, event.id)
+    case getLanguage(global.language).Map_Main_Menu.STYLE_FONT_SIZE:{
+      // SMap.setTaggingTextSize(value, event.layerInfo.path, event.id)
+      SMap.addDataToMapHistory(event.layerInfo.path, [event.id], 1).then((res) => {
+        if (res) {
+          const geoTextStyle: GeoTextStyle = { TextSize: value }
+          SData.setGeoTextStyle(
+            { datasetName: event.layerInfo.datasetName || "", datasourceName: event.layerInfo.datasourceAlias || "" },
+            event.id,
+            geoTextStyle,
+          ).then((res) => {
+            if (res) {
+              SMap.refreshMap()
+            }
+          })
+        }
+      })
       break
+    }
   }
 }
 

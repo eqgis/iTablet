@@ -12,6 +12,7 @@ import { ARNaviModule } from '../ArNavigationModule'
 import { NaviDatasetInfo, NaviDatasourceInfo } from '../ArNavigationModule/ARNaviModule'
 import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
+import { getAllNavData } from '../ToolBar/modules/roadNetModule/RoadNetData'
 
 interface Props {
   navigation: any,
@@ -53,7 +54,7 @@ class RoadNet extends React.Component<Props, State> {
         server: await FileTools.getHomeDirectory() + path,
         engineType: EngineType.UDB,
       })
-      const naviData = await SNavigationInner.getAllNavData()
+      const naviData = await getAllNavData()
       const naviDataset = naviData.filter(item => {
         return item.title === 'dataset'
       })

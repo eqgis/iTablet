@@ -13,7 +13,7 @@ import {
   GeoStyle,
 } from 'imobile_for_reactnative'
 import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
-import { DatasetType,GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType,GeometryType, GeoTextStyle, TextFont } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import ToolbarModule from '../ToolbarModule'
 import { LayerUtils, Toast, StyleUtils, SCoordinationUtils } from '../../../../../../utils'
 import {
@@ -549,32 +549,13 @@ async function deleteLabel() {
     //
   }
 }
-function translate16ToRgb(str:string){
-  const reg = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/
-  if(!reg.test(str)){return}
-  let newStr = (str.toLowerCase()).replace(/\#/g,'')
-  const len = newStr.length
-  if(len == 3){
-    let t = ''
-    for(let i=0;i<len;i++){
-      t += newStr.slice(i,i+1).concat(newStr.slice(i,i+1))
-    }
-    newStr = t
-  }
-  const arr = [] //将字符串分隔，两个两个的分隔
-  for(let i =0;i<6;i=i+2){
-    const s = newStr.slice(i,i+2)
-    arr.push(parseInt("0x" + s))
-  }
-  return {r:arr[0],g:arr[1],b:arr[2]}
-}
 function colorAction(params) {
   const { event } = ToolbarModule.getData()
   switch (params.type) {
     case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_POINT_COLOR_SET:{
       // SMap.setTaggingMarkerColor(params.key, event.layerInfo.path, event.id)
       SMap.addDataToMapHistory(event.layerInfo.path,[event.id],1).then((res)=>{
-        const rgb = translate16ToRgb(params.key)
+        const rgb = SMap._translate16ToRgb(params.key)
         if(res&&rgb){
           const geoStyle = new GeoStyle()
           geoStyle.setMarkerSize(6)
@@ -598,7 +579,7 @@ function colorAction(params) {
     case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_BORDERCOLOR_SET:{
       // SMap.setTaggingLineColor(params.key, event.layerInfo.path, event.id)
       SMap.addDataToMapHistory(event.layerInfo.path,[event.id],1).then((res)=>{
-        const rgb = translate16ToRgb(params.key)
+        const rgb = SMap._translate16ToRgb(params.key)
         if(res){
           const geoStyle = new GeoStyle()
           if(rgb){
@@ -624,7 +605,7 @@ function colorAction(params) {
     case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_REGION_FORECOLOR_SET:{
       // SMap.setTaggingFillForeColor(params.key, event.layerInfo.path, event.id)
       SMap.addDataToMapHistory(event.layerInfo.path,[event.id],1).then((res)=>{
-        const rgb = translate16ToRgb(params.key)
+        const rgb = SMap._translate16ToRgb(params.key)
         if(res){
           const geoStyle = new GeoStyle()
           if(rgb){
@@ -648,7 +629,23 @@ function colorAction(params) {
       break
     }
     case ConstToolType.SM_MAP_MARKS_TAGGING_STYLE_TEXT_COLOR_SET:
-      SMap.setTaggingTextColor(params.key, event.layerInfo.path, event.id)
+      // SMap.setTaggingTextColor(params.key, event.layerInfo.path, event.id)
+      SMap.addDataToMapHistory(event.layerInfo.path,[event.id],1).then((res)=>{
+        const rgb = SMap._translate16ToRgb(params.key)
+        if(res&&rgb){
+          const geoTextStyle:GeoTextStyle = {TextColor:rgb}
+          SData.setGeoTextStyle(
+            {datasetName:event.layerInfo.datasetName||"",datasourceName:event.layerInfo.datasourceAlias||""},
+            event.id,
+            geoTextStyle,
+          ).then((res)=>{
+            if(res){
+              SMap.refreshMap()
+            }
+          })
+        }
+        // SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
+      })
       break
     default:
       break
@@ -657,26 +654,51 @@ function colorAction(params) {
 
 function setTaggingTextFont(param) {
   const { event } = ToolbarModule.getData()
+
+  let fontStr:TextFont = 'NULL'
   switch (param.title) {
     case getLanguage(global.language).Map_Main_Menu.STYLE_BOLD:
-      SMap.setTaggingTextFont('BOLD', event.layerInfo.path, event.id)
+      fontStr = 'BOLD'
+      // SMap.setTaggingTextFont('BOLD', event.layerInfo.path, event.id)
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_ITALIC:
-      SMap.setTaggingTextFont('ITALIC', event.layerInfo.path, event.id)
+      fontStr = 'ITALIC'
+      // SMap.setTaggingTextFont('ITALIC', event.layerInfo.path, event.id)
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_UNDERLINE:
-      SMap.setTaggingTextFont('UNDERLINE', event.layerInfo.path, event.id)
+      fontStr = 'UNDERLINE'
+      // SMap.setTaggingTextFont('UNDERLINE', event.layerInfo.path, event.id)
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_STRIKEOUT:
-      SMap.setTaggingTextFont('STRIKEOUT', event.layerInfo.path, event.id)
+      fontStr = 'STRIKEOUT'
+      // SMap.setTaggingTextFont('STRIKEOUT', event.layerInfo.path, event.id)
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_SHADOW:
-      SMap.setTaggingTextFont('SHADOW', event.layerInfo.path, event.id)
+      fontStr = 'SHADOW'
+      // SMap.setTaggingTextFont('SHADOW', event.layerInfo.path, event.id)
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_OUTLINE:
-      SMap.setTaggingTextFont('OUTLINE', event.layerInfo.path, event.id)
+      fontStr = 'OUTLINE'
+      // SMap.setTaggingTextFont('OUTLINE', event.layerInfo.path, event.id)
       break
   }
+  if (fontStr !== 'NULL') {
+    SMap.addDataToMapHistory(event.layerInfo.path, [event.id], 1).then((res) => {
+      if (res) {
+        const geoTextStyle: GeoTextStyle = { TextFont: [fontStr] }
+        SData.setGeoTextStyle(
+          { datasetName: event.layerInfo.datasetName || "", datasourceName: event.layerInfo.datasourceAlias || "" },
+          event.id,
+          geoTextStyle,
+        ).then((res) => {
+          if (res) {
+            SMap.refreshMap()
+          }
+        })
+      }
+    })
+  }
+
 }
 function geometrySelected(event) {
   const _params = ToolbarModule.getParams()

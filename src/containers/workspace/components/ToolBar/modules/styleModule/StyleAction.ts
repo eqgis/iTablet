@@ -1,5 +1,5 @@
-import { SCartography, SMap } from 'imobile_for_reactnative'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+// import { SCartography, SMap } from 'imobile_for_reactnative'
+import { DatasetType, GeoTextStyle, TextFont } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import {
   ConstToolType,
   TouchType,
@@ -12,6 +12,7 @@ import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import Utils from '../../utils'
+import { SMap } from 'imobile_for_reactnative'
 
 async function commit() {
   const _params = ToolbarModule.getParams()
@@ -79,11 +80,13 @@ async function tableAction(type, params) {
       break
     case ConstToolType.SM_MAP_STYLE_TEXT_COLOR:
       // result = await SCartography.setTextColorOfLayer(params.key, params.layerName)
-      result = await SMap.setLayerTextStyle(params.layerName, {
-        TextColor: params.key,
-      })
+      const rgb = SMap._translate16ToRgb(params.key)
+      if (rgb) {
+        const geoTextStyle: GeoTextStyle = { TextColor: rgb }
+        result = await SMap.setLayerTextStyle(params.layerName, geoTextStyle)
+      }
       break
-  }
+  
   if (!result && params.action) {
     params.action(params)
   }
@@ -127,44 +130,36 @@ function layerListAction(data) {
 
 function setTextFont(param) {
   const layerName = ToolbarModule.getParams().currentLayer.name
+  let fontName:TextFont = 'NULL'
   switch (param.title) {
     case getLanguage(global.language).Map_Main_Menu.STYLE_BOLD:
       // SCartography.setTextFontOfLayer('BOLD', layerName)
-      SMap.setLayerTextStyle(layerName, {
-        TextFont: ['BOLD'],
-      })
+      fontName = 'BOLD'
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_ITALIC:
       // SCartography.setTextFontOfLayer('ITALIC', layerName)
-      SMap.setLayerTextStyle(layerName, {
-        TextFont: ['ITALIC'],
-      })
+      fontName = 'ITALIC'
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_UNDERLINE:
       // SCartography.setTextFontOfLayer('UNDERLINE', layerName)
-      SMap.setLayerTextStyle(layerName, {
-        TextFont: ['UNDERLINE'],
-      })
+      fontName = 'UNDERLINE'
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_STRIKEOUT:
       // SCartography.setTextFontOfLayer('STRIKEOUT', layerName)
-      SMap.setLayerTextStyle(layerName, {
-        TextFont: ['STRIKEOUT'],
-      })
+      fontName = 'STRIKEOUT'
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_SHADOW:
       // SCartography.setTextFontOfLayer('SHADOW', layerName)
-      SMap.setLayerTextStyle(layerName, {
-        TextFont: ['SHADOW'],
-      })
+      fontName = 'SHADOW'
       break
     case getLanguage(global.language).Map_Main_Menu.STYLE_OUTLINE:
       // SCartography.setTextFontOfLayer('OUTLINE', layerName)
-      SMap.setLayerTextStyle(layerName, {
-        TextFont: ['OUTLINE'],
-      })
+      fontName = 'OUTLINE'
       break
   }
+  SMap.setLayerTextStyle(layerName||"", {
+    TextFont: [fontName],
+  })
 }
 
 function menu(type, selectKey, params = {}) {
@@ -406,7 +401,7 @@ function setTouchProgressInfo(title, value) {
         })
       } else if (layerType === DatasetType.TEXT) {
         // SCartography.setTextAngleOfLayer(value, _params.currentLayer.name)
-        SMap.setLayerTextStyle(_params.currentLayer.name, {
+        SMap.setLayerTextStyle(_params.currentLayer.name||"", {
           TextAngle: value,
         })
       }
@@ -434,7 +429,7 @@ function setTouchProgressInfo(title, value) {
       if (value > range[1]) value = range[1]
       else if (value <= range[0]) value = range[0]
       // SCartography.setTextSizeOfLayer(value, _params.currentLayer.name)
-      SMap.setLayerTextStyle(_params.currentLayer.name, {
+      SMap.setLayerTextStyle(_params.currentLayer.name||"", {
         TextFont: value,
       })
       break

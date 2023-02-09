@@ -1,4 +1,4 @@
-import { SCartography } from 'imobile_for_reactnative'
+import { SMap } from 'imobile_for_reactnative'
 import ToolbarModule from '../ToolbarModule'
 import StyleData from './StyleData'
 import * as StyleAction from './StyleAction'

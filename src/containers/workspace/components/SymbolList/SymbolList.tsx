@@ -79,7 +79,7 @@ export default class SymbolList extends React.Component {
     } else if (this.props.layerData.type === 3) {
       // SCartography.setLineSymbolID(data.id, this.props.layerData.name)
       SMap.setLayerStyle(this.props.layerData.name, {
-        MarkerSymbolID: data.id,
+        LineSymbolID: data.id,
       })
     }
 
@@ -135,7 +135,7 @@ export default class SymbolList extends React.Component {
     } else if (this.props.layerData.type === 5) {
       // SCartography.setFillSymbolID(data.id, this.props.layerData.name)
       SMap.setLayerStyle(this.props.layerData.name, {
-        MarkerSymbolID: data.id,
+        FillSymbolID: data.id,
       })
     }
   }

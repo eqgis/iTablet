@@ -3704,6 +3704,37 @@ export default class MapView extends React.Component {
     )
   }
 
+
+  isIndoorPoint = async (x: number, y: number) => {
+    const datasources = await SData.getDatasources()
+    const datasets: Awaited<ReturnType<typeof SData.getDatasetsByDatasource>>[] = []
+    for(let i = 0; i < datasources.length; i++){
+      datasets.push(await SData.getDatasetsByDatasource({alias: datasources[i].alias}))
+    }
+    const indoorDatasource = datasets.filter(dataset => {
+      const hasFloorTable = dataset.filter(data => data.datasetName === 'FloorRelationTable').length > 0
+      return hasFloorTable
+    })
+
+    let isIndoor = false
+    if(indoorDatasource.length > 0 && indoorDatasource[0].length > 0) {
+      for(let i = 0; i < indoorDatasource[0].length; i++) {
+        const dataset = indoorDatasource[0][i]
+        const bounds = await SData.getDatasetBounds({dataset: dataset.datasetName, datasource: dataset.datasourceName})
+        const prjcoord = await SData.getDatasetPrjCoordSys({datasetName: dataset.datasetName, datasourceName: dataset.datasourceName})
+        const point = (await SData.CoordSysTranslatorGPS(prjcoord, [{x, y}]))[0]
+
+        if(point.x >= bounds.left && point.x <= bounds.right && point.y >= bounds.bottom && point.y <= bounds.top) {
+          isIndoor = true
+          break
+        }
+      }
+    }
+
+    return isIndoor
+  }
+
+
   /**
    * 开始绘制室内增量路网
    */
@@ -3711,7 +3742,7 @@ export default class MapView extends React.Component {
     try {
       if (!this.state.isRight) {
         let position = await SMap.getCurrentPosition()
-        let isIndoor = await SNavigationInner.isIndoorPoint(position.x, position.y)
+        let isIndoor = await this.isIndoorPoint(position.x, position.y)
         if (!isIndoor) {
           Toast.show(
             getLanguage(this.props.language).Prompt

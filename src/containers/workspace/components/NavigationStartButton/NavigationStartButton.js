@@ -8,9 +8,9 @@ import {
   Image,
   Platform,
 } from 'react-native'
-import { scaleSize, screen, setSpText, Toast } from '../../../../utils'
+import { AppLog, scaleSize, screen, setSpText, Toast } from '../../../../utils'
 import color from '../../../../styles/color'
-import { SMap, SARMap, SNavigation, SIndoorNavigation } from 'imobile_for_reactnative'
+import { SMap, SARMap, SNavigation, SIndoorNavigation, SData } from 'imobile_for_reactnative'
 import { getThemeAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 import NavigationService from '../../../NavigationService'
@@ -209,6 +209,62 @@ export default class NavigationStartButton extends React.Component {
     }
   }
 
+  isIndoorPoint = async (x, y) => {
+    const datasources = await SData.getDatasources()
+    const datasets = []
+    for(let i = 0; i < datasources.length; i++){
+      datasets.push(await SData.getDatasetsByDatasource({alias: datasources[i].alias}))
+    }
+    const indoorDatasource = datasets.filter(dataset => {
+      const hasFloorTable = dataset.filter(data => data.datasetName === 'FloorRelationTable').length > 0
+      return hasFloorTable
+    })
+
+    let isIndoor = false
+    if(indoorDatasource.length > 0 && indoorDatasource[0].length > 0) {
+      for(let i = 0; i < indoorDatasource[0].length; i++) {
+        const dataset = indoorDatasource[0][i]
+        const bounds = await SData.getDatasetBounds({dataset: dataset.datasetName, datasource: dataset.datasourceName})
+        const prjcoord = await SData.getDatasetPrjCoordSys({datasetName: dataset.datasetName, datasourceName: dataset.datasourceName})
+        const point = (await SData.CoordSysTranslatorGPS(prjcoord, [{x, y}]))[0]
+
+        if(point.x >= bounds.left && point.x <= bounds.right && point.y >= bounds.bottom && point.y <= bounds.top) {
+          isIndoor = true
+          break
+        }
+      }
+    }
+
+    return isIndoor
+  }
+
+  isInBounds = async (position, datasetName) => {
+    const datasources = await SData.getDatasources()
+    const datasets = []
+    for(let i = 0; i < datasources.length; i++){
+      datasets.push(await SData.getDatasetsByDatasource({alias: datasources[i].alias}))
+    }
+    const targetDatasource = datasets.filter(dataset => {
+      const hasTarget = dataset.filter(data => data.datasetName === datasetName).length > 0
+      return hasTarget
+    })
+
+    let inbounds = false
+    for(let i = 0; i < targetDatasource.length; i++) {
+      let dataset = targetDatasource[i].filter(dataset => dataset.datasetName === datasetName)[0]
+      const bounds = await SData.getDatasetBounds({dataset: dataset.datasetName, datasource: dataset.datasourceName})
+      const prjcoord = await SData.getDatasetPrjCoordSys({datasetName: dataset.datasetName, datasourceName: dataset.datasourceName})
+      const point = (await SData.CoordSysTranslatorGPS(prjcoord, [{x: position.x, y: position.y}]))[0]
+
+      if(point.x >= bounds.left && point.x <= bounds.right && point.y >= bounds.bottom && point.y <= bounds.top) {
+        inbounds = true
+      }
+    }
+
+    return inbounds
+  }
+
+
   realNavigation = async type => {
     try {
       if (this.isOnline) {
@@ -219,7 +275,7 @@ export default class NavigationStartButton extends React.Component {
       }
       let position = await SMap.getCurrentPosition()
       if (global.CURRENT_NAV_MODE === 'INDOOR') {
-        let isindoor = await SNavigationInner.isIndoorPoint(position.x, position.y)
+        let isindoor = await this.isIndoorPoint(position.x, position.y)
         if (isindoor) {
           await SIndoorNavigation.startGuide(type)
           this.setVisible(false)
@@ -231,7 +287,7 @@ export default class NavigationStartButton extends React.Component {
       } else if (global.CURRENT_NAV_MODE === 'OUTDOOR') {
         let naviData = this.props.getNavigationDatas()
         //判断是否在当前导航的室外数据集范围内
-        let isInBounds = await SNavigationInner.isInBounds(
+        let isInBounds = await this.isInBounds(
           position,
           naviData.currentDataset.datasetName,
         )
@@ -246,6 +302,7 @@ export default class NavigationStartButton extends React.Component {
         }
       }
     } catch (error) {
+      AppLog.error(error)
       this.setVisible(true)
       global.NAVIGATIONSTARTHEAD.setVisible(true)
     }

@@ -22,6 +22,8 @@ import { getLanguage } from '../../language'
 import ImageButton from '../../components/ImageButton'
 import NavigationService from '../NavigationService'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
+import { SData } from 'imobile_for_reactnative'
+import { getAllNavData } from '../workspace/components/ToolBar/modules/roadNetModule/RoadNetData'
 export default class NavigationDataChangePage extends Component {
   props: {
     navigation: Object,
@@ -142,7 +144,7 @@ export default class NavigationDataChangePage extends Component {
 
   update =  async () => {
     try {
-      let datas = await SNavigationInner.getAllNavData()
+      let datas = await getAllNavData()
       const mapDatasource = datas[0]
       const mapDataset = datas[1]
       mapDatasource.data.map(item => {

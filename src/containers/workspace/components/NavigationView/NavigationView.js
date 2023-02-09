@@ -13,13 +13,14 @@ import { TouchType } from '../../../../constants'
 import styles from './styles'
 import { color } from '../../../../styles'
 import PropTypes from 'prop-types'
-import { FileTools, SIndoorNavigation, SMap, SNavigation } from 'imobile_for_reactnative'
+import { FileTools, SData, SIndoorNavigation, SMap, SNavigation } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import Loading from '../../../../components/Container/Loading'
 import { Dialog, Container } from '../../../../components'
 import { getPublicAssets } from '../../../../assets'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 const TOOLBARHEIGHT = Platform.OS === 'ios' ? scaleSize(20) : 0
 
@@ -156,6 +157,76 @@ export default class NavigationView extends React.Component {
     return result
   }
 
+  getPointBelongs = async (x, y) => {
+    const datasourcesInfo = await SData.getDatasources()
+    const datasources = []
+    for(let i = 0; i < datasourcesInfo.length; i++){
+      datasources.push(await SData.getDatasetsByDatasource({alias: datasourcesInfo[i].alias}))
+    }
+
+    const result = []
+    for(let i = 0; i < datasources.length; i++) {
+      const datasource = datasources[i]
+      const isIndoor = datasource.filter(dataset => dataset.datasetName === 'FloorRelationTable').length > 0
+      const linkResult = datasource.filter(dataset => dataset.datasetName === 'ModelFileLinkTable')
+      const isOutdoor = linkResult.length > 0
+      if(isIndoor || isOutdoor) {
+        let needPush = false
+        let indoorMap
+        for(let j = 0; j < datasource.length; j++) {
+          const dataset = datasource[j]
+          if(dataset.datasetType !== DatasetType.Network) {
+            continue
+          }
+
+          const prjXml = await SData.getDatasetPrjCoordSys({datasetName: dataset.datasetName, datasourceName: dataset.datasourceName})
+          const point = (await SData.CoordSysTranslatorGPS(prjXml, [{x, y}]))[0]
+          const bounds = await SData.getDatasetBounds({dataset: dataset.datasetName, datasource: dataset.datasourceName})
+
+          if(point.x >= bounds.left && point.x <= bounds.right && point.y >= bounds.bottom && point.y <= bounds.top) {
+            if(isIndoor) {
+              indoorMap = {
+                name: dataset.datasourceName,
+                datasourceName: dataset.datasourceName,
+                isIndoor: true
+              }
+              needPush = true
+            } else if(isOutdoor) {
+              const linkTable = linkResult[0]
+              const fieldValues = await SData.queryWithParameter({datasetName: linkTable.datasetName, datasourceName: linkTable.datasourceName})
+              fieldValues.map(recordset => {
+                let networkDatasetName = ''
+                let networkModelFile = ''
+                recordset.map(field => {
+                  if(field.name === 'NetworkDataset') {
+                    networkDatasetName = field.value
+                  } else if(field.name === 'NetworkModelFIle') {
+                    networkModelFile = field.value
+                  }
+                })
+                if(networkDatasetName === dataset.datasetName) {
+                  result.push({
+                    name: networkDatasetName,
+                    modelFileName: networkModelFile,
+                    datasourceName: dataset.datasourceName,
+                    datasetName: networkDatasetName,
+                    isIndoor: false
+                  })
+                }
+              })
+            }
+          }
+        }
+        if(needPush) {
+          result.push(indoorMap)
+        }
+      }
+    }
+
+
+    return result
+  }
+
   /**
    * 路径分析
    * @returns {Promise<void>}
@@ -174,11 +245,11 @@ export default class NavigationView extends React.Component {
       let endPointInfo //终点所在室内数据源/室外数据集的数组
       try {
         //获取起点 终点 所在室内外的数据信息
-        startPointInfo = await SNavigationInner.getPointBelongs(
+        startPointInfo = await this.getPointBelongs(
           global.STARTX,
           global.STARTY,
         )
-        endPointInfo = await SNavigationInner.getPointBelongs(global.ENDX, global.ENDY)
+        endPointInfo = await this.getPointBelongs(global.ENDX, global.ENDY)
       } catch (e) {
         this.loading.setLoading(false)
         Toast.show(' 获取数据失败')
@@ -330,7 +401,7 @@ export default class NavigationView extends React.Component {
             endY: global.ENDY,
             datasourceName: startIndoorInfo[0].datasourceName,
           }
-          let doorPoint = await SNavigationInner.getDoorPoint(params)
+          let doorPoint = await this.getDoorPoint(params)
           //临界点获取成功，存在坐标及楼层信息
           if (doorPoint && doorPoint.x && doorPoint.y && doorPoint.floorID) {
             //构建分段导航相关参数
@@ -417,7 +488,7 @@ export default class NavigationView extends React.Component {
             endY: global.ENDY,
             datasourceName: endIndoorInfo[0].datasourceName,
           }
-          let doorPoint = await SNavigationInner.getDoorPoint(params)
+          let doorPoint = await this.getDoorPoint(params)
           //获取成功，拿到坐标和楼层id
           if (doorPoint && doorPoint.x && doorPoint.y && doorPoint.floorID) {
             //构建分段导航参数
@@ -603,6 +674,35 @@ export default class NavigationView extends React.Component {
           global.FloorListView?.changeBottom(true)
         }
       }
+    }
+  }
+
+  getDoorPoint = async param => {
+    const datasets = await SData.getDatasetsByDatasource({alias: param.datasourceName})
+    const hasTable = datasets.filter(dataset => dataset.datasetName === 'connectionInfoTable').length === 1
+    if(hasTable) {
+      const records = await SData.queryWithParameter({datasourceName: param.datasourceName, datasetName: 'connectionInfoTable'})
+      if(records.length <= 0) return
+      let length = null
+      let startX = param.startX
+      const startY = param.startY
+      const endX = param.endX
+      const endY = param.endY
+      let x, y, floorID
+      records.map(record => {
+        const lon = parseFloat(record.filter(field => field.name === 'longtitude')[0].value)
+        const lan = parseFloat(record.filter(field => field.name === 'latitude')[0].value)
+        const startLenghPow = Math.pow(lon - startX, 2) + Math.pow(lan - startY, 2)
+        const endLengthPow  = Math.pow(lon -   endX, 2) + Math.pow(lan -   endY, 2)
+        if(length == null || startLenghPow + endLengthPow < length) {
+          length = startLenghPow + endLengthPow
+          x = lon
+          y = lan
+          floorID = record.filter(field => field.name === 'FL_ID')[0].value
+        }
+      })
+
+      return {x, y, floorID}
     }
   }
 

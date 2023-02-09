@@ -49,35 +49,37 @@ async function tableAction(type, params) {
   let result = false
   switch (type) {
     case ConstToolType.SM_MAP_STYLE_LINE_COLOR:
-      // result = await SCartography.setLineColor(params.key, params.layerName)
-      result = await SMap.setLayerStyle(params.layerName, {
-        LineColor: params.key,
-      })
-      break
     case ConstToolType.SM_MAP_STYLE_POINT_COLOR:
-      // result = await SCartography.setMarkerColor(params.key, params.layerName)
-      result = await SMap.setLayerStyle(params.layerName, {
-        LineColor: params.key,
-      })
+    case ConstToolType.SM_MAP_STYLE_REGION_BORDER_COLOR:{
+      // result = await SCartography.setLineColor(params.key, params.layerName)
+      const rgb = SMap._translate16ToRgb(params.key)
+      if (rgb) {
+        result = await SMap.setLayerStyle(params.layerName, {
+          LineColor:rgb,
+        })
+      }
       break
-    case ConstToolType.SM_MAP_STYLE_REGION_BEFORE_COLOR:
-      // result = await SCartography.setFillForeColor(params.key, params.layerName)
-      result = await SMap.setLayerStyle(params.layerName, {
-        FillForeColor: params.key,
-      })
+    }
+    case ConstToolType.SM_MAP_STYLE_REGION_BEFORE_COLOR:{
+      // result = await SCartography.setLineColor(params.key, params.layerName)
+      const rgb = SMap._translate16ToRgb(params.key)
+      if (rgb) {
+        result = await SMap.setLayerStyle(params.layerName, {
+          FillForeColor: rgb,
+        })
+      }
       break
-    case ConstToolType.SM_MAP_STYLE_REGION_AFTER_COLOR:
-      // result = await SCartography.setFillBackColor(params.key, params.layerName)
-      result = await SMap.setLayerStyle(params.layerName, {
-        FillBackColor: params.key,
-      })
+    }
+    case ConstToolType.SM_MAP_STYLE_REGION_AFTER_COLOR:{
+      // result = await SCartography.setLineColor(params.key, params.layerName)
+      const rgb = SMap._translate16ToRgb(params.key)
+      if (rgb) {
+        result = await SMap.setLayerStyle(params.layerName, {
+          FillBackColor: params.key,
+        })
+      }
       break
-    case ConstToolType.SM_MAP_STYLE_REGION_BORDER_COLOR:
-      // result = await SCartography.setFillBorderColor(params.key, params.layerName)
-      result = await SMap.setLayerStyle(params.layerName, {
-        setLineColor: params.key,
-      })
-      break
+    }
     case ConstToolType.SM_MAP_STYLE_TEXT_COLOR:{
       // result = await SCartography.setTextColorOfLayer(params.key, params.layerName)
       const rgb = SMap._translate16ToRgb(params.key)

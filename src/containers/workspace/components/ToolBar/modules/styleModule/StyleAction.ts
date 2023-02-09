@@ -78,7 +78,7 @@ async function tableAction(type, params) {
         setLineColor: params.key,
       })
       break
-    case ConstToolType.SM_MAP_STYLE_TEXT_COLOR:
+    case ConstToolType.SM_MAP_STYLE_TEXT_COLOR:{
       // result = await SCartography.setTextColorOfLayer(params.key, params.layerName)
       const rgb = SMap._translate16ToRgb(params.key)
       if (rgb) {
@@ -86,7 +86,8 @@ async function tableAction(type, params) {
         result = await SMap.setLayerTextStyle(params.layerName, geoTextStyle)
       }
       break
-  
+    }
+  }
   if (!result && params.action) {
     params.action(params)
   }

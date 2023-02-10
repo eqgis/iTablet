@@ -286,7 +286,7 @@ export default class MapView extends React.Component {
     super(props)
     let { params } = this.props.route
     if (!params) {
-      let parent = this.props.navigation.dangerouslyGetParent()
+      const parent = this.props.navigation.dangerouslyGetParent()
       params = parent.state.key === 'CoworkMapStack' && parent.state.params
     }
     /** 模块类型 */
@@ -460,8 +460,8 @@ export default class MapView extends React.Component {
   }
 
   _handlePanResponderMove = (evt, gestureState) => {
-    let y = this._previousTop + gestureState.dy
-    let x = this._previousLeft + gestureState.dx
+    const y = this._previousTop + gestureState.dy
+    const x = this._previousLeft + gestureState.dx
 
     const position = this._getAvailablePosition(x, y)
 
@@ -521,7 +521,7 @@ export default class MapView extends React.Component {
 
   /** 添加楼层显隐监听 */
   addFloorHiddenListener = () => {
-      SMap.setFloorHiddenListener(async (result:{currentFloorID:number}) => {
+    SMap.setFloorHiddenListener(async (result:{currentFloorID:number}) => {
       //在选点过程中/路径分析界面 不允许拖放改变FloorList、MapController的状态
       // 使用this.currentFloorID 使ID发生变化时只渲染一次
       if (
@@ -549,7 +549,7 @@ export default class MapView extends React.Component {
   async componentDidMount() {
     AppEvent.addListener('on_exit_ar_map_module', this.back)
     if (!global.isLicenseValid) {
-      let licenseStatus = await SData.getEnvironmentStatus()
+      const licenseStatus = await SData.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid
     }
 
@@ -797,7 +797,7 @@ export default class MapView extends React.Component {
       JSON.stringify(this.props.showSampleData)
     ) {
       if (this.props.showSampleData) {
-        let animatedList = []
+        const animatedList = []
 
         animatedList.push(
           Animated.timing(this.state.samplescale, {
@@ -936,10 +936,10 @@ export default class MapView extends React.Component {
 
     if (global.Type === ChunkType.MAP_NAVIGATION) {
       (async function () {
-        let currentFloorID = await SNavigationInner.getCurrentFloorID()
+        const currentFloorID = await SNavigationInner.getCurrentFloorID()
         this.changeFloorID(currentFloorID, () => {
-          let { params } = this.props.route
-          let preParams = prevProps.route.params
+          const { params } = this.props.route
+          const preParams = prevProps.route.params
           if (params?.hideMapController && !preParams?.hideMapController) {
             this.mapController && this.mapController.setVisible(false)
           }
@@ -1096,14 +1096,14 @@ export default class MapView extends React.Component {
   _changeNavRoute = async () => {
     global.changeRouteDialog.setDialogVisible(false)
     this.setLoading(true, getLanguage(global.language).Prompt.ROUTE_ANALYSING)
-    let curNavInfos = global.NAV_PARAMS.filter(item => !item.hasNaved)
-    let guideLines = global.NAV_PARAMS.filter(item => item.hasNaved)
+    const curNavInfos = global.NAV_PARAMS.filter(item => !item.hasNaved)
+    const guideLines = global.NAV_PARAMS.filter(item => item.hasNaved)
     await SMap.clearTrackingLayer()
     await SNavigation.clearPath()
     await SIndoorNavigation.clearPath()
-    let params = JSON.parse(JSON.stringify(curNavInfos[0]))
+    const params = JSON.parse(JSON.stringify(curNavInfos[0]))
     params.hasNaved = true
-    let {
+    const {
       startX,
       startY,
       endX,
@@ -1119,7 +1119,7 @@ export default class MapView extends React.Component {
           destinationPoint: {x: endX, y: endY, floorID: endFloor}
         })
         await SIndoorNavigation.setRouteAnalyzeData({datasourceAlias: datasourceName})
-        let rel = await SIndoorNavigation.routeAnalyst()
+        const rel = await SIndoorNavigation.routeAnalyst()
         if (!rel) {
           Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
           this.changeNavPathInfo({ path: '', pathLength: '' })
@@ -1134,7 +1134,7 @@ export default class MapView extends React.Component {
         style.setLineStyle(9)
         const mapPrj = await SMap.getPrjCoordSys()
 
-        for (let item of guideLines) {
+        for (const item of guideLines) {
 
           const points = await SData.CoordSysTranslatorGPS(mapPrj, [
             { x: item.startX, y: item.startY },
@@ -1186,7 +1186,7 @@ export default class MapView extends React.Component {
           style.setLineStyle(9)
           const mapPrj = await SMap.getPrjCoordSys()
 
-          for (let item of guideLines) {
+          for (const item of guideLines) {
             const points = await SData.CoordSysTranslatorGPS(mapPrj, [
               { x: item.startX, y: item.startY },
               { x: item.endX, y: item.endY },
@@ -1272,7 +1272,7 @@ export default class MapView extends React.Component {
       mapViewNums++
     }
 
-    let current = this.props.nav.routes[this.props.nav.routes.length - 1]
+    const current = this.props.nav.routes[this.props.nav.routes.length - 1]
 
     return (
       mapViewNums === 1 &&
@@ -1374,7 +1374,7 @@ export default class MapView extends React.Component {
           ids: [event.id],
         },
       ])
-    let currentToolbarType = ToolbarModule.getData().type
+    const currentToolbarType = ToolbarModule.getData().type
     if (
       ToolbarModule.getData().actions &&
       ToolbarModule.getData().actions.geometrySelected
@@ -1429,7 +1429,7 @@ export default class MapView extends React.Component {
       ToolbarModule.getData().actions.geometryMultiSelected(event)
       return
     }
-    let data = []
+    const data = []
     for (let i = 0; i < event.geometries.length; i++) {
       if (event.geometries[i].layerInfo.editable) {
         SMap.setLayerEditable(event.geometries[i].layerInfo.path, false)
@@ -1442,7 +1442,7 @@ export default class MapView extends React.Component {
     }
     this.props.setSelection && this.props.setSelection(data)
 
-    let currentToolbarType = ToolbarModule.getData().type
+    const currentToolbarType = ToolbarModule.getData().type
     switch (currentToolbarType) {
       case ConstToolType.SM_MAP_TOOL_SELECT_BY_RECTANGLE:
         SMap.setAction(Action.PAN)
@@ -1465,7 +1465,7 @@ export default class MapView extends React.Component {
 
   /** 移除导航相关监听（楼层控件） */
   _removeNavigationListeners = async () => {
-    let listeners = []
+    const listeners = []
     if (this.TrafficView && this.TrafficView.listener) {
       listeners.push(this.TrafficView.listener)
     }
@@ -1490,7 +1490,7 @@ export default class MapView extends React.Component {
           mapName.substr(0, mapName.lastIndexOf('.')) ||
           this.props.map.currentMap.name
       } else {
-        let mapInfo = await SMap.getMapInfo()
+        const mapInfo = await SMap.getMapInfo()
         if (mapInfo && mapInfo.name) {
           // 获取MapControl中的地图名称
           mapName = mapInfo.name
@@ -1499,14 +1499,14 @@ export default class MapView extends React.Component {
           mapName = this.props.collection.datasourceName
         }
       }
-      let addition = {}
+      const addition = {}
       if (this.props.map.currentMap.Template) {
         addition.Template = this.props.map.currentMap.Template
       }
 
       this.setLoading(true, getLanguage(this.props.language).Prompt.SAVING)
       // 导出(保存)工作空间中地图到模块
-      let result = await this.props.saveMap({ mapTitle: mapName, nModule: '', addition })
+      const result = await this.props.saveMap({ mapTitle: mapName, nModule: '', addition })
       if (result || result === '') {
         this.setLoading(false)
         Toast.show(
@@ -1607,13 +1607,13 @@ export default class MapView extends React.Component {
 
         let result = true
         //使用for循环等待，在forEach里await没有用
-        for (let item of this.props.selection) {
+        for (const item of this.props.selection) {
           if (item.ids.length > 0) {
             if (global.coworkMode && item.ids.length > 0) {
-              let currentTaskInfo = this.props.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.currentTask.groupID]?.[this.props.currentTask.id]
-              let isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
+              const currentTaskInfo = this.props.coworkInfo?.[this.props.user.currentUser.userName]?.[this.props.currentTask.groupID]?.[this.props.currentTask.id]
+              const isRealTime = currentTaskInfo?.isRealTime === undefined ? false : currentTaskInfo.isRealTime
 
-              let layerType = LayerUtils.getLayerType(item.layerInfo)
+              const layerType = LayerUtils.getLayerType(item.layerInfo)
               isRealTime && layerType !== 'TAGGINGLAYER' && global.getFriend().onGeometryDelete(item.layerInfo, item.fieldInfo, item.ids[0], item.geometryType)
             }
             result =
@@ -1635,7 +1635,7 @@ export default class MapView extends React.Component {
           Toast.show(getLanguage(this.props.language).Prompt.DELETED_SUCCESS)
           this.props.setSelection && this.props.setSelection()
           SMap.setAction(Action.SELECT)
-          let preType = ToolbarModule.getParams().type
+          const preType = ToolbarModule.getParams().type
           let type
           if (preType.indexOf('SM_MAP_MARKS_') > -1) {
             type = ConstToolType.SM_MAP_MARKS_TAGGING_SELECT
@@ -1734,7 +1734,7 @@ export default class MapView extends React.Component {
         global.coworkMode && this.props.currentTask?.groupID &&
         this.props.currentTaskServices?.[this.props.user.currentUser.userName]?.[this.props.currentTask?.groupID]?.[this.props.currentTask?.id]?.length > 0
       ) {
-        let currentServices = this.props.currentTaskServices[this.props.user.currentUser.userName][this.props.currentTask.groupID][this.props.currentTask.id]
+        const currentServices = this.props.currentTaskServices[this.props.user.currentUser.userName][this.props.currentTask.groupID][this.props.currentTask.id]
         let serviceDone = true
         for (const services of currentServices) {
           if (services.status !== 'done') {
@@ -1748,7 +1748,7 @@ export default class MapView extends React.Component {
         }
       }
 
-      let result = await SMap.isModified() // 是否保存普通地图
+      const result = await SMap.isModified() // 是否保存普通地图
       const needSaveARMap = global.Type === ChunkType.MAP_AR && this.props.armap.currentMap?.mapName // 是否保存AR地图
       if ((result || needSaveARMap) && !this.isExample) {
         this.setSaveViewVisible(true, null, async () => {
@@ -1802,7 +1802,7 @@ export default class MapView extends React.Component {
         if (this.wsData) {
           if (this.wsData instanceof Array) {
             for (let i = 0; i < this.wsData.length; i++) {
-              let item = this.wsData[i]
+              const item = this.wsData[i]
               if (item === null) continue
               if (item.type === 'Workspace') {
                 await this._openWorkspace(
@@ -1840,7 +1840,7 @@ export default class MapView extends React.Component {
           }
         } else {
           // 若无参数，打开默认工作空间。分析模块使用
-          let homePath = await FileTools.appendingHomeDirectory()
+          const homePath = await FileTools.appendingHomeDirectory()
           let userPath = ConstPath.CustomerPath
           if (
             this.props.user.currentUser &&
@@ -1849,7 +1849,7 @@ export default class MapView extends React.Component {
             userPath =
               ConstPath.UserPath + this.props.user.currentUser.userName + '/'
           }
-          let wsPath =
+          const wsPath =
             homePath +
             userPath +
             ConstPath.RelativeFilePath.Workspace[
@@ -1885,7 +1885,7 @@ export default class MapView extends React.Component {
             //ConstInfo.TEMPLATE_READING
             getLanguage(this.props.language).Prompt.READING_TEMPLATE,
           )
-          let plotIconPath = await FileTools.appendingHomeDirectory(
+          const plotIconPath = await FileTools.appendingHomeDirectory(
             ConstPath.UserPath +
             this.props.user.currentUser.userName +
             '/' +
@@ -1946,7 +1946,7 @@ export default class MapView extends React.Component {
 
             if (mapInfo) await SMap.saveMap('')
             // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
-            let dataList = await SMap._getTaggingLayers(
+            const dataList = await SMap._getTaggingLayers(
               this.props.user.currentUser.userName,
             )
             dataList.forEach(item => {
@@ -1982,7 +1982,7 @@ export default class MapView extends React.Component {
               let result = false
               if (this.wsData instanceof Array) {
                 for (let i = 0; i < this.wsData.length; i++) {
-                  let item = this.wsData[i]
+                  const item = this.wsData[i]
                   if (item === null) continue
                   if (item.type === 'Datasource') {
                     result = await SMap.addLayer(item.DSParams.alias, 0)
@@ -2105,15 +2105,15 @@ export default class MapView extends React.Component {
     } else if (global.coworkMode && CoworkInfo.coworkId !== '') {
       //加入
       try {
-        let friend = global.getFriend()
+        const friend = global.getFriend()
         friend.startSendLocation(true)
 
-        let messages = this.props.coworkInfo?.[this.props.user.currentUser.userName]?.
+        const messages = this.props.coworkInfo?.[this.props.user.currentUser.userName]?.
           [this.props.currentTask.groupID]?.[this.props.currentTask.id]?.messages || []
 
         // 把没有更新/追加/忽略的操作的标志添加到地图上
         for (let i = 0; i < messages.length; i++) {
-          let _message = messages[i]
+          const _message = messages[i]
           if (_message.status) continue
           let result = false
           if (messages[i].message.geoUserID !== undefined) {
@@ -2151,7 +2151,7 @@ export default class MapView extends React.Component {
       return
     }
     try {
-      let result = await this.props.openWorkspace(wsData.DSParams)
+      const result = await this.props.openWorkspace(wsData.DSParams)
       result && this.props.openMap(index)
     } catch (e) {
       this.setLoading(false)
@@ -2183,7 +2183,7 @@ export default class MapView extends React.Component {
    */
   _openMap = async data => {
     try {
-      let mapInfo = await this.props.openMap({
+      const mapInfo = await this.props.openMap({
         path: data.path,
         name: data.name,
       })
@@ -2195,7 +2195,7 @@ export default class MapView extends React.Component {
             //ConstInfo.TEMPLATE_READING
             getLanguage(this.props.language).Prompt.READING_TEMPLATE,
           )
-          let templatePath = await FileTools.appendingHomeDirectory(
+          const templatePath = await FileTools.appendingHomeDirectory(
             ConstPath.UserPath + mapInfo.Template,
           )
           await this.props.getSymbolTemplates({
@@ -2315,7 +2315,7 @@ export default class MapView extends React.Component {
    * 点击协作消息callout出现的菜单
    */
   renderMessageMenu = () => {
-    let data = [
+    const data = [
       {
         title: getLanguage(global.language).Friends.COWORK_UPDATE,
         action: () => {
@@ -2445,7 +2445,7 @@ export default class MapView extends React.Component {
         type={this.props.analyst.params.type}
         actionType={this.props.analyst.params.actionType}
         back={() => {
-          let action =
+          const action =
             (this.props.analyst.params &&
               this.props.analyst.params.backAction) ||
             null
@@ -2563,7 +2563,7 @@ export default class MapView extends React.Component {
   showFullMap = isFull => {
     this.showFullonBlur = !isFull
     if (isFull === this.fullMap) return
-    let full = isFull === undefined ? !this.fullMap : !isFull
+    const full = isFull === undefined ? !this.fullMap : !isFull
     this.container && this.container.setHeaderVisible(full)
     this.container && this.container.setBottomVisible(full)
     this.functionToolbar && this.functionToolbar.setVisible(full)
@@ -2620,8 +2620,8 @@ export default class MapView extends React.Component {
   showUndoView = () => {
     (async function () {
       this.popModal && this.popModal.setVisible(true)
-      let historyCount = await SMap.getMapHistoryCount()
-      let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
+      const historyCount = await SMap.getMapHistoryCount()
+      const currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
       this.setState({
         canBeUndo: currentHistoryCount >= 0,
         canBeRedo: currentHistoryCount < historyCount - 1,
@@ -2999,7 +2999,7 @@ export default class MapView extends React.Component {
    */
   confirm = () => {
     (async function () {
-      let result = await SMap.setDynamicProjection()
+      const result = await SMap.setDynamicProjection()
       if (result) {
         global.prjDialog.setDialogVisible(false)
       }
@@ -3066,8 +3066,8 @@ export default class MapView extends React.Component {
               if (!this.state.canBeUndo) return
               ;(async function () {
                 await SMap.undo()
-                let historyCount = await SMap.getMapHistoryCount()
-                let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
+                const historyCount = await SMap.getMapHistoryCount()
+                const currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
                 this.setState({
                   canBeUndo: currentHistoryCount >= 0,
                   canBeRedo: currentHistoryCount < historyCount - 1,
@@ -3091,8 +3091,8 @@ export default class MapView extends React.Component {
               if (!this.state.canBeRedo) return
               ; (async function () {
                 await SMap.redo()
-                let historyCount = await SMap.getMapHistoryCount()
-                let currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
+                const historyCount = await SMap.getMapHistoryCount()
+                const currentHistoryCount = await SMap.getMapHistoryCurrentIndex()
                 this.setState({
                   canBeUndo: currentHistoryCount >= 0,
                   canBeRedo: currentHistoryCount < historyCount - 1,
@@ -3211,13 +3211,13 @@ export default class MapView extends React.Component {
   renderHeaderRight = () => {
     if (this.props.analyst.params || (global.Type === ChunkType.MAP_AR_MAPPING ? this.props.isAR : this.state.showAIDetect))
       return null
-    let size =
+    const size =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50
 
     const currentMapModule = this.props.mapModules.modules[this.props.user.currentUser.userName].find(item => {
       return item.key === this.type
     })
-    let buttonInfos = global.coworkMode && Object.keys(ChunkType).indexOf(global.Type) >= 0 && [
+    const buttonInfos = global.coworkMode && Object.keys(ChunkType).indexOf(global.Type) >= 0 && [
       MapHeaderButton.CoworkChat,
     ] || (currentMapModule && currentMapModule.headerButtons) || [
       // MapHeaderButton.BaseMap,
@@ -3226,7 +3226,7 @@ export default class MapView extends React.Component {
       MapHeaderButton.Undo,
       MapHeaderButton.Audio,
     ]
-    let buttons = []
+    const buttons = []
     if (this.isExample) {
       if (this.wsData.nodeleteBT) {
         return null
@@ -3245,7 +3245,7 @@ export default class MapView extends React.Component {
             ToolbarModule.addData({
               data: this.wsData,
             })
-            let { data, buttons } = await ToolbarModule.getToolBarData(ConstToolType.SM_MAP_BASE_CHANGE)
+            const { data, buttons } = await ToolbarModule.getToolBarData(ConstToolType.SM_MAP_BASE_CHANGE)
             this.showFullMap(true)
             this.toolBox?.setVisible(true, ConstToolType.SM_MAP_BASE_CHANGE, {
               containerType: ToolbarType.list, // 数据展示类型为普通列表
@@ -3337,9 +3337,9 @@ export default class MapView extends React.Component {
                 image: getThemeAssets().nav.icon_nav_search,
                 action: async () => {
                   if (global.Type === ChunkType.MAP_NAVIGATION) {
-                    let layers =
+                    const layers =
                       this.props.getLayers && (await this.props.getLayers())
-                    let baseMap = layers.filter(layer =>
+                    const baseMap = layers.filter(layer =>
                       LayerUtils.isBaseLayer(layer),
                     )[0]
                     if (
@@ -3374,7 +3374,7 @@ export default class MapView extends React.Component {
                 key: MapHeaderButton.CoworkChat,
                 image: getThemeAssets().cowork.icon_nav_chat,
                 action: async () => {
-                  let param = {}
+                  const param = {}
                   if (CoworkInfo.coworkId !== '') {
                     param.targetId = CoworkInfo.coworkId
                     param.title = getLanguage(global.language).Friends.GROUPS
@@ -3586,7 +3586,7 @@ export default class MapView extends React.Component {
 
   /** AR和二维地图切换图标 */
   _renderArModeIcon = () => {
-    let show =
+    const show =
       this.isARModule() ? this.props.isAR : this.state.showAIDetect
     let right
     if (
@@ -3620,7 +3620,7 @@ export default class MapView extends React.Component {
                 bGoneAIDetect: false,
               })
             }
-            let _showAIDetect = this.switchAr()
+            const _showAIDetect = this.switchAr()
             // 防止地图界面全屏后快速点击切换到AR界面，工具栏消失
             setTimeout(() => {
               _showAIDetect && this.showFullMap(false)
@@ -3724,7 +3724,7 @@ export default class MapView extends React.Component {
    * 室内增量路网绘制icon
    */
   _renderNavigationIcon = () => {
-    let title = getLanguage(this.props.language).Map_Main_Menu.DRAW
+    const title = getLanguage(this.props.language).Map_Main_Menu.DRAW
     return (
       <View style={styles.navigation}>
         <MTBtn
@@ -3780,8 +3780,8 @@ export default class MapView extends React.Component {
   _incrementRoad = async () => {
     try {
       if (!this.state.isRight) {
-        let position = await SMap.getCurrentPosition()
-        let isIndoor = await this.isIndoorPoint(position.x, position.y)
+        const position = await SMap.getCurrentPosition()
+        const isIndoor = await this.isIndoorPoint(position.x, position.y)
         if (!isIndoor) {
           Toast.show(
             getLanguage(this.props.language).Prompt
@@ -3795,7 +3795,7 @@ export default class MapView extends React.Component {
       }
       //清空Toolbar数据
       ToolbarModule.setData({})
-      let rel = await SNavigationInner.addNetWorkDataset()
+      const rel = await SNavigationInner.addNetWorkDataset()
       let type
       if (rel) {
         this.FloorListView.setVisible(false)
@@ -3968,7 +3968,7 @@ export default class MapView extends React.Component {
         break
     }
     //设置所有图层不可选 完成拓扑编辑或者退出增量需要设置回去
-    let layers = this.props.layers.layers
+    const layers = this.props.layers.layers
     LayerUtils.setLayersSelectable(layers, false, true)
     global.TouchType = TouchType.NULL
     global.IncrementRoadDialog.setVisible(false)
@@ -4162,8 +4162,8 @@ export default class MapView extends React.Component {
         <TouchableOpacity
           key={'search'}
           onPress={async () => {
-            let layers = this.props.getLayers && (await this.props.getLayers())
-            let baseMap = layers.filter(layer =>
+            const layers = this.props.getLayers && (await this.props.getLayers())
+            const baseMap = layers.filter(layer =>
               LayerUtils.isBaseLayer(layer),
             )[0]
             if (baseMap && baseMap.name !== 'baseMap' && baseMap.isVisible) {
@@ -4335,7 +4335,7 @@ export default class MapView extends React.Component {
       global.TouchType = TouchType.NORMAL
       this.changeNavPathInfo({ path, pathLength })
 
-      let history = this.props.navigationhistory
+      const history = this.props.navigationhistory
       history.push({
         sx: global.STARTX,
         sy: global.STARTY,
@@ -4457,7 +4457,7 @@ export default class MapView extends React.Component {
                 mapName.substr(0, mapName.lastIndexOf('.')) ||
                 this.props.map.currentMap.name
             } else {
-              let mapInfo = await SMap.getMapInfo()
+              const mapInfo = await SMap.getMapInfo()
               if (mapInfo && mapInfo.name) {
                 // 获取MapControl中的地图名称
                 mapName = mapInfo.name
@@ -4666,9 +4666,9 @@ export default class MapView extends React.Component {
 
   /** 设置 */
   setting = async () => {
-    let isSnap = await SARMap.getIsSnapRange()
-    let tole = await SARMap.getSnapTolerance()
-    let showGenera = this.state.showGenera
+    const isSnap = await SARMap.getIsSnapRange()
+    const tole = await SARMap.getSnapTolerance()
+    const showGenera = this.state.showGenera
     NavigationService.navigate('CollectSceneFormSet', {
       point: this.point,
       fixedPositions: point => {
@@ -4718,8 +4718,8 @@ export default class MapView extends React.Component {
 
   /** 量算的设置（界面传入数据有区别）add jiakai */
   Measuresetting = async () => {
-    let isSnap = await SARMap.getIsSnapRange()
-    let tole = await SARMap.getSnapTolerance()
+    const isSnap = await SARMap.getIsSnapRange()
+    const tole = await SARMap.getSnapTolerance()
     NavigationService.navigate('CollectSceneFormSet', {
       isMeasure: true,
       isSnap: isSnap,
@@ -4805,7 +4805,7 @@ export default class MapView extends React.Component {
   renderADDPoint = () => {
     let text
     global.language === 'CN' ? text = '添加点' : text = 'Add Point'
-    let image = getThemeAssets().ar.icon_ar_measure_add_toast
+    const image = getThemeAssets().ar.icon_ar_measure_add_toast
     // global.language === 'CN' ? image = getThemeAssets().ar.icon_ar_measure_add_toast : image = getThemeAssets().ar.icon_ar_measure_add_toast_en
     return (
       <View style={styles.addcaptureView}>
@@ -5223,17 +5223,17 @@ export default class MapView extends React.Component {
       }
       let isTianditu = false
       let isGaode  = false
-      let length = this.props.layers.layers.length
+      const length = this.props.layers.layers.length
       if(length == 0){
         return null
       }
       const layer = this.props.layers.layers[length - 1]
-      let isBaseMap = LayerUtils.isBaseLayer(layer)
+      const isBaseMap = LayerUtils.isBaseLayer(layer)
       if(!isBaseMap) {
         return null
       }
 
-      let server = layer.datasourceServer || ""
+      const server = layer.datasourceServer || ""
       if(server.toLowerCase().indexOf("tianditu") !== -1) {
         isTianditu = true
       }else if(server.toLowerCase().indexOf("amap") !== -1){

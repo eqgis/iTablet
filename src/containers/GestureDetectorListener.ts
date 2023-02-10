@@ -1,28 +1,22 @@
-/* global GLOBAL */
 import {
   SMap,
   STransportationAnalyst,
   SPlot,
   SNavigation,
   SIndoorNavigation,
-  // SFacilityAnalyst,
+  GeoStyle,
+  SData,
 } from 'imobile_for_reactnative'
 import NavigationService from './NavigationService'
 import { getLanguage } from '../language'
 import { TouchType ,ChunkType} from '../constants'
-// eslint-disable-next-line
-import { Toast } from '../utils'
 import ToolbarModule from './workspace/components/ToolBar/modules/ToolbarModule'
-import {
-  ConstToolType,
-} from '../constants'
-import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
-// eslint-disable-next-line
-let _params = {}
+import { DatasetInfo, GeometryType, GeoRegion, Point2D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+
 let isDoubleTouchCome = false
 function setGestureDetectorListener(params) {
   (async function() {
-     SMap.setGestureDetector({
+    SMap.setGestureDetector({
       singleTapHandler: touchCallback,
       longPressHandler: longtouchCallback,
       doubleTapHandler: doubleTouchCallback,
@@ -92,12 +86,12 @@ async function magntouchCallback(event) {
       // const data = ToolbarModule.getData()
       const point = event.screenPoint
       ToolbarModule.addData({ point })
-      let params = {
+      const params = {
         point,
         ...global.INCREMENT_DATA,
         secondLine: true,
       }
-      SNavigationInner.drawSelectedLineOnTrackingLayer(params)
+      drawSelectedLineOnTrackingLayer(params)
       global.bubblePane && global.bubblePane.clear()
       break
     }
@@ -281,12 +275,12 @@ async function touchCallback(event) {
       // const data = ToolbarModule.getData()
       const point = event.screenPoint
       ToolbarModule.addData({ point })
-      let params = {
+      const params = {
         point,
         ...global.INCREMENT_DATA,
         secondLine: true,
       }
-      SNavigationInner.drawSelectedLineOnTrackingLayer(params)
+      drawSelectedLineOnTrackingLayer(params)
       global.bubblePane && global.bubblePane.clear()
       break
     }
@@ -297,3 +291,80 @@ async function touchCallback(event) {
 }
 
 export { setGestureDetectorListener }
+
+
+
+
+export async function drawSelectedLineOnTrackingLayer(params: {
+  datasourceName: string
+  datasetName: string
+  /** 是否是第二根线，用来设置颜色 */
+  secondLine: boolean
+  /** 线id */
+  id: number
+} | {
+  datasourceName: string
+  datasetName: string
+  /** 是否是第二根线，用来设置颜色 */
+  secondLine: boolean
+  /** 手指点击的屏幕点，用来查询附近线 */
+  point: Point2D
+}): Promise<boolean> {
+
+  const datasetInfo: DatasetInfo = {
+    datasetName: params.datasetName,
+    datasourceName: params.datasourceName
+  }
+
+  let geoId = -1
+  if("point" in params) {
+    const srcRegion: Point2D[] = [
+      {x: params.point.x + 25, y: params.point.y + 25},
+      {x: params.point.x + 25, y: params.point.y - 25},
+      {x: params.point.x - 25, y: params.point.y - 25},
+      {x: params.point.x - 25, y: params.point.y + 25},
+    ]
+
+    const mapRegion: Point2D[] = []
+    for(let i = 0; i < srcRegion.length; i++) {
+      const mapPoint = await SMap.pixelToMap(srcRegion[i])
+      mapRegion.push(mapPoint)
+    }
+
+    const mapPrj = await SMap.getPrjCoordSys()
+    const datasetPrj = await SData.getDatasetPrjCoordSys({...datasetInfo})
+    const dataRegion = await SData.CoordSysTranslator(mapPrj, datasetPrj, mapRegion)
+
+    const geoRegion: GeoRegion = {
+      type: GeometryType.GEOREGION,
+      points: dataRegion
+    }
+    const values = await SData.queryWithParameter(
+      {...datasetInfo},
+      {spatialQueryMode: 2, spatialQueryObject: geoRegion, hasGeometry: true}
+    )
+
+    if(values.length > 0) {
+      const field = values[0].filter(record => record.name === 'SmID')
+      if(field.length > 0) {
+        geoId = field[0].value as number
+      }
+    }
+  } else {
+    geoId = params.id
+  }
+
+  if(geoId > -1) {
+    const style = new GeoStyle()
+    style.setLineWidth(1)
+    if(params.secondLine) {
+      style.setLineColor(0, 255, 245)
+    } else {
+      style.setLineColor(226, 255, 0)
+    }
+
+    return await SMap.addGeometryToTrackingLayerByIDs({...datasetInfo}, [geoId], JSON.stringify(style))
+  }
+
+  return false
+}

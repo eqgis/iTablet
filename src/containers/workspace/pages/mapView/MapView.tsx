@@ -25,9 +25,10 @@ import {
   SPlot,
   SNavigation,
   SIndoorNavigation,
+  GeoStyle,
 } from 'imobile_for_reactnative'
 import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import PropTypes from 'prop-types'
 import {
   FunctionToolbar,
@@ -89,6 +90,7 @@ import {
   AppToolBar,
   AppEvent,
   AppUser,
+  AppLog,
 } from '../../../../utils'
 import { color, zIndexLevel } from '../../../../styles'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
@@ -146,6 +148,7 @@ import { CommonActions } from '@react-navigation/native'
 import { Module } from '@/class'
 import PositionStateView from '../../components/PositionStateView'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
+import { addOutdoorStartEndGuideLine } from '../../components/NavigationView/NavigationView'
 
 global.markerTag = 118082
 
@@ -1124,10 +1127,24 @@ export default class MapView extends React.Component {
           this._changeRouteCancel()
           return
         }
+
+        const style = new GeoStyle()
+        style.setLineWidth(1)
+        style.setLineColor(0,  145, 239)
+        style.setLineStyle(9)
+        const mapPrj = await SMap.getPrjCoordSys()
+
         for (let item of guideLines) {
-          await SNavigationInner.addLineOnTrackingLayer(
+
+          const points = await SData.CoordSysTranslatorGPS(mapPrj, [
             { x: item.startX, y: item.startY },
             { x: item.endX, y: item.endY },
+          ])
+
+          await SMap.addGeometryToTrackingLayer(
+            {type: GeometryType.GEOLINE, points:points},
+            '',
+            style,
           )
         }
         await SIndoorNavigation.startGuide(1)
@@ -1150,13 +1167,34 @@ export default class MapView extends React.Component {
         })
         const result = await SNavigation.routeAnalyst()
         if(result) {
-          //todo 添加分析起终点到参数起终点之间的虚线
+          //添加分析起终点到参数起终点之间的虚线
+          const mapPrj = await SMap.getPrjCoordSys()
+          const start = result.route[0]
+          const end = result.route[result.route.length - 1]
+          await addOutdoorStartEndGuideLine(
+            {x: global.STARTX, y: global.STARTY},
+            {...start},
+            {x: global.ENDX, y: global.ENDY},
+            {...end},
+            mapPrj
+          )
         }
         if (result) {
+          const style = new GeoStyle()
+          style.setLineWidth(1)
+          style.setLineColor(0,  145, 239)
+          style.setLineStyle(9)
+          const mapPrj = await SMap.getPrjCoordSys()
+
           for (let item of guideLines) {
-            await SNavigationInner.addLineOnTrackingLayer(
+            const points = await SData.CoordSysTranslatorGPS(mapPrj, [
               { x: item.startX, y: item.startY },
               { x: item.endX, y: item.endY },
+            ])
+            await SMap.addGeometryToTrackingLayer(
+              {type: GeometryType.GEOLINE, points:points},
+              '',
+              style,
             )
           }
           await SNavigation.startGuide(1)
@@ -1172,6 +1210,7 @@ export default class MapView extends React.Component {
         }
       }
     } catch (e) {
+      AppLog.error(e)
       Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
       this.changeNavPathInfo({ path: '', pathLength: '' })
       this.setLoading(false)
@@ -4268,7 +4307,15 @@ export default class MapView extends React.Component {
       global.ENDY,
     )
     if (result && result[0] && result[0].pathInfos) {
-      await SNavigationInner.drawOnlinePath(result[0].pathPoints)
+      const style = new GeoStyle()
+      style.setLineWidth(1)
+      style.setLineColor(0,  191, 255)
+      style.setLineStyle(15)
+      const mapPrj = await SMap.getPrjCoordSys()
+      const points = await SData.CoordSysTranslatorGPS(mapPrj, result[0].pathPoints)
+
+      await SMap.addGeometryToTrackingLayer({type: GeometryType.GEOLINE, points:points},'线路',style,)
+      console.log('r2')
     } else {
       this.setLoading(false)
       Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)

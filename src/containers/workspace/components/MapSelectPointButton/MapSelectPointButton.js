@@ -1,14 +1,16 @@
 import * as React from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
-import { AppUser, FetchUtils, scaleSize, setSpText, Toast } from '../../../../utils'
+import { AppLog, AppUser, FetchUtils, scaleSize, setSpText, Toast } from '../../../../utils'
 import color from '../../../../styles/color'
-import { FileTools, SData, SIndoorNavigation, SMap, SNavigation } from 'imobile_for_reactnative'
+import { FileTools, GeoStyle, SData, SIndoorNavigation, SMap, SNavigation } from 'imobile_for_reactnative'
 import NavigationService from '../../../../containers/NavigationService'
 import { getLanguage } from '../../../../language'
 import { TouchType } from '../../../../constants'
 import { zIndexLevel } from '../../../../styles'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import style from '../PoiInfoContainer/style'
+import { addOutdoorStartEndGuideLine } from '../NavigationView/NavigationView'
 export default class MapSelectPointButton extends React.Component {
   props: {
     changeNavPathInfo: () => {},
@@ -342,10 +344,20 @@ export default class MapSelectPointButton extends React.Component {
                   turnType: step.dirToSwerve
                 }
               })
-              await SNavigationInner.addLineOnTrackingLayer(doorPoint, {
-                x: global.ENDX,
-                y: global.ENDY,
-              })
+
+              const style = new GeoStyle()
+              style.setLineWidth(1)
+              style.setLineColor(0,  145, 239)
+              style.setLineStyle(9)
+
+              const mapPrj = await SMap.getPrjCoordSys()
+              const points = await SData.CoordSysTranslatorGPS(mapPrj, [doorPoint, { x: global.ENDX, y: global.ENDY}])
+
+              await SMap.addGeometryToTrackingLayer(
+                {type: GeometryType.GEOLINE, points: points},
+                '',
+                style,
+              )
             } catch (e) {
               this.props.setLoading(false)
               Toast.show(
@@ -423,13 +435,32 @@ export default class MapSelectPointButton extends React.Component {
                 destinationPoint: {x: doorPoint.x, y: doorPoint.y}
               })
               const r = await SNavigation.routeAnalyst()
+              const mapPrj = await SMap.getPrjCoordSys()
+
               if(r) {
-                //todo 添加分析起终点到参数起终点之间的虚线
+                //添加分析起终点到参数起终点之间的虚线
+                const start = r.route[0]
+                const end = r.route[r.route.length - 1]
+                await addOutdoorStartEndGuideLine(
+                  {x: global.STARTX, y: global.STARTY},
+                  {...start},
+                  {x: doorPoint.x, y: doorPoint.y},
+                  {...end},
+                  mapPrj
+                )
               }
-              await SNavigationInner.addLineOnTrackingLayer(doorPoint, {
-                x: global.ENDX,
-                y: global.ENDY,
-              })
+
+              const style = new GeoStyle()
+              style.setLineWidth(1)
+              style.setLineColor(0,  145, 239)
+              style.setLineStyle(9)
+              const points = await SData.CoordSysTranslatorGPS(mapPrj, [doorPoint, { x: global.ENDX, y: global.ENDY}])
+
+              await SMap.addGeometryToTrackingLayer(
+                {type: GeometryType.GEOLINE, points:points},
+                '',
+                style,
+              )
               pathLength = {length: parseInt(r.naviPath.length + '')}
               path = r.naviPath.naviStep.map(step => {
                 return {
@@ -470,8 +501,18 @@ export default class MapSelectPointButton extends React.Component {
               destinationPoint: {x: global.ENDX, y: global.ENDY}
             })
             const result = await SNavigation.routeAnalyst()
+            const mapPrj = await SMap.getPrjCoordSys()
             if(result) {
-              //todo 添加分析起终点到参数起终点之间的虚线
+              //添加分析起终点到参数起终点之间的虚线
+              const start = result.route[0]
+              const end = result.route[result.route.length - 1]
+              await addOutdoorStartEndGuideLine(
+                {x: global.STARTX, y: global.STARTY},
+                {...start},
+                {x: global.ENDX, y: global.ENDY},
+                {...end},
+                mapPrj
+              )
             }
             if (result) {
               pathLength = {length: parseInt(result.naviPath.length + '')}
@@ -488,6 +529,7 @@ export default class MapSelectPointButton extends React.Component {
               global.NavDialog && global.NavDialog.setDialogVisible(true)
             }
           } catch (e) {
+            AppLog.error(e)
             this.props.setLoading(false)
             Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
             return

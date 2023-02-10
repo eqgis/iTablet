@@ -7,20 +7,20 @@ import {
   FlatList,
   Platform,
 } from 'react-native'
-import { AppUser, FetchUtils, scaleSize, setSpText, Toast } from '../../../../utils'
+import { AppLog, AppUser, FetchUtils, scaleSize, setSpText, Toast } from '../../../../utils'
 import NavigationService from '../../../../containers/NavigationService'
 import { TouchType } from '../../../../constants'
 import styles from './styles'
 import { color } from '../../../../styles'
 import PropTypes from 'prop-types'
-import { FileTools, SData, SIndoorNavigation, SMap, SNavigation } from 'imobile_for_reactnative'
+import { FileTools, GeoStyle, SData, SIndoorNavigation, SMap, SNavigation } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import Loading from '../../../../components/Container/Loading'
 import { Dialog, Container } from '../../../../components'
 import { getPublicAssets } from '../../../../assets'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 
 const TOOLBARHEIGHT = Platform.OS === 'ios' ? scaleSize(20) : 0
 
@@ -458,11 +458,19 @@ export default class NavigationView extends React.Component {
                   turnType: step.dirToSwerve
                 }
               })
-              //添加引导线到跟踪层 室内导航终点到室外导航终点
-              await SNavigationInner.addLineOnTrackingLayer(doorPoint, {
-                x: global.ENDX,
-                y: global.ENDY,
-              })
+
+              const style = new GeoStyle()
+              style.setLineWidth(1)
+              style.setLineColor(0,  145, 239)
+              style.setLineStyle(9)
+              const mapPrj = await SMap.getPrjCoordSys()
+              const points = await SData.CoordSysTranslatorGPS(mapPrj, [doorPoint, { x: global.ENDX, y: global.ENDY}])
+
+              await SMap.addGeometryToTrackingLayer(
+                {type: GeometryType.GEOLINE, points:points},
+                '',
+                style,
+              )
             } catch (e) {
               this.loading.setLoading(false)
               Toast.show(
@@ -539,8 +547,19 @@ export default class NavigationView extends React.Component {
                 destinationPoint: {x: doorPoint.x, y: doorPoint.y}
               })
               const result = await SNavigation.routeAnalyst()
+              const mapPrj = await SMap.getPrjCoordSys()
+
               if(result) {
-                //todo 添加分析起终点到参数起终点之间的虚线
+                //添加分析起终点到参数起终点之间的虚线
+                const start = result.route[0]
+                const end = result.route[result.route.length - 1]
+                await addOutdoorStartEndGuideLine(
+                  {x: global.STARTX, y: global.STARTY},
+                  {...start},
+                  {x: doorPoint.x, y: doorPoint.y},
+                  {...end},
+                  mapPrj
+                )
               }
               if (!result) {
                 Toast.show(
@@ -557,10 +576,18 @@ export default class NavigationView extends React.Component {
                 }
               })
               //添加引导线到跟踪层 临界点到导航终点
-              await SNavigationInner.addLineOnTrackingLayer(doorPoint, {
-                x: global.ENDX,
-                y: global.ENDY,
-              })
+
+              const style = new GeoStyle()
+              style.setLineWidth(1)
+              style.setLineColor(0,  145, 239)
+              style.setLineStyle(9)
+              const points = await SData.CoordSysTranslatorGPS(mapPrj, [doorPoint, { x: global.ENDX, y: global.ENDY}])
+
+              await SMap.addGeometryToTrackingLayer(
+                {type: GeometryType.GEOLINE, points:[points[0], points[1]]},
+                '',
+                style,
+              )
             } catch (e) {
               this.loading.setLoading(false)
               Toast.show(
@@ -595,8 +622,19 @@ export default class NavigationView extends React.Component {
               destinationPoint: {x: global.ENDX, y: global.ENDY}
             })
             const result = await SNavigation.routeAnalyst()
+            const mapPrj = await SMap.getPrjCoordSys()
+
             if(result) {
-              //todo 添加分析起终点到参数起终点之间的虚线
+              //添加分析起终点到参数起终点之间的虚线
+              const start = result.route[0]
+              const end = result.route[result.route.length - 1]
+              await addOutdoorStartEndGuideLine(
+                {x: global.STARTX, y: global.STARTY},
+                {...start},
+                {x: global.ENDX, y: global.ENDY},
+                {...end},
+                mapPrj
+              )
             }
             if (result) {
               //室外路径分析成功 获取路径长度 路径信息
@@ -618,6 +656,7 @@ export default class NavigationView extends React.Component {
               return
             }
           } catch (e) {
+            AppLog.error(e)
             this.loading.setLoading(false)
             Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
             return
@@ -677,6 +716,8 @@ export default class NavigationView extends React.Component {
     }
   }
 
+
+
   getDoorPoint = async param => {
     const datasets = await SData.getDatasetsByDatasource({alias: param.datasourceName})
     const hasTable = datasets.filter(dataset => dataset.datasetName === 'connectionInfoTable').length === 1
@@ -735,7 +776,15 @@ export default class NavigationView extends React.Component {
       pathLength = { length: result[0].pathLength }
       path = result[0].pathInfos
       //绘制路径到跟踪层 移动到起点
-      await SNavigationInner.drawOnlinePath(result[0].pathPoints)
+      const style = new GeoStyle()
+      style.setLineWidth(1)
+      style.setLineColor(0,  191, 255)
+      style.setLineStyle(15)
+      const mapPrj = await SMap.getPrjCoordSys()
+      const points = await SData.CoordSysTranslatorGPS(mapPrj, result[0].pathPoints)
+
+      await SMap.addGeometryToTrackingLayer({type: GeometryType.GEOLINE, points:points},'线路',style,)
+      console.log('r1')
       await SMap.moveToPoint({ x: global.STARTX, y: global.STARTY })
     } else {
       Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
@@ -1085,4 +1134,48 @@ export default class NavigationView extends React.Component {
       </View>
     )
   }
+}
+
+
+export async function addOutdoorStartEndGuideLine (line1Start, line1End, line2Start, line2End, mapPrj){
+
+  const points = await SData.CoordSysTranslatorGPS(mapPrj, [
+    {...line1Start},
+    {...line1End},
+    {...line2Start},
+    {...line2End},
+  ])
+
+  const startLine = {
+    type: GeometryType.GEOLINE,
+    points: [
+      {...points[0]},
+      {...points[1]},
+    ]
+  }
+
+  const endLine = {
+    type: GeometryType.GEOLINE,
+    points: [
+      {...points[2]},
+      {...points[3]},
+    ]
+  }
+
+  const style = new GeoStyle()
+  style.setLineWidth(2)
+  style.setLineColor(82, 198, 233)
+  style.setLineStyle(2)
+
+  await SMap.addGeometryToTrackingLayer(
+    startLine,
+    'startLine',
+    style,
+  )
+
+  await SMap.addGeometryToTrackingLayer(
+    endLine,
+    'endLine',
+    style,
+  )
 }

@@ -19,6 +19,7 @@ import TopoEditData from './TopoEditData'
 import { getLanguage } from '../../../../../../language'
 import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
+import { drawSelectedLineOnTrackingLayer } from '@/containers/GestureDetectorListener'
 
 async function geometrySelected(event) {
   const _params = ToolbarModule.getParams()
@@ -129,7 +130,7 @@ async function geometrySelected(event) {
         ...global.INCREMENT_DATA,
         secondLine,
       }
-      SNavigationInner.drawSelectedLineOnTrackingLayer(params)
+      drawSelectedLineOnTrackingLayer(params)
     }
   }
 }
@@ -243,7 +244,7 @@ async function switchType(item) {
         ...global.INCREMENT_DATA,
         secondLine: false,
       }
-      SNavigationInner.drawSelectedLineOnTrackingLayer(params)
+      drawSelectedLineOnTrackingLayer(params)
       type = ConstToolType.SM_MAP_TOPO_SPLIT_LINE
       await SMap.setAction(Action.SELECT)
       title= getLanguage(global.language).Prompt.SELECT_LINE_WITH_INTERRUPT
@@ -254,7 +255,7 @@ async function switchType(item) {
         ...global.INCREMENT_DATA,
         secondLine: false,
       }
-      SNavigationInner.drawSelectedLineOnTrackingLayer(params)
+      drawSelectedLineOnTrackingLayer(params)
       type = ConstToolType.SM_MAP_TOPO_SPLIT
       touchType = TouchType.MAP_TOPO_SPLIT_BY_POINT
       await SMap.setAction(Action.PAN)
@@ -268,7 +269,7 @@ async function switchType(item) {
         ...global.INCREMENT_DATA,
         secondLine: false,
       }
-      SNavigationInner.drawSelectedLineOnTrackingLayer(params)
+      drawSelectedLineOnTrackingLayer(params)
       type = ConstToolType.SM_MAP_TOPO_EXTEND_LINE
       await SMap.setAction(Action.PAN)
       setTimeout(() => {
@@ -282,7 +283,7 @@ async function switchType(item) {
         ...global.INCREMENT_DATA,
         secondLine: false,
       }
-      SNavigationInner.drawSelectedLineOnTrackingLayer(params)
+      drawSelectedLineOnTrackingLayer(params)
       type = ConstToolType.SM_MAP_TOPO_TRIM_LINE
       await SMap.setAction(Action.PAN)
       setTimeout(() => {

@@ -766,7 +766,6 @@ export default class MT_layerManager extends React.Component {
         if (value !== '') {
           (async () => {
             await SMap.setLabelColor()
-            debugger
             await SMap._newTaggingDataset(
               `${value}_${this.props.user.currentUser.userName}`,
               this.props.user.currentUser.userName,

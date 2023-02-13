@@ -5,6 +5,7 @@ import {
   SAIDetectView,
   SNavigation,
   SData,
+  SIndoorNavigation,
 } from 'imobile_for_reactnative'
 import { Action, FixColorMode, TFixColorMode, } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import {
@@ -80,7 +81,7 @@ function viewEntire() {
   SMap.viewEntire().then(async () => {
     const params = ToolbarModule.getParams()
     params.setToolbarVisible && params.setToolbarVisible(false)
-    const currentFloorID = await SNavigationInner.getCurrentFloorID()
+    const currentFloorID = await SIndoorNavigation.getCurrentFloorID()
     params.changeFloorID && params.changeFloorID(currentFloorID || '')
   })
 }

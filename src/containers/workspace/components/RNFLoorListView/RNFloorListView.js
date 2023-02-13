@@ -9,9 +9,8 @@ import {
 
 import { scaleSize, screen, setSpText } from '../../../../utils'
 import { color } from '../../../../styles'
-import { SMap, SNavigation } from 'imobile_for_reactnative'
+import { SData, SIndoorNavigation } from 'imobile_for_reactnative'
 import { Const } from '../../../../constants'
-import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 const DEFAULT_BOTTOM = scaleSize(135)
 const DEFAULT_BOTTOM_LOW = scaleSize(45)
@@ -89,7 +88,8 @@ export default class RNFloorListView extends React.Component {
       this.props.mapLoaded &&
       this.props.mapLoaded !== prevProps.mapLoaded
     ) {
-      let datas = await SNavigationInner.getFloorData()
+      let datas = await getFloorData()
+      console.log('dsfd', datas)
       if (datas.data && datas.data.length > 0) {
         let { data, datasource, currentFloorID } = datas
         data = data.sort(this.sortID)
@@ -188,7 +188,7 @@ export default class RNFloorListView extends React.Component {
 
   _onFloorPress = async item => {
     //change floor
-    await SNavigationInner.setCurrentFloorID(item.id)
+    await SIndoorNavigation.setCurrentFloorID(item.id)
     this.props.changeFloorID && this.props.changeFloorID(item.id)
   }
 
@@ -277,3 +277,51 @@ const styles = StyleSheet.create({
     fontSize: setSpText(16),
   },
 })
+
+
+export async function getFloorData() {
+  const datasourcesInfo = await SData.getDatasources()
+  const datasources = []
+  for(let i = 0; i < datasourcesInfo.length; i++) {
+    datasources.push(await SData.getDatasetsByDatasource({alias: datasourcesInfo[i].alias}))
+  }
+
+  let floorTable
+  datasources.map(ds => {
+    ds.map(dataset => {
+      if(dataset.datasetName === 'FloorRelationTable') {
+        floorTable = {...dataset}
+      }
+    })
+  })
+
+  if(floorTable) {
+    await SIndoorNavigation.initFloorList()
+    const fieldValues = await SData.queryWithParameter({datasourceName: floorTable.datasourceName, datasetName: floorTable.datasetName})
+
+    const data = []
+    for(let i = 0; i < fieldValues.length; i++) {
+      const FL_ID = fieldValues[i].filter(d => d.name === 'FL_ID')
+      const FL_NAME = fieldValues[i].filter(d => d.name === 'FloorName')
+
+      if(FL_ID.length > 0 && FL_NAME.length > 0) {
+        data.push({
+          name: FL_NAME[0].value,
+          id: FL_ID[0].value
+        })
+      }
+    }
+
+    const currentFloorID = await SIndoorNavigation.getCurrentFloorID()
+
+    return {
+      datasource: floorTable.datasourceName,
+      currentFloorID,
+      data
+    }
+  }
+
+  return {datasource: ''}
+
+
+}

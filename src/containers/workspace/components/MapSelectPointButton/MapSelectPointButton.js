@@ -47,7 +47,7 @@ export default class MapSelectPointButton extends React.Component {
             getLanguage(global.language).Map_Main_Menu.START_POINT
           }(${global.STARTX.toFixed(6)},${global.STARTY.toFixed(6)})`
         if (this.state.firstpage) {
-          global.STARTPOINTFLOOR = await SNavigationInner.getCurrentFloorID()
+          global.STARTPOINTFLOOR = await SIndoorNavigation.getCurrentFloorID()
           global.TouchType = TouchType.NORMAL
           NavigationService.navigate('NavigationView', {
             changeNavPathInfo: this.props.changeNavPathInfo,
@@ -74,7 +74,7 @@ export default class MapSelectPointButton extends React.Component {
             getLanguage(global.language).Map_Main_Menu.END_POINT
           }(${global.ENDX.toFixed(6)},${global.ENDY.toFixed(6)})`
         if (this.state.firstpage) {
-          global.ENDPOINTFLOOR = await SNavigationInner.getCurrentFloorID()
+          global.ENDPOINTFLOOR = await SIndoorNavigation.getCurrentFloorID()
           global.TouchType = TouchType.NORMAL
           NavigationService.navigate('NavigationView', {
             changeNavPathInfo: this.props.changeNavPathInfo,

@@ -936,7 +936,7 @@ export default class MapView extends React.Component {
 
     if (global.Type === ChunkType.MAP_NAVIGATION) {
       (async function () {
-        const currentFloorID = await SNavigationInner.getCurrentFloorID()
+        const currentFloorID = await SIndoorNavigation.getCurrentFloorID()
         this.changeFloorID(currentFloorID, () => {
           const { params } = this.props.route
           const preParams = prevProps.route.params
@@ -1199,7 +1199,7 @@ export default class MapView extends React.Component {
           }
           await SNavigation.startGuide(1)
           this.FloorListView?.setVisible(false)
-          SNavigationInner.setCurrentFloorID('')
+          SIndoorNavigation.setCurrentFloorID('')
           global.CURRENT_NAV_MODE = 'OUTDOOR'
         } else {
           Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)
@@ -2012,7 +2012,7 @@ export default class MapView extends React.Component {
         SMap.setIsMagnifierEnabled(true)
         if (global.Type === ChunkType.MAP_NAVIGATION) {
           this.props.setMapNavigation({ isShow: false, name: '' })
-          SNavigationInner.getCurrentFloorID().then(currentFloorID => {
+          SIndoorNavigation.getCurrentFloorID().then(currentFloorID => {
             this.changeFloorID(currentFloorID)
           })
           global.STARTNAME = getLanguage(
@@ -4329,7 +4329,7 @@ export default class MapView extends React.Component {
     global.NAVIGATIONSTARTHEAD.setVisible(true)
     global.MAPSELECTPOINTBUTTON.setVisible(false)
     global.MAPSELECTPOINT.setVisible(false)
-    global.STARTPOINTFLOOR = await SNavigationInner.getCurrentFloorID()
+    global.STARTPOINTFLOOR = await SIndoorNavigation.getCurrentFloorID()
 
     if (path && pathLength) {
       global.TouchType = TouchType.NORMAL

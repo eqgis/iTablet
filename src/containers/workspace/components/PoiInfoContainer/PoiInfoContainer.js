@@ -12,7 +12,7 @@ import {
   FlatList,
   Image,
 } from 'react-native'
-import { SMap, SNavigation } from 'imobile_for_reactnative'
+import { SIndoorNavigation, SMap, SNavigation } from 'imobile_for_reactnative'
 import styles from './style'
 import { scaleSize, screen } from '../../../../utils'
 import PoiData from '../../../pointAnalyst/PoiData'
@@ -314,7 +314,7 @@ export default class PoiInfoContainer extends React.Component {
       SMap._removeAllCallout()
       this.setVisible(false)
       global.PoiTopSearchBar && global.PoiTopSearchBar.setVisible(false)
-      global.STARTPOINTFLOOR = await SNavigationInner.getCurrentFloorID()
+      global.STARTPOINTFLOOR = await SIndoorNavigation.getCurrentFloorID()
       NavigationService.navigate('NavigationView', {
         changeNavPathInfo: this.props.changeNavPathInfo,
         getNavigationDatas: this.props.getNavigationDatas,

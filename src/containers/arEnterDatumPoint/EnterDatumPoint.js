@@ -21,6 +21,7 @@ import constants from '../../containers/workspace/constants'
 import NavigationService from '../../containers/NavigationService'
 import MapSelectPointLatitudeAndLongitude from '../workspace/components/MapSelectPointLatitudeAndLongitude/MapSelectPointLatitudeAndLongitude'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
+import { getFloorData } from '../workspace/components/RNFLoorListView/RNFloorListView'
 
 export default class EnterDatumPoint extends Component {
   props: {
@@ -66,7 +67,7 @@ export default class EnterDatumPoint extends Component {
   }
 
   getFloorData = async () => {
-    let result = await SNavigationInner.getFloorData()
+    let result = await getFloorData()
     this.setState({
       floorData: result.data,
     })

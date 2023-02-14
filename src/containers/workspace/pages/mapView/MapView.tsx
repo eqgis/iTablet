@@ -2008,7 +2008,7 @@ export default class MapView extends React.Component {
           },
         )
 
-        SMap.setDynamicviewsetVisible(true)
+        
         this.showMarker &&
           SMap.showMarker(
             this.showMarker.longitude,

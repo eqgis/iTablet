@@ -91,7 +91,7 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
           : ~~dataItem.distance + 'm'
       })
       if (resultList.length > 0) {
-        await SMap.addCallouts(resultList)
+        await SMap._addCallouts(resultList)
         global.PoiInfoContainer.show()
         global.PoiInfoContainer.setVisible(true, {resultList: resultList, radius: 50000, showList: true})
         global.PoiTopSearchBar.setVisible(true)
@@ -146,7 +146,7 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
                   ? (dataItem.distance / 1000).toFixed(2) + 'km'
                   : ~~dataItem.distance + 'm'
               })
-              await SMap.addCallouts(resultList)
+              await SMap._addCallouts(resultList)
               NavigationService.navigate('MapStack', {screen: 'MapView'})
               global.PoiInfoContainer.show()
               global.PoiInfoContainer.setVisible(true, {resultList: resultList, radius: 50000, showList: true})
@@ -154,7 +154,7 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
               global.PoiTopSearchBar.setState({
                 defaultValue: item.title || item.content,
               })
-              await SMap.toLocationPoint(_location)
+              await SMap._toLocationPoint(_location)
             }
             cb && cb(data)
           },

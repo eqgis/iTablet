@@ -257,7 +257,7 @@ export default class PointAnalyst extends Component {
             name: pointName,
           })
         }
-        let result = await SMap.toLocationPoint(item)
+        let result = await SMap._toLocationPoint(item)
         if (result) {
           global.PoiTopSearchBar.setVisible(true)
           global.PoiTopSearchBar.setState({ defaultValue: item.pointName })

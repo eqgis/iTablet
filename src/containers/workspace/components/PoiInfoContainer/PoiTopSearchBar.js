@@ -85,7 +85,7 @@ export default class PoiTopSearchBar extends React.Component {
           },
           async () => {
             global.PoiInfoContainer.show()
-            await SMap.addCallouts(tempResult.tempList)
+            await SMap._addCallouts(tempResult.tempList)
           },
         )
       } else {

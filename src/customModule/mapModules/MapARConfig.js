@@ -113,7 +113,7 @@ export default class MapARConfig extends Module {
           )
           return false
         }
-        SMap.setDynamicviewsetVisible(false)
+        
         const is3dSceneFirst = global.is3dSceneFirst
         SARMap.setIs3dSceneFirst(is3dSceneFirst)
         if(is3dSceneFirst) {

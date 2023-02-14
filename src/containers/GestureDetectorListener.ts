@@ -273,7 +273,10 @@ async function touchCallback(event) {
       SPlot.addAnimationWayPoint(event.screenPoint, true)
       break
     case TouchType.MAP_SELECT_POINT: {
-      const point = await SMap.pixelPointToMap(event.screenPoint)
+      const mapPt = await SMap.pixelToMap({ x: event.screenPoint.x, y: event.screenPoint.y })
+      const points = await SData.CoordSysTranslatorGPS(await SMap.getPrjCoordSys(), [mapPt])
+      const point = points[0]
+      // const point = await SMap.pixelPointToMap(event.screenPoint)
       global.MAPSELECTPOINT.updateLatitudeAndLongitude(point)
       // SMap.deleteMarker(global.markerTag)
       SMap.showMarker(point.x, point.y, global.markerTag)

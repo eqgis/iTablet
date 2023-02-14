@@ -33,7 +33,7 @@ export default class ModelChoseView extends React.Component {
 
   // eslint-disable-next-line
   componentWillMount() {
-    // SMap.setDynamicviewsetVisible(false)
+    // 
     screen.lockToPortrait()
   }
 

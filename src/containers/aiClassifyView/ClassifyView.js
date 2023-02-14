@@ -70,7 +70,7 @@ export default class ClassifyView extends React.Component {
 
   // eslint-disable-next-line
   componentWillMount() {
-    SMap.setDynamicviewsetVisible(false)
+    
     screen.lockToPortrait()
   }
 
@@ -97,7 +97,7 @@ export default class ClassifyView extends React.Component {
   }
 
   componentWillUnmount() {
-    SMap.setDynamicviewsetVisible(false)
+    
     //移除监听
     // DeviceEventEmitter.removeListener('recognizeImage', this.recognizeImage)
 

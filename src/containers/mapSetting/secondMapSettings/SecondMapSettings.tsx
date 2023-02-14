@@ -264,7 +264,7 @@ export default class SecondMapSettings extends Component {
       4: getLanguage(global.language).Map_Settings.ANTI_BLACK_AND_WHITE_2,
     }
     data[5].value = allColorMode[colorMode]
-    bgColor = await SMap.getMapBackgroundColor()
+    bgColor = await SMap._getMapBackgroundColor()
     data[6].value = bgColor.toUpperCase()
     data[7].value = await SMap.isAntialias()
     data[8].value = await SMap.getMarkerFixedAngle()

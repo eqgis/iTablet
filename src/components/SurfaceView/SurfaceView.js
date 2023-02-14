@@ -154,14 +154,14 @@ export default class SurfaceView extends Component {
     }
     if (newState.isShow) {
       if (this.props.orientation.indexOf('LANDSCAPE') === 0) {
-        SMap.setDynamicviewsetVisible(true)
+        
         screen.lockToLandscape()
       } else {
-        SMap.setDynamicviewsetVisible(true)
+        
         screen.lockToPortrait()
       }
     } else {
-      SMap.setDynamicviewsetVisible(false)
+      
       screen.unlockAllOrientations()
     }
     this.setState(newState)

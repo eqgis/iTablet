@@ -278,7 +278,7 @@ export default class CoworkInfo {
           result = res.result
           result && SMap.refreshMap()
         } else if (message.message.themeType > 0 && message.message.theme) {
-          result = await SMap.updateLayerThemeFromXML(
+          result = await SMap.setLayerThemeFromXML(
             message.message.layerPath,
             message.message.theme,
           )

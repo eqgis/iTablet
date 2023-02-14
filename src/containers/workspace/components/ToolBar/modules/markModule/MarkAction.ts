@@ -187,8 +187,8 @@ async function commit(type) {
   try {
     const _params = ToolbarModule.getParams()
     if (type === ConstToolType.SM_MAP_MARKS_DRAW) {
-      const have = await SMap.haveCurrentGeometry()
-      if(have){
+      const have = await SMap.getCurrentEditGeometry()
+      if(have!==-1){
         // 是否有新的采集或标注
         global.HAVEATTRIBUTE = true
       }
@@ -297,8 +297,8 @@ async function commit(type) {
 }
 
 async function showAttribute() {
-  const have = await SMap.haveCurrentGeometry()
-  if(have){
+  const have = await SMap.getCurrentEditGeometry()
+  if(have!==-1){
     Toast.show(getLanguage(global.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
   }else{
     if(global.HAVEATTRIBUTE){
@@ -309,8 +309,8 @@ async function showAttribute() {
 }
 
 async function showAttribute1() {
-  const have = await SMap.haveCurrentGeometry()
-  if(have){
+  const have = await SMap.getCurrentEditGeometry()
+  if(have!==-1){
     Toast.show(getLanguage(global.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
   }else{
     if(global.HAVEATTRIBUTE){

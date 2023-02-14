@@ -269,7 +269,7 @@ export default class PoiInfoContainer extends React.Component {
           this.setState(newState,
             async () => {
               this.show()
-              await SMap.addCallouts(data.resultList)
+              await SMap._addCallouts(data.resultList)
               cb && cb(data)
               global.Loading.setLoading(false)
             },
@@ -355,7 +355,7 @@ export default class PoiInfoContainer extends React.Component {
           },
           async () => {
             await this.clear()
-            await SMap.toLocationPoint(item)
+            await SMap._toLocationPoint(item)
           },
         )
       })

@@ -32,7 +32,7 @@ async function tour() {
         if (value !== '') {
           await SMap.setMapControlStyle({
             nodeColor: { r: 57, g: 153, b: 255, a: 1 },
-            nodeSize: 2,
+            nodeSize: 1,
             strokeColor: { r: 57, g: 153, b: 255, a: 1 },
             strokeWidth: 1,
           })

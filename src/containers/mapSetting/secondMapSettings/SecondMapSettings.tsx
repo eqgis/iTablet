@@ -456,7 +456,7 @@ export default class SecondMapSettings extends Component {
       let toastTip
       !title && (title = this.state.title)
       switch (title) {
-        case getLanguage(global.language).Map_Settings.FROM_DATASOURCE:
+        case getLanguage(global.language).Map_Settings.FROM_DATASOURCE:{
           prjCoordSysName = await SMap.copyPrjCoordSysFromDatasource(
             item.server,
             item.engineType,
@@ -465,6 +465,7 @@ export default class SecondMapSettings extends Component {
             ? getLanguage(global.language).Prompt.COPY_COORD_SYSTEM_SUCCESS
             : getLanguage(global.language).Prompt.COPY_COORD_SYSTEM_FAIL
           break
+        }
         case getLanguage(global.language).Map_Settings.FROM_DATASET:
           prjCoordSysName = await SMap.copyPrjCoordSysFromDataset(
             item.parentTitle,

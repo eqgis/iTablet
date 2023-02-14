@@ -1908,7 +1908,13 @@ export default class MapView extends React.Component {
         })
         global.TouchType = TouchType.NORMAL
 
-        await SMap.setLabelColor()
+        await SMap.setMapControlStyle({
+          nodeColor: { r: 57, g: 153, b: 255, a: 1 },
+          nodeSize: 2,
+          strokeColor: { r: 57, g: 153, b: 255, a: 1 },
+          strokeWidth: 1,
+        })
+        // await SMap._setLabelColor()
         // 示例地图不加载标注图层
         if (!this.isExample && !global.coworkMode) {
           await SMap._openTaggingDataset(this.props.user.currentUser.userName)
@@ -3803,7 +3809,13 @@ export default class MapView extends React.Component {
           type = ConstToolType.SM_MAP_TOOL_GPSINCREMENT
         } else {
           type = ConstToolType.SM_MAP_TOOL_INCREMENT
-          await SMap.setLabelColor()
+          await SMap.setMapControlStyle({
+            nodeColor: { r: 57, g: 153, b: 255, a: 1 },
+            nodeSize: 2,
+            strokeColor: { r: 57, g: 153, b: 255, a: 1 },
+            strokeWidth: 1,
+          })
+          // await SMap._setLabelColor()
           await SMap.setAction(Action.DRAWLINE)
           await SMap.setIsMagnifierEnabled(true)
         }

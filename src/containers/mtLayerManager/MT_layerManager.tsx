@@ -765,7 +765,13 @@ export default class MT_layerManager extends React.Component {
       cb: value => {
         if (value !== '') {
           (async () => {
-            await SMap.setLabelColor()
+            await SMap.setMapControlStyle({
+              nodeColor: { r: 57, g: 153, b: 255, a: 1 },
+              nodeSize: 2,
+              strokeColor: { r: 57, g: 153, b: 255, a: 1 },
+              strokeWidth: 1,
+            })
+            // await SMap._setLabelColor()
             await SMap._newTaggingDataset(
               `${value}_${this.props.user.currentUser.userName}`,
               this.props.user.currentUser.userName,

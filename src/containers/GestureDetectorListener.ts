@@ -9,13 +9,14 @@ import {
 } from 'imobile_for_reactnative'
 import NavigationService from './NavigationService'
 import { getLanguage } from '../language'
-import { TouchType ,ChunkType} from '../constants'
+import { TouchType, ChunkType } from '../constants'
 import ToolbarModule from './workspace/components/ToolBar/modules/ToolbarModule'
-import { DatasetInfo, GeometryType, GeoRegion, Point2D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetInfo, GeometryType, GeoRegion, GeoText, Point2D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { point } from './workspace/components/ToolBar/modules/styleModule/data'
 
 let isDoubleTouchCome = false
 function setGestureDetectorListener(params) {
-  (async function() {
+  (async function () {
     SMap.setGestureDetector({
       singleTapHandler: touchCallback,
       longPressHandler: longtouchCallback,
@@ -43,10 +44,10 @@ async function doubleTouchCallback(event) {
 async function magntouchCallback(event) {
   switch (global.TouchType) {
     case TouchType.NORMAL:
-      if (global.Type === ChunkType.MAP_NAVIGATION){
+      if (global.Type === ChunkType.MAP_NAVIGATION) {
         (async function () {
           await SMap.removeCallout('startPoint')
-          await SMap.addCallout('startPoint', event.mapPoint, {type: 'image', resource: 'start_point'})
+          await SMap.addCallout('startPoint', event.mapPoint, { type: 'image', resource: 'start_point' })
           global.STARTX = event.LLPoint.x
           global.STARTY = event.LLPoint.y
           //显示选点界面的顶部 底部组件
@@ -68,7 +69,7 @@ async function magntouchCallback(event) {
     case TouchType.NAVIGATION_TOUCH_END:
       (async function () {
         await SMap.removeCallout('endPoint')
-        await SMap.addCallout('endPoint', event.mapPoint, {type: 'image', resource: 'destination_point'})
+        await SMap.addCallout('endPoint', event.mapPoint, { type: 'image', resource: 'destination_point' })
         global.ENDX = event.LLPoint.x
         global.ENDY = event.LLPoint.y
       })()
@@ -81,20 +82,20 @@ async function magntouchCallback(event) {
       break
     }
     case TouchType.MAP_TOPO_TRIM_LINE:
-    // case TouchType.MAP_TOPO_EXTEND_LINE:
-    {
-      // const data = ToolbarModule.getData()
-      const point = event.screenPoint
-      ToolbarModule.addData({ point })
-      const params = {
-        point,
-        ...global.INCREMENT_DATA,
-        secondLine: true,
+      // case TouchType.MAP_TOPO_EXTEND_LINE:
+      {
+        // const data = ToolbarModule.getData()
+        const point = event.screenPoint
+        ToolbarModule.addData({ point })
+        const params = {
+          point,
+          ...global.INCREMENT_DATA,
+          secondLine: true,
+        }
+        drawSelectedLineOnTrackingLayer(params)
+        global.bubblePane && global.bubblePane.clear()
+        break
       }
-      drawSelectedLineOnTrackingLayer(params)
-      global.bubblePane && global.bubblePane.clear()
-      break
-    }
   }
 }
 
@@ -193,13 +194,27 @@ async function touchCallback(event) {
           if (value !== '') {
             const datasourceName = global.currentLayer.datasourceAlias
             const { datasetName } = global.currentLayer
-            await SMap.addTextRecordset(
-              datasourceName,
-              datasetName,
-              value,
-              event.screenPoint.x,
-              event.screenPoint.y,
-            )
+
+            const mapPt = await SMap.pixelToMap({ x: event.screenPoint.x, y: event.screenPoint.y })
+            const mapPrj = await SMap.getPrjCoordSys()
+            const datasetPrj = await SData.getDatasetPrjCoordSys({ datasourceName, datasetName })
+            let datasetPt = mapPt
+            if (mapPrj !== datasetPrj) {
+              const points = await SData.CoordSysTranslator(mapPrj, datasetPrj, [mapPt])
+              datasetPt = points[0]
+            }
+            const geo: GeoText = { x: datasetPt.x, y: datasetPt.y, text: value, type: GeometryType.GEOTEXT }
+            if(await SData.addRecordsetValue({ datasourceName, datasetName }, [], geo) === true){
+              SMap.refreshMap()
+            }
+
+            // await SMap.addTextRecordset(
+            //   datasourceName,
+            //   datasetName,
+            //   value,
+            //   event.screenPoint.x,
+            //   event.screenPoint.y,
+            // )
             global.HAVEATTRIBUTE = true
             NavigationService.goBack()
             //global.TouchType = TouchType.NORMAL
@@ -317,22 +332,22 @@ export async function drawSelectedLineOnTrackingLayer(params: {
   }
 
   let geoId = -1
-  if("point" in params) {
+  if ("point" in params) {
     const srcRegion: Point2D[] = [
-      {x: params.point.x + 25, y: params.point.y + 25},
-      {x: params.point.x + 25, y: params.point.y - 25},
-      {x: params.point.x - 25, y: params.point.y - 25},
-      {x: params.point.x - 25, y: params.point.y + 25},
+      { x: params.point.x + 25, y: params.point.y + 25 },
+      { x: params.point.x + 25, y: params.point.y - 25 },
+      { x: params.point.x - 25, y: params.point.y - 25 },
+      { x: params.point.x - 25, y: params.point.y + 25 },
     ]
 
     const mapRegion: Point2D[] = []
-    for(let i = 0; i < srcRegion.length; i++) {
+    for (let i = 0; i < srcRegion.length; i++) {
       const mapPoint = await SMap.pixelToMap(srcRegion[i])
       mapRegion.push(mapPoint)
     }
 
     const mapPrj = await SMap.getPrjCoordSys()
-    const datasetPrj = await SData.getDatasetPrjCoordSys({...datasetInfo})
+    const datasetPrj = await SData.getDatasetPrjCoordSys({ ...datasetInfo })
     const dataRegion = await SData.CoordSysTranslator(mapPrj, datasetPrj, mapRegion)
 
     const geoRegion: GeoRegion = {
@@ -340,13 +355,13 @@ export async function drawSelectedLineOnTrackingLayer(params: {
       points: dataRegion
     }
     const values = await SData.queryWithParameter(
-      {...datasetInfo},
-      {spatialQueryMode: 2, spatialQueryObject: geoRegion, hasGeometry: true}
+      { ...datasetInfo },
+      { spatialQueryMode: 2, spatialQueryObject: geoRegion, hasGeometry: true }
     )
 
-    if(values.length > 0) {
+    if (values.length > 0) {
       const field = values[0].filter(record => record.name === 'SmID')
-      if(field.length > 0) {
+      if (field.length > 0) {
         geoId = field[0].value as number
       }
     }
@@ -354,16 +369,16 @@ export async function drawSelectedLineOnTrackingLayer(params: {
     geoId = params.id
   }
 
-  if(geoId > -1) {
+  if (geoId > -1) {
     const style = new GeoStyle()
     style.setLineWidth(1)
-    if(params.secondLine) {
+    if (params.secondLine) {
       style.setLineColor(0, 255, 245)
     } else {
       style.setLineColor(226, 255, 0)
     }
 
-    return await SMap.addGeometryToTrackingLayerByIDs({...datasetInfo}, [geoId], JSON.stringify(style))
+    return await SMap.addGeometryToTrackingLayerByIDs({ ...datasetInfo }, [geoId], JSON.stringify(style))
   }
 
   return false

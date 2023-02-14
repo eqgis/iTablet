@@ -501,8 +501,13 @@ function tour() {
     ) => {
       try {
         if (value !== '') {
-          await SMap.setLabelColor()
-          debugger
+          await SMap.setMapControlStyle({
+            nodeColor: { r: 57, g: 153, b: 255, a: 1 },
+            nodeSize: 2,
+            strokeColor: { r: 57, g: 153, b: 255, a: 1 },
+            strokeWidth: 1,
+          })
+          // await SMap._setLabelColor()
           const tagginData = await SMap._newTaggingDataset(
             value,
             _params.user.currentUser.userName,

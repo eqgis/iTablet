@@ -2,6 +2,7 @@
  * MapView辅助工具类
  */
 import { SMap, GeoStyle } from 'imobile_for_reactnative'
+import { MapConstrolStyle } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { Platform } from 'react-native'
 
 /**
@@ -35,41 +36,19 @@ async function setSingleSelectionStyle(layerPath = '') {
 }
 
 async function setDefaultMapControlStyle() {
-  const nodeStyle = new GeoStyle()
-  nodeStyle.setFillForeColor(0, 0, 0, 1)
-  nodeStyle.setLineWidth(1)
-  nodeStyle.setLineColor(0, 0, 0)
-  nodeStyle.setMarkerHeight(1)
-  nodeStyle.setMarkerWidth(1)
-  nodeStyle.setMarkerSize(5)
-  // nodeStyle.setMarkerColor(0, 0, 0)
-
-  let style = {
-    nodeStyle: JSON.stringify(nodeStyle),
-    nodeColor: [0, 0, 0, 1],
-    nodeSize: 0.5,
-    strokeColor: [84, 160, 240, 0],
-    // strokeColor: [240, 160, 84, 0],
-    // strokeColor: colorRgb2Hex(255, 0, 0, 1),
-    strokeFillColor: [200, 200, 200, 127 / 255],
+  // const nodeStyle = new GeoStyle()
+  // nodeStyle.setLineColor(0, 0, 0, 1)
+  // nodeStyle.setMarkerSize(4)
+  // nodeStyle.setMarkerStyle(34)
+  const style:MapConstrolStyle = {
+    // nodeStyle: JSON.stringify(nodeStyle),
+    nodeColor: {r:220, g:0, b:0, a:1},
+    nodeSize: 1,
+    strokeColor: {r:0, g:0, b:180, a:1},
+    strokeFillColor: {r:255, g:200, b:200, a:127 / 255.0},
     strokeWidth: 1,
-    objectColor: [0, 255, 255, 255],
-    objectWidth: 1,
   }
-  if (Platform.OS === 'android'){
-    style = {
-      nodeStyle: JSON.stringify(nodeStyle),
-      nodeColor: [0, 0, 0, 1],
-      nodeSize: 0.5,
-      // strokeColor: [84, 160, 240, 0],
-      strokeColor: [240, 160, 84, 0],
-      // strokeColor: colorRgb2Hex(255, 0, 0, 1),
-      strokeFillColor: [200, 200, 200, 127 / 255],
-      strokeWidth: 1,
-      objectColor: [0, 255, 255, 255],
-      objectWidth: 1,
-    }
-  }
+
 
   return SMap.setMapControlStyle(style)
 }

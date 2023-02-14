@@ -114,6 +114,7 @@ function getHeaderView(type: string | number) {
               // backgroundColor: '#f00',
             }]}
             onPress={async () => {
+              AppEvent.emitEvent("langchaoLocation", "")
               await SMap.clearTrackingLayer()
               NavigationService.navigate('HistoricalRecord')
               global.ToolBar?.close()

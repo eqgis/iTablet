@@ -387,6 +387,7 @@ export default class MapView extends React.Component {
       showPoiSearch: false,
       showNavigation: false,
       isFull: true,
+      langchaoLocationText: '',
     }
     // this.props.setDatumPoint(global.Type === ChunkType.MAP_AR ? true : false)
     this.props.setDatumPoint(false)
@@ -699,6 +700,13 @@ export default class MapView extends React.Component {
 
       }.bind(this)())
     }
+
+    /** 浪潮呼叫详情里 地理位置信息的监听 */
+    AppEvent.addListener("langchaoLocation", (text: string) => {
+      this.setState({
+        langchaoLocationText: text,
+      })
+    })
   }
 
   /**添加按钮 */
@@ -5251,6 +5259,36 @@ export default class MapView extends React.Component {
     }
   }
 
+
+
+  renderLocationInfo = () => {
+    return (
+      <View
+        style={[{
+          maxWidth: scaleSize(500),
+          position: 'absolute',
+          bottom: scaleSize(430),
+          left: 0,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }]}
+      >
+        <Text
+          style={[{
+            fontSize: scaleSize(16),
+            color: '#fff',
+            lineHeight: scaleSize(20),
+            backgroundColor: 'rgba(0,0,0, .5)',
+            padding: scaleSize(5),
+            minWidth: scaleSize(100),
+            borderTopRightRadius: scaleSize(30),
+            borderBottomRightRadius: scaleSize(30),
+          }]}
+        >{this.state.langchaoLocationText}</Text>
+      </View>
+    )
+  }
+
   renderContainer = () => {
     const width = this.px(screen.getScreenWidth())
     return (
@@ -5512,6 +5550,7 @@ export default class MapView extends React.Component {
           extraModule={this.toolbarModuleData}
         />
         {this.renderExitDialog()}
+        { this.state.langchaoLocationText !== "" && this.renderLocationInfo()}
       </Container>
     )
   }

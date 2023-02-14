@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { SectionList, View, Text, TouchableOpacity, Image, StyleSheet, TextInput, FlatList } from "react-native"
+import { SectionList, View, Text, TouchableOpacity, Image, StyleSheet, TextInput, FlatList, DeviceEventEmitter } from "react-native"
 import { connect, ConnectedProps } from "react-redux"
 import { Container, Dialog } from '../../../../src/components'
 import { dp } from "imobile_for_reactnative/utils/size"
@@ -8,7 +8,7 @@ import { setCurrentSymbol } from "@/redux/models/symbol"
 import { getPublicAssets } from "@/assets"
 import { setServerIP, setServerUserId, setServerUserName, setServerDepartmentId } from '../reduxModels/langchao'
 import { dateFormat, getToken, setSysOrgid, setUserId, setUserName, users } from "../utils/langchaoServer"
-import { LayerUtils, StyleUtils, Toast } from "@/utils"
+import { AppEvent, LayerUtils, StyleUtils, Toast } from "@/utils"
 import { color } from "@/styles"
 import MapToolbar from "@/containers/workspace/components/MapToolbar"
 import ToolbarModule from "../../../../src/containers/workspace/components/ToolBar/modules/ToolbarModule"
@@ -236,6 +236,7 @@ class HistoricalRecord extends Component<Props, State> {
                   this.props.navigation.navigate('MapView', {
                     hideMapController: true,
                   })
+            AppEvent.emitEvent("langchaoLocation", data.locationInfo || "")
             this.setLoading(false)
           },
         })

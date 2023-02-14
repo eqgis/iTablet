@@ -141,21 +141,21 @@ class LangChaoLogin extends Component<Props, State> {
   }
 
   getUserData = async() => {
-    const date = new Date()
-    const timezone = 8 //目标时区时间，东八区(北京时间)   东时区正数 西市区负数
-    const offset_GMT = date.getTimezoneOffset() // 本地时间和格林威治的时间差，单位为分钟
-    const nowDate = date.getTime() // 本地时间距 1970 年 1 月 1 日午夜（GMT 时间）之间的毫秒数
-    const targetDate = new Date(nowDate + offset_GMT * 60 * 1000 + timezone * 60 * 60 * 1000)
-    // const beijingTime = targetDate.getTime()
-    // 格式化时间
-    // const formDateLocal = await dateFormat("yyyy-MM-dd HH:mm:ss", date)
-    const formDateBeijing = await dateFormat("yyyy-MM-dd HH:mm:ss", targetDate)
+    // const date = new Date()
+    // const timezone = 8 //目标时区时间，东八区(北京时间)   东时区正数 西市区负数
+    // const offset_GMT = date.getTimezoneOffset() // 本地时间和格林威治的时间差，单位为分钟
+    // const nowDate = date.getTime() // 本地时间距 1970 年 1 月 1 日午夜（GMT 时间）之间的毫秒数
+    // const targetDate = new Date(nowDate + offset_GMT * 60 * 1000 + timezone * 60 * 60 * 1000)
+    // // const beijingTime = targetDate.getTime()
+    // // 格式化时间
+    // // const formDateLocal = await dateFormat("yyyy-MM-dd HH:mm:ss", date)
+    // const formDateBeijing = await dateFormat("yyyy-MM-dd HH:mm:ss", targetDate)
 
     const params = {
       UserId: this.props.userId,
       UserName: this.props.userName,
-      BeginTime: formDateBeijing,
-      EndTime: formDateBeijing,
+      BeginTime: null,
+      EndTime: null,
       SysOrgid: this.props.departmentId,
     }
     const data = await users(params)

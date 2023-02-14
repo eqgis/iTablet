@@ -588,6 +588,7 @@ class CallDetailPage extends Component<Props, State> {
                   }: cameraReturnType) => {
                     // cb: async mediaPaths => {
                     try {
+                      console.warn("call new maedia: " + JSON.stringify(mediaPaths))
                       if (global.coworkMode) {
                         const resourceIds = [],
                           _mediaPaths = [] // 保存修改名称后的图片地址
@@ -762,7 +763,7 @@ class CallDetailPage extends Component<Props, State> {
           }]}
         >
           {/* <Text>{"我是自定义的toolbar界面" + this.props.data.SmID}</Text> */}
-          {this.renderLocationInfo()}
+          {/* {this.renderLocationInfo()} */}
           {this._renderCallInfo()}
           <View
             style={[{

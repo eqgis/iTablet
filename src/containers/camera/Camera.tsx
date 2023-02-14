@@ -829,8 +829,8 @@ const MyCamera: ForwardRefRenderFunction<IRefProps, MyCameraProps> = (props, ref
 
   const rate = _formart.photoHeight / props.device.height
 
-  _formart.photoWidth = props.device.width * rate
-  _formart.videoWidth = props.device.width * rate
+  _formart.photoWidth = 80 * rate // props.device.width * rate
+  _formart.videoWidth = 80 * rate // props.device.width * rate
 
   return (
     <RNCamera

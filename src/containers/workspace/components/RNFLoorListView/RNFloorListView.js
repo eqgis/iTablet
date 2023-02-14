@@ -89,7 +89,6 @@ export default class RNFloorListView extends React.Component {
       this.props.mapLoaded !== prevProps.mapLoaded
     ) {
       let datas = await getFloorData()
-      console.log('dsfd', datas)
       if (datas.data && datas.data.length > 0) {
         let { data, datasource, currentFloorID } = datas
         data = data.sort(this.sortID)

@@ -203,9 +203,6 @@ async function deleteAttributeByLayer(layerInfo: LayerInfo, smID: number, isColl
 //   return await SMap.deleteAttributeByData(name, smID)
 // }
 
-async function deleteNavigationAttributeByData(name: string, smID: number) {
-  return await SNavigation.deleteNavigationAttributeByData(name, smID)
-}
 
 // async function getCurrentGeometryID(path: string) {
 //   return await SMap.getCurrentGeometryID(path)
@@ -789,7 +786,6 @@ export default {
   getSelectionAttributeByData,
   // deleteAttributeByData,
   getNavigationAttributeByData,
-  deleteNavigationAttributeByData,
 
   availableServiceLayer,
 

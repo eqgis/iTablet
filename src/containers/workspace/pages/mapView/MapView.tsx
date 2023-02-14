@@ -149,6 +149,7 @@ import { Module } from '@/class'
 import PositionStateView from '../../components/PositionStateView'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 import { addOutdoorStartEndGuideLine } from '../../components/NavigationView/NavigationView'
+import IndoorGPSCollector from '../../components/ToolBar/modules/toolModule/IndoorGPSCollector'
 
 global.markerTag = 118082
 
@@ -1991,16 +1992,16 @@ export default class MapView extends React.Component {
                   const item = this.wsData[i]
                   if (item === null) continue
                   if (item.type === 'Datasource') {
-                    result = await SMap.addLayer(item.DSParams.alias, 0)
+                    result = await SMap.addLayer({datasourceAlias: item.DSParams.alias, datasetIndex: 0})
                   }
                 }
               } else if (this.wsData.type === 'Datasource') {
-                result = await SMap.addLayer(this.wsData.DSParams.alias, 0)
+                result = await SMap.addLayer({datasourceAlias: this.wsData.DSParams.alias, datasetIndex: 0})
               }
               result && this.props.getLayers()
             }
             if (layers.length === 0 && this.wsData.DSParams) {
-              SMap.addLayer(this.wsData.DSParams.alias, 0).then(result => {
+              SMap.addLayer({datasourceAlias: this.wsData.DSParams.alias, datasetIndex: 0}).then(result => {
                 result && this.props.getLayers()
               })
             }
@@ -3801,7 +3802,7 @@ export default class MapView extends React.Component {
       }
       //清空Toolbar数据
       ToolbarModule.setData({})
-      const rel = await SNavigationInner.addNetWorkDataset()
+      const rel = await IndoorGPSCollector.addNetWorkDataset()
       let type
       if (rel) {
         this.FloorListView.setVisible(false)

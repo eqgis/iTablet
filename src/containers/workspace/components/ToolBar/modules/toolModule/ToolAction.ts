@@ -26,11 +26,11 @@ import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import { TYPE } from '../../../../../camera/types'
 import LocateUtils from '../../../../../pointAnalyst/LocateUtils'
-import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
+import IndoorGPSCollector from './IndoorGPSCollector'
 
 function begin() {
   global.GPS = setInterval(() => {
-    SNavigationInner.gpsBegin()
+    IndoorGPSCollector.gpsBegin()
   }, 2000)
 }
 
@@ -42,11 +42,11 @@ function stop() {
 
 function submit() {
   (async function() {
-    if (ToolbarModule.getParams().type === ConstToolType.SM_MAP_TOOL_GPSINCREMENT) {
-      await SNavigationInner.addGPSRecordset()
-    }
     await SMap.submit()
-    await SNavigationInner.buildNetwork()
+    if (ToolbarModule.getParams().type === ConstToolType.SM_MAP_TOOL_GPSINCREMENT) {
+      await IndoorGPSCollector.addGPSRecordset()
+    }
+    await IndoorGPSCollector.buildNetwork()
   })()
 }
 
@@ -839,7 +839,7 @@ async function close(type) {
     type === ConstToolType.SM_MAP_TOOL_GPSINCREMENT
   ) {
     global.FloorListView.setVisible(true)
-    await SNavigationInner.removeNetworkDataset()
+    await IndoorGPSCollector.removeNetworkDataset()
     SMap.setAction(Action.PAN)
     _params.setToolbarVisible(false)
   } else if (type === ConstToolType.SM_MAP_TOOL_STYLE_TRANSFER) {

@@ -116,7 +116,7 @@ export default class TrafficView extends React.Component {
           }
           const scale = await SMap.getMapScale()
           const center = await SMap.getMapCenter()
-          await SMap.addLayer(ConstOnline.TrafficMap.DSParams.alias, 0)
+          await SMap.addLayer({datasourceAlias: ConstOnline.TrafficMap.DSParams.alias, datasetIndex: 0})
           await SMap.setMapScale(1 / parseFloat(scale))
           await SMap.setMapCenter(center.x, center.y)
           SMap.refreshMap()

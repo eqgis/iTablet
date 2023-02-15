@@ -812,7 +812,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
     if (!moveToCurrentResult) {
       await SMap.moveToPoint({ x: 116.21, y: 39.42 })
     }
-    await SMap.setScale(0.0000060635556556859582)
+    await SMap.setMapScale(0.0000060635556556859582)
   }
 
   overlayOnPress = () => {

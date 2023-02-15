@@ -488,6 +488,11 @@ class Camera extends React.Component<Props, State> {
     const sourcePath = this.state.data?.path.replace('file://', '')
     if (!sourcePath) return
     let result = false
+    if(this.state.type === TYPE.VIDEO && this.state.data?.duration && this.state.data?.duration > 60 ) {
+      Toast.show("时长超出一分钟")
+      this.cameraBackHandler()
+      return
+    }
     if (this.cb && typeof this.cb === 'function') {
       result = true
       this.cb({

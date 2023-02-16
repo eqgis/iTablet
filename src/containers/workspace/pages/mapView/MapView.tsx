@@ -1992,16 +1992,16 @@ export default class MapView extends React.Component {
                   const item = this.wsData[i]
                   if (item === null) continue
                   if (item.type === 'Datasource') {
-                    result = await SMap.addLayer({datasourceAlias: item.DSParams.alias, datasetIndex: 0})
+                    result = await SMap.addLayer({datasource: item.DSParams.alias, dataset: 0})
                   }
                 }
               } else if (this.wsData.type === 'Datasource') {
-                result = await SMap.addLayer({datasourceAlias: this.wsData.DSParams.alias, datasetIndex: 0})
+                result = await SMap.addLayer({datasource: this.wsData.DSParams.alias, dataset: 0})
               }
               result && this.props.getLayers()
             }
             if (layers.length === 0 && this.wsData.DSParams) {
-              SMap.addLayer({datasourceAlias: this.wsData.DSParams.alias, datasetIndex: 0}).then(result => {
+              SMap.addLayer({datasource: this.wsData.DSParams.alias, dataset: 0}).then(result => {
                 result && this.props.getLayers()
               })
             }

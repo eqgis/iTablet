@@ -40,7 +40,7 @@ async function addNetWorkDataset(): Promise<boolean> {
   }
 
   if(incrementLineDatasetName != null && incrementDatasource != null) {
-    const layer = await SMap.addLayer({datasourceAlias:incrementDatasource, datasetName: incrementLineDatasetName}, true)
+    const layer = await SMap.addLayer({datasource:incrementDatasource, dataset: incrementLineDatasetName}, true)
     if(layer) {
       SMap.setLayerEditable(layer.path as string, true)
       return true
@@ -112,7 +112,7 @@ async function buildNetwork(): Promise<boolean> {
   })
 
   if(result) {
-    SMap.addLayer({datasourceAlias: incrementDatasource, datasetName: incrementNetworkDatasetName, addChild: true}, true)
+    SMap.addLayer({datasource: incrementDatasource, dataset: incrementNetworkDatasetName, addChild: true}, true)
   }
 
 

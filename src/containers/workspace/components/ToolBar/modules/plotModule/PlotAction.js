@@ -71,7 +71,7 @@ async function geometrySelected(event) {
                     createInfo.layerName = _props.selection[0].layerInfo.name
                   }
                   if (createInfo.animationMode !== -1) {
-                    SPlot.createAnimationGo(createInfo, params.map.currentMap.name)
+                    SPlot.createAnimation(createInfo, params.map.currentMap.name)
                   }
                 }}
                 savePlotAnimationNode={() => {
@@ -86,7 +86,7 @@ async function geometrySelected(event) {
                     createInfo.layerName = _props.selection[0].layerInfo.name
                   }
                   if (createInfo.animationMode !== -1) {
-                    SPlot.createAnimationGo(createInfo, params.map.currentMap.name)
+                    SPlot.createAnimation(createInfo, params.map.currentMap.name)
                   }
                   global.TouchType = TouchType.NULL
                   global.animationWayData && (global.animationWayData = null)

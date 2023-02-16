@@ -37,9 +37,11 @@ class ARAttributeView extends React.Component<Props> {
     await SARMap.addAttributeListener({
       callback: async (result: any) => {
         try {
+          console.warn("callback enter")
           if(AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT'){
             return
           }
+          console.warn("result01: " + JSON.stringify(result))
           let arr: Array<PipeLineAttributeType> = []
           const smArr: Array<PipeLineAttributeType> = []
           let srcId = ''

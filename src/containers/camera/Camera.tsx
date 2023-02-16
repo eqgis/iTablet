@@ -489,7 +489,7 @@ class Camera extends React.Component<Props, State> {
     if (!sourcePath) return
     let result = false
     if(this.state.type === TYPE.VIDEO && this.state.data?.duration && this.state.data?.duration > 60 ) {
-      Toast.show("时长超出一分钟")
+      Toast.show(getLanguage(global.language).Map_Layer.MORE_THAN_A_MINUTE)
       this.cameraBackHandler()
       return
     }

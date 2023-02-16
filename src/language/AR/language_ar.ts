@@ -2969,5 +2969,8 @@ export const language_ar: typeof language_cn = {
   USERNAME_OR_PASSWORD_ERROR:"The user name or password is incorrect", // To be tanslated
   LANGCHAO_PROTROL: "Service Agreement and Privacy policy", // To be tanslated
   TEMPORARILY_OUT_OF_USE:"Temporarily out of use", // To be tanslated
+  WHERE_LOG_OUT:" Where to log out", // To be tanslated
+  LOGGED_OUT:"Logged out", // To be tanslated
+  MORE_THAN_A_MINUTE:"It's more than a minute long", // To be tanslated
 
 }

@@ -2946,4 +2946,7 @@ export const language_cn = {
   USERNAME_OR_PASSWORD_ERROR:"用户名或密码错误", // The user name or password is incorrect
   LANGCHAO_PROTROL: "服务协议与隐私政策", // Service Agreement and Privacy policy
   TEMPORARILY_OUT_OF_USE:"暂不使用", // Temporarily out of use
+  WHERE_LOG_OUT:"是否退出登录", // Where to log out
+  LOGGED_OUT:"已退出登录", // Logged out
+  MORE_THAN_A_MINUTE:"时长超出一分钟", // It's more than a minute long
 }

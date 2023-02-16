@@ -70,8 +70,8 @@ class SettingPage extends Component<Props, State> {
     } else {
 
       global.SimpleDialog.set({
-        // text: getLanguage(global.language).Map_Layer.WHETHER_UPLOAD_DATA,
-        text: "是否退出登录",
+        text: getLanguage(global.language).Map_Layer.WHERE_LOG_OUT,
+        // text: "是否退出登录",
         confirmText: getLanguage(global.language).Prompt.YES,
         cancelText: getLanguage(global.language).Prompt.NO,
         confirmAction: async () => {
@@ -79,7 +79,7 @@ class SettingPage extends Component<Props, State> {
           this.props.setServerUserId("")
           this.props.setLangchaoUserInfo(null)
           this.getData()
-          Toast.show("已退出登录")
+          Toast.show(getLanguage(global.language).Map_Layer.LOGGED_OUT)
         },
         cancelAction: () => {
           global.SimpleDialog.setVisible(false)

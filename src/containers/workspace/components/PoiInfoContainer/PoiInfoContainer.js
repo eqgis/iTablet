@@ -494,7 +494,7 @@ export default class PoiInfoContainer extends React.Component {
   navitoHere = async () => {
     SMap.clearTrackingLayer()
     SMap._removePOICallout()
-    let position = await SMap.getCurrentPosition()
+    let position = await SMap.getCurrentLocation()
     global.STARTX = position.x
     global.STARTY = position.y
     global.ENDX = this.state.location.x

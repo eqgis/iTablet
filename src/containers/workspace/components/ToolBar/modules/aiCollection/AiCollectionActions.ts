@@ -90,7 +90,7 @@ async function goToPreview(infos?: SARMap.AIRecognitionInfo[]) {
     if(result) {
       const classResult = await SARMap.startAIClassify(imgPath)
       if (classResult) {
-        const location = await SMap.getCurrentPosition()
+        const location = await SMap.getCurrentLocation()
         ToolbarModule.addData({
           classResult: classResult,
           captureImgPath: imgPath,

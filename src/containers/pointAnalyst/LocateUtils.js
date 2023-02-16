@@ -131,7 +131,7 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
               })
             } else {
               // 没有搜索结果,在当前位置添加callout
-              let _location = await SMap.getCurrentPosition()
+              let _location = await SMap.getCurrentLocation()
               const resultList = []
               resultList.push({
                 pointName: key || '',

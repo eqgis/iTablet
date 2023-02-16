@@ -67,7 +67,7 @@ async function goToPreview() {
     const _params: any = ToolbarModule.getParams()
     const _data: any = ToolbarModule.getData()
     const date = new Date().getTime().toString()
-    const location = await SMap.getCurrentPosition()
+    const location = await SMap.getCurrentLocation()
     const homePath = await FileTools.getHomeDirectory()
     let targetPath = homePath + ConstPath.UserPath +
       _params.user.currentUser.userName + '/' +

@@ -301,14 +301,14 @@ export default class MapController extends React.Component {
     const result = await SMap.moveToCurrent()
 
     //{{ 更新地图选点控件 add jiakai
-    let map = await SMap.getCurrentPosition()
+    let map = await SMap.getCurrentLocation()
     let point = {
       x: map.x,
       y: map.y,
     }
 
     if (global.Type === ChunkType.MAP_NAVIGATION){
-      // const point = await SMap.getCurrentPosition()
+      // const point = await SMap.getCurrentLocation()
 
       // 当触摸状态为 ‘NORMAL’ 且在地图选点页面里面时，点击定位到当前位置起始点位置也跟着变化
       if(global.TouchType === TouchType.NORMAL

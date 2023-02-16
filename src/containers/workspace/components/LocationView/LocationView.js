@@ -26,7 +26,7 @@ export default class LocationView extends React.Component {
     this.isStart = true
   }
   _location = async () => {
-    let point = await SMap.getCurrentPosition()
+    let point = await SMap.getCurrentLocation()
     if (this.isStart) {
       global.STARTX = point.x
       global.STARTY = point.y

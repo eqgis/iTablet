@@ -95,7 +95,7 @@ class CollectSceneFormSet extends Component {
       true,
       getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATIONING,
     )
-    let map = await SMap.getCurrentPosition()
+    let map = await SMap.getCurrentLocation()
 
     this.DATUMPOINTVIEWSET && this.DATUMPOINTVIEWSET.updateLatitudeAndLongitude(map)
 
@@ -123,7 +123,7 @@ class CollectSceneFormSet extends Component {
     global.toolBox.showFullMap(true)
 
     //考虑搜索界面跳转，不能直接goBack
-    let map = await SMap.getCurrentPosition()
+    let map = await SMap.getCurrentLocation()
     let wsData = JSON.parse(JSON.stringify(ConstOnline.Google))
     wsData.layerIndex = 3
     let licenseStatus = await SData.getEnvironmentStatus()

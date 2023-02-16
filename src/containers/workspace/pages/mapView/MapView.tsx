@@ -3787,7 +3787,7 @@ export default class MapView extends React.Component {
   _incrementRoad = async () => {
     try {
       if (!this.state.isRight) {
-        const position = await SMap.getCurrentPosition()
+        const position = await SMap.getCurrentLocation()
         const isIndoor = await this.isIndoorPoint(position.x, position.y)
         if (!isIndoor) {
           Toast.show(

@@ -78,7 +78,7 @@ export default class EnterDatumPoint extends Component {
       true,
       getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATIONING,
     )
-    let map = await SMap.getCurrentPosition()
+    let map = await SMap.getCurrentLocation()
 
     global.DATUMPOINTVIEW.updateLatitudeAndLongitude(map)
 
@@ -112,7 +112,7 @@ export default class EnterDatumPoint extends Component {
       //导航选点 全屏时保留mapController
       global.mapController && global.mapController.setVisible(true)
 
-      let map = await SMap.getCurrentPosition()
+      let map = await SMap.getCurrentLocation()
       let wsData = JSON.parse(JSON.stringify(ConstOnline.Google))
       wsData.layerIndex = 3
       let licenseStatus = await SData.getEnvironmentStatus()

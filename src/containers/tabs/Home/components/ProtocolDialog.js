@@ -24,7 +24,7 @@ export default class ProtocolDialog extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      confirmBtnDisable: true,
+      confirmBtnDisable: false,
     }
   }
 
@@ -140,7 +140,12 @@ export default class ProtocolDialog extends Component {
     return (
       <Dialog
         ref={ref => (this.dialog = ref)}
-        title={getLanguage(this.props.language).Protocol.PROTOCOL}
+        title={getLanguage(this.props.language).Protocol.LANGCHAO_PROTROL}
+        titleStyle={[{
+          fontSize: fixedSize(26),
+          fontWeight: '900',
+          marginBottom: fixedSize(10),
+        }]}
         style={{
           height: fixedSize(700),
           width: fixedSize(500),
@@ -152,14 +157,18 @@ export default class ProtocolDialog extends Component {
         confirmBtnTitle={getLanguage(this.props.language).Protocol.AGREE}
         // cancelBtnVisible={false}
         cancelAction={this.cancel}
-        cancelBtnTitle={getLanguage(this.props.language).Friends.GROUP_APPLY_DISAGREE}
+        confirmTitleStyle={[{
+          color: '#0B82FF',
+        }]}
+
+        cancelBtnTitle={getLanguage(this.props.language).Friends.TEMPORARILY_OUT_OF_USE}
         defaultVisible={false}
         confirmBtnDisable={this.state.confirmBtnDisable}
         type={Dialog.Type.NON_MODAL}
       >
         <View style={{flex: 1}}>
           {this.renderWebView()}
-          {this.renderOption()}
+          {/* {this.renderOption()} */}
         </View>
       </Dialog>
     )

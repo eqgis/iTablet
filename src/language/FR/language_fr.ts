@@ -2943,5 +2943,7 @@ export const language_fr: typeof language_cn = {
   FIRST_SETTING_SERVER_IP: "Set the service address first and then login", // To be tanslated
   LOGIN_SUCCESS:"Login success", // To be tanslated
   USERNAME_OR_PASSWORD_ERROR:"The user name or password is incorrect", // To be tanslated
+  LANGCHAO_PROTROL: "Service Agreement and Privacy policy", // To be tanslated
+  TEMPORARILY_OUT_OF_USE:"Temporarily out of use", // To be tanslated
 
 }

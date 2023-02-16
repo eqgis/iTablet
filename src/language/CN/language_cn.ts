@@ -2944,4 +2944,6 @@ export const language_cn = {
   FIRST_SETTING_SERVER_IP: "请优先设置服务地址，再进行登录", // Set the service address first and then login
   LOGIN_SUCCESS:"登录成功", // Login success
   USERNAME_OR_PASSWORD_ERROR:"用户名或密码错误", // The user name or password is incorrect
+  LANGCHAO_PROTROL: "服务协议与隐私政策", // Service Agreement and Privacy policy
+  TEMPORARILY_OUT_OF_USE:"暂不使用", // Temporarily out of use
 }

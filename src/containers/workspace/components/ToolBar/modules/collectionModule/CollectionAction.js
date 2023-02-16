@@ -16,7 +16,7 @@ import { FileTools } from '../../../../../../native'
 import ToolbarModule from '../ToolbarModule'
 import CollectionData from './CollectionData'
 import NavigationService from '../../../../../NavigationService'
-import { jsonUtil, Toast } from '../../../../../../utils'
+import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 
 function openTemplate(type) {

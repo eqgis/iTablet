@@ -672,12 +672,12 @@ class CallDetailPage extends Component<Props, State> {
                       // }
                       if (await SMediaCollector.isMediaLayer(layerInfo.name)){
                         await SMediaCollector.hideMedia(layerInfo.name, false)
-                        await this.addMediaFiles({
-                          datasourceName,
-                          datasetName,
-                          mediaPaths,
-                        })
-                        await this.saveHandler()
+                        // await this.addMediaFiles({
+                        //   datasourceName,
+                        //   datasetName,
+                        //   mediaPaths,
+                        // })
+                        // await this.saveHandler()
                         await this.getMediaInfo()
                       }
                     } catch (e) {

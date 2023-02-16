@@ -110,7 +110,6 @@ class ARAttributeView extends React.Component<Props> {
             })
             preSrcId = value && value.value
           }
-
           if(arr.length > 0) {
             // 若此次点击与上一次点击的是同一个管，就是隐藏，即将数据置为空数组
             if(preSrcId && preSrcId === srcId) {
@@ -118,6 +117,8 @@ class ARAttributeView extends React.Component<Props> {
             } else {
               AppToolBar.getProps().setPipeLineAttribute(arr)
             }
+          } else {
+            AppToolBar.getProps().setPipeLineAttribute([])
           }
 
         } catch (error) {

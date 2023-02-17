@@ -495,7 +495,7 @@ async function showAttribute(type?: string) {
       return
     }
     const have = await SMap.getCurrentEditGeometry()
-    if(have){
+    if(!have){
       Toast.show(getLanguage(global.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
     }else{
       if(global.HAVEATTRIBUTE){

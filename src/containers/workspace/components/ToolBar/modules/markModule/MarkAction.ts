@@ -298,7 +298,7 @@ async function commit(type) {
 
 async function showAttribute() {
   const have = await SMap.getCurrentEditGeometry()
-  if(have){
+  if(!have){
     Toast.show(getLanguage(global.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
   }else{
     if(global.HAVEATTRIBUTE){
@@ -310,7 +310,7 @@ async function showAttribute() {
 
 async function showAttribute1() {
   const have = await SMap.getCurrentEditGeometry()
-  if(have){
+  if(!have){
     Toast.show(getLanguage(global.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
   }else{
     if(global.HAVEATTRIBUTE){

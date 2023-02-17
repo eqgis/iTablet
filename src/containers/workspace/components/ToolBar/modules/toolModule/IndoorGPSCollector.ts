@@ -88,7 +88,7 @@ async function addGPSRecordset(): Promise<boolean>  {
   await SData.addRecordsetValue(
     {datasourceName: incrementDatasource, datasetName: incrementLineDatasetName},
     [],
-    {type: GeometryType.GEOLINE, points: [...gpsPoints]}
+    {type: GeometryType.GEOLINE, points: [[...gpsPoints]]}
   )
 
   gpsPoints = []

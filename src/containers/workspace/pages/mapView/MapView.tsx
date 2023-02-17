@@ -1143,7 +1143,7 @@ export default class MapView extends React.Component {
           ])
 
           await SMap.addGeometryToTrackingLayer(
-            {type: GeometryType.GEOLINE, points:points},
+            {type: GeometryType.GEOLINE, points:[points]},
             '',
             style,
           )
@@ -1193,7 +1193,7 @@ export default class MapView extends React.Component {
               { x: item.endX, y: item.endY },
             ])
             await SMap.addGeometryToTrackingLayer(
-              {type: GeometryType.GEOLINE, points:points},
+              {type: GeometryType.GEOLINE, points:[points]},
               '',
               style,
             )
@@ -4327,8 +4327,7 @@ export default class MapView extends React.Component {
       const mapPrj = await SMap.getPrjCoordSys()
       const points = await SData.CoordSysTranslatorGPS(mapPrj, result[0].pathPoints)
 
-      await SMap.addGeometryToTrackingLayer({type: GeometryType.GEOLINE, points:points},'线路',style,)
-      console.log('r2')
+      await SMap.addGeometryToTrackingLayer({type: GeometryType.GEOLINE, points:[points]},'线路',style,)
     } else {
       this.setLoading(false)
       Toast.show(getLanguage(global.language).Prompt.PATH_ANALYSIS_FAILED)

@@ -355,7 +355,7 @@ export default class MapSelectPointButton extends React.Component {
               const points = await SData.CoordSysTranslatorGPS(mapPrj, [doorPoint, { x: global.ENDX, y: global.ENDY}])
 
               await SMap.addGeometryToTrackingLayer(
-                {type: GeometryType.GEOLINE, points: points},
+                {type: GeometryType.GEOLINE, points: [points]},
                 '',
                 style,
               )
@@ -458,7 +458,7 @@ export default class MapSelectPointButton extends React.Component {
               const points = await SData.CoordSysTranslatorGPS(mapPrj, [doorPoint, { x: global.ENDX, y: global.ENDY}])
 
               await SMap.addGeometryToTrackingLayer(
-                {type: GeometryType.GEOLINE, points:points},
+                {type: GeometryType.GEOLINE, points:[points]},
                 '',
                 style,
               )

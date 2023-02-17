@@ -355,7 +355,7 @@ export async function drawSelectedLineOnTrackingLayer(params: {
 
     const geoRegion: GeoRegion = {
       type: GeometryType.GEOREGION,
-      points: dataRegion
+      points: [dataRegion]
     }
     const values = (await SData.queryRecordset(
       { ...datasetInfo },

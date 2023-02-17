@@ -39,7 +39,7 @@ function openTemplate(type) {
 
 async function showAttribute() {
   let have = await SMap.getCurrentEditGeometry()
-  if(have!==-1){
+  if(have===-1){
     Toast.show(getLanguage(global.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
   }else{
     if(global.HAVEATTRIBUTE){

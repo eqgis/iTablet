@@ -13,7 +13,6 @@
 		0A9C0838299DCEC100B164C4 /* SuperMapAR.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0A9C0836299DCEC100B164C4 /* SuperMapAR.bundle */; };
 		0A9C083A299DD0CD00B164C4 /* resources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0A9C0839299DD0CD00B164C4 /* resources.bundle */; };
 		0A9C083C299DDDA000B164C4 /* SuperMapAI.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0A9C083B299DDDA000B164C4 /* SuperMapAI.bundle */; };
-		0A9C084E299E10C800B164C4 /* JRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A9C084D299E10C600B164C4 /* JRE.framework */; };
 		0A9C0883299F11DE00B164C4 /* JKVValue.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A9C087E299F11D800B164C4 /* JKVValue.framework */; };
 		0A9C0884299F11DF00B164C4 /* JKVValue.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A9C087E299F11D800B164C4 /* JKVValue.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0A9C0885299F11E000B164C4 /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A9C087F299F11D900B164C4 /* ZipArchive.framework */; };
@@ -24,6 +23,7 @@
 		0A9C088A299F11E400B164C4 /* CocoaAsyncSocket.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A9C0881299F11DC00B164C4 /* CocoaAsyncSocket.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0A9C088B299F11E500B164C4 /* GLTFSceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A9C0882299F11DD00B164C4 /* GLTFSceneKit.framework */; };
 		0A9C088C299F11E600B164C4 /* GLTFSceneKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A9C0882299F11DD00B164C4 /* GLTFSceneKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0A9C088F299F177500B164C4 /* JRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A9C088E299F177500B164C4 /* JRE.framework */; };
 		0AC8AEF92808109F00435541 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8AE6A2808109D00435541 /* libWeChatSDK.a */; };
 		0AC8AEFA2808109F00435541 /* AppUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AC8AE6C2808109E00435541 /* AppUtils.m */; };
 		0AC8AEFC2808109F00435541 /* WeiXinUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AC8AE6F2808109E00435541 /* WeiXinUtils.m */; };
@@ -183,12 +183,12 @@
 		0A9C0836299DCEC100B164C4 /* SuperMapAR.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = SuperMapAR.bundle; path = iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/SuperMapAR.bundle; sourceTree = "<group>"; };
 		0A9C0839299DD0CD00B164C4 /* resources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = resources.bundle; path = iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/resources.bundle; sourceTree = "<group>"; };
 		0A9C083B299DDDA000B164C4 /* SuperMapAI.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = SuperMapAI.bundle; path = iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/SuperMapAI.bundle; sourceTree = "<group>"; };
-		0A9C084D299E10C600B164C4 /* JRE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JRE.framework; path = iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/JRE.framework; sourceTree = "<group>"; };
 		0A9C087E299F11D800B164C4 /* JKVValue.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JKVValue.framework; path = iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib/JKVValue.framework; sourceTree = "<group>"; };
 		0A9C087F299F11D900B164C4 /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib/ZipArchive.framework; sourceTree = "<group>"; };
 		0A9C0880299F11DB00B164C4 /* RMQClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RMQClient.framework; path = iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib/RMQClient.framework; sourceTree = "<group>"; };
 		0A9C0881299F11DC00B164C4 /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaAsyncSocket.framework; path = iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib/CocoaAsyncSocket.framework; sourceTree = "<group>"; };
 		0A9C0882299F11DD00B164C4 /* GLTFSceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLTFSceneKit.framework; path = iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib/GLTFSceneKit.framework; sourceTree = "<group>"; };
+		0A9C088E299F177500B164C4 /* JRE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JRE.framework; path = iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib/JRE.framework; sourceTree = "<group>"; };
 		0AC8AE682808109D00435541 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		0AC8AE692808109D00435541 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		0AC8AE6A2808109D00435541 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
@@ -303,7 +303,7 @@
 				0AC8AFE0280819F000435541 /* Security.framework in Frameworks */,
 				0AC8AF8A280816B900435541 /* AudioToolbox.framework in Frameworks */,
 				0AC8AFAA280817C900435541 /* JavaScriptCore.framework in Frameworks */,
-				0A9C084E299E10C800B164C4 /* JRE.framework in Frameworks */,
+				0A9C088F299F177500B164C4 /* JRE.framework in Frameworks */,
 				0AC8AFC5280818AD00435541 /* libiconv.2.4.0.tbd in Frameworks */,
 				0AC8AFCA2808190100435541 /* libresolv.tbd in Frameworks */,
 				0AC8AFBF2808186400435541 /* libflyMSC.a in Frameworks */,
@@ -437,7 +437,7 @@
 				0A9C087E299F11D800B164C4 /* JKVValue.framework */,
 				0A9C0880299F11DB00B164C4 /* RMQClient.framework */,
 				0A9C087F299F11D900B164C4 /* ZipArchive.framework */,
-				0A9C084D299E10C600B164C4 /* JRE.framework */,
+				0A9C088E299F177500B164C4 /* JRE.framework */,
 				0AC8AFEA28082C4000435541 /* libstdc++.6.0.9.tbd */,
 				0AC8AFE528081A0600435541 /* UserNotifications.framework */,
 				0AC8AFE3280819FE00435541 /* UIKit.framework */,

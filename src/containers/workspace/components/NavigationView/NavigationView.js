@@ -193,7 +193,8 @@ export default class NavigationView extends React.Component {
               needPush = true
             } else if(isOutdoor) {
               const linkTable = linkResult[0]
-              const fieldValues = await SData.queryWithParameter({datasetName: linkTable.datasetName, datasourceName: linkTable.datasourceName})
+              const fieldValues = (await SData.queryRecordset({datasetName: linkTable.datasetName, datasourceName: linkTable.datasourceName}))
+                .map(recordset => recordset.fieldInfoValue)
               fieldValues.map(recordset => {
                 let networkDatasetName = ''
                 let networkModelFile = ''
@@ -722,7 +723,8 @@ export default class NavigationView extends React.Component {
     const datasets = await SData.getDatasetsByDatasource({alias: param.datasourceName})
     const hasTable = datasets.filter(dataset => dataset.datasetName === 'connectionInfoTable').length === 1
     if(hasTable) {
-      const records = await SData.queryWithParameter({datasourceName: param.datasourceName, datasetName: 'connectionInfoTable'})
+      const records = (await SData.queryRecordset({datasourceName: param.datasourceName, datasetName: 'connectionInfoTable'}))
+        .map(recordset => recordset.fieldInfoValue)
       if(records.length <= 0) return
       let length = null
       let startX = param.startX

@@ -57,7 +57,7 @@ async function getLayerAttribute(
   const groups = params?.groupBy?.split(",")
   const orders = params?.filter?.split(",")
   const para:QueryParameter = {orderBy:orders,groupBy:groups}
-  const data1 = await SData.queryWithParameter(datasetInfo,para )
+  const data1 = (await SData.queryRecordset(datasetInfo,para )).map(recordset => recordset.fieldInfoValue)
   const head = await SData.getFieldInfos(datasetInfo)
   const startIndex =  page*size
   const total = data1.length
@@ -163,7 +163,7 @@ async function getSelectionAttributeByData(
 ) {
   // const data = await SMap.getSelectionAttributeByData(name, page, size)
   const para:QueryParameter = {}
-  const data1 = await SData.queryWithParameter(datasetInfo,para )
+  const data1 = (await SData.queryRecordset(datasetInfo,para )).map(recordset => recordset.fieldInfoValue)
   const head = await SData.getFieldInfos(datasetInfo)
   const startIndex =  page*size
   const total = data1.length

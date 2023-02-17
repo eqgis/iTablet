@@ -357,10 +357,10 @@ export async function drawSelectedLineOnTrackingLayer(params: {
       type: GeometryType.GEOREGION,
       points: dataRegion
     }
-    const values = await SData.queryWithParameter(
+    const values = (await SData.queryRecordset(
       { ...datasetInfo },
       { spatialQueryMode: 2, spatialQueryObject: geoRegion, hasGeometry: true }
-    )
+    )).map(recordset => recordset.fieldInfoValue)
 
     if (values.length > 0) {
       const field = values[0].filter(record => record.name === 'SmID')

@@ -166,8 +166,9 @@ export default class LayerAttributeStatistic extends React.Component {
       const datasetInfo:DatasetInfo = {datasetName:this.layer.datasetName,datasourceName:this.layer.datasourceAlias}
       const groups = this.fieldInfo.name?.split(",")
       const para:QueryParameter = {groupBy:groups}
-      SData.queryWithParameter(datasetInfo,para ).then(
-        result => {
+      SData.queryRecordset(datasetInfo,para ).then(
+        r => {
+          const result = r.map(recordset => recordset.fieldInfoValue)
           if(result.length == 0) return
           const downShow = this.showarraw(result.length)
           this.setState({

@@ -197,8 +197,8 @@ export default class LayerAttributeTabs extends React.Component {
         // const layerInfo = this.props.selection[this.state.currentTabIndex].layerInfo
         const datasetInfo:DatasetInfo = {datasetName:this.props.currentLayer.datasetName,datasourceName:this.props.currentLayer.datasourceAlias}
         const para:QueryParameter = {}
-        const res = await SData.queryRecordsetWithParameter(datasetInfo,para)
-        const id = res[res.length-1].geometryID
+        const res = await SData.queryRecordset(datasetInfo,para)
+        const id = res[res.length-1].geometry?.id || -1
         // debugger
         // let id = await SMap.getCurrentGeometryID(this.props.currentLayer.path)
         await SMap.addToLayerSelection(layerInfo.path,[id])
@@ -221,10 +221,10 @@ export default class LayerAttributeTabs extends React.Component {
         }
         const datasetInfo:DatasetInfo = {datasetName:layerInfo.datasetName,datasourceName:layerInfo.datasourceAlias}
         const para:QueryParameter = {}
-        const res = await SData.queryRecordsetWithParameter(datasetInfo,para)
+        const res = await SData.queryRecordset(datasetInfo,para)
         const ids = []
         for(let i=0;i<res.length;i++){
-          ids.push(res[i].geometryID)
+          ids.push(res[i].geometry?.id || -1)
         }
         // let id = await SMap.getDatasetGeometryID(this.datasetName)
         this.props.setSelection && this.props.setSelection([{
@@ -243,13 +243,13 @@ export default class LayerAttributeTabs extends React.Component {
           name: this.datasetName,
         }
         const userName = AppUser.getCurrentUser().userName
-        const res = await SData.queryRecordsetWithParameter({
+        const res = await SData.queryRecordset({
           datasourceName: 'default_increment_datasource@' + userName,
           datasetName: this.datasetName
         })
         const ids = []
         for(let i=0;i<res.length;i++){
-          ids.push(res[i].geometryID)
+          ids.push(res[i].geometry?.id || -1)
         }
         this.props.setSelection && this.props.setSelection([{
           layerInfo: layerInfo,

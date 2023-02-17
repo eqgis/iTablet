@@ -39,7 +39,7 @@ function openTemplate(type) {
 
 async function showAttribute() {
   let have = await SMap.getCurrentEditGeometry()
-  if(have===-1){
+  if(have){
     Toast.show(getLanguage(global.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
   }else{
     if(global.HAVEATTRIBUTE){
@@ -261,7 +261,7 @@ async function createCollector(type, layerName) {
 
 async function collectionSubmit(type) {
   let have = await SMap.getCurrentEditGeometry()
-  if (have!==-1) {
+  if (have) {
     // 是否有新的采集或标注
     global.HAVEATTRIBUTE = true
   }

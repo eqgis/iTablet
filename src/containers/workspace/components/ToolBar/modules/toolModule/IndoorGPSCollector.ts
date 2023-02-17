@@ -29,7 +29,8 @@ async function addNetWorkDataset(): Promise<boolean> {
   const indoorDatasource = indoorData[0]
   const floorDataset = indoorDatasource.filter(dataset => dataset.datasetName === 'FloorRelationTable')[0]
   incrementDatasource = floorDataset.datasourceName
-  const fieldValues = await SData.queryWithParameter({datasourceName: floorDataset.datasourceName, datasetName: floorDataset.datasetName})
+  const fieldValues = (await SData.queryRecordset({datasourceName: floorDataset.datasourceName, datasetName: floorDataset.datasetName}))
+    .map(recordset => recordset.fieldInfoValue)
   for(const fields of fieldValues) {
     const FL_ID = fields.filter(field => field.name === 'FL_ID')
     if(FL_ID.length > 0 && FL_ID[0].value === currentFloorID) {

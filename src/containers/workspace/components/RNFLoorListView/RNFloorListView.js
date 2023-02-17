@@ -296,7 +296,8 @@ export async function getFloorData() {
 
   if(floorTable) {
     await SIndoorNavigation.initFloorList()
-    const fieldValues = await SData.queryWithParameter({datasourceName: floorTable.datasourceName, datasetName: floorTable.datasetName})
+    const fieldValues = (await SData.queryRecordset({datasourceName: floorTable.datasourceName, datasetName: floorTable.datasetName}))
+      .map(recordset => recordset.fieldInfoValue)
 
     const data = []
     for(let i = 0; i < fieldValues.length; i++) {

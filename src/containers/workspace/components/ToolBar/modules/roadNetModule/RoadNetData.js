@@ -41,7 +41,8 @@ export async function getAllNavData() {
 
     if(hasModelTable) {
       const linkTable = datasets.filter(dataset => dataset.datasetName === 'ModelFileLinkTable')[0]
-      const records = await SData.queryWithParameter({datasetName: linkTable.datasetName, datasourceName: linkTable.datasourceName})
+      const records = (await SData.queryRecordset({datasetName: linkTable.datasetName, datasourceName: linkTable.datasourceName}))
+        .map(recordset => recordset.fieldInfoValue)
       records.map(recordset => {
         let networkDatasetName = ''
         let networkModelFile = ''

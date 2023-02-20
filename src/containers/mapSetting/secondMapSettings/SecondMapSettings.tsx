@@ -56,7 +56,7 @@ export default class SecondMapSettings extends Component {
     language: string,
     navigation: Object,
     title: string,
-    mapScaleView: Boolean,
+    mapScaleView: boolean,
     device: Object,
     setMapScaleView: () => {},
     renderItem?: () => {},
@@ -65,7 +65,7 @@ export default class SecondMapSettings extends Component {
   }
   constructor(props) {
     super(props)
-    let { params } = this.props.route
+    const { params } = this.props.route
     this.state = {
       data: [],
       title: params.title,
@@ -100,8 +100,8 @@ export default class SecondMapSettings extends Component {
 
   //数字格式化成带逗号的数字
   formatNumberToString = num => {
-    let dotReg = /\./
-    let reg = /\.\d+/
+    const dotReg = /\./
+    const reg = /\.\d+/
     let afterDot = ''
     dotReg.test(num) && (afterDot = num.toString().match(reg)[0])
     return (+num).toLocaleString('en').replace(reg, afterDot)
@@ -109,7 +109,7 @@ export default class SecondMapSettings extends Component {
 
   //带逗号的字符串格式化成数字
   formatStringToNumber = str => {
-    let reg = /,/g
+    const reg = /,/g
     return +str.replace(reg, '')
   }
 
@@ -198,10 +198,10 @@ export default class SecondMapSettings extends Component {
 
   // 获取数据源
   getDatasources = async () => {
-    let datas = []
-    let datasources = await SData.getDatasources()
+    const datas = []
+    const datasources = await SData.getDatasources()
     datasources.map(item => {
-      let obj = {}
+      const obj = {}
       obj.title = item.alias
       obj.server = item.server
       obj.engineType = item.engineType
@@ -213,12 +213,12 @@ export default class SecondMapSettings extends Component {
 
   // 获取所有数据集
   getDatasets = async ({ data }) => {
-    let result = data
+    const result = data
     let index = 0
     let dataset
     try {
-      for (let item of data) {
-        let datasets = []
+      for (const item of data) {
+        const datasets = []
         dataset = await SData.getDatasetsByDatasource(
           {
             server: item.server,
@@ -226,9 +226,9 @@ export default class SecondMapSettings extends Component {
             alias: item.title,
           },
         )
-        //  
+        //
         dataset.map(val => {
-          let obj = {}
+          const obj = {}
           obj.title = val.datasetName
           obj.parentTitle = val.datasourceName
           datasets.push(obj)
@@ -256,7 +256,7 @@ export default class SecondMapSettings extends Component {
     data[4].value = angle.toString().replace('.0', '')
     //原生层返回的是中文，做一个映射，转换成对应语言
     const colorMode:TMapColorMode = await SMap.getMapColorMode()
-    let allColorMode = {
+    const allColorMode = {
       0: getLanguage(global.language).Map_Settings.DEFAULT_COLOR_MODE,
       1: getLanguage(global.language).Map_Settings.BLACK_AND_WHITE,
       2: getLanguage(global.language).Map_Settings.GRAY_SCALE_MODE,
@@ -284,8 +284,8 @@ export default class SecondMapSettings extends Component {
 
   // 识别型数据
   getDetectTypesSettings = async () => {
-    let data = await getDetectTypesSettings()
-    let array = await SAIDetectView.getDetectArrayToUse()
+    const data = await getDetectTypesSettings()
+    const array = await SAIDetectView.getDetectArrayToUse()
     for (let i = 0; i < array.length; i++) {
       for (let j = 0; j < data.length; j++) {
         if (data[j].key === array[i]) {
@@ -298,12 +298,12 @@ export default class SecondMapSettings extends Component {
 
   //范围设置数据
   getRangeData = async () => {
-    let data = await rangeSettings()
-    let mapCenter = await SMap.getMapCenter()
-    let centerX = this.formatNumberToString(mapCenter.x)
-    let centerY = this.formatNumberToString(mapCenter.y)
-    let mapScale = await SMap.getMapScale()
-    let scale = this.formatNumberToString(mapScale)
+    const data = await rangeSettings()
+    const mapCenter = await SMap.getMapCenter()
+    const centerX = this.formatNumberToString(mapCenter.x)
+    const centerY = this.formatNumberToString(mapCenter.y)
+    const mapScale = await SMap.getMapScale()
+    const scale = this.formatNumberToString(mapScale)
     data[0].value = `${centerX}\n${centerY}`
     data[1].value = `1:${scale}`
     data[2].value = await SMap.isVisibleScalesEnabled()
@@ -312,13 +312,33 @@ export default class SecondMapSettings extends Component {
 
   //坐标系设置数据
   getCoordinateSystemData = async () => {
-    let data = await coordinateSystemSettings()
-    let transferMethod = await SMap.getCoordSysTransMethod()
-    data[0].value = await SMap.getPrjCoordSysName()
-    let isDynamicProjection = await SMap.getDynamicProjection()
+    const data = await coordinateSystemSettings()
+    const prjObj = await SData.prjCoordSysFromXml(await SMap.getPrjCoordSys())
+
+    let transMethodStr = "Geocentric Transalation(3-para)"
+    const transferMethod = await SMap.getMapCoordSysTransMethod()
+    switch (transferMethod) {
+      case 9604:
+        transMethodStr = "Molodensky(7-para)"
+        break
+      case 9605:
+        transMethodStr = "Abridged Molodensky(7-para)"
+        break
+      case 9606:
+        transMethodStr = "Position Vector(7-para)"
+        break
+      case 9607:
+        transMethodStr = "Coordinate Frame(7-para)"
+        break
+      case 9608:
+        transMethodStr = "Bursa-wolf(7-para)"
+        break
+    }
+    data[0].value = prjObj?.name||""//await SMap.getPrjCoordSysName()
+    const isDynamicProjection = await SMap.getDynamicProjection()
     data[2].value = isDynamicProjection
     data[3].value = isDynamicProjection
-      ? transferMethod
+      ? transMethodStr
       : getLanguage(global.language).Map_Settings.OFF
     this.setState({
       transferMethod,
@@ -334,8 +354,8 @@ export default class SecondMapSettings extends Component {
 
   //
   getFourRangeData = async () => {
-    let data = await fourRanges()
-    let viewBounds = await SMap.getMapViewBounds()
+    const data = await fourRanges()
+    const viewBounds = await SMap.getMapViewBounds()
     data[0].value = this.formatNumberToString(viewBounds.left)
     data[1].value = this.formatNumberToString(viewBounds.bottom)
     data[2].value = this.formatNumberToString(viewBounds.right)
@@ -350,7 +370,7 @@ export default class SecondMapSettings extends Component {
 
   //switch开关事件
   _onValueChange = async ({ value, item, index }) => {
-    let data = this.state.data.concat()
+    const data = this.state.data.concat()
     switch (item.title) {
       case getLanguage().Map_Settings.SHOW_COMPASS:
         this.props.showCompass(value)
@@ -457,37 +477,55 @@ export default class SecondMapSettings extends Component {
       !title && (title = this.state.title)
       switch (title) {
         case getLanguage(global.language).Map_Settings.FROM_DATASOURCE:{
-          prjCoordSysName = await SMap.copyPrjCoordSysFromDatasource(
-            item.server,
-            item.engineType,
-          )
+          await SData.openDatasource({server:item.server,engineType:item.engineType,alias:"dataSource#"})
+          const dsPrjXml = await SData.getDatasourcePrjCoordSys("dataSource#")
+          SData.closeDatasource("dataSource#")
+          SMap.setPrjCoordSys(dsPrjXml)
+          const prjObj = await SData.prjCoordSysFromXml(dsPrjXml)
+          prjCoordSysName = prjObj?.name || ""
+          //await SMap.copyPrjCoordSysFromDatasource(
+          //   item.server,
+          //   item.engineType,
+          // )
           toastTip = prjCoordSysName
             ? getLanguage(global.language).Prompt.COPY_COORD_SYSTEM_SUCCESS
             : getLanguage(global.language).Prompt.COPY_COORD_SYSTEM_FAIL
           break
         }
-        case getLanguage(global.language).Map_Settings.FROM_DATASET:
-          prjCoordSysName = await SMap.copyPrjCoordSysFromDataset(
-            item.parentTitle,
-            item.title,
-          )
+        case getLanguage(global.language).Map_Settings.FROM_DATASET:{
+          const dsPrjXml = await SData.getDatasetPrjCoordSys({datasetName:item.title,datasourceName:item.parentTitle})
+          SMap.setPrjCoordSys(dsPrjXml)
+          const prjObj = await SData.prjCoordSysFromXml(dsPrjXml)
+          prjCoordSysName = prjObj?.name || ""
+          // prjCoordSysName = await SMap.copyPrjCoordSysFromDataset(
+          //   item.parentTitle,
+          //   item.title,
+          // )
           toastTip = prjCoordSysName
             ? getLanguage(global.language).Prompt.COPY_COORD_SYSTEM_SUCCESS
             : getLanguage(global.language).Prompt.COPY_COORD_SYSTEM_FAIL
           break
-        case getLanguage(global.language).Map_Settings.FROM_FILE:
-          prjCoordSysName = await SMap.copyPrjCoordSysFromFile(
-            item.path,
-            item.name.substring(item.name.lastIndexOf('.'), item.name.length),
-          )
-          if (prjCoordSysName.error) {
-            toastTip = getLanguage(global.language).Prompt[prjCoordSysName.error]
-          } else {
-            toastTip = prjCoordSysName
-              ? getLanguage(global.language).Prompt.COPY_COORD_SYSTEM_SUCCESS
-              : getLanguage(global.language).Prompt.COPY_COORD_SYSTEM_FAIL
+        }
+        case getLanguage(global.language).Map_Settings.FROM_FILE:{
+          let  type:1|2 = 1
+          if(item.name.substring(item.name.lastIndexOf('.'), item.name.length) !== "xml"){
+            type = 2
           }
+          const dsPrjXml = await SData.prjCoordSysFileToXml(item.path,type)
+          SMap.setPrjCoordSys(dsPrjXml).then(value=>{
+            console.log(value)
+          })
+          const prjObj = await SData.prjCoordSysFromXml(dsPrjXml)
+          prjCoordSysName = prjObj?.name || ""
+          // prjCoordSysName = await SMap.copyPrjCoordSysFromFile(
+          //   item.path,
+          //   item.name.substring(item.name.lastIndexOf('.'), item.name.length),
+          // )
+          toastTip = prjCoordSysName
+            ? getLanguage(global.language).Prompt.COPY_COORD_SYSTEM_SUCCESS
+            : getLanguage(global.language).Prompt.COPY_COORD_SYSTEM_FAIL
           break
+        }
       }
       toastTip !== undefined && Toast.show(toastTip)
       if (this.state.cb !== '') {
@@ -500,8 +538,8 @@ export default class SecondMapSettings extends Component {
 
   //arrow item点击事件
   onArrowItemPress = ({ item, index }) => {
-    let title = item.title
-    let data = this.state.data.concat()
+    const title = item.title
+    const data = this.state.data.concat()
     switch (title) {
       case getLanguage(global.language).Map_Settings.ROTATION_ANGLE:
         this.props.navigation.navigate('InputPage', {
@@ -536,7 +574,7 @@ export default class SecondMapSettings extends Component {
       case getLanguage(global.language).Map_Settings.COLOR_MODE:
       case getLanguage(global.language).Map_Settings.BACKGROUND_COLOR:
         {
-          let type =
+          const type =
             title === getLanguage(global.language).Map_Settings.COLOR_MODE
               ? ConstToolType.SM_MAP_SETTINGS_COLOR_MODE
               : ConstToolType.SM_MAP_SETTINGS_BACKGROUND_COLOR
@@ -579,7 +617,7 @@ export default class SecondMapSettings extends Component {
             this.state.cb !== ''
               ? this.state.cb
               : ({ prjCoordSysName }) => {
-                let data = this.state.data.concat()
+                const data = this.state.data.concat()
                 data[0].value = prjCoordSysName
                 this.setState({
                   data,
@@ -596,7 +634,7 @@ export default class SecondMapSettings extends Component {
             this.state.cb !== ''
               ? this.state.cb
               : ({ prjCoordSysName }) => {
-                let data = this.state.data.concat()
+                const data = this.state.data.concat()
                 data[0].value = prjCoordSysName
                 this.setState({
                   data,
@@ -626,10 +664,10 @@ export default class SecondMapSettings extends Component {
   }
 
   onInputEnding = async (item, index, evt) => {
-    let newValue = evt.nativeEvent.text
+    const newValue = evt.nativeEvent.text
     let isSuccess = false
-    let regExp = /^\d+(\.\d+)?$/
-    let data = this.state.data.concat()
+    const regExp = /^\d+(\.\d+)?$/
+    const data = this.state.data.concat()
     let tips = ''
     switch (item.title) {
       case getLanguage(global.language).Map_Settings.MAP_SCALE:
@@ -653,10 +691,10 @@ export default class SecondMapSettings extends Component {
             Number.parseFloat(newValue).toFixed(6),
           )
           data[index].state = false
-          let left = this.formatStringToNumber(data[0].value)
-          let bottom = this.formatStringToNumber(data[1].value)
-          let right = this.formatStringToNumber(data[2].value)
-          let top = this.formatStringToNumber(data[3].value)
+          const left = this.formatStringToNumber(data[0].value)
+          const bottom = this.formatStringToNumber(data[1].value)
+          const right = this.formatStringToNumber(data[2].value)
+          const top = this.formatStringToNumber(data[3].value)
           isSuccess = await SMap.setMapViewBounds({
             left,
             bottom,
@@ -705,8 +743,8 @@ export default class SecondMapSettings extends Component {
   //修改值判定 不适用于跳转InputPage的
   saveInput = async (newValue, title) => {
     let isSuccess = false
-    let regExp = /^\d+(\.\d+)?$/
-    let data = this.state.data.concat()
+    const regExp = /^\d+(\.\d+)?$/
+    const data = this.state.data.concat()
     switch (title) {
       case getLanguage(global.language).Map_Settings.MAP_CENTER:
         if (
@@ -733,7 +771,7 @@ export default class SecondMapSettings extends Component {
 
   //设置地图坐标系回调
   setMapCoordinate = value => {
-    let data = this.state.data.concat()
+    const data = this.state.data.concat()
     data[0].value = value
     this.setState({
       data,
@@ -743,7 +781,7 @@ export default class SecondMapSettings extends Component {
 
   //设置转换方法回调
   setTransferMethod = value => {
-    let data = this.state.data.concat()
+    const data = this.state.data.concat()
     data[3].value = value
     this.setState({
       data,
@@ -828,9 +866,9 @@ export default class SecondMapSettings extends Component {
 
   //渲染带more按钮的行
   renderArrowItem = (item, index) => {
-    let rightImagePath = require('../../../assets/Mine/mine_my_arrow.png')
-    let hasValue = item.value !== undefined
-    let isBackGroundColor =
+    const rightImagePath = require('../../../assets/Mine/mine_my_arrow.png')
+    const hasValue = item.value !== undefined
+    const isBackGroundColor =
       item.title === getLanguage(global.language).Map_Settings.BACKGROUND_COLOR
     if (
       item.title ===
@@ -895,7 +933,7 @@ export default class SecondMapSettings extends Component {
 
   //渲染普通text行
   renderTextItem = item => {
-    let hasRightValue = item.value !== undefined
+    const hasRightValue = item.value !== undefined
     return (
       <TouchableOpacity
         onPress={() => {
@@ -913,7 +951,7 @@ export default class SecondMapSettings extends Component {
 
   //渲染带键盘的多行input 单行的直接跳inputPage（需要修改信息的item）
   renderKeybordItem = item => {
-    let renderData = {}
+    const renderData = {}
     switch (item.title) {
       case 'centerPoint':
         renderData.x = item.value.x
@@ -939,7 +977,7 @@ export default class SecondMapSettings extends Component {
   }
   renderInputItem = (item, index) => {
     if (item.state) {
-      let value = item.value + ''
+      const value = item.value + ''
       return (
         <View>
           <View>
@@ -972,7 +1010,7 @@ export default class SecondMapSettings extends Component {
             <Text style={styles.itemName}>{item.title}</Text>
             <TouchableOpacity
               onLongPress={() => {
-                let data = this.state.data.concat()
+                const data = this.state.data.concat()
                 switch (item.title) {
                   case getLanguage(global.language).Map_Settings.MAP_SCALE:
                   case getLanguage(global.language).LEFT:
@@ -1066,7 +1104,7 @@ export default class SecondMapSettings extends Component {
             <Text style={styles.itemName}>{item.title}</Text>
             <TouchableOpacity
               onLongPress={() => {
-                let data = this.state.data.concat()
+                const data = this.state.data.concat()
                 switch (item.title) {
                   case getLanguage(global.language).Map_Settings.MAP_CENTER:
                     data[index].state = true
@@ -1113,13 +1151,13 @@ export default class SecondMapSettings extends Component {
 
   //复制按钮点击事件
   copyInfo = async () => {
-    let datas = this.state.data
+    const datas = this.state.data
     Clipboard.setString(
       datas.reduce((total, item) => {
         return `${total}${item.title}:${item.value}\n`
       }, ''),
     )
-    let isSuccess = await Clipboard.getString()
+    const isSuccess = await Clipboard.getString()
     if (isSuccess !== undefined) {
       Toast.show(getLanguage(global.language).Prompt.COPY_SUCCESS)
     }
@@ -1128,7 +1166,7 @@ export default class SecondMapSettings extends Component {
   /** 设置置信度确认方法 */
   setConfidence = async () => {
     if(this.state.showConfidence) {
-      let confidence = this.state.confidence
+      const confidence = this.state.confidence
       SAIDetectView.setConfidence(confidence / 100)
       this.setState({
         showConfidence: false,
@@ -1142,7 +1180,7 @@ export default class SecondMapSettings extends Component {
 
   //SectionList header点击事件
   refreshList = section => {
-    let newData = this.state.data
+    const newData = this.state.data
     section.visible = !section.visible
     newData[section.index] = section
     this.setState({
@@ -1152,7 +1190,7 @@ export default class SecondMapSettings extends Component {
 
   //SectionList的header
   renderSectionHeader = ({ section }) => {
-    let image = section.visible
+    const image = section.visible
       ? getThemeAssets().publicAssets.list_section_packup
       : getThemeAssets().publicAssets.list_section_spread
     return (
@@ -1187,7 +1225,7 @@ export default class SecondMapSettings extends Component {
         <View>
           <TouchableOpacity
             onPress={async () => {
-              let isSuccess = await SMap.setPrjCoordSys(item.value)
+              const isSuccess = await SMap.setPrjCoordSys(item.value)
               isSuccess && this.state.cb(item.name)
               isSuccess && this.backAction()
             }}
@@ -1204,9 +1242,9 @@ export default class SecondMapSettings extends Component {
 
   //转换参数设置方法
   setTransferParams = async () => {
-    let data = this.state.data
+    const data = this.state.data
     let isSuccess
-    let paramsObject = {}
+    const paramsObject = {}
     switch (data.length) {
       case 2:
         paramsObject.rotateX = 0
@@ -1232,8 +1270,29 @@ export default class SecondMapSettings extends Component {
         paramsObject[key] = this.formatStringToNumber(paramsObject[key])
       }
     })
-    ;(paramsObject.coordSysTransMethod = this.state.title),
-    (isSuccess = await SMap.setCoordSysTransMethodAndParams(paramsObject))
+    const methodStr = this.state.title
+    let method:9603|9604|9605|9606|9607|9608 = 9603
+    // const transferMethod = await SMap.getMapCoordSysTransMethod()
+    switch (methodStr) {
+      case "Molodensky(7-para)":
+        method = 9604
+        break
+      case  "Abridged Molodensky(7-para)":
+        method = 9605
+        break
+      case "Position Vector(7-para)":
+        method = 9606
+        break
+      case "Coordinate Frame(7-para)":
+        method = 9607
+        break
+      case "Bursa-wolf(7-para)":
+        method = 9608
+        break
+    }
+    await SMap.setMapCoordSysTransMethod(method)
+    isSuccess = await SMap.setMapCoordSysTransParameter(paramsObject)
+    // isSuccess = await SMap.setCoordSysTransMethodAndParams(paramsObject)
     if (isSuccess) {
       this.state.cb(this.state.title)
       this.backAction()
@@ -1335,7 +1394,7 @@ export default class SecondMapSettings extends Component {
       this.state.data.constructor === Object &&
       this.state.data.value !== ''
     ) {
-      let data = this.state.data
+      const data = this.state.data
       return (
         <Container
           navigation={this.props.navigation}
@@ -1346,7 +1405,7 @@ export default class SecondMapSettings extends Component {
               <TouchableOpacity
                 key={'save'}
                 onPress={() => {
-                  let value = this.x ? { x: this.x, y: this.y } : this.textInput
+                  const value = this.x ? { x: this.x, y: this.y } : this.textInput
                   this.state.cb(value, this.state.title)
                 }}
               >
@@ -1411,8 +1470,8 @@ export default class SecondMapSettings extends Component {
     if (
       this.state.title === getLanguage(global.language).Map_Settings.FROM_FILE
     ) {
-      let menuData = coordMenuData()
-      let menuTitle = coordMenuTitle()
+      const menuData = coordMenuData()
+      const menuTitle = coordMenuTitle()
       return (
         <Container
           navigation={this.props.navigation}

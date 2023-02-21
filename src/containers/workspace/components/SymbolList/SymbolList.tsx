@@ -12,6 +12,7 @@ import {
 } from 'imobile_for_reactnative'
 import { ConstToolType, ChunkType } from '../../../../constants'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
+import { Value } from 'react-native-reanimated'
 
 export default class SymbolList extends React.Component {
   props: {
@@ -78,8 +79,10 @@ export default class SymbolList extends React.Component {
       })
     } else if (this.props.layerData.type === 3) {
       // SCartography.setLineSymbolID(data.id, this.props.layerData.name)
-      SMap.setLayerStyle(this.props.layerData.name, {
-        LineSymbolID: data.id,
+      SMap.addMapHistory().then(()=>{
+        SMap.setLayerStyle(this.props.layerData.name, {
+          LineSymbolID: data.id,
+        })
       })
     }
 
@@ -106,8 +109,10 @@ export default class SymbolList extends React.Component {
       // SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
     } else if (this.props.layerData.type === 1) {
       // SCartography.setMakerSymbolID(data.id, this.props.layerData.name)
-      SMap.setLayerStyle(this.props.layerData.name, {
-        MarkerSymbolID: data.id,
+      SMap.addMapHistory().then(()=>{
+        SMap.setLayerStyle(this.props.layerData.name, {
+          MarkerSymbolID: data.id,
+        })
       })
     }
 
@@ -134,8 +139,10 @@ export default class SymbolList extends React.Component {
       // SMap.setTaggingSymbolID(data.id, event.layerInfo.path, event.id)
     } else if (this.props.layerData.type === 5) {
       // SCartography.setFillSymbolID(data.id, this.props.layerData.name)
-      SMap.setLayerStyle(this.props.layerData.name, {
-        FillSymbolID: data.id,
+      SMap.addMapHistory().then(()=>{
+        SMap.setLayerStyle(this.props.layerData.name, {
+          FillSymbolID: data.id,
+        })
       })
     }
   }

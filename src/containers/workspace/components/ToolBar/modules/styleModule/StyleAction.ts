@@ -54,6 +54,7 @@ async function tableAction(type, params) {
       // result = await SCartography.setLineColor(params.key, params.layerName)
       const rgb = SMap._translate16ToRgb(params.key)
       if (rgb) {
+        await SMap.addMapHistory()
         result = await SMap.setLayerStyle(params.layerName, {
           LineColor:rgb,
         })
@@ -64,6 +65,7 @@ async function tableAction(type, params) {
       // result = await SCartography.setLineColor(params.key, params.layerName)
       const rgb = SMap._translate16ToRgb(params.key)
       if (rgb) {
+        await SMap.addMapHistory()
         result = await SMap.setLayerStyle(params.layerName, {
           FillForeColor: rgb,
         })
@@ -74,6 +76,7 @@ async function tableAction(type, params) {
       // result = await SCartography.setLineColor(params.key, params.layerName)
       const rgb = SMap._translate16ToRgb(params.key)
       if (rgb) {
+        await SMap.addMapHistory()
         result = await SMap.setLayerStyle(params.layerName, {
           FillBackColor: params.key,
         })
@@ -160,8 +163,10 @@ function setTextFont(param) {
       fontName = 'OUTLINE'
       break
   }
-  SMap.setLayerTextStyle(layerName||"", {
-    TextFont: [fontName],
+  SMap.addMapHistory().then(()=>{
+    SMap.setLayerTextStyle(layerName||"", {
+      TextFont: [fontName],
+    })
   })
 }
 
@@ -361,106 +366,109 @@ function setTouchProgressInfo(title, value) {
   const _params = ToolbarModule.getParams()
   let layerType = _params.currentLayer.type
   let range = [1, 100]
-  switch (title) {
-    case getLanguage(_params.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
-      range = [1, 100]
-      if (value > range[1]) value = range[1]
-      else if (value <= range[0]) value = range[0]
-      // SCartography.setMarkerSize(value, _params.currentLayer.name)
-      SMap.setLayerStyle(_params.currentLayer.name, {
-        MarkerSize: {height: value, width: value},
-      })
-      break
-    case getLanguage(_params.language).Map_Main_Menu.STYLE_TRANSPARENCY:
-      // 相同标题，当前根据图层类型来区分使用方法
-      range = [0, 100]
-      if (value > range[1]) value = range[1]
-      else if (value <= range[0]) value = range[0]
-      if (layerType === DatasetType.POINT) {
-        // SCartography.setMarkerAlpha(value, _params.currentLayer.name)
+  SMap.addMapHistory().then(()=>{
+    switch (title) {
+      case getLanguage(_params.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
+        range = [1, 100]
+        if (value > range[1]) value = range[1]
+        else if (value <= range[0]) value = range[0]
+        // SCartography.setMarkerSize(value, _params.currentLayer.name)
         SMap.setLayerStyle(_params.currentLayer.name, {
-          FillOpaqueRate: 100 - value,
+          MarkerSize: {height: value, width: value},
         })
-      } else if (layerType === DatasetType.REGION) {
-        // SCartography.setFillOpaqueRate(value, _params.currentLayer.name)
+        break
+      case getLanguage(_params.language).Map_Main_Menu.STYLE_TRANSPARENCY:
+        // 相同标题，当前根据图层类型来区分使用方法
+        range = [0, 100]
+        if (value > range[1]) value = range[1]
+        else if (value <= range[0]) value = range[0]
+        if (layerType === DatasetType.POINT) {
+          // SCartography.setMarkerAlpha(value, _params.currentLayer.name)
+          SMap.setLayerStyle(_params.currentLayer.name, {
+            FillOpaqueRate: 100 - value,
+          })
+        } else if (layerType === DatasetType.REGION) {
+          // SCartography.setFillOpaqueRate(value, _params.currentLayer.name)
+          SMap.setLayerStyle(_params.currentLayer.name, {
+            FillOpaqueRate: 100 - value,
+          })
+        } else if (layerType === DatasetType.GRID) {
+          // SCartography.setGridOpaqueRate(value, _params.currentLayer.name)
+          SMap.setLayerGridStyle(_params.currentLayer.name, {
+            OpaqueRate: 100 - value,
+          })
+        }
+        break
+      case getLanguage(_params.language).Map_Main_Menu.STYLE_ROTATION:
+        range = [0, 360]
+        if (value > range[1]) value = range[1]
+        else if (value <= range[0]) value = range[0]
+        if (layerType === DatasetType.POINT) {
+          // SCartography.setMarkerAngle(value, _params.currentLayer.name)
+          SMap.setLayerStyle(_params.currentLayer.name, {
+            MarkerAngle: value,
+          })
+        } else if (layerType === DatasetType.TEXT) {
+          // SCartography.setTextAngleOfLayer(value, _params.currentLayer.name)
+          SMap.setLayerTextStyle(_params.currentLayer.name||"", {
+            TextAngle: value,
+          })
+        }
+        break
+      case getLanguage(_params.language).Map_Main_Menu.STYLE_LINE_WIDTH:
+        range = [1, 20]
+        if (value > range[1]) value = range[1]
+        else if (value <= range[0]) value = range[0]
+        // SCartography.setLineWidth(value, _params.currentLayer.name)
         SMap.setLayerStyle(_params.currentLayer.name, {
-          FillOpaqueRate: 100 - value,
+          LineWidth: value,
         })
-      } else if (layerType === DatasetType.GRID) {
-        // SCartography.setGridOpaqueRate(value, _params.currentLayer.name)
-        SMap.setLayerGridStyle(_params.currentLayer.name, {
-          OpaqueRate: 100 - value,
-        })
-      }
-      break
-    case getLanguage(_params.language).Map_Main_Menu.STYLE_ROTATION:
-      range = [0, 360]
-      if (value > range[1]) value = range[1]
-      else if (value <= range[0]) value = range[0]
-      if (layerType === DatasetType.POINT) {
-        // SCartography.setMarkerAngle(value, _params.currentLayer.name)
+        break
+      case getLanguage(_params.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
+        range = [0, 100]
+        if (value > range[1]) value = range[1]
+        else if (value <= range[0]) value = range[0]
+        // SCartography.setLineWidth(value, _params.currentLayer.name)
         SMap.setLayerStyle(_params.currentLayer.name, {
-          MarkerAngle: value,
+          LineWidth: value,
         })
-      } else if (layerType === DatasetType.TEXT) {
-        // SCartography.setTextAngleOfLayer(value, _params.currentLayer.name)
+        break
+      case getLanguage(_params.language).Map_Main_Menu.STYLE_FONT_SIZE:
+        range = [1, 20]
+        if (value > range[1]) value = range[1]
+        else if (value <= range[0]) value = range[0]
+        // SCartography.setTextSizeOfLayer(value, _params.currentLayer.name)
         SMap.setLayerTextStyle(_params.currentLayer.name||"", {
-          TextAngle: value,
+          TextFont: value,
         })
-      }
-      break
-    case getLanguage(_params.language).Map_Main_Menu.STYLE_LINE_WIDTH:
-      range = [1, 20]
-      if (value > range[1]) value = range[1]
-      else if (value <= range[0]) value = range[0]
-      // SCartography.setLineWidth(value, _params.currentLayer.name)
-      SMap.setLayerStyle(_params.currentLayer.name, {
-        LineWidth: value,
-      })
-      break
-    case getLanguage(_params.language).Map_Main_Menu.STYLE_BORDER_WIDTH:
-      range = [0, 100]
-      if (value > range[1]) value = range[1]
-      else if (value <= range[0]) value = range[0]
-      // SCartography.setLineWidth(value, _params.currentLayer.name)
-      SMap.setLayerStyle(_params.currentLayer.name, {
-        LineWidth: value,
-      })
-      break
-    case getLanguage(_params.language).Map_Main_Menu.STYLE_FONT_SIZE:
-      range = [1, 20]
-      if (value > range[1]) value = range[1]
-      else if (value <= range[0]) value = range[0]
-      // SCartography.setTextSizeOfLayer(value, _params.currentLayer.name)
-      SMap.setLayerTextStyle(_params.currentLayer.name||"", {
-        TextFont: value,
-      })
-      break
-    case getLanguage(_params.language).Map_Main_Menu.STYLE_BRIGHTNESS:
-      range = [0, 200]
-      if (value > range[1]) value = range[1]
-      else if (value <= range[0]) value = range[0]
-  
-      value -= 100 // 亮度范围是 -100 至 100
-      
-      // SCartography.setGridBrightness(value, _params.currentLayer.name)
-      SMap.setLayerGridStyle(_params.currentLayer.name, {
-        Brightness: value,
-      })
-      break
-    case getLanguage(_params.language).Map_Main_Menu.CONTRAST:
-      range = [0, 200]
-      if (value > range[1]) value = range[1]
-      else if (value <= range[0]) value = range[0]
-  
-      value -= 100 // 对比度范围是 -100 至 100
-      
-      // SCartography.setGridContrast(value, _params.currentLayer.name)
-      SMap.setLayerGridStyle(_params.currentLayer.name, {
-        Contrast: value,
-      })
-      break
-  }
+        break
+      case getLanguage(_params.language).Map_Main_Menu.STYLE_BRIGHTNESS:
+        range = [0, 200]
+        if (value > range[1]) value = range[1]
+        else if (value <= range[0]) value = range[0]
+    
+        value -= 100 // 亮度范围是 -100 至 100
+        
+        // SCartography.setGridBrightness(value, _params.currentLayer.name)
+        SMap.setLayerGridStyle(_params.currentLayer.name, {
+          Brightness: value,
+        })
+        break
+      case getLanguage(_params.language).Map_Main_Menu.CONTRAST:
+        range = [0, 200]
+        if (value > range[1]) value = range[1]
+        else if (value <= range[0]) value = range[0]
+    
+        value -= 100 // 对比度范围是 -100 至 100
+        
+        // SCartography.setGridContrast(value, _params.currentLayer.name)
+        SMap.setLayerGridStyle(_params.currentLayer.name, {
+          Contrast: value,
+        })
+        break
+    }
+  })
+
 }
 
 export default {

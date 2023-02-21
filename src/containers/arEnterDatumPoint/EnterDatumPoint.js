@@ -215,7 +215,13 @@ export default class EnterDatumPoint extends Component {
         .then(async value => {
           let datasourceAlias
           if (value !== null) {
-            let alias = SMap.isAvilableAlias(value)
+            let dsAlias = value,ds,i=1
+            do{
+              ds = await SData.getDatasourceByAlias(dsAlias)
+              dsAlias = value + "_" + ++i
+            }while(ds)
+
+            let alias = dsAlias//SMap.isAvilableAlias(value)
             if (alias === value) {
               datasourceAlias = await SCollectSceneFormView.getSystemTime()
             } else {

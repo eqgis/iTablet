@@ -215,7 +215,12 @@ export default class MapCut extends React.Component<Props, State> {
                 flag = await FileTools.fileIsExist(newDatasourcePath)
               }
               //如果别名不可用 返回了新的别名 重新赋值
-              const returnName = await SMap.isAvilableAlias(newDatasourceName)
+              let ds,i=1,dsAlias = newDatasourceName
+              do {
+                ds = await SData.getDatasourceByAlias(dsAlias)
+                dsAlias = newDatasourceName + "_" + ++i
+              } while (ds)
+              const returnName = dsAlias//await SMap.isAvilableAlias(newDatasourceName)
               if (returnName !== newDatasourceName) {
                 newDatasourcePath = filePath + returnName + '.udb'
                 newDatasourceUDDPath = filePath + returnName + '.udd'
@@ -245,7 +250,12 @@ export default class MapCut extends React.Component<Props, State> {
                 this.state.saveAsName === ''
               ) {
                 const newDatasourcePath = filePath + info.datasourceName + '.udb'
-                const returnName = await SMap.isAvilableAlias(info.datasourceName)
+                let ds,i=1,dsAlias = info.datasourceName
+                do {
+                  ds = await SData.getDatasourceByAlias(dsAlias)
+                  dsAlias = info.datasourceName + "_" + ++i
+                } while (ds)
+                const returnName = dsAlias//await SMap.isAvilableAlias(info.datasourceName)
                 const datasourceParams:DatasourceConnectionInfo = {server:newDatasourcePath,engineType:EngineType.UDB,alias:returnName}
                 datasourceParams.server = newDatasourcePath
                 datasourceParams.engineType = EngineType.UDB

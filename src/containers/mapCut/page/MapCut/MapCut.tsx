@@ -17,6 +17,7 @@ import {
   TouchableOpacity,
   Platform,
   InteractionManager,
+  PixelRatio,
 } from 'react-native'
 import {
   Container,
@@ -36,7 +37,7 @@ import styles from '../../styles'
 import { getLanguage } from '../../../../language'
 import ConstPath from '../../../../constants/ConstPath'
 import FileTools from '../../../../native/FileTools'
-import { DatasetType, DatasourceConnectionInfo, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, DatasourceConnectionInfo, EngineType, Point2D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { LayerInfo } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { Props } from 'imobile_for_reactnative/components/Slider'
 
@@ -287,8 +288,21 @@ export default class MapCut extends React.Component<Props, State> {
               layersInfo.push(layerInfo)
             }
 
+            const _points: Point2D[] = []
+
+            //转换为地图坐标 add xiezhy
+            for(let i=0;i<this.state.points.length;i++){
+              const point:Point2D =  this.state.points[i]
+              if (Platform.OS === 'android') {
+                const dpi = PixelRatio.get()
+                point.x *=  dpi
+                point.y *=  dpi
+              }
+              _points.push(await SMap.pixelToMap(point))
+            }
+
             SMap.clipMap(
-              this.state.points,
+              _points,
               layersInfo,
               this.state.saveAsName,
             ).then(

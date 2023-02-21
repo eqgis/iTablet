@@ -936,7 +936,7 @@ async function getTouchProgressInfo() {
     case getLanguage(global.language).Map_Main_Menu.STYLE_LINE_WIDTH:
     case getLanguage(global.language).Map_Main_Menu.STYLE_BORDER_WIDTH:{
       if(style !== null){
-        value = style.getLineWidth()
+        value = style.getLineWidth()*10
       }
       // value = await SMap.getTaggingLineWidth(event.layerInfo.path, event.id)
       range = [1, 20]

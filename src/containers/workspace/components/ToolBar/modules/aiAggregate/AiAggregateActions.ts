@@ -23,7 +23,7 @@ async function getTaggingLayerData() {
     let hasDefaultTagging = false
     const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+_params.user.currentUser.userName+"#"})
     datasets.forEach(item => {
-      if (item.datasetName === "Default_Tagging_"+_params.user.currentUser.userName) {
+      if (item.datasetName.indexOf("Default_Tagging_"+_params.user.currentUser.userName) != -1) {
         hasDefaultTagging = true
       }
     })

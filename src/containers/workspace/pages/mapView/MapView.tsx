@@ -1922,7 +1922,7 @@ export default class MapView extends React.Component {
           let hasDefaultTagging = false
           const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+this.props.user.currentUser.userName+"#"})
           datasets.forEach(item => {
-            if (item.datasetName === "Default_Tagging_"+this.props.user.currentUser.userName) {
+            if (item.datasetName.indexOf("Default_Tagging_"+this.props.user.currentUser.userName) != -1) {
               hasDefaultTagging = true
             }
           })

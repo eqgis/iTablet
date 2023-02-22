@@ -431,7 +431,7 @@ export default class MapView extends React.Component {
 
     // 分享按钮是否可点击标识，true为可点击
     this.isShareCanClick = true
-    
+
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       this.servicesUtils = new SCoordination('online')
     } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
@@ -441,13 +441,14 @@ export default class MapView extends React.Component {
 
   /** 获取第三方的数据 */
   _getThreeTaskInfo = async () => {
-   try {
+    try {
       // 获取当前任务的ID
       let subtaskid = this.props.currentTask.resource.resourceId
       // 获取指定ID的子任务信息
-      // let threeServiceIpUrl = 'http://192.168.11.21:6932' 
+      // let threeServiceIpUrl = 'http://192.168.11.21:6932'
       let threeServiceIpUrl = this.props.threeServiceIpUrl
       let subtaskInfo = await getRwSubtaskById(subtaskid)
+      console.warn("subtaskInfo: " + JSON.stringify(subtaskInfo))
       // 拿到子任务里显示数据的列表
       let infoDataList = JSON.parse(subtaskInfo.jsonvalue)['111']['1']
 
@@ -467,7 +468,29 @@ export default class MapView extends React.Component {
         id,
       }
       let result = await SMap.addThreeTaskData(param, false)
-     
+
+      if(infoDataList.length > 0) {
+        // 定位到最后一条数据的中心点
+        const lastShapePosition = infoDataList[infoDataList.length -1].positions
+        // 获取最后一个对象的点集长度
+        const length = lastShapePosition.length
+        let totalX = 0
+        let totalY = 0
+        lastShapePosition.map(item => {
+          totalX += item.lng
+          totalY += item.lat
+        })
+
+        const point = {
+          y: totalY / length,
+          x: totalX / length,
+          pointName: "",
+        }
+
+        await SMap.toLocationPoint(point)
+      }
+
+
       let ProcessStr = subtaskInfo.process
       let preProcess = ProcessStr.substring(0,ProcessStr.length - 1)
       this.totalCount = 100
@@ -475,9 +498,9 @@ export default class MapView extends React.Component {
         this.totalCount = Math.round((infoDataList.length * 100) / preProcess)
       }
 
-   } catch (error) {
-     console.warn('mapView error: ' + error);
-   }
+    } catch (error) {
+      console.warn('mapView error: ' + error)
+    }
 
   }
 
@@ -796,21 +819,21 @@ export default class MapView extends React.Component {
     if (result.close) {
       this.setState({
         dioLog: getLanguage(GLOBAL.language).Map_Main_Menu
-          .MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE, showLog: true
+          .MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE, showLog: true,
       })
     }
 
     if (result.dark) {
       this.setState({
         dioLog: getLanguage(GLOBAL.language).Map_Main_Menu
-          .MAP_AR_AI_ASSISTANT_LAYOUT_DARK, showLog: true
+          .MAP_AR_AI_ASSISTANT_LAYOUT_DARK, showLog: true,
       })
     }
 
     if (result.fast) {
       this.setState({
         dioLog: getLanguage(GLOBAL.language).Map_Main_Menu
-          .MAP_AR_AI_ASSISTANT_LAYOUT_FAST, showLog: true
+          .MAP_AR_AI_ASSISTANT_LAYOUT_FAST, showLog: true,
       })
     }
 
@@ -819,7 +842,7 @@ export default class MapView extends React.Component {
         .MAP_AR_AI_ASSISTANT_LAYOUT_DARK)
         this.setState({
           dioLog: getLanguage(GLOBAL.language).Map_Main_Menu
-            .MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE, showLog: true
+            .MAP_AR_AI_ASSISTANT_LAYOUT_NOFEATURE, showLog: true,
         })
     }
 
@@ -1307,7 +1330,7 @@ export default class MapView extends React.Component {
   _onGetInstance = async mapView => {
     this.mapView = mapView
     this._addMap()
-    
+
   }
 
   _onLoad = async () => {
@@ -1519,7 +1542,7 @@ export default class MapView extends React.Component {
       // 获取当前任务的ID
       let subtaskid = this.props.currentTask.resource.resourceId
       // 获取指定ID的子任务信息
-      // let threeServiceIpUrl = 'http://192.168.11.21:6932' 
+      // let threeServiceIpUrl = 'http://192.168.11.21:6932'
       let threeServiceIpUrl = this.props.threeServiceIpUrl
       let subtaskInfo = await getRwSubtaskById( subtaskid)
 
@@ -1530,7 +1553,7 @@ export default class MapView extends React.Component {
 
       // 拿到子任务里显示数据的列表
       let infoDataList = JSON.parse(subtaskInfo.jsonvalue)['111']['1']
-      
+
       // 移除图层的参数
       let param = {
         id,
@@ -1541,7 +1564,7 @@ export default class MapView extends React.Component {
       let process = await SMap.removeThreeDataLayer(param, false)
 
       await this.noticeAllMenbers(process)
-      
+
       // 当需要更新进度时才去更新
       if(isUpdate && process !== ''){
         let result = await setSubtaskProcess(subtaskid, process)
@@ -1555,7 +1578,7 @@ export default class MapView extends React.Component {
     } catch (error) {
       console.warn("remove three data layer: " + error)
     }
-    
+
   }
   /** 不保存事件 */
   notSaveMap = async () => {
@@ -1564,7 +1587,7 @@ export default class MapView extends React.Component {
         this.saveThreeData(false)
       }
     } catch (error) {
-      console.warn("not save map error: " + error);
+      console.warn("not save map error: " + error)
     }
   }
 
@@ -3466,14 +3489,14 @@ export default class MapView extends React.Component {
                       GLOBAL.Type === this.props.online.share[0].module &&
                       this.props.online.share[0].progress !== undefined &&
                       this.isShareCanClick){
-                        Toast.show(getLanguage(GLOBAL.language).Prompt.SHARE_NOT_COMPLRTE, {duration:1500, position:145})
-                        // 当提示还存在时，分享按钮点击不给反应
-                        this.isShareCanClick = false
-                        const timer = setTimeout(() => {
-                          this.isShareCanClick = true
-                          clearTimeout(timer)
-                        }, 1500)
-                      }
+                      Toast.show(getLanguage(GLOBAL.language).Prompt.SHARE_NOT_COMPLRTE, {duration:1500, position:145})
+                      // 当提示还存在时，分享按钮点击不给反应
+                      this.isShareCanClick = false
+                      const timer = setTimeout(() => {
+                        this.isShareCanClick = true
+                        clearTimeout(timer)
+                      }, 1500)
+                    }
                     info.action()
                   }}
 
@@ -4637,7 +4660,7 @@ export default class MapView extends React.Component {
               height: scaleSize(60),
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: 'transparent'
+              backgroundColor: 'transparent',
             }}
           >
             <Image
@@ -4678,7 +4701,7 @@ export default class MapView extends React.Component {
               height: scaleSize(60),
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: 'transparent'
+              backgroundColor: 'transparent',
             }}
           >
             <Image
@@ -4699,7 +4722,7 @@ export default class MapView extends React.Component {
               height: scaleSize(60),
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: 'transparent'
+              backgroundColor: 'transparent',
             }}
           >
             <Image

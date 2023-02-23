@@ -43,19 +43,23 @@ class LangchaoProtocol extends Component<Props, State> {
   renderWebView = () => {
     let source
     if (Platform.OS === 'android') {
-      source =
-        this.props.language === 'CN'
-          ? {
-            uri: 'file:///android_asset/SuperMapUserPrivacyPolicy_CN.html',
-          }
-          : {
-            uri: 'file:///android_asset/SuperMapUserPrivacyPolicy_EN.html',
-          }
+      // source =
+      //   this.props.language === 'CN'
+      //     ? {
+      //       uri: 'file:///android_asset/SuperMapUserPrivacyPolicy_CN.html',
+      //     }
+      //     : {
+      //       uri: 'file:///android_asset/SuperMapUserPrivacyPolicy_EN.html',
+      //     }
+      source = {
+        uri: 'file:///android_asset/一键呼叫隐私政策.html'
+      }
     } else {
-      source =
-        this.props.language === 'CN'
-          ? getHtml().LangchaoUserPrivacyPolicy_CN
-          : getHtml().LangchaoUserPrivacyPolicy_EN
+      // source =
+      //   this.props.language === 'CN'
+      //     ? getHtml().LangchaoUserPrivacyPolicy_CN
+      //     : getHtml().LangchaoUserPrivacyPolicy_EN
+      source = getHtml().LangchaoUserPrivacyPolicy_CN
     }
     return (
       <WebView

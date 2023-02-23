@@ -11,7 +11,8 @@ function getJson(): typeof jsonData {
 
 /********************** html资源 **********************/
 
-const LangchaoUserPrivacyPolicy_CN = require("./LangchaoUserPrivacyPolicy_CN.html")
+// const LangchaoUserPrivacyPolicy_CN = require("./LangchaoUserPrivacyPolicy_CN.html")
+const LangchaoUserPrivacyPolicy_CN = require("./一键呼叫隐私政策.html")
 const LangchaoUserPrivacyPolicy_EN = require("./LangchaoUserPrivacyPolicy_EN.html")
 
 const htmlData = {

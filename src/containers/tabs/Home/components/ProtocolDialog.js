@@ -11,6 +11,7 @@ import { Dialog, CheckBox, MTBtn } from '../../../../components'
 import { setSpText, Toast, fixedSize } from '../../../../utils'
 import { color } from '../../../../styles'
 import { getLanguage } from '../../../../language'
+import { getHtml } from '../../../../../applets/langchaoDemo/src/assets/data/index'
 
 export default class ProtocolDialog extends Component {
   props: {
@@ -51,19 +52,23 @@ export default class ProtocolDialog extends Component {
   renderWebView = () => {
     let source
     if (Platform.OS === 'android') {
-      source =
-        this.props.language === 'CN'
-          ? {
-            uri: 'file:///android_asset/SuperMapUserPrivacyPolicy_CN.html',
-          }
-          : {
-            uri: 'file:///android_asset/SuperMapUserPrivacyPolicy_EN.html',
-          }
+      // source =
+      //   this.props.language === 'CN'
+      //     ? {
+      //       uri: 'file:///android_asset/SuperMapUserPrivacyPolicy_CN.html',
+      //     }
+      //     : {
+      //       uri: 'file:///android_asset/SuperMapUserPrivacyPolicy_EN.html',
+      //     }
+      source = {
+        uri: 'file:///android_asset/一键呼叫隐私政策.html'
+      }
     } else {
-      source =
-        this.props.language === 'CN'
-          ? require('../../../../assets/Protocol/SuperMapUserPrivacyPolicy_CN.html')
-          : require('../../../../assets/Protocol/SuperMapUserPrivacyPolicy_EN.html')
+      // source =
+      //   this.props.language === 'CN'
+      //     ? require('../../../../assets/Protocol/SuperMapUserPrivacyPolicy_CN.html')
+      //     : require('../../../../assets/Protocol/SuperMapUserPrivacyPolicy_EN.html')
+      source = getHtml().LangchaoUserPrivacyPolicy_CN
     }
     return (
       <WebView

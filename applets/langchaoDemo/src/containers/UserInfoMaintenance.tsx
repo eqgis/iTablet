@@ -91,18 +91,22 @@ class UserInfoMaintenance extends Component<Props, State> {
       EndTime: null, // formDateBeijing,
       SysOrgid: this.props.departmentId,
     }
-    const data = await users(params)
-    if(data) {
+    const dataInfo = await users(params)
+    if(dataInfo) {
+      const data = dataInfo[0]
+      if(data) {
       // to do
-      this.setState({
-        userId: data?.code || '',
-        userName: data?.name || '',
-        gender: '男',
-        phoneNumber: data?.phone || data?.mobilePhone || "",
-        organization: data?.SysOrgName || '',
-        project: '项目',
-      })
+        this.setState({
+          userId: data?.code || '',
+          userName: data?.name || '',
+          gender: data?.gender || '男',
+          phoneNumber: data?.phone || data?.mobilePhone || "",
+          organization: data?.sysOrgName || '',
+          project: data?.proName || '项目',
+        })
+      }
     }
+
   }
 
   confirm = async () => {

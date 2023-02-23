@@ -158,9 +158,12 @@ class LangChaoLogin extends Component<Props, State> {
       EndTime: null,
       SysOrgid: this.props.departmentId,
     }
-    const data = await users(params)
-    if(data) {
-      this.props.setLangchaoUserInfo(data)
+    const dataInfo = await users(params)
+    if(dataInfo) {
+      const data = dataInfo[0]
+      if(data) {
+        this.props.setLangchaoUserInfo(data)
+      }
     }
   }
 

@@ -360,18 +360,20 @@ export const users = async (params: UserInfoType) => {
     console.log('error', error)
     printLog(`\n users error : ${JSON.stringify(error)}`)
     return null
-    // return {
-    //   id: 'hhh',
-    //   code: '101',
-    //   name: '章三',
-    //   sysOrgName: '11111',
-    //   email: '',
-    //   phone: '12345678910',
-    //   gender: '男',
-    //   proCode: '101',
-    //   proName: '22222',
-    //   mobilePhone: '12345678910',
-    // }
+    // return [
+    //   {
+    //     id: 'hhh',
+    //     code: '101',
+    //     name: '章三',
+    //     sysOrgName: '11111',
+    //     email: '',
+    //     phone: '12345678910',
+    //     gender: '女',
+    //     proCode: '101',
+    //     proName: '22222',
+    //     mobilePhone: '12345678910',
+    //   }
+    // ]
   }
 
 }

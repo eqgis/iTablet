@@ -514,7 +514,7 @@ function tour() {
             false, // 轨迹图层都设置为不可编辑
             'tour',
           )
-          tourLayer = tagginData.layerName
+          tourLayer = tagginData.name
           cb && cb()
         }
         Toast.show(value)

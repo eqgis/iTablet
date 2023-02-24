@@ -9,7 +9,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>浪潮呼叫中心</string>
+	<string>呼叫中心</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>

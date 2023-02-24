@@ -24,7 +24,7 @@
     "fbjs-scripts": "^3.0.1",
     "i": "^0.3.7",
     "immutable": "^4.0.0",
-    "imobile_for_reactnative": "^1.6.13",
+    "imobile_for_reactnative": "file:imobile_for_reactnative",
     "js-base64": "^3.7.4",
     "jsencrypt": "^3.3.1",
     "moment": "^2.29.1",

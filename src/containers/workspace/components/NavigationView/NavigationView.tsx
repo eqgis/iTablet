@@ -180,7 +180,7 @@ export default class NavigationView extends React.Component {
           }
 
           const prjXml = await SData.getDatasetPrjCoordSys({datasetName: dataset.datasetName, datasourceName: dataset.datasourceName})
-          const point = (await SData.CoordSysTranslatorGPS(prjXml, [{x, y}]))[0]
+          const point = (await SData.CoordSysTranslatorGPSToPrj(prjXml, [{x, y}]))[0]
           const bounds = await SData.getDatasetBounds({dataset: dataset.datasetName, datasource: dataset.datasourceName})
 
           if(point.x >= bounds.left && point.x <= bounds.right && point.y >= bounds.bottom && point.y <= bounds.top) {
@@ -465,7 +465,7 @@ export default class NavigationView extends React.Component {
               style.setLineColor(0,  145, 239)
               style.setLineStyle(9)
               const mapPrj = await SMap.getPrjCoordSys()
-              const points = await SData.CoordSysTranslatorGPS(mapPrj, [doorPoint, { x: global.ENDX, y: global.ENDY}])
+              const points = await SData.CoordSysTranslatorGPSToPrj(mapPrj, [doorPoint, { x: global.ENDX, y: global.ENDY}])
 
               await SMap.addGeometryToTrackingLayer(
                 {type: GeometryType.GEOLINE, points:[points]},
@@ -582,7 +582,7 @@ export default class NavigationView extends React.Component {
               style.setLineWidth(1)
               style.setLineColor(0,  145, 239)
               style.setLineStyle(9)
-              const points = await SData.CoordSysTranslatorGPS(mapPrj, [doorPoint, { x: global.ENDX, y: global.ENDY}])
+              const points = await SData.CoordSysTranslatorGPSToPrj(mapPrj, [doorPoint, { x: global.ENDX, y: global.ENDY}])
 
               await SMap.addGeometryToTrackingLayer(
                 {type: GeometryType.GEOLINE, points:[[points[0], points[1]]]},
@@ -783,7 +783,7 @@ export default class NavigationView extends React.Component {
       style.setLineColor(0,  191, 255)
       style.setLineStyle(15)
       const mapPrj = await SMap.getPrjCoordSys()
-      const points = await SData.CoordSysTranslatorGPS(mapPrj, result[0].pathPoints)
+      const points = await SData.CoordSysTranslatorGPSToPrj(mapPrj, result[0].pathPoints)
 
       await SMap.addGeometryToTrackingLayer({type: GeometryType.GEOLINE, points:[points]},'线路',style,)
       await SMap.moveToPoint({ x: global.STARTX, y: global.STARTY })
@@ -1140,7 +1140,7 @@ export default class NavigationView extends React.Component {
 
 export async function addOutdoorStartEndGuideLine (line1Start: Point2D, line1End: Point2D, line2Start: Point2D, line2End: Point2D, mapPrj: string){
 
-  const points = await SData.CoordSysTranslatorGPS(mapPrj, [
+  const points = await SData.CoordSysTranslatorGPSToPrj(mapPrj, [
     {...line1Start},
     {...line1End},
     {...line2Start},

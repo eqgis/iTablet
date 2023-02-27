@@ -226,7 +226,7 @@ export default class NavigationStartButton extends React.Component {
         const dataset = indoorDatasource[0][i]
         const bounds = await SData.getDatasetBounds({dataset: dataset.datasetName, datasource: dataset.datasourceName})
         const prjcoord = await SData.getDatasetPrjCoordSys({datasetName: dataset.datasetName, datasourceName: dataset.datasourceName})
-        const point = (await SData.CoordSysTranslatorGPS(prjcoord, [{x, y}]))[0]
+        const point = (await SData.CoordSysTranslatorGPSToPrj(prjcoord, [{x, y}]))[0]
 
         if(point.x >= bounds.left && point.x <= bounds.right && point.y >= bounds.bottom && point.y <= bounds.top) {
           isIndoor = true
@@ -254,7 +254,7 @@ export default class NavigationStartButton extends React.Component {
       let dataset = targetDatasource[i].filter(dataset => dataset.datasetName === datasetName)[0]
       const bounds = await SData.getDatasetBounds({dataset: dataset.datasetName, datasource: dataset.datasourceName})
       const prjcoord = await SData.getDatasetPrjCoordSys({datasetName: dataset.datasetName, datasourceName: dataset.datasourceName})
-      const point = (await SData.CoordSysTranslatorGPS(prjcoord, [{x: position.x, y: position.y}]))[0]
+      const point = (await SData.CoordSysTranslatorGPSToPrj(prjcoord, [{x: position.x, y: position.y}]))[0]
 
       if(point.x >= bounds.left && point.x <= bounds.right && point.y >= bounds.bottom && point.y <= bounds.top) {
         inbounds = true

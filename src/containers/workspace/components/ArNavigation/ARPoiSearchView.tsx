@@ -252,14 +252,14 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
           const roadNetDataset = ARNaviModule.getData().naviDatasetInfo
           let result: RouteAnalyzeResult | null | undefined = null
           if('address' in this.state.selectedPoi) {
-            const GPSPoints = await SData.CoordSysTranslatorGPS(await SMap.getPrjCoordSys(),[this.state.selectedPoi.location])
+            const GPSPoints = await SData.CoordSysTranslatorGPSToPrj(await SMap.getPrjCoordSys(),[this.state.selectedPoi.location])
             result = await this.OnlineService?.routeAnalyze({
               startPoint: currentLocation.ll,
               endPoint: GPSPoints[0],
               to: 910111
             })
           } else if(roadNetDataset) {
-            const GPSPoints = await SData.CoordSysTranslatorGPS(await SMap.getPrjCoordSys(),[this.state.selectedPoi.location])
+            const GPSPoints = await SData.CoordSysTranslatorGPSToPrj(await SMap.getPrjCoordSys(),[this.state.selectedPoi.location])
             result = await SARMap.routeAnalyze({
               datasourcAlias: roadNetDataset.datasourceAlias,
               datasetName: roadNetDataset.datasetName,

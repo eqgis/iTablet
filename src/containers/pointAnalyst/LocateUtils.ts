@@ -1,4 +1,4 @@
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 import NavigationService from '../NavigationService'
 import { Toast, LayerUtils } from '../../utils'
 import { getLanguage } from '../../language'
@@ -13,7 +13,7 @@ import { getLanguage } from '../../language'
  */
 async function SearchPoiInMapView(item, cb = () => {}) {
   if (!item.is3D) {
-    let location = await SMap.getMapcenterPosition()
+    const location = await SMap.getMapcenterPosition()
     this.location = location
     if (global.PoiInfoContainer) {
       global.PoiInfoContainer.setState({
@@ -53,13 +53,13 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
         key: key,
       }, 0, 100)
     }
-    let location = await SMap.getMapcenterPosition()
+    const location = await SMap.getMapcenterPosition()
     if (result?.data?.length > 0) {
       NavigationService.getCurrent() !== 'MapStack' && NavigationService.navigate('MapStack', {screen: 'MapView'})
 
       const resultList = []
       for (const dataItem of result.data) {
-        let name, x, y
+        let name, x=0, y=0
         for (const _item of dataItem) {
           if (_item.name.toLowerCase() === 'smid' && name === '') {
             name = _item.value
@@ -74,7 +74,9 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
             y = parseFloat(_item.value)
           }
         }
-        let _location = await SMap._translateLocationToLongitudeLatitude({x, y})
+        const locations = await SData.CoordSysTranslatorPrjToGPS(await SMap.getPrjCoordSys(),[{x, y}])
+        const _location =  locations[0]
+        // let _location = await SMap._translateLocationToLongitudeLatitude({x, y})
         // SMap.getLoca
         resultList.push({
           pointName: name || '',
@@ -131,7 +133,7 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
               })
             } else {
               // 没有搜索结果,在当前位置添加callout
-              let _location = await SMap.getCurrentLocation()
+              const _location = await SMap.getCurrentLocation()
               const resultList = []
               resultList.push({
                 pointName: key || '',
@@ -169,7 +171,7 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
 
 function getDistance(p1, p2) {
   //经纬度差值转距离 单位 m
-  let R = 6371393
+  const R = 6371393
   return Math.abs(
     ((p2.x - p1.x) *
       Math.PI *
@@ -193,11 +195,11 @@ function compare(prop) {
  */
 function getSearchResult(params, location, cb = () => {}) {
   let searchStr = ''
-  let keys = Object.keys(params)
+  const keys = Object.keys(params)
   keys.map(key => {
     searchStr += `&${key}=${params[key]}`
   })
-  let url = `https://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos.json?&key=tY5A7zRBvPY0fTHDmKkDjjlr${searchStr}`
+  const url = `https://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos.json?&key=tY5A7zRBvPY0fTHDmKkDjjlr${searchStr}`
   //console.warn(url)
   fetch(url)
     .then(response => {
@@ -224,7 +226,7 @@ function getSearchResult(params, location, cb = () => {}) {
                 )
               } else {
                 poiInfos = data2.poiInfos
-                let resultList = poiInfos.map(item => {
+                const resultList = poiInfos.map(item => {
                   return {
                     pointName: item.name,
                     x: item.location.x,
@@ -248,7 +250,7 @@ function getSearchResult(params, location, cb = () => {}) {
               }
             })
         } else {
-          let resultList = poiInfos.map(item => {
+          const resultList = poiInfos.map(item => {
             return {
               pointName: item.name,
               x: item.location.x,

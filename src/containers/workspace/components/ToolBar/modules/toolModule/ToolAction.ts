@@ -73,7 +73,7 @@ async function select(type) {
 
 function cancelSelect() {
   ToolbarModule.getParams().setSelection(null)
-  SMap.clearSelection()
+  // SMap.clearSelection()
   select()
 }
 
@@ -851,7 +851,7 @@ async function close(type) {
     type === ConstToolType.SM_MAP_TOOL_POINT_SELECT
   ) {
     SMap.setAction(Action.PAN)
-    SMap.clearSelection()
+    // SMap.clearSelection()
     _params.setToolbarVisible(false)
   }
   // else if (type === ConstToolType.SM_MAP_TOOL_TAGGING_SELECT) {

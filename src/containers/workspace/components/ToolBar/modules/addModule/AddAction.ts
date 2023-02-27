@@ -4,6 +4,7 @@ import { Toast, LayerUtils } from '../../../../../../utils'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import ToolbarModule from '../ToolbarModule'
 import AddData from './AddData'
+import { LayerStyle } from 'imobile_for_reactnative/NativeModule/interfaces/cartography/SCartographyType'
 
 /**
  * containerType为list时，listAction为列表行点击事件
@@ -99,7 +100,7 @@ async function listAction(type, params = {}) {
       params.section &&
       params.section.title === getLanguage(_params.language).Profile.SYMBOL
     ) {
-      let filePath = global.homePath + params.item.path
+      const filePath = global.homePath + params.item.path
       ToolbarModule.addData({
         currentSymbolFile: filePath,
         lastData: ToolbarModule.getData().data,
@@ -197,10 +198,13 @@ async function commit() {
         resultArr[i].description !== 'NULL' &&
         JSON.parse(resultArr[i].description)
       if (description && description.geoStyle) {
-        await SMap._setLayerStyle(
-          resultArr[i].name,
-          JSON.stringify(description.geoStyle),
-        )
+        const layerStyle:LayerStyle = description.geoStyle
+        layerStyle.MarkerSize = {width:8,height:8}
+        await SMap.setLayerStyle(resultArr[i].name||"",layerStyle)
+        // await SMap._setLayerStyle(
+        //   resultArr[i].name,
+        //   JSON.stringify(description.geoStyle),
+        // )
       }
     }
     if (resultArr && resultArr.length > 0) result[key] = resultArr
@@ -229,13 +233,13 @@ async function commit() {
   }
 }
 
-let onSelectPath = path => {
+const onSelectPath = path => {
   const _params = ToolbarModule.getParams()
   let { currentSymbolPath } = ToolbarModule.getData()
   if (!currentSymbolPath) {
     currentSymbolPath = ''
   }
-  let symbolPath = currentSymbolPath + '/' + path
+  const symbolPath = currentSymbolPath + '/' + path
   ToolbarModule.addData({
     currentSymbolPath: symbolPath,
   })

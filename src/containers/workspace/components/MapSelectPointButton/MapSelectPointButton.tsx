@@ -136,7 +136,7 @@ export default class MapSelectPointButton extends React.Component {
           }
 
           const prjXml = await SData.getDatasetPrjCoordSys({datasetName: dataset.datasetName, datasourceName: dataset.datasourceName})
-          const point = (await SData.CoordSysTranslatorGPS(prjXml, [{x, y}]))[0]
+          const point = (await SData.CoordSysTranslatorGPSToPrj(prjXml, [{x, y}]))[0]
           const bounds = await SData.getDatasetBounds({dataset: dataset.datasetName, datasource: dataset.datasourceName})
 
           if(point.x >= bounds.left && point.x <= bounds.right && point.y >= bounds.bottom && point.y <= bounds.top) {
@@ -352,7 +352,7 @@ export default class MapSelectPointButton extends React.Component {
               style.setLineStyle(9)
 
               const mapPrj = await SMap.getPrjCoordSys()
-              const points = await SData.CoordSysTranslatorGPS(mapPrj, [doorPoint, { x: global.ENDX, y: global.ENDY}])
+              const points = await SData.CoordSysTranslatorGPSToPrj(mapPrj, [doorPoint, { x: global.ENDX, y: global.ENDY}])
 
               await SMap.addGeometryToTrackingLayer(
                 {type: GeometryType.GEOLINE, points: [points]},
@@ -455,7 +455,7 @@ export default class MapSelectPointButton extends React.Component {
               style.setLineWidth(1)
               style.setLineColor(0,  145, 239)
               style.setLineStyle(9)
-              const points = await SData.CoordSysTranslatorGPS(mapPrj, [doorPoint, { x: global.ENDX, y: global.ENDY}])
+              const points = await SData.CoordSysTranslatorGPSToPrj(mapPrj, [doorPoint, { x: global.ENDX, y: global.ENDY}])
 
               await SMap.addGeometryToTrackingLayer(
                 {type: GeometryType.GEOLINE, points:[points]},

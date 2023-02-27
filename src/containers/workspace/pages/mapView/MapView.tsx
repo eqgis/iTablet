@@ -1137,7 +1137,7 @@ export default class MapView extends React.Component {
 
         for (const item of guideLines) {
 
-          const points = await SData.CoordSysTranslatorGPS(mapPrj, [
+          const points = await SData.CoordSysTranslatorGPSToPrj(mapPrj, [
             { x: item.startX, y: item.startY },
             { x: item.endX, y: item.endY },
           ])
@@ -1188,7 +1188,7 @@ export default class MapView extends React.Component {
           const mapPrj = await SMap.getPrjCoordSys()
 
           for (const item of guideLines) {
-            const points = await SData.CoordSysTranslatorGPS(mapPrj, [
+            const points = await SData.CoordSysTranslatorGPSToPrj(mapPrj, [
               { x: item.startX, y: item.startY },
               { x: item.endX, y: item.endY },
             ])
@@ -3768,7 +3768,7 @@ export default class MapView extends React.Component {
         const dataset = indoorDatasource[0][i]
         const bounds = await SData.getDatasetBounds({dataset: dataset.datasetName, datasource: dataset.datasourceName})
         const prjcoord = await SData.getDatasetPrjCoordSys({datasetName: dataset.datasetName, datasourceName: dataset.datasourceName})
-        const point = (await SData.CoordSysTranslatorGPS(prjcoord, [{x, y}]))[0]
+        const point = (await SData.CoordSysTranslatorGPSToPrj(prjcoord, [{x, y}]))[0]
 
         if(point.x >= bounds.left && point.x <= bounds.right && point.y >= bounds.bottom && point.y <= bounds.top) {
           isIndoor = true
@@ -4325,7 +4325,7 @@ export default class MapView extends React.Component {
       style.setLineColor(0,  191, 255)
       style.setLineStyle(15)
       const mapPrj = await SMap.getPrjCoordSys()
-      const points = await SData.CoordSysTranslatorGPS(mapPrj, result[0].pathPoints)
+      const points = await SData.CoordSysTranslatorGPSToPrj(mapPrj, result[0].pathPoints)
 
       await SMap.addGeometryToTrackingLayer({type: GeometryType.GEOLINE, points:[points]},'线路',style,)
     } else {
@@ -4966,6 +4966,7 @@ export default class MapView extends React.Component {
     return (
       <>
         <SMARMapView
+          moduleId={this.getModueId()}
           customStyle={this.props.isAR ? undefined : styles.hidden}
           onLoad={this._onLoad}
           onSingleClick={async () => {

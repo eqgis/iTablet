@@ -70,10 +70,10 @@ android/app/build/
 android/app/src/main/assets/Trial_License.slm
 android/.DS_Store
 src/.DS_Store
-android/app/src/main/assets/*.so
-android/app/src/main/assets/python_android_assets/*.so
-android/app/src/main/assets/python_android_assets/*PIL.zip
-android/app/src/main/assets/python_android_assets/*python2.7.zip
+# android/app/src/main/assets/*.so
+# android/app/src/main/assets/python_android_assets/*.so
+# android/app/src/main/assets/python_android_assets/*PIL.zip
+# android/app/src/main/assets/python_android_assets/*python2.7.zip
 android/app/src/main/assets/bundles/*
 android/app/src/main/assets/base.zip
 

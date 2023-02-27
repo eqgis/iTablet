@@ -274,7 +274,7 @@ async function touchCallback(event) {
       break
     case TouchType.MAP_SELECT_POINT: {
       const mapPt = await SMap.pixelToMap({ x: event.screenPoint.x, y: event.screenPoint.y })
-      const points = await SData.CoordSysTranslatorGPS(await SMap.getPrjCoordSys(), [mapPt])
+      const points = await SData.CoordSysTranslatorGPSToPrj(await SMap.getPrjCoordSys(), [mapPt])
       const point = points[0]
       // const point = await SMap.pixelPointToMap(event.screenPoint)
       global.MAPSELECTPOINT.updateLatitudeAndLongitude(point)

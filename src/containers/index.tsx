@@ -410,7 +410,7 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="RegistrationFastPage" component={RegistrationFastPage} options={modalOption(params)} />
       <Stack.Screen name="RegistrationPage" component={RegistrationPage} options={modalOption(params)} />
       <Stack.Screen name="InterpolationAnalystView" component={InterpolationAnalystView} options={modalOption(params)} />
-      <Stack.Screen name="InterpolationAnalystDetailView" component={InterpolationAnalystDetailView} />
+      <Stack.Screen name="InterpolationAnalystDetailView" component={InterpolationAnalystDetailView} options={modalOption(params)} />
       <Stack.Screen name="SecondMapSettings" component={SecondMapSettings} options={modalOption(params)} />
       <Stack.Screen name="SecondMapSettings1" component={SecondMapSettings} options={modalOption(params)} />
       <Stack.Screen name="SecondMapSettings2" component={SecondMapSettings} options={modalOption(params)} />

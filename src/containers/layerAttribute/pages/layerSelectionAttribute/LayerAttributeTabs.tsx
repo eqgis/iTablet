@@ -25,7 +25,7 @@ import {
 import { getLanguage } from '../../../../language'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import LayerAttributeAdd from '../layerAttributeAdd'
-import { DatasetInfo, GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetInfo, GeometryType, QueryParameter } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
 import { Action, LayerInfo } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 const styles = StyleSheet.create({
@@ -201,7 +201,7 @@ export default class LayerAttributeTabs extends React.Component {
         const id = res[res.length-1].geometry?.id || -1
         // debugger
         // let id = await SMap.getCurrentGeometryID(this.props.currentLayer.path)
-        await SMap.addToLayerSelection(layerInfo.path,[id])
+        await SMap.addToLayerSelection(layerInfo.path||"",[id])
         this.props.setSelection && this.props.setSelection([{
           layerInfo: layerInfo,
           ids: [id],

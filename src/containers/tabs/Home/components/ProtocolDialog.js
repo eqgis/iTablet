@@ -68,7 +68,11 @@ export default class ProtocolDialog extends Component {
       //   this.props.language === 'CN'
       //     ? require('../../../../assets/Protocol/SuperMapUserPrivacyPolicy_CN.html')
       //     : require('../../../../assets/Protocol/SuperMapUserPrivacyPolicy_EN.html')
-      source = getHtml().LangchaoUserPrivacyPolicy_CN
+      // source = getHtml().LangchaoUserPrivacyPolicy_CN
+      source = {
+        html: getHtml().LangchaoUserPrivacyPolicy_CN,
+        baseUrl: "",
+      }
     }
     return (
       <WebView

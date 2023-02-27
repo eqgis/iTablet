@@ -59,7 +59,11 @@ class LangchaoProtocol extends Component<Props, State> {
       //   this.props.language === 'CN'
       //     ? getHtml().LangchaoUserPrivacyPolicy_CN
       //     : getHtml().LangchaoUserPrivacyPolicy_EN
-      source = getHtml().LangchaoUserPrivacyPolicy_CN
+      // source = getHtml().LangchaoUserPrivacyPolicy_CN
+      source = {
+        html: getHtml().LangchaoUserPrivacyPolicy_CN,
+        baseUrl: "",
+      }
     }
     return (
       <WebView

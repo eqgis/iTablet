@@ -13,7 +13,8 @@ import { getLanguage } from '../../language'
  */
 async function SearchPoiInMapView(item, cb = () => {}) {
   if (!item.is3D) {
-    const location = await SMap.getMapcenterPosition()
+    const location = (await SData.CoordSysTranslatorPrjToGPS(await SMap.getPrjCoordSys(),[await SMap.getMapCenter()]))[0]
+    // const location = await SMap.getMapcenterPosition()
     this.location = location
     if (global.PoiInfoContainer) {
       global.PoiInfoContainer.setState({
@@ -53,7 +54,8 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
         key: key,
       }, 0, 100)
     }
-    const location = await SMap.getMapcenterPosition()
+    const location = (await SData.CoordSysTranslatorPrjToGPS(await SMap.getPrjCoordSys(),[await SMap.getMapCenter()]))[0]
+    // const location = await SMap.getMapcenterPosition()
     if (result?.data?.length > 0) {
       NavigationService.getCurrent() !== 'MapStack' && NavigationService.navigate('MapStack', {screen: 'MapView'})
 

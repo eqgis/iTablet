@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from 'react-native'
 import { Container, SearchBar } from '../../components'
-import { SScene, SMap } from 'imobile_for_reactnative'
+import { SScene, SMap, SData } from 'imobile_for_reactnative'
 import NavigationService from '../NavigationService'
 import { scaleSize, screen, setSpText, Toast } from '../../utils'
 import styles from './styles'
@@ -407,7 +407,8 @@ export default class PointAnalyst extends Component {
       location = await SScene.getSceneCenter()
       currentLocation = location
     } else {
-      location = await SMap.getMapcenterPosition()
+      location = (await SData.CoordSysTranslatorPrjToGPS(await SMap.getPrjCoordSys(),[await SMap.getMapCenter()]))[0]
+      // location = await SMap.getMapcenterPosition()
       const _location = await SMap.getCurrentLocation()
       currentLocation = { x: _location.longitude, y: _location.latitude }
     }

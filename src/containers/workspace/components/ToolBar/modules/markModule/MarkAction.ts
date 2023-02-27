@@ -345,7 +345,7 @@ function back() {
     _params.type.indexOf('MAP_MARKS_TAGGING_STYLE') !== -1
   ) {
     SMap.cancel()
-    SMap.clearSelection()
+    // SMap.clearSelection()
     _params.setSelection()
     const type = ConstToolType.SM_MAP_MARKS_TAGGING_SELECT
 
@@ -895,7 +895,7 @@ function toolbarBack() {
     _params.type.indexOf('MAP_MARKS_TAGGING_STYLE') !== -1
   ) {
     SMap.cancel()
-    SMap.clearSelection()
+    // SMap.clearSelection()
     _params.setSelection()
     const type = ConstToolType.SM_MAP_MARKS_TAGGING_SELECT
 

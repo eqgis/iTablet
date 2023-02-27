@@ -42,13 +42,13 @@ export default class LayerTopBar extends React.Component {
     canRelated?: boolean, // 是否可点击关联
     hasTabBtn?: boolean, // 是否可点击关联
     canAddField?: boolean, // 是否可点击添加属性
-    orientation?: String,
+    orientation?: string,
     canDelete?: boolean, //是否可以点击删除
     currentIndex?: Object,//点击的数据集字段位置
     selectionAttribute?: Object,//判断是否为采集或标注功能跳转属性
     islayerSelection?: Object,//当前属性拦选中的属性的图层名
     layerAttribute?:Object,//是否为地图界面跳转属性
-    type?:String,//我的里面会传一个type过来
+    type?:string,//我的里面会传一个type过来
     attributes?:Object,
     // layerName?:String,
     layerInfo?: Object,
@@ -131,7 +131,7 @@ export default class LayerTopBar extends React.Component {
   // 多媒体采集
   captureImage = async ()=> {
     let smID = -1
-    let limit = 9
+    const limit = 9
     for (let i = 0; i < this.props.attributes.data[this.props.currentIndex].length; i++) {
       if (this.props.attributes.data[this.props.currentIndex][i].name === 'SmID') {
         smID = this.props.attributes.data[this.props.currentIndex][i].value
@@ -168,13 +168,14 @@ export default class LayerTopBar extends React.Component {
         datasetName = layerInfo.datasetName // 标注图层名称
       }
       if(this.props.islayerSelection){
-        let info = await SMap._getDataNameByLayer(global.SelectedSelectionAttribute.layerInfo.path)
-        datasetName = info.datasetName
-        datasourceAlias = info.datasourceAlias
+        const info = await SMap.getLayerInfo(global.SelectedSelectionAttribute.layerInfo.path||"")
+        // let info = await SMap._getDataNameByLayer(global.SelectedSelectionAttribute.layerInfo.path)
+        datasetName = info?.datasetName ||""
+        datasourceAlias = info?.datasourceAlias || ""
       }
 
       // 跳转到图像编辑页面
-      let info = await SMediaCollector.getMediaInfo(layerInfo.name, smID)
+      const info = await SMediaCollector.getMediaInfo(layerInfo.name, smID)
       const mediaPaths = info?.mediaFilePaths || []
       if(mediaPaths.length > 0) {
         NavigationService.navigate('MediaEdit', {
@@ -200,7 +201,7 @@ export default class LayerTopBar extends React.Component {
           // cb: async mediaPaths => {
             try {
               if (global.coworkMode) {
-                let resourceIds = [],
+                const resourceIds = [],
                   _mediaPaths = [] // 保存修改名称后的图片地址
                 let name = '', suffix = ''
                 let dest = await FileTools.appendingHomeDirectory(ConstPath.UserPath + this.props.currentUser.userName + '/' + ConstPath.RelativeFilePath.Media)
@@ -217,7 +218,7 @@ export default class LayerTopBar extends React.Component {
                     dest += `${name}.${suffix}`
                     mediaPath = await RNFS.copyAssetsFileIOS(mediaPath, dest, 0, 0)
                   } else if (mediaPath.indexOf('content://') === 0) { // 处理android相册文件
-                    let filePath = await FileTools.getContentAbsolutePath(mediaPath)
+                    const filePath = await FileTools.getContentAbsolutePath(mediaPath)
                     name = filePath.substring(filePath.lastIndexOf('/') + 1, filePath.lastIndexOf('.'))
                     suffix = filePath.substr(filePath.lastIndexOf('.') + 1)
                     dest += `${name}.${suffix}`
@@ -228,7 +229,7 @@ export default class LayerTopBar extends React.Component {
                     suffix = mediaPath.substr(mediaPath.lastIndexOf('.') + 1)
                     dest += `${name}.${suffix}`
                   }
-                  let resourceId = await this.onlineServicesUtils.uploadFileWithCheckCapacity(
+                  const resourceId = await this.onlineServicesUtils.uploadFileWithCheckCapacity(
                     mediaPath,
                     `${name}.${suffix}`,
                     'PHOTOS',
@@ -237,12 +238,12 @@ export default class LayerTopBar extends React.Component {
                   if (resourceId) {
                     resourceIds.push(resourceId)
 
-                    let _newPath = `${mediaPath.replace(name, resourceId)}`
+                    const _newPath = `${mediaPath.replace(name, resourceId)}`
                     _mediaPaths.push(_newPath)
                   }
                 }
                 if (resourceIds.length > 0) {
-                  let result = await SMediaCollector.addMedia({
+                  const result = await SMediaCollector.addMedia({
                     datasourceName,
                     datasetName,
                     mediaPaths,
@@ -268,7 +269,7 @@ export default class LayerTopBar extends React.Component {
                   })
                 }
               } else {
-                let result = await SMediaCollector.addMedia({
+                const result = await SMediaCollector.addMedia({
                   datasourceName: datasourceAlias,
                   datasetName: datasetName,
                   mediaPaths,
@@ -419,7 +420,7 @@ export default class LayerTopBar extends React.Component {
       ]
     }
 
-    let items = []
+    const items = []
     data.forEach((item, index) => {
       if (index !== 0) {
         item = Object.assign(item, {

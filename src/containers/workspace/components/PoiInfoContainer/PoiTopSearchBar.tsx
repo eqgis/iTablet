@@ -9,7 +9,7 @@ import { SearchBar, Header } from '../../../../components'
 import { scaleSize, screen } from '../../../../utils'
 import { color } from '../../../../styles'
 import { getLanguage } from '../../../../language'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 import NavigationService from '../../../NavigationService'
 import HardwareBackHandler from '../../../../components/HardwareBackHandler'
 
@@ -115,7 +115,8 @@ export default class PoiTopSearchBar extends React.Component {
         onSubmitEditing={async searchKey => {
           global.PoiInfoContainer.clear()
           //zhangxt 2020-10-12 补全接口需要的参数
-          let location = await SMap.getMapcenterPosition()
+          const location = (await SData.CoordSysTranslatorPrjToGPS(await SMap.getPrjCoordSys(),[await SMap.getMapCenter()]))[0]
+          // let location = await SMap.getMapcenterPosition()
           global.PoiInfoContainer.getSearchResult({
             keyWords: searchKey,
             location: JSON.stringify(location),

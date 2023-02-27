@@ -13,7 +13,7 @@ import { Container, TextBtn } from '../../../../components'
 import { Toast } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import { AnalystItem, PopModalList } from '../../components'
-import { SAnalyst } from 'imobile_for_reactnative'
+import { SOnlineAnalyst } from 'imobile_for_reactnative'
 import styles from './styles'
 
 export default class SourceDatasetPage extends React.Component {
@@ -63,7 +63,7 @@ export default class SourceDatasetPage extends React.Component {
       this.state.datasets.length === 0
     ) {
       InteractionManager.runAfterInteractions(() => {
-        SAnalyst.getOnlineAnalysisData(
+        SOnlineAnalyst.getOnlineAnalysisData(
           this.props.iServerData.ip,
           this.props.iServerData.port,
           0,

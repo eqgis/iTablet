@@ -1,27 +1,31 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, View, InteractionManager } from 'react-native'
+import { ScrollView, Text, View } from 'react-native'
 import { Container } from '../../../../components'
 import styles from './styles'
 import NavigationService from '../../../NavigationService'
-// import TabNavigationService from '../../../TabNavigationService'
 import { AnalystItem, PopModalList, AnalystBar } from '../../components'
-import { ConstPath } from '../../../../constants'
+import {
+  ConstPath,
+  CheckStatus,
+  TouchType,
+  ConstToolType,
+} from '../../../../constants'
 import { Toast } from '../../../../utils'
 import { FileTools } from '../../../../native'
 import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 import {
   SMap,
-  SOverlayAnalyst,
-  GeoStyle,
+  SProximityAnalyst,
   SData,
 } from 'imobile_for_reactnative'
-import { DatasetType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, EngineType,GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 const popTypes = {
   DataSource: 'DataSource',
   DataSet: 'DataSet',
-  OverlayDataSource: 'OverlayDataSource',
-  OverlayDataSet: 'OverlayDataSet',
+  ReferenceDataSource: 'ReferenceDataSource',
+  ReferenceDataSet: 'ReferenceDataSet',
   ResultDataSource: 'ResultDataSource',
   ResultDataSet: 'ResultDataSet',
 }
@@ -30,9 +34,21 @@ const defaultState = {
   // 源数据
   dataSource: null,
   dataSet: null,
-  // 叠加数据
-  overlayDataSource: null,
-  overlayDataSet: null,
+  // 显示区域设置
+  isCustomLocale: false,
+  selectRegionStatus: CheckStatus.CHECKED, // 选择面
+  drawRegionStatus: CheckStatus.UN_CHECK, // 绘制面
+
+  // 邻近数据
+  referenceDataSource: null,
+  referenceDataSet: null,
+
+  // 参数设置
+  measureType: '',
+  distanceInRange: [],
+  minDistance: 0,
+  maxDistance: 1,
+
   // 结果数据
   resultDataSource: null,
   resultDataSet: null,
@@ -44,71 +60,54 @@ const defaultState = {
   canBeAnalyst: false,
 }
 
-export default class OverlayAnalystView extends Component {
+export default class ReferenceAnalystView extends Component {
   props: {
     language: String,
     navigation: Object,
     device: Object,
     currentUser: Object,
+    map: Object,
+    layers: Array,
+    selection: Array,
     getLayers: () => {},
+    setSelection: () => {},
+    setAnalystParams: () => {},
+    setBackAction: () => {},
   }
 
   constructor(props) {
     super(props)
     const { params } = props.route
     this.cb = params && params.cb
-    this.state = {
-      title: (params && params.title) || '',
-      ...defaultState,
+    this.type = params && params.type
+    this.defaultState = params && params.defaultState
+    if (this.defaultState) {
+      this.state = this.defaultState
+    } else {
+      this.state = {
+        title: (params && params.title) || '',
+        ...defaultState,
+      }
     }
 
     this.currentPop = ''
   }
 
+  componentDidMount() {
+    this.props.setBackAction({
+      key: 'ReferenceAnalystView',
+      action: () => this.back(),
+    })
+  }
+
   componentDidUpdate(prevProps, prevState) {
-    if (
-      JSON.stringify(prevState.dataSource) !==
-        JSON.stringify(this.state.dataSource) ||
-      JSON.stringify(prevState.dataSet) !==
-        JSON.stringify(this.state.dataSet) ||
-      JSON.stringify(prevState.overlayDataSource) !==
-        JSON.stringify(this.state.overlayDataSource) ||
-      JSON.stringify(prevState.overlayDataSet) !==
-        JSON.stringify(this.state.overlayDataSet) ||
-      JSON.stringify(prevState.resultDataSource) !==
-        JSON.stringify(this.state.resultDataSource) ||
-      JSON.stringify(prevState.resultDataSet) !==
-        JSON.stringify(this.state.resultDataSet)
-    ) {
+    if (JSON.stringify(prevState) !== JSON.stringify(this.state)) {
       let canBeAnalyst = this.checkData()
       canBeAnalyst !== this.state.canBeAnalyst &&
         this.setState({
           canBeAnalyst,
         })
     }
-  }
-
-  /**
-   * 获取源数据过滤数据类型
-   * @returns {Array}
-   */
-  getDataLimit = () => {
-    let limit = []
-    switch (this.state.title) {
-      case getLanguage(this.props.language).Analyst_Methods.UPDATE:
-      case getLanguage(this.props.language).Analyst_Methods.UNION:
-      case getLanguage(this.props.language).Analyst_Methods.XOR:
-        limit = [DatasetType.REGION]
-        break
-      case getLanguage(this.props.language).Analyst_Methods.CLIP:
-      case getLanguage(this.props.language).Analyst_Methods.ERASE:
-      case getLanguage(this.props.language).Analyst_Methods.IDENTITY:
-      case getLanguage(this.props.language).Analyst_Methods.INTERSECT:
-      default:
-        limit = [DatasetType.REGION, DatasetType.LINE, DatasetType.POINT]
-        break
-    }
-    return limit
   }
 
   setLoading = (loading = false, info, extra) => {
@@ -120,8 +119,8 @@ export default class OverlayAnalystView extends Component {
     if (
       this.state.dataSource &&
       this.state.dataSet &&
-      this.state.overlayDataSource &&
-      this.state.overlayDataSet &&
+      // this.state.overlayDataSource &&
+      // this.state.overlayDataSet &&
       this.state.resultDataSource &&
       this.state.resultDataSet
     ) {
@@ -130,138 +129,140 @@ export default class OverlayAnalystView extends Component {
     return available
   }
 
-  analyst = () => {
+  analyst = async () => {
     if (!this.checkData()) return
-    Toast.show(getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_START)
-    InteractionManager.runAfterInteractions(async () => {
-      try {
-        this.setLoading(
-          true,
-          getLanguage(this.props.language).Analyst_Prompt.ANALYSING,
-        )
-        let geoStyle = new GeoStyle()
-        geoStyle.setLineColor(50, 240, 50)
-        // geoStyle.setLineStyle(0)
-        geoStyle.setLineWidth(0.5)
-        // geoStyle.setMarkerStyle(351)
-        geoStyle.setMarkerSize(5)
-        geoStyle.setFillForeColor(244, 50, 50)
-        geoStyle.setFillOpaqueRate(70)
 
-        let server = await FileTools.appendingHomeDirectory(
-          ConstPath.UserPath +
-            (this.props.currentUser.userName || 'Customer') +
-            '/' +
-            ConstPath.RelativePath.Datasource,
-        )
-        let sourceData = {
-            datasource: this.state.dataSource.value,
-            dataset: this.state.dataSet.value,
-          },
-          targetData = {
-            datasource: this.state.overlayDataSource.value,
-            dataset: this.state.overlayDataSet.value,
-          },
-          resultData = {
-            datasetType: this.state.dataSet.datasetType,
-            datasource: this.state.resultDataSource.value,
-            server: server + this.state.resultDataSource.value + '.udb',
-            dataset: this.state.resultDataSet.value,
-          },
+    let optionParameter = {}
+    // 泰森
+    if (
+      this.type === ConstToolType.SM_MAP_ANALYSIS_THIESSEN_POLYGON &&
+      this.state.isCustomLocale
+    ) {
+      // 检查选择面
+      if (this.state.selectRegionStatus === CheckStatus.CHECKED) {
+        if (
+          this.props.selection.length > 0 &&
+          this.props.selection[0].ids.length > 0 &&
+          this.props.selection[0].geometryType === GeometryType.GEOREGION
+        ) {
           optionParameter = {
-            geoStyle,
-          },
-          result = false
-        switch (this.state.title) {
-          case getLanguage(this.props.language).Analyst_Methods.CLIP:
-            result = await SOverlayAnalyst.clip(
-              sourceData,
-              targetData,
-              resultData,
-              optionParameter,
-            )
-            break
-          case getLanguage(this.props.language).Analyst_Methods.ERASE:
-            result = await SOverlayAnalyst.erase(
-              sourceData,
-              targetData,
-              resultData,
-              optionParameter,
-            )
-            break
-          case getLanguage(this.props.language).Analyst_Methods.IDENTITY:
-            result = await SOverlayAnalyst.identity(
-              sourceData,
-              targetData,
-              resultData,
-              optionParameter,
-            )
-            break
-          case getLanguage(this.props.language).Analyst_Methods.INTERSECT:
-            result = await SOverlayAnalyst.intersect(
-              sourceData,
-              targetData,
-              resultData,
-              optionParameter,
-            )
-            break
-          case getLanguage(this.props.language).Analyst_Methods.UNION:
-            result = await SOverlayAnalyst.union(
-              sourceData,
-              targetData,
-              resultData,
-              optionParameter,
-            )
-            break
-          case getLanguage(this.props.language).Analyst_Methods.UPDATE:
-            result = await SOverlayAnalyst.update(
-              sourceData,
-              targetData,
-              resultData,
-              optionParameter,
-            )
-            break
-          case getLanguage(this.props.language).Analyst_Methods.XOR:
-            result = await SOverlayAnalyst.xOR(
-              sourceData,
-              targetData,
-              resultData,
-              optionParameter,
-            )
-            break
-        }
-        this.setLoading(false)
-
-        Toast.show(
-          result
-            ? getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_SUCCESS
-            : getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
-        )
-        if (result) {
-          let layers = await this.props.getLayers()
-          layers.length > 0 && (await SMap.setLayerFullView(layers[0].path))
-
-          global.ToolBar && global.ToolBar.setVisible(false)
-          // NavigationService.goBack('AnalystListEntry')
-          NavigationService.navigate('MapStack', {screen: 'MapView'})
-          // if (optionParameter.showResult) {
-          //   TabNavigationService.navigate('MapAnalystView')
-          // }
-          if (this.cb && typeof this.cb === 'function') {
-            this.cb()
+            selectRegion: {
+              layerPath: this.props.selection[0].layerInfo.path,
+              geoId: this.props.selection[0].ids[0],
+            },
           }
+        } else {
+          Toast.show(
+            getLanguage(this.props.language).Analyst_Prompt
+              .PLEASE_SELECT_A_REGION,
+          )
+          return
         }
-      } catch (e) {
-        this.setLoading(false)
-        Toast.show(
-          getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
-        )
       }
-    })
+    }
+
+    Toast.show(getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_START)
+    // InteractionManager.runAfterInteractions(async () => {
+    try {
+      this.setLoading(
+        true,
+        getLanguage(this.props.language).Analyst_Prompt.ANALYSING,
+      )
+
+      let server = await FileTools.appendingHomeDirectory(
+        ConstPath.UserPath +
+          (this.props.currentUser.userName || 'Customer') +
+          '/' +
+          ConstPath.RelativePath.Datasource,
+      )
+      let sourceData = {
+          datasourceName: this.state.dataSource.value,
+          datasetName: this.state.dataSet.value,
+        },
+        resultData = {
+          datasourceName: this.state.resultDataSource.value,
+          server: server + this.state.resultDataSource.value + '.udb',
+          datasetName: this.state.resultDataSet.value,
+        },
+        result = false
+      switch (this.type) {
+        case ConstToolType.SM_MAP_ANALYSIS_THIESSEN_POLYGON:
+          if (this.state.isCustomLocale) {
+            if (this.state.selectRegionStatus === CheckStatus.CHECKED) {
+              optionParameter = {
+                selectRegion: {
+                  datasetName: this.props.selection[0].layerInfo.datasetName,
+                  datasourceName: this.props.selection[0].layerInfo.datasourceAlias,
+                  geoId: this.props.selection[0].ids[0],
+                },
+              }
+            } else {
+              optionParameter = { drawRegion: true }
+            }
+          }
+          result = await SProximityAnalyst.thiessenAnalyst(
+            sourceData,
+            resultData,
+            optionParameter,
+          )
+          break
+        case ConstToolType.SM_MAP_ANALYSIS_MEASURE_DISTANCE:
+          // result = await SProximityAnalyst.erase(
+          //   sourceData,
+          //   targetData,
+          //   resultData,
+          //   optionParameter,
+          // )
+          break
+      }
+      this.setLoading(false)
+
+      Toast.show(
+        result
+          ? getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_SUCCESS
+          : getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
+      )
+      SMap.setAction(Action.SELECT).then(() => {
+        SMap.setAction(Action.PAN)
+      })
+      if (result) {
+        let layers = await this.props.getLayers()
+        layers.length > 0 && (await SMap.setLayerFullView(layers[0].path))
+
+        global.ToolBar && global.ToolBar.setVisible(false)
+        global.toolBox.showFullMap(false)
+        NavigationService.goBack('ReferenceAnalystView')
+        if (this.cb && typeof this.cb === 'function') {
+          this.cb()
+        }
+      }
+    } catch (e) {
+      SMap.setAction(Action.SELECT).then(() => {
+        SMap.setAction(Action.PAN)
+      })
+      this.setLoading(false)
+      Toast.show(
+        getLanguage(this.props.language).Analyst_Prompt.ANALYSIS_FAIL,
+      )
+    }
+    // })
+    // ;(async function() {
+    //
+    // }.bind(this)())
   }
 
   back = () => {
-    NavigationService.goBack()
+    SMap.clearSelection()
+    SMap.setAction(Action.PAN)
+    this.props.setSelection && this.props.setSelection(null)
+    NavigationService.goBack('ReferenceAnalystView')
+    //{
+    //泰森多边形分析自定义区域后返回未全屏问题 jiakai
+    global.toolBox.showFullMap(true)
+    global.toolBox.setVisible(true, ConstToolType.SM_MAP_ANALYSIS, {
+      isFullScreen: true,
+    })
+    //}
   }
 
   getDataSources = async () => {
@@ -294,10 +295,8 @@ export default class OverlayAnalystView extends Component {
           if (type === item.datasetType) {
             if (
               filter.exclude &&
-              ((filter.exclude.dataSource === item.datasourceName &&
-                filter.exclude.dataSet === item.datasetName) ||
-                (filter.exclude.datasetTypes &&
-                  filter.exclude.datasetTypes.indexOf(item.datasetType) > -1))
+              filter.exclude.dataSource === item.datasourceName &&
+              filter.exclude.dataSet === item.datasetName
             )
               continue
             item.key = item.datasetName
@@ -311,10 +310,8 @@ export default class OverlayAnalystView extends Component {
       } else {
         if (
           !filter.exclude ||
-          ((filter.exclude.dataSource !== item.datasourceName ||
-            filter.exclude.dataSet !== item.datasetName) &&
-            filter.exclude.datasetTypes &&
-            filter.exclude.datasetTypes.indexOf(item.datasetType) < 0)
+          filter.exclude.dataSource !== item.datasourceName ||
+          filter.exclude.dataset !== item.datasetName
         ) {
           item.key = item.datasetName
           item.value = item.key
@@ -325,6 +322,28 @@ export default class OverlayAnalystView extends Component {
       }
     })
     return dss
+  }
+
+  changeBufferType = (title, cb) => {
+    let selectRegionStatus
+    let drawRegionStatus
+    switch (title) {
+      case getLanguage(this.props.language).Analyst_Labels.SELECT_REGION:
+        selectRegionStatus = CheckStatus.CHECKED
+        drawRegionStatus = CheckStatus.UN_CHECK
+        break
+      case getLanguage(this.props.language).Analyst_Labels.DRAW_REGION:
+        selectRegionStatus = CheckStatus.UN_CHECK
+        drawRegionStatus = CheckStatus.CHECKED
+        break
+    }
+    this.setState(
+      {
+        selectRegionStatus,
+        drawRegionStatus,
+      },
+      () => cb && cb(),
+    )
   }
 
   // 重置页面数据
@@ -375,15 +394,13 @@ export default class OverlayAnalystView extends Component {
               this.state.dataSource.path,
             )
             let filter = {}
-            filter.typeFilter = this.getDataLimit()
-            filter.exclude = {}
+            filter.typeFilter = [DatasetType.POINT]
             if (this.state.overlayDataSet && this.state.overlayDataSet.value) {
               filter.exclude = {
                 dataSource: this.state.overlayDataSource.value,
                 dataSet: this.state.overlayDataSet.value,
               }
             }
-            filter.exclude.datasetTypes = [DatasetType.Network]
             let dataSets = await this.getDataSets(
               {
                 server: udbPath,
@@ -407,7 +424,7 @@ export default class OverlayAnalystView extends Component {
     )
   }
 
-  renderOverlayData = () => {
+  renderReferenceData = () => {
     return (
       <View key="overlayData" style={styles.topView}>
         <View style={styles.subTitleView}>
@@ -456,14 +473,12 @@ export default class OverlayAnalystView extends Component {
             )
             let filter = {}
             filter.typeFilter = [DatasetType.REGION]
-            filter.exclude = {}
             if (this.state.dataSet && this.state.dataSet.value) {
               filter.exclude = {
                 dataSource: this.state.dataSource.value,
                 dataSet: this.state.dataSet.value,
               }
             }
-            filter.exclude.datasetTypes = [DatasetType.Network]
             let dataSets = await this.getDataSets(
               {
                 server: udbPath,
@@ -484,6 +499,132 @@ export default class OverlayAnalystView extends Component {
             )
           }}
         />
+      </View>
+    )
+  }
+
+  renderDisplaySettingsData = () => {
+    return (
+      <View key="overlayData" style={styles.topView}>
+        <View style={styles.subTitleView}>
+          <Text style={styles.subTitle}>
+            {
+              getLanguage(this.props.language).Analyst_Labels
+                .DISPLAY_REGION_SETTINGS
+            }
+          </Text>
+        </View>
+        <AnalystItem
+          title={getLanguage(this.props.language).Analyst_Labels.CUSTOM_LOCALE}
+          value={this.state.isCustomLocale}
+          disable={
+            this.props.layers === undefined || this.props.layers.length === 0
+          }
+          onChange={value => {
+            this.setState({
+              isCustomLocale: value,
+            })
+          }}
+        />
+        {this.state.isCustomLocale && (
+          <View>
+            <AnalystItem
+              radioStatus={this.state.selectRegionStatus}
+              title={
+                getLanguage(this.props.language).Analyst_Labels.SELECT_REGION
+              }
+              value={''}
+              onPress={() => {
+                this.changeBufferType(
+                  getLanguage(this.props.language).Analyst_Labels.SELECT_REGION,
+                  () => {
+                    let params = Object.assign(
+                      {},
+                      this.props.route.params,
+                      { defaultState: this.state },
+                    )
+                    this.props
+                      .setAnalystParams({
+                        ...params,
+                        actionType: 'select',
+                        title: getLanguage(this.props.language).Analyst_Labels
+                          .SELECT_REGION,
+                        backAction: () => {
+                          this.props.setAnalystParams(null)
+                          // SMap.setAction(Action.PAN)
+                          NavigationService.navigate('ReferenceAnalystView', {
+                            ...params,
+                          })
+                        },
+                      })
+                      .then(params => {
+                        SMap.getAction().then(type => {
+                          if (type !== Action.SELECT) {
+                            SMap.setAction(Action.SELECT)
+                          }
+                          NavigationService.goBack('ReferenceAnalystView')
+                          if (params && params.showFullMap) {
+                            params.showFullMap(true)
+                          }
+                        })
+                      })
+                  },
+                )
+              }}
+              onRadioPress={() => {
+                this.changeBufferType(
+                  getLanguage(this.props.language).Analyst_Labels.SELECT_REGION,
+                )
+              }}
+            />
+            <AnalystItem
+              radioStatus={this.state.drawRegionStatus}
+              title={
+                getLanguage(this.props.language).Analyst_Labels.DRAW_REGION
+              }
+              value={''}
+              onPress={() => {
+                this.changeBufferType(
+                  getLanguage(this.props.language).Analyst_Labels.DRAW_REGION,
+                  () => {
+                    let params = Object.assign(
+                      {},
+                      this.props.route.params,
+                      { defaultState: this.state },
+                    )
+                    this.props
+                      .setAnalystParams({
+                        ...params,
+                        actionType: 'draw',
+                        title: getLanguage(this.props.language).Analyst_Labels
+                          .DRAW_REGION,
+                        backAction: () => {
+                          this.props.setAnalystParams(null)
+                          NavigationService.navigate('ReferenceAnalystView', {
+                            ...params,
+                          })
+                        },
+                      })
+                      .then(() => {
+                        global.TouchType = TouchType.REFERENCE
+                        SMap.getAction().then(type => {
+                          if (type !== Action.CREATEPOLYGON) {
+                            SMap.setAction(Action.CREATEPOLYGON)
+                          }
+                          NavigationService.goBack('ReferenceAnalystView')
+                        })
+                      })
+                  },
+                )
+              }}
+              onRadioPress={() => {
+                this.changeBufferType(
+                  getLanguage(this.props.language).Analyst_Labels.DRAW_REGION,
+                )
+              }}
+            />
+          </View>
+        )}
       </View>
     )
   }
@@ -540,7 +681,7 @@ export default class OverlayAnalystView extends Component {
               placeholder: '',
               type: 'name',
               cb: async value => {
-                NavigationService.goBack()
+                NavigationService.goBack('InputPage')
                 this.setState({
                   resultDataSet: {
                     value: value.toString().trim(),
@@ -570,11 +711,9 @@ export default class OverlayAnalystView extends Component {
                 !this.state.dataSource ||
                 data.name !== this.state.dataSource.name
               ) {
-                // 原数据源为空，或者切换数据源，则自动获取对应数据源第一个数据集
                 let udbPath = await FileTools.appendingHomeDirectory(data.path)
                 let filter = {}
-                filter.typeFilter = [DatasetType.REGION]
-                filter.exclude = {}
+                filter.typeFilter = [DatasetType.POINT]
                 if (
                   this.state.overlayDataSet &&
                   this.state.overlayDataSet.value
@@ -584,7 +723,6 @@ export default class OverlayAnalystView extends Component {
                     dataSet: this.state.overlayDataSet.value,
                   }
                 }
-                filter.exclude.datasetTypes = [DatasetType.Network] // 过滤掉网路数据集
                 let dataSets = await this.getDataSets(
                   {
                     server: udbPath,
@@ -597,20 +735,11 @@ export default class OverlayAnalystView extends Component {
                 newStateData = Object.assign(newStateData, {
                   dataSet: dataSets.length > 0 ? dataSets[0] : null,
                 })
-
-                // 叠加数据为空，则设置默认值
-                if (this.state.overlayDataSource === null) {
-                  newStateData = Object.assign(newStateData, {
-                    overlayDataSource: data,
-                    overlayDataSet: dataSets.length > 1 ? dataSets[1] : null,
-                  })
-                }
               }
-
               if (this.state.resultDataSource === null) {
                 let resultDatasetName = await SData.availableDatasetName(
                   data.key,
-                  'Overlay',
+                  'Thiessen',
                 )
                 // 结果数据源为空时，自动选择目标数据源
                 newStateData = Object.assign(newStateData, {
@@ -622,40 +751,19 @@ export default class OverlayAnalystView extends Component {
             case popTypes.DataSet:
               newStateData = { dataSet: data }
               break
-            case popTypes.OverlayDataSource:
-              newStateData = { overlayDataSource: data }
+            case popTypes.ReferenceDataSource:
+              newStateData = { referenceDataSource: data }
               if (
-                !this.state.overlayDataSource ||
-                data.name !== this.state.overlayDataSource.name
+                this.state.referenceDataSource &&
+                data.name !== this.state.referenceDataSource.name
               ) {
-                // 原数据源为空，或者切换数据源，则自动获取对应数据源第一个数据集
-                let udbPath = await FileTools.appendingHomeDirectory(data.path)
-                let filter = {}
-                filter.typeFilter = [DatasetType.REGION]
-                filter.exclude = {}
-                if (this.state.dataSet && this.state.dataSet.value) {
-                  filter.exclude = {
-                    dataSource: this.state.dataSource.value,
-                    dataSet: this.state.dataSet.value,
-                  }
-                }
-                filter.exclude.datasetTypes = [DatasetType.Network]
-                let dataSets = await this.getDataSets(
-                  {
-                    server: udbPath,
-                    engineType: EngineType.UDB,
-                    alias: data.key,
-                  },
-                  filter,
-                )
-
                 newStateData = Object.assign(newStateData, {
-                  overlayDataSet: dataSets.length > 0 ? dataSets[0] : null,
+                  referenceDataSet: null,
                 })
               }
               break
-            case popTypes.OverlayDataSet:
-              newStateData = { overlayDataSet: data }
+            case popTypes.ReferenceDataSet:
+              newStateData = { referenceDataSet: data }
               break
             case popTypes.ResultDataSource:
               newStateData = { resultDataSource: data }
@@ -708,7 +816,10 @@ export default class OverlayAnalystView extends Component {
       >
         <ScrollView style={styles.container}>
           {this.renderSourceData()}
-          {this.renderOverlayData()}
+          {this.type === ConstToolType.SM_MAP_ANALYSIS_THIESSEN_POLYGON &&
+            this.renderDisplaySettingsData()}
+          {this.type === ConstToolType.SM_MAP_ANALYSIS_MEASURE_DISTANCE &&
+            this.renderReferenceData()}
           {this.renderResultData()}
         </ScrollView>
         {this.renderAnalystBar()}

@@ -186,10 +186,10 @@ export default class InterpolationAnalystView extends Component {
     return dss
   }
 
-  getFieldInfos = async (info, filter) => {
+  getFieldInfos = async info => {
     let infos = []
-    //todo 取消过滤，返回全部字段，JS处理 @yangsl   add xiezhy
     let fieldInfos = await SData.getFieldInfos(info)
+    console.warn(info, fieldInfos)
 
     fieldInfos.forEach(item => {
       item.key = item.name
@@ -349,7 +349,7 @@ export default class InterpolationAnalystView extends Component {
               {
                 server: udbPath,
                 engineType: EngineType.UDB,
-                alias: this.state.dataSource.key,
+                datasourceName: this.state.dataSource.key,
                 datasetName: this.state.dataSet.datasetName,
               },
               filter,
@@ -619,10 +619,11 @@ export default class InterpolationAnalystView extends Component {
                     {
                       server: this.datasourcePath,
                       engineType: EngineType.UDB,
-                      alias: data.key,
+                      datasourceName: data.key,
                     },
                     filter,
                   )
+                  console.warn(dataSets)
                   if (dataSets && dataSets.length > 0 && dataSets[0]) {
                     // 获取默认插值字段
                     let filter2 = {}
@@ -637,7 +638,7 @@ export default class InterpolationAnalystView extends Component {
                       {
                         server: this.datasourcePath,
                         engineType: EngineType.UDB,
-                        alias: data.key,
+                        datasourceName: data.key,
                         datasetName: dataSets[0].datasetName,
                       },
                       filter2,
@@ -689,7 +690,7 @@ export default class InterpolationAnalystView extends Component {
                     {
                       server: this.datasourcePath,
                       engineType: EngineType.UDB,
-                      alias: this.state.dataSource.value,
+                      datasourceName: this.state.dataSource.value,
                       datasetName: data.datasetName,
                     },
                     filter2,
@@ -757,6 +758,7 @@ export default class InterpolationAnalystView extends Component {
                     bottom: parseFloat(this.state.bottom),
                     right: parseFloat(this.state.right),
                   })
+                  console.warn(this.state.method.key, data)
                   NavigationService.navigate('InterpolationAnalystDetailView', {
                     title: this.state.method.key,
                     data,

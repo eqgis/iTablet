@@ -1,4 +1,4 @@
-import { SAnalyst } from 'imobile_for_reactnative'
+import { SInterpolationAnalyst } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 
 /**
@@ -10,17 +10,17 @@ function getSearchMethod(language, type) {
   const method = [
     {
       key: getLanguage(language).Analyst_Params.SEARCH_VARIABLE_LENGTH,
-      value: SAnalyst.SearchMode.KDTREE_FIXED_COUNT,
+      value: SInterpolationAnalyst.SearchMode.KDTREE_FIXED_COUNT,
     },
     {
       key: getLanguage(language).Analyst_Params.SEARCH_FIXED_LENGTH,
-      value: SAnalyst.SearchMode.KDTREE_FIXED_RADIUS,
+      value: SInterpolationAnalyst.SearchMode.KDTREE_FIXED_RADIUS,
     },
   ]
   if (type === getLanguage(language).Analyst_Params.ORDINARY_KRIGING) {
     method.push({
       key: getLanguage(language).Analyst_Params.SEARCH_BLOCK,
-      value: SAnalyst.SearchMode.QUADTREE,
+      value: SInterpolationAnalyst.SearchMode.QUADTREE,
     })
   }
   return method
@@ -35,15 +35,15 @@ function getSemivariogram(language) {
   return [
     {
       key: getLanguage(language).Analyst_Params.SPHERICAL_FUNCTION,
-      value: SAnalyst.VariogramMode.SPHERICAL,
+      value: SInterpolationAnalyst.VariogramMode.SPHERICAL,
     },
     {
       key: getLanguage(language).Analyst_Params.EXPONENTIAL,
-      value: SAnalyst.VariogramMode.EXPONENTIAL,
+      value: SInterpolationAnalyst.VariogramMode.EXPONENTIAL,
     },
     {
       key: getLanguage(language).Analyst_Params.GAUSSIAN,
-      value: SAnalyst.VariogramMode.GAUSSIAN,
+      value: SInterpolationAnalyst.VariogramMode.GAUSSIAN,
     },
   ]
 }

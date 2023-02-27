@@ -4,7 +4,6 @@ import {
   Text,
   View,
   Platform,
-  InteractionManager,
   KeyboardAvoidingView,
 } from 'react-native'
 import { Container } from '../../../../components'
@@ -16,7 +15,7 @@ import { Toast } from '../../../../utils'
 import { FileTools } from '../../../../native'
 import { getLanguage } from '../../../../language'
 import interpolationDetailParamsData from './interpolationDetailParamsData'
-import { SMap, SAnalyst } from 'imobile_for_reactnative'
+import { SMap, SInterpolationAnalyst } from 'imobile_for_reactnative'
 
 const popTypes = {
   SearchMethod: 'SearchMethod',
@@ -105,13 +104,13 @@ export default class InterpolationAnalystDetailView extends Component {
           ConstPath.RelativePath.Datasource,
       )
       let sourceData = {
-          datasource: this.data.dataSource.value,
-          dataset: this.data.dataSet.value,
+          datasourceName: this.data.dataSource.value,
+          datasetName: this.data.dataSet.value,
         },
         resultData = {
-          datasource: this.data.resultDataSource.value,
+          datasourceName: this.data.resultDataSource.value,
           server: server + this.data.resultDataSource.value + '.udb',
-          dataset: this.data.resultDataSet.value,
+          datasetName: this.data.resultDataSet.value,
         },
         paramter = {
           type: this.data.method.value,
@@ -127,14 +126,14 @@ export default class InterpolationAnalystDetailView extends Component {
         }
 
       switch (this.state.searchMethod.value) {
-        case SAnalyst.SearchMode.KDTREE_FIXED_COUNT:
-        case SAnalyst.SearchMode.KDTREE_FIXED_RADIUS:
+        case SInterpolationAnalyst.SearchMode.KDTREE_FIXED_COUNT:
+        case SInterpolationAnalyst.SearchMode.KDTREE_FIXED_RADIUS:
           Object.assign(paramter, {
             searchRadius: this.state.radius,
             expectedCount: this.state.pointCount,
           })
           break
-        case SAnalyst.SearchMode.QUADTREE:
+        case SInterpolationAnalyst.SearchMode.QUADTREE:
           Object.assign(paramter, {
             maxPointCountForInterpolation: this.state
               .maxPointCountForInterpolation,
@@ -144,30 +143,30 @@ export default class InterpolationAnalystDetailView extends Component {
       }
 
       switch (this.data.method.value) {
-        case SAnalyst.InterpolationAlgorithmType.IDW:
-        case SAnalyst.InterpolationAlgorithmType.RBF:
+        case SInterpolationAnalyst.InterpolationAlgorithmType.IDW:
+        case SInterpolationAnalyst.InterpolationAlgorithmType.RBF:
           Object.assign(paramter, {
             power: this.state.power,
           })
           break
-        case SAnalyst.InterpolationAlgorithmType.KRIGING:
-        case SAnalyst.InterpolationAlgorithmType.SIMPLE_KRIGING:
-        case SAnalyst.InterpolationAlgorithmType.UNIVERSAL_KRIGING:
+        case SInterpolationAnalyst.InterpolationAlgorithmType.KRIGING:
+        case SInterpolationAnalyst.InterpolationAlgorithmType.SIMPLE_KRIGING:
+        case SInterpolationAnalyst.InterpolationAlgorithmType.UNIVERSAL_KRIGING:
           Object.assign(paramter, {
             variogramMode: this.state.semivariogram.value,
             range: this.state.range,
             sill: this.state.sill,
             nugget: this.state.nuggetEffect,
           })
-          if (SAnalyst.InterpolationAlgorithmType.SIMPLE_KRIGING) {
+          if (SInterpolationAnalyst.InterpolationAlgorithmType.SIMPLE_KRIGING) {
             paramter.mean = this.state.mean
-          } else if (SAnalyst.InterpolationAlgorithmType.UNIVERSAL_KRIGING) {
+          } else if (SInterpolationAnalyst.InterpolationAlgorithmType.UNIVERSAL_KRIGING) {
             paramter.exponent = this.state.exponent
           }
           break
       }
 
-      SAnalyst.interpolate(
+      SInterpolationAnalyst.interpolate(
         sourceData,
         resultData,
         paramter,
@@ -223,11 +222,11 @@ export default class InterpolationAnalystDetailView extends Component {
   renderSearchSetting = () => {
     let arr = []
     switch (this.state.searchMethod.value) {
-      case SAnalyst.SearchMode.KDTREE_FIXED_COUNT:
-      case SAnalyst.SearchMode.KDTREE_FIXED_RADIUS:
+      case SInterpolationAnalyst.SearchMode.KDTREE_FIXED_COUNT:
+      case SInterpolationAnalyst.SearchMode.KDTREE_FIXED_RADIUS:
         arr = this.renderVariableLengthSetting(this.state.searchMethod.value)
         break
-      case SAnalyst.SearchMode.QUADTREE:
+      case SInterpolationAnalyst.SearchMode.QUADTREE:
         arr = this.renderBlockSetting()
         break
     }
@@ -275,13 +274,13 @@ export default class InterpolationAnalystDetailView extends Component {
       title2 = '',
       numberRange1 = '',
       numberRange2 = ''
-    if (type === SAnalyst.SearchMode.KDTREE_FIXED_COUNT) {
+    if (type === SInterpolationAnalyst.SearchMode.KDTREE_FIXED_COUNT) {
       title1 = getLanguage(this.props.language).Analyst_Labels.MAX_RADIUS
       title2 = getLanguage(this.props.language).Analyst_Labels
         .SEARCH_POINT_COUNT
       numberRange1 = '[0, )'
       numberRange2 = '[1, 2147483647]'
-    } else if (type === SAnalyst.SearchMode.KDTREE_FIXED_RADIUS) {
+    } else if (type === SInterpolationAnalyst.SearchMode.KDTREE_FIXED_RADIUS) {
       title1 = getLanguage(this.props.language).Analyst_Labels.SEARCH_RADIUS_2
       title2 = getLanguage(this.props.language).Analyst_Labels.MIX_COUNT
       numberRange1 = '[0, )'

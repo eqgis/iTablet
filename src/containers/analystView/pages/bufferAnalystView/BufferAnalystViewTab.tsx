@@ -171,13 +171,13 @@ export default class BufferAnalystViewTab extends Component {
     )
     let params = {
       sourceData: {
-        datasource: this.state.dataSource.value,
-        dataset: this.state.dataSet.value,
+        datasourceName: this.state.dataSource.value,
+        datasetName: this.state.dataSet.value,
       },
       resultData: {
-        datasource: this.state.resultDataSource.value,
+        datasourceName: this.state.resultDataSource.value,
         server: server + this.state.resultDataSource.value + '.udb',
-        dataset: this.state.resultDataSet.value,
+        datasetName: this.state.resultDataSet.value,
       },
       isUnion: this.state.isUnionBuffer,
       isAttributeRetained: this.state.isRetainAttribute,
@@ -251,7 +251,6 @@ export default class BufferAnalystViewTab extends Component {
 
   getDataSets = async info => {
     let dss = []
-    //todo @yangsl  {mode:'analyst'}为当前业务逻辑，不应加到原生接口
     // let dataSets = await SMap.getDatasetsByDatasource(info, true,{mode:'analyst'})
     let dataSets = await SData.getDatasetsByDatasource(info)
     dataSets.forEach(item => {
@@ -686,19 +685,19 @@ export default class BufferAnalystViewTab extends Component {
                   },
                   true,
                 )
-                const dataset = dataSets.length > 0 ? dataSets[0] : null
+                const datasetName = dataSets.length > 0 ? dataSets[0] : null
                 let roundTypeStatus = CheckStatus.CHECKED
                 let flatTypeStatus = CheckStatus.UN_CHECK
                 if (
-                  dataset &&
-                  (dataset.datasetType === DatasetType.REGION ||
-                    dataset.datasetType === DatasetType.POINT)
+                  datasetName &&
+                  (datasetName.datasetType === DatasetType.REGION ||
+                    datasetName.datasetType === DatasetType.POINT)
                 ) {
                   roundTypeStatus = CheckStatus.CHECKED_DISABLE
                   flatTypeStatus = CheckStatus.UN_CHECK_DISABLE
                 }
                 newStateData = Object.assign(newStateData, {
-                  dataSet: dataset,
+                  dataSet: datasetName,
                   showAdvance: dataSets.length > 0,
                   roundTypeStatus,
                   flatTypeStatus,

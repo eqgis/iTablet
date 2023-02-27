@@ -300,9 +300,10 @@ export default class CreateNavDataPage extends Component {
     datasourceName: string
     sourceDatasetFiled?: string
   }) => {
-    let r1 = false, r2 = false, r3 = false
+    let r1 = null
+    let r2 = false, r3 = false
 
-    const networkDatasetName =  param.sourceDatasetName + '_Network'
+    let networkDatasetName =  param.sourceDatasetName
     //构建路网
     r1 = await SNavigation.buildNetwork({
       srcLineDataset:  {
@@ -315,8 +316,8 @@ export default class CreateNavDataPage extends Component {
       },
       fieldNames: [(param.sourceDatasetFiled || 'RoadName'), 'Direction']
     })
-
-    if(r1) {
+    if(r1.success) {
+      networkDatasetName = r1.datasetName
       //生成模型
       r2 = await SNavigation.createModel({
         networkDataset: {

@@ -112,8 +112,8 @@ async function buildNetwork(): Promise<boolean> {
     targetNetworkDataset: {datasourceAlias: incrementDatasource, datasetName: incrementNetworkDatasetName }
   })
 
-  if(result) {
-    SMap.addLayer({datasource: incrementDatasource, dataset: incrementNetworkDatasetName, addChild: true}, true)
+  if(result.success) {
+    SMap.addLayer({datasource: incrementDatasource, dataset: result.datasetName, addChild: true}, true)
   }
 
 

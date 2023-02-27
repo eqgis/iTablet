@@ -84,9 +84,32 @@ async function searchLayerAttribute(
   size: number,
   type: GetAttributeType = 'loadMore',
 ) {
-  const data = await SMap._searchLayerAttribute(layerInfo.path, params, page, size)
+  //查询接口替换为下面SData 
+  //这里模糊查询所有字段
 
-  return dealData(attributes, data, page, type)
+  const datasetInfo:DatasetInfo = {datasetName:layerInfo.datasetName,datasourceName:layerInfo.datasourceAlias}
+  const fieldInfos = await SData.getFieldInfos(datasetInfo)
+  let attriButeFilter = ""
+  for(let i=0;i<fieldInfos.length;i++){
+    const fieldInfo = fieldInfos[i]
+    const fieldName = fieldInfo.name
+    if (i == 0) {
+      attriButeFilter = fieldName + " LIKE '%%" + params.key + "%%'"
+    } else {
+      attriButeFilter = attriButeFilter + " OR " + fieldName + " LIKE '%%" + params.key + "%%'"
+    }
+  }
+  const para:QueryParameter = {attriButeFilter}
+  const data1 = (await SData.queryRecordset(datasetInfo,para )).map(recordset => recordset.fieldInfoValue)
+  const head = fieldInfos
+  const startIndex =  page*size
+  const total = data1.length
+  const data  = data1.slice(startIndex,startIndex+(total-startIndex>size?size:total-startIndex))
+  const dataShow = {currentPage:page,head,startIndex,total,data}
+  return dealData(attributes, dataShow, page, type)
+  // const data = await SMap._searchLayerAttribute(layerInfo.path, params, page, size)
+
+  // return dealData(attributes, data, page, type)
 }
 
 /**
@@ -99,18 +122,18 @@ async function searchLayerAttribute(
  * @param type
  * @returns {Promise.<*>}
  */
-async function searchMyDataAttribute(
-  attributes: Attributes,
-  path: string,
-  params: {filter?: string, groupBy?: string},
-  page: number,
-  size: number,
-  type: GetAttributeType = 'loadMore',
-) {
-  const data = await SMap._searchMyDataAttribute(path, params, page, size)
+// async function searchMyDataAttribute(
+//   attributes: Attributes,
+//   layerInfo: LayerInfo,
+//   params: {filter?: string, groupBy?: string},
+//   page: number,
+//   size: number,
+//   type: GetAttributeType = 'loadMore',
+// ) {
+//   const data = await SMap._searchMyDataAttribute(path, params, page, size)
 
-  return dealData(attributes, data, page, type)
-}
+//   return dealData(attributes, data, page, type)
+// }
 
 /**
  * 搜索指定图层中Selection匹配对象的属性
@@ -124,15 +147,24 @@ async function searchMyDataAttribute(
  */
 async function searchSelectionAttribute(
   attributes: Attributes,
-  path: string,
+  layerInfo: LayerInfo,
   searchKey: string = '',
   page: number,
   size: number,
   type: GetAttributeType = 'loadMore',
 ) {
-  const data = await SMap._searchSelectionAttribute(path, searchKey, page, size)
+  // const data = await SMap._searchSelectionAttribute(path, searchKey, page, size)
 
-  return dealData(attributes, data, page, type)
+  const data1 = await SMap.getLayerSelectionAttribute(layerInfo?.path||"",searchKey)
+
+  const datasetInfo:DatasetInfo = {datasetName:layerInfo.datasetName,datasourceName:layerInfo.datasourceAlias}
+  const head = await SData.getFieldInfos(datasetInfo)
+  const startIndex =  page*size
+  const total = data1.length
+  const data  = data1.slice(startIndex,startIndex+(total-startIndex>size?size:total-startIndex))
+  const dataShow = {currentPage:page,head,startIndex,total,data}
+
+  return dealData(attributes, dataShow, page, type)
 }
 
 async function getSelectionAttributeByLayer(
@@ -757,7 +789,7 @@ export default {
   getLayerAttribute,
   searchLayerAttribute,
   searchSelectionAttribute,
-  searchMyDataAttribute,
+  // searchMyDataAttribute,
   getSelectionAttributeByLayer,
   deleteSelectionAttributeByLayer,
   deleteAttributeByLayer,

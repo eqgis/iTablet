@@ -13,7 +13,7 @@ import { LayerAttributeTable } from '../../components'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
 import { getThemeAssets } from '../../../../assets'
-import { FileTools } from '../../../../native'
+// import { FileTools } from '../../../../native'
 import NavigationService from '../../../NavigationService'
 import { SMediaCollector } from 'imobile_for_reactnative'
 
@@ -92,78 +92,76 @@ export default class LayerAttributeSearch extends React.Component {
     })
   }
 
-  search = (searchKey = '', type = 'reset', cb = () => {}) => {
-    if (!this.layerPath || searchKey === '') {
+  search = async (searchKey = '', type = 'reset', cb = () => {}) => {
+    if (!this.props.currentLayer || searchKey === '') {
       this.setLoading(false)
       return
     }
     this.searchKey = searchKey
     let result = {},
       attributes = []
-    ;(async function() {
-      try {
-        if (this.isSelection && !this.myData) {
-          result = await LayerUtils.searchSelectionAttribute(
-            this.state.attributes,
-            this.layerPath,
-            searchKey,
-            this.currentPage,
-            PAGE_SIZE,
-            type,
-          )
-        }else if (this.myData && !this.isSelection){
-          result = await LayerUtils.searchMyDataAttribute(
-            this.state.attributes,
-            this.layerPath,
-            {
-              key: searchKey,
-            },
-            this.currentPage,
-            PAGE_SIZE,
-            type,
-          )
-        } else {
-          result = await LayerUtils.searchLayerAttribute(
-            this.state.attributes,
-            this.layerPath,
-            {
-              key: searchKey,
-            },
-            this.currentPage,
-            PAGE_SIZE,
-            type,
-          )
-        }
-
-        attributes = result.attributes || []
-
-        if (
-          Math.floor(this.total / PAGE_SIZE) === this.currentPage ||
-          attributes.data.length < PAGE_SIZE
-        ) {
-          this.noMore = true
-        }
-
-        if (attributes.data.length === 1) {
-          this.setState({
-            showTable: true,
-            attributes,
-            startIndex: -1,
-          })
-        } else {
-          this.setState({
-            showTable: true,
-            attributes,
-          })
-        }
-        this.isInit = false
-        this.setLoading(false)
-        cb && cb(attributes)
-      } catch (e) {
-        this.setLoading(false)
-        cb && cb(attributes)
+    try {
+      if (this.isSelection && !this.myData) {
+        result = await LayerUtils.searchSelectionAttribute(
+          this.state.attributes,
+          this.props.route.params.layerInfo,
+          searchKey,
+          this.currentPage,
+          PAGE_SIZE,
+          type,
+        )
+      }/*else if (this.myData && !this.isSelection){
+        result = await LayerUtils.searchMyDataAttribute(
+          this.state.attributes,
+          this.props.route.params.layerInfo,
+          {
+            key: searchKey,
+          },
+          this.currentPage,
+          PAGE_SIZE,
+          type,
+        )
+      } */else {
+        result = await LayerUtils.searchLayerAttribute(
+          this.state.attributes,
+          this.props.route.params.layerInfo,
+          {
+            key: searchKey,
+          },
+          this.currentPage,
+          PAGE_SIZE,
+          type,
+        )
       }
-    }.bind(this)())
+
+      attributes = result.attributes || []
+
+      if (
+        Math.floor(this.total / PAGE_SIZE) === this.currentPage ||
+        attributes.data.length < PAGE_SIZE
+      ) {
+        this.noMore = true
+      }
+
+      if (attributes.data.length === 1) {
+        this.setState({
+          showTable: true,
+          attributes,
+          startIndex: -1,
+        })
+      } else {
+        this.setState({
+          showTable: true,
+          attributes,
+        })
+      }
+      this.isInit = false
+      this.setLoading(false)
+      cb && cb(attributes)
+    } catch (e) {
+      this.setLoading(false)
+      cb && cb(attributes)
+    }
   }
 
   selectRow = ({ data, index }) => {

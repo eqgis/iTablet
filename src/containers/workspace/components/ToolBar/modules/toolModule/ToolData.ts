@@ -119,13 +119,13 @@ function getData(type, params) {
             size: 'large',
             image: getThemeAssets().mapTools.icon_tool_aidrafting,
           },
-          {
-            key: 'qrCode',
-            title: getLanguage(global.language).Map_Main_Menu.SCAN,
-            action: ToolAction.qrCode,
-            size: 'large',
-            image: getThemeAssets().toolbar.icon_qrcode,
-          },
+          // {
+          //   key: 'qrCode',
+          //   title: getLanguage(global.language).Map_Main_Menu.SCAN,
+          //   action: ToolAction.qrCode,
+          //   size: 'large',
+          //   image: getThemeAssets().toolbar.icon_qrcode,
+          // },
         )
       }
       break

@@ -89,6 +89,7 @@ import AppDialog from '@/utils/AppDialog'
 import AppInputDialog from '@/utils/AppInputDialog'
 import BundleUtils from './utils/BundleUtils'
 import { addNetworkChangeEventListener } from '@/utils/NetworkHandler'
+import { RTKFixType } from 'imobile_for_reactnative/NativeModule/interfaces/SLocation'
 
 //字体不随系统字体变化
 Text.defaultProps = Object.assign({}, Text.defaultProps, { allowFontScaling: false })
@@ -436,10 +437,45 @@ class AppRoot extends Component {
 
   initLocation = async () => {
     await SLocation.openGPS()
-    SLocation.addSlocationStateListener((type: string) => {
+    SLocation.addSlocationStateListener((type) => {
+      let text = ''
+      switch (type) {
+        case 0:
+          text = "Invalid"
+          break
+        case 1:
+          text = "GPS"
+          break
+        case 2:
+          text = "DGPS"
+          break
+        case 3:
+          text = "PPS"
+          break
+        case 4:
+          text = "RTK"
+          break
+        case 5:
+          text = "FloatRTK"
+          break
+        case 6:
+          text = "Estimated"
+          break
+        case 7:
+          text = "Manual"
+          break
+        case 8:
+          text = "Simulation"
+          break
+        case 9:
+          text = "WAAS"
+          break
+        default:
+          text = 'No data'
+          break
+      }
       // Toast.show(getLanguage().SLOCATION_STATE_CURRENT + ":( " + type + " )")
-      let text = type.replace(/:/, " ")
-      if(text.toLowerCase().includes("invalid") | text.toLowerCase().includes("no data")) {
+      if(type === RTKFixType.invalid || type === -1) {
         text = getLanguage().WEAK_POSITIONING_SIGNAL
       }
       this.props.setPointStateText(getLanguage().SLOCATION_STATE_CURRENT + ": "+ text)

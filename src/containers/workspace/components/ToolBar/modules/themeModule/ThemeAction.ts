@@ -16,7 +16,7 @@ import constants from '../../../../constants'
 import Utils from '../../utils'
 import NavigationService from '../../../../../NavigationService'
 import DataHandler from '../../../../../../utils/DataHandler'
-import { LayerStyle } from 'imobile_for_reactnative/NativeModule/interfaces/cartography/SCartographyType'
+import { LayerStyle } from 'imobile_for_reactnative/NativeModule/interfaces/data/SCartographyType'
 
 /**
  * 统一处理方法

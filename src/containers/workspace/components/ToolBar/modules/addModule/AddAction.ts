@@ -4,7 +4,7 @@ import { Toast, LayerUtils } from '../../../../../../utils'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import ToolbarModule from '../ToolbarModule'
 import AddData from './AddData'
-import { LayerStyle } from 'imobile_for_reactnative/NativeModule/interfaces/cartography/SCartographyType'
+import { LayerStyle } from 'imobile_for_reactnative/NativeModule/interfaces/data/SCartographyType'
 
 /**
  * containerType为list时，listAction为列表行点击事件

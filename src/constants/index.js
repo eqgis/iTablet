@@ -26,9 +26,9 @@ import {
 } from './FunctionToolbarModule'
 
 import {
-  pointColorSet,
-  regionBeforeColorSet,
-  regionBorderColorSet,
+  // pointColorSet,
+  // regionBeforeColorSet,
+  // regionBorderColorSet,
   legendColor,
   mapBackGroundColor,
 } from './ColorList'
@@ -54,9 +54,9 @@ export {
   ConstInfo,
   OpenData,
   OpenData2,
-  pointColorSet,
-  regionBeforeColorSet,
-  regionBorderColorSet,
+  // pointColorSet,
+  // regionBeforeColorSet,
+  // regionBorderColorSet,
   legendColor,
   mapBackGroundColor,
   UserType,

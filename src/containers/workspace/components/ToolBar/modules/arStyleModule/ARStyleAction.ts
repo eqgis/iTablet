@@ -1,8 +1,8 @@
 /* global GLOBAL */
 import {
   SARMap,
-  ARAction,
 } from 'imobile_for_reactnative'
+import { ARAction } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import {
   ConstToolType,
 } from '../../../../../../constants'

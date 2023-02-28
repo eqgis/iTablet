@@ -4,9 +4,10 @@ import { Container } from '../../../../components'
 import TouchableItemView from '../TouchableItemView'
 import { getLanguage } from '../../../../language/index'
 import { connect } from 'react-redux'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 import { setCurrentMapModule } from '../../../../redux/models/mapModules'
 import NavigationService from '../../../NavigationService'
+import { Users } from '@/redux/models/user'
 
 class SelectModule extends Component {
   props: {
@@ -14,6 +15,7 @@ class SelectModule extends Component {
     latestMap: Object,
     navigation: Object,
     mapModules: Object,
+    user: Users,
     setCurrentMapModule: () => {},
   }
 
@@ -37,7 +39,7 @@ class SelectModule extends Component {
   }
 
   navigateToModule = async (module, index, map) => {
-    let licenseStatus = await SMap.getEnvironmentStatus()
+    let licenseStatus = await SData.getEnvironmentStatus()
     global.isLicenseValid = licenseStatus.isLicenseValid
     if (!global.isLicenseValid) {
       global.SimpleDialog.set({
@@ -56,7 +58,7 @@ class SelectModule extends Component {
   }
 
   render() {
-    let data = this.props.mapModules.modules.map(item =>
+    const data = this.props.mapModules.modules[this.props.user.currentUser.userName].map(item =>
       item.getChunk(this.props.language),
     )
     return (
@@ -103,6 +105,7 @@ const mapStateToProps = state => ({
   language: state.setting.toJS().language,
   latestMap: state.map.toJS().latestMap,
   mapModules: state.mapModules.toJS(),
+  user: state.user.toJS(),
 })
 const mapDispatchToProps = {
   setCurrentMapModule,

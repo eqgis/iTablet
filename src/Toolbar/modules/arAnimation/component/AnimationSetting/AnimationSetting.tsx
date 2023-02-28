@@ -1,13 +1,14 @@
 import React from 'react'
-import { ARAnimatorCategory, ARAnimatorPlayOrder, ARAnimatorType, ARNodeAnimatorType } from 'imobile_for_reactnative/NativeModule/dataTypes'
+import { ARAnimatorCategory, ARAnimatorPlayOrder, ARAnimatorType, ARNodeAnimatorType } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import { ARAnimatorParameter, ARModelAnimatorParameter, ARNodeAnimatorParameter, ModelAnimation } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
-import { TARAnimatorCategory, TARAnimatorPlayOrder, TARAnimatorType, TARNodeAnimatorType, Vector3 } from 'imobile_for_reactnative/types/data'
+import { TARAnimatorCategory, TARAnimatorPlayOrder, TARAnimatorType, TARNodeAnimatorType } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import { ScaledSize, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { dp } from 'imobile_for_reactnative/utils/size'
 import { AppStyle } from '../../../../../utils'
 import { getLanguage } from '../../../../../language'
 import { BoolItem, CounterItem, InputItem, ListItem, ListItemData, SelectItem, VectorItem } from '.'
 import { getImage } from '../../../../../assets'
+import { Vector3 } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 interface Props {
   onSave: (param: ARNodeAnimatorParameter | ARModelAnimatorParameter) => void

@@ -1,0 +1,12 @@
+{
+  "name": "exhibition",
+  "version": "0.0.1",
+  "bundleType": "CONFIG_MODULE",
+  "description": "展厅",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

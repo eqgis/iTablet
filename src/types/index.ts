@@ -94,3 +94,16 @@ export interface UserInfo {
   /** @deprecated 是否为邮箱登录 */
   isEmail?: string,
 }
+
+export interface Map {
+  title: string,
+  name: string,
+  path: string,
+  module: string,
+  Resources: string,
+  Datasources: Array<{
+    Type: string,
+    Server: string,
+    Alians: string,
+  }>,
+}

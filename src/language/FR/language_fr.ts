@@ -2104,6 +2104,8 @@ export const language_fr: typeof language_cn = {
   BATCH_OPERATE: "Opération par lots",
   MY_APPLET: "Mon applet",
   UN_DOWNLOADED_APPLET: "Applet non téléchargé",
+  NOT_LOADED_APPLET: "Applets that have not been loaded", // need to translate
+  LOCAL_APPLET: "Local Applets", // need to translate
   DELETE_APPLET: "Supprimer l'applet",
   ADD_APPLET: "Ajouter l'applet",
   MOVE_UP: "Déplacer vers le haut",
@@ -2870,4 +2872,8 @@ export const language_fr: typeof language_cn = {
   PANE_ANIMATION: 'Animation du panneau',
   CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
   MODEL_DATA: 'Model data',   // To be tanslated
+
+  RENDER_AR_SCENE_ON_3D: 'Render AR to 3D Scene',  // To be tanslated
+  RESTART_MODULE_INFO: 'This setting will take effect after restart the module. Would you like to restart module now?',  // To be tanslated
+
 }

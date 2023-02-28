@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { scaleSize } from '../../../../utils'
+import { scaleSize, setSpText } from '../../../../utils'
 import { color, zIndexLevel, size } from '../../../../styles'
 import { ConstToolType, Height } from '../../../../constants'
 
@@ -142,5 +142,10 @@ export default StyleSheet.create({
   headerRightImg: {
     width: scaleSize(50),
     height: scaleSize(50),
+  },
+  headerRightTxt: {
+    width: scaleSize(70),
+    textAlign: 'center',
+    fontSize: setSpText(16),
   },
 })

@@ -8,7 +8,8 @@ import { getLanguage } from '../../../../../../language'
 import { getThemeAssets, getPublicAssets, getImage } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
-import { ARElementType, SARMap, ARAction, ARLayerType } from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
+import { ARElementType, ARAction, ARLayerType } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import AREditAction from './AREditAction'
 import { DATA_ITEM, IARTransform } from '../types'
 import NavigationService from '../../../../../../containers/NavigationService'
@@ -16,7 +17,6 @@ import ToolBarInput from 'imobile_for_reactnative/components/ToolbarKit/componen
 import { dp } from 'imobile_for_reactnative/utils/size'
 import { ToolBarSlideItem } from 'imobile_for_reactnative/components/ToolbarKit/component/ToolBarSlide'
 import { Platform } from 'react-native'
-import { IAnimationParam } from 'imobile_for_reactnative/types/interface/ar'
 
 interface SectionItemData {
   key: string,

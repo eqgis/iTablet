@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, Text, View, ViewStyle } from 'react-native'
+import { Switch, Text, View, ViewStyle, TextStyle } from 'react-native'
 import { AppStyle } from '../utils'
 
 interface Props {
@@ -7,6 +7,7 @@ interface Props {
   value: boolean,
   onPress: (value: boolean) => void,
   style?: ViewStyle
+  textStyle?: TextStyle
 }
 
 interface State {
@@ -38,7 +39,7 @@ class SwitchItem extends React.Component<Props, State> {
   render() {
     return(
       <View style={[AppStyle.ListItemStyleNS, this.props.style]}>
-        <Text style={{...AppStyle.Text_Style, flex: 1}}>
+        <Text style={[{...AppStyle.Text_Style, flex: 1}, this.props.textStyle]}>
           {this.props.text}
         </Text>
         <Switch

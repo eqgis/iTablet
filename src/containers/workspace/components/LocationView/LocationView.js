@@ -12,7 +12,7 @@ import { getThemeAssets } from '../../../../assets'
 import { color } from '../../../../styles'
 import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
-
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 export default class LocationView extends React.Component {
   props: {
     getNavigationDatas: () => {},
@@ -26,11 +26,14 @@ export default class LocationView extends React.Component {
     this.isStart = true
   }
   _location = async () => {
-    let point = await SMap.getCurrentPosition()
+    let point = await SMap.getCurrentLocation()
     if (this.isStart) {
       global.STARTX = point.x
       global.STARTY = point.y
-      await SMap.getStartPoint(global.STARTX, global.STARTY, false)
+
+      await SMap.removeCallout('startPoint')
+      await SMap.addCallout('startPoint', {x: global.STARTX, y: global.STARTY}, {type: 'image', resource: 'start_point'})
+    
       global.STARTNAME =
         (await FetchUtils.getPointName(global.STARTX, global.STARTY)) ||
         `${
@@ -39,7 +42,10 @@ export default class LocationView extends React.Component {
     } else {
       global.ENDX = point.x
       global.ENDY = point.y
-      await SMap.getEndPoint(global.ENDX, global.ENDY, false)
+    
+      await SMap.removeCallout('endPoint')
+      await SMap.addCallout('endPoint', {x: global.ENDX, y: global.ENDY}, {type: 'image', resource: 'destination_point'})
+     
       global.ENDNAME =
         (await FetchUtils.getPointName(global.ENDX, global.ENDY)) ||
         `${

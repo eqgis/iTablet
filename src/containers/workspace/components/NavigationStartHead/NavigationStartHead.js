@@ -12,8 +12,9 @@ import styles from './styles'
 import { TouchType } from '../../../../constants'
 import { getPublicAssets } from '../../../../assets'
 import { color } from '../../../../styles'
-import { SMap } from 'imobile_for_reactnative'
+import { SIndoorNavigation, SMap, SNavigation } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 const TOOLBARHEIGHT = Platform.OS === 'ios' ? scaleSize(20) : 0
 const HEADER_HEIGHT = TOOLBARHEIGHT + scaleSize(270)
 export default class NavigationStartHead extends React.Component {
@@ -89,7 +90,11 @@ export default class NavigationStartHead extends React.Component {
     global.CURRENT_NAV_MODE = ''
     global.NAV_PARAMS = []
     global.TouchType = TouchType.NORMAL
-    await SMap.clearPoint()
+    await SNavigation.clearPath()
+    await SIndoorNavigation.clearPath()
+    await SMap.clearTrackingLayer()
+    await SMap.removeCallout('startPoint')
+    await SMap.removeCallout('endPoint')
     global.mapController?.changeBottom(false)
     global.FloorListView?.floatToRight(false)
     global.FloorListView?.changeBottom(false)
@@ -114,7 +119,11 @@ export default class NavigationStartHead extends React.Component {
     this.setVisible(false)
     global.NAVIGATIONSTARTBUTTON.setVisible(false)
     await SMap.clearTrackingLayer()
-    await SMap.clearPoint()
+    await SNavigation.clearPath()
+    await SIndoorNavigation.clearPath()
+    await SMap.clearTrackingLayer()
+    await SMap.removeCallout('startPoint')
+    await SMap.removeCallout('endPoint')
     if (isStart) {
       global.STARTX = null
       global.STARTY = null

@@ -1,4 +1,4 @@
-import { FileTools, SMap, SARMap } from 'imobile_for_reactnative'
+import { FileTools, SMap, SARMap, SData } from 'imobile_for_reactnative'
 import { ConstPath } from '../../constants'
 
 /** 数据源名称 */
@@ -32,7 +32,7 @@ function getARRawDatasource(): string {
 
 async function closeARRawDatasource() {
   if(isAdded && !isSaved) {
-    await SMap.closeDatasource(rawDatasource)
+    await SData.closeDatasource(rawDatasource)
     const homePath = await FileTools.getHomeDirectory()
     const datasourcePath = homePath + ConstPath.UserPath + global.currentUser.userName + '/' + ConstPath.RelativePath.ARDatasource
     const udbPath = datasourcePath + '/' + rawDatasource + '.udb'

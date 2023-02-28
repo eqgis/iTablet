@@ -1,10 +1,11 @@
 import { fromJS } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
-import { SMap, WorkspaceType, RNFS as fs } from 'imobile_for_reactnative'
+import { SMap, RNFS as fs, SData, SPlot } from 'imobile_for_reactnative'
 import xml2js from 'react-native-xml2js'
 import { FileTools } from '../../native'
 import { ConstInfo } from '../../constants'
+import { WorkspaceType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 const parser = new xml2js.Parser()
 // Constants
@@ -136,7 +137,7 @@ export const importWorkspace = (params, cb = () => {}) => async (
       cb && cb({ mapsInfo, msg: ConstInfo.WORKSPACE_ALREADY_OPENED })
     } else {
       // 关闭所有地图
-      await SMap.closeMap()
+      await SMap.exitMap()
 
       let data
       if (params && params.mapName) {
@@ -148,7 +149,7 @@ export const importWorkspace = (params, cb = () => {}) => async (
       } else {
         data = { server: params.path, type }
       }
-      mapsInfo = await SMap.importWorkspaceInfo(data, params.module)
+      mapsInfo = await SData.importWorkspace(data)
       payload = params
     }
     await dispatch({
@@ -166,7 +167,7 @@ export const importWorkspace = (params, cb = () => {}) => async (
 // 导入标绘库
 // export const importPlotLib= async (params) => {
 export const importPlotLib = (params, cb = () => {}) => async () => {
-  const result = await SMap.importPlotLibData(params.path)
+  const result = await SPlot.importPlotLibData(params.path)
   cb && cb({ result })
   return { result }
 }
@@ -219,6 +220,7 @@ export const setCurrentTemplateInfo = (
     data = {
       ...params.$,
       layerPath: params.layerPath,
+      datasetInfo:{datasetName:params.datasetName,datasourceName:params.datasourceAlias},
       field: fieldInfo,
       originData: params,
     }
@@ -316,7 +318,7 @@ export const getSymbolPlots = (params, cb = () => {}) => async (
         plotLibPaths.push(data[i].path)
       }
       // await SMap.addCadLayer('PlotEdit')
-      const resultArr = await SMap.initPlotSymbol(plotLibPaths, {layerPath: currentLayer.layerPath})
+      const resultArr = await SPlot.initPlotSymbol(plotLibPaths, {layerPath: currentLayer.layerPath})
       // const resultArr = await SMap.initPlotSymbolLibrary(
       //   plotLibPaths,
       //   isFirst,

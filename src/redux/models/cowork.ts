@@ -890,7 +890,6 @@ function showAll(members: Array<any>, messages: Array<any>) {
       if (member.show) {
         SMap.showUserTrack(userID)
       }
-      console.warn('showAll')
       for (const message of messages) {
         // 专题图消息不添加callout
         if (!message.status && message.user.id === userID && !message.message.themeType) {
@@ -1374,7 +1373,29 @@ export default handleActions(
           item.show = true
         })
       }
-      return state.setIn(['currentTask'], fromJS(payload)).setIn(['coworkInfo'], fromJS(coworkInfo))
+      let exist = false
+
+      let allTask = state.toJS().tasks || {}
+      if (!allTask[userId]) allTask[userId] = {}
+      let myTasks: any = allTask[userId] || {}
+      let tasks: any = myTasks[payload.groupID] || []
+      for (let i = 0; i < tasks.length; i++) {
+        let _task = tasks[i]
+        if (payload.id === _task.id) {
+          exist = true
+          break
+        }
+      }
+      if (!exist) {
+        tasks.push(payload)
+        if (!myTasks[payload.groupID]) myTasks[payload.groupID] = []
+        myTasks[payload.groupID] = myTasks[payload.groupID].concat(tasks)
+        allTask[userId] = myTasks
+      }
+      // TODO 临时处理 allTask 更新不了,采用以下方式
+      const _state = state.setIn(['tasks'], fromJS(allTask)).setIn(['currentTask'], fromJS(payload)).setIn(['coworkInfo'], fromJS(coworkInfo))
+      allTask = _state.toJS().tasks
+      return state.setIn(['tasks'], fromJS(allTask)).setIn(['currentTask'], fromJS(payload)).setIn(['coworkInfo'], fromJS(coworkInfo))
     },
     [`${COWORK_GROUP_EXIT}`]: (state: any, { payload, userId }: any) => {
       let groups = state.toJS().groups

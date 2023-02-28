@@ -12,8 +12,8 @@ import TouchProgress from '../TouchProgress'
 // import * as ExtraDimensions from 'react-native-extra-dimensions-android'
 import ExtraDimensions from 'react-native-extra-dimensions-android'
 import ToolbarModuleDefault, { getToolbarModule } from './modules/ToolbarModule'
-import { View, Animated, Platform, TouchableOpacity, Image, ScaledSize } from 'react-native'
-import { SMap, SScene, Action } from 'imobile_for_reactnative'
+import { View, Animated, Platform, TouchableOpacity, Image, ScaledSize, Text } from 'react-native'
+import { SMap, SScene } from 'imobile_for_reactnative'
 import ToolbarBtnType from './ToolbarBtnType'
 import styles from './styles'
 import {
@@ -25,6 +25,8 @@ import Utils from './utils'
 import { ToolbarModuleKey } from './modules/modulesKeys'
 import { DEVICE } from '@/redux/models/device'
 import sceneInfoType from '@/redux/models/scenes'
+import { Action, LayerInfo } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SScene'
 
 interface ToolbarVisibleParam {
   /** 是否全屏， */
@@ -72,7 +74,7 @@ export interface Props extends Partial<DefaultProps> {
   online: Object,
   collection: Object,
   template: Object,
-  currentLayer: Object,
+  currentLayer: LayerInfo,
   selection: Array,
   device: DEVICE,
   windowSize: ScaledSize,
@@ -810,7 +812,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
     if (!moveToCurrentResult) {
       await SMap.moveToPoint({ x: 116.21, y: 39.42 })
     }
-    await SMap.setScale(0.0000060635556556859582)
+    await SMap.setMapScale(0.0000060635556556859582)
   }
 
   overlayOnPress = () => {
@@ -871,9 +873,9 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
       // TODO savePlotAnimationNode
       // this.contentView.savePlotAnimationNode()
     } else if (this.state.type === ConstToolType.SM_MAP3D_FLY_LIST) {
-      SScene.checkoutListener('startTouchAttribute')
-      SScene.setAction('PAN3D')
-      global.action3d = 'PAN3D'
+      SScene.setOperation('startTouchAttribute')
+      SScene.setAction(Action3D.PAN3D)
+      global.action3d = Action3D.PAN3D
       this.setVisible(false)
     } else {
       this.setVisible(false)
@@ -961,8 +963,11 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
             resizeMode={'contain'}
             // source={getThemeAssets().ar.toolbar.ai_setting}
             source={item.image}
-            style={styles.headerRightImg}
+            style={[styles.headerRightImg, item.imgStyle]}
           />
+          {
+            item.title && <Text style={[styles.headerRightTxt, item.titleStyle]}>{item.title}</Text>
+          }
         </TouchableOpacity>
       )
     })

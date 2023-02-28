@@ -62,9 +62,9 @@ export default class Layer3DItem extends Component {
     let newState = JSON.parse(JSON.stringify(this.state))
     newState.visible = !this.state.visible
     if (this.props.item.type === 'Terrain') {
-      SScene.setTerrainLayerListVisible(this.props.item.name, newState.visible)
+      SScene.setTerrainLayerVisible(this.props.item.name, newState.visible)
     } else {
-      SScene.setVisible(this.props.item.name, newState.visible)
+      SScene.setLayerVisible(this.props.item.name, newState.visible)
     }
     this.setState(newState)
     this.props.onRefresh()

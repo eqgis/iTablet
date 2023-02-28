@@ -15,7 +15,8 @@ import { scaleSize, setSpText } from '../../../../../../../utils'
 import { getLanguage } from '../../../../../../../language'
 import { getThemeAssets } from '../../../../../../../assets'
 // import { TextInput } from 'react-native-gesture-handler';
-import { SMap, Action } from 'imobile_for_reactnative'
+import { SMap, SPlot } from 'imobile_for_reactnative'
+import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 var StartMode = {
   START_FOLLOW_LAST: 1,
@@ -61,7 +62,7 @@ export default class PlotAnimationView extends React.Component {
   }
 
   getCurrentGeometryType = async () => {
-    let type = await SMap.getGeometryTypeById(
+    let type = await SPlot.getGeometryTypeById(
       this.props.layerName,
       this.props.geoId,
     )
@@ -84,7 +85,7 @@ export default class PlotAnimationView extends React.Component {
         break
     }
 
-    let types = await SMap.getGeoAnimationTypes(this.props.geoId)
+    let types = await SPlot.getGeoAnimationTypes(this.props.geoId)
 
     if (global.animationWayData) {
       this.setState({
@@ -516,7 +517,7 @@ export default class PlotAnimationView extends React.Component {
 
   cancle = () => {
     // SMap.endAnimationWayPoint(false)
-    SMap.cancelAnimationWayPoint()
+    SPlot.cancelAnimationWayPoint()
     global.TouchType = TouchType.NULL
     global.animationWayData && (global.animationWayData = null)
     let height = 0

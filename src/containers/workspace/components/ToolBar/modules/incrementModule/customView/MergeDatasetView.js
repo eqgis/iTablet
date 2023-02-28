@@ -22,11 +22,13 @@ import {
   Height,
 } from '../../../../../../../constants'
 import { getPublicAssets, getThemeAssets } from '../../../../../../../assets'
-import { SMap } from 'imobile_for_reactnative'
+import { SMap ,SData, SNavigation } from 'imobile_for_reactnative'
 import ModalDropdown from 'react-native-modal-dropdown'
 import { getLanguage } from '../../../../../../../language'
 import { Container } from '../../../../../../../components'
 import NavigationService from '../../../../../../NavigationService'
+import { DatasetType, FieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 export default class MergeDatasetView extends Component {
   props: {
@@ -73,7 +75,22 @@ export default class MergeDatasetView extends Component {
    * 获取所有线数据集，过滤需要合并的源数据集 zhangxt
    */
   _add = async () => {
-    let lineDataset = await SMap.getAllLineDatasets()
+    let datasources = await SData._getDatasetsByWorkspaceDatasource()
+    let datasourceArray = []
+    datasources.forEach(item => {
+      let datasetArray = []
+      item.data.forEach(item2 => {
+        if(item2.datasetType === DatasetType.LINE){
+          datasetArray.push({datasetName:item2.datasetName,datasourceName:item2.datasourceName})
+        }
+      })
+      if(datasetArray.length>0){
+        datasourceArray.push({title:item.alias,visible:true,data:datasetArray})
+      }
+    })
+
+    let lineDataset = datasourceArray
+    // let lineDataset = await SNavigation.getAllLineDatasets()
     let { datasourceName } = this.props.sourceData
     let filterData = lineDataset.filter(item => {
       return item.title !== datasourceName
@@ -129,7 +146,7 @@ export default class MergeDatasetView extends Component {
    * }]
    */
   mergeData = async selectedDatas => {
-    let result = await SMap.mergeDataset(
+    let result = await SNavigationInner.mergeDataset(
       { ...this.props.sourceData },
       selectedDatas,
     )
@@ -293,9 +310,23 @@ class Item extends Component {
     let datasourceName = this.props.item.datasourceName
     //第一次点击先获取所有非系统的文字类型字段
     if (!this.props.item.fieldInfo) {
-      let needChangeData = await SMap.queryFieldInfos([
-        { datasetName, datasourceName },
-      ])
+      const infos = await SData.getFieldInfos({datasourceName, datasetName})
+      const names = []
+      infos.map(info => {
+        if (!info.isSystemField && (info.type == FieldType.CHAR || info.type === FieldType.TEXT)) {
+          names.push(info.name)
+        }
+      })
+      let needChangeData = []
+      if(names.length > 0) {
+        needChangeData = [
+          {
+            datasetName: datasetName,
+            datasourceName: datasourceName,
+            fieldName: names
+          }
+        ]
+      }
       if (needChangeData.length > 0) {
         this.props.item.fieldInfo = needChangeData[0].fieldName
         //已有‘RoadName’字段直接使用，不用再选择

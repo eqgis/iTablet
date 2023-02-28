@@ -26,7 +26,7 @@ class MarkModule extends FunctionModule {
       data: _data.data,
     })
     params.showFullMap && params.showFullMap(true)
-    params.setToolbarVisible(true, this.type, {
+    params?.setToolbarVisible(true, this.type, {
       containerType,
       isFullScreen: true,
       ...data,

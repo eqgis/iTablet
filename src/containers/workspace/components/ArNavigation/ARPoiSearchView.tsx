@@ -1,5 +1,5 @@
-import { ARAction, SARMap, SMap, SMARInterestView ,SSpeechRecognizer} from 'imobile_for_reactnative'
-import { POIInfo, POIInfoOnline, POISearchResult, RouteAnalyzeResult } from 'imobile_for_reactnative/types/interface/ar'
+import { SARMap, SData, SMap, SMARInterestView ,SSpeechRecognizer} from 'imobile_for_reactnative'
+import { ARAction, POIInfo, POIInfoOnline, POISearchResult, RouteAnalyzeResult } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import { Point } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import React from 'react'
 import { dismissKeyboard, Dimensions, FlatList, Image, ListRenderItemInfo, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
@@ -252,18 +252,20 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
           const roadNetDataset = ARNaviModule.getData().naviDatasetInfo
           let result: RouteAnalyzeResult | null | undefined = null
           if('address' in this.state.selectedPoi) {
+            const GPSPoints = await SData.CoordSysTranslatorGPSToPrj(await SMap.getPrjCoordSys(),[this.state.selectedPoi.location])
             result = await this.OnlineService?.routeAnalyze({
               startPoint: currentLocation.ll,
-              endPoint: await SMap.mercatorToLL(this.state.selectedPoi.location),
+              endPoint: GPSPoints[0],
               to: 910111
             })
           } else if(roadNetDataset) {
+            const GPSPoints = await SData.CoordSysTranslatorGPSToPrj(await SMap.getPrjCoordSys(),[this.state.selectedPoi.location])
             result = await SARMap.routeAnalyze({
               datasourcAlias: roadNetDataset.datasourceAlias,
               datasetName: roadNetDataset.datasetName,
               modelFileName: roadNetDataset.modelFileName,
               startPoint: currentLocation.ll,
-              endPoint: await SMap.mercatorToLL(this.state.selectedPoi.location),
+              endPoint: GPSPoints[0],
               to: 2
             })
           }

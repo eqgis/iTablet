@@ -2105,6 +2105,8 @@ export const language_ja: typeof language_cn = {
   BATCH_OPERATE: "バッチ操作",
   MY_APPLET: "使用できるアプレット",
   UN_DOWNLOADED_APPLET: "アプレットダウンロードの取り消し", // 带下载
+  NOT_LOADED_APPLET: "Applets that have not been loaded", // need to translate
+  LOCAL_APPLET: "Local Applets", // need to translate
   DELETE_APPLET: "アプレットの削除",
   ADD_APPLET: "アプレットの追加",
   MOVE_UP: "上へ",
@@ -2872,5 +2874,8 @@ export const language_ja: typeof language_cn = {
   PANE_ANIMATION: 'ペインのアニメーション',
   CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
   MODEL_DATA: 'Model data',   // To be tanslated
+
+  RENDER_AR_SCENE_ON_3D: 'Render AR to 3D Scene',  // To be tanslated
+  RESTART_MODULE_INFO: 'This setting will take effect after restart the module. Would you like to restart module now?',  // To be tanslated
 
 }

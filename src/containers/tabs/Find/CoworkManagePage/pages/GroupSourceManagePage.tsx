@@ -177,7 +177,7 @@ class GroupSourceManagePage extends Component<Props, State> {
     }
 
     if (!this.isManage) {
-      this.modules = this.props.mapModules.modules.map(item =>
+      this.modules = this.props.mapModules.modules[this.props.user.currentUser.userName].map(item =>
         item.getChunk(this.props.language),
       )
     } else {

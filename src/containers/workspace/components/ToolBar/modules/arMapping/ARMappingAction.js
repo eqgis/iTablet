@@ -1,6 +1,6 @@
 /* global GLOBAL */
 import ToolbarModule from '../ToolbarModule'
-import { SMap ,SARMap } from 'imobile_for_reactnative'
+import { SMap ,SARMap,SData,SPlot } from 'imobile_for_reactnative'
 import { LayerUtils } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 
@@ -86,11 +86,15 @@ function arMeasureCollect() {
       isTaggingLayer = layerType === 'TAGGINGLAYER'
     }
     if (!isTaggingLayer) {
-      let hasDefaultTagging = await SMap.hasDefaultTagging(
-        _params.user.currentUser.userName,
-      )
+      let hasDefaultTagging = false
+      const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+_params.user.currentUser.userName+"#"})
+      datasets.forEach(item => {
+        if (item.datasetName.indexOf("Default_Tagging_"+_params.user.currentUser.userName) != -1) {
+          hasDefaultTagging = true
+        }
+      })
       if (!hasDefaultTagging) {
-        await SMap.newTaggingDataset(
+        await SMap._newTaggingDataset(
           `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
@@ -154,11 +158,15 @@ function arDrawLine() {
       isDrawTaggingLayer = true
     }
     if (isDrawTaggingLayer) {
-      let hasDefaultTagging = await SMap.hasDefaultTagging(
-        _params.user.currentUser.userName,
-      )
+      let hasDefaultTagging = false
+      const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+_params.user.currentUser.userName+"#"})
+      datasets.forEach(item => {
+        if (item.datasetName.indexOf("Default_Tagging_"+_params.user.currentUser.userName) != -1) {
+          hasDefaultTagging = true
+        }
+      })
       if (!hasDefaultTagging) {
-        await SMap.newTaggingDataset(
+        await SMap._newTaggingDataset(
           `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
@@ -218,11 +226,15 @@ function arDrawArea() {
     }
 
     if (isDrawTaggingLayer) {
-      let hasDefaultTagging = await SMap.hasDefaultTagging(
-        _params.user.currentUser.userName,
-      )
+      let hasDefaultTagging = false
+      const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+_params.user.currentUser.userName+"#"})
+      datasets.forEach(item => {
+        if (item.datasetName.indexOf("Default_Tagging_"+_params.user.currentUser.userName) != -1) {
+          hasDefaultTagging = true
+        }
+      })
       if (!hasDefaultTagging) {
-        await SMap.newTaggingDataset(
+        await SMap._newTaggingDataset(
           `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )
@@ -281,11 +293,15 @@ function arDrawPoint() {
     }
 
     if (isDrawTaggingLayer) {
-      let hasDefaultTagging = await SMap.hasDefaultTagging(
-        _params.user.currentUser.userName,
-      )
+      let hasDefaultTagging = false
+      const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+_params.user.currentUser.userName+"#"})
+      datasets.forEach(item => {
+        if (item.datasetName.indexOf("Default_Tagging_"+_params.user.currentUser.userName) != -1) {
+          hasDefaultTagging = true
+        }
+      })
       if (!hasDefaultTagging) {
-        await SMap.newTaggingDataset(
+        await SMap._newTaggingDataset(
           `Default_Tagging_${_params.user.currentUser.userName}`,
           _params.user.currentUser.userName,
         )

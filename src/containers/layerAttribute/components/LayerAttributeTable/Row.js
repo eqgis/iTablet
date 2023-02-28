@@ -10,6 +10,7 @@ import { scaleSize } from '../../../../utils'
 import { color } from '../../../../styles'
 import Cell from './Cell'
 import CellButton from './CellButton'
+import { getLanguage } from '@/language'
 
 const ROW_HEIGHT = scaleSize(80)
 const CELL_WIDTH = 100
@@ -159,6 +160,9 @@ export default class Row extends Component {
     ) {
       isButton = true
       buttonTitle = this.props.buttonTitles[index] || this.props.buttonTitles[0]
+      if (typeof buttonTitle === 'function') {
+        buttonTitle = buttonTitle(this.props.data)
+      }
       buttonAction =
         this.props.buttonActions[index] || this.props.buttonActions[0]
     }
@@ -257,7 +261,7 @@ export default class Row extends Component {
         </TouchableOpacity>
       )
     } else if (
-      (this.props.indexColumn >= 0 && this.props.indexColumn === index) ||
+      (this.props.indexColumn !== undefined && this.props.indexColumn >= 0 && this.props.indexColumn === index) ||
       !this.props.hasInputText
     ) {
       if (!this.props.selected) {
@@ -268,11 +272,15 @@ export default class Row extends Component {
           textStyle = [styles.cellText, this.props.indexCellTextStyle]
         }
       }
-      let iTemView
       return (
         <CellButton
           style={[
-            width ? { width } : { flex: 1 },
+            width ? {
+              width: this.props.indexColumn !== undefined && this.props.indexColumn >= 0 && this.props.indexColumn === index
+              || value === getLanguage(global.language).Map_Attribute.ATTRIBUTE_NO
+                ? (width / 2)
+                : width
+            } : { flex: 1 },
             borderStyle,
             cellStyle,
           ]}

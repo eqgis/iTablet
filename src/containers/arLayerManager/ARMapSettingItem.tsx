@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { scaleSize, setSpText } from '../../utils'
 import { color } from '../../styles'
-import { ARLayer } from 'imobile_for_reactnative'
+import { ARLayer } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 
 const styles = StyleSheet.create({
   item: {

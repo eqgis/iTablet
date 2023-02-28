@@ -12,7 +12,7 @@ import {
   FlatList,
   Image,
 } from 'react-native'
-import { SMap } from 'imobile_for_reactnative'
+import { SIndoorNavigation, SMap, SNavigation } from 'imobile_for_reactnative'
 import styles from './style'
 import { scaleSize, screen } from '../../../../utils'
 import PoiData from '../../../pointAnalyst/PoiData'
@@ -22,6 +22,7 @@ import { ChunkType, TouchType } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
 import LocateUtils from '../../../pointAnalyst/LocateUtils'
 import { ScrollView } from 'react-native-gesture-handler'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 export default class PoiInfoContainer extends React.Component {
   props: {
@@ -251,13 +252,15 @@ export default class PoiInfoContainer extends React.Component {
   }
 
   //online返回存在的缺陷，没有直接返回楼层，地址中包含有楼层，但格式不统一，无法拿到，后续导航无法到正确楼层
-  getSearchResult = (params, cb) => {
+  getSearchResult = async (params, cb) => {
     try {
       global.Loading.setLoading(
         true,
         getLanguage(global.language).Prompt.SEARCHING,
       )
-      LocateUtils.getSearchResult(params, this.state.location, data => {
+
+      const currentLocation = await SMap.getCurrentLocation()
+      LocateUtils.getSearchResult(params, { x: currentLocation.longitude, y: currentLocation.latitude }, data => {
         if (data) {
           let newState = {resultList: data.resultList, radius: 50000, showList: true}
           if (data.radius !== undefined) {
@@ -266,7 +269,7 @@ export default class PoiInfoContainer extends React.Component {
           this.setState(newState,
             async () => {
               this.show()
-              await SMap.addCallouts(data.resultList)
+              await SMap._addCallouts(data.resultList)
               cb && cb(data)
               global.Loading.setLoading(false)
             },
@@ -294,18 +297,24 @@ export default class PoiInfoContainer extends React.Component {
         global.STARTX = item.x
         global.STARTY = item.y
         global.STARTNAME = item.pointName
-        await SMap.getStartPoint(global.STARTX, global.STARTY, false)
+
+        await SMap.removeCallout('startPoint')
+        await SMap.addCallout('startPoint', {x: global.STARTX, y: global.STARTY}, {type: 'image', resource: 'start_point'})
+
       } else {
         //设置终点
         global.ENDX = item.x
         global.ENDY = item.y
         global.ENDNAME = item.pointName
-        await SMap.getEndPoint(global.ENDX, global.ENDY, false)
+
+        await SMap.removeCallout('endPoint')
+        await SMap.addCallout('endPoint', {x: global.ENDX, y: global.ENDY}, {type: 'image', resource: 'destination_point'})
+
       }
-      SMap.removeAllCallout()
+      SMap._removeAllCallout()
       this.setVisible(false)
       global.PoiTopSearchBar && global.PoiTopSearchBar.setVisible(false)
-      global.STARTPOINTFLOOR = await SMap.getCurrentFloorID()
+      global.STARTPOINTFLOOR = await SIndoorNavigation.getCurrentFloorID()
       NavigationService.navigate('NavigationView', {
         changeNavPathInfo: this.props.changeNavPathInfo,
         getNavigationDatas: this.props.getNavigationDatas,
@@ -346,7 +355,7 @@ export default class PoiInfoContainer extends React.Component {
           },
           async () => {
             await this.clear()
-            await SMap.toLocationPoint(item)
+            await SMap._toLocationPoint(item)
           },
         )
       })
@@ -448,14 +457,14 @@ export default class PoiInfoContainer extends React.Component {
   }
 
   clear = async () => {
-    let rel1 = await SMap.removePOICallout()
-    let rel2 = await SMap.removeAllCallout()
+    let rel1 = await SMap._removePOICallout()
+    let rel2 = await SMap._removeAllCallout()
     return rel1 && rel2
   }
 
   close = () => {
     if (this.props.device.orientation.indexOf('LANDSCAPE') === 0) return
-    SMap.removePOICallout()
+    SMap._removePOICallout()
     this.setVisible(false)
     this.props.setMapNavigation({
       isShow: false,
@@ -484,8 +493,8 @@ export default class PoiInfoContainer extends React.Component {
 
   navitoHere = async () => {
     SMap.clearTrackingLayer()
-    SMap.removePOICallout()
-    let position = await SMap.getCurrentPosition()
+    SMap._removePOICallout()
+    let position = await SMap.getCurrentLocation()
     global.STARTX = position.x
     global.STARTY = position.y
     global.ENDX = this.state.location.x
@@ -498,8 +507,13 @@ export default class PoiInfoContainer extends React.Component {
       changeNavPathInfo: this.props.changeNavPathInfo,
       getNavigationDatas: this.props.getNavigationDatas,
     })
-    await SMap.getStartPoint(global.STARTX, global.STARTY, false)
-    await SMap.getEndPoint(global.ENDX, global.ENDY, false)
+
+    await SMap.removeCallout('startPoint')
+    await SMap.addCallout('startPoint', {x: global.STARTX, y: global.STARTY}, {type: 'image', resource: 'start_point'})
+
+    await SMap.removeCallout('endPoint')
+    await SMap.addCallout('endPoint', {x: global.ENDX, y: global.ENDY}, {type: 'image', resource: 'destination_point'})
+
     global.PoiTopSearchBar && global.PoiTopSearchBar.setVisible(false)
     this.setInitialState()
   }

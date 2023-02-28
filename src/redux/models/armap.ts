@@ -1,10 +1,11 @@
 import { fromJS } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { handleActions } from 'redux-actions'
-import { ARLayer, SARMap } from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
 import DataHandler from '../../utils/DataHandler'
+import { ARLayer } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 
 export interface UserMapInfo {
   userName: string,

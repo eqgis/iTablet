@@ -37,8 +37,8 @@ async function getAvailableMapName(path: string, name: string): Promise<string> 
  * */
 async function getFilterFiles(
   fileDir: string,
-  fileType: any,
-  arrFilterFile: any,
+  fileType?: any,
+  arrFilterFile?: any,
 ) {
   if (arrFilterFile === undefined) {
     arrFilterFile = []

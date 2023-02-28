@@ -156,7 +156,8 @@ class GroupSettingPage extends Component<Props, State> {
     )
     this.props.exitGroup && this.props.exitGroup({ groupID: this.props.currentGroup.id })
     this._setDialogVisible(false)
-    NavigationService.goBack('CoworkManagePage', null)
+    // NavigationService.goBack('CoworkManagePage', null)
+    NavigationService.navigate('GroupSelectPage', null)
   }
 
   _bottomBtnAction = () => {

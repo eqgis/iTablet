@@ -1,4 +1,4 @@
-import { SThemeCartography, RangeMode, SMap, EngineType } from 'imobile_for_reactnative'
+import { SThemeCartography, RangeMode, SMap } from 'imobile_for_reactnative'
 import constants from '../../../../constants'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import {
@@ -14,6 +14,7 @@ import ToolbarModule from '../ToolbarModule'
 import ThemeData from './ThemeData'
 import ThemeAction from './ThemeAction'
 import NavigationService from '../../../../../NavigationService'
+import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 /**
  *
@@ -55,7 +56,7 @@ async function showDatasetsList(type, filter = {}) {
             engineType: EngineType.UDB,
             alias,
           }
-          if (await SMap.openDatasource(datasourceParams, 0, true)) {
+          if (await SMap.openMapWithDatasource(datasourceParams, 0)) {
             await showDatasetsList(type, filter)
             NavigationService.goBack()
             _params.setContainerLoading && _params.setContainerLoading(false)

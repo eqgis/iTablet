@@ -3,7 +3,8 @@ import { StyleSheet, Image, Text, TextStyle, TouchableOpacity, View, ViewStyle }
 import { scaleSize, setSpText } from '../../utils'
 import { color, size } from '../../styles'
 import { getARLayerAssets, getPublicAssets, getThemeAssets } from '../../assets'
-import { SARMap, ARLayer } from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
+import { ARLayer } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 
 const styles = StyleSheet.create({
   rowOne: {

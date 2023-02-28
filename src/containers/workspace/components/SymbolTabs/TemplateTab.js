@@ -4,10 +4,11 @@ import { color, size } from '../../../../styles'
 import { TableList } from '../../../../components'
 import { scaleSize, Toast, screen } from '../../../../utils'
 import { Height, ToolbarType } from '../../../../constants'
-import { ThemeType, SMCollectorType } from 'imobile_for_reactnative'
+import { SMCollectorType } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import { getThemeAssets } from '../../../../assets'
 import { collectionModule } from '../ToolBar/modules'
+import { ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 export default class TemplateTab extends React.Component {
   props: {

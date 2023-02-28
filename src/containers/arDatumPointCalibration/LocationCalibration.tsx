@@ -54,7 +54,7 @@ class LocationCalibration extends React.Component<Props, State> {
   }
 
   getCurrentLocation = () => {
-    SMap.getCurrentPosition().then(result =>{
+    SMap.getCurrentLocation().then(result =>{
       this.setState({
         x: result.x + '',
         y: result.y + '',

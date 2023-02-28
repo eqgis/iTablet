@@ -9,7 +9,7 @@ import { getLanguage } from '../../../../language'
 import { getThemeAssets } from '../../../../assets'
 import { setCurrentTask } from '../../../../redux/models/cowork'
 import { downloadSourceFile, deleteSourceDownloadFile, DownloadData, IDownloadProps } from '../../../../redux/models/down'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 import { MsgConstant } from '../../../../constants'
 import { size, color, zIndexLevel } from '../../../../styles'
 import { TaskMessageItem } from './components'
@@ -424,19 +424,19 @@ class TaskManage extends React.Component<Props, State> {
   _getModule = (key: string, index: number) => {
     let module
     if (index === undefined) {
-      for (let i = 0; i < this.props.mapModules.modules.length; i++) {
-        if (key === this.props.mapModules.modules[i].key) {
+      for (let i = 0; i < this.props.mapModules.modules[this.props.user.currentUser.userName].length; i++) {
+        if (key === this.props.mapModules.modules[this.props.user.currentUser.userName][i].key) {
           index = i
-          module = this.props.mapModules.modules[i].chunk
-            ? this.props.mapModules.modules[i].chunk
-            : this.props.mapModules.modules[i].getChunk()
+          module = this.props.mapModules.modules[this.props.user.currentUser.userName][i].chunk
+            ? this.props.mapModules.modules[this.props.user.currentUser.userName][i].chunk
+            : this.props.mapModules.modules[this.props.user.currentUser.userName][i].getChunk()
           break
         }
       }
     } else {
-      module = this.props.mapModules.modules[index].chunk
-        ? this.props.mapModules.modules[index].chunk
-        : this.props.mapModules.modules[index].getChunk()
+      module = this.props.mapModules.modules[this.props.user.currentUser.userName][index].chunk
+        ? this.props.mapModules.modules[this.props.user.currentUser.userName][index].chunk
+        : this.props.mapModules.modules[this.props.user.currentUser.userName][index].getChunk()
     }
     return module
   }
@@ -521,7 +521,7 @@ class TaskManage extends React.Component<Props, State> {
         true,
         getLanguage(this.props.language).Prompt.PREPARING,
       )
-      let licenseStatus = await SMap.getEnvironmentStatus()
+      let licenseStatus = await SData.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid
       if (!global.isLicenseValid) {
         global.SimpleDialog.set({

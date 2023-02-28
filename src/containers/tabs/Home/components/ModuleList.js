@@ -6,7 +6,7 @@ import { scaleSize, Toast, FetchUtils } from '../../../../utils'
 import { Module } from '../../../../class'
 import { color } from '../../../../styles'
 import { FileTools } from '../../../../native'
-import { SMap ,SARMap, SLocation } from 'imobile_for_reactnative'
+import { SMap ,SARMap, SLocation, SData } from 'imobile_for_reactnative'
 import {
   downloadFile,
   deleteDownloadFile,
@@ -22,6 +22,7 @@ import { connect } from 'react-redux'
 import { getLanguage } from '../../../../language'
 import ModuleItem from './ModuleItem'
 import SizeUtil from '../SizeUtil'
+import { addNetworkChangeEventListener } from '@/utils/NetworkHandler'
 let AppUtils = NativeModules.AppUtils
 
 async function composeWaiting(action) {
@@ -92,12 +93,12 @@ class ModuleList extends Component {
 
   getData = () => {
     let data = []
-    for (let item of this.props.mapModules.modules) {
+    const modules = this.props.mapModules.modules[this.props.currentUser.userName] || []
+    for (let item of modules) {
       if (item && item.getChunk) {
         data.push(item.getChunk(this.props.language))
       } else {
-        data = []
-        break
+        continue
       }
     }
     if (
@@ -107,7 +108,7 @@ class ModuleList extends Component {
       data.push(new AppletAdd().getChunk(this.props.language))
     }
 
-    //市场不允许出现添加小程序，在审核期间把标去掉 add xiezhy
+    //市场不允许出现添加小插件，在审核期间把标去掉 add xiezhy
     // if(global.isAudit){
     //   data.splice(data.length-1, 1)
     // }
@@ -121,7 +122,7 @@ class ModuleList extends Component {
       let keyword = item.name.endsWith('_EXAMPLE')
         ? item.name
         : item.name + '_EXAMPLE'
-      let isConnected = true//(await NetInfo.fetch()).isConnected // 检测网络，有网的时候再去检查数据
+      let isConnected = (await NetInfo.fetch()).isConnected // 检测网络，有网的时候再去检查数据
       if (!isConnected) return
       if (!downloadData.url) {
         let result = await FetchUtils.getDataInfoByUrl(
@@ -229,10 +230,11 @@ class ModuleList extends Component {
   }
 
   getDownloadData = (language, item, index) => {
-    if (index > this.props.mapModules.modules.length - 1) return {}
-    let module = this.props.mapModules.modules[index]
+    const modules = this.props.mapModules.modules[this.props.currentUser.userName] || []
+    if (index > modules.length - 1) return {}
+    let module = modules[index]
     // let example = module.example
-    let example = module.getExampleName(language)
+    let example = module?.getExampleName?.(language)
     if (!example || example.length === 0) return {}
     let moduleKey = item.key
 
@@ -271,7 +273,7 @@ class ModuleList extends Component {
    */
   checkData = async index => {
     let moduleKey
-    let module = this.props.mapModules.modules[index]
+    let module = this.props.mapModules.modules[this.props.currentUser.userName][index]
     let examples =
       module &&
       module.getExampleName &&
@@ -327,8 +329,10 @@ class ModuleList extends Component {
         //申请 android 11 读写权限
         // let permisson11 = await AppUtils.requestStoragePermissionR()
         if (isAllGranted) {
-          await SMap.setPermisson(true)
+          await SData.setPermisson(true)
           // this.init()
+
+          addNetworkChangeEventListener()
 
           // 重新设置权限后，重新打开定位
           await SLocation.openGPS()
@@ -364,7 +368,7 @@ class ModuleList extends Component {
         latestMap = this.props.latestMap[currentUserName][item.key][0]
       }
 
-      let licenseStatus = await SMap.getEnvironmentStatus()
+      let licenseStatus = await SData.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid
       if (!global.isLicenseValid) {
         this.props.setCurrentMapModule(index).then(async () => {
@@ -436,7 +440,7 @@ class ModuleList extends Component {
             fileName +
             '.pxp'
         } else {
-          let maps = await SMap.getMapsByFile(filePath)
+          let maps = await SMap._getMapsByFile(filePath)
           let mapName = maps[0]
           filePath2 =
             this.homePath +

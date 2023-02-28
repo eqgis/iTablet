@@ -30,6 +30,7 @@ export default class MapNavMenu extends React.Component {
     layerManager: PropTypes.func,
     style: PropTypes.any,
     mapModules: PropTypes.object,
+    user: PropTypes.object,
     mapColumnNavBar: PropTypes.bool,
     navBarDisplay: PropTypes.bool,
   }
@@ -128,10 +129,10 @@ export default class MapNavMenu extends React.Component {
     let list = []
     const tabModules =
       (this.props.mapModules &&
-        this.props.mapModules.modules[
+        this.props.mapModules.modules[this.props.user.currentUser.userName][
           this.props.mapModules.currentMapModule
         ] &&
-        this.props.mapModules.modules[this.props.mapModules.currentMapModule]
+        this.props.mapModules.modules[this.props.user.currentUser.userName][this.props.mapModules.currentMapModule]
           .tabModules) ||
       []
 

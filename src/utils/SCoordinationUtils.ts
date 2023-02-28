@@ -52,7 +52,7 @@ async function initMapDataWithService(serviceUrl: string) {
     for (const datasourceName of datasources.datasourceNames) {
       if (
         datasourceName.indexOf('Label_') === 0 && datasourceName.indexOf('#') === datasourceName.length - 1 || // 过滤标注数据源
-        LayerUtils.isBaseLayerDatasource(datasourceName) // 过滤底图数据源
+        LayerUtils.isBaseLayerDatasource(datasourceName) || LayerUtils.isUserBaseLayerDatasource(datasourceName) // 过滤底图数据源
       ) continue
       let dsData: ServiceDatasource = {
         datasourceName: datasourceName,

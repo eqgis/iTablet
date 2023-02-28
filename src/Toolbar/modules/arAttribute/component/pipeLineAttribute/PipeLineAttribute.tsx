@@ -56,10 +56,17 @@ class PipeLineAttribute extends Component<Props> {
       >
 
         <FlatList
+          style = {[{
+            width: '100%',
+            height: '100%',
+          }]}
           data = {this.props.pipeLineAttribute}
           renderItem = {this.renderItem}
           keyExtractor = {item => item.title}
           showsVerticalScrollIndicator = {true}
+          overScrollMode="never"
+          // showsHorizontalScrollIndicator={false}
+          // pagingEnabled={false}
         />
       </View>
     )

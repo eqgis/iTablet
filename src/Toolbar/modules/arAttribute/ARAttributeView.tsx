@@ -1,7 +1,7 @@
 import FloatBar, { FloatItem } from '@/components/FloatBar'
 import NavigationService from '@/containers/NavigationService'
 import { RootState } from '@/redux/types'
-import { ARAction, SARMap } from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
 import React from 'react'
 import { Platform, StyleSheet, View } from 'react-native'
 import { Animated,  Easing } from 'react-native'
@@ -31,17 +31,17 @@ class ARAttributeView extends React.Component<Props> {
     this.props.setPipeLineAttribute([])
   }
   componentDidMount = async () => {
-    if(Platform.OS === 'ios'){
-      return
-    }
+    // if(Platform.OS === 'ios'){
+    //   return
+    // }
     await SARMap.addAttributeListener({
       callback: async (result: any) => {
         try {
           if(AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT'){
             return
           }
-          // console.warn("result01: " + JSON.stringify(result))
-          const arr: Array<PipeLineAttributeType> = []
+          let arr: Array<PipeLineAttributeType> = []
+          const smArr: Array<PipeLineAttributeType> = []
           let srcId = ''
           Object.keys(result).forEach(key => {
             const item: PipeLineAttributeType = {
@@ -54,19 +54,50 @@ class ARAttributeView extends React.Component<Props> {
               arr.unshift(item)
             } else if(key !== 'action' && item.value !== "") {
               // 不以sm开头， 或是以下四种情况之一
-              if(key.substring(0,2)!== 'Sm' || key === 'SmID'
-              || key === 'SmLength' || key === 'SmTNode'
-              || key === 'SmEdgeID' || key === 'SmGeoPosition') {
+              // if(key.substring(0,2)!== 'Sm' || key === 'SmID'
+              // || key === 'SmLength' || key === 'SmTNode'
+              // || key === 'SmEdgeID' || key === 'SmGeoPosition') {
+              //   arr.push(item)
+              // }
+
+              // if(key !== 'SmLength' && key !== 'SmTNode'
+              // && key !== 'SmEdgeID' && key !== 'SmGeoPosition') {
+              //   arr.push(item)
+              // }
+
+              if(key.substring(0,2).toLocaleUpperCase() === 'SM'){
+                smArr.push(item)
+              } else {
                 arr.push(item)
               }
+
             }
             // 记录点击管线的唯一id
             if(key === 'SmID'){
               srcId =  result[key]
             }
           })
-          // 将数据放入redux里
 
+          const tempfunc = function (pre: PipeLineAttributeType, nex: PipeLineAttributeType) {
+            const preStr = pre.title
+            const nextStr = nex.title
+            if(preStr < nextStr){
+              return -1
+            } else if(preStr > nextStr) {
+              return 1
+            }
+            return 0
+          }
+          if(arr.length > 1) {
+            arr.sort(tempfunc)
+          }
+
+          if(smArr.length > 1) {
+            smArr.sort(tempfunc)
+          }
+
+          arr = arr.concat(smArr)
+          // 将数据放入redux里
           const prePipeLineAttribute = AppToolBar.getProps().pipeLineAttribute
           let preSrcId: string | undefined = undefined
           if(prePipeLineAttribute && prePipeLineAttribute.length > 0){

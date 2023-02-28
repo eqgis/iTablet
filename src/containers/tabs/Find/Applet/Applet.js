@@ -32,7 +32,7 @@ export default class Applet extends React.Component {
   constructor(props) {
     super(props)
     const { params } = props.route
-    this.type = params.type // 判断类型，默认公共数据。其他如APPLET 小程序
+    this.type = params.type // 判断类型，默认公共数据。其他如APPLET 小插件
     this.state = {
       data: [],
       initData: false,

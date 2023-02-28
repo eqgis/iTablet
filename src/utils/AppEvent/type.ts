@@ -1,4 +1,5 @@
-import { ARElement } from "imobile_for_reactnative/types/interface/ar"
+import { NetInfoState } from "@react-native-community/netinfo"
+import { ARElement } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 
 
 
@@ -26,4 +27,8 @@ export interface Event {
   'ar_animation_exit': undefined
 
   'ar_tracking_image_result': {success: boolean}
+
+  'on_exit_ar_map_module': undefined
+
+  'network_change': NetInfoState
 }

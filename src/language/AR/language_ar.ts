@@ -2118,6 +2118,8 @@ export const language_ar: typeof language_cn = {
 
   MY_APPLET: "تطبيقاتي المصغرة",
   UN_DOWNLOADED_APPLET: "التطبيق الصغير الذي تم تنزيله",
+  NOT_LOADED_APPLET: "Applets that have not been loaded", // need to translate
+  LOCAL_APPLET: "Local Applets", // need to translate
   DELETE_APPLET: "حذف التطبيق الصغير",
   ADD_APPLET: "إضافة برنامج صغير",
   MOVE_UP: "تحريك لأعلى",
@@ -2894,4 +2896,7 @@ export const language_ar: typeof language_cn = {
   PANE_ANIMATION: 'جزء الرسوم المتحركة',
   CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
   MODEL_DATA: 'Model data',   // To be tanslated
+
+  RENDER_AR_SCENE_ON_3D: 'Render AR to 3D Scene',  // To be tanslated
+  RESTART_MODULE_INFO: 'This setting will take effect after restart the module. Would you like to restart module now?',  // To be tanslated
 }

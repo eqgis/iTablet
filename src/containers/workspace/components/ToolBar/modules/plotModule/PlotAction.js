@@ -1,6 +1,7 @@
 /* global GLOBAL */
 import React from 'react'
-import { SMap, Action } from 'imobile_for_reactnative'
+import { SMap, SPlot } from 'imobile_for_reactnative'
+import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import {
   ConstToolType,
   ConstInfo,
@@ -21,7 +22,7 @@ async function listAction(type, params = {}) {
   switch (type) {
     case ConstToolType.SM_MAP_PLOT_ANIMATION_XML_LIST:
       await SMap.setLayerEditable(_params.currentLayer.path, true)
-      SMap.readAnimationXmlFile(params.item.path)
+      SPlot.readAnimationXmlFile(params.item.path)
       animationPlay()
       break
     case ConstToolType.SM_MAP_PLOT_LIB_CHANGE:
@@ -39,7 +40,7 @@ async function geometrySelected(event) {
   const currentToolbarType = ToolbarModule.getData().type
   switch (currentToolbarType) {
     case ConstToolType.SM_MAP_PLOT_ANIMATION: {
-      const type = await SMap.getGeometryTypeById(
+      const type = await SPlot.getGeometryTypeById(
         event.layerInfo.name,
         event.id,
       )
@@ -70,7 +71,7 @@ async function geometrySelected(event) {
                     createInfo.layerName = _props.selection[0].layerInfo.name
                   }
                   if (createInfo.animationMode !== -1) {
-                    SMap.createAnimationGo(createInfo, params.map.currentMap.name)
+                    SPlot.createAnimation(createInfo, params.map.currentMap.name)
                   }
                 }}
                 savePlotAnimationNode={() => {
@@ -85,7 +86,7 @@ async function geometrySelected(event) {
                     createInfo.layerName = _props.selection[0].layerInfo.name
                   }
                   if (createInfo.animationMode !== -1) {
-                    SMap.createAnimationGo(createInfo, params.map.currentMap.name)
+                    SPlot.createAnimation(createInfo, params.map.currentMap.name)
                   }
                   global.TouchType = TouchType.NULL
                   global.animationWayData && (global.animationWayData = null)
@@ -135,7 +136,7 @@ async function showCollection(libId, symbolCode, type) {
     await SMap.setLayerEditable(params.currentLayer.path, true)
   }
   StyleUtils.setDefaultMapControlStyle().then(() => {})
-  await SMap.setPlotSymbol(libId, symbolCode)
+  await SPlot.setPlotSymbol(libId, symbolCode)
   const { data, buttons } = PlotData.getCollectionData(
     libId,
     symbolCode,
@@ -173,7 +174,7 @@ function cancelAnimationWay() {
   // global.animationWayData && (global.animationWayData.points = null)
   // SMap.endAnimationWayPoint(false)
   const params = ToolbarModule.getParams()
-  SMap.refreshAnimationWayPoint()
+  SPlot.refreshAnimationWayPoint()
   const type = ConstToolType.SM_MAP_PLOT_ANIMATION_NODE_CREATE
   params.setToolbarVisible(true, type, {
     isFullScreen: true,
@@ -185,7 +186,7 @@ function cancelAnimationWay() {
 
 async function endAnimationWayPoint() {
   const params = ToolbarModule.getParams()
-  const wayPoints = await SMap.endAnimationWayPoint(true)
+  const wayPoints = await SPlot.endAnimationWayPoint(true)
   global.animationWayData && (global.animationWayData.wayPoints = wayPoints)
 
   const type = ConstToolType.SM_MAP_PLOT_ANIMATION_NODE_CREATE
@@ -198,7 +199,7 @@ async function endAnimationWayPoint() {
 }
 
 async function animationWayUndo() {
-  await SMap.addAnimationWayPoint(null, false)
+  await SPlot.addAnimationWayPoint(null, false)
 }
 
 async function collectionSubmit(libId, symbolCode) {
@@ -207,7 +208,7 @@ async function collectionSubmit(libId, symbolCode) {
     if (result) {
       await SMap.refreshMap()
       await SMap.setLayerEditable(params.currentLayer.path, true)
-      SMap.setPlotSymbol(libId, symbolCode)
+      SPlot.setPlotSymbol(libId, symbolCode)
 
       ToolbarModule.getParams().getLayers(-1, async layers => {
         // let plotLayer
@@ -233,7 +234,7 @@ async function collectionSubmit(libId, symbolCode) {
 
 async function cancel(libId, symbolCode) {
   SMap.cancel()
-  SMap.setPlotSymbol(libId, symbolCode)
+  SPlot.setPlotSymbol(libId, symbolCode)
 }
 
 function undo() {
@@ -248,7 +249,7 @@ function redo() {
 
 function reset() {
   // SMap.animationStop()
-  SMap.animationReset()
+  SPlot.animationReset()
   const height = 0
   ToolbarModule.getParams().showFullMap &&
     ToolbarModule.getParams().showFullMap(true)
@@ -271,7 +272,7 @@ async function changePlotLib(item) {
     )
     const libIds = params.template.plotLibIds
     if (libIds !== undefined) {
-      const result = await SMap.removePlotSymbolLibraryArr(libIds)
+      const result = await SPlot.removePlotSymbolLibraryArr(libIds)
       if (result) {
         const plotPath = await FileTools.appendingHomeDirectory(
           // ConstPath.UserPath + ConstPath.RelativeFilePath.Plotting,
@@ -318,7 +319,7 @@ async function animationSave() {
             true,
             getLanguage(global.language).Prompt.SAVEING,
           )
-        await SMap.animationSave(savePath, value)
+        await SPlot.animationSave(savePath, value)
 
         global.Loading && global.Loading.setLoading(false)
 
@@ -385,9 +386,9 @@ function close() {
   const params = ToolbarModule.getParams()
   const data = ToolbarModule.getData()
   if (data.type === ConstToolType.SM_MAP_PLOT_ANIMATION) {
-    SMap.animationClose()
+    SPlot.animationClose()
     SMap.setAction(Action.PAN)
-    SMap.endAnimationWayPoint(false)
+    SPlot.endAnimationWayPoint(false)
     global.TouchType = TouchType.NULL
     global.animationWayData && (global.animationWayData = null)
     params.setToolbarVisible(false)
@@ -395,7 +396,7 @@ function close() {
     data.type === ConstToolType.SM_MAP_PLOT_ANIMATION_PLAY ||
     data.type === ConstToolType.SM_MAP_PLOT_ANIMATION_START
   ) {
-    SMap.animationClose()
+    SPlot.animationClose()
     params.setToolbarVisible(false)
   } else {
     SMap.setAction(Action.PAN)

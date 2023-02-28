@@ -27,7 +27,7 @@ export default class MapSelectPointLatitudeAndLongitude extends React.Component 
     if (global.SELECTPOINTLATITUDEANDLONGITUDE) {
       position = global.SELECTPOINTLATITUDEANDLONGITUDE
     } else {
-      position = await SMap.getCurrentPosition()
+      position = await SMap.getCurrentLocation()
     }
     this.updateLatitudeAndLongitude(position)
   }

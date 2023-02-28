@@ -6,4 +6,4 @@
  * 功能说明
     - 新建：新建室外导航数据，跳转到 `CreateNavDataPage`
     - ☑️：选中当前要使用的数据
-    - 下拉刷新：重新调用`SMap.getAllNavData`获取数据（主要用于新建路网后，刷新数据）
+    - 下拉刷新：重新调用`SNavigation.getAllNavData`获取数据（主要用于新建路网后，刷新数据）

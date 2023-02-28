@@ -64,7 +64,7 @@ async function getData(type, params) {
       layerType = LayerUtils.getLayerType(
         ToolbarModule.getParams().currentLayer,
       )
-      isTourLayer = await SMediaCollector.isTourLayer(ToolbarModule.getParams().currentLayer.name)
+      isTourLayer = await SMediaCollector.isTourLayer(ToolbarModule.getParams().currentLayer?.name)
       const datasetDescription = LayerUtils.getDatasetDescriptionByLayer(ToolbarModule.getParams().currentLayer)
       data = [
         {

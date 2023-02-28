@@ -1,12 +1,14 @@
 import { fromJS, Record } from 'immutable'
 import { Action,handleActions } from 'redux-actions'
-import { SMap, SScene } from 'imobile_for_reactnative'
+import { SData, SMap, SScene } from 'imobile_for_reactnative'
 import { Toast, dataUtil } from '../../utils'
 import { ConstInfo } from '../../constants'
 import { getLanguage } from '../../language'
-import { LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
+// import { LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
+import { LayerInfo,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { Attributes } from '@/utils/LayerUtils'
 import { AttributeHistory } from '../types'
+import { FieldInfoValue } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 // Constants
 // --------------------------------------------------
 export const SET_EDIT_LAYER = 'SET_EDIT_LAYER'
@@ -80,7 +82,7 @@ export const getLayers = (params = -1, cb = () => {}) => async dispatch => {
       currentLayerIndex: params.currentLayerIndex || -1,
     }
   }
-  const layers = await SMap.getLayersByType(params.type)
+  const layers = await SMap.getLayersInfo(params.type)
   await dispatch({
     type: GET_LAYERS,
     payload:
@@ -93,46 +95,6 @@ export const getLayers = (params = -1, cb = () => {}) => async dispatch => {
   return layers
 }
 
-// 获取图层属性
-// export const getAttributes = (params, cb = () => {}) => async (
-//   dispatch,
-//   getState,
-// ) => {
-//   try {
-//     // 当page为0时，则为刷新
-//     let path,
-//       page = 0,
-//       size = 20
-//     if (params) {
-//       if (!params.path && getState().layers.toJS().currentLayer.path) {
-//         path = getState().layers.toJS().currentLayer.path
-//       } else {
-//         path = params.path
-//       }
-//       if (params.page >= 0) {
-//         page = params.page
-//       }
-//       if (params.size >= 0) {
-//         size = params.size
-//       }
-//     }
-//     let attribute = await SMap.getLayerAttribute(path, page, size)
-//
-//     let action = page === 0 ? GET_ATTRIBUTES_REFRESH : GET_ATTRIBUTES_LOAD
-//     await dispatch({
-//       type: action,
-//       payload: attribute || [],
-//     })
-//     cb && cb(attribute)
-//     return attribute
-//   } catch (e) {
-//     await dispatch({
-//       type: GET_ATTRIBUTES_FAILED,
-//     })
-//     cb && cb()
-//     return e
-//   }
-// }
 
 export const setAttributes = (data = [], cb = () => {}) => async dispatch => {
   await dispatch({
@@ -166,11 +128,18 @@ export const setLayerAttributes = (
   try {
     if (params && params.length > 0) {
       for (let i = 0; i < params.length; i++) {
-        bRes = await SMap.setLayerFieldInfo(
-          params[i].layerPath,
+        
+        let layerInfo:LayerInfo = params[i].layerInfo
+        bRes = await SData.setRecordsetValue(
+          {datasetName:layerInfo.datasetName||'',datasourceName:layerInfo.datasourceAlias||''},
           params[i].fieldInfo,
-          params[i].params,
+          {index: params[i].params?.index,filter: params[i].params?.filter}
         )
+        // bRes = await SMap.setLayerFieldInfo(
+        //   params[i].layerPath,
+        //   params[i].fieldInfo,
+        //   params[i].params,
+        // )
       }
     }
 
@@ -209,11 +178,16 @@ export const setDataAttributes = (
   try {
     if (params && params.length > 0) {
       for (let i = 0; i < params.length; i++) {
-        bRes = await SMap.setDataFieldInfo(
-          params[i].layerPath,
+        bRes = await SData.setRecordsetValue(
+          {datasetName:params[i].layerInfo.datasetName,datasourceName:params[i].layerInfo.datasourceAlias},
           params[i].fieldInfo,
           params[i].params,
         )
+        // bRes = await SMap.setDataFieldInfo(
+        //   params[i].layerPath,
+        //   params[i].fieldInfo,
+        //   params[i].params,
+        // )
       }
     }
 
@@ -231,16 +205,24 @@ export const setDataAttributes = (
 export const setNaviAttributes = (
   params = [],
   cb = () => { },
-) => async dispatch => {
+) => async (dispatch,getState) => {
   let bRes = false
   try {
     if (params && params.length > 0) {
       for (let i = 0; i < params.length; i++) {
-        bRes = await SMap.setNaviFieldInfo(
-          params[i].layerPath,
+        bRes = await SData.setRecordsetValue(
+          {
+            datasourceName:"default_increment_datasource@"+getState().user.toJS().userName,
+            datasetName:params[i].layerPath
+          },
           params[i].fieldInfo,
           params[i].params,
         )
+        // bRes = await SMap.setNaviFieldInfo(
+        //   params[i].layerPath,
+        //   params[i].fieldInfo,
+        //   params[i].params,
+        // )
       }
     }
 
@@ -442,11 +424,16 @@ export const setAttributeHistory = (params = {}, cb = () => {}) => async (
 
     if (currentHistory && currentHistory && currentHistory.length > 0) {
       for (let i = 0; i < currentHistory.length; i++) {
-        await SMap.setLayerFieldInfo(
-          layerHistory.layerPath,
+        await SData.setRecordsetValue(
+          layerHistory.datasetInfo,
           currentHistory[i].fieldInfo,
           currentHistory[i].params,
         )
+        // await SMap.setLayerFieldInfo(
+        //   layerHistory.layerPath,
+        //   currentHistory[i].fieldInfo,
+        //   currentHistory[i].params,
+        // )
       }
     }
 
@@ -511,7 +498,7 @@ export const resetLayer3dList = () => async (dispatch) =>{
 
 export const refreshLayer3dList = (cb = () => {}) => async (dispatch, getState) => {
   let language = getState().setting.toJS().language
-  const result = await SScene.getLayerList()
+  const result = await SScene.getLayers()
   const basemaplist = []
   const layerlist = []
   const lablelist = []
@@ -528,7 +515,7 @@ export const refreshLayer3dList = (cb = () => {}) => async (dispatch, getState) 
     }
   }
 
-  const Terrains = await SScene.getTerrainLayerList()
+  const Terrains = await SScene.getTerrainLayers()
   for (let index = 0; index < Terrains.length; index++) {
     const element = Terrains[index]
     const item = { ...element, isShow: true }
@@ -774,7 +761,7 @@ export default handleActions<SettingStateType>(
             let { layers } = attributesHistory[i]
             let layerExist = false // 判断历史记录是否包含该地图中的图层
             for (let j = 0; j < layers.length; j++) {
-              if (layers[j].layerPath === item.layerPath) {
+              if (layers[j].layerPath === item.layerInfo.path) {
                 layerExist = true
                 // 添加新的记录时，如果当前历史记录指向的位置不是最新的（0）记录
                 // 则把0 到 currentIndex的记录删除，然后向0添加新的记录
@@ -821,7 +808,8 @@ export default handleActions<SettingStateType>(
               // 若新建 地图-图层-历史记录，且包含prevData，则prevData作为初始数据，支持还原功能
               layers.unshift({
                 currentIndex: 0,
-                layerPath: item.layerPath,
+                layerPath: item.layerInfo.path,
+                datasetInfo: {datasetName:item.layerInfo.datasetName,datasourceName:item.layerInfo.datasourceAlias},
                 history: [
                   {
                     fieldInfo: item.fieldInfo,
@@ -874,7 +862,8 @@ export default handleActions<SettingStateType>(
             layers: [
               {
                 currentIndex: 0,
-                layerPath: item.layerPath,
+                layerPath: item.layerInfo.path,
+                datasetInfo: {datasetName:item.layerInfo.datasetName,datasourceName:item.layerInfo.datasourceAlias},
                 history,
               },
             ],

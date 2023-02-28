@@ -1,7 +1,7 @@
 /**
  * 编辑
  */
-import { SMap, Action } from 'imobile_for_reactnative'
+import { SMap } from 'imobile_for_reactnative'
 import EditData from './EditData'
 import EditAction from './EditAction'
 import ToolbarModule from '../ToolbarModule'
@@ -10,6 +10,7 @@ import { Toast } from '../../../../../../utils'
 import { getThemeAssets } from '../../../../../../assets'
 import { ToolbarType, ConstToolType } from '../../../../../../constants'
 import FunctionModule from '../../../../../../class/FunctionModule'
+import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 class EditModule extends FunctionModule {
   constructor(props) {

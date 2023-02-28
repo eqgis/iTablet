@@ -122,6 +122,7 @@ export default class VideoViewer extends React.Component<Props, State> {
           source={{ uri: this.props.uri }}
           ref={ref => (this.player = ref)}
           paused={this.state.videoPaused}
+          resizeMode="contain"
           repeat={false}
           style={styles.video}
           onEnd={() => {

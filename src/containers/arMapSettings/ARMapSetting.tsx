@@ -1,13 +1,13 @@
 import React from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View, Platform } from 'react-native'
 import { connect, ConnectedProps } from 'react-redux'
 import { getPublicAssets } from '../../assets'
-import { Container } from '../../components'
+import { Container, SwitchItem } from '../../components'
 // import { RootState } from '../../redux/types'
-import { scaleSize } from '../../utils'
+import { AppDialog, AppEvent, dp, scaleSize } from '../../utils'
 import { color, size } from '../../styles'
 import { getLanguage } from '../../language'
-import { setDatumPoint , arPoiSearch } from '../../redux/models/setting'
+import { setDatumPoint , arPoiSearch, set3dSceneFirst } from '../../redux/models/setting'
 import { MapToolbar } from '../workspace/components'
 import NavigationService from '../NavigationService'
 
@@ -44,6 +44,24 @@ class ARMapSetting extends React.Component<Props,State> {
             source={getPublicAssets().common.icon_move}
           />
         </TouchableOpacity>
+
+        {Platform.OS === 'android' && (
+          <SwitchItem
+            textStyle={styles.itemText}
+            text={getLanguage().RENDER_AR_SCENE_ON_3D}
+            value={this.props.is3dSceneFirst}
+            onPress={value => {
+              AppDialog.show({
+                text: getLanguage().RESTART_MODULE_INFO,
+                confirm: () => {
+                  AppEvent.emitEvent('on_exit_ar_map_module')
+                  NavigationService.navigate('MapView')
+                }
+              })
+              this.props.set3dSceneFirst(value)
+            }}
+          />
+        )}
       </View>
     )
   }
@@ -83,11 +101,13 @@ class ARMapSetting extends React.Component<Props,State> {
 
 const mapStateToProp = (state: any) => ({
   mapModules: state.mapModules.toJS(),
+  is3dSceneFirst: state.setting.toJS().is3dSceneFirst
 })
 
 const mapDispatch = {
   setDatumPoint,
   arPoiSearch,
+  set3dSceneFirst,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>
@@ -107,7 +127,7 @@ const styles = StyleSheet.create({
   },
   settingItem: {
     height: scaleSize(80),
-    marginLeft: scaleSize(20),
+    marginLeft: dp(20),
     paddingRight: scaleSize(16),
     flexDirection: 'row',
     alignItems: 'center',

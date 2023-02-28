@@ -1,9 +1,10 @@
-import { SMap, ThemeType, SThemeCartography } from 'imobile_for_reactnative'
+import { SMap, SThemeCartography } from 'imobile_for_reactnative'
 import { MsgConstant } from '../../../../constants'
 import { Toast } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import NavigationService from '../../../NavigationService'
 import { serviceModule } from '../../../workspace/components/ToolBar/modules'
+import { ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 export default class CoworkInfo {
   static coworkId = ''
@@ -155,7 +156,7 @@ export default class CoworkInfo {
           if (message.message.themeType === ThemeType.GRAPH) {
             index = -1
           }
-          result = await SMap.insertXMLLayer(index, message.message.layer)
+          result = await SMap.insertLayerFromXml(index, message.message.layer)
           result && SMap.refreshMap()
         }
         if (result) {
@@ -233,7 +234,7 @@ export default class CoworkInfo {
           if (message.message.themeType === ThemeType.GRAPH) {
             index = -1
           }
-          result = await SMap.insertXMLLayer(index, message.message.layer)
+          result = await SMap.insertLayerFromXml(index, message.message.layer)
           result && SMap.refreshMap()
         }
         if (result) {
@@ -277,7 +278,7 @@ export default class CoworkInfo {
           result = res.result
           result && SMap.refreshMap()
         } else if (message.message.themeType > 0 && message.message.theme) {
-          result = await SMap.updateLayerThemeFromXML(
+          result = await SMap.setLayerThemeFromXML(
             message.message.layerPath,
             message.message.theme,
           )

@@ -14,9 +14,10 @@ import { getLanguage } from '../../../../language'
 import { scaleSize } from '../../../../utils'
 import { size, color } from '../../../../styles'
 import { getThemeAssets } from '../../../../assets'
-import { SMap } from 'imobile_for_reactnative'
+import { SIndoorNavigation, SMap, SNavigation } from 'imobile_for_reactnative'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
-interface MapInfo {
+interface MapInfoTmp {
   name: string,
   mapType: 'map' | 'ar',
   addition?: {[name: string]: any},
@@ -29,12 +30,12 @@ interface Props {
   saveMap: (data: { mapName: string, nModule: string, addition?: {Template?: string} }) => boolean,
   saveARMap: (name: string) => boolean,
 
-  getMaps: () => Promise<MapInfo[]>,
+  getMaps: () => Promise<MapInfoTmp[]>,
 }
 
 interface State {
-  selectedData: Map<string, MapInfo>,
-  maps: MapInfo[],
+  selectedData: Map<string, MapInfoTmp>,
+  maps: MapInfoTmp[],
 }
 
 const styles = StyleSheet.create({
@@ -160,8 +161,13 @@ export default class SaveListView extends React.Component<Props, State> {
       if (global.Type === ChunkType.MAP_NAVIGATION) {
         //这里先处理下异常 add xiezhy
         try {
-          await SMap.stopGuide()
-          await SMap.clearPoint()
+          await SNavigation.stopGuide()
+          await SIndoorNavigation.stopGuide()
+          await SNavigation.clearPath()
+          await SIndoorNavigation.clearPath()
+          await SMap.clearTrackingLayer()
+          await SMap.removeCallout('startPoint')
+          await SMap.removeCallout('endPoint')
         } catch (e) {
           this._setLoading && this._setLoading(false)
         }

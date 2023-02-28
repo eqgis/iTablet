@@ -1,6 +1,5 @@
 import ToolbarBottomButtons from './ToolbarBottomButtons'
 import ToolbarContentView from './ToolbarContentView'
-import Map3DToolBar from './Map3DToolBar'
 import ToolBarSectionList from './ToolBarSectionList'
 import ToolList from './ToolList'
 import ToolbarMenuDialog from './ToolbarMenuDialog'
@@ -12,7 +11,6 @@ import ScanView from './ScanView'
 export {
   ToolbarBottomButtons,
   ToolbarContentView,
-  Map3DToolBar,
   ToolBarSectionList,
   ToolList,
   ToolbarMenuDialog,

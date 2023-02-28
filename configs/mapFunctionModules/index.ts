@@ -9,11 +9,11 @@ const CustomModules: {
   // Tour,
 }
 
-function getModule (type: string, params?: any) {
-  let module = {}
+function getModule (type: string) {
+  let module = null
   if (typeof type !== 'string') return null
-  for (let key in CustomModules) {
-    let item = CustomModules[key]()
+  for (const key in CustomModules) {
+    const item = CustomModules[key]()
     // 严格按照命名规范，type名称SM_yyy_zzz（SM_ 为系统字段，自定义不可使用）
     if (type.indexOf(item.type) === 0) {
       module = item

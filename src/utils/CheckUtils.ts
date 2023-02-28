@@ -161,6 +161,30 @@ function checkInteger(type?: 'positive'): (text: string) => string {
   }
 }
 
+let checkServiceUploadFun: (() => boolean) | undefined
+/**
+ * 设置服务是否可上传检测方法
+ * @param fun
+ */
+function setCheckServiceUpload(fun: () => boolean): void {
+  if (typeof fun === 'function') {
+    checkServiceUploadFun = fun
+  } else {
+    checkServiceUploadFun = undefined
+  }
+}
+
+/**
+ * 检测服务是否可上传
+ * @param type
+ * @returns
+ */
+function checkServiceUpload(): boolean {
+  if (typeof checkServiceUploadFun === 'function') {
+    return checkServiceUploadFun()
+  }
+  return true
+}
 
 /** 输入检查方法 */
 export const CheckSpell = {
@@ -173,4 +197,11 @@ export const CheckSpell = {
   checkFloat,
   /** 检查是否为合法整数 */
   checkInteger,
+}
+
+export const CheckService = {
+  /** 设置服务是否可上传检测方法 */
+  setCheckServiceUpload,
+  /** 检测服务是否可上传 */
+  checkServiceUpload,
 }

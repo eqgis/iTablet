@@ -17,10 +17,10 @@ import styles from './styles'
 import Toast from '../../../utils/Toast'
 import {
   SScene,
-  SMap,
   SOnlineService,
   SIPortalService,
-  SLocation,
+  SData,
+  BundleTools,
 } from 'imobile_for_reactnative'
 import FileTools from '../../../native/FileTools'
 import ConstPath from '../../../constants/ConstPath'
@@ -80,6 +80,7 @@ export default class Home extends Component {
       mineguide: true,
       slide: false,
     }
+    global.is3dSceneFirst = this.props.is3dSceneFirst
   }
 
   componentDidMount() {
@@ -96,6 +97,9 @@ export default class Home extends Component {
         this.props.setMapSceneGuide(true)
       }
     }
+
+    this._loadModel()
+
     if (Platform.OS === 'android') {
       this.props.setBackAction({ key: 'Home', action: this.showExitPop })
     }
@@ -108,11 +112,32 @@ export default class Home extends Component {
     )
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.user.currentUser.userName !== this.props.user.currentUser.userName) {
+      this._loadModel()
+    }
+  }
+
   componentWillUnmount() {
     if (Platform.OS === 'android') {
       this.props.removeBackAction({
         key: this.props.route.name,
       })
+    }
+  }
+
+  _loadModel = () => {
+    try {
+      BundleTools.getBundles().then(async bundles => {
+        for (const bundle of bundles) {
+          await BundleTools.loadModel(bundle.path).then(async result => {
+            // result && this.getBundles()
+          })
+        }
+      })
+    } catch(e) {
+      // eslint-disable-next-line no-undef
+      __DEV__ && console.warn(e)
     }
   }
 
@@ -132,7 +157,7 @@ export default class Home extends Component {
           } else {
             Toast.show(getLanguage(global.language).Prompt.IMPORTED_SUCCESS)
           }
-          result = await SMap.importWorkspaceInfo({
+          result = await SData.importWorkspace({
             server: filePath,
             type: 9,
           })
@@ -143,7 +168,7 @@ export default class Home extends Component {
           //   )
           // }
         } else {
-          let result = await SMap.importWorkspaceInfo({
+          let result = await SData.importWorkspace({
             server: filePath,
             type: 9,
           })
@@ -154,6 +179,7 @@ export default class Home extends Component {
         }
       }
     } catch (e) {
+       
       Toast.show('导入失败')
     } finally {
       // if (isFirstImportWorkspace === true) {
@@ -303,7 +329,7 @@ export default class Home extends Component {
 
   confirm = async () => {
     //先判断是否有网
-    if (true /*(await NetInfo.fetch()).isConnected*/) {
+    if ((await NetInfo.fetch()).isConnected) {
       let confirm = this.dialogConfirm ? this.dialogConfirm : () => { }
       confirm &&
         confirm(this.moduleItemRef, this.downloadData, this.state.dialogCheck)
@@ -1089,7 +1115,7 @@ export default class Home extends Component {
     //申请 android 11 读写权限
     // let permisson11 = await appUtilsModule.requestStoragePermissionR()
     if (isAllGranted) {
-      SMap.setPermisson(true)
+      SData.setPermisson(true)
       // this.init()
     } else {
       this._closeModal()

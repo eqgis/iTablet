@@ -13,7 +13,7 @@ const ChunkType: TChunkType = {
   MAP_NAVIGATION: 'MAP_NAVIGATION',
   MAP_PLOTTING: 'MAP_PLOTTING',
   MAP_ANALYST: 'MAP_ANALYST',
-  APPLET_ADD: 'APPLET_ADD', // 添加小程序
+  APPLET_ADD: 'APPLET_ADD', // 添加小插件
 }
 
 export interface TChunkType {
@@ -27,7 +27,7 @@ export interface TChunkType {
   MAP_NAVIGATION: 'MAP_NAVIGATION',
   MAP_PLOTTING: 'MAP_PLOTTING',
   MAP_ANALYST: 'MAP_ANALYST',
-  APPLET_ADD: 'APPLET_ADD', // 添加小程序
+  APPLET_ADD: 'APPLET_ADD', // 添加小插件
 }
 
 export default ChunkType

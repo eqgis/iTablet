@@ -1,5 +1,5 @@
 /*global global*/
-import { SAIDetectView, SMap } from 'imobile_for_reactnative'
+import { SAIDetectView, SMap ,SData,SPlot} from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../../../language'
 import NavigationService from '../../../../../NavigationService'
 import { Toast, LayerUtils } from '../../../../../../utils'
@@ -17,7 +17,7 @@ let isDownload = true // 目标分类默认文件下载判断
 function illegallyParkCollect() {
   (async function() {
     const _params = ToolbarModule.getParams()
-    const dataList = await SMap.getTaggingLayers(
+    const dataList = await SMap._getTaggingLayers(
       _params.user.currentUser.userName,
     )
     global.toolBox && global.toolBox.removeAIDetect(true)
@@ -27,7 +27,7 @@ function illegallyParkCollect() {
         ;(await global.toolBox) && global.toolBox.switchAr()
       }
       let taggingLayerData = await getTaggingLayerData()
-      const dataList = await SMap.getTaggingLayers(
+      const dataList = await SMap._getTaggingLayers(
         _params.user.currentUser.userName,
       )
       for (let i = 0; i < dataList.length; i++) {
@@ -62,11 +62,15 @@ async function getTaggingLayerData() {
   }
   let taggingLayerData
   if (!isTaggingLayer) {
-    let hasDefaultTagging = await SMap.hasDefaultTagging(
-      _params.user.currentUser.userName,
-    )
+    let hasDefaultTagging = false
+    const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+_params.user.currentUser.userName+"#"})
+    datasets.forEach(item => {
+      if (item.datasetName.indexOf("Default_Tagging_"+_params.user.currentUser.userName) != -1) {
+        hasDefaultTagging = true
+      }
+    })
     if (!hasDefaultTagging) {
-      await SMap.newTaggingDataset(
+      await SMap._newTaggingDataset(
         `Default_Tagging_${_params.user.currentUser.userName}`,
         _params.user.currentUser.userName,
       )
@@ -109,7 +113,7 @@ function aiClassify() {
           ;(await global.toolBox) && global.toolBox.switchAr()
         }
         let taggingLayerData = await getTaggingLayerData()
-        const dataList = await SMap.getTaggingLayers(
+        const dataList = await SMap._getTaggingLayers(
           _params.user.currentUser.userName,
         )
         for (let i = 0; i < dataList.length; i++) {
@@ -206,7 +210,7 @@ function aiDetect() {
       ;(await global.toolBox) && global.toolBox.switchAr()
     }
     let taggingLayerData = await getTaggingLayerData()
-    const dataList = await SMap.getTaggingLayers(
+    const dataList = await SMap._getTaggingLayers(
       _params.user.currentUser.userName,
     )
     for (let i = 0; i < dataList.length; i++) {
@@ -262,7 +266,7 @@ function polymerizeCollect() {
       ;(await global.toolBox) && global.toolBox.switchAr()
     }
     let taggingLayerData = await getTaggingLayerData()
-    const dataList = await SMap.getTaggingLayers(
+    const dataList = await SMap._getTaggingLayers(
       _params.user.currentUser.userName,
     )
     for (let i = 0; i < dataList.length; i++) {

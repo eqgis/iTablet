@@ -3,17 +3,18 @@ import { View, FlatList, TouchableOpacity, Text, Image ,Platform,StyleSheet} fro
 import { scaleSize, setSpText, Toast, LayerUtils ,DialogUtils} from '../../utils'
 import { color } from '../../styles'
 import NavigationService from '../NavigationService'
-import { SMap, DatasetType } from 'imobile_for_reactnative'
+import { SMap ,SData } from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import { Container } from '../../components'
 import { getThemeAssets,getLayerWhiteIconByType ,getPublicAssets,getLayerIconByType} from '../../assets'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 import { getLanguage } from '../../language'
 import { LayerManager_tolbar } from '../mtLayerManager/components/LayerManager_tolbar'
 import { OverlayView } from '../workspace/components'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
-
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 export default class ChooseNaviLayer extends React.Component {
   static propTypes = {
     user: PropTypes.object,
@@ -21,6 +22,7 @@ export default class ChooseNaviLayer extends React.Component {
     getLayers: PropTypes.func,
     device:PropTypes.object,
     currentLayer:PropTypes.object,
+    layers:PropTypes.array,
   }
 
   props: {
@@ -42,9 +44,40 @@ export default class ChooseNaviLayer extends React.Component {
   }
 
   getData = async () => {
-    let dataList = await SMap.getLineDataset()
+    let has = false
+    let array = []
+    let datasources = await SData._getDatasetsByWorkspaceDatasource()
+    datasources.forEach(item => {
+      if(item.alias === "default_increment_datasource@"+this.props.user.currentUser.userName){
+        has = true
+      }
+    })
+    if(!has){
+      const homePath = await FileTools.getHomeDirectory()
+      const udbpath = homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativePath.Temp + "default_increment_datasource@" + this.props.user.currentUser.userName + ".udb"
+      await SData.openDatasource({alias:"default_increment_datasource@"+this.props.user.currentUser.userName,server:udbpath,engineType:219})
+      datasources = await SData._getDatasetsByWorkspaceDatasource()
+    }
+
+    datasources.forEach(item => {
+      if(item.alias === "default_increment_datasource@"+this.props.user.currentUser.userName){
+        item.data.forEach(item2 => {
+          if(item2.datasetType === DatasetType.LINE){
+            let name = ""
+            this.props.layers.forEach(layer =>{
+              if(layer.datasetName === item2.datasetName){
+                name = layer.datasetName
+              }
+            })
+            array.push({layerName:name,datasetName:item2.datasetName,datasourceName:item2.datasourceName})
+          }
+        })
+      }
+    })
+
+    // let dataList = await SNavigation.getLineDataset()
     this.setState({
-      data: dataList,
+      data: array,
     })
   }
 
@@ -86,7 +119,10 @@ export default class ChooseNaviLayer extends React.Component {
       removeLayer = true
       global.INCREMENT_DATA = {}
     }
-    await SMap.deleteDatasetAndLayer({ datasourceName, datasetName, removeLayer })
+    if(removeLayer) {
+      await SMap.removeLayer({datasourceAlias: datasourceName, datasetName: datasourceName})
+    }
+    await SData.deleteDataset(datasourceName, datasetName)
     this.setState({
       data,
       selectedItem,
@@ -108,7 +144,7 @@ export default class ChooseNaviLayer extends React.Component {
         let selectedItem = JSON.parse(JSON.stringify(this.state.selectedItem))
         selectedItem.datasetName = text
         //更新datasteName
-        SMap.modifyDatasetName({
+        SData.renameDataset({
           datasourceName,
           datasetName,
           newDatasetName: text,
@@ -126,8 +162,8 @@ export default class ChooseNaviLayer extends React.Component {
       let regExp = /^[a-zA-Z0-9@#_]+$/
       let isValid = regExp.test(text)
       if (isValid) {
-        await SMap.createNaviDataset(text,global.INCREMENT_DATA.layerName).then(async returnData => {
-          if (returnData.datasetName) {
+        await SNavigationInner.createNaviDataset(text,global.INCREMENT_DATA.layerName).then(async returnData => {
+          if (returnData && returnData.datasetName) {
             global.INCREMENT_DATA = returnData
             this.setState({selectedItem:returnData})
             this.getData()
@@ -153,6 +189,7 @@ export default class ChooseNaviLayer extends React.Component {
         if(result){
           Toast.show(getLanguage(global.language).Prompt.EXPORT_SUCCESS)
         }else{
+           
           Toast.show(getLanguage(global.language).Prompt.EXPORT_FAILED)
         }
       } else {
@@ -207,7 +244,7 @@ export default class ChooseNaviLayer extends React.Component {
             datasourceName: this.item.datasourceName,
             datasetName: this.item.datasetName,
           }
-          await SMap.setCurrentDataset(params)
+          await SNavigationInner.setCurrentDataset(params)
           global.INCREMENT_DATA = this.item
         }.bind(this)())
       }
@@ -354,7 +391,7 @@ export default class ChooseNaviLayer extends React.Component {
               datasourceName: this.state.selectedItem.datasourceName,
               datasetName: this.state.selectedItem.datasetName,
             }
-            await SMap.setCurrentDataset(params)
+            await SNavigationInner.setCurrentDataset(params)
             global.INCREMENT_DATA = this.state.selectedItem
           }.bind(this)())
         }

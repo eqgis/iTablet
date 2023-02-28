@@ -2,7 +2,7 @@ import { MyDataPage } from '../component'
 import DataHandler from '../../../../utils/DataHandler'
 import { FileTools } from '../../../../native'
 import { ConstPath } from '../../../../constants'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 
 class MyLabel extends MyDataPage {
   constructor(props) {
@@ -35,15 +35,11 @@ class MyLabel extends MyDataPage {
     let homePath = await FileTools.appendingHomeDirectory()
     let userPath =
       homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/'
-    let datasourcePath =
-      userPath +
-      ConstPath.RelativePath.Label +
-      'Label_' +
-      this.props.user.currentUser.userName +
-      '#.udb'
-    return await SMap.removeDatasetByName(
+    let datasourcePath = 'Label_' +
+      this.props.user.currentUser.userName
+    return await SData.deleteDataset(
       datasourcePath,
-      this.itemInfo.item.name,
+      this.itemInfo.item?.datasetName,
     )
   }
 
@@ -96,10 +92,10 @@ class MyLabel extends MyDataPage {
       if (this.state.batchMode) {
         uploadList = this._getSelectedNames(this._getSelectedList())
       } else {
-        uploadList = [this.itemInfo.item.name]
+        uploadList = [this.itemInfo.item?.datasetName]
       }
 
-      await SMap.copyDataset(datasourcePath, todatasourcePath, uploadList, true)
+      await SData.copyDataset(datasourcePath, todatasourcePath, uploadList, true)
       result = await FileTools.zipFile(archivePath, targetPath)
       FileTools.deleteFile(archivePath)
     }
@@ -109,7 +105,7 @@ class MyLabel extends MyDataPage {
   _getSelectedNames = itemList => {
     let list = []
     for (let i = 0; i < itemList.length; i++) {
-      list.push(itemList[i].item.name)
+      list.push(itemList[i].item?.datasetName)
     }
     return list
   }

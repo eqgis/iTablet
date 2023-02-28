@@ -4,6 +4,7 @@
  */
 
 import { TChunkType } from '@/constants/custom/ChunkType'
+import { TAction3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SScene'
 import { orientation, specificOrientation } from 'react-native-orientation'
 
 declare global {
@@ -29,11 +30,11 @@ declare global {
   /** 是否是在线协作模式 */
   var coworkMode: boolean
   /** 首页模块类型 */
-  var Type: keyof TChunkType | null
+  var Type: keyof TChunkType | null | string
   /** 地图触摸事件类型 */
   var TouchType: string
-  /** 三维Action PAN3D | PANSELECT3D | PAN3D_FIX */
-  var action3d: string
+  /** 三维Action*/
+  var action3d: TAction3D
   /** 当前导航模式 INDOOR | OUTDOOR */
   var CURRENT_NAV_MODE: string
   /** 网络请求数据的文本信息 */
@@ -113,7 +114,7 @@ declare global {
   /** 离线场景 */
   var offlineScene: boolean
   /** 专题图-地图是否由xml加载 */
-  var IS_MAP_FROM_XML: boolean
+  // var IS_MAP_FROM_XML: boolean
   // 组件ref
   /** 地图界面-地图组件 MapView.js SMMapView */
   var mapView: any

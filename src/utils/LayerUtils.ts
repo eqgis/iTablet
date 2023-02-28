@@ -1,19 +1,24 @@
 /* global global */
 import { TOnlineData } from '@/constants/ConstOnline'
-import { SMap, DatasetType, FieldType, FieldInfo2, TDatasetType, FieldInfo1, TFieldType } from 'imobile_for_reactnative'
-import { AttributesResp, FieldInfo, LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
+import { SData, SMap, SNavigation} from 'imobile_for_reactnative'
+import { DatasetType, FieldType, FieldInfo, FieldInfoValue, QueryParameter, DatasetInfo } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
+// import { AttributesResp} from 'imobile_for_reactnative/types/interface/mapping/SMap'
+import { AttributesResp } from "@/utils/AttributeUtils"
 import { ConstOnline } from '../constants'
 import { getLanguage } from '../language'
+import { LayerInfo } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
+import AppUser from './AppUser'
 
 export interface AttributeHead {
   value: string,
   isSystemField: boolean,
-  fieldInfo: FieldInfo2,
+  fieldInfo: FieldInfoValue,
   name?: string,
 }
 
 export interface Attributes {
-  data: Array<FieldInfo1[]>,
+  data: Array<FieldInfo[]>,
   head: AttributeHead[],
 }
 
@@ -39,15 +44,26 @@ export type GetAttributeType = 'loadMore' | 'refresh' | 'reset'
  */
 async function getLayerAttribute(
   attributes: Attributes,
-  path: string,
+  layerInfo: LayerInfo,
   page: number,
   size: number,
   params?: {filter?: string, groupBy?: string},
   type: GetAttributeType = 'loadMore',
 ) {
-  const data = await SMap.getLayerAttribute(path, page, size, params)
+  //查询接口替换为下面SData
+  // const data1111 = await SMap.getLayerAttribute(layerInfo.path, page, size, params)
 
-  return dealData(attributes, data, page, type)
+  const datasetInfo:DatasetInfo = {datasetName:layerInfo.datasetName,datasourceName:layerInfo.datasourceAlias}
+  const groups = params?.groupBy?.split(",")
+  const orders = params?.filter?.split(",")
+  const para:QueryParameter = {orderBy:orders,groupBy:groups}
+  const data1 = (await SData.queryRecordset(datasetInfo,para )).map(recordset => recordset.fieldInfoValue)
+  const head = await SData.getFieldInfos(datasetInfo)
+  const startIndex =  page*size
+  const total = data1.length
+  const data  = data1.slice(startIndex,startIndex+(total-startIndex>size?size:total-startIndex))
+  const dataShow = {currentPage:page,head,startIndex,total,data}
+  return dealData(attributes, dataShow, page, type)
 }
 
 /**
@@ -62,16 +78,38 @@ async function getLayerAttribute(
  */
 async function searchLayerAttribute(
   attributes: Attributes,
-  path: string,
+  layerInfo: LayerInfo,
   params: {filter?: string, groupBy?: string},
   page: number,
   size: number,
   type: GetAttributeType = 'loadMore',
 ) {
-  // let data = await SMap.getLayerAttribute(path, page, size)
-  const data = await SMap.searchLayerAttribute(path, params, page, size)
+  //查询接口替换为下面SData 
+  //这里模糊查询所有字段
 
-  return dealData(attributes, data, page, type)
+  const datasetInfo:DatasetInfo = {datasetName:layerInfo.datasetName,datasourceName:layerInfo.datasourceAlias}
+  const fieldInfos = await SData.getFieldInfos(datasetInfo)
+  let attriButeFilter = ""
+  for(let i=0;i<fieldInfos.length;i++){
+    const fieldInfo = fieldInfos[i]
+    const fieldName = fieldInfo.name
+    if (i == 0) {
+      attriButeFilter = fieldName + " LIKE '%%" + params.key + "%%'"
+    } else {
+      attriButeFilter = attriButeFilter + " OR " + fieldName + " LIKE '%%" + params.key + "%%'"
+    }
+  }
+  const para:QueryParameter = {attriButeFilter}
+  const data1 = (await SData.queryRecordset(datasetInfo,para )).map(recordset => recordset.fieldInfoValue)
+  const head = fieldInfos
+  const startIndex =  page*size
+  const total = data1.length
+  const data  = data1.slice(startIndex,startIndex+(total-startIndex>size?size:total-startIndex))
+  const dataShow = {currentPage:page,head,startIndex,total,data}
+  return dealData(attributes, dataShow, page, type)
+  // const data = await SMap._searchLayerAttribute(layerInfo.path, params, page, size)
+
+  // return dealData(attributes, data, page, type)
 }
 
 /**
@@ -84,18 +122,18 @@ async function searchLayerAttribute(
  * @param type
  * @returns {Promise.<*>}
  */
-async function searchMyDataAttribute(
-  attributes: Attributes,
-  path: string,
-  params: {filter?: string, groupBy?: string},
-  page: number,
-  size: number,
-  type: GetAttributeType = 'loadMore',
-) {
-  const data = await SMap.searchMyDataAttribute(path, params, page, size)
+// async function searchMyDataAttribute(
+//   attributes: Attributes,
+//   layerInfo: LayerInfo,
+//   params: {filter?: string, groupBy?: string},
+//   page: number,
+//   size: number,
+//   type: GetAttributeType = 'loadMore',
+// ) {
+//   const data = await SMap._searchMyDataAttribute(path, params, page, size)
 
-  return dealData(attributes, data, page, type)
-}
+//   return dealData(attributes, data, page, type)
+// }
 
 /**
  * 搜索指定图层中Selection匹配对象的属性
@@ -109,79 +147,104 @@ async function searchMyDataAttribute(
  */
 async function searchSelectionAttribute(
   attributes: Attributes,
-  path: string,
+  layerInfo: LayerInfo,
   searchKey: string = '',
   page: number,
   size: number,
   type: GetAttributeType = 'loadMore',
 ) {
-  const data = await SMap.searchSelectionAttribute(path, searchKey, page, size)
+  // const data = await SMap._searchSelectionAttribute(path, searchKey, page, size)
 
-  return dealData(attributes, data, page, type)
+  const data1 = await SMap.getLayerSelectionAttribute(layerInfo?.path||"",searchKey)
+
+  const datasetInfo:DatasetInfo = {datasetName:layerInfo.datasetName,datasourceName:layerInfo.datasourceAlias}
+  const head = await SData.getFieldInfos(datasetInfo)
+  const startIndex =  page*size
+  const total = data1.length
+  const data  = data1.slice(startIndex,startIndex+(total-startIndex>size?size:total-startIndex))
+  const dataShow = {currentPage:page,head,startIndex,total,data}
+
+  return dealData(attributes, dataShow, page, type)
 }
 
 async function getSelectionAttributeByLayer(
   attributes: Attributes,
-  path: string,
+  layerInfo: LayerInfo,
   page: number,
   size: number,
   type: GetAttributeType = 'loadMore',
   isCollection: boolean = false
 ) {
-  const data = await SMap.getSelectionAttributeByLayer(path, page, size, isCollection)
+  const data1 = await SMap.getLayerSelectionAttribute(layerInfo?.path||"")
 
-  return dealData(attributes, data, page, type)
+  const datasetInfo:DatasetInfo = {datasetName:layerInfo.datasetName,datasourceName:layerInfo.datasourceAlias}
+  const head = await SData.getFieldInfos(datasetInfo)
+  const startIndex =  page*size
+  const total = data1.length
+  const data  = data1.slice(startIndex,startIndex+(total-startIndex>size?size:total-startIndex))
+  const dataShow = {currentPage:page,head,startIndex,total,data}
+  return dealData(attributes, dataShow, page, type)
 }
 
 async function getSelectionAttributeByData(
   attributes: Attributes,
-  name: string,
+  datasetInfo: DatasetInfo,
   page: number,
   size: number,
   type: GetAttributeType = 'loadMore',
 ) {
-  const data = await SMap.getSelectionAttributeByData(name, page, size)
+  // const data = await SMap.getSelectionAttributeByData(name, page, size)
+  const para:QueryParameter = {}
+  const data1 = (await SData.queryRecordset(datasetInfo,para )).map(recordset => recordset.fieldInfoValue)
+  const head = await SData.getFieldInfos(datasetInfo)
+  const startIndex =  page*size
+  const total = data1.length
+  const data  = data1.slice(startIndex,startIndex+(total-startIndex>size?size:total-startIndex))
+  const dataShow = {currentPage:page,head,startIndex,total,data}
 
-  return dealData(attributes, data, page, type)
+  return dealData(attributes, dataShow, page, type)
 }
 
 async function getNavigationAttributeByData(
   attributes: Attributes,
   name: string,
-  page: number,
-  size: number,
+  page = 0,
+  size = 20,
   type: GetAttributeType = 'loadMore',
 ) {
-  const data = await SMap.getNavigationAttributeByData(name, page, size)
-  return dealData(attributes, data, page, type)
+  const userName = AppUser.getCurrentUser().userName
+  return await getSelectionAttributeByData(
+    attributes,
+    {datasourceName: 'default_increment_datasource@' + userName, datasetName: name},
+    page, size, type
+  )
 }
 
 
 async function deleteSelectionAttributeByLayer(path: string, index: number, isCollection: boolean) {
-  return await SMap.deleteSelectionAttributeByLayer(path, index, isCollection)
+  return await SMap.deleteLayerSelectionAttribute(path, index)
 }
 
-async function deleteAttributeByLayer(path: string, smID: number, isCollection: boolean) {
-  return await SMap.deleteAttributeByLayer(path, smID, isCollection)
+async function deleteAttributeByLayer(layerInfo: LayerInfo, smID: number, isCollection: boolean) {    
+  // return await SMap.deleteAttributeByLayer(path, smID, isCollection)
+  return await SData.deleteRecordsetValue({datasetName:layerInfo.datasetName,datasourceName:layerInfo.datasourceAlias},{index:smID})
 }
 
-async function deleteAttributeByData(name: string, smID: number) {
-  return await SMap.deleteAttributeByData(name, smID)
-}
+// async function deleteAttributeByData(name: string, smID: number) {
+//   debugger
+//   return await SMap.deleteAttributeByData(name, smID)
+// }
 
-async function deleteNavigationAttributeByData(name: string, smID: number) {
-  return await SMap.deleteNavigationAttributeByData(name, smID)
-}
 
-async function getCurrentGeometryID(path: string) {
-  return await SMap.getCurrentGeometryID(path)
-}
+// async function getCurrentGeometryID(path: string) {
+//   return await SMap.getCurrentGeometryID(path)
+// }
 
 function dealData(attributes: Attributes, result: AttributesResp, page: number, type: GetAttributeType) {
   const tableHead: {
     value: string,
     isSystemField: boolean,
-    fieldInfo: FieldInfo2,
+    fieldInfo: FieldInfoValue,
   }[] = []
   const resLength = (result.data && result.data.length) || 0
   if (resLength > 0) {
@@ -320,7 +383,16 @@ const baseMapsOrigin = [
   'roadmap@GaoDeMap',
   'satellite@GaoDeMap',
 ]
-let baseMaps = [...baseMapsOrigin]
+// 系统底图数组
+const baseMaps = [...baseMapsOrigin]
+// 用户添加的底图数组
+let userBaseMap: Array<string> = []
+
+/**
+ * 是否是系统的底图
+ * @param {LayerInfo} layer 需要判断的图层的图层信息
+ * @returns {boolean} 是系统的底图返回true，不是返回false
+ */
 function isBaseLayer(layer: LayerInfo) {
   try {
     let name = layer.name
@@ -336,7 +408,7 @@ function isBaseLayer(layer: LayerInfo) {
     }
     return false
   } catch (e) {
-    // debugger
+    //  
     return false
   }
 
@@ -358,7 +430,11 @@ function isBaseLayer(layer: LayerInfo) {
   // }
   // return false
 }
-
+/**
+ * 是否是系统的底图图层数据源
+ * @param {string} datasourceName 数据源名称
+ * @returns {boolean} 是系统的底图图层数据源返回true，不是返回false
+ */
 function isBaseLayerDatasource(datasourceName: string) {
   try {
     for (let i = 0, n = baseMaps.length; i < n; i++) {
@@ -391,12 +467,32 @@ function isBaseLayerDatasource(datasourceName: string) {
   // return false
 }
 
+/**
+ * 是否是用户添加的底图图层数据源 lyx
+ * @param {string} datasourceName 数据源名称
+ * @returns {boolean} 是用户添加的底图图层数据源返回true，不是返回false
+ */
+function isUserBaseLayerDatasource(datasourceName: string) {
+  try {
+    for (let i = 0, n = userBaseMap.length; i < n; i++) {
+      const _dsName = userBaseMap[i].toUpperCase().split('@')[1]
+      if (datasourceName.toUpperCase() === _dsName) {
+        return true
+      }
+    }
+    return false
+  } catch (e) {
+    return false
+  }
+}
+
 function getBaseLayers(layers: LayerInfo[] = []) {
+  const baseMapTempArr = baseMaps.concat(userBaseMap)
   const arr = []
   for (let i = 0; i < layers.length; i++) {
     const { name } = layers[i]
-    for (let i = 0, n = baseMaps.length; i < n; i++) {
-      if (name.toUpperCase().indexOf(baseMaps[i].toUpperCase()) >= 0) {
+    for (let i = 0, n = baseMapTempArr.length; i < n; i++) {
+      if (name.toUpperCase().indexOf(baseMapTempArr[i].toUpperCase()) >= 0) {
         arr.push(layers[i])
       }
     }
@@ -421,10 +517,21 @@ function getBaseLayers(layers: LayerInfo[] = []) {
   return arr
 }
 
-function setBaseMap(baseMap: string[]) {
-  baseMaps = [...baseMapsOrigin]
-  baseMaps = baseMaps.concat(baseMap)
+// function setBaseMap(baseMap: string[]) {
+//   baseMaps = []
+//   baseMaps = baseMaps.concat(baseMap)
+// }
+
+/**
+ * 设置用户添加的底图 lyx
+ * @param {Array<string>} datasourceName 用户添加的底图的名称数组
+ * @returns {void}
+ */
+function setUserBaseMap(baseMap: string[]) {
+  userBaseMap = []
+  userBaseMap = userBaseMap.concat(baseMap)
 }
+
 async function addBaseMap(
   layers: LayerInfo[] = [],
   data: TOnlineData | TOnlineData[] = ConstOnline.Google,
@@ -434,20 +541,16 @@ async function addBaseMap(
   if (getBaseLayers(layers).length === 0) {
     if (data instanceof Array) {
       for (let i = 0; i < data.length; i++) {
-        await SMap.openDatasource(
+        await SMap.openMapWithDatasource(
           data[i].DSParams,
           index !== undefined ? index : data[i].layerIndex,
-          false,
-          visible,
         )
       }
       global.BaseMapSize = data.length
     } else {
-      await SMap.openDatasource(
+      await SMap.openMapWithDatasource(
         data.DSParams,
         index !== undefined ? index : data.layerIndex,
-        false,
-        visible,
       )
       global.BaseMapSize = 1
     }
@@ -577,7 +680,7 @@ function setLayersSelectable(layers: LayerInfo[] & {child?: LayerInfo[]}, select
  * 用于判断多媒体采集和旅行轨迹对象判断
  * @param {*} fieldInfo
  */
-function isMediaData(fieldInfo: FieldInfo1[]) {
+function isMediaData(fieldInfo: FieldInfo[]) {
   try {
     let tag = 0, isTourLine = false, hasMedia
     fieldInfo.forEach(item => {
@@ -686,7 +789,7 @@ export default {
   getLayerAttribute,
   searchLayerAttribute,
   searchSelectionAttribute,
-  searchMyDataAttribute,
+  // searchMyDataAttribute,
   getSelectionAttributeByLayer,
   deleteSelectionAttributeByLayer,
   deleteAttributeByLayer,
@@ -696,8 +799,10 @@ export default {
 
   isBaseLayer,
   isBaseLayerDatasource,
+  isUserBaseLayerDatasource,
   addBaseMap,
-  setBaseMap,
+  // setBaseMap,
+  setUserBaseMap,
   openDefaultBaseMap,
   getDefaultBaseMapData,
   getLayerType,
@@ -706,14 +811,13 @@ export default {
 
   setLayersSelectable,
 
-  getCurrentGeometryID,
+  // getCurrentGeometryID,
 
   isMediaData,
 
   getSelectionAttributeByData,
-  deleteAttributeByData,
+  // deleteAttributeByData,
   getNavigationAttributeByData,
-  deleteNavigationAttributeByData,
 
   availableServiceLayer,
 

@@ -45,9 +45,9 @@ export default class SampleMap extends Component {
   }
   
   getData = async () => {
-    let examples = this.props.mapModules.modules[this.props.mapModules.currentMapModule]
+    let examples = this.props.mapModules.modules[this.props.user.currentUser.userName][this.props.mapModules.currentMapModule]
       .getExampleName(this.props.language)
-    let mapType = this.props.mapModules.modules[this.props.mapModules.currentMapModule].mapType
+    let mapType = this.props.mapModules.modules[this.props.user.currentUser.userName][this.props.mapModules.currentMapModule].mapType
     let keywords = []
     for (let i = 0; i < examples.length; i++) {
       let _name = examples[i].name
@@ -147,7 +147,7 @@ export default class SampleMap extends Component {
         downloadData={this._getCurrentDownloadData(item)}
         downloadFile={this._downloadFile}
         // downloads={this.props.downloads}
-        moduleData={this.props.mapModules.modules[this.props.mapModules.currentMapModule]}
+        moduleData={this.props.mapModules.modules[this.props.user.currentUser.userName][this.props.mapModules.currentMapModule]}
       />
     )
   }

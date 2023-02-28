@@ -13,7 +13,7 @@ function commit() {
 }
 
 function colorAction(item) {
-  SMap.setMapBackgroundColor(item.key)
+  SMap._setMapBackgroundColor(item.key)
 }
 
 function close() {

@@ -16,9 +16,11 @@ import {
 } from '../../../../utils'
 import { color } from '../../../../styles'
 import { Const, ConstOnline } from '../../../../constants'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap, SNavigation } from 'imobile_for_reactnative'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { getThemeAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 export default class TrafficView extends React.Component {
   props: {
@@ -60,7 +62,17 @@ export default class TrafficView extends React.Component {
     return null
   }
   incrementRoad = async () => {
-    let rel = await SMap.hasLineDataset()
+    // let rel = await SNavigation.hasLineDataset()
+    let rel = false
+    let datasources = await SData._getDatasetsByWorkspaceDatasource()
+    datasources.forEach(item => {
+      item.data.forEach(item2 => {
+        if(item2.datasetType === DatasetType.LINE){
+          rel = true
+        }
+      })
+    })
+
     if (rel) {
       this.props.incrementRoad()
     } else {
@@ -88,7 +100,7 @@ export default class TrafficView extends React.Component {
     try {
       this.props.setLoading && this.props.setLoading(true, getLanguage(this.props.language).Prompt.CHANGING)
       if (this.state.hasAdded) {
-        await SMap.removeTrafficMap('tencent@TrafficMap')
+        await SMap.removeLayer('tencent@TrafficMap')
       } else {
         let layers = await this.props.getLayers()
         let baseMap = layers.filter(layer =>
@@ -99,7 +111,15 @@ export default class TrafficView extends React.Component {
           baseMap.name !== 'baseMap' &&
           baseMap.isVisible
         ) {
-          await SMap.openTrafficMap(ConstOnline.TrafficMap.DSParams)
+          if(!await SData.isDatasourceOpened(ConstOnline.TrafficMap.DSParams.alias)) {
+            await SData.openDatasource(ConstOnline.TrafficMap.DSParams)
+          }
+          const scale = await SMap.getMapScale()
+          const center = await SMap.getMapCenter()
+          await SMap.addLayer({datasource: ConstOnline.TrafficMap.DSParams.alias, dataset: 0})
+          await SMap.setMapScale(1 / parseFloat(scale))
+          await SMap.setMapCenter(center.x, center.y)
+          SMap.refreshMap()
         }
       }
       let hasAdded = !this.state.hasAdded

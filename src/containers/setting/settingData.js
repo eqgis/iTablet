@@ -1,5 +1,5 @@
 import { SScene } from 'imobile_for_reactnative'
-import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SSceneType'
+import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SScene'
 import { getLanguage } from '../../language/index'
 
 async function getMap3DSettings() {

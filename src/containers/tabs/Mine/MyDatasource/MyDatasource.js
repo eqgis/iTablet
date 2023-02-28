@@ -6,7 +6,7 @@ import { ConstPath } from '../../../../constants'
 import NavigationService from '../../../NavigationService'
 import { SData } from 'imobile_for_reactnative'
 import { Toast } from '../../../../utils'
-import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 class MyDatasource extends MyDataPage {
   constructor(props) {

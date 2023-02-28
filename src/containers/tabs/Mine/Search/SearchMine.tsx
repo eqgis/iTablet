@@ -19,7 +19,7 @@ import SearchItem from './SearchItem'
 import NavigationService from '../../../NavigationService'
 import { getPublicAssets, getThemeAssets } from '../../../../assets'
 import { scaleSize, Toast } from '../../../../utils'
-import { DatasourceConnectionInfo, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasourceConnectionInfo, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 const pointImg = require('../../../../assets/mapToolbar/dataset_type_point_black.png')
 const lineImg = require('../../../../assets/mapToolbar/dataset_type_line_black.png')
 const regionImg = require('../../../../assets/mapToolbar/dataset_type_region_black.png')

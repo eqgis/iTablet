@@ -1,12 +1,12 @@
 import { ConstPath } from "@/constants"
 import NavigationService from "@/containers/NavigationService"
-import { ARLayerType, FileTools, RNFS, SARMap } from "imobile_for_reactnative"
+import { FileTools, RNFS, SARMap } from "imobile_for_reactnative"
 import { getImage } from "../../../assets"
 import { getLanguage } from "../../../language"
 import { ToolbarModuleData } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppToolBar, AppUser, Toast } from "../../../utils"
 import { getData } from "./Data"
-import { Platform } from "react-native"
+import { ARLayerType } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 
 /** ar矢量线符号数据格式 */
 interface ARSymbolObj {

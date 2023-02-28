@@ -7,7 +7,6 @@ import { getThemeAssets } from '../../../../../../assets'
 import { Toast } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import FunctionModule from '../../../../../../class/FunctionModule'
-import { SARMap, ARLayerType } from 'imobile_for_reactnative'
 import { arMapStyleData } from '@/Toolbar/modules'
 
 class ArStyleModule extends FunctionModule {

@@ -11,7 +11,7 @@ import PropTypes from 'prop-types'
 import { getLayerIconByType } from '../../assets'
 
 import styles from './styles'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 export default class LayerItem extends React.Component {
   static propTypes = {

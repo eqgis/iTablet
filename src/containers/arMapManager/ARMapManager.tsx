@@ -1,4 +1,4 @@
-import { ARLayer } from 'imobile_for_reactnative'
+import { ARLayer } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import React from 'react'
 import { Container, ListSeparator, BackButton } from '../../components'
 // import ARLayers from './Home/component/ARLayers'

@@ -5,7 +5,7 @@ import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
-import { ARLayerType } from 'imobile_for_reactnative'
+import { ARLayerType } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import { arMapEditData } from '@/Toolbar/modules'
 
 class ArEditModule extends FunctionModule {

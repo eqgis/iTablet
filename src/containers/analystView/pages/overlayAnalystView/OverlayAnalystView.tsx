@@ -16,7 +16,7 @@ import {
   GeoStyle,
   SData,
 } from 'imobile_for_reactnative'
-import { DatasetType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 const popTypes = {
   DataSource: 'DataSource',
   DataSet: 'DataSet',

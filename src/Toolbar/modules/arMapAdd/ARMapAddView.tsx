@@ -1,13 +1,12 @@
-import { ARElementType, SARMap } from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
 import React from 'react'
 import { Image, Platform, StyleSheet, TouchableOpacity } from 'react-native'
-import {  getImage } from '../../../assets'
+import { getImage } from '../../../assets'
 import { AppEvent, AppStyle, AppToolBar, dp } from '../../../utils'
 import { ModuleViewProps } from '../../../Toolbar'
 import AnimationList from './AnimationList'
-import { ARElement } from 'imobile_for_reactnative'
 import * as ARMapModule from './ModuleData'
-import { ModelAnimation } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
+import { ModelAnimation, ARElement, ARElementType } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 type Props = ModuleViewProps<unknown>
 
 interface State {

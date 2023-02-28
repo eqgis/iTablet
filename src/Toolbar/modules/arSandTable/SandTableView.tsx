@@ -6,7 +6,7 @@ import { getImage } from '../../../assets'
 import { getLanguage } from '../../../language'
 import {  AppEvent,  AppLog,  AppStyle, AppToolBar, dp } from '../../../utils'
 import { ModuleViewProps } from '../../../Toolbar'
-import { ARElement } from 'imobile_for_reactnative'
+import { ARElement } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 
 import { ARSAndTableViewOption } from './BottomView'
 import { FloatBar } from '@/components'

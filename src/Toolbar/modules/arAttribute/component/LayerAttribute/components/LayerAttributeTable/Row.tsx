@@ -5,7 +5,7 @@
  */
 
 // import { FieldInfo2 } from 'imobile_for_reactnative/types/data'
-import { FieldInfoValue } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { FieldInfoValue } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, ViewStyle, TextStyle, GestureResponderEvent, StyleProp, Image } from 'react-native'
 import { getImage } from '../../../../../../../assets'

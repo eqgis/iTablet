@@ -42,7 +42,7 @@ import {
 import ToolBarSectionList from '../../../workspace/components/ToolBar/components/ToolBarSectionList'
 import styles from './styles'
 import { SMap, SMCollectorType, RNFS, SMediaCollector, SData } from 'imobile_for_reactnative'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 // import { Dialog } from '../../../../components'
 import { color } from '../../../../styles'
 import { Toast, scaleSize, setSpText, dataUtil, LayerUtils } from '../../../../utils'

@@ -6,7 +6,7 @@ import ToolbarBtnType from '../containers/workspace/components/ToolBar/ToolbarBt
 import { getLanguage } from '../language/index'
 import { Toast, LayerUtils, AppToolBar } from '../utils'
 import { getThemeAssets } from '../assets'
-import { DatasetType, Point2D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, Point2D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 async function OpenData(data, index, callback) {
   global.Loading?.setLoading(true)

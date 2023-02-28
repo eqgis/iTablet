@@ -20,7 +20,7 @@ import { Dialog, Container } from '../../../../components'
 import { getPublicAssets } from '../../../../assets'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
-import { DatasetType, GeoLine, GeometryType, Point2D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, GeoLine, GeometryType, Point2D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 const TOOLBARHEIGHT = Platform.OS === 'ios' ? scaleSize(20) : 0
 

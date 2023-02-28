@@ -9,7 +9,7 @@ import NavigationService from '../../../NavigationService'
 import { View, Text, ScrollView } from 'react-native'
 import { SMap, SProcess, SData } from 'imobile_for_reactnative'
 import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 const popTypes = {
   DataSource: 'DataSource',

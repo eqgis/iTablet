@@ -1,7 +1,7 @@
 /* global global */
 import { TOnlineData } from '@/constants/ConstOnline'
 import { SData, SMap, SNavigation} from 'imobile_for_reactnative'
-import { DatasetType, FieldType, FieldInfo, FieldInfoValue, QueryParameter, DatasetInfo } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, FieldType, FieldInfo, FieldInfoValue, QueryParameter, DatasetInfo } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 // import { AttributesResp} from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import { AttributesResp } from "@/utils/AttributeUtils"
 import { ConstOnline } from '../constants'

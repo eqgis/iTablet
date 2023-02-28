@@ -11,7 +11,6 @@ import {
   SMap,
   SScene,
   SCollector,
-  EngineType,
   SMediaCollector,
   SAIDetectView,
   SSpeechRecognizer,
@@ -19,8 +18,6 @@ import {
   SARMap,
   SMMeasureARGeneraView,
   // SCollectSceneFormView,
-  ARElementType,
-  ARAction,
   SData,
   SPlot,
   SNavigation,
@@ -28,7 +25,8 @@ import {
   GeoStyle,
 } from 'imobile_for_reactnative'
 import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
-import { DatasetType, GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, GeometryType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
+import { ARElementType, ARAction,} from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import PropTypes from 'prop-types'
 import {
   FunctionToolbar,

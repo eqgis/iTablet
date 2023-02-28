@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 import { handleActions } from 'redux-actions'
-import { ARLayer, SARMap } from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
 
 import {
   NEW_AR_MAP,
@@ -9,6 +9,7 @@ import {
   OPEN_AR_MAP,
   OpenARMapAction,
 } from "./armap"
+import { ARLayer } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 
 const GET_AR_LAYERS = 'GET_AR_LAYERS'
 const SET_CURRENT_AR_LAYER = 'SET_CURRENT_AR_LAYER'

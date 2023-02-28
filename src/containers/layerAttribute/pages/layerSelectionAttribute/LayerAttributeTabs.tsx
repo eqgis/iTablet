@@ -25,7 +25,7 @@ import {
 import { getLanguage } from '../../../../language'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
 import LayerAttributeAdd from '../layerAttributeAdd'
-import { DatasetInfo, GeometryType, QueryParameter } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetInfo, GeometryType, QueryParameter } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { Action, LayerInfo } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 const styles = StyleSheet.create({

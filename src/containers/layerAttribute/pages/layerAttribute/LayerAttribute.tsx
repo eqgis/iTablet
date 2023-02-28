@@ -46,7 +46,7 @@ import ToolbarModule from '../../../workspace/components/ToolBar/modules/Toolbar
 import LayerAttributeAdd from '../layerAttributeAdd'
 import { Rect } from 'react-native-popover-view'
 // import { LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
-import { DatasetInfo,DatasetType,GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetInfo,DatasetType,GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 const SINGLE_ATTRIBUTE = 'singleAttribute'
 const PAGE_SIZE = 30

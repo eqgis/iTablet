@@ -26,7 +26,7 @@ import { ToolbarModuleKey } from './modules/modulesKeys'
 import { DEVICE } from '@/redux/models/device'
 import sceneInfoType from '@/redux/models/scenes'
 import { Action, LayerInfo } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
-import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SSceneType'
+import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SScene'
 
 interface ToolbarVisibleParam {
   /** 是否全屏， */

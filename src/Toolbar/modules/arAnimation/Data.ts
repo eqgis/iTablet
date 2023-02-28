@@ -1,7 +1,7 @@
 import { getImage } from "@/assets"
 import { IToolbarOption, ToolbarOption } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppEvent, AppToolBar } from "@/utils"
-import { ARAction } from "imobile_for_reactnative"
+import { ARAction } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 import { SARMap } from "imobile_for_reactnative"
 import { ModuleList } from ".."
 import { ARAnimationViewOption } from "./ARAnimationView"

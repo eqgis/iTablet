@@ -1,5 +1,5 @@
 import { SARMap } from "imobile_for_reactnative"
-import { ARElement } from "imobile_for_reactnative"
+import { ARElement } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 import { Platform } from "react-native"
 import { ThunkAction } from "redux-thunk"
 import { RootState } from "../types"

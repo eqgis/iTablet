@@ -13,7 +13,7 @@ import {
   GeoStyle,
 } from 'imobile_for_reactnative'
 import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
-import { DatasetType,GeometryType, GeoTextStyle, TextFont } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType,GeometryType, GeoTextStyle, TextFont } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import ToolbarModule from '../ToolbarModule'
 import { LayerUtils, Toast, StyleUtils, SCoordinationUtils } from '../../../../../../utils'
 import {

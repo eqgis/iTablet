@@ -49,7 +49,7 @@ import { BackHandlerUtil } from '../../util'
 import GuideViewMapSceneModel from '../../components/GuideViewMapSceneModel'
 import { Bar } from 'react-native-progress'
 import sceneInfoType from '../../../../redux/models/scenes'
-import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SSceneType'
+import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/Type'
 
 const SAVE_TITLE = '是否保存当前场景'
 export default class Map3D extends React.Component {

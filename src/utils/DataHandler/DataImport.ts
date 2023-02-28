@@ -4,7 +4,7 @@ import { ConstPath } from '../../constants'
 import { ExternalDatasetType, UserInfo } from '@/types'
 import { IExternalData } from './DataExternal'
 import { AppUser } from '@/utils'
-import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 async function importExternalData(user: UserInfo, item: IExternalData): Promise<boolean> {
   let type = item.fileType

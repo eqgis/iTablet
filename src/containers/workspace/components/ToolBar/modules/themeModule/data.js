@@ -14,7 +14,7 @@ import ToolbarModule from '../ToolbarModule'
 import ThemeData from './ThemeData'
 import ThemeAction from './ThemeAction'
 import NavigationService from '../../../../../NavigationService'
-import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 /**
  *

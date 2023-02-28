@@ -6,7 +6,7 @@ import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
-import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SSceneType'
+import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SScene'
 
 let isClickMeasurePoint = true // 用于量算判断是否是选择点，true为新选择点，false为撤销回退
 /** 距离量算 * */

@@ -7,7 +7,7 @@ import {
   SData,
   SNavigation,
 } from 'imobile_for_reactnative'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import {
   ConstToolType,
   ConstPath,

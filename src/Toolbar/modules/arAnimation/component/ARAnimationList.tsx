@@ -1,5 +1,4 @@
-import { ARAnimatorType } from 'imobile_for_reactnative/NativeModule/dataTypes'
-import { ARAnimatorParameter } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
+import { ARAnimatorParameter, ARAnimatorType } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import React from 'react'
 import { FlatList, Image, ImageRequireSource, ListRenderItemInfo, Text, TouchableOpacity, View } from 'react-native'
 import { getImage } from '../../../../assets'

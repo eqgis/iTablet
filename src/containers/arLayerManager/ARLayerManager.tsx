@@ -1,4 +1,4 @@
-import { SARMap, ARLayerType, ARElementLayer } from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
 import React from 'react'
 import { Container, ListSeparator, BackButton, InputDialog } from '../../components'
 import { getLanguage } from '../../language'
@@ -12,13 +12,12 @@ import { DEVICE } from '../../redux/models/device'
 import ARLayerItem from './ARLayerItem'
 import ARMapSettingItem from '../arLayerManager/ARMapSettingItem'
 import { MapToolbar } from '../workspace/components'
-import { ARLayer } from 'imobile_for_reactnative'
 import NavigationService from '../NavigationService'
 import ARLayerMenu from './ARLayerMenu'
 import { UserInfo } from '@/types'
 import { arLayerType } from '@/utils/AppToolBar'
 import { MapModules } from '@/redux/models/mapModules'
-
+import { ARElementLayer, ARLayer, ARLayerType } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 
 const styles = StyleSheet.create({
   headerBtnTitle: {

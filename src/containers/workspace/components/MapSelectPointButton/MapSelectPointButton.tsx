@@ -8,7 +8,7 @@ import { getLanguage } from '../../../../language'
 import { TouchType } from '../../../../constants'
 import { zIndexLevel } from '../../../../styles'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
-import { DatasetType, GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import style from '../PoiInfoContainer/style'
 import { addOutdoorStartEndGuideLine } from '../NavigationView/NavigationView'
 export default class MapSelectPointButton extends React.Component {

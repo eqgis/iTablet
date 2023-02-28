@@ -19,7 +19,7 @@ import {
   SProximityAnalyst,
   SData,
 } from 'imobile_for_reactnative'
-import { DatasetType, EngineType,GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, EngineType,GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 const popTypes = {
   DataSource: 'DataSource',

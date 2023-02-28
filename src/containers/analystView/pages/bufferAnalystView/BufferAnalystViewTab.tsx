@@ -15,7 +15,7 @@ import {
 import NavigationService from '../../../NavigationService'
 
 import styles from './styles'
-import { DatasetType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 const popTypes = {
   DataSource: 'DataSource',

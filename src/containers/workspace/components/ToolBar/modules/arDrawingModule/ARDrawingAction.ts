@@ -1,18 +1,20 @@
 /* global global */
 import {
+  SARMap,
+  FileTools,
+  SCoordination,
+  IServerService,
+} from 'imobile_for_reactnative'
+import { Point3D } from "imobile_for_reactnative/NativeModule/interfaces/data/SData"
+import {
   ARLayerType,
   TARLayerType,
-  SARMap,
   TARElementType,
   ARElementType,
   ARElementLayer,
   ARAction,
-  FileTools,
   ARLayer,
-  SCoordination,
-  IServerService,
-} from 'imobile_for_reactnative'
-import { Point3D } from "imobile_for_reactnative/types/data"
+} from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 import {
   ConstToolType,
   ToolbarType,

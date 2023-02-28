@@ -1,5 +1,5 @@
 import { SData, SIndoorNavigation, SMap, SNavigation } from "imobile_for_reactnative"
-import { GeometryType, Point2D } from "imobile_for_reactnative/NativeModule/interfaces/data/SDataType"
+import { GeometryType, Point2D } from "imobile_for_reactnative/NativeModule/interfaces/data/SData"
 
 let incrementDatasource: string | null = null
 let incrementLineDatasetName: string | null = null

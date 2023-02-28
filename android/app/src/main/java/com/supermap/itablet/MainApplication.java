@@ -12,6 +12,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.soloader.SoLoader;
+import com.supermap.RNUtils.AppInfo;
 import com.supermap.bundleCore.BundleUtils;
 
 import java.io.File;
@@ -21,7 +22,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 public class MainApplication extends Application implements ReactApplication {
-  public static String SDCARD = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
+  public static String SDCARD = AppInfo.getSdcard();//android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
   private static MainApplication sInstance = null;
   private static ReactInstanceManager mReactInstanceManager;
   // 打包或测试bundle时为true，需要打包base.bundle，调试iTablet代码时为false

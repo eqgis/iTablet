@@ -7,6 +7,7 @@ const mapStateToProp = (state: RootState) => ({
   device: state.device.toJS().device,
   essentialInfo: state.location.toJS().essentialInfo,
   selectLoadPoint: state.location.toJS().selectLoadPoint,
+  peripheralDevice: state.setting.toJS().peripheralDevice,
 })
 
 const mapDispatch = {

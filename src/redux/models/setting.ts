@@ -8,6 +8,7 @@ import { ModelUtils } from '../../utils'
 import { ChunkType } from '../../constants'
 import { setCurrentLanguage } from '@/language'
 import { setLastLaunchState } from '../store'
+import { LocationConnectionParam } from '@/containers/BluetoothDevices/BluetoothDevices'
 
 const { AppUtils } = NativeModules
 // Constants
@@ -119,7 +120,7 @@ export const setLanguage = (params: string, isConfig = false, cb = () => {}) => 
   }
   cb && cb()
 }
-export const setDevice = (params: SLocation.LocationConnectionParam) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
+export const setDevice = (params: LocationConnectionParam) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
   await dispatch({
     type: SETTING_DEVICE,
     payload: params,
@@ -394,7 +395,7 @@ interface SettingState {
   language: string,
   autoLanguage: true,
   configLangSet: false,
-  peripheralDevice: SLocation.LocationConnectionParam,
+  peripheralDevice: LocationConnectionParam,
   mapLegend: Legend,
   mapNavigation: {
     isShow: boolean,

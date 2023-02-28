@@ -2213,6 +2213,11 @@ export const language_ja: typeof language_cn = {
   SLOCATION_STATE_CURRENT: "測位状態",
   WEAK_POSITIONING_SIGNAL: "測位信号は弱いです",
 
+  CHECK_DEVICE_SUPPORTS_DIFFERENTIAL_SERVICE:"Check whether the device supports differential service", // To be translated
+  CURRENT_LOADING_POINT:"Current loading point", // To be translated
+  LOADING_POINT_NAME:"Loading point name", // To be translated
+  CHECK_LITE_RTK_DEVICE_IS_CONNECTED:"Pease confirm that the Lite RTK device is connected", // To be translated
+
   // ライセンス
   LICENSE: "ライセンス",
   LICENSE_CURRENT: "現在ライセンス",

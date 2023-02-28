@@ -8,6 +8,7 @@ import styles from "./style"
 import { Picker } from '@react-native-picker/picker'
 import { ScrollView } from 'react-native-gesture-handler'
 import NavigationService from '../NavigationService'
+import Toast from '@/utils/Toast'
 
 
 const radio_on = require('../../assets/public/radio_select.png')
@@ -16,17 +17,19 @@ const radio_off = require('../../assets/public/radio_select_no.png')
 interface Props{
   navigation: MainStackScreenNavigationProps<'BluetoothDevices'>,
   // route: MainStackScreenRouteProp<'BluetoothDevices'>,
-  peripheralDevice: SLocation.LocationConnectionParam,
-  setDevice: (param: SLocation.LocationConnectionParam) => void
+  peripheralDevice: LocationConnectionParam,
+  setDevice: (param: LocationConnectionParam) => void
 }
 
+type brandType = 'other' | 'situoli' | 'woncan' | 'mijiaH20'
+
 interface State {
-  devices: SLocation.LocationConnectionParam[],
-  currentOption: SLocation.LocationConnectionParam,
+  devices: LocationConnectionParam[],
+  currentOption: LocationConnectionParam,
   showSearch: boolean
   searchNotify: string
   gnssTppe: 'rtk'
-  brand: 'other' | 'situoli'
+  brand: brandType
 }
 
 interface BluedeviceMainInfo {
@@ -34,11 +37,36 @@ interface BluedeviceMainInfo {
   address: string
 }
 
-class BluetoothDevices extends Component<Props, State> {
 
-  prevOption: SLocation.LocationConnectionParam
+export type LocationConnectionParam = LocalConnectionParam
+                                    | ExternalConnectionParam
+                                    | BluetoothConnectionParam
+
+interface LocalConnectionParam {
+  type: 'local'
+}
+
+interface ExternalConnectionParam {
+  type: 'external'
+  name: string
+}
+
+interface BluetoothConnectionParam {
+  type: 'bluetooth'
+  name: string
+  mac: string
+  gnssTppe: 'rtk'
+  brand: 'other' | 'situoli' | 'woncan' | 'mijiaH20'
+}
+
+class BluetoothDevices extends Component<Props, State> {
+  timer: NodeJS.Timeout | null = null
+  container: typeof Container | null | undefined = null
+  prevOption: LocationConnectionParam
   brandArray = [
     {label: '思拓力', value: 'situoli'},
+    {label: '千寻LiteRtk', value: 'woncan'},
+    {label: '米甲H20', value: 'mijiaH20'},
     {label: '其它', value: 'other'},
   ]
   gnssTppeArray = [
@@ -48,20 +76,61 @@ class BluetoothDevices extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.prevOption = this.props.peripheralDevice
+    let brandTemp: brandType = 'situoli'
+    if(this.prevOption && this.prevOption.type === 'bluetooth') {
+      brandTemp = this.prevOption.brand
+    }
     this.state = {
       devices: [],
       currentOption: this.prevOption,
       showSearch: true,
       searchNotify: getLanguage(global.language).Prompt.SEARCHING,
       gnssTppe: 'rtk',
-      brand: 'situoli',
+      brand: brandTemp,
     }
   }
 
   componentDidMount = () => {
     try {
+      SLocation.setBTScanListner(async (devicesResult: BluedeviceMainInfo) => {
+        this.timer && clearTimeout(this.timer)
+        // console.warn("devices01 : " + JSON.stringify(devicesResult))
+        this.container?.setLoading?.(false)
+        const devicesSym: BluedeviceMainInfo[] = await SLocation.getPairedBTDevices()
+        const devices: LocationConnectionParam[] = []
+        devicesSym.push(devicesResult)
+        devicesSym.map((item: BluedeviceMainInfo) => {
+          const device: LocationConnectionParam = {
+            type: 'bluetooth',
+            name: item.name,
+            mac: item.address,
+            gnssTppe: this.state.gnssTppe,
+            brand: this.state.brand,
+          }
+          devices.push(device)
+        })
+        this.setState({
+          devices,
+        })
+      })
       // await SLocation.connectNtrip()
-      this.getData()
+
+      if(this.state.brand === 'woncan') {
+        // 上一次选择的设备是千寻知寸的设备
+        this.container?.setLoading?.(true,getLanguage(global.language).Profile.LOADING,{})
+        SLocation.scanBluetooth()
+        this.timer = setTimeout(() => {
+          if(this.timer) {
+            this.container?.setLoading?.(false)
+            Toast.show(getLanguage(global.language).Profile.CHECK_LITE_RTK_DEVICE_IS_CONNECTED)
+            this.getData()
+            clearTimeout(this.timer)
+          }
+        }, 10000)
+      } else {
+        this.getData()
+      }
+
     } catch (error) {
       console.warn("BluetoothDevices mount error!")
     }
@@ -75,10 +144,10 @@ class BluetoothDevices extends Component<Props, State> {
   getData = async () => {
     try {
       const devicesSym: BluedeviceMainInfo[] = await SLocation.getPairedBTDevices()
-      const devices: SLocation.LocationConnectionParam[] = []
+      const devices: LocationConnectionParam[] = []
 
       devicesSym.map((item: BluedeviceMainInfo) => {
-        const device: SLocation.LocationConnectionParam = {
+        const device: LocationConnectionParam = {
           type: 'bluetooth',
           name: item.name,
           mac: item.address,
@@ -155,6 +224,20 @@ class BluetoothDevices extends Component<Props, State> {
               // setValue(value)
               // value !== null && props.onValueChange(value)
               this.setState({brand: value})
+              if(value === "woncan") {
+                // 切换到千寻知寸的设备
+                this.container?.setLoading?.(true,getLanguage(global.language).Profile.LOADING,{})
+                SLocation.scanBluetooth()
+                this.timer = setTimeout(() => {
+                  if(this.timer) {
+                    this.container?.setLoading?.(false)
+                    Toast.show(getLanguage(global.language).Profile.CHECK_LITE_RTK_DEVICE_IS_CONNECTED)
+                    clearTimeout(this.timer)
+                  }
+                }, 10000)
+              } else {
+                this.getData()
+              }
             } }
           >
             {this.brandArray.map((item, index) => {
@@ -193,7 +276,7 @@ class BluetoothDevices extends Component<Props, State> {
   }
 
   /** 列表项 */
-  renderItem = (device: SLocation.LocationConnectionParam) => {
+  renderItem = (device: LocationConnectionParam) => {
     if(device.type !== 'bluetooth') {
       return null
     }
@@ -266,7 +349,7 @@ class BluetoothDevices extends Component<Props, State> {
   render() {
     return (
       <Container
-        // ref={ref => (this.container = ref)}
+        ref={(ref: typeof Container) => (this.container = ref)}
         headerProps={{
           title: getLanguage(global.language).Profile.SETTING_LOCATION_BLUETOOTH,
           withoutBack: false,

@@ -2212,6 +2212,11 @@ export const language_fr: typeof language_cn = {
   SLOCATION_STATE_CURRENT: "État du positionnement",
   WEAK_POSITIONING_SIGNAL: "Signal de localisation faible",
 
+  CHECK_DEVICE_SUPPORTS_DIFFERENTIAL_SERVICE:"Check whether the device supports differential service", // To be translated
+  CURRENT_LOADING_POINT:"Current loading point", // To be translated
+  LOADING_POINT_NAME:"Loading point name", // To be translated
+  CHECK_LITE_RTK_DEVICE_IS_CONNECTED:"Pease confirm that the Lite RTK device is connected", // To be translated
+
   // 许可
   LICENSE: "License",
   LICENSE_CURRENT: "Licence actuelle",

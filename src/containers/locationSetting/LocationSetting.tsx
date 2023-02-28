@@ -7,19 +7,21 @@ import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import color from '../../styles/color'
 import { getImage } from '@/assets'
+import { LocationConnectionParam } from '../BluetoothDevices/BluetoothDevices'
+import { TSNonNullExpression } from '@babel/types'
 
 const radio_on = require('../../assets/public/radio_select.png')
 const radio_off = require('../../assets/public/radio_select_no.png')
 
 interface Props {
   navigation: any
-  peripheralDevice: SLocation.LocationConnectionParam
-  setDevice: (param: SLocation.LocationConnectionParam) => void
+  peripheralDevice: LocationConnectionParam
+  setDevice: (param: LocationConnectionParam) => void
 }
 
 interface State {
-  devices: SLocation.LocationConnectionParam[]
-  currentOption: SLocation.LocationConnectionParam
+  devices: LocationConnectionParam[]
+  currentOption: LocationConnectionParam
   // showSearch: boolean
   // searchNotify: string
   distanceLocation: boolean
@@ -30,7 +32,7 @@ interface State {
 }
 
 class LocationSetting extends React.Component<Props, State> {
-  prevOption: SLocation.LocationConnectionParam
+  prevOption: LocationConnectionParam
 
   constructor(props:Props) {
     super(props)
@@ -53,7 +55,7 @@ class LocationSetting extends React.Component<Props, State> {
     // SLocation.searchDevice(true)
     // this.startShowSearching()
     this.getLocationType()
-   
+
   }
 
   componentWillUnmount() {
@@ -104,7 +106,18 @@ class LocationSetting extends React.Component<Props, State> {
     }
 
     // 直接将redux里的值拿给原生, 选择好的设备先放在了redux里，所以保存的时候直接修改原生的设备就好了
-    SLocation.changeLocationDevice(this.props.peripheralDevice).then(() => {
+    let tempDevice: SLocation.LocationConnectionParam | null = null
+    if(this.props.peripheralDevice.type === 'bluetooth') {
+      tempDevice = {
+        type: 'bluetooth',
+        mac: this.props.peripheralDevice.mac,
+        gnssTppe: this.props.peripheralDevice.gnssTppe,
+        brand: this.props.peripheralDevice.brand,
+      }
+    } else {
+      tempDevice = this.props.peripheralDevice
+    }
+    tempDevice && SLocation.changeLocationDevice(tempDevice).then(() => {
       let toastText = getLanguage().CHANGE_DEVICE_LOCAL
       switch (this.props.peripheralDevice.type) {
         case "local":

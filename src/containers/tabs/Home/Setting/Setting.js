@@ -8,6 +8,8 @@ import {
   ScrollView,
   RefreshControl,
   Platform,
+  PermissionsAndroid,
+  NativeModules,
 } from 'react-native'
 import { scaleSize, Toast } from '../../../../utils'
 import Container from '../../../../components/Container'
@@ -19,6 +21,9 @@ import NavigationService from '../../../NavigationService'
 import { FileTools } from '../../../../native'
 import { RNFS } from 'imobile_for_reactnative'
 import { getImage } from '@/assets'
+import { SMap } from 'imobile_for_reactnative'
+
+const appUtilsModule = NativeModules.AppUtils
 export default class Setting extends Component {
   props: {
     navigation: Object,
@@ -71,8 +76,34 @@ export default class Setting extends Component {
   }
 
   //定位设置
-  onLocation = () => {
+  onLocation = async () => {
     NavigationService.navigate('LocationSetting')
+    // 接入部分外部蓝牙设备需要先有定位权限
+    const permissionList = [
+      'android.permission.ACCESS_FINE_LOCATION',
+      "android.permission.ACCESS_COARSE_LOCATION",
+      'android.permission.BLUETOOTH',
+      'android.permission.BLUETOOTH_ADMIN',
+    ]
+    if(Platform.OS === 'android') {
+      const sdkVesion = Platform.Version
+      // android 12 的版本api编号 31 32 android 13的版本api编号 33
+      if(sdkVesion >= 31) {
+        permissionList.push('android.permission.BLUETOOTH_CONNECT')
+        permissionList.push('android.permission.BLUETOOTH_SCAN')
+      }
+    }
+    const results = await PermissionsAndroid.requestMultiple(permissionList)
+    let isAllGranted = true
+    for (let key in results) {
+      isAllGranted = results[key] === 'granted' && isAllGranted
+    }
+    //申请 android 11 读写权限
+    let permisson11 = await appUtilsModule.requestStoragePermissionR()
+    if (isAllGranted && permisson11) {
+      SMap.setPermisson(true)
+    // this.init()
+    }
   }
 
   //关于

@@ -40,6 +40,7 @@ class NtripSetting extends Component<Props, State> {
 
   agreementArray = [
     {label: 'NTRIPV1', value: 'NTRIPV1'},
+    {label: "千寻知寸", value:'qianxun'},
     {label: '中国移动', value: 'China Mobile'},
   ]
 
@@ -228,9 +229,23 @@ class NtripSetting extends Component<Props, State> {
                   // loadPointArray: tempArray,
                   loadPointNameArray: nameArray,
                   agreement: value,
+                  address: "sdk.pnt.10086.cn",
+                  port: '8002',
                 })
               } else {
-                this.setState({agreement: value}, () => {
+                let addressTemp = ""
+                let portTemp = ""
+                switch (value) {
+                  case "qianxun":
+                    addressTemp = "rtk.ntrip.qxwz.com"
+                    portTemp = "8002"
+                    break
+                }
+                this.setState({
+                  agreement: value,
+                  address:addressTemp,
+                  port: portTemp,
+                }, () => {
                   this.refreshLoadPoint()
                 })
               }

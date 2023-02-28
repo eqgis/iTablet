@@ -1,7 +1,7 @@
 import { getThemeAssets } from "@/assets"
 import NavigationService from "@/containers/NavigationService"
 import { getLanguage } from "@/language"
-import { AppToolBar } from "@/utils"
+import { AppToolBar, Toast } from "@/utils"
 import { getImage } from "../../assets/Image"
 import { getUserParam } from "../../utils/langchaoServer"
 
@@ -85,12 +85,22 @@ export const getThematicMapSettings = (hasUser = false) => {
     },
   }
 
+  const app_version = " 1.0"
+  const versionCode = {
+    title: "版本号 " + app_version,
+    leftImage: getImage().icon_app_version,
+    action: () => {
+      Toast.show(app_version)
+    },
+  }
+
   if(hasUser) {
     // data = data.concat(userData)
     data.unshift(userInfo)
     data.unshift(contacts)
     data.push(passwordUpdate)
   }
+  data.push(versionCode)
   return data
 }
 

@@ -46,6 +46,7 @@ const app_start_bg = require('./app_start_bg.png')
 const bg_login = require('./bg_login.png')
 const login_setting = require('./login_setting.png')
 const login = require('./login.png')
+const icon_app_version = require('./icon_app_version.png')
 
 const image = {
   flight,
@@ -92,6 +93,7 @@ const image = {
   bg_login,
   login_setting,
   login,
+  icon_app_version,
 }
 
 function getImage(): typeof image {

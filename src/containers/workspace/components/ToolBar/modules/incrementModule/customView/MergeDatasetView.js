@@ -27,7 +27,7 @@ import ModalDropdown from 'react-native-modal-dropdown'
 import { getLanguage } from '../../../../../../../language'
 import { Container } from '../../../../../../../components'
 import NavigationService from '../../../../../../NavigationService'
-import { DatasetType, FieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, FieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 
 export default class MergeDatasetView extends Component {

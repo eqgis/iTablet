@@ -13,7 +13,7 @@ import {
 import ToolbarModule from '../ToolbarModule'
 import { Toast, LayerUtils } from '../../../../../../utils'
 import {  SMap, SNavigation } from 'imobile_for_reactnative'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { constants } from '../../../index'
 import TopoEditData from './TopoEditData'
 import { getLanguage } from '../../../../../../language'

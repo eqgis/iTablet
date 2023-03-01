@@ -7,7 +7,7 @@ import { dp } from '../../utils'
 import Container from '../../components/Container'
 import { setCurrentLayer } from '../../redux/models/layers'
 import { getLanguage } from '../../language'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 interface Props extends ReduxProps {
   navigation: any

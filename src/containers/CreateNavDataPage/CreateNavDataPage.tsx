@@ -30,7 +30,7 @@ import { ConstPath } from '../../constants'
 import ModalDropdown from 'react-native-modal-dropdown'
 import NavigationService from '../NavigationService'
 import ImageButton from '../../components/ImageButton'
-import { DatasetType, FieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, FieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 export default class CreateNavDataPage extends Component {
   props: {

@@ -1,10 +1,8 @@
 import { ARAnimatorWithID } from "@/redux/models/aranimation"
-import { ARAnimatorType, ARElementType, ARNodeAnimatorType } from "imobile_for_reactnative/NativeModule/dataTypes"
 import { SARMap } from "imobile_for_reactnative"
 import { ARAnimatorSettingParam } from "./component/AnimatorParamSetting"
 import { AppToolBar } from "@/utils"
-import { ARElement } from "imobile_for_reactnative"
-import { ModelAnimation } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
+import { ModelAnimation, ARAnimatorType, ARElementType, ARElement } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 
 let arAnimatorSettingParam: ARAnimatorSettingParam = initArAnimatorSettingParam()
 

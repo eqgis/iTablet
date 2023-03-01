@@ -1,5 +1,5 @@
 import {SARMap } from 'imobile_for_reactnative'
-import { FieldInfoValue } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { FieldInfoValue } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 export interface AttributeHead {
   value: string,

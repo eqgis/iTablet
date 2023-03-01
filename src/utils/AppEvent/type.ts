@@ -1,5 +1,5 @@
 import { NetInfoState } from "@react-native-community/netinfo"
-import { ARElement } from "imobile_for_reactnative"
+import { ARElement } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 
 
 

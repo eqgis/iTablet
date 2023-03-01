@@ -7,7 +7,7 @@ import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { StyleUtils, Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
-import {GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import {GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 async function commit(type) {

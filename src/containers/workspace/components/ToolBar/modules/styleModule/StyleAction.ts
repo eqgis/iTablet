@@ -1,5 +1,5 @@
 // import { SCartography, SMap } from 'imobile_for_reactnative'
-import { DatasetType, GeoTextStyle, TextFont } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, GeoTextStyle, TextFont } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import {
   ConstToolType,
   TouchType,

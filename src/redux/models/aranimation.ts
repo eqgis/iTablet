@@ -1,4 +1,4 @@
-import { ARAnimatorType } from "imobile_for_reactnative/NativeModule/dataTypes"
+import { ARAnimatorType } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 import { ARGroupAnimatorParameter, ARModelAnimatorParameter, ARNodeRotationAnimatorParameter, ARNodeScaleAnimatorParameter, ARNodeTranslationAnimatorParameter, ARAnimatorParameter } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 import { ThunkAction } from "redux-thunk"
 import { RootState } from "../types"

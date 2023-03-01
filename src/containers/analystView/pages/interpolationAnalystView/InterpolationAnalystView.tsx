@@ -13,7 +13,7 @@ import InterpolationParamsData from './interpolationParamsData'
 import {
   SData,
 } from 'imobile_for_reactnative'
-import { DatasetType, EngineType, FieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, EngineType, FieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 const popTypes = {
   Method: 'Method',

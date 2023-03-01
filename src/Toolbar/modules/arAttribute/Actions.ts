@@ -1,6 +1,7 @@
 import { AppToolBar, AttributeUtils } from "@/utils"
 import { Attributes, AttributesResp } from "@/utils/AttributeUtils"
-import { ARElementType, ARLayerType, SARMap, TARElementType, TARLayerType } from "imobile_for_reactnative"
+import { SARMap } from "imobile_for_reactnative"
+import { ARElementType, ARLayerType, TARElementType, TARLayerType } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 import { SandTableData } from "./component/LayerAttribute/pages/AttributeDetail"
 
 

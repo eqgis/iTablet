@@ -1,5 +1,5 @@
-import { ARAction, SARMap } from 'imobile_for_reactnative'
-import { ARAnimatorType } from 'imobile_for_reactnative/NativeModule/dataTypes'
+import { SARMap } from 'imobile_for_reactnative'
+import { ARAction, ARAnimatorType } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import { ARGroupAnimatorParameter } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import React from 'react'
 import { Image, ImageRequireSource, Text, TouchableOpacity, View } from 'react-native'

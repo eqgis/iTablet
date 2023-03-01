@@ -1,5 +1,5 @@
 import { SMap } from 'imobile_for_reactnative'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import PlotData from './PlotData'
 import PlotAction from './PlotAction'
 import ToolbarModule from '../ToolbarModule'

@@ -1,10 +1,15 @@
-import { FileTools,  SMap, ARLayerType,FiltedData, TARLayerType, RNFS, FileInfo, SData } from 'imobile_for_reactnative'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { FileTools, RNFS, SData } from 'imobile_for_reactnative'
+import { DatasetType, TDatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { ConstPath } from '../../constants'
 import { NativeMethod } from '../../native'
 import { dataUtil } from '..'
 import { UserInfo, LocalDataType } from '../../types'
-import { DatasourceConnectionInfo, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasourceConnectionInfo, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
+import {
+  ARLayerType,
+  TARLayerType,
+} from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
+import { FiltedData, FileInfo } from 'imobile_for_reactnative/NativeModule/utility/FileTools'
 
 export interface ILocalData extends FiltedData {
   /** ai模型相关信息 */

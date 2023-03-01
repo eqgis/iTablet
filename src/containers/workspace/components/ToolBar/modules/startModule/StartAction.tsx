@@ -8,7 +8,7 @@ import {
   SNavigation,
   SData,
 } from 'imobile_for_reactnative'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { color, size } from '../../../../../../styles'
 import { FileTools, NativeMethod } from '../../../../../../native'
 import { getThemeAssets } from '../../../../../../assets'

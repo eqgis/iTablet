@@ -5,7 +5,7 @@ import { IToolbarOption, SelectionListOption, ToolBarBottomItem, ToolbarOption }
 import { AppEvent, AppLog, AppToolBar, AppUser, Toast } from "@/utils"
 import AppDialog from "@/utils/AppDialog"
 import AppInputDialog from "@/utils/AppInputDialog"
-import { ARAction } from "imobile_for_reactnative"
+import { ARAction } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 import { SARMap } from "imobile_for_reactnative"
 import { ModuleList } from ".."
 import { addModelToSandTable, saveARSandTable } from "./Actions"

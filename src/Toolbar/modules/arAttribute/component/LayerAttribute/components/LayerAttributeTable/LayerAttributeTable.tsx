@@ -26,7 +26,7 @@ import { getLanguage } from '../../../../../../../language'
 // import { FieldInfo2 } from 'imobile_for_reactnative/types/data'
 import { AttributeHead } from '../../../../../../../utils/AttributeUtils'
 import { IndicatorLoading } from '@/components'
-import { FieldInfoValue } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { FieldInfoValue } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 const COL_HEIGHT = scaleSize(80)
 

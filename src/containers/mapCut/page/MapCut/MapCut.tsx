@@ -37,7 +37,7 @@ import styles from '../../styles'
 import { getLanguage } from '../../../../language'
 import ConstPath from '../../../../constants/ConstPath'
 import FileTools from '../../../../native/FileTools'
-import { DatasetType, DatasourceConnectionInfo, EngineType, Point2D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, DatasourceConnectionInfo, EngineType, Point2D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { LayerInfo } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { Props } from 'imobile_for_reactnative/components/Slider'
 

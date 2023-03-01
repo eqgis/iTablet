@@ -1,9 +1,9 @@
 import React from 'react'
-import { Image, View, TouchableOpacity, Text } from 'react-native'
+import { Image, View, TouchableOpacity } from 'react-native'
 import { DEVICE } from '../../../src/redux/models/device'
 import ToolBarSectionList from '../workspace/components/ToolBar/components/ToolBarSectionList'
-import { ARLayerType, SARMap } from 'imobile_for_reactnative'
-import { ARLayer } from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
+import { ARLayer, ARLayerType } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import { getThemeAssets } from '../../assets'
 import { dp } from '../../utils'
 

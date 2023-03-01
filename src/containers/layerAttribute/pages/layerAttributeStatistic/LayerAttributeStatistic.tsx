@@ -18,7 +18,7 @@ import {
   getPublicAssets,
 } from '../../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
-import { DatasetInfo, FieldType, QueryParameter } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetInfo, FieldType, QueryParameter } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 const PREVIOUS = 'previous'
 const NEXT = 'next'

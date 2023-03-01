@@ -12,7 +12,7 @@ import { connect } from 'react-redux'
 import ExportList from '../component/ExportList'
 import { Platform } from 'react-native'
 import NavigationService from '../../../NavigationService'
-import { DatasetType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 class MyDataset extends MyDataPage {
   constructor(props) {

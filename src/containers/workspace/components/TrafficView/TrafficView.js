@@ -17,7 +17,7 @@ import {
 import { color } from '../../../../styles'
 import { Const, ConstOnline } from '../../../../constants'
 import { SData, SMap, SNavigation } from 'imobile_for_reactnative'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { getThemeAssets } from '../../../../assets'
 import { getLanguage } from '../../../../language'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'

@@ -14,7 +14,7 @@ import {ConstToolType,ConstPath} from "../../../../../../constants"
 import IncrementAction from "./IncrementAction"
 import {SData} from 'imobile_for_reactnative'
 import { FileTools } from '../../../../../../native'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 async function getData(type) {
   let data = []

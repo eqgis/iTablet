@@ -13,7 +13,7 @@ import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import NavigationService from '../../../../../NavigationService'
 import { getThemeAssets } from '../../../../../../assets'
-import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SSceneType'
+import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SScene'
 
 let onlineScenceData = [
   // {

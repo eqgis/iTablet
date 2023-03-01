@@ -1,4 +1,4 @@
-import { ARElement } from "imobile_for_reactnative"
+import { ARElement } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 
 /** 记录一次添加中所有添加的对象 */
 const _list: ARElement[] = []

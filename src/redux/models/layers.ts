@@ -8,7 +8,7 @@ import { getLanguage } from '../../language'
 import { LayerInfo,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { Attributes } from '@/utils/LayerUtils'
 import { AttributeHistory } from '../types'
-import { FieldInfoValue } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { FieldInfoValue } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 // Constants
 // --------------------------------------------------
 export const SET_EDIT_LAYER = 'SET_EDIT_LAYER'

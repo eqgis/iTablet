@@ -1,4 +1,4 @@
-import { ARAction, ARElementType, ARLayerType, SARMap } from "imobile_for_reactnative"
+import { ARAction, ARElementType, ARLayerType } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 import { ModuleList } from ".."
 import { getImage } from "../../../assets"
 import { getLanguage } from "../../../language"
@@ -7,6 +7,7 @@ import { AppToolBar, Toast } from "../../../utils"
 import { ARAttributeViewOption } from "./ARAttributeView"
 import { checkSupportARAttributeByElement, getSandtableAttributeData, getSandtableData } from "./Actions"
 import NavigationService from "@/containers/NavigationService"
+import { SARMap } from "imobile_for_reactnative"
 
 
 export function getData(key: ModuleList['ARATTRIBUTE']): IToolbarOption {

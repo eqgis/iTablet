@@ -1,7 +1,7 @@
 import FloatBar, { FloatItem } from '@/components/FloatBar'
 import NavigationService from '@/containers/NavigationService'
 import { RootState } from '@/redux/types'
-import { ARAction, SARMap } from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
 import React from 'react'
 import { Platform, StyleSheet, View } from 'react-native'
 import { Animated,  Easing } from 'react-native'

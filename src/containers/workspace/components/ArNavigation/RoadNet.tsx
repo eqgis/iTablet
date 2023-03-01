@@ -10,7 +10,7 @@ import { getLanguage } from '../../../../language'
 import { scaleSize } from '../../../../../src/utils'
 import { ARNaviModule } from '../ArNavigationModule'
 import { NaviDatasetInfo, NaviDatasourceInfo } from '../ArNavigationModule/ARNaviModule'
-import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 import { getAllNavData } from '../ToolBar/modules/roadNetModule/RoadNetData'
 

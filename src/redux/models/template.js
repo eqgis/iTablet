@@ -5,7 +5,7 @@ import { SMap, RNFS as fs, SData, SPlot } from 'imobile_for_reactnative'
 import xml2js from 'react-native-xml2js'
 import { FileTools } from '../../native'
 import { ConstInfo } from '../../constants'
-import { WorkspaceType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { WorkspaceType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 const parser = new xml2js.Parser()
 // Constants

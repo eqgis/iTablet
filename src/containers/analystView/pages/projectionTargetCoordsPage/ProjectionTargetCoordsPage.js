@@ -12,7 +12,7 @@ import { SMap, SProcess, SData } from 'imobile_for_reactnative'
 import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
 import ImageButton from '../../../../components/ImageButton'
 import NavigationService from '../../../NavigationService'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 const popTypes = {
   DataSource: 'DataSource',

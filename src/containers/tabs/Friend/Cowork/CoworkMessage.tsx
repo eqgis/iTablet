@@ -11,7 +11,7 @@ import MsgConstant from '../../../../constants/MsgConstant'
 import moment from 'moment'
 import NavigationService from '../../../NavigationService'
 import { ChunkType } from '@/constants'
-import { GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 
 interface Props {

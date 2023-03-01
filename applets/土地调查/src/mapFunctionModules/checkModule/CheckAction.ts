@@ -14,7 +14,7 @@ import { AppletsToolType } from '../../constants'
 import NavigationService from '@/containers/NavigationService'
 // import { Action, LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import CheckData from './CheckData'
-import { FieldInfo, GeometryType, TGeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { FieldInfo, GeometryType, TGeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { Action,TAction } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 function startCheck() {

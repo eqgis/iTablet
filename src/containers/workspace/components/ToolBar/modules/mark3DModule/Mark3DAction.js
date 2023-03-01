@@ -9,7 +9,7 @@ import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import { ConstToolType ,ToolbarType} from '../../../../../../constants'
 import Mark3DData from './Mark3DData'
-import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SSceneType'
+import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SScene'
 
 /** 兴趣点 * */
 function createPoint() {

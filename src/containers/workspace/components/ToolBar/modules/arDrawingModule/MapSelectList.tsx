@@ -16,7 +16,7 @@ import {
   ConstToolType,
 } from '../../../../../../constants'
 import { AppToolBar } from "@/utils"
-import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 interface Props {
   language: string,

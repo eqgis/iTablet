@@ -25,7 +25,7 @@ import {
   SData,
   SPlot,
 } from 'imobile_for_reactnative'
-import { DatasetType, } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType, } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { color } from '../../../../styles'
 import NavigationService from '../../../../containers/NavigationService'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'

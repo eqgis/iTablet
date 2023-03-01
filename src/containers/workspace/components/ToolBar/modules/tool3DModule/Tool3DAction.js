@@ -6,7 +6,7 @@ import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
-import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SSceneType'
+import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SScene'
 
 let isClickMeasurePoint = true // 用于量算判断是否是选择点，true为新选择点，false为撤销回退
 /** 距离量算 * */
@@ -173,6 +173,7 @@ async function map3dCut() {
       containerType: ToolbarType.typeNull,
     })
     params.setClipSetting && params.setClipSetting(rel)
+    global.action3d = Action3D.NULL
   } else {
     Toast.show(getLanguage(global.language).Map_Main_Menu.CUT_FIRST)
   }
@@ -331,6 +332,7 @@ function clearMeasure(type) {
       break
     case ConstToolType.SM_MAP3D_TOOL_BOX_CLIP:
       // 清除裁剪面 返回上个界面
+      global.action3d = Action3D.PAN3D
       _params.clearClip && _params.clearClip()
       SScene.clearClip()
       global.MapSurfaceView && global.MapSurfaceView.show()
@@ -472,6 +474,7 @@ function layerChange(layers) {
 }
 
 function closeClip() {
+  global.action3d = Action3D.PAN3D
   const _params = ToolbarModule.getParams()
   SScene.clearClip()
   _params.setToolbarVisible(false)

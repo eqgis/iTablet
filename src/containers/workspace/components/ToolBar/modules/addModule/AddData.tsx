@@ -16,7 +16,7 @@ import { color } from '../../../../../../styles'
 import { getThemeAssets } from '../../../../../../assets'
 import { View } from 'react-native'
 import AddAction from './AddAction'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 /**
  * 获取数据源和地图菜单

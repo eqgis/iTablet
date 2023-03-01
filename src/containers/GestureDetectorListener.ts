@@ -11,7 +11,7 @@ import NavigationService from './NavigationService'
 import { getLanguage } from '../language'
 import { TouchType, ChunkType } from '../constants'
 import ToolbarModule from './workspace/components/ToolBar/modules/ToolbarModule'
-import { DatasetInfo, GeometryType, GeoRegion, GeoText, Point2D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { DatasetInfo, GeometryType, GeoRegion, GeoText, Point2D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { point } from './workspace/components/ToolBar/modules/styleModule/data'
 
 let isDoubleTouchCome = false

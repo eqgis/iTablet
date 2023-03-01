@@ -25,7 +25,7 @@ import { getCurrentLanguage, getLanguage } from '../../../../../../../language'
 // import { TFieldType } from 'imobile_for_reactnative'
 // import { FieldInfo1 } from 'imobile_for_reactnative/types/data'
 import Button from '@/components/Button'
-import { FieldInfo, TFieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SDataType'
+import { FieldInfo, TFieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 interface MType {
   cn: string,
   en: string,

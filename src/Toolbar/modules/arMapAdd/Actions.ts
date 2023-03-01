@@ -1,15 +1,22 @@
-import { ARElementLayer, ARElementType, ARLayerType, SARMap, TARElementType, FileTools, TARLayerType, SCoordination, IServerService } from "imobile_for_reactnative"
+import { SARMap, FileTools, SCoordination, IServerService } from "imobile_for_reactnative"
 import { getLanguage } from "@/language"
 import { ExternalDataType } from "@/types"
 import { AppLog, AppPath, AppToolBar, CheckSpell, DataHandler, Toast, AppUser } from "@/utils"
 import { AR3DExample, ExampleData} from "@/utils/DataHandler/DataExample"
 import { Platform } from "react-native"
-import { Point3D } from "imobile_for_reactnative/types/data"
 import { FetchBlob } from "@/utils/FetchBlob"
 import DataLocal from "@/utils/DataHandler/DataLocal"
 import { UserRoot } from "@/utils/AppPath"
 import AppProgress from "imobile_for_reactnative/utils/AppProgress"
 import { ConstPath } from "../../../../src/constants"
+import { Point3D } from "imobile_for_reactnative/NativeModule/interfaces/data/SData"
+import {
+  ARElementLayer,
+  ARElementType,
+  ARLayerType,
+  TARElementType,
+  TARLayerType,
+} from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 
 export interface AddOption {
   translation?: Point3D

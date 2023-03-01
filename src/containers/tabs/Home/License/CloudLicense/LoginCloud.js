@@ -6,7 +6,7 @@ import { getLanguage } from '../../../../../language'
 import { Toast, scaleSize, screen, AccountUtils } from '../../../../../utils'
 import { color } from '../../../../../styles'
 import OnlineLoginView from '../../../Mine/Login/component/OnlineLoginView'
-import { SData, SMap } from 'imobile_for_reactnative'
+import { SData } from 'imobile_for_reactnative'
 import { connect } from 'react-redux'
 import {
   setCloudLicenseUser,
@@ -205,7 +205,7 @@ class LoginCloud extends Component {
           marginRight: scaleSize(40),
         }}
         onPress={() => {
-          SMap.setCloudLicenseSite(item.key)
+          SData.setCloudLicenseSite(item.key)
           this.props.setCloudLicenseSite(item.key)
         }}
       >

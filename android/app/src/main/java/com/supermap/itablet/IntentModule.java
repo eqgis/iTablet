@@ -9,9 +9,10 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.supermap.RNUtils.AppInfo;
 
 public class IntentModule extends ReactContextBaseJavaModule {
-    public final static String SDCARD = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
+    public final static String SDCARD = AppInfo.getSdcard();//android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
     private static ReactContext context;
 
     public IntentModule(ReactApplicationContext reactContext) {

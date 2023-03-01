@@ -18,6 +18,7 @@ import com.facebook.react.bridge.ReactContext;
 import com.rnfs.RNFSManager;
 import com.supermap.RN.AppUtils;
 import com.supermap.RN.appManager;
+import com.supermap.RNUtils.AppInfo;
 import com.supermap.RNUtils.FileTools;
 import com.supermap.bundleCore.BundleBean;
 import com.supermap.bundleCore.BundleUtils;
@@ -28,7 +29,7 @@ import com.supermap.itablet.splashscreen.SplashScreen;
 import java.io.File;
 
 public class MainActivity extends ReactActivity {
-  public final static String SDCARD = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
+  public final static String SDCARD = AppInfo.getSdcard();//android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
   public static boolean isActive;
   private static MainActivity sInstance;
   private boolean isFirstOnResume = true;

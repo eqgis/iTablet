@@ -30,7 +30,6 @@ export async function getAllNavData() {
 
     const hasFloorTable = datasets.filter(dataset => dataset.datasetName === 'FloorRelationTable').length  > 0
     const hasModelTable = datasets.filter(dataset => dataset.datasetName === 'ModelFileLinkTable').length  > 0
-
     if(hasFloorTable) {
       datasourceArr.push({
         selected: false,
@@ -50,7 +49,7 @@ export async function getAllNavData() {
         recordset.map(field => {
           if(field.name === 'NetworkDataset') {
             networkDatasetName = field.value
-          } else if(field.name === 'NetworkModelFIle') {
+          } else if(field.name.toLocaleLowerCase() === 'networkmodelfile') {
             networkModelFile = field.value
           } else if(field.name === 'POIDataset') {
             POIDataset = field.value

@@ -181,7 +181,7 @@ export default class NavigationView extends React.Component {
 
           const prjXml = await SData.getDatasetPrjCoordSys({datasetName: dataset.datasetName, datasourceName: dataset.datasourceName})
           const point = (await SData.CoordSysTranslatorGPSToPrj(prjXml, [{x, y}]))[0]
-          const bounds = await SData.getDatasetBounds({dataset: dataset.datasetName, datasource: dataset.datasourceName})
+          const bounds = await SData.getDatasetBounds({datasetName: dataset.datasetName, datasourceName: dataset.datasourceName})
 
           if(point.x >= bounds.left && point.x <= bounds.right && point.y >= bounds.bottom && point.y <= bounds.top) {
             if(isIndoor) {

@@ -201,7 +201,7 @@ export default class NavigationView extends React.Component {
                 recordset.map(field => {
                   if(field.name === 'NetworkDataset') {
                     networkDatasetName = field.value
-                  } else if(field.name === 'NetworkModelFIle') {
+                  } else if(field.name.toLocaleLowerCase() === 'networkmodelfile') {
                     networkModelFile = field.value
                   }
                 })

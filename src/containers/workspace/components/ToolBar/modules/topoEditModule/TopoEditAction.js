@@ -12,10 +12,14 @@ import {
 } from '../../../../../../constants'
 import ToolbarModule from '../ToolbarModule'
 import { Toast, LayerUtils } from '../../../../../../utils'
-import { DatasetType, SMap, Action } from 'imobile_for_reactnative'
+import {  SMap, SNavigation } from 'imobile_for_reactnative'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { constants } from '../../../index'
 import TopoEditData from './TopoEditData'
 import { getLanguage } from '../../../../../../language'
+import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
+import { drawSelectedLineOnTrackingLayer } from '@/containers/GestureDetectorListener'
 
 async function geometrySelected(event) {
   const _params = ToolbarModule.getParams()
@@ -126,7 +130,7 @@ async function geometrySelected(event) {
         ...global.INCREMENT_DATA,
         secondLine,
       }
-      SMap.drawSelectedLineOnTrackingLayer(params)
+      drawSelectedLineOnTrackingLayer(params)
     }
   }
 }
@@ -144,7 +148,7 @@ function commit() {
 
 function dialogConfirm() {
   const _params = ToolbarModule.getParams()
-  SMap.cancelIncrement(global.INCREMENT_DATA)
+  SNavigationInner.cancelIncrement(global.INCREMENT_DATA)
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(false)
   let layers = _params.layers.layers
@@ -240,7 +244,7 @@ async function switchType(item) {
         ...global.INCREMENT_DATA,
         secondLine: false,
       }
-      SMap.drawSelectedLineOnTrackingLayer(params)
+      drawSelectedLineOnTrackingLayer(params)
       type = ConstToolType.SM_MAP_TOPO_SPLIT_LINE
       await SMap.setAction(Action.SELECT)
       title= getLanguage(global.language).Prompt.SELECT_LINE_WITH_INTERRUPT
@@ -251,7 +255,7 @@ async function switchType(item) {
         ...global.INCREMENT_DATA,
         secondLine: false,
       }
-      SMap.drawSelectedLineOnTrackingLayer(params)
+      drawSelectedLineOnTrackingLayer(params)
       type = ConstToolType.SM_MAP_TOPO_SPLIT
       touchType = TouchType.MAP_TOPO_SPLIT_BY_POINT
       await SMap.setAction(Action.PAN)
@@ -265,7 +269,7 @@ async function switchType(item) {
         ...global.INCREMENT_DATA,
         secondLine: false,
       }
-      SMap.drawSelectedLineOnTrackingLayer(params)
+      drawSelectedLineOnTrackingLayer(params)
       type = ConstToolType.SM_MAP_TOPO_EXTEND_LINE
       await SMap.setAction(Action.PAN)
       setTimeout(() => {
@@ -279,7 +283,7 @@ async function switchType(item) {
         ...global.INCREMENT_DATA,
         secondLine: false,
       }
-      SMap.drawSelectedLineOnTrackingLayer(params)
+      drawSelectedLineOnTrackingLayer(params)
       type = ConstToolType.SM_MAP_TOPO_TRIM_LINE
       await SMap.setAction(Action.PAN)
       setTimeout(() => {
@@ -398,7 +402,7 @@ async function inputConfirm(text) {
 
   let reg = /^[0-9]+$/
   if (reg.test(text) && text >= 2 && text <= 10) {
-    let result = await SMap.smoothLine({
+    let result = await SNavigation.smoothLine({
       id: data.event.id,
       smooth: ~~text,
       ...global.INCREMENT_DATA,
@@ -446,7 +450,7 @@ async function pointSplitLine(point) {
     point,
     ...global.INCREMENT_DATA,
   }
-  let rel = await SMap.pointSplitLine(params)
+  let rel = await SNavigation.pointSplitLine(params)
   if (rel) {
     Toast.show(getLanguage(global.language).Prompt.EDIT_SUCCESS)
     global.TouchType = TouchType.NULL
@@ -480,7 +484,7 @@ async function extendLine() {
     id: data.event.id,
     ...global.INCREMENT_DATA,
   }
-  let rel = await SMap.extendLine(params)
+  let rel = await SNavigation.extendLine(params)
   if (rel) {
     Toast.show(getLanguage(global.language).Prompt.EDIT_SUCCESS)
   } else {
@@ -514,7 +518,7 @@ async function lineSplitByLine() {
     id2: secondEvent.id,
     ...global.INCREMENT_DATA,
   }
-  let rel = await SMap.lineSplitByLine(params)
+  let rel = await SNavigation.lineSplitByLine(params)
   if (rel) {
     Toast.show(getLanguage(global.language).Prompt.EDIT_SUCCESS)
   } else {
@@ -548,7 +552,7 @@ async function trimLine() {
     id: data.event.id,
     ...global.INCREMENT_DATA,
   }
-  let rel = await SMap.trimLine(params)
+  let rel = await SNavigation.trimLine(params)
   if (rel) {
     Toast.show(getLanguage(global.language).Prompt.EDIT_SUCCESS)
   } else {
@@ -576,7 +580,7 @@ async function resampleLine() {
     id: data.event.id,
     ...global.INCREMENT_DATA,
   }
-  let rel = await SMap.resampleLine(params)
+  let rel = await SNavigation.resampleLine(params)
   if (rel) {
     Toast.show(getLanguage(global.language).Prompt.EDIT_SUCCESS)
   } else {
@@ -596,7 +600,7 @@ async function changeLineDirection() {
     id: data.event.id,
     ...global.INCREMENT_DATA,
   }
-  let rel = await SMap.changeLineDirection(params)
+  let rel = await SNavigation.changeLineDirection(params)
   if (rel) {
     Toast.show(getLanguage(global.language).Prompt.EDIT_SUCCESS)
   } else {

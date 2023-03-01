@@ -1,5 +1,5 @@
 import { Platform } from "react-native"
-import { SMap, SARMap, SMediaCollector, RNFS } from 'imobile_for_reactnative'
+import { SMap, SARMap, SMediaCollector, RNFS ,SData,SPlot} from 'imobile_for_reactnative'
 import NavigationService from '../../../../../NavigationService'
 import { ConstToolType, ConstPath } from '../../../../../../constants'
 import { LayerUtils } from '../../../../../../utils'
@@ -17,11 +17,15 @@ async function getTaggingLayerData() {
   }
   let taggingLayerData
   if (!isTaggingLayer) {
-    let hasDefaultTagging = await SMap.hasDefaultTagging(
-      _params.user.currentUser.userName,
-    )
+    let hasDefaultTagging = false
+    const datasets = await SData.getDatasetsByDatasource({alias:"Label_"+_params.user.currentUser.userName+"#"})
+    datasets.forEach(item => {
+      if (item.datasetName.indexOf("Default_Tagging_"+_params.user.currentUser.userName) != -1) {
+        hasDefaultTagging = true
+      }
+    })
     if (!hasDefaultTagging) {
-      await SMap.newTaggingDataset(
+      await SMap._newTaggingDataset(
         `Default_Tagging_${_params.user.currentUser.userName}`,
         _params.user.currentUser.userName,
       )
@@ -49,7 +53,7 @@ function aiDetect() {
     const _params: any = ToolbarModule.getParams()
     global.toolBox && global.toolBox.removeAIDetect(false)
     let taggingLayerData = await getTaggingLayerData()
-    const dataList = await SMap.getTaggingLayers(
+    const dataList = await SMap._getTaggingLayers(
       _params.user.currentUser.userName,
     )
     for (let layer of dataList) {
@@ -86,7 +90,7 @@ async function goToPreview(infos?: SARMap.AIRecognitionInfo[]) {
     if(result) {
       const classResult = await SARMap.startAIClassify(imgPath)
       if (classResult) {
-        const location = await SMap.getCurrentPosition()
+        const location = await SMap.getCurrentLocation()
         ToolbarModule.addData({
           classResult: classResult,
           captureImgPath: imgPath,

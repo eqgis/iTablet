@@ -16,7 +16,9 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native'
-import { SThemeCartography, SMap ,ThemeType } from 'imobile_for_reactnative'
+import { SThemeCartography, SMap  } from 'imobile_for_reactnative'
+import { ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+
 import { Container } from '../../components'
 import { color } from '../../styles'
 import { scaleSize, setSpText, Toast } from '../../utils'

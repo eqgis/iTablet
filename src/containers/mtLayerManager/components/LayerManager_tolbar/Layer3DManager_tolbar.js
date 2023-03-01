@@ -23,7 +23,6 @@ import { SScene } from 'imobile_for_reactnative'
 import { color } from '../../../../styles'
 import { getThemeAssets } from '../../../../assets'
 import { screen, scaleSize, setSpText, dataUtil, Toast } from '../../../../utils'
-// import Map3DToolBar from '../../../workspace/components/Map3DToolBar'
 import { getLanguage } from '../../../../language/index'
 /** 工具栏类型 **/
 const list = 'list'
@@ -154,7 +153,7 @@ export default class LayerManager_tolbar extends React.Component {
           },
           data: [],
         }
-        let value = await SScene.getTerrainCacheNames()
+        let value = await SScene.getTerrainCache()
         if (value) {
           for (let i = 0, n = value.length; i < n; i++) {
             let terrainData = {
@@ -180,7 +179,7 @@ export default class LayerManager_tolbar extends React.Component {
           },
           data: [],
         }
-        let value = await SScene.getImageCacheNames()
+        let value = await SScene.getImageCache()
         if (value) {
           for (let i = 0, n = value.length; i < n; i++) {
             let terrainData = {
@@ -296,7 +295,7 @@ export default class LayerManager_tolbar extends React.Component {
       //设置图层可选择
       let selectable = this.layer3dItem.selectable
       let canChoose = !selectable
-      SScene.setSelectable(this.layer3dItem.name, canChoose).then(result => {
+      SScene.setLayerSelectable(this.layer3dItem.name, canChoose).then(result => {
         let type = canChoose
           ? ConstToolType.SM_MAP3D_LAYER3D_DEFAULT_SELECTED
           : ConstToolType.SM_MAP3D_LAYER3D_DEFAULT
@@ -313,13 +312,13 @@ export default class LayerManager_tolbar extends React.Component {
       //缩放至当前图层
       this.setVisible(false)
       this.props.overlayView && this.props.overlayView.setVisible(false)
-      SScene.ensureVisibleLayer(this.layer3dItem.name)
+      SScene.ensureVisibleByLayer(this.layer3dItem.name)
       this.props.navigation.navigate('Map3D')
     } else if (section.type && section.type === 'scaleToLayer') {
       //缩放至当前图层
       this.setVisible(false)
       this.props.overlayView && this.props.overlayView.setVisible(false)
-      SScene.ensureVisibleLayer(this.layer3dItem.name)
+      SScene.ensureVisibleByLayer(this.layer3dItem.name)
       this.props.navigation.navigate('Map3D')
     } else if (section.type && section.type === 'AddTerrain') {
       //添加地形图层
@@ -341,10 +340,10 @@ export default class LayerManager_tolbar extends React.Component {
       //添加具体地形
       this.setVisible(false)
       this.props.overlayView && this.props.overlayView.setVisible(false)
-      SScene.addTerrainCacheLayer(section.path, section.title).then(name => {
+      SScene.addTerrainLayer(section.path, section.title).then(name => {
         if (name) {
           this.props.layer3dRefresh()
-          SScene.ensureVisibleLayer(name)
+          SScene.ensureVisibleByLayer(name)
         } else {
           Toast.show(getLanguage(global.language).Prompt.ADD_FAILED)
         }
@@ -356,10 +355,10 @@ export default class LayerManager_tolbar extends React.Component {
       //添加具体影像
       this.setVisible(false)
       this.props.overlayView && this.props.overlayView.setVisible(false)
-      SScene.addImageCacheLayer(section.path, section.title).then(name => {
+      SScene.addLayer(section.path, section.title).then(name => {
         if (name) {
           this.props.layer3dRefresh()
-          SScene.ensureVisibleLayer(name)
+          SScene.ensureVisibleByLayer(name)
         } else {
           Toast.show(getLanguage(global.language).Prompt.ADD_FAILED)
         }
@@ -371,14 +370,14 @@ export default class LayerManager_tolbar extends React.Component {
       //删除影像图层
       this.setVisible(false)
       this.props.overlayView && this.props.overlayView.setVisible(false)
-      SScene.removeImageCacheLayer(this.layer3dItem.name).then(value => {
+      SScene.removeLayer(this.layer3dItem.name).then(value => {
         value && this.props.layer3dRefresh()
       })
     } else if (section.type && section.type === 'RemoveLayer3d_terrain') {
       //删除地形图层
       this.setVisible(false)
       this.props.overlayView && this.props.overlayView.setVisible(false)
-      SScene.removeTerrainCacheLayer(this.layer3dItem.name).then(value => {
+      SScene.removeTerrainLayer(this.layer3dItem.name).then(value => {
         value && this.props.layer3dRefresh()
       })
     } else if (section.type && section.type === 'AddBingmap') {
@@ -481,10 +480,10 @@ export default class LayerManager_tolbar extends React.Component {
                 let bRes = false
                 let type = 'AddTerrain_second'
                 if (section.header.type === 'Image') {
-                  bRes = await SScene.setImageCacheName(value)
+                  bRes = await SScene.addOnlineImageCache(value)
                   type = 'AddImage_second'
                 } else if (section.header.type === 'Terrain') {
-                  bRes = await SScene.setTerrainCacheName(value)
+                  bRes = await SScene.addOnlineTerrainCache(value)
                 }
                 NavigationService.goBack()
                 if (bRes) {

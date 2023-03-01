@@ -47,7 +47,7 @@ export default class Preview extends React.Component<Props, State> {
 
   // eslint-disable-next-line
   componentWillMount() {
-    SMap.setDynamicviewsetVisible(false)
+    
   }
 
   componentDidMount() {

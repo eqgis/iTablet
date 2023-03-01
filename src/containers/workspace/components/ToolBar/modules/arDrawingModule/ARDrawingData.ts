@@ -4,13 +4,14 @@ import { getThemeAssets, getARSceneAssets, getPublicAssets, getImage } from '../
 import ToolbarModule from '../ToolbarModule'
 import ARDrawingAction from './ARDrawingAction'
 import ToolbarBtnType from '../../ToolbarBtnType'
-import { SARMap ,ARAction} from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
 import DataHandler from '../../../../../../utils/DataHandler'
 import { Platform } from 'react-native'
 import { AR3DExample, ARModelExample, AREffectExample, AREffectExample2, AREffectExample3, AREffectExample4 } from '../../../../../../utils/DataHandler/DataExample'
 import { dataUtil, DialogUtils ,AppToolBar,AppUser} from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import { FileTools } from '@/native'
+import { ARAction } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 
 interface SectionItemData {
   key: string,

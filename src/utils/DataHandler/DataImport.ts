@@ -1,9 +1,10 @@
-import { SMap, EngineType, SScene, SARMap, AppInfo, FileInfo } from 'imobile_for_reactnative'
+import { SData, SScene, SARMap, AppInfo, FileInfo } from 'imobile_for_reactnative'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
 import { ExternalDatasetType, UserInfo } from '@/types'
 import { IExternalData } from './DataExternal'
 import { AppUser } from '@/utils'
+import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 async function importExternalData(user: UserInfo, item: IExternalData): Promise<boolean> {
   let type = item.fileType
@@ -21,7 +22,7 @@ async function importExternalData(user: UserInfo, item: IExternalData): Promise<
       //数据集导入调用 importDataset
       result = false
       break
-    case 'online': 
+    case 'online':
       result = false
       break
     case 'plotting':
@@ -117,7 +118,7 @@ async function importXmlTemplate(item: IExternalData) {
 
 async function importPlotLib(item: IExternalData) {
   try {
-    return await SMap.importPlotLibData(item.filePath)
+    return await SPlot.importPlotLibData(item.filePath)
   } catch (error) {
     return false
   }
@@ -131,7 +132,7 @@ async function importWorkspace(item: IExternalData) {
       server: filePath,
       type,
     }
-    let result = await SMap.importWorkspaceInfo(data)
+    let result = await SData.importWorkspace(data)
     return result
   } catch (error) {
     return false
@@ -145,7 +146,7 @@ async function importWorkspace(item: IExternalData) {
  */
 async function importWorkspace3D(item: IExternalData) {
   try {
-    return await SScene.import3DWorkspace({server:item.filePath})
+    return await SScene.import3DWorkspace({ server: item.filePath })
   } catch (error) {
     return false
   }
@@ -251,9 +252,9 @@ async function importSCI(item: IExternalData) {
     //   }
     // }
 
-    // debugger
+    //  
     await FileTools.copydir(item.directory, `${userPath}/${datasourceName}`)
-    // debugger
+    //  
     return true
   } catch (e) {
     return false
@@ -315,7 +316,9 @@ async function _importDataset(
     if (index > 0) {
       alias = alias.substring(0, index)
     }
-    const result = await SMap.importDataset(
+
+    //todo xiezhy 需要确认参数类型
+    const result = await SData.importDataset(
       type,
       filePath,
       {
@@ -323,9 +326,8 @@ async function _importDataset(
         alias,
         engineType: EngineType.UDB,
       },
-      importParams,
     )
-    SMap.closeDatasource(alias)
+    SData.closeDatasource(alias)
     return result
   } catch (error) {
     return false
@@ -361,7 +363,7 @@ async function _copyFile(item: IExternalData, desDir: string): Promise<boolean> 
   }
 }
 
-function _getAvailableName(name: string, fileList: FileInfo[], type: 'file' | 'directory', ext = '')  {
+function _getAvailableName(name: string, fileList: FileInfo[], type: 'file' | 'directory', ext = '') {
   let AvailabeName = name
   if (type === 'file' && ext !== '') {
     AvailabeName = `${name}.${ext}`

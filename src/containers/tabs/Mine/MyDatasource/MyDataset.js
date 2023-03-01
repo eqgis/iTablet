@@ -2,9 +2,8 @@ import React from 'react'
 import { MyDataPage } from '../component'
 import {
   SMap,
-  EngineType,
-  DatasetType,
   SProcess,
+  SData,
 } from 'imobile_for_reactnative'
 import { FileTools } from '../../../../native'
 import { Toast, scaleSize } from '../../../../utils'
@@ -13,6 +12,7 @@ import { connect } from 'react-redux'
 import ExportList from '../component/ExportList'
 import { Platform } from 'react-native'
 import NavigationService from '../../../NavigationService'
+import { DatasetType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 class MyDataset extends MyDataPage {
   constructor(props) {
@@ -51,15 +51,16 @@ class MyDataset extends MyDataPage {
 
   componentWillUnmount() {
     if (!this.isAlreadyOpen) {
-      // SMap.closeDatasource(this.datasourceName)
-      this.from === 'MapView' ? SMap.closeTempDatasource() :  SMap.closeDatasource(this.datasourceName)
+      if(this.from !== 'MapView'){
+        SData.closeDatasource(this.datasourceName)
+      }  
     }
     this.container && this.container.setLoading(false)
   }
 
   _openDatasource = async () => {
     try {
-      let datasources = await SMap.getDatasources()
+      let datasources = await SData.getDatasources()
       let homePath = await FileTools.appendingHomeDirectory()
       this.isAlreadyOpen = false
       if (datasources.length !== 0) {
@@ -78,7 +79,7 @@ class MyDataset extends MyDataPage {
         datasourceParams.server = homePath + this.state.data.path
         datasourceParams.engineType = EngineType.UDB
         datasourceParams.alias = this.state.title
-        await SMap.openDatasource2(datasourceParams, this.from === 'MapView')
+        await SData.openDatasource(datasourceParams)
       }
       // let datasourceParams = {}
       // datasourceParams.server = homePath + this.state.data.path
@@ -91,14 +92,13 @@ class MyDataset extends MyDataPage {
   }
 
   getData = async () => {
-    let userTempWorkspace = !this.isAlreadyOpen && this.from === 'MapView'
-    let dataset = await SMap.getDatasetsByDatasource({
+    const userTempWorkspace = !this.isAlreadyOpen && this.from === 'MapView'
+    const data = await SData.getDatasetsByDatasource({
       alias: userTempWorkspace ? this.datasourceName : this.state.title,
       server: await FileTools.appendingHomeDirectory(this.state.data.path),
-    }, false, {}, userTempWorkspace)
-    let data = dataset.list
+    })
 
-    let sectionData = []
+    const sectionData = []
     sectionData.push({
       title: 'DATASET',
       data: data || [],
@@ -111,7 +111,7 @@ class MyDataset extends MyDataPage {
     try {
       if (!this.itemInfo) return false
       let datasetName = this.itemInfo.item.datasetName
-      let result  = await SMap.deleteDataset(this.datasourceName, datasetName, !this.isAlreadyOpen && this.from === 'MapView')
+      let result  = await SData.deleteDataset(this.datasourceName, datasetName)
       return result
     } catch (e) {
       return false
@@ -131,7 +131,7 @@ class MyDataset extends MyDataPage {
     )
     /** 单个文件 */
     let filePath = exportPath + availableName
-    let result = await SMap.exportDataset(
+    let result = await SData.exportDataset(
       this.exportType,
       filePath,
       datasetParams,
@@ -160,7 +160,13 @@ class MyDataset extends MyDataPage {
 
   showAttribute = () => {
     global.NEEDREFRESHTABLE = true
-    NavigationService.navigate('LayerSelectionAttribute',{type:'MY_DATA',datasetName:this.itemInfo.item.datasetName})
+    const para = {
+      type:'MY_DATA',
+      datasetName:this.itemInfo.item.datasetName,
+      datasourceName:this.itemInfo.item.datasourceName
+    }
+    // console.log(para)
+    NavigationService.navigate('LayerSelectionAttribute',para)
   }
 
   setProjection = () => {
@@ -175,11 +181,8 @@ class MyDataset extends MyDataPage {
         let result = false
         //设置数据集投影
         let datasetName = this.itemInfo.item.datasetName
-        result = await SProcess.setPrjCoordSys(
-          this.datasourceName,
-          datasetName,
-          targetCoords.value+"",
-          !this.isAlreadyOpen && this.from === 'MapView',
+        result = await SData.setDatasetPrjCoordSys( {datasourceName: this.datasourceName,datasetName:datasetName},
+          targetCoords.value+""
         )
         global.Loading.setLoading(false)
         if (result) {
@@ -199,7 +202,7 @@ class MyDataset extends MyDataPage {
           getLanguage(global.language).Profile.BUILDING,
         )
         let datasetName = this.itemInfo.item.datasetName
-        let result = await SMap.buildPyramid(this.datasourceName, datasetName)
+        let result = await SData.buildPyramid(this.datasourceName, datasetName)
         global.Loading.setLoading(false)
         Toast.show(
           result
@@ -225,7 +228,7 @@ class MyDataset extends MyDataPage {
           getLanguage(global.language).Profile.BUILDING,
         )
         let datasetName = this.itemInfo.item.datasetName
-        let result = await SMap.updataStatistics(this.datasourceName, datasetName)
+        let result = await SData.updataStatistics(this.datasourceName, datasetName)
         global.Loading.setLoading(false)
         Toast.show(
           result
@@ -385,7 +388,7 @@ class MyDataset extends MyDataPage {
           this.exportType === this.exportTypes.GPX
         ) {
           let datasetParams = Object.assign({}, this.itemInfo.item)
-          if (!(await SMap.isPrgCoordSysWGS1984(datasetParams))) {
+          if (!(await SData.isPrgCoordSysWGS1984(datasetParams))) {
             this.SimpleDialog.set({
               text: getLanguage(global.language).Prompt.REQUIRE_PRJ_1984,
               cancelBtnVisible:false,

@@ -57,7 +57,7 @@ import { ConstPath, ThemeType, ChunkType, UserType } from './constants'
 import * as PT from './customPrototype'
 import NavigationService from './containers/NavigationService'
 import Orientation from 'react-native-orientation'
-import { BundleTools, RNFS as fs, SOnlineService, SScene, SMap, SIPortalService, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo ,SARMap} from 'imobile_for_reactnative'
+import { BundleTools, RNFS as fs, SOnlineService, SScene, SMap, SIPortalService, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo ,SARMap, SData} from 'imobile_for_reactnative'
 // import SplashScreen from 'react-native-splash-screen'
 import { getLanguage } from './language/index'
 import { ProtocolDialog } from './containers/tabs/Home/components'
@@ -84,11 +84,12 @@ import LaunchGuide from '../configs/guide'
 // import CoworkInfo from './src/containers/tabs/Friend/Cowork/CoworkInfo'
 
 import { setBaseMap } from './redux/models/map'
-import AppNavigator from './containers'
+// import AppNavigator from './containers'
 import AppDialog from '@/utils/AppDialog'
 import AppInputDialog from '@/utils/AppInputDialog'
 import BundleUtils from './utils/BundleUtils'
 import { addNetworkChangeEventListener } from '@/utils/NetworkHandler'
+import { RTKFixType } from 'imobile_for_reactnative/NativeModule/interfaces/SLocation'
 
 //字体不随系统字体变化
 Text.defaultProps = Object.assign({}, Text.defaultProps, { allowFontScaling: false })
@@ -376,7 +377,7 @@ class AppRoot extends Component {
     //申请 android 11 读写权限
     let permisson11 = await AppUtils.requestStoragePermissionR()
     if (isAllGranted && permisson11) {
-      await SMap.setPermisson(true)
+      await SData.setPermission(true)
       await this.init(true)
       global.Loading.setLoading(false)
     } else {
@@ -417,13 +418,14 @@ class AppRoot extends Component {
 
   initEnvironment = async () => {
     AppUtils.initApp()
-    await SMap.initEnvironment('iTablet')
-    await AppInfo.setRootPath('/' + ConstPath.AppPath.replace(/\//g, ''))
+    // await SMap.initEnvironment('iTablet')
+    await AppInfo.setRootPath('/' + config.alias.replace(/\//g, ''))
+    // await AppInfo.setRootPath('/' + ConstPath.AppPath.replace(/\//g, ''))
     SOnlineService.init()
     SIPortalService.init(this.props.user.currentUser.serverUrl)
     await this.initLicense()
-    SMap.setModuleListener(this.onInvalidModule)
-    SMap.setLicenseListener(this.onInvalidLicense)
+    SData.setModuleListener(this.onInvalidModule)
+    SData.setLicenseListener(this.onInvalidLicense)
     if (Platform.OS === 'android') {
       //  this.initSpeechManager()
       SSpeechRecognizer.init('5dafb910')
@@ -436,10 +438,45 @@ class AppRoot extends Component {
 
   initLocation = async () => {
     await SLocation.openGPS()
-    SLocation.addSlocationStateListener((type: string) => {
+    SLocation.addSlocationStateListener((type) => {
+      let text = ''
+      switch (type) {
+        case 0:
+          text = "Invalid"
+          break
+        case 1:
+          text = "GPS"
+          break
+        case 2:
+          text = "DGPS"
+          break
+        case 3:
+          text = "PPS"
+          break
+        case 4:
+          text = "RTK"
+          break
+        case 5:
+          text = "FloatRTK"
+          break
+        case 6:
+          text = "Estimated"
+          break
+        case 7:
+          text = "Manual"
+          break
+        case 8:
+          text = "Simulation"
+          break
+        case 9:
+          text = "WAAS"
+          break
+        default:
+          text = 'No data'
+          break
+      }
       // Toast.show(getLanguage().SLOCATION_STATE_CURRENT + ":( " + type + " )")
-      let text = type.replace(/:/, " ")
-      if(text.toLowerCase().includes("invalid") | text.toLowerCase().includes("no data")) {
+      if(type === RTKFixType.invalid || type === -1) {
         text = getLanguage().WEAK_POSITIONING_SIGNAL
       }
       this.props.setPointStateText(getLanguage().SLOCATION_STATE_CURRENT + ": "+ text)
@@ -570,12 +607,12 @@ class AppRoot extends Component {
   /** 检查本地离线许可 */
   inspectEnvironment = async () => {
     //todo 初始化云许可，私有云许可状态
-    let serialNumber = await SMap.initSerialNumber('')
+    let serialNumber = await SData.initSerialNumber()
     if (serialNumber !== '') {
-      await SMap.reloadLocalLicense()
+      await SData.reloadLocalLicense()
     }
 
-    let status = await SMap.getEnvironmentStatus()
+    let status = await SData.getEnvironmentStatus()
     this.props.setLicenseInfo(status)
   }
 
@@ -617,6 +654,8 @@ class AppRoot extends Component {
         clearInterval(this.loginTimer)
         this.loginTimer = undefined
       }
+
+      SIPortalService.init(this.props.user.currentUser.serverUrl)
       this.loginTimer = setInterval(() => {
         let url = this.props.user.currentUser.serverUrl
         let userName = this.props.user.currentUser.userName
@@ -825,7 +864,7 @@ class AppRoot extends Component {
     let bundleInfo = await AppInfo.getBundleVersion()
     global.APP_VERSION = 'V' + appInfo.versionName + '_' + appInfo.versionCode
       + '_' + bundleInfo.BundleVersion + '_' + bundleInfo.BundleBuildVersion
-    global.isAudit = await SMap.isAudit()
+    global.isAudit = await SData._isAudit()
     global.GUIDE_VERSION = appInfo.GuideVersion
   }
 

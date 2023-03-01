@@ -54,6 +54,7 @@ import {
   TaskMemberLocationParams,
   TaskMemberDeleteParams,
 } from '../../../redux/models/cowork'
+import { getService } from '@/utils/OnlineServicesUtils'
 const SMessageServiceiOS = NativeModules.SMessageService
 const appUtilsModule = NativeModules.AppUtils
 const iOSEventEmitter = new NativeEventEmitter(SMessageServiceiOS)
@@ -228,7 +229,7 @@ export default class Friend extends Component {
       let commonPath = await FileTools.appendingHomeDirectory(
         '/iTablet/Common/',
       )
-      let servicesUtils = new OnlineServicesUtils(type)
+      let servicesUtils = getService(type)
       let data
       let Info, useConfigServer = false
       if (type === 'iportal' && this.props.appConfig.messageServer) {

@@ -88,7 +88,7 @@ class Protocol extends Component {
       let url = `https://www.supermapol.com/web/datas/${data.id}/download`
 
       let filePath = commonPath + data.fileName
-      debugger
+       
 
       if (await RNFS.exists(filePath)) {
         await RNFS.unlink(filePath)

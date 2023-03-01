@@ -1,6 +1,6 @@
 import React from 'react'
 import { TouchableOpacity, Image } from 'react-native'
-import { SMap } from 'imobile_for_reactnative'
+import { SMap, SPlot } from 'imobile_for_reactnative'
 import constants from '../../../../constants'
 import { ConstToolType, ConstPath } from '../../../../../../constants'
 import ToolbarBtnType from '../../ToolbarBtnType'
@@ -88,8 +88,8 @@ function getPlotOperationData(type, params) {
           title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
           // '开始播放',
           action: async () => {
-            await SMap.initAnimation()
-            await SMap.animationPlay()
+            await SPlot.initAnimation()
+            await SPlot.animationPlay()
           },
           size: 'large',
           image: require('../../../../../../assets/mapEdit/icon_play.png'),
@@ -100,7 +100,7 @@ function getPlotOperationData(type, params) {
           title: getLanguage(global.language).Map_Main_Menu.COLLECTION_PAUSE,
           // '暂停',
           action: () => {
-            SMap.animationPause()
+            SPlot.animationPause()
           },
           size: 'large',
           image: require('../../../../../../assets/mapEdit/icon_stop.png'),
@@ -248,7 +248,7 @@ async function deleteAnimation(item) {
       try {
         if (await FileTools.fileIsExist(item.path)) {
           await FileTools.deleteFile(item.path)
-          await SMap.readAnimationXmlFile(item.path)
+          await SPlot.readAnimationXmlFile(item.path)
           await PlotAction.showAnimationXmlList()
         } else {
           Toast.show(getLanguage(global.language).Friends.RESOURCE_NOT_EXIST)
@@ -316,7 +316,7 @@ async function getAnimationList() {
         // '当前场景无态势推演'
       )
     } else {
-      SMap.initAnimation()
+      SPlot.initAnimation()
     }
 
     const data = [

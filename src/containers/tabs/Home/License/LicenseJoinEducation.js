@@ -12,7 +12,7 @@ import { Container } from '../../../../components'
 import { getLanguage } from '../../../../language'
 import { Toast } from '../../../../utils'
 import { color } from '../../../../styles'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 import styles from './styles'
 import { connect } from 'react-redux'
 import {
@@ -24,7 +24,7 @@ class LicenseJoinEducation extends Component {
   props: {
     navigation: Object,
     licenseInfo: Object,
-    educationServer: String,
+    educationServer: string,
     setEducationServer: () => {},
     setLicenseInfo: () => {},
   }
@@ -41,7 +41,7 @@ class LicenseJoinEducation extends Component {
       licenseInfo.isLicenseValid &&
       licenseInfo.licenseType === 2
     ) {
-      SMap.closePrivateCloudLicense()
+      SData.closePrivateCloudLicense()
     }
   }
 
@@ -76,7 +76,7 @@ class LicenseJoinEducation extends Component {
       if (this.server.indexOf('http') !== 0) {
         this.server = 'https://' + this.server
       }
-      let bConnect = await SMap.checkConnectEduLicense(this.server)
+      let bConnect = await SData.checkConnectEduLicense(this.server)
 
       if (!bConnect) {
         Toast.show(
@@ -95,7 +95,7 @@ class LicenseJoinEducation extends Component {
           true,
           getLanguage(global.language).Profile.LICENSE_ACTIVATING,
         )
-      let result = await SMap.applyEduLicense(this.server)
+      let result = await SData.applyEduLicense(this.server)
       
       if (result) {
         this.container && this.container.setLoading(false)
@@ -103,19 +103,19 @@ class LicenseJoinEducation extends Component {
           getLanguage(global.language).Profile.LICENSE_ACTIVATION_SUCCESS,
         )
         if(Platform.OS === 'android') {
-          await SMap.setEducationConnectCallback(async result => {
+          await SData.setEducationConnectCallback(async result => {
             if (!result) {
               Toast.show(
                 global.language === 'CN'
                   ? '教育许可的连接已断开!'
                   : 'Lost connection with education license server!',
               )
-              let info = await SMap.getEnvironmentStatus()
+              let info = await SData.getEnvironmentStatus()
               this.props.setLicenseInfo(info)
             }
           })
         }
-        let info = await SMap.getEnvironmentStatus()
+        let info = await SData.getEnvironmentStatus()
         this.props.setEducationServer(this.server)
         this.props.setLicenseInfo(info)
         this.props.navigation.pop(2)
@@ -146,26 +146,26 @@ class LicenseJoinEducation extends Component {
           true,
           getLanguage(global.language).Profile.LICENSE_ACTIVATING,
         )
-      let result = await SMap.applyEduLicense(this.server)
+      let result = await SData.applyEduLicense(this.server)
       this.container && this.container.setLoading(false)
       if (result) {
         Toast.show(
           getLanguage(global.language).Profile.LICENSE_ACTIVATION_SUCCESS,
         )
 
-        await SMap.setEducationConnectCallback(async result => {
+        await SData.setEducationConnectCallback(async result => {
           if (!result) {
             Toast.show(
               global.language === 'CN'
                 ? '教育许可的连接已断开!'
                 : 'Lost connection with education license server!',
             )
-            let info = await SMap.getEnvironmentStatus()
+            let info = await SData.getEnvironmentStatus()
             this.props.setLicenseInfo(info)
           }
         })
 
-        let info = await SMap.getEnvironmentStatus()
+        let info = await SData.getEnvironmentStatus()
         this.props.setLicenseInfo(info)
         this.props.navigation.pop(1)
       } else {

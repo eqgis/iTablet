@@ -1,4 +1,4 @@
-import { SMap, Action } from 'imobile_for_reactnative'
+import { SMap } from 'imobile_for_reactnative'
 import { getLanguage } from '@/language'
 import { Height, ToolbarType } from '@/constants'
 import CustomFunctionModule from '@/class/CustomFunctionModule'

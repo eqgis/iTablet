@@ -24,7 +24,7 @@ class Fly3DModule extends FunctionModule {
     })
     this.setModuleData(this.type)
     params.showFullMap && params.showFullMap(true)
-    SScene.checkoutListener('startMeasure')
+    SScene.setOperation('startMeasure')
     params.setToolbarVisible(true, this.type, {
       containerType,
       ...data,

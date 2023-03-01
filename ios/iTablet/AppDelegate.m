@@ -225,8 +225,8 @@ static BOOL isBundle = YES;
     return [NSURL URLWithString:baseBundePath];
   } else {
     #if DEBUG
-    //  [[RCTBundleURLProvider sharedSettings] setJsLocation:@"192.168.11.76"];
-      [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.6.51"];
+//      [[RCTBundleURLProvider sharedSettings] setJsLocation:@"192.168.0.103"];
+      [[RCTBundleURLProvider sharedSettings] setJsLocation:@"10.10.2.73"];
       return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
     #else
       return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
@@ -260,7 +260,7 @@ static BOOL isBundle = YES;
   }
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
-                                                              moduleName:@"iTablet"
+                                                              moduleName:@"base"
                                                        initialProperties:nil
                                                            launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];

@@ -5,8 +5,9 @@ import { getThemeAssets } from '../../../../../../assets'
 import { color } from '../../../../../../styles'
 import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
-import { SARMap, ARLayerType } from 'imobile_for_reactnative'
+import { SARMap } from 'imobile_for_reactnative'
 import ARDrawingData from '../arDrawingModule/ARDrawingData'
+import { ARLayerType } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 
 interface SectionItemData {
   key: string,

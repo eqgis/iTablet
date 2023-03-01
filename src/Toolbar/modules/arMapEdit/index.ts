@@ -5,7 +5,7 @@ import { AppToolBar } from "../../../utils"
 import ARMapEditView from "./ARMapEditView"
 import { getData } from "./Data"
 import ARMapEditBottom from "./ARMapEditBottom"
-import { ARLayerType } from "imobile_for_reactnative"
+import { ARLayerType } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 
 
 interface KEYS {

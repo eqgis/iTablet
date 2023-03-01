@@ -13,7 +13,7 @@ import { Container, TextBtn } from '../../../../components'
 import { color, size } from '../../../../styles'
 import { getLanguage } from '../../../../language'
 import { scaleSize, setSpText } from '../../../../utils'
-import { SMap } from 'imobile_for_reactnative'
+import { SMap, SPlot } from 'imobile_for_reactnative'
 import NavigationService from '../../../../containers/NavigationService'
 
 export default class AnimationNodeEditView extends React.Component {
@@ -66,7 +66,7 @@ export default class AnimationNodeEditView extends React.Component {
   }
 
   getAnimationGoInfo = async () => {
-    let animationGoInfo = await SMap.getAnimationGoInfo(this.state.index)
+    let animationGoInfo = await SPlot.getAnimationGoInfo(this.state.index)
     this.setState({
       data: animationGoInfo,
       animationType: animationGoInfo.animationType,
@@ -74,7 +74,7 @@ export default class AnimationNodeEditView extends React.Component {
   }
 
   confirm = async () => {
-    await SMap.modifyAnimationNode(this.state.index, this.state.data)
+    await SPlot.modifyAnimationNode(this.state.index, this.state.data)
     this.cb && this.cb()
   }
 

@@ -1,6 +1,6 @@
 import { SMap2, SMMapView2, SARMap } from 'imobile_for_reactnative'
-import { Point2D } from 'imobile_for_reactnative/types/data'
-import { RouteAnalyzeResult } from 'imobile_for_reactnative/types/interface/ar'
+// import { Point2D } from 'imobile_for_reactnative/types/data'
+import { RouteAnalyzeResult } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import React from 'react'
 import { View, Text ,StyleSheet} from 'react-native'
 import Button from './Button'
@@ -13,6 +13,7 @@ import {
   ConstOnline,
 } from '../../../../constants'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
+import { Point2D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 interface Props {
   navigation: any,

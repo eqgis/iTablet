@@ -1,12 +1,14 @@
-/* global GLOBAL */
 import {
   SARMap,
+} from 'imobile_for_reactnative'
+import {
+  IAnimationParam,
+  ARElementLayer,
+  AREffectLayer,
   ARAction,
   ARLayerType,
   ARElementType,
-} from 'imobile_for_reactnative'
-import { IAnimationParam, ARElementLayer, AREffectLayer } from "imobile_for_reactnative/types/interface/ar"
-import { IVector3 } from "imobile_for_reactnative/types/data"
+} from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 import {
   ConstToolType,
   ToolbarType,
@@ -20,6 +22,7 @@ import AREditData from './AREditData'
 import { Platform } from 'react-native'
 import { FileTools } from '@/native'
 import DataHandler from '../../../../../../utils/DataHandler'
+import { Vector3 } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 async function toolbarBack() {
   const _params: any = ToolbarModule.getParams()
@@ -306,10 +309,10 @@ interface IAnimation {
   repeatCount?: number,
   repeatMode?: 1 | 2,
 
-  rotationAxis?: IVector3,
+  rotationAxis?: Vector3,
   clockwise?: boolean,
 
-  startPosition?: IVector3,
+  startPosition?: Vector3,
   direction?: 'x' | 'y' | 'z',
   distance?: number,
 }

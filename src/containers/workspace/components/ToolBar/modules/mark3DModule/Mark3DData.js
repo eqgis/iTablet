@@ -75,7 +75,7 @@ async function getData(type, params) {
           type: ToolbarBtnType.BACK,
           image: getThemeAssets().edit.icon_back_off,
           action: () => {
-            if (global.Type === ChunkType.MAP_3D) SScene.symbolback()
+            if (global.Type === ChunkType.MAP_3D) SScene.undoLabel()
           },
         },
         {
@@ -83,7 +83,7 @@ async function getData(type, params) {
           image: getThemeAssets().toolbar.icon_toolbar_submit,
           action: async () => {
             try {
-              if (global.Type === ChunkType.MAP_3D) await SScene.save()
+              if (global.Type === ChunkType.MAP_3D) await SScene.saveLabel()
               Toast.show(getLanguage(params.language).Prompt.SAVE_SUCCESSFULLY)
             } catch (error) {
               Toast.show(getLanguage(params.language).Prompt.SAVE_FAILED)
@@ -101,20 +101,20 @@ async function getData(type, params) {
           type: ToolbarBtnType.BACK,
           image: getThemeAssets().edit.icon_back_off,
           action: () => {
-            if (global.Type === ChunkType.MAP_3D) SScene.symbolback()
+            if (global.Type === ChunkType.MAP_3D) SScene.undoLabel()
           },
         },
         {
           type: ToolbarBtnType.CLEAR_CURRENT_LABEL,
           image: getThemeAssets().mark.icon_mark_erase,
-          action: () => SScene.clearcurrentLabel(),
+          action: () => SScene.clearCurrentLabel(),
         },
         {
           type: ToolbarBtnType.SAVE,
           image: getThemeAssets().toolbar.icon_toolbar_submit,
           action: async () => {
             try {
-              if (global.Type === ChunkType.MAP_3D) await SScene.save()
+              if (global.Type === ChunkType.MAP_3D) await SScene.saveLabel()
               Toast.show(getLanguage(params.language).Prompt.SAVE_SUCCESSFULLY)
             } catch (error) {
               Toast.show(getLanguage(params.language).Prompt.SAVE_FAILED)

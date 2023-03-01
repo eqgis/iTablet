@@ -1,7 +1,8 @@
 import React from 'react'
 import { View, PermissionsAndroid, Text } from 'react-native'
 import { connect } from 'react-redux'
-import { SMMapView, SMap, FileTools, AppInfo, SLocation } from 'imobile_for_reactnative'
+import { SMMapView, SMap, FileTools, AppInfo, SLocation, SData } from 'imobile_for_reactnative'
+import config from 'configs/config'
 
 interface Props {
   language: string,
@@ -39,9 +40,10 @@ class Home extends React.Component<Props, State> {
       for (const key in results) {
         isAllGranted = results[key] === 'granted' && isAllGranted
       }
-      await SMap.setPermisson(true)
-      await AppInfo.setRootPath('/iTablet')
-      await SMap.initEnvironment('iTablet')
+      await SData.setPermission(true)
+      // await AppInfo.setRootPath('/iTablet')
+      // await AppInfo.setRootPath('/' + config.alias.replace(/\//g, ''))
+      // await SMap.initEnvironment('iTablet')
       await SLocation.openGPS()
 
       isAllGranted && this.setState({

@@ -1,5 +1,5 @@
-import { ARAction, ARElementType, SARMap } from "imobile_for_reactnative"
-import { ARElement, IAnimationParam } from "imobile_for_reactnative/types/interface/ar"
+import {  ARElement, IAnimationParam, ARAction, ARElementType, ARAnimatorType, ARNodeAnimatorType  } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
+import { SARMap } from "imobile_for_reactnative"
 import { ModuleList } from ".."
 import { getImage } from "../../../assets"
 import { getLanguage } from "../../../language"
@@ -9,7 +9,6 @@ import { AppEvent, AppInputDialog, AppLog, AppToolBar, CheckSpell, Toast } from 
 import { AddOption, cancelAddARLinePoint, editAddLinePoint} from "../arMapAdd/Actions"
 import { ARMapEditViewOption } from "./ARMapEditView"
 import { Platform } from "react-native"
-import { ARAnimatorType, ARNodeAnimatorType } from "imobile_for_reactnative/NativeModule/dataTypes"
 import { ARNodeAnimatorParameter } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 import NavigationService from "@/containers/NavigationService"
 import { COLORS } from "@/utils/AppStyle"
@@ -279,7 +278,7 @@ function GeometryLinePointAdd(option: ToolbarOption<ARMapEditViewOption>, addFun
         AppEvent.emitEvent('ar_map_add_end')
 
         // const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
-        // if(layer && (layer.type === ARLayerType.AR_LINE_LAYER || layer.type === ARLayerType.AR_MARKER_LINE_LAYER)) {
+        // if(layer && (layer.type === .AR_LINE_LAYER || layer.type === .AR_MARKER_LINE_LAYER)) {
         //   SARMap.exitAddARLine(layer.name)
         // }
         const elementEdit = AppToolBar.getData().selectARElement

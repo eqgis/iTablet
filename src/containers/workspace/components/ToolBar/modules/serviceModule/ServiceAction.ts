@@ -6,6 +6,7 @@ import {
   PermissionType,
   EntityType,
   ServiceData,
+  SData,
 } from 'imobile_for_reactnative'
 import {
   ConstToolType,
@@ -24,6 +25,7 @@ import ToolbarModule from '../ToolbarModule'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import CoworkInfo from '../../../../../tabs/Friend/Cowork/CoworkInfo'
 import DataHandler from '../../../../../../utils/DataHandler'
+import { LayerInfo } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 
 
@@ -46,7 +48,7 @@ function isLabelDatasource(datasourceAlias?: string) {
 async function getLabelDatasourceName(datasourceAlias?: string) {
   let _datasourceAlias = datasourceAlias || ''
   const _params: any = ToolbarModule.getParams()
-  if (_datasourceAlias && isLabelDatasource(_datasourceAlias) && await SMap.isDatasourceOpened(_datasourceAlias)) {
+  if (_datasourceAlias && isLabelDatasource(_datasourceAlias) && await SData.isDatasourceOpened(_datasourceAlias)) {
 
   } else if (_datasourceAlias && isLabelDatasource(_datasourceAlias)) {
     _datasourceAlias = `Label_${
@@ -64,11 +66,11 @@ async function addServiceLayer(datasetName: string, datasource?: string) {
   const _params: any = ToolbarModule.getParams()
   let labelUDB = datasource || `Label_${_params.user.currentUser.userName}#`
   if (labelUDB) {
-    const datasourceInfo = await SMap.getDatasourceByAlias(labelUDB)
+    const datasourceInfo = await SData.getDatasourceByAlias(labelUDB)
     if (datasourceInfo?.server) {
       labelUDB = datasourceInfo.server.substring(datasourceInfo.server.lastIndexOf('/') + 1, datasourceInfo.server.lastIndexOf('.'))
     }
-  } else if (!labelUDB || !await SMap.isDatasourceOpened(labelUDB)) {
+  } else if (!labelUDB || !await SData.isDatasourceOpened(labelUDB)) {
     labelUDB = `Label_${
       _params.user.currentUser.userName
     }#`
@@ -77,10 +79,10 @@ async function addServiceLayer(datasetName: string, datasource?: string) {
   if (resultArr.length > 0) {
     SMap.refreshMap()
     const layers = await _params.getLayers()
-    SMediaCollector.showMedia(resultArr[0].layerName, false)
+    SMediaCollector.showMedia(resultArr[0].name, false)
     for (const layer of layers) {
-      if (layer.name === resultArr[0].layerName) {
-        await SMap.resetModified(layer.path) // 提交服务后,重置图层修改信息
+      if (layer.name === resultArr[0].name) {
+        await SMap._resetModified(layer.path) // 提交服务后,重置图层修改信息
         break
       }
     }
@@ -276,7 +278,7 @@ SCoordinationUtils.getScoordiantion().addDataServiceLitsener({
           const dsDescription = LayerUtils.getDatasetDescriptionByLayer(layer)
           if (dsDescription?.url && dsDescription?.type === 'onlineService' && res.content.urlDataset === dsDescription.url && layer.isModified) {
             hasResetLayer = true
-            await SMap.resetModified(layer.path) // 提交服务后,重置图层修改信息
+            await SMap._resetModified(layer.path) // 提交服务后,重置图层修改信息
           }
         }
         hasResetLayer && _params.getLayers()
@@ -484,12 +486,12 @@ async function downloadService(url: string, messageIcon?:any) {
     let showError = true // 用于控制重复提示错误信息
     for (const datasource of serviceData) {
       const datasourceName = datasource.datasourceName.indexOf(SERVICE_TAGGING_PRE_NAME) === 0 ? '' : datasource.datasourceName
-      const _datasets = await SMap.getDatasetsByDatasource({alias: datasourceName})
+      const _datasets = await SData.getDatasetsByDatasource({alias: datasourceName})
       for (const dataset of datasource.datasets) {
         let canAdd = true
         if(_datasets != null){
           canAdd = false
-          for (const _dataset of _datasets.list) {
+          for (const _dataset of _datasets) {
             if (_dataset.datasetName === dataset.datasetName && LayerUtils.availableServiceLayer(_dataset.datasetType)) {
               canAdd = true
               break
@@ -589,7 +591,7 @@ async function updateToLocal (layerData: {
   }
   let result = false
   try {
-    await SMap.checkCurrentModule()
+    // await SMap.checkCurrentModule()
     _params.setCoworkService({
       groupId: _params.currentTask.groupID,
       taskId: _params.currentTask.id,
@@ -599,7 +601,7 @@ async function updateToLocal (layerData: {
       },
     })
     let datasourceAlias
-    if (layerData?.datasourceAlias && await SMap.isDatasourceOpened(layerData?.datasourceAlias)) {
+    if (layerData?.datasourceAlias && await SData.isDatasourceOpened(layerData?.datasourceAlias)) {
       datasourceAlias = layerData.datasourceAlias
     } else if (isLabelDatasource(layerData?.datasourceAlias)) {
       datasourceAlias = `Label_${
@@ -613,7 +615,7 @@ async function updateToLocal (layerData: {
       if (layerData.url.indexOf('/datasources/') && layerData.url.indexOf('/datasets/')) {
         datasourceAlias = layerData.url.substring(layerData.url.indexOf('datasources/') + 12, layerData.url.indexOf('/datasets'))
       }
-      if (!datasourceAlias || !await SMap.isDatasourceOpened(datasourceAlias)) {
+      if (!datasourceAlias || !await SData.isDatasourceOpened(datasourceAlias)) {
         datasourceAlias = `Label_${
           _params.user.currentUser.userName
         }#`
@@ -673,7 +675,7 @@ async function uploadToService(layerData: {
   }
   let result = false
   try {
-    await SMap.checkCurrentModule()
+    // await SMap.checkCurrentModule()
     _params.setCoworkService({
       groupId: _params.currentTask.groupID,
       taskId: _params.currentTask.id,
@@ -758,11 +760,12 @@ async function exportData(name: string, datasourcePath: string, datasets: string
     )
     targetPath = tempPath + availableName
 
+    //todo @yangsl 测试下面两个接口
     if (dataType === 'WORKSPACE') {
       let workspaceServer = userPath + ConstPath.RelativePath.Temp + name + '/' + name + '.smwu'
-      result = await SMap.copyDatasetToNewWorkspace(datasourcePath, todatasourcePath, datasets, workspaceServer)
+      result = await SData.copyDatasetToNewWorkspace(datasourcePath, todatasourcePath, datasets, workspaceServer)
     } else {
-      result = await SMap.copyDataset(datasourcePath, todatasourcePath, datasets)
+      result = await SData.copyDataset(datasourcePath, todatasourcePath, datasets)
     }
 
     result = result && await FileTools.zipFile(archivePath, targetPath)
@@ -1029,7 +1032,7 @@ async function publishMapService() {
     },
   })
   try {
-    let datasources = await SMap.getDatasources()
+    let datasources = await SData.getDatasources()
     for (const datasource of datasources) {
       const datasourceAlias = datasource.alias
       // 不发布标注图层
@@ -1187,7 +1190,7 @@ async function commit() {
  * 先检测是否需要更新,然后再提交
  */
 async function uploadLayerService({ layerData }: {
-  layerData: SMap.LayerInfo,
+  layerData:LayerInfo,
 }) {
   // 检测是否可以提交服务
   if (!CheckService.checkServiceUpload()) {

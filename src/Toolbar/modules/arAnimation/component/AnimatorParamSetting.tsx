@@ -1,6 +1,5 @@
-import { ARAnimatorCategory, ARAnimatorPlayOrder, ARAnimatorType } from 'imobile_for_reactnative/NativeModule/dataTypes'
+import { ARAnimatorCategory, ARAnimatorPlayOrder, ARAnimatorType, TARElementType } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import { ARAnimatorParameter, ARGroupAnimatorParameter, ARModelAnimatorParameter, ARNodeAnimatorParameter, ModelAnimation } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
-import { TARElementType } from 'imobile_for_reactnative/types/data'
 import React from 'react'
 import { AppToolBar } from '../../../../utils'
 import { connect, ConnectedProps } from 'react-redux'

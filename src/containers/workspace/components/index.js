@@ -1,4 +1,3 @@
-import NetworkAnalystToolBar from './NetworkAnalystToolBar'
 import AlertDialog from './AlertDialog'
 import DrawerView from './DrawerView'
 import FunctionToolbar from './FunctionToolbar'
@@ -47,7 +46,6 @@ export {
   ScaleView,
   RNLegendView,
   SimpleSelectList,
-  NetworkAnalystToolBar,
   AlertDialog,
   DrawerView,
   FunctionToolbar,

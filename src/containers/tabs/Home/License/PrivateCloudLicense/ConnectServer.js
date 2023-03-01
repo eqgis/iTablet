@@ -12,7 +12,7 @@ import { Container } from '../../../../../components'
 import { getLanguage } from '../../../../../language'
 import { Toast } from '../../../../../utils'
 import { color } from '../../../../../styles'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 import styles from '../styles'
 import { connect } from 'react-redux'
 import { setPrivateLicenseServer } from '../../../../../redux/models/license'
@@ -46,8 +46,8 @@ class ConnectServer extends Component {
           true,
           getLanguage(global.language).Profile.LICENSE_QUERYING,
         )
-      await SMap.setPrivateServer(this.server)
-      let modules = await SMap.queryPrivateCloudLicense()
+      await SData.setPrivateServer(this.server)
+      let modules = await SData.queryPrivateCloudLicense()
       this.container && this.container.setLoading(false)
       if (modules) {
         this.props.setPrivateLicenseServer(this.server)

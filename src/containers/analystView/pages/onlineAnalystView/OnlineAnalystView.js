@@ -11,8 +11,9 @@ import AggregatePointsAnalystView from './AggregatePointsAnalystView'
 import DensityAnalystView from './DensityAnalystView'
 import onlineParamsData from './onlineParamsData'
 import AnalystEntryData from '../analystListEntry/AnalystEntryData'
-import { SMap, SAnalyst, EngineType } from 'imobile_for_reactnative'
+import { SMap, SOnlineAnalyst } from 'imobile_for_reactnative'
 import { AggregatePointParams, DensityParams } from '../../AnalystType'
+import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 export default class OnlineAnalystView extends Component {
   props: {
@@ -123,7 +124,7 @@ export default class OnlineAnalystView extends Component {
           this.cb(this.state.title)
         }
 
-        SAnalyst.aggregatePointsOnline(
+        SOnlineAnalyst.aggregatePointsOnline(
           this.props.iServerData,
           analysisData,
           this.analystResult,
@@ -148,7 +149,7 @@ export default class OnlineAnalystView extends Component {
           this.cb(this.state.title)
         }
 
-        SAnalyst.densityOnline(
+        SOnlineAnalyst.densityOnline(
           this.props.iServerData,
           analysisData,
           this.analystResult,
@@ -165,7 +166,7 @@ export default class OnlineAnalystView extends Component {
         for (let i = 0; i < res.datasources.length; i++) {
           let datasource = res.datasources[i]
           let alias = datasource.substr(datasource.lastIndexOf('/') + 1)
-          await SMap.openDatasource(
+          await SMap.openMapWithDatasource(
             {
               server: datasource,
               engineType: EngineType.Rest,
@@ -225,7 +226,7 @@ export default class OnlineAnalystView extends Component {
 
   /** 获取数据集数据 **/
   getDatasets = async params => {
-    let data = await SAnalyst.getOnlineAnalysisData(params.ip, params.port, 0)
+    let data = await SOnlineAnalyst.getOnlineAnalysisData(params.ip, params.port, 0)
     let datasets = []
     if (data.datasetCount > 0) {
       data.datasetNames.forEach(datasetName => {

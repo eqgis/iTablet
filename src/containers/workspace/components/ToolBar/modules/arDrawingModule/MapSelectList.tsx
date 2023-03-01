@@ -6,7 +6,7 @@ import { scaleSize, dp, setSpText,Toast} from '../../../../../../utils'
 import React from 'react'
 import { getThemeAssets ,getImage} from '../../../../../../assets'
 import { getLanguage } from '../../../../../../language'
-import { SARMap,FileTools,SMap,EngineType } from "imobile_for_reactnative"
+import { SARMap,FileTools,SMap } from "imobile_for_reactnative"
 import { ILocalData } from '../../../../../../utils/DataHandler/DataLocal'
 import NavigationService from '../../../../../NavigationService'
 import { Users } from '../../../../../../redux/models/user'
@@ -16,6 +16,7 @@ import {
   ConstToolType,
 } from '../../../../../../constants'
 import { AppToolBar } from "@/utils"
+import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 interface Props {
   language: string,
@@ -171,7 +172,7 @@ class MapSelectList extends React.Component<Props, State> {
                 datasourceParams.server = await FileTools.appendingHomeDirectory(item.path)
                 datasourceParams.engineType = EngineType.UDB
                 datasourceParams.alias = item.name.substring(0, item.name.indexOf('.'))
-                const datasourceAlias = await SMap.openDatasource(datasourceParams)
+                const datasourceAlias = await SMap.openMapWithDatasource(datasourceParams,-1)//待确认 add xiezhy
                 if(datasourceAlias){
                   Toast.show(getLanguage().Prompt.ADD_SUCCESS)
                 }

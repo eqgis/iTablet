@@ -2,11 +2,12 @@ import {
   SCollector,
   SMCollectorType,
   SMap,
-  DatasetType,
   GeoStyle,
-  Action,
   SLocation,
+  SData,
+  SNavigation,
 } from 'imobile_for_reactnative'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import {
   ConstToolType,
   ConstPath,
@@ -18,6 +19,8 @@ import CollectionData from './CollectionData'
 import NavigationService from '../../../../../NavigationService'
 import { Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
+import { Login } from '@/containers/tabs'
+import { Action, } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 function openTemplate(type) {
   const params = ToolbarModule.getParams()
@@ -35,7 +38,7 @@ function openTemplate(type) {
 }
 
 async function showAttribute() {
-  let have = await SMap.haveCurrentGeometry()
+  let have = await SMap.getCurrentEditGeometry()
   if(have){
     Toast.show(getLanguage(global.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
   }else{
@@ -257,7 +260,7 @@ async function createCollector(type, layerName) {
 }
 
 async function collectionSubmit(type) {
-  let have = await SMap.haveCurrentGeometry()
+  let have = await SMap.getCurrentEditGeometry()
   if (have) {
     // 是否有新的采集或标注
     global.HAVEATTRIBUTE = true
@@ -281,10 +284,15 @@ async function collectionSubmit(type) {
         break
     }
     if (ToolbarModule.getParams().template.currentTemplateInfo.layerPath) {
-      SMap.setLayerFieldInfo(
-        ToolbarModule.getParams().template.currentTemplateInfo.layerPath,
+      SData.setRecordsetValue(
+        ToolbarModule.getParams().template.currentTemplateInfo.datasetInfo,
         ToolbarModule.getParams().template.currentTemplateInfo.field,
+        {index:-1}
       )
+      // SMap.setLayerFieldInfo(
+      //   ToolbarModule.getParams().template.currentTemplateInfo.layerPath,
+      //   ToolbarModule.getParams().template.currentTemplateInfo.field,
+      // )
     }
     // 采集后 需要刷新属性表
     global.NEEDREFRESHTABLE = true

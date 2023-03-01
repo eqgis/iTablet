@@ -1,8 +1,9 @@
-import { ARAction, SARMap } from "imobile_for_reactnative"
+import { SARMap } from "imobile_for_reactnative"
 import { getImage } from "../../../assets"
 import { IToolbarOption, ToolbarOption } from "imobile_for_reactnative/components/ToolbarKit"
 import { AppToolBar } from "../../../utils"
 import { ModuleList } from ".."
+import { ARAction } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 
 
 export function getData(key: ModuleList['ARMAP']): IToolbarOption {

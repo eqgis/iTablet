@@ -13,12 +13,15 @@ import { Container, Button } from '../../components'
 
 import { color } from '../../styles'
 import { getLanguage } from '../../language'
-import { SMap, SCollectSceneFormView, Action } from 'imobile_for_reactnative'
+import { SMap, SCollectSceneFormView, SData, SNavigation } from 'imobile_for_reactnative'
+import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { Toast, scaleSize } from '../../utils'
 import { ConstOnline, TouchType } from '../../constants'
 import constants from '../../containers/workspace/constants'
 import NavigationService from '../../containers/NavigationService'
 import MapSelectPointLatitudeAndLongitude from '../workspace/components/MapSelectPointLatitudeAndLongitude/MapSelectPointLatitudeAndLongitude'
+import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
+import { getFloorData } from '../workspace/components/RNFLoorListView/RNFloorListView'
 
 export default class EnterDatumPoint extends Component {
   props: {
@@ -64,7 +67,7 @@ export default class EnterDatumPoint extends Component {
   }
 
   getFloorData = async () => {
-    let result = await SMap.getFloorData()
+    let result = await getFloorData()
     this.setState({
       floorData: result.data,
     })
@@ -75,7 +78,7 @@ export default class EnterDatumPoint extends Component {
       true,
       getLanguage(global.language).Profile.MAP_AR_DATUM_AUTO_LOCATIONING,
     )
-    let map = await SMap.getCurrentPosition()
+    let map = await SMap.getCurrentLocation()
 
     global.DATUMPOINTVIEW.updateLatitudeAndLongitude(map)
 
@@ -109,10 +112,10 @@ export default class EnterDatumPoint extends Component {
       //导航选点 全屏时保留mapController
       global.mapController && global.mapController.setVisible(true)
 
-      let map = await SMap.getCurrentPosition()
+      let map = await SMap.getCurrentLocation()
       let wsData = JSON.parse(JSON.stringify(ConstOnline.Google))
       wsData.layerIndex = 3
-      let licenseStatus = await SMap.getEnvironmentStatus()
+      let licenseStatus = await SData.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid
       NavigationService.navigate('MapView', {
         // NavigationService.navigate('MapViewSingle', {
@@ -212,7 +215,13 @@ export default class EnterDatumPoint extends Component {
         .then(async value => {
           let datasourceAlias
           if (value !== null) {
-            let alias = SMap.isAvilableAlias(value)
+            let dsAlias = value,ds,i=1
+            do{
+              ds = await SData.getDatasourceByAlias(dsAlias)
+              dsAlias = value + "_" + ++i
+            }while(ds)
+
+            let alias = dsAlias//SMap.isAvilableAlias(value)
             if (alias === value) {
               datasourceAlias = await SCollectSceneFormView.getSystemTime()
             } else {

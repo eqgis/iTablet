@@ -83,7 +83,7 @@ export default class MapARAnalysis extends Module {
           )
           return false
         }
-        SMap.setDynamicviewsetVisible(false)
+        
         SARMap.setIs3dSceneFirst(false)
         // 竖屏时,锁定竖屏
         if (screen.getOrientation().indexOf('LANDSCAPE') < 0) {

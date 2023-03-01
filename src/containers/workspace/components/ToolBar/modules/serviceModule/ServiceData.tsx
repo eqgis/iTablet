@@ -2,7 +2,7 @@
  * 获取地图工具数据
  */
 import React from 'react'
-import { SMap } from 'imobile_for_reactnative'
+import { SMap, SData } from 'imobile_for_reactnative'
 import { ConstToolType, ConstPath } from '../../../../../../constants'
 import { ImageButton } from '../../../../../../components'
 import { getThemeAssets } from '../../../../../../assets'
@@ -14,8 +14,9 @@ import ServiceAction, { DataServiceUrlParams } from './ServiceAction'
 import { FileTools } from '../../../../../../native'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import CoworkInfo from '../../../../../tabs/Friend/Cowork/CoworkInfo'
+import { LayerInfo } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 interface ActionParams {
-  layerData: SMap.LayerInfo,
+  layerData: LayerInfo,
 }
 
 /**
@@ -34,7 +35,7 @@ async function getData(type: string, params: any) {
       const result = await ServiceAction.getGroupServices(params.currentTask.groupID)
       let _data: any = []
       if (result?.content?.length > 0) {
-        let datasources = await SMap.getDatasources() || []
+        let datasources = await SData.getDatasources() || []
         // let services = []
         const mapName = params.map?.currentMap?.name?.replace(/_[0-9]+$/g, '') || ''
         result.content.forEach(item => {
@@ -154,7 +155,7 @@ async function getData(type: string, params: any) {
               },
               confirmText: getLanguage(global.language).Prompt.YES,
               confirmAction: async () => {
-                await SMap.checkCurrentModule()
+                // await SMap.checkCurrentModule()
                 if (!name) return
                 const datasetDescription = LayerUtils.getDatasetDescriptionByLayer(layerData)
                 if (datasetDescription?.type === 'onlineService') {
@@ -222,7 +223,7 @@ async function getData(type: string, params: any) {
                       groupName: _params.currentGroup.groupName,
                     }])
                     // _params.setContainerLoading?.(false)
-                    await SMap.resetModified(layerData.path) // 发布后,重置图层
+                    await SMap._resetModified(layerData.path) // 发布后,重置图层
                     if (result) {
                       const keywords: string[] = []
                       const _content: DataServiceUrlParams[] = []

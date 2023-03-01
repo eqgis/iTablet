@@ -932,8 +932,16 @@ export default class FriendListFileHandle {
           FriendListFileHandle.adminInfoFile,
         )
         const data = await FileTools.decoder(value)
-        FriendListFileHandle.adminInfo = JSON.parse(data)
+        if (data === '') {
+          FriendListFileHandle.adminInfo = {
+            userName: '',
+            password: '',
+          }
+        } else {
+          FriendListFileHandle.adminInfo = JSON.parse(data)
+        }
         await RNFS.unlink(FriendListFileHandle.adminInfoFile)
+        await RNFS.unlink(FriendListFileHandle.adminInfoFile + '_tmp')
         return value
       } else {
         FriendListFileHandle.adminInfo = {

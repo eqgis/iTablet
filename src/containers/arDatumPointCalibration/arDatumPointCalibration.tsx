@@ -40,7 +40,7 @@ class DatumPointCalibration extends Component<IProps,IState> {
     if (global.SELECTPOINTLATITUDEANDLONGITUDE) {
       position = global.SELECTPOINTLATITUDEANDLONGITUDE
     }else {
-      position = await SMap.getCurrentPosition()
+      position = await SMap.getCurrentLocation()
     }
     this.setState({
       longitude: position.x + '',

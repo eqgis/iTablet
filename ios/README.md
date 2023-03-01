@@ -16,11 +16,11 @@
 					      const char* base_filename)”方法添加如下代码
 
 ```
-/*
+
  if(!(severity >= 0 && severity < NUM_SEVERITIES) ){
         return;
     }
-*/
+
 ```
 * Step 3:
 RCTBridge.m新增bundle加载接口

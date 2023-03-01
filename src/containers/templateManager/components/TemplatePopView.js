@@ -19,7 +19,7 @@ import { scaleSize, Toast } from '../../../utils'
 import { size, color } from '../../../styles'
 import { getLanguage } from '../../../language'
 import NavigationService from '../../NavigationService'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 
 const styles = StyleSheet.create({
   btnsView: {
@@ -197,9 +197,9 @@ export default class TemplatePopView extends React.Component {
                 newData[1].data[1].type = data.datasetType
                 newData[1].data[1].value = data.datasetName
 
-                // TODO 获取数据集属性
-                let fieldInfos = await SMap.getFieldInfos({
-                  alias: datasourceAlias,
+                // TODO 获取数据集属性 @yangsl
+                let fieldInfos = await SData.getFieldInfos({
+                  datasourceName: datasourceAlias,
                   datasetName: data.datasetName,
                 })
                 let fields = []

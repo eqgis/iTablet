@@ -16,7 +16,7 @@ import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import DataHandler from '../../../../../../utils/DataHandler'
-import { ARAction } from 'imobile_for_reactnative/NativeModule/dataTypes'
+import { ARAction } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 
 interface ListData extends FiltedData {
   title: string,

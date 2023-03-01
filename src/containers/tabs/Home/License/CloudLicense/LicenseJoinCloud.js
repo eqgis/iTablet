@@ -16,7 +16,7 @@ import {
 import constants from '../../../../../../src/containers/workspace/constants'
 import { Container, Button } from '../../../../../components'
 import { color } from '../../../../../styles'
-import { SMap } from 'imobile_for_reactnative'
+import { SData, SMap } from 'imobile_for_reactnative'
 import ModuleInfo from '../component/ModuleInfo'
 import { AccountUtils, scaleSize, Toast } from '../../../../../utils'
 import styles from '../styles'
@@ -103,7 +103,7 @@ class LicenseJoinCloud extends Component {
       licenseInfo.isLicenseValid &&
       licenseInfo.licenseType === 2
     ) {
-      SMap.closePrivateCloudLicense()
+      SData.closePrivateCloudLicense()
     }
   }
 
@@ -114,7 +114,7 @@ class LicenseJoinCloud extends Component {
       licenseInfo.isLicenseValid &&
       licenseInfo.licenseType === 4
     ) {
-      SMap.closeEduLicense()
+      SData.closeEduLicense()
     }
   }
 
@@ -127,10 +127,10 @@ class LicenseJoinCloud extends Component {
         return
       }
 
-      const licenseResult = await SMap.queryCloudLicense()
+      const licenseResult = await SData.queryCloudLicense()
       if(licenseResult) {
         const lockMacAddr = licenseResult.licenses[0].lockMacAddr
-        if(lockMacAddr != null && lockMacAddr !== '' && !(await SMap.isSameDevice(lockMacAddr))) {
+        if(lockMacAddr != null && lockMacAddr !== '' && !(await SData._isSameDevice(lockMacAddr))) {
           Toast.show(getLanguage().LICENSE_ACTIVATED_OTHER_DEVICE)
           return
         }
@@ -145,12 +145,13 @@ class LicenseJoinCloud extends Component {
             true,
             getLanguage(global.language).Profile.LICENSE_ACTIVATING,
           )
-        let returnId = await SMap.applyCloudLicense(licenseId)
+        let returnId = await SData.applyCloudLicense(licenseId)
         if (!returnId) {
           let activated = this.state.currentLicense.lockMacAddr !== ''
           if(activated) {
             Toast.show(getLanguage().LICENSE_ALREADY_ACTIVATED_ON_ANOTHER_DEVICE)
           } else {
+             
             Toast.show(getLanguage().LICENSE_ACTIVATION_FAIL)
           }
         } else {
@@ -159,7 +160,7 @@ class LicenseJoinCloud extends Component {
           Toast.show(
             getLanguage(global.language).Profile.LICENSE_ACTIVATION_SUCCESS,
           )
-          let info = await SMap.getEnvironmentStatus()
+          let info = await SData.getEnvironmentStatus()
           this.props.setLicenseInfo(info)
           this.props.navigation.pop(2)
         }
@@ -167,6 +168,7 @@ class LicenseJoinCloud extends Component {
       }
     } catch (e) {
       this.container && this.container.setLoading(false)
+       
       Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
     }
   }
@@ -187,8 +189,9 @@ class LicenseJoinCloud extends Component {
           true,
           getLanguage(global.language).Profile.LICENSE_ACTIVATING,
         )
-      let result = await SMap.applyCloudTrialLicense()
+      let result = await SData.applyCloudTrialLicense()
       if (!result) {
+         
         Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
       } else {
         AsyncStorage.setItem(constants.LICENSE_CLOUD_ID, '')
@@ -196,13 +199,14 @@ class LicenseJoinCloud extends Component {
         Toast.show(
           getLanguage(global.language).Profile.LICENSE_ACTIVATION_SUCCESS,
         )
-        let info = await SMap.getEnvironmentStatus()
+        let info = await SData.getEnvironmentStatus()
         this.props.setLicenseInfo(info)
         this.props.navigation.pop(2)
       }
       this.container && this.container.setLoading(false)
     } catch (e) {
       this.container && this.container.setLoading(false)
+       
       Toast.show(getLanguage(global.language).Profile.LICENSE_ACTIVATION_FAIL)
     }
   }
@@ -218,7 +222,7 @@ class LicenseJoinCloud extends Component {
           true,
           getLanguage(global.language).Profile.LICENSE_EXIT + '...',
         )
-      let result = await SMap.logoutCloudLicense()
+      let result = await SData.logoutCloudLicense()
       // ios 退出云许可,需要重新登录账号,覆盖cookie,才能正常使用fetch请求
       Platform.OS === 'ios' && await AccountUtils.login(this.props.user.currentUser)
       this.container && this.container.setLoading(false)

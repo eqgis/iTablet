@@ -41,7 +41,8 @@ import {
 } from 'react-native'
 import ToolBarSectionList from '../../../workspace/components/ToolBar/components/ToolBarSectionList'
 import styles from './styles'
-import { SMap, DatasetType, SMCollectorType, RNFS, SMediaCollector } from 'imobile_for_reactnative'
+import { SMap, SMCollectorType, RNFS, SMediaCollector, SData } from 'imobile_for_reactnative'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 // import { Dialog } from '../../../../components'
 import { color } from '../../../../styles'
 import { Toast, scaleSize, setSpText, dataUtil, LayerUtils } from '../../../../utils'
@@ -595,7 +596,7 @@ export default class LayerManager_tolbar extends React.Component {
             await SMap.removeLayer(layers[i].path)
           }
           for (let i = 0; i < layers.length; i++) {
-            await SMap.closeDatasource(layers[i].datasourceAlias)
+            await SData.closeDatasource(layers[i].datasourceAlias)
           }
           global.BaseMapSize = 0
         } else {
@@ -802,7 +803,7 @@ export default class LayerManager_tolbar extends React.Component {
         if(res){
           this.props.getLayers()
           // 地图是否是xml加载而来，用于在保存地图时判断
-          global.IS_MAP_FROM_XML = true
+          // global.IS_MAP_FROM_XML = true
         }
       })
     }
@@ -1085,7 +1086,7 @@ export default class LayerManager_tolbar extends React.Component {
             'zip',
           )
           let datasetZipPath = tempPath + exportDatasetName
-          await SMap.getDatasetToGeoJson(
+          await SData.exportDatasetToGeoJsonFile(
             layerData.datasourceAlias,
             layerData.datasetName,
             datasetPath,

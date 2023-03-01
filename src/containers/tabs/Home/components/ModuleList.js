@@ -6,7 +6,7 @@ import { scaleSize, Toast, FetchUtils } from '../../../../utils'
 import { Module } from '../../../../class'
 import { color } from '../../../../styles'
 import { FileTools } from '../../../../native'
-import { SMap ,SARMap, SLocation } from 'imobile_for_reactnative'
+import { SMap ,SARMap, SLocation, SData } from 'imobile_for_reactnative'
 import {
   downloadFile,
   deleteDownloadFile,
@@ -329,7 +329,7 @@ class ModuleList extends Component {
         //申请 android 11 读写权限
         let permisson11 = await AppUtils.requestStoragePermissionR()
         if (isAllGranted && permisson11) {
-          await SMap.setPermisson(true)
+          await SData.setPermission(true)
           // this.init()
 
           addNetworkChangeEventListener()
@@ -368,7 +368,7 @@ class ModuleList extends Component {
         latestMap = this.props.latestMap[currentUserName][item.key][0]
       }
 
-      let licenseStatus = await SMap.getEnvironmentStatus()
+      let licenseStatus = await SData.getEnvironmentStatus()
       global.isLicenseValid = licenseStatus.isLicenseValid
       if (!global.isLicenseValid) {
         this.props.setCurrentMapModule(index).then(async () => {
@@ -440,7 +440,7 @@ class ModuleList extends Component {
             fileName +
             '.pxp'
         } else {
-          let maps = await SMap.getMapsByFile(filePath)
+          let maps = await SMap._getMapsByFile(filePath)
           let mapName = maps[0]
           filePath2 =
             this.homePath +

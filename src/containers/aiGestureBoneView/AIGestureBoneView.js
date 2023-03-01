@@ -51,7 +51,7 @@ export default class AIGestureBoneView extends React.Component {
 
   // eslint-disable-next-line
   componentWillMount() {
-    SMap.setDynamicviewsetVisible(false)
+    
     // SPoseEstimationView.setOperMode(this.state.poseMode)
     screen.lockToPortrait()
   }

@@ -1,11 +1,10 @@
 import {
   SMap,
-  Action,
   SMediaCollector,
-  GeometryType,
+  // GeometryType,
   SCollector,
-  TGeometryType,
-  TAction,
+  // TGeometryType,
+  SData,
 } from 'imobile_for_reactnative'
 import { ConstToolType, ToolbarType } from '@/constants'
 import { LayerUtils, StyleUtils, Toast } from '@/utils'
@@ -13,9 +12,10 @@ import { getLanguage } from '@/language'
 import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/ToolbarModule'
 import { AppletsToolType } from '../../constants'
 import NavigationService from '@/containers/NavigationService'
-import { FieldInfo, LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
+// import { Action, LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import CheckData from './CheckData'
-import { getImage } from '../../assets'
+import { FieldInfo, GeometryType, TGeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
+import { Action,TAction } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 function startCheck() {
   try {
@@ -52,7 +52,7 @@ async function commit(type: string) {
         },
       })
     } else if (type === AppletsToolType.APPLETS_CHECK_EDIT_ADD_REGION) {
-      const have = await SMap.haveCurrentGeometry()
+      const have = await SMap.getCurrentEditGeometry()
       if(have){
         // 是否有新的采集或标注
         global.HAVEATTRIBUTE = true
@@ -458,8 +458,8 @@ async function showAttribute(type?: string) {
           const selection = _params.layers.selection[0]
           const isCheck = !data.cellData.value // 核查后修改的值
           // 修改核查结果
-          SMap.setLayerFieldInfo(
-            selection.layerInfo.path,
+          SData.setRecordsetValue(
+            {datasetName:selection.layerInfo.datasetName||'',datasourceName:selection.layerInfo.datasourceAlias||''},
             [{
               name: data.cellData.fieldInfo.name,
               value: isCheck,
@@ -467,7 +467,6 @@ async function showAttribute(type?: string) {
             {
               // index: int,      // 当前对象所在记录集中的位置
               filter: `SmID=${selection.ids[0]}`, // 过滤条件
-              cursorType: 2, // 2: DYNAMIC, 3: STATIC
             },
           ).then(result => {
             if (!result) return
@@ -495,7 +494,7 @@ async function showAttribute(type?: string) {
       })
       return
     }
-    const have = await SMap.haveCurrentGeometry()
+    const have = await SMap.getCurrentEditGeometry()
     if(have){
       Toast.show(getLanguage(global.language).Prompt.PLEASE_SUBMIT_EDIT_GEOMETRY)
     }else{

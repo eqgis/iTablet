@@ -30,8 +30,14 @@ async function tour() {
     ) => {
       try {
         if (value !== '') {
-          await SMap.setLabelColor()
-          const tagginData = await SMap.newTaggingDataset(
+          await SMap.setMapControlStyle({
+            nodeColor: { r: 57, g: 153, b: 255, a: 1 },
+            nodeSize: 1,
+            strokeColor: { r: 57, g: 153, b: 255, a: 1 },
+            strokeWidth: 1,
+          })
+          // await SMap._setLabelColor()
+          const tagginData = await SMap._newTaggingDataset(
             value,
             _params.user.currentUser.userName,
             false, // 轨迹图层都设置为不可编辑

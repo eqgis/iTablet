@@ -10,10 +10,11 @@ import ToolbarBtnType from "../../ToolbarBtnType"
 import { getThemeAssets} from "../../../../../../assets"
 import constants from "../../../../constants"
 import {getLanguage} from "../../../../../../language"
-import {ConstToolType} from "../../../../../../constants"
+import {ConstToolType,ConstPath} from "../../../../../../constants"
 import IncrementAction from "./IncrementAction"
-import {SMap} from 'imobile_for_reactnative'
-import LineList from "./customView/LineList"
+import {SData} from 'imobile_for_reactnative'
+import { FileTools } from '../../../../../../native'
+import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 async function getData(type) {
   let data = []
@@ -207,18 +208,14 @@ async function getData(type) {
         },
       ]
       break
-    case ConstToolType.SM_MAP_INCREMENT_CHANGE_NETWORK:
-      data = await SMap.getLineDataset()
-      //eslint-disable-next-line
-      customView = props => <LineList data={data} device={props.device} selectedItem={global.INCREMENT_DATA}/>
-      buttons = []
-      break
   }
   if(type === ConstToolType.SM_MAP_INCREMENT_EDIT){
     buttons.splice(2,1)
   }
   return {data, buttons, customView}
 }
+
+
 export default {
   getData,
 }

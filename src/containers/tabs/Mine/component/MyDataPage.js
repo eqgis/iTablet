@@ -24,7 +24,8 @@ import { scaleSize, OnlineServicesUtils } from '../../../../utils'
 import NavigationService from '../../../NavigationService'
 import ModalBtns from './ModalBtns'
 import UserType from '../../../../constants/UserType'
-import { DatasetType, SMap, RNFS  } from 'imobile_for_reactnative'
+import { SMap, RNFS  } from 'imobile_for_reactnative'
+import { DatasetType, } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { getLanguage } from '../../../../language/index'
 import { MsgConstant, SimpleDialog } from '../../Friend'
 import { MineItem, BatchHeadBar } from '../component'
@@ -337,8 +338,6 @@ export default class MyDataPage extends Component {
           : getLanguage(global.language).Prompt.SHARING,
       )
 
-      await SMap.checkLicense()
-
       let result = undefined
       if (fileName === '') {
         if (this.type === this.types.dataset) {
@@ -393,6 +392,7 @@ export default class MyDataPage extends Component {
           if(type === 'template'){
             Toast.show( getLanguage(global.language).Prompt.EXPORT_TEMP_FAILED )
           } else {
+             
             Toast.show(
               type === 'local'
                 ? getLanguage(global.language).Prompt.EXPORT_FAILED
@@ -402,6 +402,7 @@ export default class MyDataPage extends Component {
         }
       }
     } catch (error) {
+       
       Toast.show(
         type === 'local' || type === 'template'
           ? getLanguage(global.language).Prompt.EXPORT_FAILED
@@ -979,7 +980,7 @@ export default class MyDataPage extends Component {
         img = defaultImg
       }
     } else {
-      let name = info.item.name
+      let name = info.item?.name || info.item?.datasetName
       txtInfo =
         name.lastIndexOf('.') > 0
           ? name.substring(0, name.lastIndexOf('.'))

@@ -1,11 +1,7 @@
-import ARDrawingData from './ARDrawingData'
-import ARDrawingAction from './ARDrawingAction'
-import ToolbarModule from '../ToolbarModule'
-import { ConstToolType, ToolbarType } from '../../../../../../constants'
+import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
 import { getThemeAssets } from '../../../../../../assets'
 import FunctionModule from '../../../../../../class/FunctionModule'
-import { SARMap } from 'imobile_for_reactnative'
 import { arMapAddData } from '@/Toolbar/modules'
 
 class ArDrawingModule extends FunctionModule {
@@ -60,9 +56,5 @@ export default function() {
     size: 'large',
     // image: getThemeAssets().ar.icon_tool_ardrawing,
     image: getThemeAssets().functionBar.icon_tool_add,
-    getData: ARDrawingData.getData,
-    getHeaderData: ARDrawingData.getHeaderData,
-    getMenuData: ARDrawingData.getMenuData,
-    actions: ARDrawingAction,
   })
 }

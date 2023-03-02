@@ -3787,7 +3787,7 @@ export default class MapView extends React.Component {
     try {
       if (!this.state.isRight) {
         const position = await SMap.getCurrentLocation()
-        const isIndoor = await this.isIndoorPoint(position.x, position.y)
+        const isIndoor = await this.isIndoorPoint(position.longitude, position.latitude)
         if (!isIndoor) {
           Toast.show(
             getLanguage(this.props.language).Prompt

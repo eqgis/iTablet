@@ -4,6 +4,7 @@
  */
 
 import { TChunkType } from '@/constants/custom/ChunkType'
+import MapSelectPointLatitudeAndLongitude from '@/containers/workspace/components/MapSelectPointLatitudeAndLongitude'
 import { TAction3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SScene'
 import { orientation, specificOrientation } from 'react-native-orientation'
 
@@ -170,7 +171,7 @@ declare global {
   /** 地图界面专题图预览时的header MapView.js PreviewHeader */
   var PreviewHeader: any
   /** 地图选点界面 EnterDatumPoint.js MapSelectPointLatitudeAndLongitude */
-  var DATUMPOINTVIEW: any
+  var DATUMPOINTVIEW: MapSelectPointLatitudeAndLongitude
 
   /** 框选点选属性界面 当前页浏览属性数据 LayerSelectionAttribute.js*/
   var layerSelection: any

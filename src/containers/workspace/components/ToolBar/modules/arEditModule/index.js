@@ -1,5 +1,3 @@
-import AREditData from './AREditData'
-import AREditAction from './AREditAction'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
@@ -109,10 +107,5 @@ export default function() {
     title: getLanguage(global.language).Map_Main_Menu.EDIT,
     size: 'large',
     image: getThemeAssets().functionBar.icon_tool_edit,
-    getData: AREditData.getData,
-    getHeaderData: AREditData.getHeaderData,
-    getHeaderView: AREditData.getHeaderView,
-    getMenuData: AREditData.getMenuData,
-    actions: AREditAction,
   })
 }

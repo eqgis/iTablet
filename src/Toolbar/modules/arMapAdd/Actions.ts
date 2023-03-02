@@ -527,7 +527,7 @@ async function _downloadExample(type: ExternalDataType, exampleData: ExampleData
         //TODO 导入所有数据
         result = await DataHandler.importExternalData(AppUser.getCurrentUser(), items[0])
         result && AppToolBar.resetTabData()
-         
+
         Toast.show(result ? getLanguage().IMPORT_SUCCESS : getLanguage().IMPORT_FAIL)
       } else {
         AppLog.error('没有数据')
@@ -540,7 +540,7 @@ async function _downloadExample(type: ExternalDataType, exampleData: ExampleData
     Toast.show(getLanguage().IMPORTING)
     result = await DataHandler.importExternalData(AppUser.getCurrentUser(), items[0])
     result && AppToolBar.resetTabData()
-     
+
     Toast.show(result ? getLanguage().IMPORT_SUCCESS : getLanguage().IMPORT_FAIL)
   }
   AppProgress.onProgressEnd(downloadKey)

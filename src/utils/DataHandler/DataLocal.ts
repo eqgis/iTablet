@@ -2,7 +2,7 @@ import { FileTools, RNFS, SData } from 'imobile_for_reactnative'
 import { DatasetType, TDatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { ConstPath } from '../../constants'
 import { NativeMethod } from '../../native'
-import { dataUtil } from '..'
+import { AppLog, dataUtil } from '..'
 import { UserInfo, LocalDataType } from '../../types'
 import { DatasourceConnectionInfo, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import {
@@ -447,27 +447,34 @@ async function createDefaultDatasource(
   newDatasource: boolean,
   newDataset: boolean,
 ): Promise<ICreateResult> {
-  let result = ""
+  let result = false
+  let error = ''
   try {
     let server = datasourcePath + datasourceName + '.udb'
     const exist = await FileTools.fileIsExist(server)
     if(!exist) {
       //不存在，创建并打开
-      result = await SData.createDatasource({
+      result = (await SData.createDatasource({
         alias: datasourceName,
         server: server,
         engineType: EngineType.UDB,
-      })
+      })) !== ''
+      if(!result) {
+        error = '创建并打开数据源失败'
+      }
     } else {
       if(newDatasource) {
         //存在，创建新的数据源
         datasourceName = await getAvailableFileNameNoExt(datasourcePath, datasourceName, 'udb')
         server = datasourcePath + datasourceName + '.udb'
-        result = await SData.createDatasource({
+        result = (await SData.createDatasource({
           alias: datasourceName,
           server: server,
           engineType: EngineType.UDB,
-        })
+        })) !== ''
+        if(!result) {
+          error = '创建新数据源失败'
+        }
       } else {
         //存在，检查是否打开
         const wsds = await SData.getDatasources()
@@ -476,33 +483,43 @@ async function createDefaultDatasource(
         })
         //未打开则在此打开
         if(opends.length === 0) {
-          result = await SData.openDatasource({
+          result = (await SData.openDatasource({
             alias: datasourceName,
             server: server,
             engineType: EngineType.UDB,
-          })
+          })) !== ''
+          if(!result) {
+            error = '打开数据源失败'
+          }
+        } else {
+          result = true
         }
       }
 
     }
-    if(result != "") {
+    if(result) {
     //检查打开的数据源中是否有默认的数据集
       const dsets = await SData.getDatasetsByDatasource({alias: datasourceName})
       const defualtDset = dsets.filter(item => {
         return item.datasetName === datasetName
       })
-      let bDsCreate = false
       //没有则创建
       if(defualtDset.length === 0) {
-        bDsCreate = await SData.createDataset(datasourceName, datasetName, datastType)
+        result = await SData.createDataset(datasourceName, datasetName, datastType)
+        if(!result) {
+          error = '创建数据集失败'
+        }
       } else {
         //重名则创建新的数据集
         if(newDataset) {
           datasetName = await SData.availableDatasetName(datasourceName, datasetName)
-          bDsCreate = await SData.createDataset(datasourceName, datasetName, datastType)
+          result = await SData.createDataset(datasourceName, datasetName, datastType)
+          if(!result) {
+            error = '创建新数据集失败'
+          }
         }
       }
-      if(bDsCreate) {
+      if(result) {
         return {
           success: true,
           datasourceName,
@@ -512,7 +529,7 @@ async function createDefaultDatasource(
     }
     return {
       success: false,
-      error: 'fail',
+      error: error,
     }
   } catch(e) {
     return {
@@ -526,8 +543,8 @@ async function createARElementDatasource(
   user: UserInfo,
   datasourceName: string,
   datasetName: string,
-  newDatasource: string,
-  newDataset: string,
+  newDatasource: boolean,
+  newDataset: boolean,
   type: TARLayerType,
 ): Promise<ICreateResult> {
   try {

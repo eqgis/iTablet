@@ -1,5 +1,3 @@
-import ARStyleData from './ARStyleData'
-import ARStyleAction from './ARStyleAction'
 import ToolbarModule from '../ToolbarModule'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { getLanguage } from '../../../../../../language'
@@ -87,8 +85,5 @@ export default function() {
     title: getLanguage(global.language).Map_Main_Menu.STYLE,
     size: 'large',
     image: getThemeAssets().mine.my_color,
-    getData: ARStyleData.getData,
-    getMenuData: ARStyleData.getMenuData,
-    actions: ARStyleAction,
   })
 }

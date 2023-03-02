@@ -1,6 +1,5 @@
-import { SMap2, SMMapView2, SARMap } from 'imobile_for_reactnative'
+import { SMap2, SMMapView2, SARMap, SARNavigation } from 'imobile_for_reactnative'
 // import { Point2D } from 'imobile_for_reactnative/types/data'
-import { RouteAnalyzeResult } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import React from 'react'
 import { View, Text ,StyleSheet} from 'react-native'
 import Button from './Button'
@@ -14,6 +13,7 @@ import {
 } from '../../../../constants'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 import { Point2D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
+import { RouteAnalyzeResult } from '@/utils/OnlineServicesUtils'
 
 interface Props {
   navigation: any,
@@ -138,7 +138,20 @@ class NavigationView2D extends React.Component<Props, State> {
           onPress={async () => {
             try {
               if (this.state.result) {
-                await SARMap.startNavigation(this.state.result)
+                // await SARMap.startNavigation(this.state.result)
+                const result = this.state.result
+                await SARNavigation.loadNaviRoute({
+                  route: result.pathPoints,
+                  naviStep: result.pathInfos.map(item => {
+                    const result: Parameters<typeof SARNavigation.loadNaviRoute>[0]['naviStep'][0] = {
+                      name: item.routeName,
+                      point: item.junction,
+                      dirToSwerve: item.dirToSwerve
+                    }
+                    return result
+                  })
+                })
+                await SARNavigation.startGuide()
                 const _params: any = ToolbarModule.getParams()
                 _params.showArNavi && _params.showArNavi(false)
                 _params.showNavigation && _params.showNavigation(true)

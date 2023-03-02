@@ -9,12 +9,13 @@ import CookieManager from 'react-native-cookies'
 import { UserType } from '../constants'
 import { getLanguage } from '../language'
 import { Toast } from '../utils'
-import { OnlineRouteAnalyzeParam, POISearchResultOnline, RouteAnalyzeResult } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import { MyCreateData, OnlineData, ResultDataBase } from 'imobile_for_reactnative/types/interface/iserver/types'
 import RNFetchBlob from 'rn-fetch-blob'
 import { TLoginUserType } from '../constants/UserType'
 import { UserInfo } from '../types'
 import SCoordinationUtils from './SCoordinationUtils'
+import { Point2D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
+import { POIInfo } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARNavigation'
 
 /** 上传回调 */
 interface UploadCallBack {
@@ -146,6 +147,91 @@ export interface POISearchParamOnline {
    * 910111	四维、高德墨卡托
    */
   to?: 4326 | 3857 | 910113 | 910102 | 910112 | 910101 | 910111
+}
+
+
+/** 在线 POI搜索结果 */
+export interface POISearchResultOnline {
+  totalHits: number
+  poiInfos: POIInfoOnline[]
+}
+
+/** 在线 poi 信息 */
+export interface POIInfoOnline extends POIInfo {
+  address: string
+  score: number
+  telephone: string
+}
+
+/** 在线路径分析参数 */
+interface OnlineRouteAnalyzeParam {
+  startPoint: Point2D
+  endPoint: Point2D
+  routeType?: 'MINLENGTH' | 'NOHIGHWAY' | 'RECOMMEND'
+  /**
+   * 4326	GPS经纬度
+   *
+   *  3857	GPS墨卡托
+   *
+   * 910113	搜狗墨卡托
+   *
+   * 910102	百度经纬度
+   *
+   * 910112	百度墨卡托
+   *
+   * 910101	四维、高德经纬度。 GCJ02是由中国国家测绘局指定的地理信息系统的坐标系统，俗称火星坐标。它是一种对标准经纬度数据的加密算法，即加入了随机的偏差。腾讯、Google Map、高德、四维等图商用的都是此坐标系统。
+   *
+   * 910111	四维、高德墨卡托
+   */
+  to?: 4326 | 3857 | 910113 | 910102 | 910112 | 910101 | 910111
+}
+
+
+/** 路径分析结果 */
+export interface RouteAnalyzeResult {
+  /** 返回分析结果的点集合 */
+  pathPoints: Point2D[]
+  /** 返回分析结果的引导信息集合 */
+  pathInfos: PathInfo[]
+  /** 返回分析结果的总长度 */
+  pathLength: number
+  /** 导航花费时间。单位：秒。 */
+  pathTime: number
+}
+
+
+/** 路径分析结果的引导信息 */
+export interface PathInfo {
+  /**
+   * 转向类型
+   * 直行				0
+   * 左前转弯			1
+   * 右前转弯			2
+   * 左转弯			3
+   * 右转弯			4
+   * 左后转弯			5
+   * 右后转弯			6
+   * 调头				7
+   * 右转弯绕行至左	8
+   * 直角斜边右转弯	9
+   * 环岛				10
+   * 出环岛			11
+   *	目的地			12
+   *	电梯上行			13
+   *	电梯下行			14
+   *	扶梯上行			15
+   *	扶梯下行			16
+   *	楼梯	上行			17
+   *	楼梯下行			18
+   * 到达途经点		19
+   */
+  dirToSwerve: 0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19
+  /** 下一条道路的路口点坐标 */
+  junction: Point2D
+  /** 当前道路的长度 */
+  length: number
+  /** 当前道路的名称 */
+  routeName: string
 }
 
 /** online 在线请求失败结果 */

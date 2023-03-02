@@ -1,4 +1,4 @@
-import { SARMap } from 'imobile_for_reactnative'
+import { SARNavigation } from 'imobile_for_reactnative'
 import React from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { ARNaviModule } from '../ArNavigationModule'
@@ -49,7 +49,8 @@ class ARNavigationView extends React.Component<Props, State> {
   }
 
   back =  () => {
-    SARMap.endNavigation()
+    // SARMap.endNavigation()
+    SARNavigation.stopGuide()
     const _params: any = ToolbarModule.getParams()
     _params.showArNavi && _params.showArNavi(true)
     _params.showNavigation && _params.showNavigation(false)

@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     marginTop: dp(20),
   },
   text: {
-    width: dp(80),
+    width: dp(88),
     fontSize: dp(16),
     color: '#A0A0A0',
     textAlign: 'right',
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     // borderColor: '#ccc',
     // borderWidth: dp(1),
     // alignItems: 'center',
+    alignContent: 'center',
     justifyContent: 'center',
     paddingVertical: 0,
     // fontSize: dp(14),

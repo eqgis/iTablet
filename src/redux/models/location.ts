@@ -8,7 +8,7 @@ import { NtripMountPoint } from "imobile_for_reactnative/NativeModule/interfaces
 // --------------------------------------------------
 export interface EssentialInfo {
   /** 协议 */
-  agreement: 'NTRIPV1'
+  agreement: 'NTRIPV1' | "China Mobile"
   address: string
   port: string
   userName: string

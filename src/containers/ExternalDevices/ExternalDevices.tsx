@@ -6,6 +6,7 @@ import { Image, TouchableOpacity, View, Text, ActivityIndicator } from "react-na
 import styles from "./styles"
 import { SLocation } from "imobile_for_reactnative"
 import NavigationService from "../NavigationService"
+import { LocationConnectionParam } from '../BluetoothDevices/BluetoothDevices'
 
 
 const radio_on = require('../../assets/public/radio_select.png')
@@ -14,20 +15,20 @@ const radio_off = require('../../assets/public/radio_select_no.png')
 interface Props{
   navigation: MainStackScreenNavigationProps<'ExternalDevices'>,
   // route: MainStackScreenRouteProp<'ExternalDevices'>,
-  peripheralDevice: SLocation.LocationConnectionParam,
-  setDevice: (param: SLocation.LocationConnectionParam) => void
+  peripheralDevice: LocationConnectionParam,
+  setDevice: (param: LocationConnectionParam) => void
 }
 
 interface State {
-  devices: SLocation.LocationConnectionParam[],
-  currentOption: SLocation.LocationConnectionParam,
+  devices: LocationConnectionParam[],
+  currentOption: LocationConnectionParam,
   showSearch: boolean
   searchNotify: string
 }
 
 class ExternalDevices extends Component<Props, State> {
 
-  prevOption: SLocation.LocationConnectionParam
+  prevOption: LocationConnectionParam
 
   constructor(props: Props) {
     super(props)
@@ -54,7 +55,7 @@ class ExternalDevices extends Component<Props, State> {
   addListener() {
     SLocation.addDeviceListener(device => {
       const devices = JSON.parse(JSON.stringify(this.state.devices))
-      const ownitem =  devices.filter((item: SLocation.LocationConnectionParam) => {
+      const ownitem =  devices.filter((item: LocationConnectionParam) => {
         return item.type === "external" && item.name === device
       })
       if(!ownitem) {
@@ -122,7 +123,7 @@ class ExternalDevices extends Component<Props, State> {
   }
 
   /** 列表项 */
-  renderItem = (device: SLocation.LocationConnectionParam) => {
+  renderItem = (device: LocationConnectionParam) => {
     if(device.type !== 'external') {
       return null
     }

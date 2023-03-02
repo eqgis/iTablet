@@ -2212,6 +2212,11 @@ export const language_cn = {
   SLOCATION_STATE_CURRENT: "定位状态",
   WEAK_POSITIONING_SIGNAL: "定位信号弱",
 
+  CHECK_DEVICE_SUPPORTS_DIFFERENTIAL_SERVICE:"请确认该设备是否支持差分服务", // Check whether the device supports differential service
+  CURRENT_LOADING_POINT:"当前加载点", // Current loading point
+  LOADING_POINT_NAME:"加载点名", // Loading point name
+  CHECK_LITE_RTK_DEVICE_IS_CONNECTED:"请确认千寻设备是否处于可连接状态", // Pease confirm that the Lite RTK device is connected
+
   // 许可
   LICENSE: "许可",
   LICENSE_CURRENT: "当前许可",

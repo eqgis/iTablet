@@ -402,6 +402,32 @@ function layerManagerData() {
       themeType: -1,
     },
     {
+      title: 'Tianditu Image_c',
+      action: ({callback}) => {
+        global.SimpleDialog.set({
+          text: getLanguage(global.language).Map_Layer.IS_ADD_NOTATION_LAYER,
+          confirmText: getLanguage(global.language).Prompt.YES,
+          cancelText: getLanguage(global.language).Prompt.NO,
+          confirmAction: () => {
+            let data = []
+            if (global.language === 'CN') {
+              data.push(ConstOnline.tiandituImg_cCN())
+            } else {
+              data.push(ConstOnline.tiandituImg_cEN())
+            }
+            data.push(ConstOnline.tiandituImg_c())
+            OpenData(data, 0, callback)
+          },
+          cancelAction: () => OpenData(ConstOnline.tiandituImg(), 0, callback),
+        })
+        global.SimpleDialog.setVisible(true)
+      },
+      data: [],
+      image: getThemeAssets().layerType.layer_image,
+      type: DatasetType.IMAGE,
+      themeType: -1,
+    },
+    {
       title: 'Tianditu Terrain',
       action: ({callback}) => {
         global.SimpleDialog.set({

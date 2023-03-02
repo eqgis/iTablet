@@ -67,11 +67,14 @@ async function getDatasources(params = {}) {
       case 'tianditu':
         datasources = [
           ConstOnline.tianditu(),
-          ConstOnline.tiandituCN(),
-          ConstOnline.tiandituEN(),
+          // ConstOnline.tiandituCN(),
+          // ConstOnline.tiandituEN(),
           ConstOnline.tiandituImg(),
-          ConstOnline.tiandituImgCN(),
-          ConstOnline.tiandituImgEN(),
+          // ConstOnline.tiandituImgCN(),
+          // ConstOnline.tiandituImgEN(),
+          ConstOnline.tiandituImg_c(),
+          // ConstOnline.tiandituImg_cCN(),
+          // ConstOnline.tiandituImg_cEN(),
           ConstOnline.tiandituTer(),
           ConstOnline.tiandituTerCN(),
         ]

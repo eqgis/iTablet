@@ -41,6 +41,7 @@ class NtripSetting extends Component<Props, State> {
   agreementArray = [
     {label: 'NTRIPV1', value: 'NTRIPV1'},
     {label: "千寻知寸", value:'qianxun'},
+    {label: "华测", value:'huace'},
     {label: '中国移动', value: 'China Mobile'},
   ]
 
@@ -240,6 +241,9 @@ class NtripSetting extends Component<Props, State> {
                     addressTemp = "rtk.ntrip.qxwz.com"
                     portTemp = "8002"
                     break
+                  case "huace":
+                    addressTemp = "rtk.huacenav.com"
+                    portTemp = "8002"
                 }
                 this.setState({
                   agreement: value,

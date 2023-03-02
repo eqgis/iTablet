@@ -184,7 +184,7 @@ export default class ArMappingButton extends React.Component {
         title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_POINT,
         action: async () => {
-          let is = await SARMap.isMeasuring()
+          const is = await SARMap.isMeasuring()
           if (is) {
             SARMap.cancelCurrent()
           }
@@ -204,7 +204,7 @@ export default class ArMappingButton extends React.Component {
         title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_LINE,
         action: async () => {
-          let is = await SARMap.isMeasuring()
+          const is = await SARMap.isMeasuring()
           if (is) {
             SARMap.cancelCurrent()
           }
@@ -224,7 +224,7 @@ export default class ArMappingButton extends React.Component {
         title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_SAVE_AEREA,
         action: async () => {
-          let is = await SARMap.isMeasuring()
+          const is = await SARMap.isMeasuring()
           if (is) {
             SARMap.cancelCurrent()
           }
@@ -571,14 +571,14 @@ export default class ArMappingButton extends React.Component {
       if (Platform.OS === 'ios') {
         // this.save()
         SARMap.setMeasurePath(this.props.currentLayer.datasourceAlias, this.props.currentLayer.datasetName)
-        let result = await SARMap.saveTrackingLine()
+        const result = await SARMap.saveTrackingLine()
         if (!result) {
           Toast.show(getLanguage(global.language).Prompt.SAVE_LINE_FAIL)
         }
       }else{
         await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
           this.props.currentLayer.datasetName)
-        let result = await SARMap.saveTrackingLine()
+        const result = await SARMap.saveTrackingLine()
         Toast.show(result ? getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(global.language).Prompt.SAVE_FAILED)
       }
     } catch (e) {
@@ -592,14 +592,14 @@ export default class ArMappingButton extends React.Component {
       if (Platform.OS === 'ios') {
         // this.save()
         SARMap.setMeasurePath(this.props.currentLayer.datasourceAlias, this.props.currentLayer.datasetName)
-        let result = await SARMap.saveTrackingPoint()
+        const result = await SARMap.saveTrackingPoint()
         if (!result) {
           Toast.show(getLanguage(global.language).Prompt.SAVE_FAIL_POINT)
         }
       }else{
         await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
           this.props.currentLayer.datasetName)
-        let result = await SARMap.saveTrackingPoint()
+        const result = await SARMap.saveTrackingPoint()
         Toast.show(result ? getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(global.language).Prompt.SAVE_FAILED)
       }
     } catch (e) {
@@ -613,14 +613,14 @@ export default class ArMappingButton extends React.Component {
       if (Platform.OS === 'ios') {
         // this.save()
         SARMap.setMeasurePath(this.props.currentLayer.datasourceAlias, this.props.currentLayer.datasetName)
-        let result = await SARMap.saveTrackingRegion()
+        const result = await SARMap.saveTrackingRegion()
         if (!result) {
           Toast.show(getLanguage(global.language).Prompt.SAVE_REGION_FAIL)
         }
       } else {
         await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
           this.props.currentLayer.datasetName)
-        let result = await SARMap.saveTrackingRegion()
+        const result = await SARMap.saveTrackingRegion()
         Toast.show(result ? getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(global.language).Prompt.SAVE_FAILED)
       }
     } catch (e) {
@@ -695,7 +695,7 @@ export default class ArMappingButton extends React.Component {
     this.props.showSwitch(false)
 
     const _params = ToolbarModule.getParams()
-    let currentLayer = global.currentLayer
+    const currentLayer = global.currentLayer
     const layerType = LayerUtils.getLayerType(currentLayer)
 
     // 是否绘制到标注图层
@@ -723,8 +723,8 @@ export default class ArMappingButton extends React.Component {
           _params.user.currentUser.userName,
         )
       }
-      let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
+      const datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
+      const datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
       global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
@@ -737,9 +737,9 @@ export default class ArMappingButton extends React.Component {
         datasetName,
       }
     }
-    
-    let _point = await SMap.getCurrentLocation()
-    let point = { x: _point.longitude, y: _point.latitude }
+
+    const _point = await SMap.getCurrentLocation()
+    const point = { x: _point.longitude, y: _point.latitude }
     global.MeasureCollectData.point = point
     global.MeasureCollectData.measureType = 'arDrawPoint'
     global.toolBox && global.toolBox.measure({isExistFullMap:false,measureType:'arDrawPoint',point:point,datasourceAlias:global.MeasureCollectData.datasourceAlias,datasetName:global.MeasureCollectData.datasetName,haslocation:true})
@@ -766,7 +766,7 @@ export default class ArMappingButton extends React.Component {
     this.props.showSwitch(false)
 
     const _params = ToolbarModule.getParams()
-    let currentLayer = global.currentLayer
+    const currentLayer = global.currentLayer
     const layerType = LayerUtils.getLayerType(currentLayer)
 
     // 是否绘制到标注图层
@@ -792,8 +792,8 @@ export default class ArMappingButton extends React.Component {
           _params.user.currentUser.userName,
         )
       }
-      let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
+      const datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
+      const datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
       global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
@@ -808,8 +808,8 @@ export default class ArMappingButton extends React.Component {
       }
     }
 
-    let _point = await SMap.getCurrentLocation()
-    let point = { x: _point.longitude, y: _point.latitude }
+    const _point = await SMap.getCurrentLocation()
+    const point = { x: _point.longitude, y: _point.latitude }
     global.MeasureCollectData.point = point
     global.MeasureCollectData.measureType = 'drawLine'
     global.toolBox && global.toolBox.measure({isExistFullMap:false,measureType:'drawLine',point:point,datasourceAlias:global.MeasureCollectData.datasourceAlias,datasetName:global.MeasureCollectData.datasetName,haslocation:true})
@@ -836,7 +836,7 @@ export default class ArMappingButton extends React.Component {
 
 
     const _params = ToolbarModule.getParams()
-    let currentLayer = global.currentLayer
+    const currentLayer = global.currentLayer
     const layerType = LayerUtils.getLayerType(currentLayer)
 
     // 是否绘制到标注图层
@@ -863,8 +863,8 @@ export default class ArMappingButton extends React.Component {
           _params.user.currentUser.userName,
         )
       }
-      let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
+      const datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
+      const datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
       global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
@@ -878,8 +878,8 @@ export default class ArMappingButton extends React.Component {
       }
     }
 
-    let _point = await SMap.getCurrentLocation()
-    let point = { x: _point.longitude, y: _point.latitude }
+    const _point = await SMap.getCurrentLocation()
+    const point = { x: _point.longitude, y: _point.latitude }
     global.MeasureCollectData.point = point
     global.MeasureCollectData.measureType = 'arDrawArea'
     global.toolBox && global.toolBox.measure({isExistFullMap:false,measureType:'arDrawArea',point:point,datasourceAlias:global.MeasureCollectData.datasourceAlias,datasetName:global.MeasureCollectData.datasetName,haslocation:true})
@@ -905,7 +905,7 @@ export default class ArMappingButton extends React.Component {
     this.props.showSwitch(false)
 
     const _params = ToolbarModule.getParams()
-    let currentLayer = global.currentLayer
+    const currentLayer = global.currentLayer
     const layerType = LayerUtils.getLayerType(currentLayer)
 
     // 是否绘制到标注图层
@@ -932,8 +932,8 @@ export default class ArMappingButton extends React.Component {
           _params.user.currentUser.userName,
         )
       }
-      let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
+      const datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
+      const datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
       global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
@@ -947,8 +947,8 @@ export default class ArMappingButton extends React.Component {
       }
     }
 
-    let _point = await SMap.getCurrentLocation()
-    let point = { x: _point.longitude, y: _point.latitude }
+    const _point = await SMap.getCurrentLocation()
+    const point = { x: _point.longitude, y: _point.latitude }
     global.MeasureCollectData.point = point
     global.MeasureCollectData.measureType = 'arDrawRectangle'
     global.toolBox && global.toolBox.measure({isExistFullMap:false,measureType:'arDrawRectangle',point:point,datasourceAlias:global.MeasureCollectData.datasourceAlias,datasetName:global.MeasureCollectData.datasetName})
@@ -974,7 +974,7 @@ export default class ArMappingButton extends React.Component {
     this.props.showSwitch(false)
 
     const _params = ToolbarModule.getParams()
-    let currentLayer = global.currentLayer
+    const currentLayer = global.currentLayer
     const layerType = LayerUtils.getLayerType(currentLayer)
 
     // 是否绘制到标注图层
@@ -1001,8 +1001,8 @@ export default class ArMappingButton extends React.Component {
           _params.user.currentUser.userName,
         )
       }
-      let datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
-      let datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
+      const datasourceAlias = 'Label_' + _params.user.currentUser.userName + '#'
+      const datasetName = `Default_Tagging_${_params.user.currentUser.userName}`
       global.MeasureCollectData = {
         datasourceAlias,
         datasetName,
@@ -1016,15 +1016,15 @@ export default class ArMappingButton extends React.Component {
       }
     }
 
-    let _point = await SMap.getCurrentLocation()
-    let point = { x: _point.longitude, y: _point.latitude }
+    const _point = await SMap.getCurrentLocation()
+    const point = { x: _point.longitude, y: _point.latitude }
     global.MeasureCollectData.point = point
     global.MeasureCollectData.measureType = 'arDrawCircular'
     global.toolBox && global.toolBox.measure({isExistFullMap:false,measureType:'arDrawCircular',point:point,datasourceAlias:global.MeasureCollectData.datasourceAlias,datasetName:global.MeasureCollectData.datasetName})
   }
 
   renderItems = () => {
-    let items = []
+    const items = []
     for (let i = 0; i < this.state.data.length; i++) {
       items.push(this.renderItem(this.state.data[i]))
     }
@@ -1109,7 +1109,7 @@ export default class ArMappingButton extends React.Component {
   undo = async () => {
     await SARMap.undoDraw()
     if (this.state.measureType === 'arMeasureHeight') {
-      let height = await SARMap.getCurrentHeight()
+      const height = await SARMap.getCurrentHeight()
       // this.setState({
       //   currentHeight: height + 'm',
       // })

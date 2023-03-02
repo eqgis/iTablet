@@ -125,6 +125,51 @@ function tiandituImgEN(): TOnlineData {
     mapName: 'tiandituImgEN',
   }
 }
+
+//经纬度投影
+function tiandituImg_c(): TOnlineData {
+  return {
+    type: 'Datasource',
+    DSParams: {
+      server:
+      `http://t0.tianditu.com/img_c/wmts?dpi=96&tk=${_getToken()}`,
+      engineType: 23,
+      driver: 'WMTS',
+      alias: 'tiandituImg_c',
+    },
+    layerIndex: 0,
+    mapName: 'tiandituImg_c',
+  }
+}
+function tiandituImg_cCN(): TOnlineData {
+  return {
+    type: 'Datasource',
+    DSParams: {
+      server:
+      `http://t0.tianditu.com/cia_c/wmts?dpi=96&tk=${_getToken()}`,
+      engineType: 23,
+      driver: 'WMTS',
+      alias: 'tiandituImgCN_c',
+    },
+    layerIndex: 0,
+    mapName: 'tiandituImgCN_c',
+  }
+}
+
+function tiandituImg_cEN(): TOnlineData {
+  return {
+    type: 'Datasource',
+    DSParams: {
+      server:
+      `http://t0.tianditu.com/eia_c/wmts?dpi=96&tk=${_getToken()}`,
+      engineType: 23,
+      driver: 'WMTS',
+      alias: 'tiandituImgEN_c',
+    },
+    layerIndex: 0,
+    mapName: 'tiandituImgEN_c',
+  }
+}
 function tiandituTer(): TOnlineData {
   return {
     type: 'Datasource',
@@ -327,6 +372,9 @@ export default {
   tiandituImg,
   tiandituImgCN,
   tiandituImgEN,
+  tiandituImg_c,
+  tiandituImg_cCN,
+  tiandituImg_cEN,
   tiandituTer,
   tiandituTerCN,
 }

@@ -1,5 +1,5 @@
-import { SARMap, SData, SMap, SMARInterestView ,SSpeechRecognizer} from 'imobile_for_reactnative'
-import { ARAction, POIInfo, POIInfoOnline, POISearchResult, RouteAnalyzeResult } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
+import { PrjCoordSysType, SARMap, SARNavigation, SData, SMap, SMARInterestView ,SNavigation,SSpeechRecognizer} from 'imobile_for_reactnative'
+import { ARAction } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 import { Point } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import React from 'react'
 import { dismissKeyboard, Dimensions, FlatList, Image, ListRenderItemInfo, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
@@ -13,6 +13,9 @@ import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 import NavigationService from '../../../../containers/NavigationService'
 import BackButton from '../../../../components/Header/BackButton'
 import { FloatBar } from '@/components'
+import { Point2D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
+import { POIInfo, POISearchResult } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARNavigation'
+import { POIInfoOnline, RouteAnalyzeResult } from '@/utils/OnlineServicesUtils'
 
 interface Props {
   toolbarVisible: boolean,
@@ -78,7 +81,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
     const _params: any = ToolbarModule.getParams()
     await DataHandler.createPoiSearchDatasource(_params.user.currentUser)
     if(this.state.results) {
-      SARMap.addSearchPois(this.state.results)
+      SARNavigation.addSearchPois(this.state.results)
     }
     SARMap.setAction(ARAction.SELECT)
 
@@ -86,7 +89,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
   }
 
   removePoiDatasource = () => {
-    SARMap.removeSearchPois()
+    SARNavigation.removeSearchPois()
     SARMap.setAction(ARAction.NULL)
   }
 
@@ -114,7 +117,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
   /** 点击 poi list 结果，高亮场景 poi */
   selectPoi = async (uid: string) => {
     await SARMap.clearSelection()
-    SARMap.selectSearchPoi(uid)
+    SARNavigation.selectSearchPoi(uid)
   }
 
   back =  () => {
@@ -165,10 +168,10 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
         to: 910111
       })
       const naviDataset = ARNaviModule.getData().naviDatasetInfo
-      let resultRoadNet: POISearchResult | undefined
+      let resultRoadNet: POISearchResult | undefined | null
       if (naviDataset) {
         //路网数据集搜索
-        resultRoadNet = await SARMap.searchPoi({
+        resultRoadNet = await SARNavigation.searchPoi({
           datasourceAlias: naviDataset.datasourceAlias,
           poiDatasetName: naviDataset.poiDatasetName,
           keyword: key,
@@ -219,8 +222,8 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
           results: infos,
           history: [key].concat(history)
         })
-        await SARMap.removeSearchPois()
-        SARMap.addSearchPois(infos)
+        await SARNavigation.removeSearchPois()
+        SARNavigation.addSearchPois(infos)
       } else {
         Toast.show(getLanguage(global.language).ARMap.NO_SEARCH_RESULT)
       }
@@ -241,9 +244,9 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
     })
   }
 
-  analyzeRoute = async (): Promise<RouteAnalyzeResult | null> => {
+  analyzeRoute = async (): Promise<RouteAnalyzeResult | null | undefined> => {
     try {
-      if(this.state.selectedPoi) {
+      if(this.state.selectedPoi, this.state.selectedPoi) {
         ARNaviModule.setData({
           currentPOI: this.state.selectedPoi
         })
@@ -251,23 +254,62 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
         if(currentLocation) {
           const roadNetDataset = ARNaviModule.getData().naviDatasetInfo
           let result: RouteAnalyzeResult | null | undefined = null
+          const merctorXml = await SData.prjCoordSysToXml({type: PrjCoordSysType.PCS_SPHERE_MERCATOR})
+          const GPSPoints = await SData.CoordSysTranslatorPrjToGPS(merctorXml, [this.state.selectedPoi.location])
           if('address' in this.state.selectedPoi) {
-            const GPSPoints = await SData.CoordSysTranslatorGPSToPrj(await SMap.getPrjCoordSys(),[this.state.selectedPoi.location])
             result = await this.OnlineService?.routeAnalyze({
               startPoint: currentLocation.ll,
               endPoint: GPSPoints[0],
               to: 910111
             })
           } else if(roadNetDataset) {
-            const GPSPoints = await SData.CoordSysTranslatorGPSToPrj(await SMap.getPrjCoordSys(),[this.state.selectedPoi.location])
-            result = await SARMap.routeAnalyze({
-              datasourcAlias: roadNetDataset.datasourceAlias,
-              datasetName: roadNetDataset.datasetName,
-              modelFileName: roadNetDataset.modelFileName,
-              startPoint: currentLocation.ll,
-              endPoint: GPSPoints[0],
-              to: 2
+            // result = await SARMap.routeAnalyze({
+            //   datasourcAlias: roadNetDataset.datasourceAlias,
+            //   datasetName: roadNetDataset.datasetName,
+            //   modelFileName: roadNetDataset.modelFileName,
+            //   startPoint: currentLocation.ll,
+            //   endPoint: GPSPoints[0],
+            //   to: 2
+            // })
+            await SNavigation.setRouteAnalyzeData({
+              networkDataset: {'datasourceAlias': roadNetDataset.datasourceAlias, 'datasetName':  roadNetDataset.datasetName},
+              modelPath: roadNetDataset.modelFileName,
             })
+            await SNavigation.setRouteAnalyzePoints({
+              startPoint: currentLocation.ll,
+              destinationPoint: GPSPoints[0],
+            })
+            const r = await SNavigation.routeAnalyst()
+            if(r) {
+              const datasetPrj = await SData.getDatasetPrjCoordSys({datasourceName: roadNetDataset.datasourceAlias, datasetName: roadNetDataset.datasetName})
+              const merctorPrj = await SData.prjCoordSysToXml({type: PrjCoordSysType.PCS_SPHERE_MERCATOR})
+              //结果坐标转换
+              r.route = await SData.CoordSysTranslator(datasetPrj, merctorPrj, {...r.route})
+              let pathPoints: Point2D[] = []
+              for(let i = 0; i < r.naviPath.naviStep.length; i++) {
+                pathPoints.push({...r.naviPath.naviStep[i].point})
+              }
+              pathPoints = await SData.CoordSysTranslator(datasetPrj, merctorPrj, {...pathPoints})
+              for(let i = 0; i < r.naviPath.naviStep.length; i++) {
+                r.naviPath.naviStep[i].point = pathPoints[i]
+              }
+              result = {
+                pathPoints: r.route,
+                pathInfos: r.naviPath.naviStep.map(item => {
+                  const res: RouteAnalyzeResult['pathInfos'][0] = {
+                    'dirToSwerve': item.dirToSwerve,
+                    'junction': item.point,
+                    'length': item.length,
+                    'routeName': item.name
+                  }
+                  return res
+                }),
+                pathLength: r.naviPath.length,
+                pathTime: r.naviPath.time * 60
+              }
+            } else {
+              result = r
+            }
           }
           ARNaviModule.setData({
             currentRoute: result
@@ -290,7 +332,19 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
     try {
       const result = await this.analyzeRoute()
       if(result) {
-        await SARMap.startNavigation(result)
+        // await SARMap.startNavigation(result)
+        await SARNavigation.loadNaviRoute({
+          route: result.pathPoints,
+          naviStep: result.pathInfos.map(item => {
+            const result: Parameters<typeof SARNavigation.loadNaviRoute>[0]['naviStep'][0] = {
+              name: item.routeName,
+              point: item.junction,
+              dirToSwerve: item.dirToSwerve
+            }
+            return result
+          })
+        })
+        await SARNavigation.startGuide()
         const _params: any = ToolbarModule.getParams()
         _params.showArNavi && _params.showArNavi(false)
         _params.showNavigation && _params.showNavigation(true)

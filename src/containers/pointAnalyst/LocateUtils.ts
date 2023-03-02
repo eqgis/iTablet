@@ -139,9 +139,9 @@ async function SearchGeoInCurrentLayer(item, cb = () => {}) {
               const resultList = []
               resultList.push({
                 pointName: key || '',
-                x: _location.x,
-                y: _location.y,
-                address: `x:${_location.x} y:${_location.y}`,
+                x: _location.longitude,
+                y: _location.latitude,
+                address: `x:${_location.longitude} y:${_location.latitude}`,
                 distance: getDistance(_location, location),
               })
               resultList.sort(compare('distance')).forEach((dataItem, index) => {

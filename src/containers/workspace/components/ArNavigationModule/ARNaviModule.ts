@@ -2,8 +2,9 @@
  * AR导航，路径分析管理模块
  */
 
+import { POIInfoOnline, RouteAnalyzeResult } from "@/utils/OnlineServicesUtils"
 import { SData, SMap } from "imobile_for_reactnative"
-import { POIInfo, POIInfoOnline, RouteAnalyzeResult } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
+import { POIInfo } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARNavigation"
 
 /** 室外导航数据源及路网数据集信息*/
 export interface NaviDatasourceInfo {

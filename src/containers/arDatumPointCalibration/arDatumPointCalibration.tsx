@@ -39,13 +39,17 @@ class DatumPointCalibration extends Component<IProps,IState> {
     let position
     if (global.SELECTPOINTLATITUDEANDLONGITUDE) {
       position = global.SELECTPOINTLATITUDEANDLONGITUDE
+      this.setState({
+        longitude: position.x + '',
+        latitude: position.y + '',
+      })
     }else {
       position = await SMap.getCurrentLocation()
+      this.setState({
+        longitude: position.longitude + '',
+        latitude: position.latitude + '',
+      })
     }
-    this.setState({
-      longitude: position.x + '',
-      latitude: position.y + '',
-    })
   }
 
   _onClose = async () => {

@@ -23,6 +23,7 @@ import {
   SNavigation,
   SIndoorNavigation,
   GeoStyle,
+  SARNavigation,
 } from 'imobile_for_reactnative'
 import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { DatasetType, GeometryType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
@@ -1333,7 +1334,7 @@ export default class MapView extends React.Component {
       width = Math.min(Math.min(screenSize.height, screenSize.width) * 0.4, 200)
       size = scaleSize(80)
     }
-    SARMap.setNaviBaseMapPosition({
+    SARNavigation.setNaviBaseMapPosition({
       x: screenSize.width - width / 2 - scaleSize(30),
       y: screen.getScreenSafeHeight() - width - size,
       width: width,
@@ -3786,7 +3787,7 @@ export default class MapView extends React.Component {
     try {
       if (!this.state.isRight) {
         const position = await SMap.getCurrentLocation()
-        const isIndoor = await this.isIndoorPoint(position.x, position.y)
+        const isIndoor = await this.isIndoorPoint(position.longitude, position.latitude)
         if (!isIndoor) {
           Toast.show(
             getLanguage(this.props.language).Prompt

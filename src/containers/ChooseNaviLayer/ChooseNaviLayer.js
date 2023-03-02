@@ -120,7 +120,7 @@ export default class ChooseNaviLayer extends React.Component {
       global.INCREMENT_DATA = {}
     }
     if(removeLayer) {
-      await SMap.removeLayer({datasourceAlias: datasourceName, datasetName: datasourceName})
+      await SMap.removeLayer({datasourceAlias: datasourceName, datasetName: datasetName})
     }
     await SData.deleteDataset(datasourceName, datasetName)
     this.setState({

@@ -4,6 +4,8 @@ import {
   SMap,
   SProcess,
   SData,
+  PrjCoordSysType,
+  GeoCoordSysType,
 } from 'imobile_for_reactnative'
 import { FileTools } from '../../../../native'
 import { Toast, scaleSize } from '../../../../utils'
@@ -51,17 +53,17 @@ class MyDataset extends MyDataPage {
 
   componentWillUnmount() {
     if (!this.isAlreadyOpen) {
-      if(this.from !== 'MapView'){
+      if (this.from !== 'MapView') {
         SData.closeDatasource(this.datasourceName)
-      }  
+      }
     }
     this.container && this.container.setLoading(false)
   }
 
   _openDatasource = async () => {
     try {
-      let datasources = await SData.getDatasources()
-      let homePath = await FileTools.appendingHomeDirectory()
+      const datasources = await SData.getDatasources()
+      const homePath = await FileTools.appendingHomeDirectory()
       this.isAlreadyOpen = false
       if (datasources.length !== 0) {
         for (let i = 0; i < datasources.length; i++) {
@@ -75,7 +77,7 @@ class MyDataset extends MyDataPage {
         }
       }
       if (!this.isAlreadyOpen) {
-        let datasourceParams = {}
+        const datasourceParams = {}
         datasourceParams.server = homePath + this.state.data.path
         datasourceParams.engineType = EngineType.UDB
         datasourceParams.alias = this.state.title
@@ -110,8 +112,8 @@ class MyDataset extends MyDataPage {
   deleteData = async () => {
     try {
       if (!this.itemInfo) return false
-      let datasetName = this.itemInfo.item.datasetName
-      let result  = await SData.deleteDataset(this.datasourceName, datasetName)
+      const datasetName = this.itemInfo.item.datasetName
+      const result = await SData.deleteDataset(this.datasourceName, datasetName)
       return result
     } catch (e) {
       return false
@@ -119,34 +121,34 @@ class MyDataset extends MyDataPage {
   }
 
   exportData = async (name, exportToTemp = true) => {
-    let datasetParams = Object.assign({}, this.itemInfo.item)
-    let homePath = await FileTools.appendingHomeDirectory()
+    const datasetParams = Object.assign({}, this.itemInfo.item)
+    const homePath = await FileTools.appendingHomeDirectory()
 
     //先导出，再根据情况是否打包
-    let exportPath = homePath + this.getRelativeExportPath()
-    let availableName = await this._getAvailableFileName(
+    const exportPath = homePath + this.getRelativeExportPath()
+    const availableName = await this._getAvailableFileName(
       exportPath,
       name,
       this.exportType,
     )
     /** 单个文件 */
-    let filePath = exportPath + availableName
+    const filePath = exportPath + availableName
     let result = await SData.exportDataset(
       this.exportType,
       filePath,
       datasetParams,
     )
 
-    if(!result) return false
+    if (!result) return false
 
     if (exportToTemp) {
-      let tempPath = homePath + this.getRelativeTempPath()
-      let zipName = await this._getAvailableFileName(
+      const tempPath = homePath + this.getRelativeTempPath()
+      const zipName = await this._getAvailableFileName(
         tempPath,
         'MyExport',
         'zip',
       )
-      let targetPath = tempPath + zipName
+      const targetPath = tempPath + zipName
 
       result = await FileTools.zipFile(filePath, targetPath)
       FileTools.deleteFile(filePath)
@@ -161,12 +163,12 @@ class MyDataset extends MyDataPage {
   showAttribute = () => {
     global.NEEDREFRESHTABLE = true
     const para = {
-      type:'MY_DATA',
-      datasetName:this.itemInfo.item.datasetName,
-      datasourceName:this.itemInfo.item.datasourceName
+      type: 'MY_DATA',
+      datasetName: this.itemInfo.item.datasetName,
+      datasourceName: this.itemInfo.item.datasourceName
     }
     // console.log(para)
-    NavigationService.navigate('LayerSelectionAttribute',para)
+    NavigationService.navigate('LayerSelectionAttribute', para)
   }
 
   setProjection = () => {
@@ -180,9 +182,9 @@ class MyDataset extends MyDataPage {
         )
         let result = false
         //设置数据集投影
-        let datasetName = this.itemInfo.item.datasetName
-        result = await SData.setDatasetPrjCoordSys( {datasourceName: this.datasourceName,datasetName:datasetName},
-          targetCoords.value+""
+        const datasetName = this.itemInfo.item.datasetName
+        result = await SData.setDatasetPrjCoordSys({ datasourceName: this.datasourceName, datasetName: datasetName },
+          targetCoords.value + ""
         )
         global.Loading.setLoading(false)
         if (result) {
@@ -195,14 +197,14 @@ class MyDataset extends MyDataPage {
   }
 
   buildPyramid = () => {
-    let build = async () => {
+    const build = async () => {
       try {
         global.Loading.setLoading(
           true,
           getLanguage(global.language).Profile.BUILDING,
         )
-        let datasetName = this.itemInfo.item.datasetName
-        let result = await SData.buildPyramid(this.datasourceName, datasetName)
+        const datasetName = this.itemInfo.item.datasetName
+        const result = await SData.buildPyramid(this.datasourceName, datasetName)
         global.Loading.setLoading(false)
         Toast.show(
           result
@@ -221,14 +223,14 @@ class MyDataset extends MyDataPage {
   }
 
   updataStatistics = async () => {
-    let build = async () => {
+    const build = async () => {
       try {
         global.Loading.setLoading(
           true,
           getLanguage(global.language).Profile.BUILDING,
         )
-        let datasetName = this.itemInfo.item.datasetName
-        let result = await SData.updataStatistics(this.datasourceName, datasetName)
+        const datasetName = this.itemInfo.item.datasetName
+        const result = await SData.updataStatistics(this.datasourceName, datasetName)
         global.Loading.setLoading(false)
         Toast.show(
           result
@@ -247,8 +249,8 @@ class MyDataset extends MyDataPage {
   }
 
   getItemPopupData = () => {
-    if(this.itemInfo && this.itemInfo.item.datasetType === DatasetType.TEXT) {
-      let customedata = this.getCustomItemPopupData()
+    if (this.itemInfo && this.itemInfo.item.datasetType === DatasetType.TEXT) {
+      const customedata = this.getCustomItemPopupData()
       return customedata.concat([
         {
           title:
@@ -262,7 +264,7 @@ class MyDataset extends MyDataPage {
   }
 
   getCustomItemPopupData = () => {
-    let data = [
+    const data = [
       {
         title: getLanguage(global.language).Map_Label.ATTRIBUTE,
         action: this.showAttribute,
@@ -314,7 +316,7 @@ class MyDataset extends MyDataPage {
   ]
 
   isExportable = itemInfo => {
-    let datasetType = itemInfo.item.datasetType
+    const datasetType = itemInfo.item.datasetType
     if (
       datasetType === DatasetType.POINT ||
       datasetType === DatasetType.LINE ||
@@ -338,8 +340,8 @@ class MyDataset extends MyDataPage {
   }
 
   showSelectExportTypeDialog = () => {
-    let data = []
-    let datasetType = this.itemInfo.item.datasetType
+    const data = []
+    const datasetType = this.itemInfo.item.datasetType
     switch (datasetType) {
       case DatasetType.IMAGE:
       case DatasetType.MBImage:
@@ -377,7 +379,7 @@ class MyDataset extends MyDataPage {
         break
     }
     this.exportType = data[0]
-    let dialogHeight =
+    const dialogHeight =
       scaleSize(130) + Math.ceil(data.length / 2) * scaleSize(70)
     this.SimpleDialog.set({
       text: getLanguage(global.language).Profile.SELECT_DATASET_EXPORT_TYPE,
@@ -387,15 +389,25 @@ class MyDataset extends MyDataPage {
           this.exportType === this.exportTypes.KMZ ||
           this.exportType === this.exportTypes.GPX
         ) {
-          let datasetParams = Object.assign({}, this.itemInfo.item)
-          if (!(await SData.isPrgCoordSysWGS1984(datasetParams))) {
+          const datasetParams = Object.assign({}, this.itemInfo.item)
+          const prj = await SData.prjCoordSysFromXml(await SData.getDatasetPrjCoordSys(datasetParams))
+          if (prj.type === PrjCoordSysType.PCS_EARTH_LONGITUDE_LATITUDE &&
+            prj.geoCoordSys.type === GeoCoordSysType.GCS_WGS_1984) {
             this.SimpleDialog.set({
               text: getLanguage(global.language).Prompt.REQUIRE_PRJ_1984,
-              cancelBtnVisible:false,
+              cancelBtnVisible: false,
             })
             this.SimpleDialog.setVisible(true)
             return
           }
+          // if (!(await SData.isPrgCoordSysWGS1984(datasetParams))) {
+          //   this.SimpleDialog.set({
+          //     text: getLanguage(global.language).Prompt.REQUIRE_PRJ_1984,
+          //     cancelBtnVisible:false,
+          //   })
+          //   this.SimpleDialog.setVisible(true)
+          //   return
+          // }
         }
         this._onShareData(this.shareType)
       },

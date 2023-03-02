@@ -24,7 +24,7 @@ import {
 import { dataUtil, scaleSize, setSpText, Toast } from '../../utils'
 import color from '../../styles/color'
 import { getLanguage } from '../../language'
-import { SMap, SData, SNavigation } from 'imobile_for_reactnative'
+import { SMap, SData, SNavigation, PrjCoordSysType, GeoCoordSysType } from 'imobile_for_reactnative'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
 import ModalDropdown from 'react-native-modal-dropdown'
@@ -433,7 +433,10 @@ export default class CreateNavDataPage extends Component {
         item={item}
         selected={selected}
         onSelect={async item => {
-          const result = await SData.isPrgCoordSysWGS1984({...item})
+          // const result = await SData.isPrgCoordSysWGS1984({...item})
+          const prj = await SData.prjCoordSysFromXml(await SData.getDatasetPrjCoordSys({...item}))
+          const result = (prj?.type === PrjCoordSysType.PCS_EARTH_LONGITUDE_LATITUDE &&
+            prj?.geoCoordSys.type === GeoCoordSysType.GCS_WGS_1984)
           if(result){
             const data = JSON.parse(JSON.stringify(this.state.sleectedData))
             let has = false

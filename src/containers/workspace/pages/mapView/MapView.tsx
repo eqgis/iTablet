@@ -24,6 +24,7 @@ import {
   SIndoorNavigation,
   GeoStyle,
   SARNavigation,
+  SARMeasure,
 } from 'imobile_for_reactnative'
 import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { DatasetType, GeometryType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
@@ -688,8 +689,8 @@ export default class MapView extends React.Component {
     }
     if (this.isARModule()) {
       (async function () {
-        SARMap.addOnHeightChangeListener({
-          onHeightChange: height => {
+        SARMeasure.setMeasureLengthChangeListener({
+          onLengthChange: height => {
             height = height.toFixed(2)
             this.setState({
               currentHeight: height + 'm',
@@ -2821,12 +2822,12 @@ export default class MapView extends React.Component {
     this.measureType = params.measureType
     if (this.measureType) {
       if (this.measureType === 'measureArea') {
-        SARMap.setMeasureMode('MEASURE_AREA')
+        SARMeasure.setMeasureMode('MEASURE_AREA')
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_POLYGON_TITLE
       } else if (this.measureType === 'measureLength') {
-        SARMap.setMeasureMode('MEASURE_LINE')
+        SARMeasure.setMeasureMode('MEASURE_LINE')
         this.setState({
           showCurrentHeightView: true,
         })
@@ -2858,7 +2859,7 @@ export default class MapView extends React.Component {
           this.props.setDatumPoint(true)
         }
       } else if (this.measureType === 'arMeasureHeight') {
-        SARMap.setMeasureMode('MEASURE_HEIGHT')
+        SARMeasure.setMeasureMode('MEASURE_HEIGHT')
         this.setState({
           showCurrentHeightView: true,
         })
@@ -2866,27 +2867,27 @@ export default class MapView extends React.Component {
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_MEASURE_HEIGHT
       } else if (this.measureType === 'arMeasureCircle') {
-        SARMap.setMeasureMode('MEASURE_AREA_CIRCLE')
+        SARMeasure.setMeasureMode('MEASURE_AREA_CIRCLE')
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CIRCULAR_TITLE
       } else if (this.measureType === 'arMeasureRectangle') {
-        SARMap.setMeasureMode('MEASURE_AREA_RECTANGLE')
+        SARMeasure.setMeasureMode('MEASURE_AREA_RECTANGLE')
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_RECTANGLE_TITLE
       } else if (this.measureType === 'measureAngle') {
-        SARMap.setMeasureMode('MEASURE_AREA_ANGLE')
+        SARMeasure.setMeasureMode('MEASURE_AREA_ANGLE')
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_ANGLE
       } else if (this.measureType === 'arMeasureCuboid') {
-        SARMap.setMeasureMode('MEASURE_VOLUME_CUBOID')
+        SARMeasure.setMeasureMode('MEASURE_VOLUME_CUBOID')
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CUBOID_TITLE
       } else if (this.measureType === 'arMeasureCylinder') {
-        SARMap.setMeasureMode('MEASURE_VOLUME_CYLINDER')
+        SARMeasure.setMeasureMode('MEASURE_VOLUME_CYLINDER')
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_AREA_CYLINDER_TITLE
@@ -4769,8 +4770,10 @@ export default class MapView extends React.Component {
   }
 
   ARMappingHeaderBack = () => {
+    //todo 区分采集和测量
     SARMap.stopLocation()
     SARMap.cancelCurrent()
+    SARMeasure.cancel()
     SARMap.clearMeasure()
     this.listeners && this.listeners.infoListener?.remove()
     this.listeners && this.listeners.addListener?.remove()
@@ -4857,7 +4860,9 @@ export default class MapView extends React.Component {
       }
       this.setState({ showADDPoint: false, isfirst: false })
     } else {
-      SARMap.draw()
+      // SARMap.draw()
+      //todo 区分采集和测量
+      SARMeasure.addHitPoint()
       this.setState({ showADDPoint: false, isfirst: false })
     }
   }

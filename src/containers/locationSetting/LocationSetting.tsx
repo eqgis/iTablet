@@ -279,7 +279,7 @@ class LocationSetting extends React.Component<Props, State> {
         <View
           style={[styles.itemView]}
         >
-          <Text style={styles.text}>{getLanguage(global.language).Profile.INSTRUMENT_TYPE}</Text>
+          <Text style={styles.text}>{getLanguage(global.language).Profile.POSITION_ACCURACY}</Text>
           <Picker
             selectedValue={this.state.positionAccuracy}
             mode={'dropdown'}

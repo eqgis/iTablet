@@ -2883,4 +2883,5 @@ export const language_cn = {
   RESTART_MODULE_INFO: '该设置重启模块后生效，是否现在退出模块?',
   RTK_AUTO_CALIBRATION: "RTK自动校准",
   SHOW_POINT_INFO:"显示定位信息",
+  POSITION_ACCURACY:"定位精度",
 }

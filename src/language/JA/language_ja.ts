@@ -2884,5 +2884,6 @@ export const language_ja: typeof language_cn = {
   RESTART_MODULE_INFO: 'This setting will take effect after restart the module. Would you like to restart module now?',  // To be tanslated
   RTK_AUTO_CALIBRATION: "RTK auto calibration",  // To be tanslated
   SHOW_POINT_INFO:"Display location infomation",  // To be tanslated
+  POSITION_ACCURACY:"Positioning accuracy ",  // To be tanslated
 
 }

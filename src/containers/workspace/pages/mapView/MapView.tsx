@@ -121,6 +121,8 @@ import {
   Dimensions,
   DeviceEventEmitter,
   PixelRatio,
+  NativeModules,
+  NativeEventEmitter,
 } from 'react-native'
 import { getLanguage } from '../../../../language/index'
 import styles from './styles'
@@ -150,6 +152,10 @@ import PositionStateView from '../../components/PositionStateView'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 import { addOutdoorStartEndGuideLine } from '../../components/NavigationView/NavigationView'
 import IndoorGPSCollector from '../../components/ToolBar/modules/toolModule/IndoorGPSCollector'
+
+
+const nativeLocation = NativeModules.SLocation
+const eventEmitter = new NativeEventEmitter(nativeLocation)
 
 global.markerTag = 118082
 
@@ -387,6 +393,7 @@ export default class MapView extends React.Component {
       showPoiSearch: false,
       showNavigation: false,
       isFull: true,
+      ntripInfo: "",
     }
     // this.props.setDatumPoint(global.Type === ChunkType.MAP_AR ? true : false)
     this.props.setDatumPoint(false)
@@ -549,6 +556,7 @@ export default class MapView extends React.Component {
   }
 
   async componentDidMount() {
+    this.getNtripInfo()
     AppEvent.addListener('on_exit_ar_map_module', this.back)
     if (!global.isLicenseValid) {
       const licenseStatus = await SData.getEnvironmentStatus()
@@ -5312,6 +5320,37 @@ export default class MapView extends React.Component {
     }
   }
 
+
+  getNtripInfo = () => {
+    eventEmitter.addListener("NtripInfo", (text: string) => {
+      this.setState({
+        ntripInfo: text,
+      })
+    })
+  }
+
+
+  renderNtripInfo = () => {
+    return (
+      <View
+        style={[
+          {
+            position: 'absolute',
+            width: scaleSize(300),
+            height: scaleSize(40),
+            top: scaleSize(140),
+            left: scaleSize(20),
+            backgroundColor: 'rgba(0,0,0,.5)',
+          },
+        ]}
+      >
+        <Text
+          style={[styles.bottomInfoText]}
+        >{this.state.ntripInfo}</Text>
+      </View>
+    )
+  }
+
   renderContainer = () => {
     const width = this.px(screen.getScreenWidth())
     return (
@@ -5548,6 +5587,7 @@ export default class MapView extends React.Component {
         {this.renderCustomInputDialog()}
         {this.renderCustomAlertDialog()}
         {this.getInfoText()}
+        {this.renderNtripInfo()}
 
         <Toolbar
           navigation={this.props.navigation}

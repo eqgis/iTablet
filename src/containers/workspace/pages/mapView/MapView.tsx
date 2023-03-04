@@ -5389,11 +5389,12 @@ export default class MapView extends React.Component {
 
 
         {/* 是否使用了差分服务的定位状态提示 */}
-        {this.props?.peripheralDevice?.type === "bluetooth"
+        {/* {this.props?.peripheralDevice?.type === "bluetooth"
         && this.props?.essentialInfo?.userName !== ""
         && this.props.pointStateText !== ""
         && this._renderPositionStateView()
-        }
+        } */}
+        {this._renderPositionStateView()}
 
         {this._renderAIDetectChange()}
         <SurfaceView

@@ -61,7 +61,9 @@ export default class SecondMapSettings extends Component {
     setMapScaleView: () => {},
     renderItem?: () => {},
     showCompass: () => {},
-    isShowCompass: boolean
+    isShowCompass: boolean,
+    setPointParamShow: () => void,
+    isPointParamShow: boolean,
   }
   constructor(props) {
     super(props)
@@ -274,6 +276,7 @@ export default class SecondMapSettings extends Component {
     data[12].value = await SMap.isMagnifierEnabled()
     data[13].value = await SMap.isShowLocation()
     data[14].value = this.props.isShowCompass
+    data[15].value = this.props.isPointParamShow
     data.splice(1,1)
 
     if (global.Type === ChunkType.MAP_NAVIGATION) {
@@ -372,6 +375,9 @@ export default class SecondMapSettings extends Component {
   _onValueChange = async ({ value, item, index }) => {
     const data = this.state.data.concat()
     switch (item.title) {
+      case  getLanguage().Map_Settings.SHOW_POINT_INFO:
+        this.props.setPointParamShow(value)
+        break
       case getLanguage().Map_Settings.SHOW_COMPASS:
         this.props.showCompass(value)
         break

@@ -2880,5 +2880,7 @@ export const language_fr: typeof language_cn = {
 
   RENDER_AR_SCENE_ON_3D: 'Render AR to 3D Scene',  // To be tanslated
   RESTART_MODULE_INFO: 'This setting will take effect after restart the module. Would you like to restart module now?',  // To be tanslated
+  RTK_AUTO_CALIBRATION: "RTK auto calibration",  // To be tanslated
+  SHOW_POINT_INFO:"Display location infomation",  // To be tanslated
 
 }

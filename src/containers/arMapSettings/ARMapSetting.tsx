@@ -7,7 +7,7 @@ import { Container, SwitchItem } from '../../components'
 import { AppDialog, AppEvent, dp, scaleSize } from '../../utils'
 import { color, size } from '../../styles'
 import { getLanguage } from '../../language'
-import { setDatumPoint , arPoiSearch, set3dSceneFirst } from '../../redux/models/setting'
+import { setDatumPoint , arPoiSearch, set3dSceneFirst, setRTKAutoCalibration, setPointParamShow } from '../../redux/models/setting'
 import { MapToolbar } from '../workspace/components'
 import NavigationService from '../NavigationService'
 
@@ -62,6 +62,30 @@ class ARMapSetting extends React.Component<Props,State> {
             }}
           />
         )}
+
+        {/* RTK自动校准 */}
+        {Platform.OS === 'android' && (
+          <SwitchItem
+            textStyle={styles.itemText}
+            text={getLanguage().RTK_AUTO_CALIBRATION}
+            value={this.props.isRTKAutoCalibration}
+            onPress={value => {
+              this.props.setRTKAutoCalibration(value)
+            }}
+          />
+        )}
+
+        {/* 显示定位信息 */}
+        {Platform.OS === 'android' && (
+          <SwitchItem
+            textStyle={styles.itemText}
+            text={getLanguage().SHOW_POINT_INFO}
+            value={this.props.isPointParamShow}
+            onPress={value => {
+              this.props.setPointParamShow(value)
+            }}
+          />
+        )}
       </View>
     )
   }
@@ -101,13 +125,17 @@ class ARMapSetting extends React.Component<Props,State> {
 
 const mapStateToProp = (state: any) => ({
   mapModules: state.mapModules.toJS(),
-  is3dSceneFirst: state.setting.toJS().is3dSceneFirst
+  is3dSceneFirst: state.setting.toJS().is3dSceneFirst,
+  isRTKAutoCalibration: state.setting.toJS().isRTKAutoCalibration,
+  isPointParamShow: state.setting.toJS().isPointParamShow,
 })
 
 const mapDispatch = {
   setDatumPoint,
   arPoiSearch,
   set3dSceneFirst,
+  setRTKAutoCalibration,
+  setPointParamShow,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

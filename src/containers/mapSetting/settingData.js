@@ -429,6 +429,11 @@ const basicSettings = () => [
     value: false,
     iconType: 'switch',
   },
+  {
+    title: getLanguage().Map_Settings.SHOW_POINT_INFO,
+    value: false,
+    iconType: 'switch',
+  },
 ]
 // 范围设置
 const rangeSettings = () => [

@@ -2881,4 +2881,6 @@ export const language_cn = {
 
   RENDER_AR_SCENE_ON_3D: '优先渲染场景到3维',
   RESTART_MODULE_INFO: '该设置重启模块后生效，是否现在退出模块?',
+  RTK_AUTO_CALIBRATION: "RTK自动校准",
+  SHOW_POINT_INFO:"显示定位信息",
 }

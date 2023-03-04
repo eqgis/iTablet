@@ -19,6 +19,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     overflow: 'hidden',
   },
+  containerHiden: {
+    top: dp(-20),
+  },
   text: {
     fontSize: dp(10),
     // backgroundColor: 'transparent',

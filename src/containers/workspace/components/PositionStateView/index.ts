@@ -5,6 +5,7 @@ import { RootState } from "@/redux/types"
 const mapStateToProp = (state: RootState) => ({
   device: state.device.toJS().device,
   pointStateText: state.location.toJS().pointStateText,
+  isPointParamShow: state.setting.toJS().isPointParamShow,
 })
 
 const mapDispatch = {

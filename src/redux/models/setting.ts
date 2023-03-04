@@ -1,7 +1,7 @@
 import { fromJS, Record } from 'immutable'
 import { REHYDRATE } from 'redux-persist'
 import { Action, handleActions } from 'redux-actions'
-import { SMap, SLanguage, SLocation } from 'imobile_for_reactnative'
+import { SMap, SLanguage, SLocation, SARMap } from 'imobile_for_reactnative'
 // import { DatasetType} from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { NativeModules } from 'react-native'
 import { getMapSettings } from '../../containers/mapSetting/settingData'
@@ -45,6 +45,8 @@ export const SET_AI_DETECT_MODEL = 'SET_AI_DETECT_MODEL'
 export const SET_AI_CLASSIFY_MODEL = 'SET_AI_CLASSIFY_MODEL'
 const SET_ARLABEL = 'SET_ARLABEL'
 const SET_3D_SCENE_FIRST = 'SET_3D_SCENE_FIRST'
+const SET_HIGH_PRECISION_AUTO_CALIBRATION = 'SET_HIGH_PRECISION_AUTO_CALIBRATION'
+const SET_POINT_PARAM_SHOW = 'SET_POINT_PARAM_SHOW'
 
 // Actions
 // --------------------------------------------------
@@ -303,6 +305,21 @@ export const set3dSceneFirst = (is3dSceneFirst: boolean) => async (dispatch: (ar
   })
 }
 
+export const setRTKAutoCalibration = (isRTKAutoCalibration: boolean) => async (dispatch: (arg0: { type: string; payload: any }) => any) => {
+  await SARMap.setRTKAutoCalibration(isRTKAutoCalibration)
+  await dispatch({
+    type: SET_HIGH_PRECISION_AUTO_CALIBRATION,
+    payload: isRTKAutoCalibration,
+  })
+}
+
+export const setPointParamShow = (isPointParamShow: boolean) => async (dispatch: (arg0: { type: string; payload: any }) => any) => {
+  await dispatch({
+    type: SET_POINT_PARAM_SHOW,
+    payload: isPointParamShow,
+  })
+}
+
 const defaultMapLegend: {[key in keyof Legend]?: Legend[key]} = (() => {
   let _mapLegend: {[key in keyof Legend]?: Legend[key]} = {}
   const legendConfig = {
@@ -376,6 +393,8 @@ const initialState = fromJS({
   aiDetectData: {},
   aiClassifyData: {},
   is3dSceneFirst: false,
+  isRTKAutoCalibration: false,
+  isPointParamShow: false,
 })
 
 interface Legend {
@@ -438,7 +457,11 @@ interface SettingState {
   poiSearch: boolean,
   aiDetectData: {[key: string]: any},
   aiClassifyData: {[key: string]: any},
-  is3dSceneFirst: boolean
+  is3dSceneFirst: boolean,
+  /** 是否RTK自动校准 */
+  isRTKAutoCalibration: boolean,
+  /** 是否显示定位信息 */
+  isPointParamShow: boolean,
 }
 
 type SettingStateType = Record<SettingState> & SettingState
@@ -593,6 +616,12 @@ export default handleActions<SettingStateType>(
       global.is3dSceneFirst = payload
       return state.setIn(['is3dSceneFirst'], fromJS(payload))
     },
+    [`${SET_HIGH_PRECISION_AUTO_CALIBRATION}`]: (state, { payload }) => {
+      return state.setIn(['isRTKAutoCalibration'], fromJS(payload))
+    },
+    [`${SET_POINT_PARAM_SHOW}`]: (state, { payload }) => {
+      return state.setIn(['isPointParamShow'], fromJS(payload))
+    },
     [REHYDRATE]: (state, { payload }) => {
       let data: SettingStateType = ModelUtils.checkModel(
         state,
@@ -614,6 +643,7 @@ export default handleActions<SettingStateType>(
       data.isAR = false
       data.poiSearch = false
       // data.showARLabel = true
+      SARMap.setRTKAutoCalibration(data?.isRTKAutoCalibration || false)
 
       // 临时存放上一期关闭app时保存的数据
       // payload && setLastLaunchState(payload)

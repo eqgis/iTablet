@@ -4,6 +4,7 @@ import styles from './style'
 
 interface Props {
   pointStateText: string,
+  isPointParamShow: boolean,
 }
 
 export default class PositionStateView extends Component<Props> {
@@ -21,6 +22,7 @@ export default class PositionStateView extends Component<Props> {
       <Animated.View
         style={[
           styles.container,
+          (!this.props.isPointParamShow || this.props.pointStateText == "") && styles.containerHiden
         ]}
       >
         <Text style={[styles.text]}>{this.props.pointStateText}</Text>

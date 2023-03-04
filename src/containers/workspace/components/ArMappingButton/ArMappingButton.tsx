@@ -24,6 +24,7 @@ import {
   SARMap,
   SData,
   SPlot,
+  SARMeasure,
 } from 'imobile_for_reactnative'
 import { DatasetType, } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { color } from '../../../../styles'
@@ -1107,9 +1108,12 @@ export default class ArMappingButton extends React.Component {
 
   /** 撤销 **/
   undo = async () => {
-    await SARMap.undoDraw()
+    // await SARMap.undoDraw()
+    //todo 区分采集和测量
+    await SARMeasure.undo()
     if (this.state.measureType === 'arMeasureHeight') {
-      const height = await SARMap.getCurrentHeight()
+      // const height = await SARMap.getCurrentHeight()
+      const height = (await SARMeasure.getMeasureLength()).toFixed(2)
       // this.setState({
       //   currentHeight: height + 'm',
       // })
@@ -1119,12 +1123,16 @@ export default class ArMappingButton extends React.Component {
 
   /** 连续测量 **/
   continuousDraw = async () => {
-    await SARMap.endCurrentDraw()
+    // await SARMap.endCurrentDraw()
+    //todo 区分采集和测量
+    await SARMeasure.submit()
   }
 
   /** 清除 **/
   clearAll = async () => {
-    await SARMap.clearMeasure()
+    // await SARMap.clearMeasure()
+    //todo 区分采集和测量
+    await SARMeasure.clear()
     if (this.state.measureType === 'arMeasureHeight'||this.state.measureType === 'measureLength') {
       this.props.setCurrentHeight('0m')
       // this.setState({

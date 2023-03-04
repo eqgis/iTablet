@@ -277,6 +277,7 @@ export default class MapView extends React.Component {
     aiClassifyData: PropTypes.object,
     setAIClassifyModel: PropTypes.func,
     setAIDetectModel: PropTypes.func,
+    isRTKAutoCalibration: PropTypes.bool,
   }
 
   /** 是否导航中 */
@@ -1320,6 +1321,7 @@ export default class MapView extends React.Component {
     // }
     this.initBaseMapPosistion(Dimensions.get('screen'))
     this.onMapLoad?.('ar')
+    SARMap.setRTKAutoCalibration(this.props?.isRTKAutoCalibration || false)
   }
 
   onChange = event => {

@@ -120,6 +120,7 @@ const mapStateToProps = state => ({
   peripheralDevice: state.setting.toJS().peripheralDevice,
   essentialInfo: state.location.toJS().essentialInfo,
   showARLabel: state.setting.toJS().showARLabel,
+  isRTKAutoCalibration: state.setting.toJS().isRTKAutoCalibration,
 })
 
 const mapDispatchToProps = {

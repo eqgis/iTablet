@@ -9,6 +9,8 @@ import color from '../../styles/color'
 import { getImage } from '@/assets'
 import { LocationConnectionParam } from '../BluetoothDevices/BluetoothDevices'
 import { TSNonNullExpression } from '@babel/types'
+import { Picker } from '@react-native-picker/picker'
+import { PositionAccuracyType } from 'imobile_for_reactnative/NativeModule/interfaces/SLocation'
 
 const radio_on = require('../../assets/public/radio_select.png')
 const radio_off = require('../../assets/public/radio_select_no.png')
@@ -17,6 +19,8 @@ interface Props {
   navigation: any
   peripheralDevice: LocationConnectionParam
   setDevice: (param: LocationConnectionParam) => void
+  positionAccuracy: PositionAccuracyType
+  setPositionAccuracy: (type: PositionAccuracyType) => void
 }
 
 interface State {
@@ -29,10 +33,22 @@ interface State {
   distanceLocationText: string
   timeLocationText: string
   // selectDevicesType: string
+  positionAccuracy: PositionAccuracyType
+}
+
+interface positionAccuracyItemType {
+  label: string
+  value: PositionAccuracyType
 }
 
 class LocationSetting extends React.Component<Props, State> {
   prevOption: LocationConnectionParam
+
+  positionAccuracyArray: Array<positionAccuracyItemType> = [
+    {label: "米级", value:1},
+    {label: "亚米级", value:5},
+    {label: "厘米级", value:4},
+  ]
 
   constructor(props:Props) {
     super(props)
@@ -47,6 +63,7 @@ class LocationSetting extends React.Component<Props, State> {
       distanceLocationText: "",
       timeLocationText: "",
       // selectDevicesType: this.prevOption.type,
+      positionAccuracy: this.props.positionAccuracy || 5,
     }
   }
 
@@ -103,6 +120,12 @@ class LocationSetting extends React.Component<Props, State> {
     }else{
       SLocation.setDistanceLocation(false)
       SLocation.setTimeLocation(false)
+    }
+
+    // 当当前选择的精度与之前的精度不同时，才去设置
+    if(this.state.positionAccuracy !== this.props.positionAccuracy) {
+      SLocation.setPositionAccuracy(this.state.positionAccuracy)
+      this.props.setPositionAccuracy(this.state.positionAccuracy)
     }
 
     // 直接将redux里的值拿给原生, 选择好的设备先放在了redux里，所以保存的时候直接修改原生的设备就好了
@@ -251,6 +274,28 @@ class LocationSetting extends React.Component<Props, State> {
         >
           <Text style={styles.text}>{getLanguage(global.language).Profile.NTRIP_SETTING}</Text>
         </TouchableOpacity>
+        {this.renderSeperator()}
+
+        <View
+          style={[styles.itemView]}
+        >
+          <Text style={styles.text}>{getLanguage(global.language).Profile.INSTRUMENT_TYPE}</Text>
+          <Picker
+            selectedValue={this.state.positionAccuracy}
+            mode={'dropdown'}
+            style={[styles.pickerSize]}
+            onValueChange={value => {
+              // setValue(value)
+              // value !== null && props.onValueChange(value)
+              this.setState({positionAccuracy: value})
+            } }
+          >
+            {this.positionAccuracyArray.map((item, index) => {
+              return <Picker.Item label={item.label} value={item.value} key={item.label + index} />
+            })}
+
+          </Picker>
+        </View>
         {this.renderSeperator()}
       </View>
     )
@@ -444,6 +489,23 @@ const styles = StyleSheet.create({
   },
   devicesText: {
     fontSize: scaleSize(24),
-  }
+  },
+  pickerView:{
+    width: '100%',
+    flexDirection: 'column',
+    paddingHorizontal: dp(10),
+  },
+  pickerSize: {
+    width: dp(140),
+    height: dp(30),
+  },
+  pickerItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: dp(10),
+    paddingLeft: dp(40),
+    height:dp(50),
+  },
 })
 export default LocationSetting

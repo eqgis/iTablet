@@ -1,7 +1,7 @@
 import { fromJS } from "immutable"
 import { handleActions } from 'redux-actions'
 import { REHYDRATE } from 'redux-persist'
-import { NtripMountPoint } from "imobile_for_reactnative/NativeModule/interfaces/SLocation"
+import { NtripMountPoint, PositionAccuracyType } from "imobile_for_reactnative/NativeModule/interfaces/SLocation"
 
 
 // 类型定义
@@ -25,6 +25,7 @@ export interface NtripInfoType {
 // --------------------------------------------------
 const UPDATE_NTRIP_INFO = 'UPDATE_NTRIP_INFO'
 const SET_POINT_STATE_TEXT = 'SET_POINT_STATE_TEXT'
+const SET_POSITION_ACCURACY = 'SET_POSITION_ACCURACY'
 
 
 // Actions Type
@@ -38,6 +39,11 @@ export interface upDateNtripInfoAction {
 export interface pointStateTextAction {
   type: typeof SET_POINT_STATE_TEXT
   payload: string
+}
+
+export interface positionAccuracyAction {
+  type: typeof SET_POSITION_ACCURACY
+  payload: PositionAccuracyType
 }
 
 
@@ -81,6 +87,22 @@ export const setPointStateText = (
   }
 }
 
+/** 设置高精定位的精度选择 */
+export const setPositionAccuracy = (
+  type: PositionAccuracyType
+) => async (
+  dispatch: (arg0: positionAccuracyAction) => void
+) => {
+  try {
+    await dispatch({
+      type: SET_POSITION_ACCURACY,
+      payload: type,
+    })
+  } catch (error) {
+    // to do
+  }
+}
+
 // 初始值
 // --------------------------------------------------
 const initialState = fromJS({
@@ -95,7 +117,8 @@ const initialState = fromJS({
     name: '',
     requireGGA: false,
   },
-  pointStateText: '',
+  pointStateText: '3333',
+  positionAccuracy: 5,
 })
 
 
@@ -113,6 +136,9 @@ export default handleActions(
     },
     [`${SET_POINT_STATE_TEXT}`]: (state: any, { payload }) => {
       return state.setIn(['pointStateText'], fromJS(payload))
+    },
+    [`${SET_POSITION_ACCURACY}`]: (state: any, { payload }) => {
+      return state.setIn(['positionAccuracy'], fromJS(payload))
     },
 
     [REHYDRATE]: (state, { payload }) => {

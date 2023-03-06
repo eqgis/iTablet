@@ -117,7 +117,7 @@ const initialState = fromJS({
     name: '',
     requireGGA: false,
   },
-  pointStateText: '3333',
+  pointStateText: '',
   positionAccuracy: 5,
 })
 

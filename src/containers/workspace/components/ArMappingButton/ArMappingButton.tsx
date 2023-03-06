@@ -25,6 +25,7 @@ import {
   SData,
   SPlot,
   SARMeasure,
+  SARCollector,
 } from 'imobile_for_reactnative'
 import { DatasetType, } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { color } from '../../../../styles'
@@ -686,7 +687,7 @@ export default class ArMappingButton extends React.Component {
     }
     this.props.isTrack(false)
     this.isDrawing = true
-    SARMap.setMeasureMode('DRAW_POINT')
+    SARCollector.setCollectMode('DRAW_POINT')
     this.setState({
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         global.language,
@@ -757,7 +758,7 @@ export default class ArMappingButton extends React.Component {
     }
     this.props.isTrack(false)
     this.isDrawing = true
-    SARMap.setMeasureMode('DRAW_LINE')
+    SARCollector.setCollectMode('DRAW_LINE')
     this.setState({
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         global.language,
@@ -827,7 +828,7 @@ export default class ArMappingButton extends React.Component {
     }
     this.props.isTrack(false)
     this.isDrawing = true
-    SARMap.setMeasureMode('DRAW_AREA')
+    SARCollector.setCollectMode('DRAW_AREA')
     this.setState({
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         global.language,
@@ -897,7 +898,7 @@ export default class ArMappingButton extends React.Component {
     }
     this.props.isTrack(false)
     this.isDrawing = true
-    SARMap.setMeasureMode('DRAW_RECTANGLE')
+    SARCollector.setCollectMode('DRAW_RECTANGLE')
     this.setState({
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         global.language,
@@ -966,7 +967,7 @@ export default class ArMappingButton extends React.Component {
     }
     this.props.isTrack(false)
     this.isDrawing = true
-    SARMap.setMeasureMode('DRAW_CIRCLE')
+    SARCollector.setCollectMode('DRAW_CIRCLE')
     this.setState({
       isCollect:false, showSave: true, showSwitch: false, toolbar: { height: scaleSize(96) }, title: getLanguage(
         global.language,
@@ -1109,8 +1110,11 @@ export default class ArMappingButton extends React.Component {
   /** 撤销 **/
   undo = async () => {
     // await SARMap.undoDraw()
-    //todo 区分采集和测量
-    await SARMeasure.undo()
+    if(this.isARMeasure()) {
+      await SARMeasure.undo()
+    } else{
+      await SARCollector.undo()
+    }
     if (this.state.measureType === 'arMeasureHeight') {
       // const height = await SARMap.getCurrentHeight()
       const height = (await SARMeasure.getMeasureLength()).toFixed(2)
@@ -1124,21 +1128,42 @@ export default class ArMappingButton extends React.Component {
   /** 连续测量 **/
   continuousDraw = async () => {
     // await SARMap.endCurrentDraw()
-    //todo 区分采集和测量
-    await SARMeasure.submit()
+    if(this.isARMeasure()) {
+      await SARMeasure.submit()
+    } else{
+      await SARCollector.submit()
+    }
   }
 
   /** 清除 **/
   clearAll = async () => {
     // await SARMap.clearMeasure()
-    //todo 区分采集和测量
-    await SARMeasure.clear()
+    if(this.isARMeasure()) {
+      await SARMeasure.clear()
+    } else{
+      await SARCollector.clear()
+    }
     if (this.state.measureType === 'arMeasureHeight'||this.state.measureType === 'measureLength') {
       this.props.setCurrentHeight('0m')
       // this.setState({
       //   currentHeight: '0m',
       // })
     }
+  }
+
+  /** 采集还是测量 */
+  isARMeasure = (): boolean => {
+    console.log('isMeasure', this.state.measureType)
+    return (
+      this.state.measureType === 'arMeasureHeight'
+      || this.state.measureType === 'measureLength'
+      || this.state.measureType === 'measureArea'
+      || this.state.measureType === 'arMeasureRectangle'
+      || this.state.measureType === 'arMeasureCircle'
+      || this.state.measureType === 'measureAngle'
+      || this.state.measureType === 'arMeasureCuboid'
+      || this.state.measureType === 'arMeasureCylinder'
+    )
   }
 
   /** 保存 **/
@@ -1157,8 +1182,11 @@ export default class ArMappingButton extends React.Component {
       datasourceAlias = 'Label_' + this.props.user.currentUser.userName + '#'
       datasetName = `Default_Tagging_${this.props.user.currentUser.userName}`
     }
-    SARMap.setMeasurePath(datasourceAlias, datasetName)
-    SARMap.saveMeasureData(datasourceAlias, datasetName).then(result => {
+    // SARMap.setMeasurePath(datasourceAlias, datasetName)
+    // SARMap.saveMeasureData(datasourceAlias, datasetName).then(result => {
+    //   Toast.show(result ? getLanguage().Prompt.SAVE_SUCCESSFULLY : getLanguage().Prompt.SAVE_FAILED)
+    // })
+    SARCollector.save().then(result => {
       Toast.show(result ? getLanguage().Prompt.SAVE_SUCCESSFULLY : getLanguage().Prompt.SAVE_FAILED)
     })
   }

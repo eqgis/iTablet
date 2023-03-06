@@ -25,6 +25,7 @@ import {
   GeoStyle,
   SARNavigation,
   SARMeasure,
+  SARCollector,
 } from 'imobile_for_reactnative'
 import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 import { DatasetType, GeometryType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
@@ -2845,7 +2846,7 @@ export default class MapView extends React.Component {
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_LENGTH
       } else if (this.measureType === 'drawLine') {
-        SARMap.setMeasureMode('DRAW_LINE')
+        SARCollector.setCollectMode('DRAW_LINE')
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_LINE
@@ -2853,7 +2854,7 @@ export default class MapView extends React.Component {
           this.props.setDatumPoint(true)
         }
       } else if (this.measureType === 'arDrawArea') {
-        SARMap.setMeasureMode('DRAW_AREA')
+        SARCollector.setCollectMode('DRAW_AREA')
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_AREA
@@ -2861,7 +2862,7 @@ export default class MapView extends React.Component {
           this.props.setDatumPoint(true)
         }
       } else if (this.measureType === 'arDrawPoint') {
-        SARMap.setMeasureMode('DRAW_POINT')
+        SARCollector.setCollectMode('DRAW_POINT')
         this.title = getLanguage(
           global.language,
         ).Map_Main_Menu.MAP_AR_AI_ASSISTANT_MEASURE_DRAW_POINT
@@ -2998,7 +2999,8 @@ export default class MapView extends React.Component {
         datasourceAlias = 'Label_' + this.props.user.currentUser.userName + '#'
         datasetName = 'Default_Tagging'
       }
-      SARMap.setMeasurePath(datasourceAlias, datasetName)
+      // SARMap.setMeasurePath(datasourceAlias, datasetName)
+      SARCollector.setDataset({datasourceName: datasourceAlias, datasetName: datasetName})
 
       this.setState({ showArMappingButton: true, showSave: this.showSave, isfirst: true, showGenera: true, isDrawing: this.isDrawing, isCollect: this.isCollect, isnew: this.isnew, canContinuousDraw: this.canContinuousDraw, measureType: this.measureType, isMeasure: this.isMeasure })
     }
@@ -4782,9 +4784,15 @@ export default class MapView extends React.Component {
   ARMappingHeaderBack = () => {
     //todo 区分采集和测量
     SARMap.stopLocation()
-    SARMap.cancelCurrent()
-    SARMeasure.cancel()
-    SARMap.clearMeasure()
+    // SARMap.cancelCurrent()
+    // SARMap.clearMeasure()
+    if(this.isMeasure) {
+      SARMeasure.cancel()
+      SARMeasure.clear()
+    } else {
+      SARCollector.cancel()
+      SARCollector.clear()
+    }
     this.listeners && this.listeners.infoListener?.remove()
     this.listeners && this.listeners.addListener?.remove()
     SARMap.showMeasureView(false)
@@ -4871,8 +4879,11 @@ export default class MapView extends React.Component {
       this.setState({ showADDPoint: false, isfirst: false })
     } else {
       // SARMap.draw()
-      //todo 区分采集和测量
-      SARMeasure.addHitPoint()
+      if(this.isMeasure) {
+        SARMeasure.addHitPoint()
+      } else {
+        SARCollector.addHitPoint()
+      }
       this.setState({ showADDPoint: false, isfirst: false })
     }
   }

@@ -1954,7 +1954,7 @@ export default class MapView extends React.Component {
             layer.isVisible = await SMap.setLayerVisible(layer.name, true)
             this.props.setCurrentLayer(layer)
 
-            if (mapInfo) await SMap.saveMap('')
+            if (mapInfo) await SMap.saveMap()
             // 检查是否有可显示的标注图层，并把多媒体标注显示到地图上
             const dataList = await SMap._getTaggingLayers(
               this.props.user.currentUser.userName,

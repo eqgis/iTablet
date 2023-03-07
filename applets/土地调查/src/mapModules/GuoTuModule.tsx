@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
  * 首页显示的土地调查模块
  */
 export default class GuoTuModule extends Module {
-  static key = 'guotu'
+  static key = '土地调查'
   serviceLoading = new Animated.Value(0)
   aniMotion: Animated.CompositeAnimation | null | undefined
   isUploading = false

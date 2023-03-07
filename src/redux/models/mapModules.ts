@@ -34,7 +34,7 @@ export const setMapModule = (
   params: typeof Module[],
   cb?: () => void,
 ) => async (dispatch: (params: MapModule<typeof MODULES_SET_MAP_MODULE, SetMapModule>) => any, getState: () => any) => {
-  const userName = getState().user.toJS().currentUser.userName
+  const userName = getState().user.toJS().currentUser.userName || 'Customer'
   await dispatch({
     type: MODULES_SET_MAP_MODULE,
     payload: {
@@ -62,7 +62,7 @@ export const addMapModule = (
   params: typeof Module,
   cb?: () => void,
 ) => async (dispatch: (params: MapModule<typeof MODULES_ADD_MAP_MODULE, AddMapModule>) => any, getState: () => any) => {
-  const userName = getState().user.toJS().currentUser.userName
+  const userName = getState().user.toJS().currentUser.userName || 'Customer'
   await dispatch({
     type: MODULES_ADD_MAP_MODULE,
     payload: {
@@ -77,7 +77,7 @@ export const deleteMapModule = (
   moduleKey: string,
   cb?: () => void,
 ) => async (dispatch: (params: MapModule<typeof MODULES_DELETE_MAP_MODULE, DeleteMapModule>) => any, getState: () => any) => {
-  const userName = getState().user.toJS().currentUser.userName
+  const userName = getState().user.toJS().currentUser.userName || 'Customer'
   await dispatch({
     type: MODULES_DELETE_MAP_MODULE,
     payload: {
@@ -92,7 +92,7 @@ export const loadAddedModule = (
   moduleKey: string,
   cb?: () => void,
 ) => async (dispatch: (params: MapModule<typeof MODULES_LOAD_ADDED_APPLETS, LoadAddedModule>) => any, getState: () => any) => {
-  const userName = getState().user.toJS().currentUser.userName
+  const userName = getState().user.toJS().currentUser.userName || 'Customer'
   await dispatch({
     type: MODULES_LOAD_ADDED_APPLETS,
     payload: {
@@ -123,6 +123,9 @@ export default handleActions(
     },
     [`${MODULES_ADD_MAP_MODULE}`]: (state: any, { payload }: handleParams<AddMapModule>) => {
       const modules = state.toJS().modules
+      if (payload.userName && !modules[payload.userName]) {
+        modules[payload.userName] = []
+      }
       const payloadModule = new payload.module()
       let _module
       for (const module of modules[payload.userName]) {

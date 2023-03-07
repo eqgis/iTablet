@@ -29,7 +29,7 @@ class MyApplet extends MyDataPage {
       batchMode: false, // 1是批量添加，2是批量删除
       title: getLanguage(this.props.language).Find.APPLET,
     }
-    let { params } = this.props.route
+    const { params } = this.props.route
     if (params) {
       this.refresh = params.refresh
     }
@@ -38,7 +38,7 @@ class MyApplet extends MyDataPage {
   getData = async () => {
     const unusedModules = await BundleTools.getUnusedBundles()
     // const assetsModules = await BundleTools.getAssetsBundles()
-    const files = await BundleTools.getBundles()
+    const files = await BundleTools.getBundles(this.props.user.currentUser.userName)
     const _files = []
     for (const file of files) {
       if (file.name !== 'iTablet') {
@@ -79,10 +79,10 @@ class MyApplet extends MyDataPage {
 
   getCustomItemPopupData = () => {
     if (!this.itemInfo) return []
-    let item = this.itemInfo.item
-    let _sectionData = JSON.parse(JSON.stringify(this.state.sectionData))
-    let sectionIndex = -1
-    for (let i in _sectionData) {
+    const item = this.itemInfo.item
+    const _sectionData = JSON.parse(JSON.stringify(this.state.sectionData))
+    const sectionIndex = -1
+    for (const i in _sectionData) {
       if (this.itemInfo.section.title === _sectionData[i].title) {
         sectionIndex = parseInt(i)
         break
@@ -94,7 +94,7 @@ class MyApplet extends MyDataPage {
           title: getLanguage(this.props.language).Profile.ADD_APPLET,
           action: async () => {
             this._closeModal()
-            const result = await BundleTools.loadModel(item.path)
+            const result = await BundleTools.loadModel(this.props.user.currentUser.userName, item.path)
             if (result) {
               // 如已经加载过,则从redux记录中直接放到首页
               this.props.loadAddedModule(result.name)
@@ -109,7 +109,7 @@ class MyApplet extends MyDataPage {
   }
 
   getSectionIndex = () => {
-    let _sectionData = JSON.parse(JSON.stringify(this.state.sectionData))
+    const _sectionData = JSON.parse(JSON.stringify(this.state.sectionData))
     let sectionIndex = -1
     for (let i in _sectionData) {
       if (this.itemInfo.section.title === _sectionData[i].title) {
@@ -123,7 +123,7 @@ class MyApplet extends MyDataPage {
   deleteData = async () => {
     try {
       this._closeModal()
-      let sectionIndex = this.getSectionIndex()
+      const sectionIndex = this.getSectionIndex()
       // 删除bundle
       let result = false
       if (sectionIndex) {
@@ -131,7 +131,7 @@ class MyApplet extends MyDataPage {
         result = await BundleTools.deleteBundle(this.itemInfo.item.path)
       } else {
         // 卸载已加载的小插件
-        result = await BundleTools.unloadBundle(this.itemInfo.item.path)
+        result = await BundleTools.unloadBundle(this.props.user.currentUser.userName, this.itemInfo.item.path)
         // 卸载后,删除首页对应小插件
         result && this.props.deleteMapModule(this.itemInfo.item.name)
       }
@@ -167,7 +167,7 @@ class MyApplet extends MyDataPage {
   exportData = async () => {
     try {
       this.exportPath = ''
-      let sectionIndex = this.getSectionIndex()
+      const sectionIndex = this.getSectionIndex()
       let result = false
       if (sectionIndex) {
         // 导出本地小插件

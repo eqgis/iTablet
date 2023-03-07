@@ -812,7 +812,7 @@ class AppRoot extends Component {
       //   }
       // })
 
-      let applets = await BundleTools.getBundles()
+      let applets = await BundleTools.getBundles(this.props.user.currentUser.userName)
       let myMapModules = []
       // 系统自带模块
       for (let item of mapModules) {

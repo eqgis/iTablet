@@ -10,7 +10,7 @@ import { getLanguage } from '@/language'
 import { getThemeAssets } from '@/assets'
 
 import styles from './styles'
-import { BundleType } from 'imobile_for_reactnative'
+import { BundleType } from 'imobile_for_reactnative/NativeModule/interfaces/utils/BundleTools'
 
 interface Props {
   data: BundleType,

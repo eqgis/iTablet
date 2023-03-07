@@ -128,9 +128,9 @@ export default class Home extends Component {
 
   _loadModel = () => {
     try {
-      BundleTools.getBundles().then(async bundles => {
+      BundleTools.getBundles(this.props.user.currentUser.userName).then(async bundles => {
         for (const bundle of bundles) {
-          await BundleTools.loadModel(bundle.path).then(async result => {
+          await BundleTools.loadModel(this.props.user.currentUser.userName, bundle.path).then(async result => {
             // result && this.getBundles()
           })
         }

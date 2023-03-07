@@ -13,7 +13,7 @@ import { getImage } from '../assets'
  * 首页显示的旅行轨迹模块
  */
 export default class TourModule extends Module {
-  static key = 'tour'
+  static key = '旅行轨迹'
   constructor() {
     super({
       key: TourModule.key,

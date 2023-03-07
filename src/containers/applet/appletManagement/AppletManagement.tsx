@@ -14,7 +14,8 @@ import {
   Container,
   MTBtn,
 } from '@/components'
-import { BundleTools, BundleType } from 'imobile_for_reactnative'
+import { BundleTools } from 'imobile_for_reactnative'
+import { BundleType } from 'imobile_for_reactnative/NativeModule/interfaces/utils/BundleTools'
 // import _mapModules from '@/../configs/mapModules'
 import NavigationService from '../../NavigationService'
 import AppletItem2 from './AppletItem2'
@@ -86,7 +87,7 @@ class AppletManagement extends React.Component<Props, State> {
 
   getBundles = async () => {
     const unusedModules = await BundleTools.getUnusedBundles()
-    const files = await BundleTools.getBundles()
+    const files = await BundleTools.getBundles(this.props.user.currentUser.userName)
     const _files = []
     for (const file of files) {
       if (file.name !== 'iTablet') {
@@ -135,7 +136,7 @@ class AppletManagement extends React.Component<Props, State> {
     const modules = [<Text key={'unused'}>未加载Bundle</Text>]
     for (const module of this.state.unusedModules) {
       modules.push(this.renderItem(module, path => {
-        BundleTools.loadModel(path).then(async result => {
+        BundleTools.loadModel(this.props.user.currentUser.userName, path).then(async result => {
           result && this.getBundles()
         })
       }))
@@ -143,7 +144,7 @@ class AppletManagement extends React.Component<Props, State> {
     modules.push(<Text key={'loaded'}>已加载Bundle</Text>)
     for (const module of this.state.dynamicModules) {
       modules.push(this.renderItem(module, (path, bundleType) => {
-        BundleTools.openModel(path, bundleType)
+        // BundleTools.openModel(path, bundleType)
       }))
     }
     return modules
@@ -169,7 +170,7 @@ class AppletManagement extends React.Component<Props, State> {
           {/* {this._renderRows(this.state.myApplets, true)} */}
           {
             this.renderRows(this.state.dynamicModules, (path, bundleType) => {
-              BundleTools.openModel(path, bundleType)
+              // BundleTools.openModel(path, bundleType)
             })
           }
         </View>
@@ -186,7 +187,7 @@ class AppletManagement extends React.Component<Props, State> {
         <View style={styles.rows}>
           {this.renderRows(this.state.unusedModules, path => {
             // 加载小插件bundle包
-            BundleTools.loadModel(path).then(result => {
+            BundleTools.loadModel(this.props.user.currentUser.userName, path).then(result => {
               if (result) {
                 // 如已经加载过,则从redux记录中直接放到首页
                 this.props.loadAddedModule(result.name)

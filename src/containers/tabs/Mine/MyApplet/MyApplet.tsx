@@ -81,7 +81,7 @@ class MyApplet extends MyDataPage {
     if (!this.itemInfo) return []
     const item = this.itemInfo.item
     const _sectionData = JSON.parse(JSON.stringify(this.state.sectionData))
-    const sectionIndex = -1
+    let sectionIndex = -1
     for (const i in _sectionData) {
       if (this.itemInfo.section.title === _sectionData[i].title) {
         sectionIndex = parseInt(i)
@@ -111,7 +111,7 @@ class MyApplet extends MyDataPage {
   getSectionIndex = () => {
     const _sectionData = JSON.parse(JSON.stringify(this.state.sectionData))
     let sectionIndex = -1
-    for (let i in _sectionData) {
+    for (const i in _sectionData) {
       if (this.itemInfo.section.title === _sectionData[i].title) {
         sectionIndex = parseInt(i)
         break

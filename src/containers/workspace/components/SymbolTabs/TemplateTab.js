@@ -8,7 +8,7 @@ import { SMCollectorType } from 'imobile_for_reactnative'
 import { getLanguage } from '../../../../language'
 import { getThemeAssets } from '../../../../assets'
 import { collectionModule } from '../ToolBar/modules'
-import { ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
 
 export default class TemplateTab extends React.Component {
   props: {

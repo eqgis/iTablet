@@ -1,7 +1,7 @@
 /**
  * 添加 数据
  */
-import { SThemeCartography, SMap, SMSymbolTable, SData } from 'imobile_for_reactnative'
+import { STheme, SMap, SMSymbolTable, SData } from 'imobile_for_reactnative'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { FileTools } from '../../../../../../native'
 import { dataUtil, scaleSize, Toast } from '../../../../../../utils'
@@ -164,7 +164,7 @@ async function getDatasets(type, params = {}) {
     const selectList =
       (ToolbarModule.getData() && ToolbarModule.getData().selectList) || []
     const path = await FileTools.appendingHomeDirectory(params.path)
-    let list = await SThemeCartography.getUDBName(path)
+    let list = await STheme.getUDBName(path)
 
     //过滤属性表
     list = list.filter(item => item.datasetType !== 'TABULAR')

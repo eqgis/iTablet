@@ -1,4 +1,4 @@
-import { SThemeCartography, RangeMode, SMap } from 'imobile_for_reactnative'
+import { STheme, RangeMode, SMap, SData } from 'imobile_for_reactnative'
 import constants from '../../../../constants'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import {
@@ -15,7 +15,7 @@ import ThemeData from './ThemeData'
 import ThemeAction from './ThemeAction'
 import NavigationService from '../../../../../NavigationService'
 import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
-
+import { ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
 /**
  *
  * @param type
@@ -27,7 +27,7 @@ import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data
  */
 async function showDatasetsList(type, filter = {}) {
   const _params = ToolbarModule.getParams()
-  const isAnyOpenedDS = await SThemeCartography.isAnyOpenedDS()
+  const isAnyOpenedDS = await STheme.isAnyOpenedDS()
   if (!isAnyOpenedDS) {
     Toast.show(
       getLanguage(global.language).Prompt.PLEASE_ADD_DATASOURCE_BY_UNIFORM,
@@ -38,11 +38,11 @@ async function showDatasetsList(type, filter = {}) {
       getItemCallback: async data => {
         try {
           _params.setContainerLoading &&
-          _params.setContainerLoading(
-            true,
-            getLanguage(_params.language).Prompt.LOADING,
-          )
-  
+            _params.setContainerLoading(
+              true,
+              getLanguage(_params.language).Prompt.LOADING,
+            )
+
           let server = await FileTools.appendingHomeDirectory(data.item.path)
           let alias = data.item.name
 
@@ -50,7 +50,7 @@ async function showDatasetsList(type, filter = {}) {
           if (alias.indexOf('.sci', alias.length - '.sci'.length) !== -1) alias = alias.replace('.sci', '')
           // if (alias.endsWith('.udb')) alias = alias.replace('.udb', '')
           // if (alias.endsWith('.sci')) alias = alias.replace('.sci', '')
-  
+
           let datasourceParams = {
             server,
             engineType: EngineType.UDB,
@@ -74,7 +74,7 @@ async function showDatasetsList(type, filter = {}) {
   }
   const data = []
   const checkLabelAndPlot = /^(Label_|PlotEdit_(.*)@)(.*)#$/
-  SThemeCartography.getAllDatasetNames().then(getdata => {
+  STheme.getAllDatasetNames().then(getdata => {
     getdata.reverse()
     for (let i = 0; i < getdata.length; i++) {
       const datalist = getdata[i]
@@ -144,10 +144,24 @@ async function showDatasetsList(type, filter = {}) {
 function showExpressionList(type, themeType) {
   const listSelectable = type === 'ThemeGraph'
   if (!ToolbarModule.getData().currentLayer) return
-  SThemeCartography.getThemeExpressionByLayerName(
-    global.language,
-    ToolbarModule.getData().currentLayer.name,
-  ).then(getdata => {
+
+  const datasetName = ToolbarModule.getData().currentLayer.datasetName || ""
+  const datasourceName = ToolbarModule.getData().currentLayer.datasourceAlias || ""
+  SData.getFieldInfos({ datasetName, datasourceName }).then(async items => {
+    const expressionData1 = []
+    items.forEach(item => {
+      const type = SData.getFieldTypeString(item.type)
+      expressionData1.push(
+        {
+          "expression": item.name,
+          "isSelected": false, datasetName, datasourceName,
+          "fieldType": type,
+          "fieldTypeStr": type, "isSystemField": item.isSystemField
+        })
+    })
+    const datasetInfo = await SData.getDatasetInfo({ datasetName, datasourceName })
+    const getdata = { "dataset": { datasetName, "datasetType": datasetInfo?.datasetType }, "list": expressionData1 }
+
     const { dataset } = getdata
     const allExpressions = []
     getdata.list.forEach(item => {
@@ -170,10 +184,6 @@ function showExpressionList(type, themeType) {
     const buttons = listSelectable
       ? [ToolbarBtnType.CANCEL, ToolbarBtnType.TOOLBAR_COMMIT]
       : [ToolbarBtnType.CANCEL]
-    // const height =
-    //   ToolbarModule.getParams().device.orientation.indexOf('LANDSCAPE') === 0
-    //     ? ConstToolType.THEME_HEIGHT[3]
-    //     : ConstToolType.THEME_HEIGHT[5]
     const _data = {
       type,
       getData: ThemeData.getData,
@@ -204,6 +214,67 @@ function showExpressionList(type, themeType) {
     ToolbarModule.getParams().scrollListToLocation &&
       ToolbarModule.getParams().scrollListToLocation()
   })
+
+  // STheme.getThemeExpressionByLayerName(
+  //   global.language,
+  //   ToolbarModule.getData().currentLayer.name,
+  // ).then(getdata => {
+  //   const { dataset } = getdata
+  //   const allExpressions = []
+  //   getdata.list.forEach(item => {
+  //     if (isThemeFieldTypeAvailable(item.fieldTypeStr, themeType)) {
+  //       item.info = {
+  //         infoType: 'fieldType',
+  //         fieldType: item.fieldType,
+  //       }
+  //       allExpressions.push(item)
+  //     }
+  //   })
+  //   const data = [
+  //     {
+  //       title: dataset.datasetName,
+  //       datasetType: dataset.datasetType,
+  //       expressionType: true,
+  //       data: allExpressions,
+  //     },
+  //   ]
+  //   const buttons = listSelectable
+  //     ? [ToolbarBtnType.CANCEL, ToolbarBtnType.TOOLBAR_COMMIT]
+  //     : [ToolbarBtnType.CANCEL]
+  //   // const height =
+  //   //   ToolbarModule.getParams().device.orientation.indexOf('LANDSCAPE') === 0
+  //   //     ? ConstToolType.THEME_HEIGHT[3]
+  //   //     : ConstToolType.THEME_HEIGHT[5]
+  //   const _data = {
+  //     type,
+  //     getData: ThemeData.getData,
+  //     lastData: {
+  //       data,
+  //       buttons,
+  //       // height,
+  //     },
+  //     actions: ThemeAction,
+  //   }
+  //   ToolbarModule.addData(_data)
+  //   ToolbarModule.getParams().setToolbarVisible &&
+  //     ToolbarModule.getParams().setToolbarVisible(
+  //       true,
+  //       ConstToolType.SM_MAP_THEME_PARAM_CREATE_EXPRESSION_BY_LAYERNAME,
+  //       {
+  //         containerType: listSelectable
+  //           ? ToolbarType.selectableList
+  //           : ToolbarType.list,
+  //         isFullScreen: true,
+  //         isTouchProgress: false,
+  //         showMenuDialog: false,
+  //         // height,
+  //         data,
+  //         buttons,
+  //       },
+  //     )
+  //   ToolbarModule.getParams().scrollListToLocation &&
+  //     ToolbarModule.getParams().scrollListToLocation()
+  // })
 }
 
 // 通过数据集->创建栅格单值专题图
@@ -216,7 +287,7 @@ async function createThemeGridUniqueMap(params) {
     DatasetName: params.themeDatasetName,
     GridUniqueColorScheme: 'EE_Lake',
   }
-  await SThemeCartography.createThemeGridUniqueMap(paramsTheme).then(msg => {
+  await STheme.createThemeGridUniqueMap(paramsTheme).then(msg => {
     isSuccess = msg.result
     // errorInfo = msg.error && msg.error
     if (isSuccess && msg.layer) {
@@ -248,7 +319,7 @@ async function createThemeGridRangeMap(params) {
     DatasetName: params.themeDatasetName,
     GridRangeColorScheme: 'FF_Blues',
   }
-  await SThemeCartography.createThemeGridRangeMap(paramsTheme).then(msg => {
+  await STheme.createThemeGridRangeMap(paramsTheme).then(msg => {
     isSuccess = msg.result
     // errorInfo = msg.error && msg.error
     if (isSuccess && msg.layer) {
@@ -280,7 +351,7 @@ async function createThemeGridUniqueMapByLayer() {
     LayerName: currentLayer.name,
     GridUniqueColorScheme: 'EE_Lake',
   }
-  await SThemeCartography.createThemeGridUniqueMapByLayer(paramsTheme).then(
+  await STheme.createThemeGridUniqueMapByLayer(paramsTheme).then(
     msg => {
       isSuccess = msg.result
       // errorInfo = msg.error && msg.error
@@ -314,7 +385,7 @@ async function createThemeGridRangeMapByLayer() {
     LayerName: currentLayer.name,
     GridRangeColorScheme: 'FF_Blues',
   }
-  await SThemeCartography.createThemeGridRangeMapByLayer(paramsTheme).then(
+  await STheme.createThemeGridRangeMapByLayer(paramsTheme).then(
     msg => {
       isSuccess = msg.result
       // errorInfo = msg.error && msg.error
@@ -668,7 +739,7 @@ function getThemeMapCreate(type) {
       title: getLanguage(global.language).Map_Main_Menu.THEME_HEATMAP,
       // title: constants.THEME_HEATMAP,
       size: 'large',
-      action: () => showDatasetsList(type,{
+      action: () => showDatasetsList(type, {
         typeFilter: ['POINT'],
       }),
       image: getThemeAssets().themeType.heatmap,
@@ -714,19 +785,19 @@ function setRangeMode(type, rangeMode) {
       globalParams.setToolbarVisible(false)
       NavigationService.navigate('CustomModePage', { type })
     } else {
-      SThemeCartography.modifyThemeLabelRangeMap(_params)
+      STheme.modifyThemeLabelRangeMap(_params)
     }
   } else if (rangeMode === RangeMode.CUSTOMINTERVAL) {
     globalParams.setToolbarVisible(false)
     NavigationService.navigate('CustomModePage', { type })
   } else {
-    SThemeCartography.modifyThemeRangeMap(_params)
+    STheme.modifyThemeRangeMap(_params)
   }
 }
 
 function setGridRangeMode() {
   const _params = ToolbarModule.getData().themeParams
-  SThemeCartography.modifyThemeGridRangeMap(_params)
+  STheme.modifyThemeGridRangeMap(_params)
 }
 
 function getRangeMode(type) {
@@ -842,7 +913,7 @@ function getGridRangeMode() {
 /** 设置统一标签背景形状 */
 function setLabelFont() {
   const _params = ToolbarModule.getData().themeParams
-  return SThemeCartography.setLabelFontName(_params)
+  return STheme.setLabelFontName(_params)
 }
 function getLabelFont() {
   const data = [
@@ -907,7 +978,7 @@ function getLabelFont() {
 /** 设置统一标签背景形状 */
 function setLabelBackShape() {
   const _params = ToolbarModule.getData().themeParams
-  return SThemeCartography.setUniformLabelBackShape(_params)
+  return STheme.setUniformLabelBackShape(_params)
 }
 function getLabelBackShape() {
   const data = [
@@ -980,7 +1051,7 @@ function getLabelBackShape() {
 /** 设置统一标签字体 */
 function setLabelFontName() {
   const _params = ToolbarModule.getData().themeParams
-  return SThemeCartography.setLabelFontName(_params)
+  return STheme.setLabelFontName(_params)
 }
 
 function getLabelFontName() {
@@ -1088,8 +1159,8 @@ function getLabelFontName() {
 /** 设置统一标签旋转角度 */
 function setLabelFontRotation() {
   const _params = ToolbarModule.getData().themeParams
-  // return SThemeCartography.setUniformLabelRotaion(_params)
-  return SThemeCartography.setLabelRotation(_params)
+  // return STheme.setUniformLabelRotaion(_params)
+  return STheme.setLabelRotation(_params)
 }
 
 function getLabelFontRotation() {
@@ -1138,16 +1209,16 @@ function getLabelFontRotation() {
 function setColor() {
   const _params = ToolbarModule.getData().themeParams
   if (_params.colorType === 'UNIFORMLABEL_FORE_COLOR') {
-    return SThemeCartography.setUniformLabelColor(_params)
+    return STheme.setUniformLabelColor(_params)
   }
   if (_params.colorType === 'UNIFORMLABEL_BACKSHAPE_COLOR') {
-    return SThemeCartography.setUniformLabelBackColor(_params)
+    return STheme.setUniformLabelBackColor(_params)
   }
   if (_params.colorType === 'DOT_DENSITY_COLOR') {
-    return SThemeCartography.modifyDotDensityThemeMap(_params)
+    return STheme.modifyDotDensityThemeMap(_params)
   }
   if (_params.colorType === 'GRADUATED_SYMBOL_COLOR') {
-    return SThemeCartography.modifyGraduatedSymbolThemeMap(_params)
+    return STheme.modifyGraduatedSymbolThemeMap(_params)
   }
 }
 
@@ -2388,7 +2459,7 @@ function getGridUniqueColorScheme() {
 /** 设置统计专题图类型 */
 function setThemeGraphType() {
   const _params = ToolbarModule.getData().themeParams
-  return SThemeCartography.setThemeGraphType(_params)
+  return STheme.setThemeGraphType(_params)
 }
 
 function getThemeGraphType() {
@@ -2517,7 +2588,7 @@ function getThemeGraphType() {
 /** 设置统计专题图统计值计算方法 */
 function setThemeGraphGraduatedMode() {
   const _params = ToolbarModule.getData().themeParams
-  return SThemeCartography.setThemeGraphGraduatedMode(_params)
+  return STheme.setThemeGraphGraduatedMode(_params)
 }
 
 function getGraphThemeGradutedMode() {
@@ -2557,7 +2628,7 @@ function getGraphThemeGradutedMode() {
 /** 设置等级符号专题图分级方式 */
 function setThemeGraduatedSymbolGraduatedMode() {
   const _params = ToolbarModule.getData().themeParams
-  return SThemeCartography.modifyGraduatedSymbolThemeMap(_params)
+  return STheme.modifyGraduatedSymbolThemeMap(_params)
 }
 
 function getGraduatedSymbolGradutedMode() {
@@ -2799,9 +2870,8 @@ async function getUnifyStyleAdd() {
   ) {
     userUDBPath = `${(await FileTools.appendingHomeDirectory(
       ConstPath.UserPath,
-    )) + ToolbarModule.getParams().user.currentUser.userName}/${
-      ConstPath.RelativePath.Datasource
-    }`
+    )) + ToolbarModule.getParams().user.currentUser.userName}/${ConstPath.RelativePath.Datasource
+      }`
     userUDBs = await FileTools.getPathListByFilter(userUDBPath, {
       extension: 'udb',
       type: 'file',
@@ -2880,29 +2950,30 @@ async function getUnifyStyleAdd() {
  */
 async function createThemeByDataset(item, ToolbarParams = {}) {
   let paramsTheme = {}
+  const datasetInfo = { datasourceName: ToolbarParams.themeDatasourceAlias, datasetName: ToolbarParams.themeDatasetName, }
   let isSuccess = false
   // let errorInfo = ''
   switch (ToolbarParams.themeCreateType) {
-    case constants.THEME_UNIQUE_STYLE:
+    case constants.THEME_UNIQUE_STYLE: {
       // 单值风格
-      paramsTheme = {
-        DatasourceAlias: ToolbarParams.themeDatasourceAlias,
-        DatasetName: ToolbarParams.themeDatasetName,
-        UniqueExpression: item.expression,
+      const params = {
+        themeType: ThemeType.UNIQUE,
+        expression: item.expression,
         // ColorGradientType: 'CYANWHITE',
-        ColorScheme: 'BB_Green', // 有ColorScheme，则ColorGradientType无效（ColorGradientType的颜色方案会被覆盖）
+        colorScheme: 'BB_Green', // 有ColorScheme，则ColorGradientType无效（ColorGradientType的颜色方案会被覆盖）
       }
-      await SThemeCartography.createThemeUniqueMap(paramsTheme).then(msg => {
-        isSuccess = msg.result
-        if (isSuccess && msg.layer) {
-          ThemeAction.sendAddThemeMsg(msg.layer)
+      // await STheme.createThemeUniqueMap(paramsTheme).then(msg => {
+      await STheme.createThemeUniqueLayer(datasetInfo, params).then(layerInfo => {
+        if (layerInfo) {
+          isSuccess = true
+          ThemeAction.sendAddThemeMsg(layerInfo)
         }
       })
       // .catch(err => {
       //   errorInfo = err.message
       // })
       break
-    case constants.THEME_RANGE_STYLE:
+    } case constants.THEME_RANGE_STYLE:
       // 分段风格
       paramsTheme = {
         DatasourceAlias: ToolbarParams.themeDatasourceAlias,
@@ -2912,7 +2983,7 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
         RangeParameter: '11.0',
         ColorScheme: 'FF_Blues',
       }
-      await SThemeCartography.createThemeRangeMap(paramsTheme).then(msg => {
+      await STheme.createThemeRangeMap(paramsTheme).then(msg => {
         isSuccess = msg.result
         if (isSuccess && msg.layer) {
           ThemeAction.sendAddThemeMsg(msg.layer)
@@ -2930,7 +3001,7 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
         DotExpression: item.expression,
         Value: '20',
       }
-      await SThemeCartography.createDotDensityThemeMap(paramsTheme).then(
+      await STheme.createDotDensityThemeMap(paramsTheme).then(
         msg => {
           isSuccess = msg.result
           if (isSuccess && msg.layer) {
@@ -2951,7 +3022,7 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
         GraduatedMode: 'LOGARITHM',
         // SymbolSize: '30',
       }
-      await SThemeCartography.createGraduatedSymbolThemeMap(paramsTheme).then(
+      await STheme.createGraduatedSymbolThemeMap(paramsTheme).then(
         msg => {
           isSuccess = msg.result
           if (isSuccess && msg.layer) {
@@ -2974,7 +3045,7 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
         // FontSize: '15.0',
         ForeColor: '#000000',
       }
-      await SThemeCartography.createUniformThemeLabelMap(paramsTheme).then(
+      await STheme.createUniformThemeLabelMap(paramsTheme).then(
         msg => {
           isSuccess = msg.result
           if (isSuccess && msg.layer) {
@@ -2996,7 +3067,7 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
         // RangeParameter: '11.0',
         ColorScheme: 'DA_Ragular',
       }
-      await SThemeCartography.createUniqueThemeLabelMap(paramsTheme).then(
+      await STheme.createUniqueThemeLabelMap(paramsTheme).then(
         msg => {
           isSuccess = msg.result
           if (isSuccess && msg.layer) {
@@ -3018,7 +3089,7 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
         RangeParameter: '5.0',
         ColorScheme: 'CD_Cyans',
       }
-      await SThemeCartography.createRangeThemeLabelMap(paramsTheme).then(
+      await STheme.createRangeThemeLabelMap(paramsTheme).then(
         msg => {
           isSuccess = msg.result
           if (isSuccess && msg.layer) {
@@ -3049,27 +3120,28 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
 async function createThemeByLayer(item, ToolbarParams = {}) {
   let paramsTheme = {}
   let isSuccess = false
+  const datasetInfo = { datasourceName: item.datasourceName, datasetName: item.datasetName }
   // let errorInfo = ''
   switch (ToolbarParams.themeCreateType) {
-    case constants.THEME_UNIQUE_STYLE:
+    case constants.THEME_UNIQUE_STYLE: {
       // 单值风格
-      paramsTheme = {
-        DatasourceAlias: item.datasourceName,
-        DatasetName: item.datasetName,
-        UniqueExpression: item.expression,
-        ColorScheme: 'BB_Green',
+      const params = {
+        themeType: ThemeType.UNIQUE,
+        expression: item.expression,
+        colorScheme: 'BB_Green',
       }
-      await SThemeCartography.createThemeUniqueMap(paramsTheme).then(msg => {
-        isSuccess = msg.result
-        if (isSuccess && msg.layer) {
-          ThemeAction.sendAddThemeMsg(msg.layer)
+      // await STheme.createThemeUniqueMap(paramsTheme).then(msg => {
+      await STheme.createThemeUniqueLayer(datasetInfo, params).then(layerInfo => {
+        if (layerInfo) {
+          isSuccess = true
+          ThemeAction.sendAddThemeMsg(layerInfo)
         }
       })
       // .catch(err => {
       //   errorInfo = err.message
       // })
       break
-    case constants.THEME_RANGE_STYLE:
+    } case constants.THEME_RANGE_STYLE:
       // 分段风格
       paramsTheme = {
         DatasourceAlias: item.datasourceName,
@@ -3079,7 +3151,7 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
         RangeParameter: '11.0',
         ColorScheme: 'CD_Cyans',
       }
-      await SThemeCartography.createThemeRangeMap(paramsTheme).then(msg => {
+      await STheme.createThemeRangeMap(paramsTheme).then(msg => {
         isSuccess = msg.result
         if (isSuccess && msg.layer) {
           ThemeAction.sendAddThemeMsg(msg.layer)
@@ -3097,7 +3169,7 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
         DotExpression: item.expression,
         Value: '20',
       }
-      await SThemeCartography.createDotDensityThemeMap(paramsTheme).then(
+      await STheme.createDotDensityThemeMap(paramsTheme).then(
         msg => {
           isSuccess = msg.result
           if (isSuccess && msg.layer) {
@@ -3118,7 +3190,7 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
         GraduatedMode: 'LOGARITHM',
         // SymbolSize: '30',
       }
-      await SThemeCartography.createGraduatedSymbolThemeMap(paramsTheme).then(
+      await STheme.createGraduatedSymbolThemeMap(paramsTheme).then(
         msg => {
           isSuccess = msg.result
           if (isSuccess && msg.layer) {
@@ -3141,7 +3213,7 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
         // FontSize: '15.0',
         ForeColor: '#000000',
       }
-      await SThemeCartography.createUniformThemeLabelMap(paramsTheme).then(
+      await STheme.createUniformThemeLabelMap(paramsTheme).then(
         msg => {
           isSuccess = msg.result
           if (isSuccess && msg.layer) {
@@ -3163,7 +3235,7 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
         // RangeParameter: '11.0',
         ColorScheme: 'DA_Ragular',
       }
-      await SThemeCartography.createUniqueThemeLabelMap(paramsTheme).then(
+      await STheme.createUniqueThemeLabelMap(paramsTheme).then(
         msg => {
           isSuccess = msg.result
           if (isSuccess && msg.layer) {
@@ -3185,7 +3257,7 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
         RangeParameter: '5.0',
         ColorScheme: 'CD_Cyans',
       }
-      await SThemeCartography.createRangeThemeLabelMap(paramsTheme).then(
+      await STheme.createRangeThemeLabelMap(paramsTheme).then(
         msg => {
           isSuccess = msg.result
           if (isSuccess && msg.layer) {
@@ -3303,7 +3375,7 @@ async function createHeatMap(params) {
     intensity: 0.1,
     colorType: 'ZA_Insights',
   }
-  await SThemeCartography.createHeatMap(paramsTheme)
+  await STheme.createHeatMap(paramsTheme)
     .then(msg => {
       isSuccess = msg.result
       errorInfo = msg.error && msg.error
@@ -4026,16 +4098,31 @@ const heatmapMenuInfo = param => [
 async function getGraphThemeExpressionsData() {
   const _params = ToolbarModule.getParams()
   const { themeCreateType } = ToolbarModule.getData()
-  const expressionData = await SThemeCartography.getThemeExpressionByLayerName(
-    _params.language,
-    _params.currentLayer.name,
-  )
+  const datasetName = _params.currentLayer.datasetName || ""
+  const datasourceName = _params.currentLayer.datasourceAlias || ""
+  const expressionData1 = (await SData.getFieldInfos({ datasetName, datasourceName }))
+    .map(item => {
+      const type = SData.getFieldTypeString(item.type)
+      return {
+        "expression": item.name,
+        "isSelected": false, datasetName, datasourceName,
+        "fieldType": type,
+        "fieldTypeStr": type, "isSystemField": item.isSystemField
+      }
+    })
+  const datasetInfo = await SData.getDatasetInfo({ datasetName, datasourceName })
+  const expressionData = { "dataset": { datasetName, "datasetType": datasetInfo?.datasetType }, "list": expressionData1 }
+
+  // const expressionData = await STheme.getThemeExpressionByLayerName(
+  //   _params.language,
+  //   _params.currentLayer.name,
+  // )
   const { dataset } = expressionData
   const allExpressions = []
   const param = {
     LayerName: _params.currentLayer.name,
   }
-  const expressions = await SThemeCartography.getGraphExpressions(param)
+  const expressions = await STheme.getGraphExpressions(param)
   const selectedExpressions = expressions.list // 已选择的字段列表
   const listExpressionsArr = []
 

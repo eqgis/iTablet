@@ -9,21 +9,24 @@ import {ConstToolType} from "../../../../../../constants"
 import ToolbarModule from "../ToolbarModule"
 import PreviewColorPicker from "./customView"
 import ToolbarBtnType from "../../ToolbarBtnType"
+import { GeoStyle } from 'imobile_for_reactnative'
 
 function getData(type) {
-  let data = [],
+  let data,
     buttons = [],
     customView
   if (type === ConstToolType.SM_MAP_COLOR_PICKER) {
-    let params = ToolbarModule.getParams()
+    const params = ToolbarModule.getParams()
     {
-      let data = ToolbarModule.getData().customModeData
-      let index = ToolbarModule.getData().index
-      let color = data[index].color
-      let { r, g, b } = color
+      const modeData = ToolbarModule.getData()
+      data = modeData.customModeData
+      const index = modeData.index
+      const geostyle = new GeoStyle(modeData.customModeData[index].style)
+      const color = geostyle.getFillForeColor() || geostyle.getLineColor() || geostyle.getPointColor()
+      const { r, g, b } = color
       customView = () => (
         <PreviewColorPicker
-          data={data}
+          data={modeData.customModeData}
           g={g}
           r={r}
           selectedIndex={index}

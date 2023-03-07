@@ -1,10 +1,10 @@
-import { SMap, SThemeCartography } from 'imobile_for_reactnative'
+import { SMap, STheme } from 'imobile_for_reactnative'
 import { MsgConstant } from '../../../../constants'
 import { Toast } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import NavigationService from '../../../NavigationService'
 import { serviceModule } from '../../../workspace/components/ToolBar/modules'
-import { ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
 
 export default class CoworkInfo {
   static coworkId = ''
@@ -139,7 +139,7 @@ export default class CoworkInfo {
             message.message.geoType,
           )
         } else if (message.message.isHeatmap && message.message.layerHeatmap) {
-          let res = await SThemeCartography.createHeatMap({
+          let res = await STheme.createHeatMap({
             DatasourceAlias: message.message.DatasourceAlias,
             DatasetName: message.message.DatasetName,
             kernelRadius: message.message.layerHeatmap.kernelRadius,
@@ -216,7 +216,7 @@ export default class CoworkInfo {
           )
         } else if (message.message.isHeatmap && message.message.layerHeatmap) {
           // 添加热力图
-          let res = await SThemeCartography.createHeatMap({
+          let res = await STheme.createHeatMap({
             DatasourceAlias: message.message.DatasourceAlias,
             DatasetName: message.message.DatasetName,
             kernelRadius: message.message.layerHeatmap.kernelRadius,
@@ -271,7 +271,7 @@ export default class CoworkInfo {
               )
           }
         } else if (message.message.isHeatmap && message.message.layerHeatmap) {
-          let res = await SThemeCartography.modifyHeatMap(
+          let res = await STheme.modifyHeatMap(
             message.message.layerPath,
             message.message.layerHeatmap,
           )

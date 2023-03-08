@@ -1776,7 +1776,7 @@ export default class LayerAttribute extends React.Component {
     return (
       <Container
         ref={ref => (this.container = ref)}
-        showFullInMap={true}
+        // showFullInMap={true}
         headerProps={{
           title: this.props.mapModules.modules[this.props.currentUser.userName][
             this.props.mapModules.currentMapModule

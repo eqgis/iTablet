@@ -305,8 +305,8 @@ export default class SMessageServiceHTTP {
             _queue = null
           }
           SMessageService.sendMessage(
-            JSON.stringify(messageObj),
             targetIds[i],
+            JSON.stringify(messageObj),
           )
         }
       }
@@ -337,8 +337,8 @@ export default class SMessageServiceHTTP {
         _queue = null
       }
       SMessageService.sendMessage(
-        JSON.stringify(messageObj),
         targetId,
+        JSON.stringify(messageObj),
       )
     } catch (e) {
       Toast.show(getLanguage(global.language).Friends.SEND_FAIL)

@@ -525,15 +525,21 @@ export default class Friend extends Component {
   connectService = async () => {
     if (UserType.isOnlineUser(this.props.user.currentUser) || UserType.isIPortalUser(this.props.user.currentUser)) {
       try {
+        if (
+          SMessageServiceHTTP.serviceInfo.MSG_IP === undefined || SMessageServiceHTTP.serviceInfo.MSG_Port === undefined ||
+          SMessageServiceHTTP.serviceInfo.MSG_HostName === undefined || SMessageServiceHTTP.serviceInfo.MSG_UserName === undefined ||
+          SMessageServiceHTTP.serviceInfo.MSG_Password === undefined
+        ) {
+          return
+        }
         await this.initServerInfo(UserType.isOnlineUser(this.props.user.currentUser) ? 'online' : 'iportal')
-        const res = await SMessageService.connectService(
-          SMessageServiceHTTP.serviceInfo.MSG_IP,
-          Number(SMessageServiceHTTP.serviceInfo.MSG_Port),
-          SMessageServiceHTTP.serviceInfo.MSG_HostName,
-          SMessageServiceHTTP.serviceInfo.MSG_UserName,
-          SMessageServiceHTTP.serviceInfo.MSG_Password,
-          this.props.user.currentUser.userName,
-        )
+        const res = await SMessageService.connectService({
+          ip: SMessageServiceHTTP.serviceInfo.MSG_IP,
+          port: Number(SMessageServiceHTTP.serviceInfo.MSG_Port),
+          hostName: SMessageServiceHTTP.serviceInfo.MSG_HostName,
+          userName: SMessageServiceHTTP.serviceInfo.MSG_UserName,
+          password: SMessageServiceHTTP.serviceInfo.MSG_Password,
+        })
         if (!res) {
           if(count%600 === 0 || count === 0){
             Toast.show(
@@ -1334,7 +1340,7 @@ export default class Friend extends Component {
       }
       const generalMsg = JSON.stringify(messageObj)
 
-      let result = SMessageService.sendMessage(generalMsg, talkId)
+      let result = SMessageService.sendMessage(talkId, generalMsg)
 
       const timeout = sec => {
         return new Promise(resolve => {
@@ -1617,48 +1623,24 @@ export default class Friend extends Component {
   }
 
   /**
-   * 使用rabbitMQ发送
-   */
-  _sendFile = (messageStr, filepath, talkId, msgId, informMsg, cb) => {
-    const connectInfo = SMessageServiceHTTP.serviceInfo
-    SMessageService.sendFileWithMQ(
-      JSON.stringify(connectInfo),
-      messageStr,
-      filepath,
-      talkId,
-      msgId,
-    ).then(res => {
-      const msg = this.getMsgByMsgId(talkId, msgId)
-      msg.originMsg.message.message.queueName = res.queueName
-      MessageDataHandle.editMessage({
-        userId: this.props.user.currentUser.userName,
-        talkId: talkId,
-        msgId: msgId,
-        editItem: msg,
-      })
-
-      informMsg.message.message.queueName = res.queueName
-      // informMsg.message.type=3       要给桌面发文件需要将类型改为3
-      this._sendMessage(JSON.stringify(informMsg), talkId, false)
-      cb && cb()
-    })
-  }
-
-  /**
    * 发送到第三方服务器
    */
-  sendFile = async (message, filePath, talkId, msgId, cb) => {
+  sendFile = async (message: string, filePath: string, talkId: string, msgId: string, cb: (result: boolean) => void) => {
     try {
-      const res = await SMessageService.sendFileWithThirdServer(
-        SMessageServiceHTTP.serviceInfo.FILE_UPLOAD_SERVER_URL,
-        filePath,
-        this.props.user.currentUser.userName,
-        talkId,
-        msgId,
-      )
+      if (!SMessageServiceHTTP.serviceInfo.FILE_UPLOAD_SERVER_URL) {
+        cb && cb(false)
+        return
+      }
+      const res = await SMessageService.uploadFile({
+        serverUrl: SMessageServiceHTTP.serviceInfo.FILE_UPLOAD_SERVER_URL,
+        filePath: filePath,
+        userId: this.props.user.currentUser.userName,
+        talkId: talkId,
+        msgId: msgId,
+      })
 
       const msg = this.getMsgByMsgId(talkId, msgId)
-      msg.originMsg.message.message.queueName = res.queueName
+      msg.originMsg.message.message.md5 = res.md5
       MessageDataHandle.editMessage({
         userId: this.props.user.currentUser.userName,
         talkId: talkId,
@@ -1666,7 +1648,7 @@ export default class Friend extends Component {
         editItem: msg,
       })
 
-      message.message.message.queueName = res.queueName
+      message.message.message.md5 = res.md5
       this._sendMessage(JSON.stringify(message), talkId, false)
       cb && cb(true)
     } catch (error) {
@@ -1675,80 +1657,25 @@ export default class Friend extends Component {
   }
 
   /**
-   * 接收RabbitMQ上的文件
-   */
-  _receiveFile = async (
-    fileName,
-    queueName,
-    receivePath,
-    talkId,
-    msgId,
-    cb,
-  ) => {
-    if (g_connectService) {
-      try {
-        const homePath = await FileTools.appendingHomeDirectory()
-        const res = await SMessageService.receiveFileWithMQ(
-          fileName,
-          queueName,
-          homePath + receivePath,
-          talkId,
-          msgId,
-        )
-        const message = this.props.chat[this.props.user.currentUser.userName][
-          talkId
-        ].history[msgId]
-        if (res === true) {
-          Toast.show(getLanguage(this.props.language).Friends.RECEIVE_SUCCESS)
-          message.originMsg.message.message.filePath =
-            receivePath + '/' + fileName
-          MessageDataHandle.editMessage({
-            userId: this.props.user.currentUser.userName,
-            talkId: talkId,
-            msgId: msgId,
-            editItem: message,
-          })
-        } else {
-          Toast.show(
-            getLanguage(this.props.language).Friends.RECEIVE_FAIL_EXPIRE,
-          )
-          FileTools.deleteFile(homePath + receivePath + '/' + fileName)
-        }
-        if (cb && typeof cb === 'function') {
-          cb(res)
-        }
-      } catch (error) {
-        Toast.show(
-          getLanguage(this.props.language).Friends.RECEIVE_FAIL_NETWORK,
-        )
-        if (cb && typeof cb === 'function') {
-          cb(false)
-        }
-      }
-    } else {
-      Toast.show(getLanguage(this.props.language).Friends.RECEIVE_FAIL_NETWORK)
-      if (cb && typeof cb === 'function') {
-        cb(false)
-      }
-    }
-  }
-
-  /**
    * 接收第三方服务器的文件
    */
   receiveFile = async (chatMessage, receivePath, fileName, talkId, cb) => {
     try {
+      if (!SMessageServiceHTTP.serviceInfo.FILE_DOWNLOAD_SERVER_URL) {
+        cb && cb(false)
+        return
+      }
       const homePath = await FileTools.appendingHomeDirectory()
-      const res = await SMessageService.receiveFileWithThirdServer(
-        SMessageServiceHTTP.serviceInfo.FILE_DOWNLOAD_SERVER_URL,
-        chatMessage.originMsg.user.id,
-        chatMessage.originMsg.message.message.queueName,
-        chatMessage.originMsg.message.message.fileSize,
-        homePath + receivePath,
-        fileName,
-        talkId,
-        chatMessage._id,
-      )
+      const res = await SMessageService.downloadFile({
+        serverUrl: SMessageServiceHTTP.serviceInfo.FILE_DOWNLOAD_SERVER_URL,
+        fileOwnerId: chatMessage.originMsg.user.id,
+        md5: chatMessage.originMsg.message.message.md5,
+        fileSize: chatMessage.originMsg.message.message.fileSize,
+        receivePath: homePath + receivePath,
+        fileName: fileName,
+        talkId: talkId,
+        msgId: chatMessage._id,
+      })
 
       const message = this.props.chat[this.props.user.currentUser.userName][talkId]
         .history[chatMessage._id]

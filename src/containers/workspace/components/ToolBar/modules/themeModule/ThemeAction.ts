@@ -128,7 +128,8 @@ async function getThemeExpress(type, key = '', name = '') {
     // selectedExpression = await STheme.getUniqueExpression(param)
     selectedExpression = (await STheme.getThemeUniqueInfo(param?.LayerName||"")).expression
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGE_EXPRESSION) {
-    selectedExpression = await STheme.getRangeExpression(param)
+    // selectedExpression = await STheme.getRangeExpression(param)
+    selectedExpression = (await STheme.getThemeRangeInfo(param.LayerName||"")).expression
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION) {
     selectedExpression = await STheme.getUniformLabelExpression(
       param,
@@ -896,11 +897,12 @@ async function listAction(type, params = {}) {
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGE_EXPRESSION) {
     // 分段专题图表达式
     const Params = {
-      RangeExpression: item.expression,
-      LayerName: _params.currentLayer.name,
+      expression: item.expression,
+      LayerName: _params.currentLayer.name||"",
     }
     params.refreshList && (await params.refreshList(item.expression))
-    await STheme.setRangeExpression(Params)
+    // await STheme.setRangeExpression(Params)
+    await STheme.modifyThemeRangeLayer(Params.LayerName,Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_EXPRESSION) {
     // 点密度专题图表达式
     const Params = {
@@ -930,11 +932,12 @@ async function listAction(type, params = {}) {
       }
     } else {
       Params = {
-        ColorScheme: item.key,
+        colorScheme: item.key,
         LayerName: _params.currentLayer.name,
       }
     }
-    await STheme.setRangeColorScheme(Params)
+    // await STheme.setRangeColorScheme(Params)
+    await STheme.modifyThemeRangeLayer(Params?.LayerName||"",Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_GRID_RANGE_COLOR) {
     // 栅格分段专题图颜色表
     ToolbarModule.addData({ themeColor: item.key })
@@ -1754,9 +1757,9 @@ async function getTouchProgressInfo(title) {
         themeType === ThemeType.RANGE ||
         themeType === ThemeType.LABELRANGE
       ) {
-        value = await STheme.getRangeCount({
-          LayerName: _params.currentLayer.name,
-        })
+        const items = (await STheme.getThemeRangeInfo(_params.currentLayer.name || "")).items
+        value = items?.length || 0
+        // value = await STheme.getRangeCount({LayerName: _params.currentLayer.name })
       } else if (themeType === ThemeType.GRIDRANGE) {
         value = await STheme.getGridRangeCount({
           LayerName: _params.currentLayer.name,
@@ -1852,7 +1855,8 @@ function setTouchProgressInfo(title, value) {
       if (themeType === ThemeType.LABELRANGE) {
         STheme.modifyThemeLabelRangeMap(_params)
       } else if (themeType === ThemeType.RANGE) {
-        STheme.modifyThemeRangeMap(_params)
+        STheme.modifyThemeRangeLayer(_params.LayerName,_params)
+        // STheme.modifyThemeRangeMap(_params)
       } else if (themeType === ThemeType.GRIDRANGE) {
         STheme.modifyThemeGridRangeMap(_params)
       }

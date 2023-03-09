@@ -1,4 +1,4 @@
-import { STheme, RangeMode, SMap, SData } from 'imobile_for_reactnative'
+import { STheme, SMap, SData } from 'imobile_for_reactnative'
 import constants from '../../../../constants'
 import ToolbarBtnType from '../../ToolbarBtnType'
 import {
@@ -15,7 +15,7 @@ import ThemeData from './ThemeData'
 import ThemeAction from './ThemeAction'
 import NavigationService from '../../../../../NavigationService'
 import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
-import { ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
+import { RangeMode, ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
 /**
  *
  * @param type
@@ -778,7 +778,7 @@ function setRangeMode(type, rangeMode) {
   const globalParams = ToolbarModule.getParams()
   const _params = ToolbarModule.getData().themeParams
   if (rangeMode !== undefined) {
-    _params.RangeMode = rangeMode
+    _params.rangeMode = rangeMode
   }
   if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_MODE) {
     if (rangeMode === RangeMode.CUSTOMINTERVAL) {
@@ -791,7 +791,8 @@ function setRangeMode(type, rangeMode) {
     globalParams.setToolbarVisible(false)
     NavigationService.navigate('CustomModePage', { type })
   } else {
-    STheme.modifyThemeRangeMap(_params)
+    STheme.modifyThemeRangeLayer(_params.LayerName,_params)
+    // STheme.modifyThemeRangeMap(_params)
   }
 }
 
@@ -2973,27 +2974,29 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       //   errorInfo = err.message
       // })
       break
-    } case constants.THEME_RANGE_STYLE:
+    } case constants.THEME_RANGE_STYLE:{
       // 分段风格
-      paramsTheme = {
-        DatasourceAlias: ToolbarParams.themeDatasourceAlias,
-        DatasetName: ToolbarParams.themeDatasetName,
-        RangeExpression: item.expression,
-        RangeMode: RangeMode.EQUALINTERVAL,
-        RangeParameter: '11.0',
-        ColorScheme: 'FF_Blues',
+      const params = {
+        // DatasourceAlias: ToolbarParams.themeDatasourceAlias,
+        // DatasetName: ToolbarParams.themeDatasetName,
+        expression: item.expression||"",
+        rangeMode: RangeMode.EQUALINTERVAL,
+        rangeParameter: 11.0,
+        colorScheme: 'FF_Blues',
+        themeType:ThemeType.RANGE
       }
-      await STheme.createThemeRangeMap(paramsTheme).then(msg => {
-        isSuccess = msg.result
-        if (isSuccess && msg.layer) {
-          ThemeAction.sendAddThemeMsg(msg.layer)
+      // await STheme.createThemeRangeMap(paramsTheme).then(msg => {
+      await STheme.createThemeRangeLayer(datasetInfo,params).then(layerInfo => {
+        if (layerInfo) {
+          isSuccess = true
+          ThemeAction.sendAddThemeMsg(layerInfo)
         }
       })
       // .catch(err => {
       //   errorInfo = err.message
       // })
       break
-    case constants.THEME_DOT_DENSITY:
+    }case constants.THEME_DOT_DENSITY:
       // 点密度专题图
       paramsTheme = {
         DatasourceAlias: ToolbarParams.themeDatasourceAlias,
@@ -3141,27 +3144,29 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
       //   errorInfo = err.message
       // })
       break
-    } case constants.THEME_RANGE_STYLE:
+    } case constants.THEME_RANGE_STYLE:{
       // 分段风格
-      paramsTheme = {
-        DatasourceAlias: item.datasourceName,
-        DatasetName: item.datasetName,
-        RangeExpression: item.expression,
-        RangeMode: RangeMode.EQUALINTERVAL,
-        RangeParameter: '11.0',
-        ColorScheme: 'CD_Cyans',
+      const params = {
+        // DatasourceAlias: item.datasourceName,
+        // DatasetName: item.datasetName,
+        expression: item.expression,
+        rangeMode: RangeMode.EQUALINTERVAL,
+        rangeParameter: 11.0,
+        colorScheme: 'CD_Cyans',
+        themeType:ThemeType.RANGE
       }
-      await STheme.createThemeRangeMap(paramsTheme).then(msg => {
-        isSuccess = msg.result
-        if (isSuccess && msg.layer) {
-          ThemeAction.sendAddThemeMsg(msg.layer)
+      // await STheme.createThemeRangeMap(paramsTheme).then(msg => {
+      await STheme.createThemeRangeLayer(datasetInfo,params).then(layerInfo => {
+        if (layerInfo) {
+          isSuccess = true
+          ThemeAction.sendAddThemeMsg(layerInfo)
         }
       })
       // .catch(err => {
       //   errorInfo = err.message
       // })
       break
-    case constants.THEME_DOT_DENSITY:
+    }case constants.THEME_DOT_DENSITY:
       // 点密度专题图
       paramsTheme = {
         DatasourceAlias: item.datasourceName,

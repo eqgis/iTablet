@@ -17,7 +17,7 @@ import { FileTools } from '../../../../../../native'
 import ToolbarModule from '../ToolbarModule'
 import CollectionData from './CollectionData'
 import NavigationService from '../../../../../NavigationService'
-import { Toast } from '../../../../../../utils'
+import { AppEvent, Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import { Login } from '@/containers/tabs'
 import { Action, } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
@@ -63,16 +63,19 @@ function changeCollection(type) {
     case SMCollectorType.REGION_GPS_POINT:
     case SMCollectorType.REGION_HAND_PATH:
     case SMCollectorType.REGION_HAND_POINT:
+    case SMCollectorType.REGION_AIM_POINT:
       toolbarType = ConstToolType.SM_MAP_COLLECTION_REGION
       break
     case SMCollectorType.LINE_GPS_PATH:
     case SMCollectorType.LINE_GPS_POINT:
     case SMCollectorType.LINE_HAND_POINT:
     case SMCollectorType.LINE_HAND_PATH:
+    case SMCollectorType.LINE_AIM_POINT:
       toolbarType = ConstToolType.SM_MAP_COLLECTION_LINE
       break
     case SMCollectorType.POINT_GPS:
     case SMCollectorType.POINT_HAND:
+    case SMCollectorType.POINT_AIM_POINT:
       toolbarType = ConstToolType.SM_MAP_COLLECTION_POINT
       break
   }
@@ -108,6 +111,16 @@ function showCollection(type, layerName) {
   //     height = ConstToolType.HEIGHT[0]
   //     break
   // }
+
+  // 是准星采集的话，就发消息让准星显示出来
+  if(type === SMCollectorType.LINE_AIM_POINT
+    || type === SMCollectorType.POINT_AIM_POINT
+    || type === SMCollectorType.REGION_AIM_POINT
+  ) {
+    AppEvent.emitEvent("collector_aim_point_show", true)
+  } else {
+    AppEvent.emitEvent("collector_aim_point_show", false)
+  }
   ToolbarModule.getParams().showFullMap(true)
   ToolbarModule.getParams().setToolbarVisible(true, type, {
     isFullScreen: false,
@@ -152,7 +165,9 @@ async function createCollector(type, layerName) {
   let mType
   switch (type) {
     case SMCollectorType.POINT_GPS:
-    case SMCollectorType.POINT_HAND: {
+    case SMCollectorType.POINT_HAND:
+    case SMCollectorType.POINT_AIM_POINT:
+    {
       if (
         _params.symbol.currentSymbol &&
         _params.symbol.currentSymbol.type &&
@@ -169,7 +184,9 @@ async function createCollector(type, layerName) {
     case SMCollectorType.LINE_GPS_POINT:
     case SMCollectorType.LINE_GPS_PATH:
     case SMCollectorType.LINE_HAND_POINT:
-    case SMCollectorType.LINE_HAND_PATH: {
+    case SMCollectorType.LINE_HAND_PATH:
+    case SMCollectorType.LINE_AIM_POINT:
+    {
       if (
         _params.symbol.currentSymbol &&
         _params.symbol.currentSymbol.type &&
@@ -184,7 +201,9 @@ async function createCollector(type, layerName) {
     case SMCollectorType.REGION_GPS_POINT:
     case SMCollectorType.REGION_GPS_PATH:
     case SMCollectorType.REGION_HAND_POINT:
-    case SMCollectorType.REGION_HAND_PATH: {
+    case SMCollectorType.REGION_HAND_PATH:
+    case SMCollectorType.REGION_AIM_POINT:
+    {
       if (
         _params.symbol.currentSymbol &&
         _params.symbol.currentSymbol.type &&
@@ -246,17 +265,17 @@ async function createCollector(type, layerName) {
 
   layerInfo = await SCollector.setDataset(params)
   if (!layerInfo) return
-    // 设置绘制风格
-    await SCollector.setStyle(collectorStyle)
-    await SCollector.initCollect(type)
-    if (isGPSCollect(type)) {
-      await SLocation.setBackgroundLocationEnable(true)
-    } else {
-      await SLocation.setBackgroundLocationEnable(false)
-    }
-    ToolbarModule.getParams().getLayers(-1, () => {
-      ToolbarModule.getParams().setCurrentLayer(layerInfo)
-    })
+  // 设置绘制风格
+  await SCollector.setStyle(collectorStyle)
+  await SCollector.initCollect(type)
+  if (isGPSCollect(type)) {
+    await SLocation.setBackgroundLocationEnable(true)
+  } else {
+    await SLocation.setBackgroundLocationEnable(false)
+  }
+  ToolbarModule.getParams().getLayers(-1, () => {
+    ToolbarModule.getParams().setCurrentLayer(layerInfo)
+  })
 }
 
 async function collectionSubmit(type) {

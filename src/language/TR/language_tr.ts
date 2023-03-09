@@ -1234,6 +1234,7 @@ export const language_tr: typeof language_cn = {
   COLLECTION_POINTS_BY_GPS: "GPS ile noktaları toplama",
   COLLECTION_LINE_BY_GPS: "GPS ile çizgileri toplama",
   COLLECTION_POINT_DRAW: "Nokta Çizim",
+  COLLECTION_AIM_POINT_DEAW:"Aim Point Draw", // To be translated
   COLLECTION_FREE_DRAW: "Serbest Çizim",
   COLLECTION_ADD_POINT: "Nokta Ekle",
   COLLECTION_START: "Başla",

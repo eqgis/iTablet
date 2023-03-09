@@ -4,7 +4,7 @@ import { openARMap, createARMap, ARMapState } from '../../../../redux/models/arm
 import { getARLayers, ARMapInfo } from '../../../../redux/models/arlayer'
 import { UserInfo } from '../../../../redux/models/user'
 import { SARMap , RNFS} from 'imobile_for_reactnative'
-import { Toast } from '../../../../utils'
+import { AppToolBar, Toast } from '../../../../utils'
 import { getLanguage } from '../../../../language'
 import DataHandler from '../../../../utils/DataHandler'
 import ToolbarModule from '../../../workspace/components/ToolBar/modules/ToolbarModule'
@@ -89,9 +89,7 @@ class MyARMap extends MyDataPage {
       const result = await this.props.openARMap(mapName)
       if(result) {
         await this.props.getARLayers()
-        ToolbarModule.addData({
-          addNewDSourceWhenCreate: true,
-        })
+        AppToolBar.addData({addNewDSourceWhenCreate: true})
       }
       return result
     } catch (e) {

@@ -11,7 +11,7 @@ import {
   ConstToolType,
   ToolbarType,
 } from '../../../../../../constants'
-import { Toast, scaleSize, DialogUtils } from '../../../../../../utils'
+import { Toast, scaleSize, DialogUtils, AppToolBar } from '../../../../../../utils'
 import NavigationService from '../../../../../NavigationService'
 import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
@@ -160,6 +160,7 @@ async function createMap() {
         _params.setContainerLoading &&
           _params.setContainerLoading(false)
         _params.setToolbarVisible(false)
+        AppToolBar.addData({addNewDSourceWhenCreate: true})
       },
     })
   } catch (e) {
@@ -230,9 +231,7 @@ async function changeMap(item: ListData) {
       if (layers.length > 0) {
         await params.setCurrentARLayer(layers[0])
       }
-      ToolbarModule.addData({
-        addNewDSourceWhenCreate: false,
-      })
+      AppToolBar.addData({addNewDSourceWhenCreate: false})
       params.setContainerLoading(false)
       SARMap.setAction(ARAction.NULL)
       Toast.show(getLanguage(params.language).Prompt.SWITCHING_SUCCESS)

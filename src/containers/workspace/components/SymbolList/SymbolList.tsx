@@ -6,7 +6,7 @@ import {
   SMSymbolTable,
   SMap,
   SCartography,
-  SThemeCartography,
+  STheme,
   SData,
   GeoStyle,
 } from 'imobile_for_reactnative'
@@ -47,10 +47,10 @@ export default class SymbolList extends React.Component {
       }
       switch (this.props.type) {
         case ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_SYMBOLS:
-          SThemeCartography.modifyDotDensityThemeMap(params)
+          STheme.modifyDotDensityThemeMap(params)
           break
         case ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOLS:
-          SThemeCartography.modifyGraduatedSymbolThemeMap(params)
+          STheme.modifyGraduatedSymbolThemeMap(params)
           break
       }
       return

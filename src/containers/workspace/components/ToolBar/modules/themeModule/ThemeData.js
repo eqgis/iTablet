@@ -1,7 +1,7 @@
 /**
  * 获取地图专题图数据
  */
-import { SThemeCartography } from 'imobile_for_reactnative'
+import { STheme } from 'imobile_for_reactnative'
 import { ConstToolType } from '../../../../../../constants'
 import { FileTools } from '../../../../../../native'
 import { getThemeAssets } from '../../../../../../assets'
@@ -52,7 +52,7 @@ async function getDatasets(type, params = {}) {
     const selectList =
       (ToolbarModule.getData() && ToolbarModule.getData().selectList) || []
     const path = await FileTools.appendingHomeDirectory(params.path)
-    const list = await SThemeCartography.getUDBName(path)
+    const list = await STheme.getUDBName(path)
 
     list.forEach(_params => {
       if (_params.geoCoordSysType && _params.prjCoordSysType) {

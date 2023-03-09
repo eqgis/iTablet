@@ -1,5 +1,5 @@
-import { SThemeCartography, SMap } from 'imobile_for_reactnative'
-import { ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { STheme, SMap, SData } from 'imobile_for_reactnative'
+import { ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
 import {
   ConstToolType,
   ToolbarType,
@@ -104,32 +104,46 @@ async function _appendMyColor(data) {
 async function getThemeExpress(type, key = '', name = '') {
   const _params = ToolbarModule.getParams()
   const { themeCreateType } = ToolbarModule.getData()
-  const expressionData = await SThemeCartography.getThemeExpressionByLayerName(
-    _params.language,
-    _params.currentLayer.name,
-  )
+  const datasetName = _params.currentLayer.datasetName || ""
+  const datasourceName = _params.currentLayer.datasourceAlias || ""
+  const expressionData1 = (await SData.getFieldInfos({datasetName, datasourceName}))
+    .map(item => {
+      const type =  SData.getFieldTypeString(item.type)
+      return {"expression":item.name,
+        "isSelected":false,datasetName,datasourceName,
+        "fieldType":type,
+        "fieldTypeStr":type,"isSystemField":item.isSystemField}
+    })
+  const datasetInfo =  await SData.getDatasetInfo({datasetName, datasourceName})
+  const expressionData = {"dataset":{datasetName,"datasetType":datasetInfo?.datasetType},"list":expressionData1}
+  // const expressionData = await STheme.getThemeExpressionByLayerName(
+  //   _params.language,
+  //   _params.currentLayer.name,
+  // )
   let selectedExpression
   const param = {
     LayerName: _params.currentLayer.name,
   }
   if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUE_EXPRESSION) {
-    selectedExpression = await SThemeCartography.getUniqueExpression(param)
+    // selectedExpression = await STheme.getUniqueExpression(param)
+    selectedExpression = (await STheme.getThemeUniqueInfo(param?.LayerName||"")).expression
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGE_EXPRESSION) {
-    selectedExpression = await SThemeCartography.getRangeExpression(param)
+    // selectedExpression = await STheme.getRangeExpression(param)
+    selectedExpression = (await STheme.getThemeRangeInfo(param.LayerName||"")).expression
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION) {
-    selectedExpression = await SThemeCartography.getUniformLabelExpression(
+    selectedExpression = await STheme.getUniformLabelExpression(
       param,
     )
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_EXPRESSION) {
-    selectedExpression = await SThemeCartography.getUniqueLabelExpression(param)
+    selectedExpression = await STheme.getUniqueLabelExpression(param)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_EXPRESSION) {
-    selectedExpression = await SThemeCartography.getRangeLabelExpression(param)
+    selectedExpression = await STheme.getRangeLabelExpression(param)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_EXPRESSION) {
-    selectedExpression = await SThemeCartography.getDotDensityExpression(param)
+    selectedExpression = await STheme.getDotDensityExpression(param)
   } else if (
     type === ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_EXPRESSION
   ) {
-    selectedExpression = await SThemeCartography.getGraduatedSymbolExpress(
+    selectedExpression = await STheme.getGraduatedSymbolExpress(
       param,
     )
   }
@@ -756,7 +770,7 @@ async function listSelectableAction({ selectList }) {
     LayerName: _params.currentLayer.name,
     GraphExpressions: list,
   }
-  await SThemeCartography.setThemeGraphExpressions(Params)
+  await STheme.setThemeGraphExpressions(Params)
 }
 
 /**
@@ -836,12 +850,12 @@ async function listAction(type, params = {}) {
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUE_EXPRESSION) {
     // 单值专题图表达式
     const Params = {
-      UniqueExpression: item.expression,
-      LayerName: _params.currentLayer.name,
+      expression: item.expression,
     }
-    // await SThemeCartography.setUniqueExpression(Params)
+    // await STheme.setUniqueExpression(Params)
     params.refreshList && (await params.refreshList(item.expression))
-    await SThemeCartography.modifyThemeUniqueMap(Params)
+    // await STheme.modifyThemeUniqueMap(Params)
+    await STheme.modifyThemeUniqueLayer(_params.currentLayer.name||"",Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUE_COLOR) {
     if (item.key === 'USER_DEFINE') {
       _params.setToolbarVisible(false)
@@ -857,11 +871,12 @@ async function listAction(type, params = {}) {
         }
       } else {
         Params = {
-          ColorScheme: item.key,
-          LayerName: _params.currentLayer.name,
+          colorScheme: item.key,
+          // LayerName: _params.currentLayer.name,
         }
       }
-      await SThemeCartography.setUniqueColorScheme(Params)
+      await STheme.modifyThemeUniqueLayer(_params.currentLayer.name||"",Params)
+      // await STheme.setUniqueColorScheme(Params)
     }
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_GRID_UNIQUE_COLOR) {
     // 栅格单值专题图颜色表
@@ -878,15 +893,16 @@ async function listAction(type, params = {}) {
         LayerName: _params.currentLayer.name,
       }
     }
-    await SThemeCartography.modifyThemeGridUniqueMap(Params)
+    await STheme.modifyThemeGridUniqueMap(Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGE_EXPRESSION) {
     // 分段专题图表达式
     const Params = {
-      RangeExpression: item.expression,
-      LayerName: _params.currentLayer.name,
+      expression: item.expression,
+      // LayerName: _params.currentLayer.name||"",
     }
     params.refreshList && (await params.refreshList(item.expression))
-    await SThemeCartography.setRangeExpression(Params)
+    // await STheme.setRangeExpression(Params)
+    await STheme.modifyThemeRangeLayer(_params.currentLayer.name||"",Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_EXPRESSION) {
     // 点密度专题图表达式
     const Params = {
@@ -894,7 +910,7 @@ async function listAction(type, params = {}) {
       LayerName: _params.currentLayer.name,
     }
     params.refreshList && (await params.refreshList(item.expression))
-    await SThemeCartography.modifyDotDensityThemeMap(Params)
+    await STheme.modifyDotDensityThemeMap(Params)
   } else if (
     type === ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_EXPRESSION
   ) {
@@ -904,7 +920,7 @@ async function listAction(type, params = {}) {
       LayerName: _params.currentLayer.name,
     }
     params.refreshList && (await params.refreshList(item.expression))
-    await SThemeCartography.modifyGraduatedSymbolThemeMap(Params)
+    await STheme.modifyGraduatedSymbolThemeMap(Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGE_COLOR) {
     // 分段专题图颜色表
     ToolbarModule.addData({ themeColor: item.key })
@@ -912,15 +928,16 @@ async function listAction(type, params = {}) {
     if (item.colors) {
       Params = {
         Colors: item.colors,
-        LayerName: _params.currentLayer.name,
+        // LayerName: _params.currentLayer.name,
       }
     } else {
       Params = {
-        ColorScheme: item.key,
+        colorScheme: item.key,
         LayerName: _params.currentLayer.name,
       }
     }
-    await SThemeCartography.setRangeColorScheme(Params)
+    // await STheme.setRangeColorScheme(Params)
+    await STheme.modifyThemeRangeLayer(_params.currentLayer.name||"",Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_GRID_RANGE_COLOR) {
     // 栅格分段专题图颜色表
     ToolbarModule.addData({ themeColor: item.key })
@@ -936,7 +953,7 @@ async function listAction(type, params = {}) {
         LayerName: _params.currentLayer.name,
       }
     }
-    await SThemeCartography.modifyThemeGridRangeMap(Params)
+    await STheme.modifyThemeGridRangeMap(Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_GRAPH_COLOR) {
     // 统计专题图颜色表
     ToolbarModule.addData({ themeColor: item.key })
@@ -952,7 +969,7 @@ async function listAction(type, params = {}) {
         LayerName: _params.currentLayer.name,
       }
     }
-    await SThemeCartography.setThemeGraphColorScheme(Params)
+    await STheme.setThemeGraphColorScheme(Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_HEAT_AGGREGATION_COLOR) {
     // 热力图颜色表
     ToolbarModule.addData({ themeColor: item.key })
@@ -968,7 +985,7 @@ async function listAction(type, params = {}) {
         LayerName: _params.currentLayer.name,
       }
     }
-    await SThemeCartography.setHeatMapColorScheme(Params)
+    await STheme.setHeatMapColorScheme(Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION) {
     // 统一标签表达式
     const Params = {
@@ -976,7 +993,7 @@ async function listAction(type, params = {}) {
       LayerName: _params.currentLayer.name,
     }
     params.refreshList && (await params.refreshList(item.expression))
-    await SThemeCartography.setUniformLabelExpression(Params)
+    await STheme.setUniformLabelExpression(Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_EXPRESSION) {
     // 单值标签表达式
     const Params = {
@@ -984,7 +1001,7 @@ async function listAction(type, params = {}) {
       LayerName: _params.currentLayer.name,
     }
     params.refreshList && (await params.refreshList(item.expression))
-    await SThemeCartography.setUniqueLabelExpression(Params)
+    await STheme.setUniqueLabelExpression(Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_COLOR) {
     // 单值标签专题图颜色表
     if (item.key === 'USER_DEFINE') {
@@ -1004,7 +1021,7 @@ async function listAction(type, params = {}) {
           LayerName: _params.currentLayer.name,
         }
       }
-      await SThemeCartography.setUniqueLabelColorScheme(Params)
+      await STheme.setUniqueLabelColorScheme(Params)
     }
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_EXPRESSION) {
     // 分段标签表达式
@@ -1013,7 +1030,7 @@ async function listAction(type, params = {}) {
       LayerName: _params.currentLayer.name,
     }
     params.refreshList && (await params.refreshList(item.expression))
-    await SThemeCartography.setRangeLabelExpression(Params)
+    await STheme.setRangeLabelExpression(Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_COLOR) {
     // 分段标签专题图颜色表
     ToolbarModule.addData({ themeColor: item.key })
@@ -1029,7 +1046,7 @@ async function listAction(type, params = {}) {
         LayerName: _params.currentLayer.name,
       }
     }
-    await SThemeCartography.setRangeLabelColorScheme(Params)
+    await STheme.setRangeLabelColorScheme(Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_CREATE_DATASETS) {
     // 数据集选择列表(跳转到专题图字段选择列表)
     try {
@@ -1065,7 +1082,7 @@ async function listAction(type, params = {}) {
           true,
           getLanguage(_params.language).Prompt.READING_DATA,
         )
-      const datasetData = await SThemeCartography.getThemeExpressionByDatasetName(
+      const datasetData = await STheme.getThemeExpressionByDatasetName(
         _params.language,
         item.datasourceName,
         item.datasetName,
@@ -1259,7 +1276,7 @@ async function commit(type) {
       GraphExpressions: expressions,
       ThemeGraphType: themeCreateType,
     }
-    const {result, layer} = await SThemeCartography.createThemeGraphMap(params)
+    const {result, layer} = await STheme.createThemeGraphMap(params)
     if (result && layer) {
       sendAddThemeMsg(layer)
     }
@@ -1287,7 +1304,7 @@ async function commit(type) {
       GraphExpressions: expressions,
       ThemeGraphType: themeCreateType,
     }
-    let {result, layer} = await SThemeCartography.createThemeGraphMapByLayer(params)
+    let {result, layer} = await STheme.createThemeGraphMapByLayer(params)
     if (result && layer) {
       sendAddThemeMsg(layer)
     }
@@ -1715,21 +1732,21 @@ async function getTouchProgressInfo(title) {
     // 热力图
     case getLanguage(_params.language).Map_Main_Menu.THEME_HEATMAP_RADIUS:
       range = [1, 50]
-      value = await SThemeCartography.getHeatMapRadius({
+      value = await STheme.getHeatMapRadius({
         LayerName: _params.currentLayer.name,
       })
       unit = 'X'
       break
     case getLanguage(_params.language).Map_Main_Menu.THEME_HEATMAP_FUZZY_DEGREE:
       range = [1, 100]
-      value = await SThemeCartography.getHeatMapFuzzyDegree({
+      value = await STheme.getHeatMapFuzzyDegree({
         LayerName: _params.currentLayer.name,
       })
       unit = '%'
       break
     case getLanguage(_params.language).Map_Main_Menu.THEME_HEATMAP_MAXCOLOR_WEIGHT:
       range = [1, 100]
-      value = await SThemeCartography.getHeatMapMaxColorWeight({
+      value = await STheme.getHeatMapMaxColorWeight({
         LayerName: _params.currentLayer.name,
       })
       unit = '%'
@@ -1740,11 +1757,11 @@ async function getTouchProgressInfo(title) {
         themeType === ThemeType.RANGE ||
         themeType === ThemeType.LABELRANGE
       ) {
-        value = await SThemeCartography.getRangeCount({
-          LayerName: _params.currentLayer.name,
-        })
+        const items = (await STheme.getThemeRangeInfo(_params.currentLayer.name || "")).items
+        value = items?.length || 0
+        // value = await STheme.getRangeCount({LayerName: _params.currentLayer.name })
       } else if (themeType === ThemeType.GRIDRANGE) {
-        value = await SThemeCartography.getGridRangeCount({
+        value = await STheme.getGridRangeCount({
           LayerName: _params.currentLayer.name,
         })
       }
@@ -1752,18 +1769,18 @@ async function getTouchProgressInfo(title) {
       break
     case getLanguage(_params.language).Map_Main_Menu.DOT_VALUE:
       range = [0, 100]
-      value = await SThemeCartography.getDotDensityValue({
+      value = await STheme.getDotDensityValue({
         LayerName: _params.currentLayer.name,
       })
       break
     case getLanguage(_params.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
       range = [0, 100]
       if (themeType === ThemeType.DOTDENSITY) {
-        value = await SThemeCartography.getDotDensityDotSize({
+        value = await STheme.getDotDensityDotSize({
           LayerName: _params.currentLayer.name,
         })
       } else if (themeType === ThemeType.GRADUATEDSYMBOL) {
-        value = await SThemeCartography.getGraduatedSymbolSize({
+        value = await STheme.getGraduatedSymbolSize({
           LayerName: _params.currentLayer.name,
         })
       }
@@ -1771,19 +1788,19 @@ async function getTouchProgressInfo(title) {
       break
     case getLanguage(_params.language).Map_Main_Menu.DATUM_VALUE:
       range = [1, 10000]
-      value = await SThemeCartography.getGraduatedSymbolValue({
+      value = await STheme.getGraduatedSymbolValue({
         LayerName: _params.currentLayer.name,
       })
       break
     case getLanguage(_params.language).Map_Main_Menu.STYLE_FONT_SIZE:
       range = [1, 20]
-      value = await SThemeCartography.getLabelFontSize({
+      value = await STheme.getLabelFontSize({
         LayerName: _params.currentLayer.name,
       })
       break
     case getLanguage(_params.language).Map_Main_Menu.THEME_MAX_VISIBLE_SIZE:
       range = [1, 20]
-      value = await SThemeCartography.getGraphMaxValue({
+      value = await STheme.getGraphMaxValue({
         LayerName: _params.currentLayer.name,
       })
       unit = 'X'
@@ -1812,35 +1829,36 @@ function setTouchProgressInfo(title, value) {
         LayerName: Params.currentLayer.name,
         Radius: value,
       }
-      SThemeCartography.setHeatMapRadius(_params)
+      STheme.setHeatMapRadius(_params)
       break
     case getLanguage(Params.language).Map_Main_Menu.THEME_HEATMAP_FUZZY_DEGREE:
       _params = {
         LayerName: Params.currentLayer.name,
         fuzzyDegree: value,
       }
-      SThemeCartography.setHeatMapFuzzyDegree(_params)
+      STheme.setHeatMapFuzzyDegree(_params)
       break
     case getLanguage(Params.language).Map_Main_Menu.THEME_HEATMAP_MAXCOLOR_WEIGHT:
       _params = {
         LayerName: Params.currentLayer.name,
         MaxColorWeight: value,
       }
-      SThemeCartography.setHeatMapMaxColorWeight(_params)
+      STheme.setHeatMapMaxColorWeight(_params)
       break
     // 其他专题图
     case getLanguage(global.language).Map_Main_Menu.RANGE_COUNT:
       _params = {
-        LayerName: Params.currentLayer.name,
-        RangeParameter: parseInt(value),
+        // LayerName: Params.currentLayer.name,
+        rangeParameter: parseInt(value),
       }
       Object.assign(_params, ToolbarModule.getData().themeParams)
       if (themeType === ThemeType.LABELRANGE) {
-        SThemeCartography.modifyThemeLabelRangeMap(_params)
+        STheme.modifyThemeLabelRangeMap(_params)
       } else if (themeType === ThemeType.RANGE) {
-        SThemeCartography.modifyThemeRangeMap(_params)
+        STheme.modifyThemeRangeLayer(Params.currentLayer.name||"",_params)
+        // STheme.modifyThemeRangeMap(_params)
       } else if (themeType === ThemeType.GRIDRANGE) {
-        SThemeCartography.modifyThemeGridRangeMap(_params)
+        STheme.modifyThemeGridRangeMap(_params)
       }
       break
     case getLanguage(Params.language).Map_Main_Menu.DOT_VALUE:
@@ -1848,7 +1866,7 @@ function setTouchProgressInfo(title, value) {
         LayerName: Params.currentLayer.name,
         Value: value,
       }
-      SThemeCartography.modifyDotDensityThemeMap(_params)
+      STheme.modifyDotDensityThemeMap(_params)
       break
     case getLanguage(Params.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
       _params = {
@@ -1856,9 +1874,9 @@ function setTouchProgressInfo(title, value) {
         SymbolSize: value,
       }
       if (themeType === ThemeType.DOTDENSITY) {
-        SThemeCartography.modifyDotDensityThemeMap(_params)
+        STheme.modifyDotDensityThemeMap(_params)
       } else if (themeType === ThemeType.GRADUATEDSYMBOL) {
-        SThemeCartography.modifyGraduatedSymbolThemeMap(_params)
+        STheme.modifyGraduatedSymbolThemeMap(_params)
       }
       break
     case getLanguage(Params.language).Map_Main_Menu.DATUM_VALUE:
@@ -1869,7 +1887,7 @@ function setTouchProgressInfo(title, value) {
         LayerName: Params.currentLayer.name,
         BaseValue: value,
       }
-      SThemeCartography.modifyGraduatedSymbolThemeMap(_params)
+      STheme.modifyGraduatedSymbolThemeMap(_params)
       break
     case getLanguage(Params.language).Map_Main_Menu.STYLE_FONT_SIZE:
       range = [1, 20]
@@ -1883,7 +1901,7 @@ function setTouchProgressInfo(title, value) {
       if (themeType === ThemeType.LABELRANGE) {
         _params.type = 'range'
       }
-      SThemeCartography.setLabelFontSize(_params)
+      STheme.setLabelFontSize(_params)
       break
     case getLanguage(Params.language).Map_Main_Menu.THEME_MAX_VISIBLE_SIZE:
       range = [1, 20]
@@ -1893,7 +1911,7 @@ function setTouchProgressInfo(title, value) {
         LayerName: Params.currentLayer.name,
         MaxValue: value,
       }
-      SThemeCartography.setGraphMaxValue(_params)
+      STheme.setGraphMaxValue(_params)
       break
   }
 }

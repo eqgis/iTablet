@@ -14,7 +14,7 @@ import {
   SData,
   SMap,
 } from 'imobile_for_reactnative'
-import { ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
 import { DatasetType, FieldInfo, FieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { LayerManager_item, LayerManager_tolbar } from './components'
 import {

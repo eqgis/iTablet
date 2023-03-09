@@ -16,8 +16,8 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native'
-import { SThemeCartography, SMap  } from 'imobile_for_reactnative'
-import { ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { STheme, SMap, GeoStyle  } from 'imobile_for_reactnative'
+import { ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
 
 import { Container } from '../../components'
 import { color } from '../../styles'
@@ -59,16 +59,18 @@ export default class CustomModePage extends Component {
       }
       switch (this.type) {
         case ConstToolType.SM_MAP_THEME_PARAM_RANGE_MODE:
-          data = await SThemeCartography.getRangeList(layerParams)
+          data = (await STheme.getThemeRangeInfo(layerParams.LayerName)).items
+          // data = await STheme.getRangeList(layerParams)
           break
         case ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_MODE:
-          data = await SThemeCartography.getRangeLabelList(layerParams)
+          data = await STheme.getRangeLabelList(layerParams)
           break
         case ConstToolType.SM_MAP_THEME_PARAM_UNIQUE_COLOR:
-          data = await SThemeCartography.getUniqueList(layerParams)
+          data = (await STheme.getThemeUniqueInfo(layerParams.LayerName)).items
+          // data = await STheme.getUniqueList(layerParams)
           break
         case ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_COLOR:
-          data = await SThemeCartography.getUniqueLabelList(layerParams)
+          data = await STheme.getUniqueLabelList(layerParams)
           break
       }
       length = data.length
@@ -176,7 +178,7 @@ export default class CustomModePage extends Component {
 
   _changeItemVisible = index => {
     let data = JSON.parse(JSON.stringify(this.state.data))
-    data[index].visible = !data[index].visible
+    data[index].isVisible = !data[index].isVisible
     this.setState({
       data,
     })
@@ -223,13 +225,13 @@ export default class CustomModePage extends Component {
       data.splice(this.lastLength - 1 - minusRel, minusRel)
     } else {
       for (let i = 0; i < Math.abs(minusRel); i++) {
+        const geoStyle = new GeoStyle()
+        geoStyle.setFillForeColor(255,255,255)
+        geoStyle.setLineColor(255,255,255)
+        geoStyle.setPointColor(255,255,255)
         let newObj = {
-          visible: true,
-          color: {
-            r: 0,
-            g: 0,
-            b: 0,
-          },
+          style:JSON.stringify(geoStyle),
+          isVisible: true,
         }
         data.splice(this.lastLength - 1, 0, newObj)
       }
@@ -238,8 +240,8 @@ export default class CustomModePage extends Component {
       if (item.start === 'min' || item.end === 'max') {
         return
       }
-      item.start = min + rand * (index - 1) + ''
-      item.end = min + rand * index + ''
+      item.start = min + rand * (index - 1)
+      item.end = min + rand * index
       item.caption = item.start + ' <= X < ' + item.end
     })
     this.lastLength = ~~length
@@ -252,7 +254,7 @@ export default class CustomModePage extends Component {
   _preView = async () => {
     let data = {
       LayerName: this.props.currentLayer.name,
-      RangeList: this.state.data,
+      items: this.state.data,
     }
     let rel = await this._setAttrToMap(data)
     if (rel) {
@@ -272,7 +274,7 @@ export default class CustomModePage extends Component {
   _confirm = async () => {
     let data = {
       LayerName: this.props.currentLayer.name,
-      RangeList: this.state.data,
+      items: this.state.data,
     }
     let rel = await this._setAttrToMap(data)
     if (rel) {
@@ -313,13 +315,15 @@ export default class CustomModePage extends Component {
     let result
     switch (this.type) {
       case ConstToolType.SM_MAP_THEME_PARAM_RANGE_MODE:
-        result = await SThemeCartography.setCustomThemeRange(params)
+        result = await STheme.modifyThemeRangeLayer(params.LayerName,params)
+        // result = await STheme.setCustomThemeRange(params)
         break
       case ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_MODE:
-        result = await SThemeCartography.setCustomRangeLabel(params)
+        result = await STheme.setCustomRangeLabel(params)
         break
       case ConstToolType.SM_MAP_THEME_PARAM_UNIQUE_COLOR:
-        result = await SThemeCartography.setCustomThemeUnique(params)
+        result = await STheme.modifyThemeUniqueLayer(params.LayerName,params)
+        // result = await STheme.setCustomThemeUnique(params)
         break
       case ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_COLOR:
         result = true
@@ -408,18 +412,20 @@ export default class CustomModePage extends Component {
   }
 
   _renderItem = ({ item, index }) => {
-    let visibleImg = item.visible
+    let visibleImg = item.isVisible
       ? require('../../assets/mapTools/icon_multi_selected_disable_black.png')
       : require('../../assets/mapTools/icon_multi_unselected_disable_black.png')
     let start, end, str
     if (item.start) {
-      start = item.start === 'min' ? item.start : Math.round(item.start)
-      end = item.end === 'max' ? item.end : Math.round(item.end)
+      start = index === 0 ? 'min' : Math.round(item.start)
+      end = index === this.state.data.length-1 ? 'max' : Math.round(item.end)
       str = `${start}<=X<`
     } else {
-      str = item.title
+      str = item.caption
     }
-    let color = `rgb(${item.color.r},${item.color.g},${item.color.b})`
+    const geoStyle = new GeoStyle(item.style)
+    const colorObj = geoStyle.getFillForeColor() || geoStyle.getLineColor() || geoStyle.getPointColor()
+    let color = `rgb(${colorObj.r},${colorObj.g},${colorObj.b})`
     return (
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' && 'padding'}>
         <View style={styles.itemRow}>

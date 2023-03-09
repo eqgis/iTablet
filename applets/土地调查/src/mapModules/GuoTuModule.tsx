@@ -275,10 +275,11 @@ export default class GuoTuModule extends Module {
           await ServiceAction.uploadLayerService({layerData})
         }
       }
-      if (needUpload && !this.isUploading) {
-        // this.aniMotion = null
-        // this.loading()
-      } else {
+      // if (needUpload && !this.isUploading) {
+      // this.aniMotion = null
+      // this.loading()
+      // } else {
+      if (!needUpload) {
         this.isUploading = false
         this.aniMotion = null
         Toast.show('不需要提交服务')

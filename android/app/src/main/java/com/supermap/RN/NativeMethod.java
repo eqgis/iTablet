@@ -42,9 +42,9 @@ public class NativeMethod extends ReactContextBaseJavaModule {
             String templatePath = "";
             WritableArray templateList = Arguments.createArray();
             if (strModule == null || strModule.equals("")) {
-                templatePath = SDCARD + "iTablet/ExternalData";
+                templatePath = SDCARD + "/iTablet/ExternalData";
             } else {
-                templatePath = SDCARD + "iTablet/ExternalData/" + strModule;
+                templatePath = SDCARD + "/iTablet/ExternalData/" + strModule;
             }
 
             File file = new File(templatePath);
@@ -115,11 +115,11 @@ public class NativeMethod extends ReactContextBaseJavaModule {
             String templatePath = "";
             WritableArray templateList = Arguments.createArray();
             if (strModule == null || strModule.equals("")) {
-                templatePath = SDCARD + "iTablet/ExternalData";
+                templatePath = SDCARD + "/iTablet/ExternalData";
             }else if(strModule != null && strModule.equals("XmlTemplate")){
-                templatePath = SDCARD + "iTablet/ExternalData/XmlTemplate";
+                templatePath = SDCARD + "/iTablet/ExternalData/XmlTemplate";
             } else {
-                templatePath = SDCARD + "iTablet/User/"+userName+ "/Data/" + strModule;
+                templatePath = SDCARD + "/iTablet/User/"+userName+ "/Data/" + strModule;
             }
 
             File file = new File(templatePath);

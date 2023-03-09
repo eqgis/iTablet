@@ -898,11 +898,11 @@ async function listAction(type, params = {}) {
     // 分段专题图表达式
     const Params = {
       expression: item.expression,
-      LayerName: _params.currentLayer.name||"",
+      // LayerName: _params.currentLayer.name||"",
     }
     params.refreshList && (await params.refreshList(item.expression))
     // await STheme.setRangeExpression(Params)
-    await STheme.modifyThemeRangeLayer(Params.LayerName,Params)
+    await STheme.modifyThemeRangeLayer(_params.currentLayer.name||"",Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_EXPRESSION) {
     // 点密度专题图表达式
     const Params = {
@@ -928,7 +928,7 @@ async function listAction(type, params = {}) {
     if (item.colors) {
       Params = {
         Colors: item.colors,
-        LayerName: _params.currentLayer.name,
+        // LayerName: _params.currentLayer.name,
       }
     } else {
       Params = {
@@ -937,7 +937,7 @@ async function listAction(type, params = {}) {
       }
     }
     // await STheme.setRangeColorScheme(Params)
-    await STheme.modifyThemeRangeLayer(Params?.LayerName||"",Params)
+    await STheme.modifyThemeRangeLayer(_params.currentLayer.name||"",Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_GRID_RANGE_COLOR) {
     // 栅格分段专题图颜色表
     ToolbarModule.addData({ themeColor: item.key })
@@ -1848,14 +1848,14 @@ function setTouchProgressInfo(title, value) {
     // 其他专题图
     case getLanguage(global.language).Map_Main_Menu.RANGE_COUNT:
       _params = {
-        LayerName: Params.currentLayer.name,
-        RangeParameter: parseInt(value),
+        // LayerName: Params.currentLayer.name,
+        rangeParameter: parseInt(value),
       }
       Object.assign(_params, ToolbarModule.getData().themeParams)
       if (themeType === ThemeType.LABELRANGE) {
         STheme.modifyThemeLabelRangeMap(_params)
       } else if (themeType === ThemeType.RANGE) {
-        STheme.modifyThemeRangeLayer(_params.LayerName,_params)
+        STheme.modifyThemeRangeLayer(Params.currentLayer.name||"",_params)
         // STheme.modifyThemeRangeMap(_params)
       } else if (themeType === ThemeType.GRIDRANGE) {
         STheme.modifyThemeGridRangeMap(_params)

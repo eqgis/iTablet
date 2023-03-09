@@ -109,13 +109,14 @@ export default class PreviewColorPicker extends Component {
     let rel = false
     switch (type) {
       case ConstToolType.SM_MAP_THEME_PARAM_RANGE_MODE:
-        rel = await STheme.setCustomThemeRange(params)
+        rel = await STheme.modifyThemeRangeLayer(this.props.currentLayer?.name||"",{items:data})
+        // rel = await STheme.setCustomThemeRange(params)
         break
       case ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_MODE:
         rel = await STheme.setCustomRangeLabel(params)
         break
       case ConstToolType.SM_MAP_THEME_PARAM_UNIQUE_COLOR:
-        rel = await STheme.modifyThemeUniqueLayer(this.props.currentLayer.name,{items:data})
+        rel = await STheme.modifyThemeUniqueLayer(this.props.currentLayer?.name||"",{items:data})
         // rel = await STheme.setCustomThemeUnique(params)
         break
       case ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_COLOR:

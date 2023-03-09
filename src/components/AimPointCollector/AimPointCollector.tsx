@@ -1,7 +1,7 @@
 import { getThemeAssets } from "@/assets"
 import { AppEvent, dp, screen } from "@/utils"
 import React, {Component} from "react"
-import { View, Image, UIManager,  findNodeHandle, Text, PixelRatio} from 'react-native'
+import { View, Image, UIManager,  findNodeHandle, Text, PixelRatio, Platform} from 'react-native'
 import { SCollector, SData, SMap, SMCollectorType } from "imobile_for_reactnative"
 import styles from './styles'
 import { Point2D } from "imobile_for_reactnative/types/data"
@@ -98,11 +98,18 @@ class AimPointCollector extends Component<Props, State> {
     if(this.aimPointImageRef) {
       UIManager.measure(findNodeHandle(this.aimPointImageRef),async (x: number, y: number,width: number,height: number,pageX: number,pageY: number)=>{
         // console.warn("x: " + x + "\ny: " + y + "\nwidth: " + width + "\nheight: " + height + "\npageX: " + pageX + "\npageY: " + pageY)
-        // 屏幕x坐标 = 屏幕宽度 * 像素密度    屏幕y坐标 = 屏幕高度 * 像素密度
+        // andoid 屏幕x坐标 = 屏幕宽度 * 像素密度   屏幕y坐标 = 屏幕高度 * 像素密度
+        // ios 屏幕x坐标 = 屏幕宽度   屏幕y坐标 = 屏幕高度
+        let pointX = pageX + width / 2
+        let pointY = pageY + height / 2
         const pixel = PixelRatio.get()
+        if (Platform.OS === 'android') {
+          pointX *= pixel
+          pointY *= pixel
+        }
         const point: Point2D = {
-          x: (pageX + width / 2) * pixel,
-          y: (pageY + height / 2) * pixel,
+          x: pointX,
+          y: pointY,
         }
         // 屏幕坐标转地图坐标
         const mapPoint = await SMap.pixelToMap(point)

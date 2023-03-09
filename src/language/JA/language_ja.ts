@@ -1237,6 +1237,7 @@ export const language_ja: typeof language_cn = {
   COLLECTION_POINTS_BY_GPS: "GPSプロット方式",
   COLLECTION_LINE_BY_GPS: "GPS軌跡式",
   COLLECTION_POINT_DRAW: "ポイント描画式",
+  COLLECTION_AIM_POINT_DEAW:"Aim Point Draw", // To be translated
   COLLECTION_FREE_DRAW: "自由式",
   COLLECTION_ADD_POINT: "プロット",
   COLLECTION_START: "開始",

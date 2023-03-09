@@ -9,6 +9,7 @@ const icon_analysis_critical_element = require('./icon_analysis_critical_element
 const icon_ar_frame = require('./icon_ar_frame.png')
 const icon_collect_free_line = require('./icon_collect_free_line.png')
 const icon_collect_point = require('./icon_collect_point.png')
+const icon_collect_aim_point = require('./icon_collect_aim_point.png')
 const icon_ar_effect_download = require('./ar_effect_download.png')
 const icon_scan = require('./icon_scan.png')
 // ar增强定位图标
@@ -38,6 +39,7 @@ export default {
   icon_ar_frame,
   icon_collect_free_line,
   icon_collect_point,
+  icon_collect_aim_point,
   icon_ar_effect_download,
 
   // 位置校准

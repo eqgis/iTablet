@@ -1240,6 +1240,7 @@ export const language_ar: typeof language_cn = {
   COLLECTION_POINTS_BY_GPS: "جمع النقاط بواسطةنظام تحديد المواقع",
   COLLECTION_LINE_BY_GPS: "جمع الخط بواسطة نظام تحديد المواقع",
   COLLECTION_POINT_DRAW: "رسم النقطة",
+  COLLECTION_AIM_POINT_DEAW:"Aim Point Draw", // To be translated
   COLLECTION_FREE_DRAW: "رسم حر",
   COLLECTION_ADD_POINT: "إضافة النقاط",
   COLLECTION_START: "بدء",

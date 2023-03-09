@@ -151,6 +151,7 @@ import PositionStateView from '../../components/PositionStateView'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 import { addOutdoorStartEndGuideLine } from '../../components/NavigationView/NavigationView'
 import IndoorGPSCollector from '../../components/ToolBar/modules/toolModule/IndoorGPSCollector'
+import AimPointCollector from '@/components/AimPointCollector'
 
 global.markerTag = 118082
 
@@ -5323,6 +5324,16 @@ export default class MapView extends React.Component {
     }
   }
 
+  /** 准星采集的准星 */
+  rendercollectorAimPoint = () => {
+    return (
+      <AimPointCollector
+        device= {this.props.device}
+      />
+    )
+  }
+
+
   renderContainer = () => {
     const width = this.px(screen.getScreenWidth())
     return (
@@ -5559,6 +5570,7 @@ export default class MapView extends React.Component {
         {this.renderCustomInputDialog()}
         {this.renderCustomAlertDialog()}
         {this.getInfoText()}
+        {global.Type === ChunkType.MAP_COLLECTION &&  this.rendercollectorAimPoint()}
 
         <Toolbar
           navigation={this.props.navigation}

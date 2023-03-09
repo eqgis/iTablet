@@ -1232,6 +1232,7 @@ export const language_en: typeof language_cn = {
   COLLECTION_POINTS_BY_GPS: "Collect Points by GPS",
   COLLECTION_LINE_BY_GPS: "Collect Line by GPS",
   COLLECTION_POINT_DRAW: "Point Draw",
+  COLLECTION_AIM_POINT_DEAW:"Aim Point Draw", // To be translated
   COLLECTION_FREE_DRAW: "Free Draw",
   COLLECTION_ADD_POINT: "Add Points",
   COLLECTION_START: "Start",

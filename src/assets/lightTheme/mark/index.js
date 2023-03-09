@@ -14,6 +14,7 @@ const icon_mark_manage = require('./icon_mark_manage.png')
 const icon_mark_manage_ash = require('./icon_manage_ash.png')
 const icon_mark_erase = require('./icon_mark_erase.png')
 const icon_spot_collection = require('./icon_spot_collection.png')
+const icon_aim_point = require('./icon_aim_point.png')
 
 export default {
   icon_frame,
@@ -32,4 +33,5 @@ export default {
   icon_mark_manage_ash,
   icon_mark_erase,
   icon_spot_collection,
+  icon_aim_point,
 }

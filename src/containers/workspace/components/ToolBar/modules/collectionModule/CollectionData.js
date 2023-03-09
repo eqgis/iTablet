@@ -6,6 +6,7 @@ import { getThemeAssets } from '../../../../../../assets'
 import { ConstToolType } from '../../../../../../constants'
 import CollectionAction from './CollectionAction'
 import ToolbarModule from '../ToolbarModule'
+import { AppEvent } from '@/utils'
 
 /**
  * 获取采集操作数据
@@ -99,6 +100,23 @@ function getData(type) {
       image: getThemeAssets().edit.icon_redo,
     })
   }
+
+  // 准星采集的打点
+  if(type ===  SMCollectorType.LINE_AIM_POINT
+    || type === SMCollectorType.POINT_AIM_POINT
+    || type === SMCollectorType.REGION_AIM_POINT
+  ) {
+    data.unshift({
+      key: 'addAimPoint',
+      title: getLanguage(global.language).Map_Main_Menu.COLLECTION_ADD_POINT,
+      action: () => {
+        AppEvent.emitEvent("collector_aim_point_add", type)
+      },
+      size: 'large',
+      image: getThemeAssets().collection.icon_collect_point,
+    })
+  }
+
   data.push({
     key: constants.CANCEL,
     title: getLanguage(global.language).Map_Main_Menu.COLLECTION_CANCEL,
@@ -120,6 +138,7 @@ function getData(type) {
       image: getThemeAssets().toolbar.icon_toolbar_quit,
       action: async () => {
         await CollectionAction.cancel(type)
+        AppEvent.emitEvent("collector_aim_point_show", false)
         global.ToolBar?.close()
       },
     },
@@ -212,6 +231,18 @@ function getOperationData(type) {
           size: 'large',
           image: getThemeAssets().mark.icon_mark_manage,
         },
+        {
+          key: 'aimPointDraw',
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_AIM_POINT_DEAW,
+          action: () =>{
+            CollectionAction.showCollection(
+              SMCollectorType.POINT_AIM_POINT,
+              _params.currentLayer.path,
+            )
+          },
+          size: 'large',
+          image: getThemeAssets().collection.icon_collect_aim_point,
+        },
       )
       break
     case ConstToolType.SM_MAP_COLLECTION_LINE:
@@ -226,6 +257,18 @@ function getOperationData(type) {
             ),
           size: 'large',
           image: getThemeAssets().mark.icon_dotted_lines,
+        },
+        {
+          key: 'aimPointDraw',
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_AIM_POINT_DEAW,
+          action: () =>{
+            CollectionAction.showCollection(
+              SMCollectorType.LINE_AIM_POINT,
+              _params.currentLayer.path,
+            )
+          },
+          size: 'large',
+          image: getThemeAssets().collection.icon_collect_aim_point,
         },
         {
           key: 'freeDraw',
@@ -256,6 +299,18 @@ function getOperationData(type) {
           image: getThemeAssets().mark.icon_frame,
         },
         {
+          key: 'aimPointDraw',
+          title: getLanguage(global.language).Map_Main_Menu.COLLECTION_AIM_POINT_DEAW,
+          action: () =>{
+            CollectionAction.showCollection(
+              SMCollectorType.REGION_AIM_POINT,
+              _params.currentLayer.path,
+            )
+          },
+          size: 'large',
+          image: getThemeAssets().collection.icon_collect_aim_point,
+        },
+        {
           key: 'freeDraw',
           title: getLanguage(global.language).Map_Main_Menu
             .COLLECTION_FREE_DRAW,
@@ -273,7 +328,17 @@ function getOperationData(type) {
   }
 
   buttons = [
-    ToolbarBtnType.CANCEL,
+    // ToolbarBtnType.CANCEL,
+    {
+      type: ToolbarBtnType.CANCEL,
+      // image: getThemeAssets().collection.icon_symbol,
+      action: async () => {
+        // await CollectionAction.cancel(type)
+        AppEvent.emitEvent("collector_aim_point_show", false)
+        global.ToolBar?.close()
+
+      },
+    },
     ToolbarBtnType.PLACEHOLDER,
   ]
 

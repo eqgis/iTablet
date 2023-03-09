@@ -26,7 +26,7 @@ class AimPointCollector extends Component<Props, State> {
 
   /** 准星采集的准星图片 */
   aimPointImageRef: typeof Image | null | undefined = null
-  aimPointTimer: NodeJS.Timer | null | undefined = null
+  // aimPointTimer: NodeJS.Timer | null | undefined = null
 
   constructor(props: Props) {
     super(props)
@@ -57,19 +57,34 @@ class AimPointCollector extends Component<Props, State> {
       // 添加画点监听
       AppEvent.addListener("collector_aim_point_add", this.draw)
 
-      if(!(this.aimPointTimer)) {
-        this.aimPointTimer = setInterval(() => {
-          this.aimPointLLDraw()
-        },1000)
-      }
+      SMap.setMapParameterChangedListener({
+        boundsChanged: async (mapCenter: Point2D) => {
+          // 回调里的值是地图坐标系的点 需要转成经纬度的显示
+          // 获取地图的投影坐标系
+          const mapPrj = await SMap.getPrjCoordSys()
+          // 地图坐标转经纬度坐标
+          const LLPoints = await SData.CoordSysTranslatorPrjToGPS(mapPrj, [mapCenter])
+          const LLPoint = LLPoints[0]
+          this.setState({
+            x: (LLPoint.x).toFixed(6) || "0",
+            y: (LLPoint.y).toFixed(6) || "0",
+          })
+        }
+      })
+
+      // if(!(this.aimPointTimer)) {
+      //   this.aimPointTimer = setInterval(() => {
+      //     this.aimPointLLDraw()
+      //   },1000)
+      // }
     } else {
       // 移除准星采集的打点的监听
       // 移除画点监听
       AppEvent.removeListener('collector_aim_point_add',this.draw)
-      if(this.aimPointTimer) {
-        clearInterval(this.aimPointTimer)
-        this.aimPointTimer = null
-      }
+      // if(this.aimPointTimer) {
+      //   clearInterval(this.aimPointTimer)
+      //   this.aimPointTimer = null
+      // }
     }
   }
 
@@ -139,7 +154,7 @@ class AimPointCollector extends Component<Props, State> {
 
   rendercollectorAimPoint = () => {
     const width = dp(100)
-    const height = dp(70)
+    const height = dp(100)
     let top = 0
     let left = 0
     // 竖屏
@@ -172,14 +187,14 @@ class AimPointCollector extends Component<Props, State> {
           source={getThemeAssets().mark.icon_aim_point}
           style= {[{
             // backgroundColor:'#ff0',
-            width: dp(60),
-            height: dp(60),
+            width: dp(80),
+            height: dp(80),
           }]}
         />
         {/* 准星对应的地图坐标显示 */}
         <View style={[styles.textContainer]}>
-          <Text style={[styles.textstyle]}>{"X: " + this.state.x}</Text>
-          <Text style={[styles.textstyle]}>{"Y: " + this.state.y}</Text>
+          <Text style={[styles.textstyle]}>{this.state.x}</Text>
+          <Text style={[styles.textstyle]}>{" , " + this.state.y}</Text>
         </View>
       </View>
     )

@@ -174,6 +174,7 @@ class CallDetailPage extends Component<Props, State> {
 
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
     if(this.props.data.SmID !== prevProps.data.SmID) {
+      console.warn("smId: " + this.props.data.SmID + "\n pre smId: " + prevProps.data.SmID)
       this.setState({
         data: this.props.data,
       }, () => {
@@ -571,7 +572,7 @@ class CallDetailPage extends Component<Props, State> {
 
                 const selectionAttribute = false
                 const index = this.state.data.SmID - 1
-                const layerAttribute = true
+                const layerAttribute = false
 
                 NavigationService.navigate('Camera', {
                   datasourceAlias,
@@ -637,7 +638,7 @@ class CallDetailPage extends Component<Props, State> {
                             datasetName,
                             mediaPaths,
                             mediaIds: resourceIds,
-                          }, false, { index: index, selectionAttribute: selectionAttribute, ids: global.layerSelection?.ids ,layerAttribute: layerAttribute})
+                          }, false, { index: 0, selectionAttribute: selectionAttribute, ids: [this.state.data.SmID],layerAttribute: layerAttribute}) // global.layerSelection?.ids || []
                         } else {
                           Toast.show(getLanguage(global.language).Friends.RESOURCE_UPLOAD_FAILED)
                         }
@@ -662,7 +663,7 @@ class CallDetailPage extends Component<Props, State> {
                           datasourceName: datasourceAlias,
                           datasetName: datasetName,
                           mediaPaths,
-                        }, false, { index: index, selectionAttribute: selectionAttribute, ids: global.layerSelection?.ids ,layerAttribute: layerAttribute})
+                        }, false, { index: 0, selectionAttribute: selectionAttribute, ids: [this.state.data.SmID] ,layerAttribute: layerAttribute})
                       }
                       // if (
                       //   this.props.refreshAction &&

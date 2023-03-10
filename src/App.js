@@ -599,6 +599,7 @@ class AppRoot extends Component {
 
   //初始化横竖屏显示方式
   initOrientation = async () => {
+    screen.lockToPortrait()
     if (Platform.OS === 'ios') {
       Orientation.getSpecificOrientation((e, orientation) => {
         this.showStatusBar(orientation)

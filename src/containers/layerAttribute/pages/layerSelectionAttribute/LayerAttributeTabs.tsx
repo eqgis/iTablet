@@ -1003,7 +1003,10 @@ export default class LayerAttributeTabs extends React.Component {
     return (
       <View
         style={{
-          width: '100%',
+          position: 'absolute',
+          right: 0,
+          bottom:0,
+          width: (this.props.device.orientation.indexOf('LANDSCAPE') === 0) ? '60%' : '100%',
           height: scaleSize(100) + paddingBottom,
           ...screen.getIphonePaddingHorizontal(
             this.props.device.orientation,
@@ -1255,12 +1258,12 @@ export default class LayerAttributeTabs extends React.Component {
                 : '80%',
             width:
               this.props.device.orientation.indexOf('LANDSCAPE') >= 0
-                ? '40%'
+                ? '60%'
                 : '100%',
             right: 0,
             left:
               this.props.device.orientation.indexOf('LANDSCAPE') >= 0
-                ? '60%'
+                ? '40%'
                 : 0,
           }}
           navigation={this.props.navigation}

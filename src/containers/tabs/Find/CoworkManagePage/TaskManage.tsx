@@ -528,6 +528,7 @@ class TaskManage extends React.Component<Props, State> {
           text: getLanguage(this.props.language).Prompt.APPLY_LICENSE_FIRST,
         })
         global.SimpleDialog.setVisible(true)
+        global.Loading.setLoading(false)
         return
       }
       CoworkInfo.setId(targetId)

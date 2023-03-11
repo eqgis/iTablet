@@ -6,9 +6,11 @@ import { ThunkAction } from "redux-thunk"
 import { RootState } from "../types"
 import { OrientationType } from "@/utils/screen"
 import { DeviceUtils } from 'imobile_for_reactnative'
+import { NetInfoState, NetInfoStateType } from "@react-native-community/netinfo"
 // Constants
 // --------------------------------------------------
 export const SHOW_SET = 'SHOW_SET'
+export const SET_NETINFO = 'SET_NETINFO'
 
 export interface DEVICE {
   orientation: OrientationType,
@@ -31,6 +33,11 @@ export interface SetWindowSizeAction {
   },
 }
 
+export interface NetInfoAction {
+  type: typeof SET_NETINFO,
+  payload: NetInfoState,
+}
+
 // Actions
 // ---------------------------------.3-----------------
 
@@ -48,6 +55,25 @@ export const setShow = (params: {orientation: OrientationType}, cb?: () => void)
   cb && cb()
 }
 
+/**
+ * 设置设备网络状态
+ * @param params 网络状态
+ * @param cb 回调
+ * @returns
+ */
+export const setNetInfo = (params: NetInfoState, cb?: () => void): ThunkAction<void, RootState, unknown, NetInfoAction> => async (dispatch, getState) => {
+  const netInfo = getState().device.toJS().netInfo
+  if (JSON.stringify(netInfo) === JSON.stringify(params)) {
+    cb && cb()
+    return
+  }
+  await dispatch({
+    type: SET_NETINFO,
+    payload: params,
+  })
+  cb && cb()
+}
+
 const initialState = fromJS({
   device: {
     orientation:
@@ -59,6 +85,12 @@ const initialState = fromJS({
   },
   windowSize: Dimensions.get('window'),
   screenSize: Dimensions.get('screen'),
+  netInfo: {
+    type: NetInfoStateType.unknown,
+    isConnected: null,
+    isInternetReachable: null,
+    details: null,
+  }
 })
 
 export default handleActions(
@@ -81,6 +113,9 @@ export default handleActions(
         width: payload.orientation.indexOf('LANDSCAPE') >= 0 ? Math.max(screenSize.width, screenSize.height) : Math.min(screenSize.width, screenSize.height),
         height: payload.orientation.indexOf('LANDSCAPE') >= 0 ? Math.min(screenSize.width, screenSize.height) : Math.max(screenSize.width, screenSize.height),
       }))
+    },
+    [`${SET_NETINFO}`]: (state: any, { payload }: { payload: NetInfoState}) => {
+      return state.setIn(['netInfo'], fromJS(payload))
     },
     // [REHYDRATE]: (state, { payload }) => {
     //   return payload && payload.device ? fromJS(payload.device) : state

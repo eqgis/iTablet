@@ -14,6 +14,7 @@ const persistConfig: PersistConfig<any, any, any, any> = {
   key: 'root',
   storage: AsyncStorage,
   whitelist: [
+    'user',
     'setting',
     'chat',
     'template',
@@ -31,7 +32,6 @@ const persistConfig: PersistConfig<any, any, any, any> = {
   ],
   blacklist: [
     'nav',
-    'user',
     'collection',
     'down',
     'layers',

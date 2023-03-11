@@ -11,6 +11,8 @@ export default {
   launchGuideVersion: '0.0.3',
   language: 'AUTO',
   supportLanguage: [],
+  /** 有许可情况下, 离线后可保持登录状态的时间 */
+  offlineExpireDate: 24 * 60 * 60 * 1000,
   about: {
     isShow: true,
     url: '',

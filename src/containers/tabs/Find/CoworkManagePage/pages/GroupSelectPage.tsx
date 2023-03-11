@@ -12,13 +12,15 @@ import CoworkInfo from '../../../Friend/Cowork/CoworkInfo'
 import { Users } from '../../../../../redux/models/user'
 import { setCoworkGroup, setCurrentGroup, MessageType } from '../../../../../redux/models/cowork'
 import { connect } from 'react-redux'
-import CoworkFileHandle from '../CoworkFileHandle'
+import { SData } from 'imobile_for_reactnative'
+import { NetInfoState } from '@react-native-community/netinfo'
 
 interface Props {
-  navigation: Object,
+  navigation: any,
   user: Users,
   language: string,
   device: any,
+  netInfo: NetInfoState,
   coworkGroups: any,
   currentGroup: any,
   coworkMessages: {
@@ -61,7 +63,7 @@ class GroupSelectPage extends Component<Props, State> {
       OnlineServicesUtils.setServiceType('iportal')
     }
 
-    let sectionMap = new Map()
+    const sectionMap = new Map()
     sectionMap.set(getLanguage(global.language).Friends.MY_GROUPS, true)
     sectionMap.set(getLanguage(global.language).Friends.JOINED_GROUPS, true)
 
@@ -163,6 +165,30 @@ class GroupSelectPage extends Component<Props, State> {
 
   getGroups = async ({pageSize = this.pageSize, currentPage = 1, orderBy = 'CREATETIME', orderType = 'DESC'}) => {
     try {
+      // 无网络的时候,判断许可,若有许可,则保留数据
+      if (!this.props.netInfo.isConnected && (await SData.getEnvironmentStatus()).isLicenseValid) {
+        const myGroups: any[] = [], _joinedGroups: any[] = []
+        const coworkGroups = this.props.coworkGroups || []
+        for (const group of coworkGroups) {
+          if (group.creator === this.props.user.currentUser.userName) {
+            myGroups.push(group)
+          } else {
+            _joinedGroups.push(group)
+          }
+        }
+        this.setState({
+          data: [{
+            title: getLanguage(global.language).Friends.MY_GROUPS,
+            data: myGroups,
+          }, {
+            title: getLanguage(global.language).Friends.JOINED_GROUPS,
+            data: _joinedGroups,
+          }],
+          isRefresh: false,
+        })
+        this.isLoading = false
+        return
+      }
       SCoordinationUtils.getScoordiantion()?.getGroupInfos({
         orderBy: orderBy,
         orderType: orderType,
@@ -181,7 +207,7 @@ class GroupSelectPage extends Component<Props, State> {
               _data = result.content
             }
           }
-          for (const group of result.content) {
+          for (const group of _data) {
             if (group.creator === this.props.user.currentUser.userName) {
               myGroups.push(group)
             } else {
@@ -210,6 +236,9 @@ class GroupSelectPage extends Component<Props, State> {
           this.state.isRefresh && this.setState({ isRefresh: false, data: [] })
           this.isLoading = false
         }
+      }).catch(e => {
+        this.state.isRefresh && this.setState({ isRefresh: false })
+        this.isLoading = false
       })
     } catch (error) {
       this.isLoading = false
@@ -453,6 +482,7 @@ class GroupSelectPage extends Component<Props, State> {
 const mapStateToProps = (state: any) => ({
   user: state.user.toJS(),
   device: state.device.toJS().device,
+  netInfo: state.device.toJS().netInfo,
   language: state.setting.toJS().language,
   coworkGroups: state.cowork.toJS().groups[state.user.toJS().currentUser.userId],
   currentGroup: state.cowork.toJS().currentGroup,

@@ -1,14 +1,17 @@
 import { fromJS } from 'immutable'
 import { handleActions } from 'redux-actions'
-import { } from '../../utils'
+import { ModelUtils } from '../../utils'
 import { ConfigUtils, AppInfo } from 'imobile_for_reactnative'
 import { UserInfo } from '../../types'
 import AppUser from '@/utils/AppUser'
+import { REHYDRATE } from 'redux-persist'
+import { UserType } from '@/constants'
 // Constants
 // --------------------------------------------------
 export const USER_SET = 'USER_SET'
 export const USERS_SET = 'USERS_SET'
 export const USER_DELETE = 'USER_DELETE'
+export const USER_EXPIRE_DATE_SET = 'USER_EXPIRE_DATE_SET'
 
 interface SetUserAction {
   type: typeof USER_SET,
@@ -63,7 +66,7 @@ export interface Users {
 
 // Actions
 // ---------------------------------.3-----------------
-export const setUser = (params: UserInfo, cb = () => {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
+export const setUser = (params: UserInfo, cb = () => {}) => async (dispatch: (arg0: { type: string; payload: UserInfo }) => any) => {
   global.currentUser = params
   AppUser.setCurrentUser(params)
   await dispatch({
@@ -73,7 +76,7 @@ export const setUser = (params: UserInfo, cb = () => {}) => async (dispatch: (ar
   cb && cb()
 }
 
-export const setUsers = (params: UserInfo[], cb = () => {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
+export const setUsers = (params: UserInfo[], cb = () => {}) => async (dispatch: (arg0: { type: string; payload: UserInfo[] }) => any) => {
   global.currentUser = params[0]
   AppUser.setCurrentUser(params[0])
   await dispatch({
@@ -83,7 +86,7 @@ export const setUsers = (params: UserInfo[], cb = () => {}) => async (dispatch: 
   cb && cb()
 }
 
-export const deleteUser = (params: UserInfo, cb = () => {}) => async (dispatch: (arg0: { type: string; payload: {} }) => any) => {
+export const deleteUser = (params: UserInfo, cb = () => {}) => async (dispatch: (arg0: { type: string; payload: UserInfo }) => any) => {
   await dispatch({
     type: USER_DELETE,
     payload: params,
@@ -91,9 +94,29 @@ export const deleteUser = (params: UserInfo, cb = () => {}) => async (dispatch: 
   cb && cb()
 }
 
+export const setExpireDate = (params: { date: number, override?: boolean}, cb = () => {}) => async (dispatch: (arg0: { type: string; payload: number }) => any, getState: () => { (): any; new(): any; user: { (): any; new(): any; expireDate: any } }) => {
+  const expireDate = getState().user.toJS().expireDate
+  // 已经有过期时间,或者不覆盖,或者相等,则不储存
+  if (
+    expireDate === params.date ||
+    expireDate !== undefined &&
+    params.date !== undefined &&
+    !params.override
+  ) {
+    return
+  }
+  await dispatch({
+    type: USER_EXPIRE_DATE_SET,
+    payload: params.date,
+  })
+  cb && cb()
+}
+
 const initialState = fromJS({
   currentUser: {},
   users: [],
+  // 登录过期时间,如果存在,则需要重新登录
+  expireDate: undefined,
 })
 
 export default handleActions(
@@ -115,6 +138,10 @@ export default handleActions(
       }
       ConfigUtils.recordUsers(users)
       AppInfo.setUserName(payload.userName)
+      // 登录后,重置过期时间
+      if (payload.userType !== UserType.PROBATION_USER) {
+        state = state.setIn(['expireDate'], fromJS(undefined))
+      }
       return state
         .setIn(['currentUser'], fromJS(payload))
         .setIn(['users'], fromJS(users))
@@ -140,11 +167,12 @@ export default handleActions(
       ConfigUtils.recordUsers(users)
       return state.setIn(['users'], fromJS(users))
     },
-    // [REHYDRATE]: (state, { payload }) => {
-    //   const _data = ModelUtils.checkModel(state, payload && payload.user)
-    //   // return payload && payload.user ? fromJS(payload.user) : state
-    //   return _data
-    // },
+    [`${USER_EXPIRE_DATE_SET}`]: (state: { setIn: (arg0: string[], arg1: any) => any }, { payload }: { payload: number}) => {
+      return state.setIn(['expireDate'], fromJS(payload))
+    },
+    [REHYDRATE]: (state, { payload }) => {
+      return payload && payload.user ? fromJS(payload.user) : state
+    },
   },
   initialState,
 )

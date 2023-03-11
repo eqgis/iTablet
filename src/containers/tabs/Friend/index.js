@@ -40,6 +40,7 @@ const mapStateToProps = state => ({
   chat: state.chat.toJS(),
   appConfig: state.appConfig.toJS(),
   device: state.device.toJS().device,
+  netInfo: state.device.toJS().netInfo,
   cowork: state.cowork.toJS(),
 })
 

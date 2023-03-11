@@ -810,9 +810,9 @@ function addTaskInfoMember(
   members: Array<Member>,
 ) {
   // 添加成员到本地数据中
-  let taskInfo = getTaskInfo(coworkInfo, userId, groupId, taskId, false)
+  const taskInfo = getTaskInfo(coworkInfo, userId, groupId, taskId, false)
   if (taskInfo) {
-    let taskInfoMembers = taskInfo.members || []
+    const taskInfoMembers = taskInfo.members || []
     members.forEach((m: Member) => {
       let exsit = false
       for (let j = 0; j < taskInfoMembers.length; j++) {
@@ -846,9 +846,9 @@ function deleteTaskInfoMember(
   members: Array<Member>,
 ) {
   // 添加成员到本地数据中
-  let taskInfo = getTaskInfo(coworkInfo, userId, groupId, taskId, false)
+  const taskInfo = getTaskInfo(coworkInfo, userId, groupId, taskId, false)
   if (taskInfo) {
-    let taskInfoMembers = taskInfo.members || []
+    const taskInfoMembers = taskInfo.members || []
     members.forEach((m: Member) => {
       for (let j = 0; j < taskInfoMembers.length; j++) {
         if (m.id === taskInfoMembers[j].id) {
@@ -870,7 +870,7 @@ function hideAll(members: Array<any>) {
   try {
     SMap.removeUserCallout()
     for (let i = 0; i < members.length; i++) {
-      let userID = members[i].id
+      const userID = members[i].id
       SMap.hideUserTrack(userID)
     }
   } catch (error) {
@@ -927,7 +927,7 @@ function showAll(members: Array<any>, messages: Array<any>) {
  */
 function setUserLocation(members: Array<any>, userID: string, location: Location): Array<any> {
   for (let i = 0; i < members.length; i++) {
-    let member = members[i]
+    const member = members[i]
     if (member.id === userID) {
       member.location = location
       break
@@ -942,7 +942,7 @@ function setUserLocation(members: Array<any>, userID: string, location: Location
  */
 function setUserTrack(member: CoworkMember, isShow: boolean): void {
   if (isShow) {
-    let location = member.location
+    const location = member.location
     if (location) {
       let initial = location.initial
       if (initial && initial.length > 2) {

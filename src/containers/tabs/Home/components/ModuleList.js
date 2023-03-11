@@ -368,15 +368,15 @@ class ModuleList extends Component {
         latestMap = this.props.latestMap[currentUserName][item.key][0]
       }
 
-      let licenseStatus = await SData.getEnvironmentStatus()
-      global.isLicenseValid = licenseStatus.isLicenseValid
-      if (!global.isLicenseValid) {
-        this.props.setCurrentMapModule(index).then(async () => {
-          item.action && (await item.action(tmpCurrentUser, latestMap))
-          item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
-        })
-        return
-      }
+      // let licenseStatus = await SData.getEnvironmentStatus()
+      // global.isLicenseValid = licenseStatus.isLicenseValid
+      // if (!global.isLicenseValid) {
+      //   this.props.setCurrentMapModule(index).then(async () => {
+      //     item.action && (await item.action(tmpCurrentUser, latestMap))
+      //     item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
+      //   })
+      //   return
+      // }
 
       let downloadData = this.getDownloadData(language, item, index)
 

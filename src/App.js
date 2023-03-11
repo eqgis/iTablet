@@ -20,7 +20,7 @@ import { Provider, connect } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import PropTypes from 'prop-types'
 import { setNav } from './redux/models/nav'
-import { setUser, setUsers, deleteUser } from './redux/models/user'
+import { setUser, setUsers, deleteUser, setExpireDate } from './redux/models/user'
 import { setAgreeToProtocol, setLanguage, setMapSetting } from './redux/models/setting'
 import { setPointStateText } from './redux/models/location'
 import {
@@ -45,7 +45,7 @@ import { setMapModule, addMapModule, loadAddedModule } from './redux/models/mapM
 import { Dialog, Loading, MyToast, InputDialog, Dialog2, InputDialog2 } from './components'
 import { setAnalystParams } from './redux/models/analyst'
 import { setCollectionInfo } from './redux/models/collection'
-import { setShow } from './redux/models/device'
+import { setShow, setNetInfo } from './redux/models/device'
 import { setLicenseInfo } from './redux/models/license'
 import { FileTools, SplashScreen } from './native'
 import ConfigStore from './redux/store'
@@ -53,11 +53,11 @@ import { scaleSize, Toast, screen, DialogUtils, GetUserBaseMapUtil, AppEvent } f
 import * as OnlineServicesUtils from './utils/OnlineServicesUtils'
 import RootNavigator from './containers/RootNavigator'
 import { color } from './styles'
-import { ConstPath, ThemeType, ChunkType, UserType } from './constants'
+import { ConstPath, ThemeType, UserType } from './constants'
 import * as PT from './customPrototype'
 import NavigationService from './containers/NavigationService'
 import Orientation from 'react-native-orientation'
-import { BundleTools, RNFS as fs, SOnlineService, SScene, SMap, SIPortalService, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo ,SARMap, SData} from 'imobile_for_reactnative'
+import { BundleTools, RNFS as fs, SOnlineService, SScene, SIPortalService, SSpeechRecognizer, SLocation, ConfigUtils, AppInfo ,SARMap, SData} from 'imobile_for_reactnative'
 // import SplashScreen from 'react-native-splash-screen'
 import { getLanguage } from './language/index'
 import { ProtocolDialog } from './containers/tabs/Home/components'
@@ -169,6 +169,7 @@ class AppRoot extends Component {
     layers: PropTypes.array,
     isAgreeToProtocol: PropTypes.bool,
     device: PropTypes.object,
+    netInfo: PropTypes.object,
     appConfig: PropTypes.object,
     version: PropTypes.string,
 
@@ -176,8 +177,10 @@ class AppRoot extends Component {
     setUser: PropTypes.func,
     deleteUser: PropTypes.func,
     setUsers: PropTypes.func,
+    setExpireDate: PropTypes.func,
     openWorkspace: PropTypes.func,
     setShow: PropTypes.func,
+    setNetInfo: PropTypes.func,
     closeMap: PropTypes.func,
     setCurrentMap: PropTypes.func,
     closeWorkspace: PropTypes.func,
@@ -211,6 +214,9 @@ class AppRoot extends Component {
 
   /** 是否是华为设备 */
   isHuawei = false
+
+  /** 记录app状态,是否活跃 */
+  appState = ''
 
   constructor(props) {
     super(props)
@@ -287,12 +293,17 @@ class AppRoot extends Component {
     this.initOrientation()
     if (!this.state.showLaunchGuide) {
       this.showUserProtocol()
+    } else {
+      this.login()
     }
   }
 
   componentDidUpdate(prevProps) {
     // 切换用户，重新加载用户配置文件
-    if (JSON.stringify(prevProps.user) !== JSON.stringify(this.props.user)) {
+    if (
+      JSON.stringify(prevProps.user.currentUser) !== JSON.stringify(this.props.user.currentUser) ||
+      JSON.stringify(prevProps.user.users) !== JSON.stringify(this.props.user.users)
+    ) {
       this.initDirectories(this.props.user.currentUser.userName)
       this.getUserApplets(this.props.user.currentUser.userName)
       this.reCircleLogin()
@@ -306,17 +317,22 @@ class AppRoot extends Component {
   }
 
   handleNetworkState = async state => {
+    this.props.setNetInfo(state)
     // TODO 网络状态发生变化,wifi切换为移动网络,判断内网服务是否可用
-    if (UserType.isIPortalUser(this.props.user.currentUser) || UserType.isOnlineUser(this.props.user.currentUser)) {
+    if (state.isConnected && (UserType.isIPortalUser(this.props.user.currentUser) || UserType.isOnlineUser(this.props.user.currentUser))) {
       const isConnected = await OnlineServicesUtils.getService()?.checkConnection()
       if (isConnected) {
+        // 网络连接,重启登录,并开启心跳
+        await this.login()
+        this.reCircleLogin()
         Toast.show(getLanguage().Prompt.NETWORK_RECONNECT)
         global.getFriend()?.restartService()
         return
       } else {
         // 无法连接内网, 退出登录
         // global.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
-        Toast.show(getLanguage().Prompt.NETWORK_ERROR)
+        await this.checkNetAndLicenseValid()
+        Toast.show(getLanguage().Prompt.NO_NETWORK)
       }
     } else if (state.type === 'none' || state.type === 'unknown') {
       Toast.show(getLanguage().Prompt.NETWORK_ERROR)
@@ -642,7 +658,55 @@ class AppRoot extends Component {
     }
   }
 
-  reCircleLogin = () => {
+  /**
+   * 检查网络和许可,是否支持登录成功或使用离线模式
+   * @returns
+   *    网络正常,返回true
+   *    网络断开,返回false
+   *    网络断开,许可无效,退出登录 返回false
+   */
+  checkNetAndLicenseValid = async () => {
+    try {
+      // 检查网络状态
+      if (!this.props.netInfo.isConnected) {
+        const status = await SData.getEnvironmentStatus()
+        const currentDate = new Date().getTime()
+        // 查看许可是否存在,否则退出
+        if (!status.isLicenseValid || this.props.user.expireDate && this.props.user.expireDate < currentDate) {
+          if (UserType.isOnlineUser(this.props.user.currentUser)) {
+            this.logoutOnline()
+          } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
+            global.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+            // 退出登录成功后,移除过期时间
+            this.props.setExpireDate({
+              date: undefined,
+            })
+          }
+        } else if (this.props.user.expireDate === undefined) {
+          const expireDate = currentDate + config.offlineExpireDate
+          // 有许可状态,则记录需要重新登录时间(断网时间 + 24h)
+          // 若已经记录有重新登录时间,则跳过
+          // 若在重新登录时间之前连上网络,则删除重新登录时间
+          this.props.setExpireDate({
+            date: expireDate,
+          })
+        }
+        return false
+      }
+      return true
+    } catch(e) {
+      return false
+    }
+  }
+
+  reCircleLogin = async () => {
+    if (!(await this.checkNetAndLicenseValid())) {
+      if (this.loginTimer !== undefined) {
+        clearInterval(this.loginTimer)
+        this.loginTimer = undefined
+      }
+      return
+    }
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       if (this.loginTimer !== undefined) {
         clearInterval(this.loginTimer)
@@ -709,6 +773,10 @@ class AppRoot extends Component {
         NavigationService.navigate('Tabs', { screen: 'Home' })
         this.props.openWorkspace({ server: customPath })
         Toast.show(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+        // 退出登录成功后,移除过期时间
+        this.props.setExpireDate({
+          date: undefined,
+        })
       })
     } catch (e) {
       //
@@ -716,6 +784,9 @@ class AppRoot extends Component {
   }
 
   login = async bResetMsgService => {
+    if (!(await this.checkNetAndLicenseValid())) {
+      return
+    }
     if (UserType.isOnlineUser(this.props.user.currentUser)) {
       let result
       result = await this.loginOnline()
@@ -732,18 +803,25 @@ class AppRoot extends Component {
         let JSOnlineservice = OnlineServicesUtils.getService(userType === UserType.COMMON_USER ? 'online' : 'OnlineJP')
         //登录后更新用户信息 zhangxt
         let userInfo = await JSOnlineservice.getUserInfo(this.props.user.currentUser.nickname, true)
-        let user = {
-          userName: userInfo.userId,
-          password: this.props.user.currentUser.password,
-          nickname: userInfo.nickname,
-          email: userInfo.email,
-          phoneNumber: userInfo.phoneNumber,
-          userId: userInfo.userId,
-          isEmail: true,
-          userType: UserType.COMMON_USER,
-          roles: userInfo.roles,
+        // 防止获取用户信息错误,导致用户为Customer,且为登录状态 ysl
+        if (userInfo.userId !== undefined) {
+          let user = {
+            userName: userInfo.userId,
+            password: this.props.user.currentUser.password,
+            nickname: userInfo.nickname,
+            email: userInfo.email,
+            phoneNumber: userInfo.phoneNumber,
+            userId: userInfo.userId,
+            isEmail: true,
+            userType: UserType.COMMON_USER,
+            roles: userInfo.roles,
+          }
+          await this.props.setUser(user)
         }
-        await this.props.setUser(user)
+        // 登录成功后,移除过期时间
+        this.props.setExpireDate({
+          date: undefined,
+        })
         //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
         if (bResetMsgService !== true) {
           //TODO 处理app加载流程，确保登录后再更新消息服务
@@ -752,7 +830,12 @@ class AppRoot extends Component {
       } else {
         //这里如果是前后台切换，就不处理了，friend里面处理过 add xiezhy
         if (bResetMsgService !== true) {
-          this.logoutOnline()
+          // this.logoutOnline()
+          SData.getEnvironmentStatus(status => {
+            if (!status.isLicenseValid) {
+              this.logoutOnline()
+            }
+          })
         }
       }
     } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
@@ -767,20 +850,37 @@ class AppRoot extends Component {
         result = await FriendListFileHandle.initFriendList(this.props.user.currentUser)
         if (info) {
           let userInfo = JSON.parse(info)
-          await this.props.setUser({
-            serverUrl: url,
-            userName: userInfo.name,
-            userId: userInfo.name,
-            password: password,
-            nickname: userInfo.nickname,
-            email: userInfo.email,
-            userType: UserType.IPORTAL_COMMON_USER,
-            roles: userInfo.roles,
+          // 防止获取用户信息错误,导致用户为Customer,且为登录状态 ysl
+          if (userInfo.name !== undefined){
+            await this.props.setUser({
+              serverUrl: url,
+              userName: userInfo.name,
+              userId: userInfo.name,
+              password: password,
+              nickname: userInfo.nickname,
+              email: userInfo.email,
+              userType: UserType.IPORTAL_COMMON_USER,
+              roles: userInfo.roles,
+            })
+          }
+          // 登录成功后,移除过期时间
+          this.props.setExpireDate({
+            date: undefined,
           })
         }
         global.getFriend().onUserLoggedin()
       } else {
-        global.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+        if (bResetMsgService !== true) {
+          SData.getEnvironmentStatus(status => {
+            if (!status.isLicenseValid) {
+              global.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+              // 退出登录成功后,移除过期时间
+              this.props.setExpireDate({
+                date: undefined,
+              })
+            }
+          })
+        }
       }
     }
   }
@@ -899,7 +999,7 @@ class AppRoot extends Component {
   }
 
   handleStateChange = async appState => {
-    if (appState === 'active') {
+    if (this.appState !== 'active' && appState === 'active') {
       // if (UserType.isOnlineUser(this.props.user.currentUser)) {
       this.login(true)
       this.reCircleLogin()
@@ -940,6 +1040,8 @@ class AppRoot extends Component {
         })
       }
     }
+
+    this.appState = appState
   }
 
   showStatusBar = async orientation => {
@@ -1299,6 +1401,7 @@ const mapStateToProps = state => {
     nav: state.nav.toJS(),
     editLayer: state.layers.toJS().editLayer,
     device: state.device.toJS().device,
+    netInfo: state.device.toJS().netInfo,
     map: state.map.toJS(),
     collection: state.collection.toJS(),
     layers: state.layers.toJS().layers,
@@ -1314,8 +1417,10 @@ const AppRootWithRedux = connect(mapStateToProps, {
   setNav,
   setUser,
   setUsers,
+  setExpireDate,
   openWorkspace,
   setShow,
+  setNetInfo,
   closeMap,
   setCurrentMap,
   setCurrentLayer,

@@ -504,15 +504,15 @@ class GuoTuTasks extends Component<Props, State> {
       CoworkInfo.setGroupId(this.props.currentGroup.id)
       CoworkInfo.setId(targetId)
 
-      const licenseStatus = await SMap.getEnvironmentStatus()
-      global.isLicenseValid = licenseStatus.isLicenseValid
-      if (!global.isLicenseValid) {
-        global.SimpleDialog.set({
-          text: getLanguage(this.props.language).Prompt.APPLY_LICENSE_FIRST,
-        })
-        global.SimpleDialog.setVisible(true)
-        return
-      }
+      // const licenseStatus = await SMap.getEnvironmentStatus()
+      // global.isLicenseValid = licenseStatus.isLicenseValid
+      // if (!global.isLicenseValid) {
+      //   global.SimpleDialog.set({
+      //     text: getLanguage(this.props.language).Prompt.APPLY_LICENSE_FIRST,
+      //   })
+      //   global.SimpleDialog.setVisible(true)
+      //   return
+      // }
       setTimeout(() => global.Loading.setLoading(false), 300)
     } catch (error) {
       global.Loading.setLoading(false)

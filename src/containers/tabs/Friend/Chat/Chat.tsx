@@ -901,8 +901,8 @@ class Chat extends React.Component {
     } else {
       let wsData = JSON.parse(JSON.stringify(global.language === 'CN'? ConstOnline.OSM:ConstOnline.Google))
       wsData.layerIndex = 0
-      let licenseStatus = await SData.getEnvironmentStatus()
-      global.isLicenseValid = licenseStatus.isLicenseValid
+      // let licenseStatus = await SData.getEnvironmentStatus()
+      // global.isLicenseValid = licenseStatus.isLicenseValid
       NavigationService.navigate('MapViewSingle', {
         wsData,
         isExample: true,

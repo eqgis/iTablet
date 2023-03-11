@@ -115,51 +115,51 @@ export default class Map3D extends React.Component {
   }
 
   componentDidMount() {
-    if (global.isLicenseValid) {
-      this.container.setLoading(
-        true,
-        getLanguage(this.props.language).Prompt.LOADING,
-      )
+    // if (global.isLicenseValid) {
+    this.container.setLoading(
+      true,
+      getLanguage(this.props.language).Prompt.LOADING,
+    )
 
 
-      this.unsubscribeFocus = () => {
-        if (this.showFullonBlur) {
-          this.showFullMap(false)
-          this.showFullonBlur = false
-        }
-        this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
+    this.unsubscribeFocus = () => {
+      if (this.showFullonBlur) {
+        this.showFullMap(false)
+        this.showFullonBlur = false
       }
-
-      this.unsubscribeDidFocus = () => {
-        if (this.showFullonBlur) {
-          this.showFullMap(false)
-          this.showFullonBlur = false
-        }
-        this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
-      }
-
-      this.unsubscribeBlur = () => {
-        if (!this.fullMap) {
-          this.showFullMap(true)
-          this.showFullonBlur = true
-        }
-        this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
-      }
-
-      this.props.navigation.addListener('willFocus', this.unsubscribeFocus)
-      //跳转回mapview速度太快时会来不及触发willFocus，在didFocus时重复处理相关逻辑
-      this.props.navigation.addListener('didFocus', this.unsubscribeDidFocus)
-      this.props.navigation.addListener('willBlur', this.unsubscribeBlur)
-
-      BackHandler.addEventListener('hardwareBackPress', this.backHandler)
-    } else {
-      global.SimpleDialog.set({
-        text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
-        confirmAction: () => NavigationService.goBack(),
-        cancelAction: () => NavigationService.goBack(),
-      })
-      global.SimpleDialog.setVisible(true)
+      this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
     }
+
+    this.unsubscribeDidFocus = () => {
+      if (this.showFullonBlur) {
+        this.showFullMap(false)
+        this.showFullonBlur = false
+      }
+      this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
+    }
+
+    this.unsubscribeBlur = () => {
+      if (!this.fullMap) {
+        this.showFullMap(true)
+        this.showFullonBlur = true
+      }
+      this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
+    }
+
+    this.props.navigation.addListener('willFocus', this.unsubscribeFocus)
+    //跳转回mapview速度太快时会来不及触发willFocus，在didFocus时重复处理相关逻辑
+    this.props.navigation.addListener('didFocus', this.unsubscribeDidFocus)
+    this.props.navigation.addListener('willBlur', this.unsubscribeBlur)
+
+    BackHandler.addEventListener('hardwareBackPress', this.backHandler)
+    // } else {
+    //   global.SimpleDialog.set({
+    //     text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
+    //     confirmAction: () => NavigationService.goBack(),
+    //     cancelAction: () => NavigationService.goBack(),
+    //   })
+    //   global.SimpleDialog.setVisible(true)
+    // }
   }
 
   componentDidUpdate(prevProps) {
@@ -1243,13 +1243,13 @@ export default class Map3D extends React.Component {
         }
         bottomProps={{ type: 'fix' }}
       >
-        {global.isLicenseValid && (
-          <SMSceneView
-            style={styles.map}
-            moduleId={0x02}
-            onGetScene={this._onGetInstance}
-          />
-        )}
+        {/* {global.isLicenseValid && ( */}
+        <SMSceneView
+          style={styles.map}
+          moduleId={0x02}
+          onGetScene={this._onGetInstance}
+        />
+        {/* )} */}
         <SurfaceView
           ref={ref => (global.MapSurfaceView = ref)}
           orientation={this.props.device.orientation}

@@ -56,6 +56,8 @@ import {
 } from '../../../redux/models/cowork'
 import { getService } from '@/utils/OnlineServicesUtils'
 import { LongitudeAndLatitude } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
+import { NetInfoState } from "@react-native-community/netinfo"
+
 const SMessageServiceiOS = NativeModules.SMessageService
 const appUtilsModule = NativeModules.AppUtils
 const iOSEventEmitter = new NativeEventEmitter(SMessageServiceiOS)
@@ -70,6 +72,7 @@ export default class Friend extends Component {
     appConfig: Object,
     chat: Array,
     device: Object,
+    netInfo: NetInfoState,
     cowork: Object,
     addChat: () => {},
     editChat: () => {},
@@ -523,6 +526,10 @@ export default class Friend extends Component {
   }
 
   connectService = async () => {
+    // 没有网络停止连接
+    if (!this.props.netInfo.isConnected) {
+      return
+    }
     if (UserType.isOnlineUser(this.props.user.currentUser) || UserType.isIPortalUser(this.props.user.currentUser)) {
       try {
         if (
@@ -1309,6 +1316,10 @@ export default class Friend extends Component {
 
   _sendMessage = async (messageStr, talkId, bSilent = false, cb) => {
     try {
+      // 没有网络停止发送消息
+      if (!this.props.netInfo.isConnected) {
+        return
+      }
       const messageObj = JSON.parse(messageStr)
       const talkIds = []
       let queueExist = true

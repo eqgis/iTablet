@@ -375,7 +375,7 @@ const sendMessagePhone = async (id: number, type: uploadType) => {
       const path = tempPath + layerdatasetName + '_' + id + '.json'
 
       const ids = []
-      ids.push(id)
+      ids.push(id -1)
       // 删除文件
       const jsonFileExist = await FileTools.fileIsExist(path)
       if(jsonFileExist) {

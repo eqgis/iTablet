@@ -8,6 +8,8 @@ import collectionModule from '../collectionModule'
 import AppToolBar from '@/utils/AppToolBar'
 import ToolbarModule from '../ToolbarModule'
 import { getLanguage } from '@/language'
+import NavigationService from '@/containers/NavigationService'
+import { getUserParam } from '../../../../../../../applets/langchaoDemo/src/utils/langchaoServer'
 
 class TrackModule extends FunctionModule {
   constructor(props) {
@@ -15,6 +17,12 @@ class TrackModule extends FunctionModule {
   }
 
   action = async () => {
+
+    if(getUserParam().userId === "") {
+      NavigationService.navigate('LangChaoLogin')
+      return
+    }
+
     this.setModuleData(this.type)
     const data = {"name":"专用公路","type":"line","id":965018}
 

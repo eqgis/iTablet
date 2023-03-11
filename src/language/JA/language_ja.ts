@@ -2950,5 +2950,6 @@ export const language_ja: typeof language_cn = {
   WHERE_LOG_OUT:" Where to log out", // To be tanslated
   LOGGED_OUT:"Logged out", // To be tanslated
   MORE_THAN_A_MINUTE:"It's more than a minute long", // To be tanslated
+  VERSION_CODE: "Version", // To be tanslated
 
 }

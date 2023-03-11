@@ -2949,4 +2949,5 @@ export const language_cn = {
   WHERE_LOG_OUT:"是否退出登录", // Where to log out
   LOGGED_OUT:"已退出登录", // Logged out
   MORE_THAN_A_MINUTE:"时长超出一分钟", // It's more than a minute long
+  VERSION_CODE: "版本号", // Version
 }

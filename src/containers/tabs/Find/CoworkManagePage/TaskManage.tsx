@@ -521,16 +521,16 @@ class TaskManage extends React.Component<Props, State> {
         true,
         getLanguage(this.props.language).Prompt.PREPARING,
       )
-      let licenseStatus = await SData.getEnvironmentStatus()
-      global.isLicenseValid = licenseStatus.isLicenseValid
-      if (!global.isLicenseValid) {
-        global.SimpleDialog.set({
-          text: getLanguage(this.props.language).Prompt.APPLY_LICENSE_FIRST,
-        })
-        global.SimpleDialog.setVisible(true)
-        global.Loading.setLoading(false)
-        return
-      }
+      // let licenseStatus = await SData.getEnvironmentStatus()
+      // global.isLicenseValid = licenseStatus.isLicenseValid
+      // if (!global.isLicenseValid) {
+      //   global.SimpleDialog.set({
+      //     text: getLanguage(this.props.language).Prompt.APPLY_LICENSE_FIRST,
+      //   })
+      //   global.SimpleDialog.setVisible(true)
+      //   global.Loading.setLoading(false)
+      //   return
+      // }
       CoworkInfo.setId(targetId)
       // CoworkInfo.setId(this.props.groupInfo.id + '')
       // CoworkInfo.setId(this.props.user.currentUser.userName + '')

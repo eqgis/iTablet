@@ -552,10 +552,10 @@ export default class MapView extends React.Component {
 
   async componentDidMount() {
     AppEvent.addListener('on_exit_ar_map_module', this.back)
-    if (!global.isLicenseValid) {
-      const licenseStatus = await SData.getEnvironmentStatus()
-      global.isLicenseValid = licenseStatus.isLicenseValid
-    }
+    // if (!global.isLicenseValid) {
+    //   const licenseStatus = await SData.getEnvironmentStatus()
+    //   global.isLicenseValid = licenseStatus.isLicenseValid
+    // }
 
     if (global.Type === ChunkType.MAP_AR) {
       Dimensions.addEventListener('change', this.onChange)
@@ -566,130 +566,130 @@ export default class MapView extends React.Component {
     }
     BackHandler.addEventListener('hardwareBackPress', this.backHandler)
 
-    if (global.isLicenseValid) {
-      if (global.Type === ChunkType.MAP_NAVIGATION) {
-        this.addFloorHiddenListener()
-        SNavigation.setNaviListener({
-          onStartNavi: () => {},
-          onStopNavi: this._changeRouteCancel,
-          onArrivedDestination: () => {
-            if (
-              global.NAV_PARAMS &&
-                global.NAV_PARAMS.filter(item => !item.hasNaved).length > 0
-            ) {
-              global.changeRouteDialog &&
-                  global.changeRouteDialog.setDialogVisible(true)
-            } else {
-              this._changeRouteCancel()
-            }
-          },
-        })
-        SIndoorNavigation.setNaviListener({
-          onStartNavi: () => {},
-          onStopNavi: this._changeRouteCancel,
-          onArrivedDestination: () => {
-            if (
-              global.NAV_PARAMS &&
-                global.NAV_PARAMS.filter(item => !item.hasNaved).length > 0
-            ) {
-              global.changeRouteDialog &&
-                  global.changeRouteDialog.setDialogVisible(true)
-            } else {
-              this._changeRouteCancel()
-            }
-          },
-        })
-        SIndoorNavigation.setFloorChangeListener(this.changeFloorID)
-      }
-      this.container &&
-        this.container.setLoading(
-          true,
-          getLanguage(this.props.language).Prompt.LOADING,
-          //'地图加载中'
-        )
-      // 动画导致有时不会进入InteractionManager
-      // InteractionManager.runAfterInteractions(() => {
-      global.SaveMapView &&
-        global.SaveMapView.setTitle(
-          getLanguage(this.props.language).Prompt.SAVE_TITLE,
-          getLanguage(this.props.language).Prompt.SAVE_YES,
-          getLanguage(this.props.language).Prompt.SAVE_NO,
-          getLanguage(this.props.language).Prompt.CANCEL,
-        )
-
-      this.setState({
-        showMap: true,
-      })
-
-      this.props.setBackAction({
-        key: 'MapView',
-        action: this.back,
-      })
-
-      SMediaCollector.setDownloadListener({
-        downloadingHandler: data => {
-          DownloadUtil.downloadMedia(data)
-          DeviceEventEmitter.emit(EventConst.DOWNLOAD_MEDIA, data)
-        },
-        downloadedHandler: data => {
-          DownloadUtil.downloadMedia(data)
-          DeviceEventEmitter.emit(EventConst.DOWNLOAD_MEDIA, data)
-        },
-      })
-      SMediaCollector.setCalloutTapListener(async info => {
-        let layerInfo
-        for (const layer of this.props.layers.layers) {
-          if (layer.name === info.layerName) {
-            layerInfo = layer
-            break
+    // if (global.isLicenseValid) {
+    if (global.Type === ChunkType.MAP_NAVIGATION) {
+      this.addFloorHiddenListener()
+      SNavigation.setNaviListener({
+        onStartNavi: () => {},
+        onStopNavi: this._changeRouteCancel,
+        onArrivedDestination: () => {
+          if (
+            global.NAV_PARAMS &&
+              global.NAV_PARAMS.filter(item => !item.hasNaved).length > 0
+          ) {
+            global.changeRouteDialog &&
+                global.changeRouteDialog.setDialogVisible(true)
+          } else {
+            this._changeRouteCancel()
           }
-        }
-        NavigationService.navigate('MediaEdit', {
-          layerInfo,
-          info,
-        })
+        },
       })
-
-      this.clearData()
-      if (this.toolBox) {
-        global.toolBox = this.toolBox
-      }
-
-      this.unsubscribeDidFocus = () => {
-        if (this.showFullonBlur) {
-          this.showFullMap(false)
-          this.showFullonBlur = false
-        }
-        this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
-      }
-
-      // this.unsubscribeBlur = () => {
-      //   if (!this.fullMap) {
-      //     this.showFullMap(true)
-      //     this.showFullonBlur = true
-      //   }
-      //   this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
-      // }
-
-      //跳转回mapview速度太快时会来不及触发willFocus，在didFocus时重复处理相关逻辑
-      this.props.navigation.addListener('focus', this.unsubscribeDidFocus)
-      // this.props.navigation.addListener('blur', this.unsubscribeBlur)
-
-      SMap.addMessageCalloutListener(this.onMessageCalloutTap)
-      this.addSpeechRecognizeListener()
-      if (global.language === 'CN') {
-        SSpeechRecognizer.setParameter('language', 'zh_cn')
-      } else {
-        SSpeechRecognizer.setParameter('language', 'en_us ')
-      }
-    } else {
-      global.SimpleDialog.set({
-        text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
-        confirmAction: () => NavigationService.goBack(),
-        cancelAction: () => NavigationService.goBack(),
+      SIndoorNavigation.setNaviListener({
+        onStartNavi: () => {},
+        onStopNavi: this._changeRouteCancel,
+        onArrivedDestination: () => {
+          if (
+            global.NAV_PARAMS &&
+              global.NAV_PARAMS.filter(item => !item.hasNaved).length > 0
+          ) {
+            global.changeRouteDialog &&
+                global.changeRouteDialog.setDialogVisible(true)
+          } else {
+            this._changeRouteCancel()
+          }
+        },
       })
-      global.SimpleDialog.setVisible(true)
+      SIndoorNavigation.setFloorChangeListener(this.changeFloorID)
     }
+    this.container &&
+      this.container.setLoading(
+        true,
+        getLanguage(this.props.language).Prompt.LOADING,
+        //'地图加载中'
+      )
+    // 动画导致有时不会进入InteractionManager
+    // InteractionManager.runAfterInteractions(() => {
+    global.SaveMapView &&
+      global.SaveMapView.setTitle(
+        getLanguage(this.props.language).Prompt.SAVE_TITLE,
+        getLanguage(this.props.language).Prompt.SAVE_YES,
+        getLanguage(this.props.language).Prompt.SAVE_NO,
+        getLanguage(this.props.language).Prompt.CANCEL,
+      )
+
+    this.setState({
+      showMap: true,
+    })
+
+    this.props.setBackAction({
+      key: 'MapView',
+      action: this.back,
+    })
+
+    SMediaCollector.setDownloadListener({
+      downloadingHandler: data => {
+        DownloadUtil.downloadMedia(data)
+        DeviceEventEmitter.emit(EventConst.DOWNLOAD_MEDIA, data)
+      },
+      downloadedHandler: data => {
+        DownloadUtil.downloadMedia(data)
+        DeviceEventEmitter.emit(EventConst.DOWNLOAD_MEDIA, data)
+      },
+    })
+    SMediaCollector.setCalloutTapListener(async info => {
+      let layerInfo
+      for (const layer of this.props.layers.layers) {
+        if (layer.name === info.layerName) {
+          layerInfo = layer
+          break
+        }
+      }
+      NavigationService.navigate('MediaEdit', {
+        layerInfo,
+        info,
+      })
+    })
+
+    this.clearData()
+    if (this.toolBox) {
+      global.toolBox = this.toolBox
+    }
+
+    this.unsubscribeDidFocus = () => {
+      if (this.showFullonBlur) {
+        this.showFullMap(false)
+        this.showFullonBlur = false
+      }
+      this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
+    }
+
+    // this.unsubscribeBlur = () => {
+    //   if (!this.fullMap) {
+    //     this.showFullMap(true)
+    //     this.showFullonBlur = true
+    //   }
+    //   this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
+    // }
+
+    //跳转回mapview速度太快时会来不及触发willFocus，在didFocus时重复处理相关逻辑
+    this.props.navigation.addListener('focus', this.unsubscribeDidFocus)
+    // this.props.navigation.addListener('blur', this.unsubscribeBlur)
+
+    SMap.addMessageCalloutListener(this.onMessageCalloutTap)
+    this.addSpeechRecognizeListener()
+    if (global.language === 'CN') {
+      SSpeechRecognizer.setParameter('language', 'zh_cn')
+    } else {
+      SSpeechRecognizer.setParameter('language', 'en_us ')
+    }
+    // } else {
+    //   global.SimpleDialog.set({
+    //     text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
+    //     confirmAction: () => NavigationService.goBack(),
+    //     cancelAction: () => NavigationService.goBack(),
+    //   })
+    //   global.SimpleDialog.setVisible(true)
+    // }
     if (this.isARModule()) {
       (async function () {
         SARMeasure.setMeasureLengthChangeListener({

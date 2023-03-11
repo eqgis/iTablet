@@ -52,15 +52,15 @@ class CoworkInviteView extends React.Component {
       Toast.show(getLanguage(global.language).Friends.NO_SUCH_MAP)
       return
     }
-    let licenseStatus = await SData.getEnvironmentStatus()
-    global.isLicenseValid = licenseStatus.isLicenseValid
-    if (!global.isLicenseValid) {
-      global.SimpleDialog.set({
-        text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
-      })
-      global.SimpleDialog.setVisible(true)
-      return
-    }
+    // let licenseStatus = await SData.getEnvironmentStatus()
+    // global.isLicenseValid = licenseStatus.isLicenseValid
+    // if (!global.isLicenseValid) {
+    //   global.SimpleDialog.set({
+    //     text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
+    //   })
+    //   global.SimpleDialog.setVisible(true)
+    //   return
+    // }
     let friend = global.getFriend()
     let result = await friend.joinCowork(item.coworkId, item.talkId)
     if (result) {

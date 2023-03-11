@@ -128,8 +128,8 @@ class CollectSceneFormSet extends Component {
     const map = await SMap.getCurrentLocation()
     const wsData = JSON.parse(JSON.stringify(ConstOnline.Google))
     wsData.layerIndex = 3
-    const licenseStatus = await SData.getEnvironmentStatus()
-    global.isLicenseValid = licenseStatus.isLicenseValid
+    // const licenseStatus = await SData.getEnvironmentStatus()
+    // global.isLicenseValid = licenseStatus.isLicenseValid
     NavigationService.navigate('MapView', {
       wsData,
       isExample: true,

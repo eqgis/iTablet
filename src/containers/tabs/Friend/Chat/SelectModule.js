@@ -39,15 +39,15 @@ class SelectModule extends Component {
   }
 
   navigateToModule = async (module, index, map) => {
-    let licenseStatus = await SData.getEnvironmentStatus()
-    global.isLicenseValid = licenseStatus.isLicenseValid
-    if (!global.isLicenseValid) {
-      global.SimpleDialog.set({
-        text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
-      })
-      global.SimpleDialog.setVisible(true)
-      return
-    }
+    // let licenseStatus = await SData.getEnvironmentStatus()
+    // global.isLicenseValid = licenseStatus.isLicenseValid
+    // if (!global.isLicenseValid) {
+    //   global.SimpleDialog.set({
+    //     text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
+    //   })
+    //   global.SimpleDialog.setVisible(true)
+    //   return
+    // }
     let tmpCurrentUser = global.getFriend().props.user.currentUser
     global.getFriend().setCurMod(module)
     this.props.setCurrentMapModule(index).then(() => {

@@ -218,6 +218,9 @@ class AppRoot extends Component {
   /** 记录app状态,是否活跃 */
   appState = ''
 
+  /** 登录状态断网,退出登录Timer */
+  logoutTimer = null
+
   constructor(props) {
     super(props)
     const guidePages = LaunchGuide.getGuide(this.props.language) || []
@@ -307,6 +310,26 @@ class AppRoot extends Component {
       this.initDirectories(this.props.user.currentUser.userName)
       this.getUserApplets(this.props.user.currentUser.userName)
       this.reCircleLogin()
+    }
+
+    // 登录状态,断网,添加重新登录监听
+    if (
+      (UserType.isOnlineUser(this.props.user.currentUser) || UserType.isIPortalUser(this.props.user.currentUser)) &&
+      prevProps.user.expireDate !== this.props.user.expireDate
+    ) {
+      SData.getEnvironmentStatus().then(status => {
+        // 若无许可,则不需要添加重新登录提示监听
+        if (!status.isLicenseValid) return
+
+        if (this.props.user.expireDate && !this.logoutTimer) {
+          // 若有离线登录过期时间,则新增心跳
+          this.logoutTimer = setInterval(this.checkNetAndLicenseValid, 15 * 1000)
+        } else if (!this.props.user.expireDate){
+          // 若无离线登录过期时间,则删除心跳
+          this.logoutTimer && clearInterval(this.logoutTimer)
+          this.logoutTimer = null
+        }
+      })
     }
   }
 
@@ -672,16 +695,53 @@ class AppRoot extends Component {
         const status = await SData.getEnvironmentStatus()
         const currentDate = new Date().getTime()
         // 查看许可是否存在,否则退出
-        if (!status.isLicenseValid || this.props.user.expireDate && this.props.user.expireDate < currentDate) {
-          if (UserType.isOnlineUser(this.props.user.currentUser)) {
-            this.logoutOnline()
-          } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
-            global.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
-            // 退出登录成功后,移除过期时间
-            this.props.setExpireDate({
-              date: undefined,
-            })
+        if (
+          (UserType.isOnlineUser(this.props.user.currentUser) || UserType.isIPortalUser(this.props.user.currentUser)) &&
+          (!status.isLicenseValid || this.props.user.expireDate && this.props.user.expireDate < currentDate)
+        ) {
+          if (!status.isLicenseValid) {
+            // 退出
+            this.logout()
+            return false
           }
+          // 如果在地图界面,需要提示保存后退出
+          let inMap = false
+          if (this.props.nav.routes.length > 0) {
+            for (const route of this.props.nav.routes) {
+              if (route.name === 'MapStack') {
+                inMap = true
+                break
+              }
+            }
+          }
+          if (inMap) {
+            global.SimpleDialog.set({
+              text: getLanguage().LOGIN_INVALID,
+              cancelText: getLanguage().LOG_OUT,
+              cancelAction: async () =>{
+                // 退出
+                this.logout()
+              },
+              confirmText: getLanguage().SAVE_LOGOUT,
+              confirmAction: async () => {
+                // 保存
+                await this.props.saveMap({ mapName: this.props.map.currentMap.name || 'DefaultMap' })
+                // 退出
+                this.logout()
+              },
+            })
+            global.SimpleDialog.setVisible(true)
+          }
+
+          // if (UserType.isOnlineUser(this.props.user.currentUser)) {
+          //   this.logoutOnline()
+          // } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
+          //   global.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+          //   // 退出登录成功后,移除过期时间
+          //   this.props.setExpireDate({
+          //     date: undefined,
+          //   })
+          // }
         } else if (this.props.user.expireDate === undefined) {
           const expireDate = currentDate + config.offlineExpireDate
           // 有许可状态,则记录需要重新登录时间(断网时间 + 24h)
@@ -882,6 +942,26 @@ class AppRoot extends Component {
           })
         }
       }
+    }
+  }
+
+  logout = async() => {
+    try {
+      if (UserType.isOnlineUser(this.props.user.currentUser)) {
+        this.logoutOnline()
+        this.logoutTimer && clearInterval(this.logoutTimer)
+        this.logoutTimer = null
+      } else if (UserType.isIPortalUser(this.props.user.currentUser)) {
+        global.getFriend()._logout(getLanguage(this.props.language).Profile.LOGIN_INVALID)
+        // 退出登录成功后,移除过期时间
+        this.props.setExpireDate({
+          date: undefined,
+        })
+        this.logoutTimer && clearInterval(this.logoutTimer)
+        this.logoutTimer = null
+      }
+    } catch (e) {
+      console.warn(e)
     }
   }
 

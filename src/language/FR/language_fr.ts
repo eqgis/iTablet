@@ -1990,6 +1990,7 @@ export const language_fr: typeof language_cn = {
   // 我的——登录
   LOGIN: "connexion",
   LOGINING: "Connexion..",
+  SAVE_LOGOUT: "Save and logout", // need to translate
   LOGIN_TIMEOUT: "Délai de connexion, veuillez réessayer plus tard",
   LOGIN_CURRENT: "L'utilisateur actuel est déjà connecté",
   LOGIN_INVALID: "La connexion a expiré. Veuillez vous reconnecter",

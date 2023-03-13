@@ -1991,6 +1991,7 @@ export const language_ja: typeof language_cn = {
   // 我的——登录
   LOGIN: "ログイン",
   LOGINING: "ログイン中..",
+  SAVE_LOGOUT: "Save and logout", // need to translate
   LOGIN_TIMEOUT: "ログインタイムアウト、後で再度試してださい。",
   LOGIN_CURRENT: "現在ユーザーはログインしました。",
   LOGIN_INVALID: "ログインに失敗しました。再度ログインしてください。",

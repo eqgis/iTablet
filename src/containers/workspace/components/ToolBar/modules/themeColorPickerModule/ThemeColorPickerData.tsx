@@ -10,6 +10,7 @@ import ToolbarModule from "../ToolbarModule"
 import PreviewColorPicker from "./customView"
 import ToolbarBtnType from "../../ToolbarBtnType"
 import { GeoStyle } from 'imobile_for_reactnative'
+import { GeoTextStyle } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 function getData(type) {
   let data,
@@ -21,8 +22,15 @@ function getData(type) {
       const modeData = ToolbarModule.getData()
       data = modeData.customModeData
       const index = modeData.index
-      const geostyle = new GeoStyle(modeData.customModeData[index].style)
-      const color = geostyle.getFillForeColor() || geostyle.getLineColor() || geostyle.getPointColor()
+
+      let color
+      if(typeof modeData.customModeData[index].style == 'string'){
+        const geostyle = new GeoStyle()
+        color = geostyle.getFillForeColor() || geostyle.getLineColor() || geostyle.getPointColor()
+      }else{
+        // const geoTextStyle:GeoTextStyle = modeData.customModeData[index].style
+        color = modeData.customModeData[index].color
+      }
       const { r, g, b } = color
       customView = () => (
         <PreviewColorPicker

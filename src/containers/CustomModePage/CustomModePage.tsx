@@ -30,6 +30,7 @@ import constants from '../workspace/constants'
 import {
   themeModule,
 } from '../workspace/components/ToolBar/modules'
+import { GeoTextStyle } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 export default class CustomModePage extends Component {
   props: {
@@ -70,7 +71,8 @@ export default class CustomModePage extends Component {
           // data = await STheme.getUniqueList(layerParams)
           break
         case ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_COLOR:
-          data = await STheme.getUniqueLabelList(layerParams)
+          // data = await STheme.getUniqueLabelList(layerParams)
+          data = (await STheme.getUniqueThemeLabelLayerInfo(layerParams.LayerName)).items
           break
       }
       length = data.length
@@ -423,9 +425,16 @@ export default class CustomModePage extends Component {
     } else {
       str = item.caption
     }
-    const geoStyle = new GeoStyle(item.style)
-    const colorObj = geoStyle.getFillForeColor() || geoStyle.getLineColor() || geoStyle.getPointColor()
-    let color = `rgb(${colorObj.r},${colorObj.g},${colorObj.b})`
+    let color
+    if(typeof item.style == 'string'){
+      const geoStyle = new GeoStyle(item.style)
+      const colorObj = geoStyle.getFillForeColor() || geoStyle.getLineColor() || geoStyle.getPointColor()
+      color = colorObj && `rgb(${colorObj.r},${colorObj.g},${colorObj.b})`
+    }else{
+      // const geoTextStyle:GeoTextStyle = item.style
+      const colorObj = item.color
+      color = colorObj && `rgb(${colorObj.r},${colorObj.g},${colorObj.b})`
+    }
     return (
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' && 'padding'}>
         <View style={styles.itemRow}>

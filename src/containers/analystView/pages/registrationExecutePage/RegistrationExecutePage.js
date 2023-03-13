@@ -6,7 +6,7 @@ import { getLanguage } from '../../../../language'
 import { scaleSize, Toast } from '../../../../utils'
 import { color, size } from '../../../../styles'
 import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
-import { SData, SMap, SRectifyView } from 'imobile_for_reactnative'
+import { SData, SMap, SRectify } from 'imobile_for_reactnative'
 import SampleModeView from '../../components/SampleModeView'
 import { getPublicAssets } from '../../../../assets'
 import NavigationService from '../../../NavigationService'
@@ -135,7 +135,7 @@ export default class RegistrationExecutePage extends Component {
         }
         datasets[i].transformationMode = arithmeticMode
 
-        let result = await SRectifyView.rectifyRasterDirectByDataset(
+        let result = await SRectify.rectifyRasterDirectByDataset(
           datasets[i],
         )
         if (result) {

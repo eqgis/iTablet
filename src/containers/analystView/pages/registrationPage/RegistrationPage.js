@@ -16,7 +16,7 @@ import {
   Platform,
 } from 'react-native'
 
-import { SMRectifyView, SRectifyView } from 'imobile_for_reactnative'
+import { SMRectifyView, SRectify } from 'imobile_for_reactnative'
 
 export default class RegistrationPage extends Component {
   props: {
@@ -51,19 +51,33 @@ export default class RegistrationPage extends Component {
   componentDidMount = async () => {
     try {
       setTimeout(async function() {
+        const rectifyDatasets = []
+        const rectifyReferDatasets = []
         if (global.RectifyDatasetInfo) {
-          await SRectifyView.setRectifyDataset(global.RectifyDatasetInfo)
+          for (const data of global.RectifyDatasetInfo) {
+            rectifyDatasets.push({
+              datasourceName: data.datasourceName,
+              datasets: data.data,
+            })
+          }
+          // await SRectify.setRectifyDataset(rectifyDatasets)
         }
         if (global.RectifyReferDatasetInfo) {
-          await SRectifyView.setReferDataset(global.RectifyReferDatasetInfo)
+          for (const data of global.RectifyReferDatasetInfo) {
+            rectifyReferDatasets.push({
+              datasourceName: data.datasourceName,
+              datasets: data.data,
+            })
+          }
+          // await SRectify.setReferDataset(rectifyReferDatasets)
         }
-        if (global.RegistrationArithmeticMode) {
-          await SRectifyView.setTransformationMode(
-            global.RegistrationArithmeticMode,
-          )
-        }
+        await SRectify.setRectifyData(
+          rectifyDatasets,
+          rectifyReferDatasets,
+          global.RegistrationArithmeticMode
+        )
         if (Platform.OS === 'android') {
-          await SRectifyView.setSplit(0.49)
+          await SRectify.setSplit(0.49)
         }
       }, 500)
     } catch (e) {
@@ -85,7 +99,7 @@ export default class RegistrationPage extends Component {
       if (!this.myIsNaN(originalY)) {
         originalY = parseFloat(originalY)
       }
-      SRectifyView.setOriginalControlPoint(index, originalX, originalY)
+      SRectify.setOriginalControlPoint(index, originalX, originalY)
     }
     if (
       point.targetPoint !== null &&
@@ -100,14 +114,14 @@ export default class RegistrationPage extends Component {
       if (!this.myIsNaN(targetY)) {
         targetY = parseFloat(targetY)
       }
-      SRectifyView.setTargetControlPoint(index, targetX, targetY)
+      SRectify.setTargetControlPoint(index, targetX, targetY)
     }
   }
 
   back = async () => {
     if (this.state.isEditPoint) {
       this.setPoint(this.state.tempPoint, this.state.currentIndex)
-      SRectifyView.setCurrentIndex(-1)
+      SRectify.setCurrentIndex(-1)
       this.setState({
         isShowDetail: true,
         isEditPoint: false,
@@ -122,7 +136,7 @@ export default class RegistrationPage extends Component {
       )
       // Toast.show(getLanguage(global.language).Prompt.CLOSING)
       setTimeout(async function() {
-        await SRectifyView.dispose()
+        await SRectify.dispose()
         global.Loading.setLoading(false)
         NavigationService.goBack()
       }, 200)
@@ -132,14 +146,14 @@ export default class RegistrationPage extends Component {
   sure = async () => {
     if (this.state.isEditPoint) {
       (async function() {
-        let _controlPoints = await SRectifyView.getControlPoints()
+        let _controlPoints = await SRectify.getControlPoints()
         let points = this.checkPoints(_controlPoints)
         let point = points[this.state.currentIndex]
         let _showPointsData = this.state.showPointsData
         _showPointsData[this.state.currentIndex] = point
 
         this.setPoint(this.state.tempPoint, this.state.currentIndex)
-        SRectifyView.setCurrentIndex(-1)
+        SRectify.setCurrentIndex(-1)
         this.setState({
           isShowDetail: true,
           isEditPoint: false,
@@ -161,7 +175,7 @@ export default class RegistrationPage extends Component {
     )
 
     InteractionManager.runAfterInteractions(async () => {
-      await SRectifyView.dispose()
+      await SRectify.dispose()
       global.Loading.setLoading(false)
 
       NavigationService.goBack('RegistrationDatasetPage')
@@ -170,7 +184,7 @@ export default class RegistrationPage extends Component {
 
   confirm = async () => {
     //判断是否有无效点
-    let _isAllPointEffect = await SRectifyView.isAllPointEffect()
+    let _isAllPointEffect = await SRectify.isAllPointEffect()
     if (!_isAllPointEffect) {
       Toast.show(
         getLanguage(global.language).Analyst_Prompt
@@ -178,7 +192,7 @@ export default class RegistrationPage extends Component {
       )
       return
     }
-    let controlPoints = await SRectifyView.getControlPoints()
+    let controlPoints = await SRectify.getControlPoints()
     let result = this.checkControlPoints(controlPoints)
     if (result) {
       NavigationService.navigate('RegistrationExecutePage')
@@ -257,7 +271,7 @@ export default class RegistrationPage extends Component {
   setAssociation = () => {
     let _isAssociation = this.state.isAssociat
     _isAssociation = !_isAssociation
-    SRectifyView.setIsAssociatedView(_isAssociation)
+    SRectify.setIsAssociatedView(_isAssociation)
     this.setState({
       isAssociat: _isAssociation,
     })
@@ -265,7 +279,7 @@ export default class RegistrationPage extends Component {
 
   export = async () => {
     //判断是否有无效点
-    let _isAllPointEffect = await SRectifyView.isAllPointEffect()
+    let _isAllPointEffect = await SRectify.isAllPointEffect()
     if (!_isAllPointEffect) {
       Toast.show(
         getLanguage(global.language).Analyst_Prompt
@@ -274,7 +288,7 @@ export default class RegistrationPage extends Component {
       return
     }
     //检查控制点的数量
-    let controlPoints = await SRectifyView.getControlPoints()
+    let controlPoints = await SRectify.getControlPoints()
     let result = this.checkControlPoints(controlPoints)
     if (!result) {
       return
@@ -300,7 +314,7 @@ export default class RegistrationPage extends Component {
           true,
           getLanguage(global.language).Analyst_Labels.REGISTRATION_EXPORT,
         )
-        let result = await SRectifyView.rectifyInfoSaveAs(value)
+        let result = await SRectify.rectifyInfoSaveAs(value)
         global.Loading.setLoading(false)
         if (result) {
           Toast.show(
@@ -452,7 +466,7 @@ export default class RegistrationPage extends Component {
     return pointsData
   }
   detalShow = async () => {
-    let _controlPoints = await SRectifyView.getControlPoints()
+    let _controlPoints = await SRectify.getControlPoints()
     this.tempControlPoints = _controlPoints
     // if (
     //   _controlPoints.originalPoints.length != _controlPoints.targetPoints.length
@@ -502,7 +516,7 @@ export default class RegistrationPage extends Component {
         if (isNaN(originalY)) {
           originalY = 0
         }
-        SRectifyView.setOriginalControlPoint(i, originalX, originalY)
+        SRectify.setOriginalControlPoint(i, originalX, originalY)
       }
       if (
         _showPointsData[i].targetPoint !== null &&
@@ -523,7 +537,7 @@ export default class RegistrationPage extends Component {
         if (isNaN(targetY)) {
           targetY = 0
         }
-        SRectifyView.setTargetControlPoint(i, targetX, targetY)
+        SRectify.setTargetControlPoint(i, targetX, targetY)
       }
     }
 
@@ -533,7 +547,7 @@ export default class RegistrationPage extends Component {
   }
 
   reselcetPoint = index => {
-    SRectifyView.setCurrentIndex(index)
+    SRectify.setCurrentIndex(index)
     let _tempPoint = this.state.showPointsData[index]
     this.setState({
       isShowDetail: false,
@@ -544,7 +558,7 @@ export default class RegistrationPage extends Component {
   }
 
   removePoint = index => {
-    SRectifyView.removeControlPoint(index)
+    SRectify.removeControlPoint(index)
     let _showPointsData = this.state.showPointsData
     _showPointsData.splice(index, 1)
     this.setState({
@@ -823,11 +837,12 @@ export default class RegistrationPage extends Component {
             <View
               style={{
                 backgroundColor: 'white',
-                position: 'absolute',
-                top: scaleSize(100),
-                bottom: 0,
-                left: 0,
-                right: 0,
+                flex: 1,
+                // position: 'absolute',
+                // top: scaleSize(100),
+                // bottom: 0,
+                // left: 0,
+                // right: 0,
               }}
             >
               <SMRectifyView

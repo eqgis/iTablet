@@ -914,7 +914,14 @@ function getGridRangeMode() {
 /** 设置统一标签背景形状 */
 function setLabelFont() {
   const _params = ToolbarModule.getData().themeParams
-  return STheme.setLabelFontName(_params)
+
+  if(_params.ThemeType == ThemeType.LABELUNIQUE){
+    return STheme.modifyUniqueThemeLabelLayer(_params?.LayerName||"",{labelStyle:{TextFont:[_params?.FontName]}})
+  }else{
+    return STheme.setLabelFontName(_params)
+  }
+
+ 
 }
 function getLabelFont() {
   const data = [
@@ -1161,7 +1168,12 @@ function getLabelFontName() {
 function setLabelFontRotation() {
   const _params = ToolbarModule.getData().themeParams
   // return STheme.setUniformLabelRotaion(_params)
-  return STheme.setLabelRotation(_params)
+  if(_params.ThemeType == ThemeType.LABELUNIQUE){
+    return STheme.modifyUniqueThemeLabelLayer(_params?.LayerName||"",{labelStyle:{TextAngle:parseInt(_params?.Rotaion)}})
+  }else{
+    return STheme.setLabelRotation(_params)
+  }
+  
 }
 
 function getLabelFontRotation() {
@@ -3060,29 +3072,25 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       //   errorInfo = err.message
       // })
       break
-    case constants.THEME_UNIQUE_LABEL:
+    case constants.THEME_UNIQUE_LABEL:{
       // 单值标签
-      paramsTheme = {
-        DatasourceAlias: ToolbarParams.themeDatasourceAlias,
-        DatasetName: ToolbarParams.themeDatasetName,
-        UniqueExpression: item.expression,
-        // RangeMode: RangeMode.EQUALINTERVAL,
-        // RangeParameter: '11.0',
-        ColorScheme: 'DA_Ragular',
+      const params = {
+        expression: item.expression,
+        colorScheme: 'DA_Ragular',
+        themeType:ThemeType.LABELUNIQUE
       }
-      await STheme.createUniqueThemeLabelMap(paramsTheme).then(
-        msg => {
-          isSuccess = msg.result
-          if (isSuccess && msg.layer) {
-            ThemeAction.sendAddThemeMsg(msg.layer)
+      // await STheme.createUniqueThemeLabelMap(paramsTheme).then(
+      await STheme.createUniqueThemeLabelLayer(datasetInfo,params).then(
+        layerInfo => {
+          if (layerInfo) {
+            isSuccess = true
+            ThemeAction.sendAddThemeMsg(layerInfo)
           }
         },
       )
-      // .catch(err => {
-      //   errorInfo = err.message
-      // })
+
       break
-    case constants.THEME_RANGE_LABEL:
+    }case constants.THEME_RANGE_LABEL:
       // 分段标签
       paramsTheme = {
         DatasourceAlias: ToolbarParams.themeDatasourceAlias,
@@ -3230,29 +3238,24 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
       //   errorInfo = err.message
       // })
       break
-    case constants.THEME_UNIQUE_LABEL:
+    case constants.THEME_UNIQUE_LABEL:{
       // 单值标签
-      paramsTheme = {
-        DatasourceAlias: item.datasourceName,
-        DatasetName: item.datasetName,
-        UniqueExpression: item.expression,
-        // RangeMode: RangeMode.EQUALINTERVAL,
-        // RangeParameter: '11.0',
-        ColorScheme: 'DA_Ragular',
+      const params = {
+        expression: item.expression,
+        colorScheme: 'DA_Ragular',
+        themeType:ThemeType.LABELUNIQUE
       }
-      await STheme.createUniqueThemeLabelMap(paramsTheme).then(
-        msg => {
-          isSuccess = msg.result
-          if (isSuccess && msg.layer) {
-            ThemeAction.sendAddThemeMsg(msg.layer)
+      // await STheme.createUniqueThemeLabelMap(paramsTheme).then(
+      await STheme.createUniqueThemeLabelLayer(datasetInfo,params).then(
+        layerInfo => {
+          if (layerInfo) {
+            isSuccess = true
+            ThemeAction.sendAddThemeMsg(layerInfo)
           }
         },
       )
-      // .catch(err => {
-      //   errorInfo = err.message
-      // })
       break
-    case constants.THEME_RANGE_LABEL:
+    }case constants.THEME_RANGE_LABEL:
       // 分段标签
       paramsTheme = {
         DatasourceAlias: item.datasourceName,
@@ -3404,9 +3407,6 @@ async function createHeatMap(params) {
 }
 
 function isThemeFieldTypeAvailable(fieldType, themeType) {
-  if (themeType && (themeType === constants.THEME_UNIFY_LABEL || themeType === constants.THEME_UNIQUE_LABEL || themeType === constants.THEME_UNIQUE_STYLE)) {
-    return true
-  }
   return (
     fieldType === 'DOUBLE' ||
     fieldType === 'INT16' ||
@@ -3600,7 +3600,7 @@ const uniqueLabelMenuInfo = param => [
     // getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     action: () => {
       ThemeAction.getThemeExpress(
-        ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION,
+        ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_LABEL_EXPRESSION,
         getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
       )
     },

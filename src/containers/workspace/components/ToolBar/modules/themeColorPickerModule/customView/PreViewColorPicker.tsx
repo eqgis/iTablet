@@ -74,11 +74,16 @@ export default class PreviewColorPicker extends Component {
       g = this.state.g
       b = this.state.b
     }
-    const geoStyle = new GeoStyle(JSON.stringify(data[this.state.selectedIndex].style))
-    geoStyle.setFillForeColor(r,g,b)
-    geoStyle.setLineColor(r,g,b)
-    geoStyle.setPointColor(r,g,b)
-    data[this.state.selectedIndex].style = JSON.stringify(geoStyle)
+    if(data[this.state.selectedIndex]?.color){
+      data[this.state.selectedIndex].color = {r,g,b}
+    }else{
+      const geoStyle = new GeoStyle(JSON.stringify(data[this.state.selectedIndex].style))
+      geoStyle.setFillForeColor(r,g,b)
+      geoStyle.setLineColor(r,g,b)
+      geoStyle.setPointColor(r,g,b)
+      data[this.state.selectedIndex].style = JSON.stringify(geoStyle)
+    }
+   
     // data[this.state.selectedIndex].color = {
     //   r,
     //   g,
@@ -120,7 +125,8 @@ export default class PreviewColorPicker extends Component {
         // rel = await STheme.setCustomThemeUnique(params)
         break
       case ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_COLOR:
-        rel = await STheme.setCustomUniqueLabel(params)
+        rel = await STheme.modifyUniqueThemeLabelLayer(this.props.currentLayer?.name||"",{items:data})
+        // rel = await STheme.setCustomUniqueLabel(params)
         break
     }
     if (rel) {

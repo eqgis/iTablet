@@ -1991,6 +1991,7 @@ export const language_cn = {
   // 我的——登录
   LOGIN: "登录",
   LOGINING: "登录中..",
+  SAVE_LOGOUT: "保存并退出",
   LOGIN_TIMEOUT: "登录超时，请稍后再试",
   LOGIN_CURRENT: "当前用户已经登录",
   LOGIN_INVALID: "登录失效，请重新登录",

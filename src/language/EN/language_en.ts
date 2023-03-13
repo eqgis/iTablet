@@ -1989,6 +1989,7 @@ export const language_en: typeof language_cn = {
   // Profile - login
   LOGIN: "Login",
   LOGINING: "Logging..",
+  SAVE_LOGOUT: "Save and logout", // need to translate
   LOGIN_TIMEOUT: "Login timeout, please try again later",
   LOGIN_CURRENT: "Current user is already logged in",
   LOGIN_INVALID: "Login expired. Please log in again",

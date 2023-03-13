@@ -3226,7 +3226,7 @@ export default class MapView extends React.Component {
     const size =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50
 
-    const currentMapModule = this.props.mapModules.modules[this.props.user.currentUser.userName].find(item => {
+    const currentMapModule = this.props.mapModules.modules[this.props.user.currentUser.userName]?.find(item => {
       return item.key === this.type
     })
     const buttonInfos = global.coworkMode && Object.keys(ChunkType).indexOf(global.Type) >= 0 && [

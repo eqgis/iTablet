@@ -7,7 +7,7 @@ import { scaleSize, Toast } from '../../../../utils'
 import { color } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
 import { View, Text, ScrollView } from 'react-native'
-import { SMap, SProcess, SData } from 'imobile_for_reactnative'
+import { SProcess, SData } from 'imobile_for_reactnative'
 import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
@@ -31,7 +31,7 @@ export default class ProjectionTransformationPage extends Component {
       dataSource: null, //源数据源
       dataSet: null, //源数据集
       transMothodData: null, //转换方法
-      transMothodParameter: null, //转换方法参数
+      transMethodParameter: null, //转换方法参数
       isMustSaveAs: false, //是否必须另存，影像和栅格数据集必须另存
       isSaveAs: false, //是否另存
       resultDataSource: null, //结果数据源
@@ -45,7 +45,7 @@ export default class ProjectionTransformationPage extends Component {
   }
 
   getDefaultParameter = () => {
-    let _transMothodParameter = {
+    let _transMethodParameter = {
       offsetX: 0,
       offsetY: 0,
       offsetZ: 0,
@@ -54,9 +54,9 @@ export default class ProjectionTransformationPage extends Component {
       rotationY: 0,
       rotationZ: 0,
 
-      ratitionDifference: 0,
+      rotationDifference: 0,
     }
-    return _transMothodParameter
+    return _transMethodParameter
   }
 
   confirm = async () => {
@@ -139,18 +139,35 @@ export default class ProjectionTransformationPage extends Component {
       true,
       getLanguage(global.language).Analyst_Labels.CONVERTTING,
     )
-    let dataInfo = {}
-    dataInfo.datasourceName = this.state.dataSource.alias
-    dataInfo.datasetName = this.state.dataSet.datasetName
-    dataInfo.transMothodId = this.state.transMothodData.id
-    dataInfo.transMothodParameter = this.state.transMothodParameter
-    dataInfo.saveAs = this.state.isSaveAs ? 1 : 0
-    if (dataInfo.saveAs === 1) {
-      dataInfo.outputDatasourceName = this.state.resultDataSource.alias
-      dataInfo.outputDatasetName = this.state.resultDataSet.datasetName
+    // let dataInfo = {}
+    // dataInfo.datasourceName = this.state.dataSource.alias
+    // dataInfo.datasetName = this.state.dataSet.datasetName
+    // dataInfo.transMethodId = this.state.transMothodData.id
+    // dataInfo.transMethodParameter = this.state.transMethodParameter
+    // dataInfo.saveAs = this.state.isSaveAs ? 1 : 0
+    // if (dataInfo.saveAs === 1) {
+    //   dataInfo.outputDatasourceName = this.state.resultDataSource.alias
+    //   dataInfo.outputDatasetName = this.state.resultDataSet.datasetName
+    // }
+    // dataInfo.coordSysType = this.state.targetCoords.value
+    // let result = await SProcess.convertDataset(dataInfo)
+    const dataInfo = {
+      datasourceName: this.state.dataSource.alias,
+      datasetName: this.state.dataSet.datasetName
     }
-    dataInfo.coordSysType = this.state.targetCoords.value
-    let result = await SProcess.convertDataset(dataInfo)
+    const transParams = {
+      transMethodId: this.state.transMothodData.id,
+      transMethodParameter: this.state.transMethodParameter,
+      coordSysType: this.state.targetCoords.value,
+    }
+    let saveDataInfo
+    if (this.state.isSaveAs) {
+      saveDataInfo = {
+        datasourceName: this.state.resultDataSource.alias,
+        datasetName: this.state.resultDataSet.datasetName
+      }
+    }
+    const result = await SData.CoordSysTranslatorDataset(dataInfo, transParams, saveDataInfo)
     global.Loading.setLoading(false)
 
     if (result) {
@@ -444,17 +461,17 @@ export default class ProjectionTransformationPage extends Component {
               )
               return
             }
-            let transMothodParameter = this.getDefaultParameter()
-            transMothodParameter = this.state.transMothodParameter
-              ? this.state.transMothodParameter
-              : transMothodParameter
-            transMothodParameter.paraNumber = this.state.transMothodData.paraNumber
+            let transMethodParameter = this.getDefaultParameter()
+            transMethodParameter = this.state.transMethodParameter
+              ? this.state.transMethodParameter
+              : transMethodParameter
+            transMethodParameter.paraNumber = this.state.transMothodData.paraNumber
             NavigationService.navigate('ProjectionParameterSetPage', {
-              transMothodParameter,
+              transMethodParameter,
               cb: parameter => {
                 NavigationService.goBack()
                 this.setState({
-                  transMothodParameter: parameter,
+                  transMethodParameter: parameter,
                 })
               },
             })
@@ -563,7 +580,7 @@ export default class ProjectionTransformationPage extends Component {
 
   isSaveChange = async value => {
     if (value && this.state.dataSource && this.state.dataSet) {
-      let availableName = await SProcess.getAvailableDatasetNameByDatasource(
+      let availableName = await SData.availableDatasetName(
         this.state.dataSource.value,
         this.state.dataSet.value,
       )
@@ -612,18 +629,18 @@ export default class ProjectionTransformationPage extends Component {
               break
             }
             case popTypes.TransMothodData: {
-              let _transMothodParameter = this.getDefaultParameter()
-              _transMothodParameter.paraNumber = data.paraNumber
+              let _transMethodParameter = this.getDefaultParameter()
+              _transMethodParameter.paraNumber = data.paraNumber
 
               newStateData = {
                 transMothodData: data,
-                transMothodParameter: _transMothodParameter,
+                transMethodParameter: _transMethodParameter,
               }
               break
             }
             case popTypes.ResultDataSource:
               if (this.state.dataSet) {
-                let availableName = await SProcess.getAvailableDatasetNameByDatasource(
+                let availableName = await SData.availableDatasetName(
                   data.value,
                   this.state.dataSet.value,
                 )

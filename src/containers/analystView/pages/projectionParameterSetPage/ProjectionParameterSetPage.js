@@ -21,22 +21,22 @@ export default class ProjectionParameterSetPage extends Component {
   constructor(props) {
     super(props)
     const { params } = this.props.route
-    let _transMothodParameter = params.transMothodParameter
+    let _transMethodParameter = params.transMethodParameter
     this.cb = params && params.cb
     this.clickAble = true // 防止重复点击
 
     this.state = {
-      paraNumber: _transMothodParameter.paraNumber,
+      paraNumber: _transMethodParameter.paraNumber,
 
-      offsetX: _transMothodParameter.offsetX,
-      offsetY: _transMothodParameter.offsetY,
-      offsetZ: _transMothodParameter.offsetZ,
+      offsetX: _transMethodParameter.offsetX,
+      offsetY: _transMethodParameter.offsetY,
+      offsetZ: _transMethodParameter.offsetZ,
 
-      rotationX: _transMothodParameter.rotationX,
-      rotationY: _transMothodParameter.rotationY,
-      rotationZ: _transMothodParameter.rotationZ,
+      rotationX: _transMethodParameter.rotationX,
+      rotationY: _transMethodParameter.rotationY,
+      rotationZ: _transMethodParameter.rotationZ,
 
-      ratitionDifference: _transMothodParameter.ratitionDifference,
+      rotationDifference: _transMethodParameter.rotationDifference,
     }
   }
 
@@ -51,7 +51,7 @@ export default class ProjectionParameterSetPage extends Component {
     }
 
     if (this.cb && typeof this.cb === 'function') {
-      this.ratitionDifferenceItem && this.ratitionDifferenceItem._blur()
+      this.rotationDifferenceItem && this.rotationDifferenceItem._blur()
       this.rotationXItem && this.rotationXItem._blur()
       this.rotationYItem && this.rotationYItem._blur()
       this.rotationZItem && this.rotationZItem._blur()
@@ -67,7 +67,7 @@ export default class ProjectionParameterSetPage extends Component {
       // _data.rotationX = parseFloat(this.state.rotationX + '')
       // _data.rotationY = parseFloat(this.state.rotationY + '')
       // _data.rotationZ = parseFloat(this.state.rotationZ + '')
-      // _data.ratitionDifference = parseFloat(this.state.ratitionDifference + '')
+      // _data.rotationDifference = parseFloat(this.state.rotationDifference + '')
 
       _data.paraNumber = this.state.paraNumber
       _data.offsetX = parseFloat(
@@ -88,9 +88,9 @@ export default class ProjectionParameterSetPage extends Component {
       _data.rotationZ = parseFloat(
         this.rotationZItem && this.rotationZItem.getInputText() + '',
       )
-      _data.ratitionDifference = parseFloat(
-        this.ratitionDifferenceItem &&
-          this.ratitionDifferenceItem.getInputText() + '',
+      _data.rotationDifference = parseFloat(
+        this.rotationDifferenceItem &&
+          this.rotationDifferenceItem.getInputText() + '',
       )
       isNaN(_data.offsetX) ? (_data.offsetX = 0) : null
       isNaN(_data.offsetY) ? (_data.offsetY = 0) : null
@@ -100,7 +100,7 @@ export default class ProjectionParameterSetPage extends Component {
       isNaN(_data.rotationY) ? (_data.rotationY = 0) : null
       isNaN(_data.rotationZ) ? (_data.rotationZ = 0) : null
 
-      isNaN(_data.ratitionDifference) ? (_data.ratitionDifference = 0) : null
+      isNaN(_data.rotationDifference) ? (_data.rotationDifference = 0) : null
 
       this.cb(_data)
     }
@@ -116,24 +116,24 @@ export default class ProjectionParameterSetPage extends Component {
           </Text>
         </View>
         <AnalystItem
-          ref={ref => (this.ratitionDifferenceItem = ref)}
+          ref={ref => (this.rotationDifferenceItem = ref)}
           style={{ borderBottomWidth: 0 }}
           rightType={'input'}
           inputStyle={styles.inputStyle}
           title={getLanguage(global.language).Analyst_Labels.RATIO_DIFFERENCE}
-          value={this.state.ratitionDifference + ''}
+          value={this.state.rotationDifference + ''}
           keyboardType={'numeric'}
           onSubmitEditing={value => {
             if (isNaN(value) && value !== '') {
-              value = this.state.ratitionDifference
+              value = this.state.rotationDifference
             }
             this.setState({
-              ratitionDifference: value,
+              rotationDifference: value,
             })
           }}
           onBlur={value => {
             this.setState({
-              ratitionDifference: value,
+              rotationDifference: value,
             })
           }}
         />

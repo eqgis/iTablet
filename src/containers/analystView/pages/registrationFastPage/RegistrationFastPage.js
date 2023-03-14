@@ -8,7 +8,7 @@ import { scaleSize, Toast } from '../../../../utils'
 import { FileTools } from '../../../../native'
 import { color, size } from '../../../../styles'
 import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
-import { SData, SMap, SRectifyView } from 'imobile_for_reactnative'
+import { SData, SMap, SRectify } from 'imobile_for_reactnative'
 import SampleModeView from '../../components/SampleModeView'
 import { getPublicAssets } from '../../../../assets'
 import NavigationService from '../../../NavigationService'
@@ -192,7 +192,7 @@ export default class RegistrationExecutePage extends Component {
         datasets[i].rectifyFilePath = _registrationFile.path
         // datasets[i].transformationMode = arithmeticMode
 
-        let result = await SRectifyView.rectifyFast(datasets[i])
+        let result = await SRectify.rectifyFast(datasets[i])
         if (result) {
           count++
         }

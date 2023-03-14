@@ -15,7 +15,7 @@ import ThemeData from './ThemeData'
 import ThemeAction from './ThemeAction'
 import NavigationService from '../../../../../NavigationService'
 import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
-import { RangeMode, ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
+import { RangeMode, ThemeLabel, ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
 /**
  *
  * @param type
@@ -165,7 +165,7 @@ function showExpressionList(type, themeType) {
     const { dataset } = getdata
     const allExpressions = []
     getdata.list.forEach(item => {
-      if (isThemeFieldTypeAvailable(item.fieldTypeStr, themeType)) {
+      if (constants.THEME_UNIFY_LABEL === themeType || isThemeFieldTypeAvailable(item.fieldTypeStr, themeType)) {
         item.info = {
           infoType: 'fieldType',
           fieldType: item.fieldType,
@@ -917,6 +917,8 @@ function setLabelFont() {
 
   if(_params.ThemeType == ThemeType.LABELUNIQUE){
     return STheme.modifyUniqueThemeLabelLayer(_params?.LayerName||"",{labelStyle:{TextFont:[_params?.FontName]}})
+  }else if(_params.ThemeType == ThemeType.LABEL){
+    return STheme.modifyUniformLabelLayer(_params?.LayerName||"",{labelStyle:{TextFont:[_params?.FontName]}})
   }else{
     return STheme.setLabelFontName(_params)
   }
@@ -986,7 +988,8 @@ function getLabelFont() {
 /** 设置统一标签背景形状 */
 function setLabelBackShape() {
   const _params = ToolbarModule.getData().themeParams
-  return STheme.setUniformLabelBackShape(_params)
+  // return STheme.setUniformLabelBackShape(_params)
+  return  STheme.modifyUniformLabelLayer(_params?.LayerName||"",{labelBackShape:parseInt(_params?.LabelBackShape)})
 }
 function getLabelBackShape() {
   const data = [
@@ -1170,6 +1173,8 @@ function setLabelFontRotation() {
   // return STheme.setUniformLabelRotaion(_params)
   if(_params.ThemeType == ThemeType.LABELUNIQUE){
     return STheme.modifyUniqueThemeLabelLayer(_params?.LayerName||"",{labelStyle:{TextAngle:parseInt(_params?.Rotaion)}})
+  }else if(_params.ThemeType == ThemeType.LABEL){
+    return STheme.modifyUniformLabelLayer(_params?.LayerName||"",{labelStyle:{TextAngle:parseInt(_params?.Rotaion)}})
   }else{
     return STheme.setLabelRotation(_params)
   }
@@ -1222,10 +1227,12 @@ function getLabelFontRotation() {
 function setColor() {
   const _params = ToolbarModule.getData().themeParams
   if (_params.colorType === 'UNIFORMLABEL_FORE_COLOR') {
-    return STheme.setUniformLabelColor(_params)
+    return STheme.modifyUniformLabelLayer(_params.LayerName,{labelStyle: {TextColor:SMap._translate16ToRgb(_params.Color)}})
+    // return STheme.setUniformLabelColor(_params)
   }
   if (_params.colorType === 'UNIFORMLABEL_BACKSHAPE_COLOR') {
-    return STheme.setUniformLabelBackColor(_params)
+    // return STheme.setUniformLabelBackColor(_params)
+    return STheme.modifyUniformLabelLayer(_params.LayerName,{labelBackColor:SMap._translate16ToRgb(_params.Color)})
   }
   if (_params.colorType === 'DOT_DENSITY_COLOR') {
     return STheme.modifyDotDensityThemeMap(_params)
@@ -3049,30 +3056,24 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       //   errorInfo = err.message
       // })
       break
-    case constants.THEME_UNIFY_LABEL:
+    case constants.THEME_UNIFY_LABEL:{
       // 统一标签
-      paramsTheme = {
-        DatasourceAlias: ToolbarParams.themeDatasourceAlias,
-        DatasetName: ToolbarParams.themeDatasetName,
-        LabelExpression: item.expression,
-        LabelBackShape: 'NONE',
-        FontName: '宋体',
-        // FontSize: '15.0',
-        ForeColor: '#000000',
+      const  params:ThemeLabel = {
+        labelExpression: item.expression,
+        labelBackShape: 0,
+        labelStyle: {TextColor:{r:0,g:0,b:0}},
       }
-      await STheme.createUniformThemeLabelMap(paramsTheme).then(
-        msg => {
-          isSuccess = msg.result
-          if (isSuccess && msg.layer) {
-            ThemeAction.sendAddThemeMsg(msg.layer)
+      // await STheme.createUniformThemeLabelMap(paramsTheme).then(
+      await STheme.createUniformThemeLabelLayer(datasetInfo,params).then(
+        layerInfo => {
+          if (layerInfo) {
+            isSuccess = true
+            ThemeAction.sendAddThemeMsg(layerInfo)
           }
         },
       )
-      // .catch(err => {
-      //   errorInfo = err.message
-      // })
       break
-    case constants.THEME_UNIQUE_LABEL:{
+    }case constants.THEME_UNIQUE_LABEL:{
       // 单值标签
       const params = {
         expression: item.expression,
@@ -3215,22 +3216,19 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
       //   errorInfo = err.message
       // })
       break
-    case constants.THEME_UNIFY_LABEL:
+    case constants.THEME_UNIFY_LABEL:{
       // 统一标签
-      paramsTheme = {
-        DatasourceAlias: item.datasourceName,
-        DatasetName: item.datasetName,
-        LabelExpression: item.expression,
-        LabelBackShape: 'NONE',
-        FontName: '宋体',
-        // FontSize: '15.0',
-        ForeColor: '#000000',
+      const params: ThemeLabel = {
+        labelExpression: item.expression,
+        labelBackShape: 0,
+        labelStyle: { TextColor: { r: 0, g: 0, b: 0 } },
       }
-      await STheme.createUniformThemeLabelMap(paramsTheme).then(
-        msg => {
-          isSuccess = msg.result
-          if (isSuccess && msg.layer) {
-            ThemeAction.sendAddThemeMsg(msg.layer)
+      // await STheme.createUniformThemeLabelMap(paramsTheme).then(
+      await STheme.createUniformThemeLabelLayer(datasetInfo,params).then(
+        layerInfo => {
+          if (layerInfo) {
+            isSuccess = true
+            ThemeAction.sendAddThemeMsg(layerInfo)
           }
         },
       )
@@ -3238,7 +3236,7 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
       //   errorInfo = err.message
       // })
       break
-    case constants.THEME_UNIQUE_LABEL:{
+    }case constants.THEME_UNIQUE_LABEL:{
       // 单值标签
       const params = {
         expression: item.expression,

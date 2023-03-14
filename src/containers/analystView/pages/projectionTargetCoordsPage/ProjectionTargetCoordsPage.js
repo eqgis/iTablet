@@ -6,9 +6,9 @@ import { getLanguage } from '../../../../language'
 import { scaleSize, Toast } from '../../../../utils'
 import { getThemeAssets } from '../../../../assets'
 import { color, size } from '../../../../styles'
-import { View, Text, SectionList, TouchableOpacity, Image, Platform } from 'react-native'
+import { View, Text, SectionList, TouchableOpacity, Image } from 'react-native'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
-import { SMap, SProcess, SData } from 'imobile_for_reactnative'
+import { SData, PrjCoordSysType, GeoCoordSysType } from 'imobile_for_reactnative'
 import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
 import ImageButton from '../../../../components/ImageButton'
 import NavigationService from '../../../NavigationService'
@@ -30,7 +30,7 @@ export default class ProjectionTargetCoordsPage extends Component {
   constructor(props) {
     super(props)
     const { params } = this.props.route
-    // let _transMothodParameter = params.transMothodParameter
+    // let _transMethodParameter = params.transMethodParameter
     this.cb = params && params.cb
     // this.filtVectDataset = params && params.filtVectDataset
     this.title = params && params.title
@@ -68,17 +68,64 @@ export default class ProjectionTargetCoordsPage extends Component {
     }
   }
 
+  /** 获取地理坐标系 */
+  getGeoCoordSysTypes = () => {
+    const geoCoordSysTypes = []
+    for (const key of Object.keys(GeoCoordSysType)) {
+      geoCoordSysTypes.push({
+        title: key,
+        value: GeoCoordSysType[key],
+        type: 1,
+      })
+    }
+    return geoCoordSysTypes
+  }
+
+  /** 获取投影坐标系 */
+  getPrjCoordSysTypes = () => {
+    const prjCoordSysTypes = []
+    for (const key of Object.keys(PrjCoordSysType)) {
+      prjCoordSysTypes.push({
+        title: key,
+        value: PrjCoordSysType[key],
+        type: 0,
+      })
+    }
+    return prjCoordSysTypes
+  }
+
+  /** 获取常用坐标系 */
+  getCommonCoordSysTypes = () => {
+    return[{
+      title: 'PCS_SPHERE_MERCATOR',
+      value: PrjCoordSysType.PCS_SPHERE_MERCATOR,
+      type: 0,
+    }, {
+      title: 'GCS_WGS_1984',
+      value: GeoCoordSysType.GCS_WGS_1984,
+      type: 1,
+    }, {
+      title: 'GCS_CHINA_2000',
+      value: GeoCoordSysType.GCS_CHINA_2000,
+      type: 1,
+    }, {
+      title: 'GCS_XIAN_1980',
+      value: GeoCoordSysType.GCS_XIAN_1980,
+      type: 1,
+    }]
+  }
+
   componentDidMount = async () => {
     //获取地理坐标系类型
-    let allGeoCoordSysTypes = await SProcess.getGeoCoordSysTypes()
+    let allGeoCoordSysTypes = await this.getGeoCoordSysTypes()
     this._allGeoCoordSysTypes = allGeoCoordSysTypes
 
     //获取投影坐标系类型
-    let allPrjCoordSysTypes = await SProcess.getPrjCoordSysTypes()
+    let allPrjCoordSysTypes = await this.getPrjCoordSysTypes()
     this._allPrjCoordSysTypes = allPrjCoordSysTypes
 
     // 获取常用坐标系类型
-    let allCommonCoordSysTypes = await SProcess.getCommonCoordSysTypes()
+    let allCommonCoordSysTypes = this.getCommonCoordSysTypes()
     this._allCommonCoordSysTypes = allCommonCoordSysTypes
 
     let geoCoordSysTypes = allGeoCoordSysTypes.slice(0, 20)
@@ -238,7 +285,7 @@ export default class ProjectionTargetCoordsPage extends Component {
             case popTypes.TransMothodData: {
               newStateData = {
                 transMothodData: data,
-                transMothodParameter: null,
+                transMethodParameter: null,
               }
               break
             }

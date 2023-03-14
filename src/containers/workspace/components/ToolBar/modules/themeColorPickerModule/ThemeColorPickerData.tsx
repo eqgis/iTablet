@@ -25,7 +25,7 @@ function getData(type) {
 
       let color
       if(typeof modeData.customModeData[index].style == 'string'){
-        const geostyle = new GeoStyle()
+        const geostyle = new GeoStyle(modeData.customModeData[index].style)
         color = geostyle.getFillForeColor() || geostyle.getLineColor() || geostyle.getPointColor()
       }else{
         // const geoTextStyle:GeoTextStyle = modeData.customModeData[index].style

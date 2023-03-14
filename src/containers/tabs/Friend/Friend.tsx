@@ -317,30 +317,14 @@ export default class Friend extends Component {
   }
 
   addFileListener = () => {
-    if (Platform.OS === 'ios') {
-      this.receiveFileListener = iOSEventEmitter.addListener(
-        EventConst.MESSAGE_SERVICE_RECEIVE_FILE,
-        this.onReceiveProgress,
-      )
-      this.sendFileListener = iOSEventEmitter.addListener(
-        EventConst.MESSAGE_SERVICE_SEND_FILE,
-        this.onReceiveProgress,
-      )
-    } else {
-      this.receiveFileListener = DeviceEventEmitter.addListener(
-        EventConst.MESSAGE_SERVICE_RECEIVE_FILE,
-        this.onReceiveProgress,
-      )
-      this.sendFileListener = DeviceEventEmitter.addListener(
-        EventConst.MESSAGE_SERVICE_SEND_FILE,
-        this.onReceiveProgress,
-      )
-    }
+    SMessageService.setFileServiceListener({
+      onUpload: this.onReceiveProgress,
+      onDownload: this.onReceiveProgress,
+    })
   }
 
   removeFileListener = () => {
-    this.receiveFileListener && this.receiveFileListener.remove()
-    this.sendFileListener && this.sendFileListener.remove()
+    SMessageService.setFileServiceListener()
   }
 
   /************************** 处理状态变更 ***********************************/

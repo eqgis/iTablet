@@ -1,4 +1,4 @@
-import { SARMap } from 'imobile_for_reactnative'
+import { SARMap, SData } from 'imobile_for_reactnative'
 import * as React from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { connect, ConnectedProps } from 'react-redux'
@@ -12,6 +12,7 @@ import LayerAttributeAdd from './LayerAttribute/pages/layerAttributeAdd'
 import { AddResult } from './LayerAttribute/pages/layerAttributeAdd/LayerAttributeAdd'
 import { getImage } from '../../../../assets'
 import { checkSupportARAttributeByElement, checkSupportARAttributeByLayer } from '../Actions'
+import { ARLayer } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 
 const PAGE_SIZE = 30
 const ROWS_LIMIT = 120
@@ -158,6 +159,15 @@ class Attribute extends React.Component<Props, State> {
     )
   }
 
+  _getARLayer = (layerName: string): ARLayer | undefined => {
+    const arlayers = AppToolBar.getProps().arMapInfo.layers
+    console.log('arlayers', arlayers)
+    const arlayer = arlayers.find(layer => layer.name === layerName)
+
+    return arlayer
+
+  }
+
   getAttribute = async (params: {
     type: GetMethod,
     currentPage: number,
@@ -176,10 +186,13 @@ class Attribute extends React.Component<Props, State> {
     } : JSON.parse(JSON.stringify(this.state.attributes))
     if(selectARElement?.layerName) {
       this.layerName = selectARElement.layerName
-      result = await AttributeUtils.getSelectionAttributeByData(attributes, selectARElement.layerName, 0, pageSize !== undefined ? pageSize : PAGE_SIZE, type)
+      const layer = this._getARLayer(this.layerName)
+      if(layer) {
+        result = await AttributeUtils.getSelectionAttributeByData(attributes, layer, selectARElement.id, 0, pageSize !== undefined ? pageSize : PAGE_SIZE, type)
+      }
     } else if (layer) {
       this.layerName = layer.name
-      result = await AttributeUtils.getLayerAttribute(attributes, layer.name, currentPage, pageSize !== undefined ? pageSize : PAGE_SIZE, {}, type)
+      result = await AttributeUtils.getLayerAttribute(attributes, layer, currentPage, pageSize !== undefined ? pageSize : PAGE_SIZE, {}, type)
     }
 
     if (!result) {
@@ -303,27 +316,30 @@ class Attribute extends React.Component<Props, State> {
           }
         }
       }
-      await SARMap.setDataFieldInfo(
-        this.layerName,
-        [
+      const arlayer = this._getARLayer(this.layerName)
+      if(arlayer && 'datasourceAlias' in arlayer) {
+        await SData.setRecordsetValue(
+          {datasourceName: arlayer.datasourceAlias, datasetName: arlayer.datasetName},
+          [
+            {
+              name: isSingleData ? data.rowData.name : data.cellData.name,
+              value: data.value,
+              // index: data.index,
+              // columnIndex: data.columnIndex,
+              // smID: isSingleData
+              //   ? this.state.attributes.data[0][0].value
+              //   : data.rowData[1].value,
+            },
+          ],
           {
-            name: isSingleData ? data.rowData.name : data.cellData.name,
-            value: data.value,
-            index: data.index,
-            columnIndex: data.columnIndex,
-            smID: isSingleData
+            filter: `SmID=${isSingleData
               ? this.state.attributes.data[0][0].value
-              : data.rowData[1].value,
+              : data.rowData[1].value // 0为序号
+            }`, // 过滤条件
+            // cursorType: 2, // 2: DYNAMIC, 3: STATIC
           },
-        ],
-        {
-          filter: `SmID=${isSingleData
-            ? this.state.attributes.data[0][0].value
-            : data.rowData[1].value // 0为序号
-          }`, // 过滤条件
-          cursorType: 2, // 2: DYNAMIC, 3: STATIC
-        },
-      )
+        )
+      }
     } catch (error) {
       AppLog.error(error)
     }
@@ -372,7 +388,11 @@ class Attribute extends React.Component<Props, State> {
       Toast.show(getLanguage().ALIAS + checkCaption.error)
       return false
     }
-    const result = await SARMap.addAttributeFieldInfo(layerName, fieldInfo)
+    const arlayer = this._getARLayer(layerName)
+    let result = false
+    if(arlayer && 'datasourceAlias' in arlayer) {
+      result = await SData.addFieldInfos({datasourceName: arlayer.datasourceAlias, datasetName: arlayer.datasetName}, [fieldInfo])
+    }
     if (result) {
       Toast.show(getLanguage().ATTRIBUTE_ADD_SUCCESS)
       this.refresh(undefined, true)

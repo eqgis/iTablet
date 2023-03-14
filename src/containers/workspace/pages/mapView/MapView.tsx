@@ -2049,9 +2049,9 @@ export default class MapView extends React.Component {
         // 开始协作
         await this.startCowork()
 
-        if (this.props.isAR) {
-          await SARMap.resetARMapWorkspace()
-        }
+        // if (this.props.isAR) {
+        //   await SARMap.resetARMapWorkspace()
+        // }
 
         global.legend && global.legend.getLegendData()
 
@@ -4994,15 +4994,15 @@ export default class MapView extends React.Component {
               this.showFullMap(!this.fullMap)
             }
           }}
-          onARElementTouch={async (element, childIndex) => {
+          onARElementTouch={async element => {
             if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT' && Platform.OS === 'android') {
               const element01 = AppToolBar.getData().selectARElement
               if(element01) {
                 // 只有当点击对象与选择对象相同时，才显隐属性表
                 if(element01.layerName === element.layerName && element01.id === element.id) {
-                  const attributes = await SARMap.getShowAttribute(element01.layerName, element01.id)
+                  const attributes = await SARMap.getAttributeFieldNames(element01.layerName, element01.id)
                   AppToolBar.getProps().setPipeLineAttribute([])
-                  if (attributes) {
+                  if (attributes.length > 0) {
                     const isShowAttribute = await SARMap.isShowAttribute(element01.layerName, element01.id)
                     if (isShowAttribute) {
                       SARMap.hideAttribute(element.layerName, element.id)
@@ -5030,9 +5030,9 @@ export default class MapView extends React.Component {
                 // || element.type === ARElementType.AR_SAND_TABLE
               ) {
                 // 获取已选择的属性
-                const attributes = await SARMap.getShowAttribute(element.layerName, element.id)
+                const attributes = await SARMap.getAttributeFieldNames(element.layerName, element.id)
                 AppToolBar.getProps().changeShowAttributeElement(element)
-                if (attributes) {
+                if (attributes.length > 0) {
                 // 当已选择的属性存在时
                   const isShowAttribute = await SARMap.isShowAttribute(element.layerName, element.id)
                   if (isShowAttribute) {
@@ -5051,7 +5051,7 @@ export default class MapView extends React.Component {
 
             }
           }}
-          onARElementSelect={async (element, childIndex) => {
+          onARElementSelect={async (element, childIndex, touchType) => {
             if (AppToolBar.getCurrentOption()?.key === 'AR_MAP_ATTRIBUTE_SELECTED') {
               if( element.type === ARElementType.AR_IMAGE
                 || element.type === ARElementType.AR_VIDEO
@@ -5066,9 +5066,9 @@ export default class MapView extends React.Component {
                 // 在属性选择页面。选中对象后，跳转到属性编辑页面
                 AppToolBar.addData({ selectARElement: element })
                 AppToolBar.show('ARATTRIBUTE', 'AR_MAP_BROWSE_ELEMENT')
-                const attributes = await SARMap.getShowAttribute(element.layerName, element.id)
+                const attributes = await SARMap.getAttributeFieldNames(element.layerName, element.id)
                 AppToolBar.getProps().setPipeLineAttribute([])
-                if (attributes) {
+                if (attributes.length > 0) {
                   const isShowAttribute = await SARMap.isShowAttribute(element.layerName, element.id)
                   if (isShowAttribute) {
                   // SARMap.hideAttribute(element.layerName, element.id)
@@ -5117,7 +5117,7 @@ export default class MapView extends React.Component {
                 if(modelAnimations.length > 0) {
                   ownModelAnimation = true
                 }
-                AppToolBar.addData({selectARElement: element, ownModelAnimation})
+                AppToolBar.addData({selectARElement: element, ownModelAnimation, selectTouchType: touchType})
                 AppToolBar.show('ARMAP_EDIT', 'AR_MAP_EDIT_ELEMENT')
               }
             }

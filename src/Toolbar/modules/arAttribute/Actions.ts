@@ -1,7 +1,7 @@
 import { AppToolBar, AttributeUtils } from "@/utils"
 import { Attributes, AttributesResp } from "@/utils/AttributeUtils"
 import { SARMap } from "imobile_for_reactnative"
-import { ARElementType, ARLayerType, TARElementType, TARLayerType } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
+import { ARElementType, ARLayer, ARLayerType, TARElementType, TARLayerType } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 import { SandTableData } from "./component/LayerAttribute/pages/AttributeDetail"
 
 
@@ -45,7 +45,13 @@ sandAttributeData = {
 export function getSandtableData(){
   return sandAttributeData
 }
+function _getARLayer(layerName: string): ARLayer | undefined {
+  const arlayers = AppToolBar.getProps().arMapInfo.layers
+  const arlayer = arlayers.find(layer => layer.name === layerName)
 
+  return arlayer
+
+}
 export async function getSandtableAttributeData(): Promise<sandAttributeDataType | undefined> {
   try {
     const currentPage = 0, pageSize = 30, type = 'reset'
@@ -63,10 +69,13 @@ export async function getSandtableAttributeData(): Promise<sandAttributeDataType
     let layername = ''
     if(selectARElement?.layerName) {
       layername = selectARElement.layerName
-      result = await AttributeUtils.getSelectionAttributeByData(attributes, selectARElement.layerName, 0, pageSize !== undefined ? pageSize : PAGE_SIZE, type)
+      const layer = _getARLayer(layername)
+      if(layer) {
+        result = await AttributeUtils.getSelectionAttributeByData(attributes, layer, selectARElement.id, 0, pageSize !== undefined ? pageSize : PAGE_SIZE, type)
+      }
     } else if (layer) {
       layername = layer.name
-      result = await AttributeUtils.getLayerAttribute(attributes, layer.name, currentPage, pageSize !== undefined ? pageSize : PAGE_SIZE, {}, type)
+      result = await AttributeUtils.getLayerAttribute(attributes, layer, currentPage, pageSize !== undefined ? pageSize : PAGE_SIZE, {}, type)
     }
 
     if(result) {

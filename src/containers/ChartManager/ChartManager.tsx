@@ -144,7 +144,7 @@ class ChartManager extends Component<Props, State> {
           data: this.state.data,
           unit: this.state.unit
         }
-        await SARMap.updateBarChart(element?.layerName, chartData, element.id)
+        await SARMap.updateBarChart(element?.layerName, element.id, chartData)
       }
       this.props.navigation.goBack()
     }else if(type === 'pieChartAdd'){
@@ -172,7 +172,7 @@ class ChartManager extends Component<Props, State> {
       // const element = ToolbarModule.getData().selectARElement
       const element = AppToolBar.getData().selectARElement
       if(element){
-        await SARMap.updatePieChart(element?.layerName, this.state.data, element.id)
+        await SARMap.updatePieChart(element?.layerName, element.id, this.state.data)
       }
       this.props.navigation.goBack()
     } else {

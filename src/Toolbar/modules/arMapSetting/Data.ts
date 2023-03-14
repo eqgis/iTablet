@@ -100,7 +100,7 @@ function settingViewBounds(option: IToolbarOption) {
 /** 点击特效图层的持续时间及功能的实现 */
 function settingSecondsToPlay(option: IToolbarOption){
   // 拿到当前的特效持续时间
-  let secondsToPlay = AppToolBar.getData().secondsToPlay || 0
+  let secondsToPlay = AppToolBar.getData().duration || 0
   // 特效持续时间是否改变标识
   let isSecondsChange = false
   // 是否一直播放标识
@@ -144,10 +144,10 @@ function settingSecondsToPlay(option: IToolbarOption){
           const results: Promise<boolean>[] = []
           if(keepPlay) {
             // 当持续时间为永久时，将持续时间的值设为0
-            results.push(SARMap.setEffectLayerSecondsToPlay(layer.name, 0))
+            results.push(SARMap.setEffectLayerDuration(layer.name, 0))
           } else if(isSecondsChange) {
             // 当持续时间为某一具体的数值时，就设置为哪个值
-            results.push(SARMap.setEffectLayerSecondsToPlay(layer.name, secondsToPlay))
+            results.push(SARMap.setEffectLayerDuration(layer.name, secondsToPlay))
           }
           if(results.length > 0) {
             Promise.all(results).then(AppToolBar.getProps().getARLayers)

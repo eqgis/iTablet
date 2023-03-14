@@ -397,7 +397,11 @@ function _getAddTab(): ToolbarTabItem[] {
 
               // 先矫正定位
               // if(Platform.OS === 'android') {
-              SARMap.setEffectLayerCenter(item.name.substring(0, item.name.lastIndexOf('.')))
+              const center = await SARMap.getCurrentPosition()
+              if(center) {
+                const p = await SARMap.CoordSysTranslatorARToMapPrj([center])
+                SARMap.setEffectLayerCenter(item.name.substring(0, item.name.lastIndexOf('.')), {x: p[0].x, y:p[0].y})
+              }
               // } else {
               //   // IOS TODO
               // }
@@ -517,7 +521,7 @@ function addElementOption(option: IToolbarOption, addFunc: (addOption?: AddOptio
   option.listData ={data: [{
     image: getThemeAssets().ar.armap.ar_add_location,
     onPress: () => {
-      SARMap.setCenterHitTest(false)
+      SARMap.setAction(ARAction.NULL)
       AppEvent.removeListener('ar_on_tap_add_buttun')
       AppEvent.addListener('ar_on_tap_add_buttun', () => {
         const isAdding = AppToolBar.getData().isAddingARElement
@@ -551,10 +555,10 @@ function addElementOption(option: IToolbarOption, addFunc: (addOption?: AddOptio
   }, {
     image: getThemeAssets().ar.armap.ar_add_point,
     onPress: () => {
-      SARMap.setCenterHitTest(true)
+      SARMap.setAction(ARAction.FOCUS)
       AppEvent.removeListener('ar_on_tap_add_buttun')
       AppEvent.addListener('ar_on_tap_add_buttun', async () => {
-        const translation = await SARMap.getCurrentCenterHitPoint()
+        const translation = await SARMap.getFocusPosition()
         if(translation) {
           const isAdding = AppToolBar.getData().isAddingARElement
           if(isAdding) return
@@ -566,7 +570,7 @@ function addElementOption(option: IToolbarOption, addFunc: (addOption?: AddOptio
             AppToolBar.addData({ isAddingARElement: false , isAlbumFirstAdd: true})
             if(!continousAdd) {
               AppEvent.emitEvent('ar_map_add_end')
-              SARMap.setCenterHitTest(false)
+              SARMap.setAction(ARAction.NULL)
               if(AppToolBar.getData().albumName !== getLanguage().ATTRIBUTE_ALBUM
               && AppToolBar.getData().albumName !== getLanguage().MAPBROCHORE
               && AppToolBar.getData().albumName !== getLanguage().ATTRIBUTE_ALBUM
@@ -599,7 +603,7 @@ function _getAddPOIBottomData(continousAdd = true, goBack = false): ToolBarBotto
       image: getThemeAssets().toolbar.icon_toolbar_quit,
       onPress: () => {
         // TODO SARMap.cancel()
-        SARMap.setCenterHitTest(false)
+        SARMap.setAction(ARAction.NULL)
         AppEvent.emitEvent('ar_map_add_end')
         AppToolBar.goBack()
       }
@@ -628,7 +632,7 @@ function _getAddPOIBottomData(continousAdd = true, goBack = false): ToolBarBotto
       {
         image: getThemeAssets().toolbar.icon_toolbar_submit,
         onPress: () => {
-          SARMap.setCenterHitTest(false)
+          SARMap.setAction(ARAction.NULL)
           AppEvent.emitEvent('ar_map_add_end')
           if(goBack) {
             AppToolBar.goBack()
@@ -822,7 +826,7 @@ function addElementLine(option: IToolbarOption, addFunc: (addOption?: AddOption)
       AppEvent.removeListener('ar_on_tap_add_buttun')
       AppEvent.addListener('ar_on_tap_add_buttun', async () => {
         // 获取指定点的中心位置坐标
-        const translation = await SARMap.getCurrentCenterHitPoint()
+        const translation = await SARMap.getFocusPosition()
         // 当指定点的位置坐标获取成功时才去添加线的节点
         if(translation) {
           const isLineAdd = AppToolBar.getData().isLineAdd

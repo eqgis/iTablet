@@ -142,7 +142,9 @@ class MapSelectList extends React.Component<Props, State> {
             }
             const type = this.props.route.params?.type
             if (type === 'mapSelect') {
-              await SARMap.addARBrochoreMap(this.state.selectedData)
+              AppToolBar.addData({
+                selectedMapPath: this.state.selectedData.map(item => item.path)
+              })
               // ToolbarModule.addData({ albumName: getLanguage().MAPBROCHORE })
               // const _params: any = ToolbarModule.getParams()
               // _params.setToolbarVisible(true, ConstToolType.SM_AR_DRAWING_ADD_BROCHORE, {

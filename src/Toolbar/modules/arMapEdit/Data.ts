@@ -85,6 +85,7 @@ export function getData(key: ModuleList['ARMAP_EDIT']): IToolbarOption {
 /** POI/模型位置变换 */
 function editElementOption(option: ToolbarOption<ARMapEditViewOption>) {
   const element = AppToolBar.getData().selectARElement
+  const touchType = AppToolBar.getData().selectTouchType
   if(!element)  {
     AppLog.error('未选中对象！')
     return
@@ -99,7 +100,7 @@ function editElementOption(option: ToolbarOption<ARMapEditViewOption>) {
       transformInfo: {
         layerName: element.layerName,
         id: element.id,
-        touchType: element.touchType,
+        touchType: touchType || 0,
         type: 'position',
         positionX: 0,
         positionY: 0,
@@ -185,6 +186,7 @@ async function edit3DLayerOption(option: IToolbarOption) {
 /** 矢量线或矢量符号线的编辑 */
 function editGeometryOption(option: ToolbarOption<ARMapEditViewOption>) {
   const element = AppToolBar.getData().selectARElement
+  const touchType = AppToolBar.getData().selectTouchType
   if(!element)  {
     AppLog.error('未选中对象！')
     return
@@ -195,7 +197,7 @@ function editGeometryOption(option: ToolbarOption<ARMapEditViewOption>) {
       transformInfo: {
         layerName: element.layerName,
         id: element.id,
-        touchType: element.touchType,
+        touchType: touchType || 0,
         type: 'position',
         positionX: 0,
         positionY: 0,
@@ -225,6 +227,7 @@ function editGeometryOption(option: ToolbarOption<ARMapEditViewOption>) {
       onPress: () => {
         const transformData = AppToolBar.getData().transformInfo
         const editItem = AppToolBar.getData().selectARElement
+        const touchType = AppToolBar.getData().selectTouchType
         if(!transformData || !editItem) return
         SARMap.submit().then(() => {
           AppToolBar.resetTabData()
@@ -232,7 +235,7 @@ function editGeometryOption(option: ToolbarOption<ARMapEditViewOption>) {
             transformInfo: {
               layerName: editItem.layerName,
               id: editItem.id,
-              touchType: editItem.touchType,
+              touchType: touchType || 0,
               type: 'position',
               positionX: 0,
               positionY: 0,
@@ -358,7 +361,7 @@ function GeometryLinePointAdd(option: ToolbarOption<ARMapEditViewOption>, addFun
       AppEvent.removeListener('ar_on_tap_add_buttun')
       AppEvent.addListener('ar_on_tap_add_buttun', async () => {
         // 获取指定点的中心位置坐标
-        const translation = await SARMap.getCurrentCenterHitPoint()
+        const translation = await SARMap.getFocusPosition()
         // 当指定点的位置坐标获取成功时才去添加线的节点
         if(translation) {
           const isLineAdd = AppToolBar.getData().isLineAdd
@@ -428,11 +431,12 @@ function _getTransformTabData(editItem: ARElement | string): ToolBarMenuItem[] {
         })
         SARMap.appointEditAR3DLayer(editItem)
       } else {
+        const touchType = AppToolBar.getData().selectTouchType
         AppToolBar.addData({
           transformInfo: {
             layerName: editItem.layerName,
             id: editItem.id,
-            touchType: editItem.touchType,
+            touchType: touchType || 0,
             type: 'position',
             positionX: 0,
             positionY: 0,
@@ -662,11 +666,12 @@ function _getGeometryLineObjectTabData(): ToolBarMenuItem[] {
         })
         SARMap.appointEditAR3DLayer(editItem)
       } else {
+        const touchType = AppToolBar.getData().selectTouchType
         AppToolBar.addData({
           transformInfo: {
             layerName: editItem.layerName,
             id: editItem.id,
-            touchType: editItem.touchType,
+            touchType: touchType || 0,
             type: 'position',
             positionX: 0,
             positionY: 0,
@@ -837,11 +842,12 @@ function getPoiEditBottom(editItem: ARElement | string): ToolBarBottomItem[] {
             SARMap.appointEditAR3DLayer(editItem)
             SARMap.setAction(ARAction.NULL)
           } else {
+            const touchType = AppToolBar.getData().selectTouchType
             AppToolBar.addData({
               transformInfo: {
                 layerName: editItem.layerName,
                 id: editItem.id,
-                touchType: editItem.touchType,
+                touchType: touchType || 0,
                 type: 'position',
                 positionX: 0,
                 positionY: 0,
@@ -861,7 +867,7 @@ function getPoiEditBottom(editItem: ARElement | string): ToolBarBottomItem[] {
         )}
     },
   ]
-
+  const touchType = AppToolBar.getData().selectTouchType
   if((typeof(editItem) !== 'string'
     && editItem.type !== ARElementType.AR_ATTRIBUTE_ALBUM
     && editItem.type !== ARElementType.AR_BROCHOR
@@ -871,8 +877,8 @@ function getPoiEditBottom(editItem: ARElement | string): ToolBarBottomItem[] {
     && editItem.type !== ARElementType.AR_BAR_CHART
     && editItem.type !== ARElementType.AR_PIE_CHART)
     || typeof(editItem) === 'string'
-    || (editItem.type === ARElementType.AR_VIDEO_ALBUM && editItem.touchType !==0)
-    || (editItem.type === ARElementType.AR_SAND_TABLE_ALBUM && editItem.touchType !==0)
+    || (editItem.type === ARElementType.AR_VIDEO_ALBUM && touchType !==0)
+    || (editItem.type === ARElementType.AR_SAND_TABLE_ALBUM && touchType !==0)
   ){
     data.splice(1, 1)
   }
@@ -1542,12 +1548,13 @@ function _getPoiSettingData(editItem: ARElement): ToolBarListOption {
     data.splice(3, 1)
   }
 
+  const touchType = AppToolBar.getData().selectTouchType
   //点击右侧node时不显示标题设置
-  if(editItem.touchType !== 0){
+  if(touchType && touchType !== 0){
     data.splice(0, 1)
     data.splice(1, 1)
   }
-  if(editItem.type === ARElementType.AR_ALBUM || editItem.videoType === 0 || editItem.type === ARElementType.AR_SAND_TABLE_ALBUM){
+  if(editItem.type === ARElementType.AR_ALBUM || ('videoType' in editItem && editItem.videoType === 0) || editItem.type === ARElementType.AR_SAND_TABLE_ALBUM){
     data.splice(2, 2)
   }
   return{
@@ -1624,7 +1631,7 @@ function _getPoiSettingData_title(editItem: ARElement): ToolBarMenuItem[] {
           text: '',
           apply:async (text: string)=>{
             // console.warn('title: ' + text)
-            SARMap.setNodeTextTitle(text, editItem)
+            SARMap.setARWidgetTitle(editItem.layerName, editItem.id, text)
           }
         }
       },
@@ -1736,7 +1743,7 @@ function _getPoiSettingData_title(editItem: ARElement): ToolBarMenuItem[] {
           textTitle: getLanguage().ARMap.TITLE,
           text: '',
           apply:async (text: string)=>{
-            SARMap.setNodeTextTitle(text, editItem)
+            SARMap.setARWidgetTitle(editItem.layerName, editItem.id, text)
           }
         }
       },
@@ -1810,7 +1817,8 @@ function _getPoiSettingData_title(editItem: ARElement): ToolBarMenuItem[] {
       data.splice(4,1)
     }
 
-    if(editItem.touchType === 0 && editItem.videoType === 0){
+    const touchType = AppToolBar.getData().selectTouchType || 0
+    if(touchType === 0 && 'videoType' in editItem && editItem.videoType === 0){
       data.push({
         title: getLanguage().ARMap.BUTTON_TEXT_SIZE,
         onPress: () => {

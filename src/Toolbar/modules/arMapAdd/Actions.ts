@@ -14,7 +14,6 @@ import {
   ARElementLayer,
   ARElementType,
   ARLayerType,
-  TARElementType,
   TARLayerType,
 } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 
@@ -26,7 +25,7 @@ export interface AddOption {
   updatefoucus?: boolean
 }
 
-async function addMedia(type: TARElementType, option?: AddOption) {
+async function addMedia(type: Parameters<typeof SARMap.addARMedia>[1], option?: AddOption) {
   await checkARElementLayer(ARLayerType.AR_MEDIA_LAYER)
   let content = AppToolBar.getData().arContent
   const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
@@ -34,7 +33,7 @@ async function addMedia(type: TARElementType, option?: AddOption) {
     if((type === ARElementType.AR_VIDEO || type === ARElementType.AR_IMAGE) && content.indexOf('file://') === 0) {
       content = content.substring(7)
     }
-    SARMap.addARMedia(layer.name, type, content, option?.translation)
+    SARMap.addARMedia(layer.name, type, content, {position: option?.translation})
   }
 }
 
@@ -55,7 +54,7 @@ export async function addText(option?: AddOption) {
   const content = AppToolBar.getData().arContent
   const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
   if(content && layer && layer.type === ARLayerType.AR_TEXT_LAYER) {
-    SARMap.addARText(layer.name, content, option?.translation)
+    SARMap.addARText(layer.name, content, {position: option?.translation})
   }
 }
 
@@ -64,7 +63,7 @@ export async function addBubbleText(option?: AddOption) {
   const content = AppToolBar.getData().arContent
   const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
   if(content && layer && layer.type === ARLayerType.AR_TEXT_LAYER) {
-    SARMap.addARBubbleText(layer.name, content, option?.translation)
+    SARMap.addARBubbleText(layer.name, content, {position: option?.translation})
   }
 }
 
@@ -140,7 +139,7 @@ export async function addModel(option?: AddOption) {
   await checkARElementLayer(ARLayerType.AR_MODEL_LAYER)
   const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
   if(layer){
-    SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + modelPath, option?.translation)
+    SARMap.addARModel(layer.name, await FileTools.getHomeDirectory() + modelPath, {position: option?.translation})
   }
 }
 
@@ -149,7 +148,7 @@ export async function addSandTable(option?: AddOption) {
   await checkARElementLayer(ARLayerType.AR_MODEL_LAYER)
   const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
   if(layer && sandTablePath){
-    await SARMap.addARSandTable(layer.name, sandTablePath, option?.translation)
+    await SARMap.addARSandTable(layer.name, sandTablePath, {position: option?.translation})
   }
 }
 
@@ -157,9 +156,20 @@ export async function addARWidget(option?: AddOption) {
   await checkARElementLayer(ARLayerType.AR_WIDGET_LAYER)
   const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
   const arPhotos = AppToolBar.getData().arPhotos
-  const albumName = AppToolBar.getData().albumName
+  const albumName = AppToolBar.getData().albumName || ''
   if(arPhotos && layer) {
-    SARMap.addARWidget(layer.name, ARElementType.AR_ALBUM,arPhotos,albumName, option?.translation)
+    const photos = arPhotos.map(item => {
+      let uri: string = item.uri
+      if(uri.indexOf('file://') === 0) {
+        uri = uri.substring(7)
+      }
+      return {
+        uri: uri,
+        timestamp: item.timestamp as number
+      }
+    })
+
+    SARMap.addARAlbum(layer.name, photos, albumName, {position: option?.translation})
   }
 }
 
@@ -167,9 +177,20 @@ export async function addARAttriubutWidget(option?: AddOption) {
   await checkARElementLayer(ARLayerType.AR_WIDGET_LAYER)
   const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
   const arPhotos = AppToolBar.getData().arPhotos
-  const albumName = AppToolBar.getData().albumName
+  const albumName = AppToolBar.getData().albumName || ''
   if(arPhotos && layer) {
-    SARMap.addARAttributeWidget(layer.name, ARElementType.AR_ATTRIBUTE_ALBUM,arPhotos,albumName, option?.translation)
+    const photos = arPhotos.map(item => {
+      let uri: string = item.uri
+      if(uri.indexOf('file://') === 0) {
+        uri = uri.substring(7)
+      }
+      return {
+        uri: uri,
+        timestamp: item.timestamp as number
+      }
+    })
+
+    SARMap.addARAttributeAlbum(layer.name, photos, albumName, {position: option?.translation})
   }
 }
 
@@ -177,10 +198,20 @@ export async function addARVideoAlbum(option?: AddOption) {
   await checkARElementLayer(ARLayerType.AR_WIDGET_LAYER)
   const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
   const arPhotos = AppToolBar.getData().arPhotos
-  const albumName = AppToolBar.getData().albumName
-  const videoType = AppToolBar.getData().videoType
+  const albumName = AppToolBar.getData().albumName || ''
+  const videoType = AppToolBar.getData().videoType || 0
   if(arPhotos && layer) {
-    SARMap.addARVideoAlbum(layer.name, ARElementType.AR_VIDEO_ALBUM,arPhotos,albumName,videoType, option?.translation)
+    const photos = arPhotos.map(item => {
+      let uri: string = item.uri
+      if(uri.indexOf('file://') === 0) {
+        uri = uri.substring(7)
+      }
+      return {
+        uri: uri,
+        timestamp: item.timestamp as number
+      }
+    })
+    SARMap.addARVideoAlbum(layer.name, photos,albumName,videoType, {position: option?.translation})
   }
 }
 
@@ -188,21 +219,20 @@ export async function addARBrochore(option?: AddOption) {
   // const props = AppToolBar.getProps()
   await checkARElementLayer(ARLayerType.AR_WIDGET_LAYER)
   const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
-  const albumName = AppToolBar.getData().albumName
-  if(layer){
-    // const maps = await DataHandler.getLocalData(props.currentUser.userName, 'MAP')
-    // await SARMap.addARBrochoreMap(maps)
-    SARMap.addARBrochore(layer.name, ARElementType.AR_BROCHOR,albumName, option?.translation)
+  const albumName = AppToolBar.getData().albumName || ''
+  const path = AppToolBar.getData().selectedMapPath
+  if(layer && path && path.length > 0){
+    SARMap.addARMapAlbum(layer.name, path, albumName, {position: option?.translation})
   }
 }
 
 export async function addARSandTableAlbum(option?: AddOption) {
   const { sandTablePaths } = AppToolBar.getData()
-  const albumName = AppToolBar.getData().albumName
+  const albumName = AppToolBar.getData().albumName || ''
   await checkARElementLayer(ARLayerType.AR_WIDGET_LAYER)
   const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
   if(layer && sandTablePaths){
-    await SARMap.addARSandTableAlbum(layer.name, sandTablePaths, albumName,option?.translation)
+    await SARMap.addARSandTableAlbum(layer.name, sandTablePaths, albumName,{position: option?.translation})
   }
 }
 
@@ -213,7 +243,7 @@ export async function addARChart(option?: AddOption) {
   const data = AppToolBar.getData()?.chartData
   if(data && layer) {
     if(Platform.OS === 'android'){
-      SARMap.addBarChart(layer.name, data, option?.translation)
+      SARMap.addBarChart(layer.name, data, {position: option?.translation})
     }
   }
 }
@@ -225,7 +255,7 @@ export async function addARPieChart(option?: AddOption) {
   const data = AppToolBar.getData()?.chartData?.data
   if(data && layer) {
     if(Platform.OS === 'android'){
-      SARMap.addARPieChart(layer.name, data, option?.translation)
+      SARMap.addARPieChart(layer.name, data, {position: option?.translation})
     }
   }
 }
@@ -303,13 +333,13 @@ export async function addARSceneLayer(option?: AddOption) {
           }
         })
       }
-      addLayerName = await SARMap.addSceneLayerOnline(datasourceName, datasetName, serverUrl, sceneName, option?.translation, sceneOffset)
+      addLayerName = await SARMap.addSceneLayerOnline(datasourceName, datasetName, serverUrl, sceneName, {position: option?.translation}, sceneOffset)
     } else {
       path = homePath + path
       const pxp = await DataLocal.getPxpContent(path)
       if(pxp === null) return
       const wsPath = homePath + AppPath.User.path + '/' + props.currentUser.userName + UserRoot.Data.ARScene.path +  '/' + pxp.Workspace.server
-      addLayerName = await SARMap.addSceneLayer(datasourceName, datasetName, wsPath, option?.translation)
+      addLayerName = await SARMap.addSceneLayer(datasourceName, datasetName, wsPath, {position: option?.translation})
     }
     if(addLayerName !== ''){
       const layers = await props.getARLayers()
@@ -388,7 +418,8 @@ export async function addEffectLayer(fileName: string, path: string) {
 async function checkARElementLayer(type: TARLayerType) {
   if(type === ARLayerType.EFFECT_LAYER
     || type === ARLayerType.AR_SCENE_LAYER
-    || type === ARLayerType.AR3D_LAYER)
+    || type === ARLayerType.AR3D_LAYER
+    || type === ARLayerType.UNKNOWN)
   {
     return
   }

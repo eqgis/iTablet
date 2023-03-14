@@ -273,7 +273,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
     }]
 
     // 特效图层下移
-    if(this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
+    if(this.state.selectLayer && "duration" in this.state.selectLayer) {
       menuData[0].data.unshift({
         title: getLanguage().Map_Layer.LAYERS_MOVE_DOWN,
         // image: getThemeAssets().layer.icon_edit_movedown,
@@ -309,7 +309,7 @@ export default class ARLayerManager extends React.Component<Props, State> {
     }
 
     // 特效图层上移
-    if(this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
+    if(this.state.selectLayer && "duration" in this.state.selectLayer) {
       menuData[0].data.unshift({
         title: getLanguage().Map_Layer.LAYERS_MOVE_UP,
         // image: getThemeAssets().layer.icon_edit_moveup,
@@ -378,9 +378,9 @@ export default class ARLayerManager extends React.Component<Props, State> {
       })
     }
     // 特效图层可持续时间
-    if(this.state.selectLayer && "secondsToPlay" in this.state.selectLayer) {
-      const secondsToPlay = this.state.selectLayer.secondsToPlay
-      AppToolBar.addData({selectARLayer: this.state.selectLayer,secondsToPlay})
+    if(this.state.selectLayer && "duration" in this.state.selectLayer) {
+      const secondsToPlay = this.state.selectLayer.duration
+      AppToolBar.addData({selectARLayer: this.state.selectLayer,duration: secondsToPlay})
       menuData[0].data.unshift({
         title: getLanguage().Map_Layer.LAYERS_SECONDS_TO_PLAY,
         // image: getThemeAssets().layer.icon_tool_duration,

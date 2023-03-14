@@ -19,10 +19,11 @@ import {
   ModuleList,
 } from "./modules"
 import { getLayers, setCurrentLayer } from "@/redux/models/layers"
-import { getARLayers, setCurrentARLayer } from "@/redux/models/arlayer"
+import { ARLayerState, getARLayers, setCurrentARLayer } from "@/redux/models/arlayer"
 import {closeARMap, createARMap, saveARMap} from '@/redux/models/armap'
 import { setPipeLineAttribute, changeShowAttributeElement } from "@/redux/models/arattribute"
 import { ScaledSize } from "react-native"
+import { ARLayer } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 
 const SToolbar = ToolbarKit.createToolbar<ModuleList>(resource)
 
@@ -65,7 +66,7 @@ class Toolbar extends React.Component<Props> {
 
 const mapStateToProp = (state: RootState) => ({
   windowSize: state.device.toJS().windowSize as ScaledSize,
-  arMapInfo: state.arlayer.toJS(),
+  arMapInfo: state.arlayer.toJS() as ARLayerState,
   arMap: state.armap.toJS(),
   currentUser: state.user.toJS().currentUser,
   pipeLineAttribute: state.arattribute.pipeLineAttribute,

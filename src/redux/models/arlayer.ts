@@ -65,6 +65,11 @@ export const setCurrentARLayer = (
   })
 }
 
+export interface ARLayerState {
+  layers: ARLayer[]
+  currentLayer: ARLayer | undefined
+}
+
 
 const initialState = fromJS({
   layers: [],

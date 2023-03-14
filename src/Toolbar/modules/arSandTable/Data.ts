@@ -289,6 +289,7 @@ function sandTableAlignOption(option: ToolbarOption<ARSAndTableViewOption>) {
 function editElementOption(option: ToolbarOption<ARSAndTableViewOption>) {
   const element = AppToolBar.getData().selectARElement
   const childIndex = AppToolBar.getData().selectedChildIndex
+  const touchType = AppToolBar.getData().selectTouchType
   if(!element || childIndex === undefined)  {
     AppLog.error('未选中对象！')
     return
@@ -305,7 +306,7 @@ function editElementOption(option: ToolbarOption<ARSAndTableViewOption>) {
       transformInfo: {
         layerName: element.layerName,
         id: element.id,
-        touchType: element.touchType,
+        touchType: touchType || 0,
         type: 'position',
         positionX: 0,
         positionY: 0,

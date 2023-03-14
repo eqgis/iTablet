@@ -1,5 +1,6 @@
-import {SARMap } from 'imobile_for_reactnative'
-import { FieldInfoValue } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
+import {SARMap, SData } from 'imobile_for_reactnative'
+import { ARLayer } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
+import { DatasetInfo, FieldInfoValue, QueryParameter } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 export interface AttributeHead {
   value: string,
@@ -35,27 +36,52 @@ export type GetAttributeType = 'loadMore' | 'refresh' | 'reset'
  */
 async function getLayerAttribute(
   attributes: Attributes,
-  path: string,
+  layer: ARLayer,
   page: number,
   size: number,
   params?: {filter?: string, groupBy?: string},
   type: GetAttributeType = 'loadMore',
 ) {
-  const data = await SARMap.getLayerAttribute(path, page, size, params)
+  if(!('datasourceAlias' in layer)) return
 
-  return dealData(attributes, data, page, type)
+  const datasetInfo:DatasetInfo = {datasetName:layer.datasetName,datasourceName:layer.datasourceAlias}
+  const groups = params?.groupBy?.split(",")
+  const orders = params?.filter?.split(",")
+  const para:QueryParameter = {orderBy:orders,groupBy:groups}
+  return await _getAttribute(attributes, datasetInfo, page, size, para, type)
+
 }
 
 async function getSelectionAttributeByData(
   attributes: Attributes,
-  name: string,
+  layer: ARLayer,
+  elementId: number,
   page: number,
   size: number,
   type: GetAttributeType = 'loadMore',
 ) {
-  const data = await SARMap.getSelectionAttributeByData(name, page, size)
+  if(!('datasourceAlias' in layer)) return
 
-  return dealData(attributes, data, page, type)
+  const datasetInfo:DatasetInfo = {datasetName:layer.datasetName,datasourceName:layer.datasourceAlias}
+
+  return await _getAttribute(attributes, datasetInfo, page, size, {queryIDs: [elementId]}, type)
+}
+
+async function _getAttribute(
+  attributes: Attributes,
+  datasetInfo: DatasetInfo,
+  page: number,
+  size: number,
+  params?: QueryParameter,
+  type: GetAttributeType = 'loadMore',
+) {
+  const data1 = (await SData.queryRecordset(datasetInfo,params)).map(recordset => recordset.fieldInfoValue)
+  const head = await SData.getFieldInfos(datasetInfo)
+  const startIndex =  page*size
+  const total = data1.length
+  const data  = data1.slice(startIndex,startIndex+(total-startIndex>size?size:total-startIndex))
+  const dataShow = {currentPage:page,head,startIndex,total,data}
+  return dealData(attributes, dataShow, page, type)
 }
 
 function dealData(attributes: Attributes, result: any, page: number, type: GetAttributeType) {

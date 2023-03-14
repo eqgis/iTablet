@@ -3,7 +3,7 @@ import NavigationService from '@/containers/NavigationService'
 import { RootState } from '@/redux/types'
 import { SARMap } from 'imobile_for_reactnative'
 import React from 'react'
-import { Platform, StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { Animated,  Easing } from 'react-native'
 import { connect, ConnectedProps } from 'react-redux'
 import { ModuleViewProps } from '../..'
@@ -34,98 +34,97 @@ class ARAttributeView extends React.Component<Props> {
     // if(Platform.OS === 'ios'){
     //   return
     // }
-    await SARMap.addAttributeListener({
-      callback: async (result: any) => {
-        try {
-          // console.warn("callback enter")
-          if(AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT'){
-            return
+    SARMap.setScene3DAttributeListener(async result => {
+      try {
+        // console.warn("callback enter")
+        if(AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT'){
+          return
+        }
+        // console.warn("result01: " + JSON.stringify(result))
+        let arr: Array<PipeLineAttributeType> = []
+        const smArr: Array<PipeLineAttributeType> = []
+        let srcId = ''
+        Object.keys(result).forEach(key => {
+          const item: PipeLineAttributeType = {
+            title: key,
+            value: result[key],
           }
-          // console.warn("result01: " + JSON.stringify(result))
-          let arr: Array<PipeLineAttributeType> = []
-          const smArr: Array<PipeLineAttributeType> = []
-          let srcId = ''
-          Object.keys(result).forEach(key => {
-            const item: PipeLineAttributeType = {
-              title: key,
-              value: result[key],
+
+
+          if (key === 'id') {
+            arr.unshift(item)
+          } else if(key !== 'action' && item.value !== "") {
+            // 不以sm开头， 或是以下四种情况之一
+            // if(key.substring(0,2)!== 'Sm' || key === 'SmID'
+            // || key === 'SmLength' || key === 'SmTNode'
+            // || key === 'SmEdgeID' || key === 'SmGeoPosition') {
+            //   arr.push(item)
+            // }
+
+            // if(key !== 'SmLength' && key !== 'SmTNode'
+            // && key !== 'SmEdgeID' && key !== 'SmGeoPosition') {
+            //   arr.push(item)
+            // }
+
+            if(key.substring(0,2).toLocaleUpperCase() === 'SM'){
+              smArr.push(item)
+            } else {
+              arr.push(item)
             }
 
+          }
+          // 记录点击管线的唯一id
+          if(key === 'SmID'){
+            srcId =  result[key]
+          }
+        })
 
-            if (key === 'id') {
-              arr.unshift(item)
-            } else if(key !== 'action' && item.value !== "") {
-              // 不以sm开头， 或是以下四种情况之一
-              // if(key.substring(0,2)!== 'Sm' || key === 'SmID'
-              // || key === 'SmLength' || key === 'SmTNode'
-              // || key === 'SmEdgeID' || key === 'SmGeoPosition') {
-              //   arr.push(item)
-              // }
+        const tempfunc = function (pre: PipeLineAttributeType, nex: PipeLineAttributeType) {
+          const preStr = pre.title
+          const nextStr = nex.title
+          if(preStr < nextStr){
+            return -1
+          } else if(preStr > nextStr) {
+            return 1
+          }
+          return 0
+        }
+        if(arr.length > 1) {
+          arr.sort(tempfunc)
+        }
 
-              // if(key !== 'SmLength' && key !== 'SmTNode'
-              // && key !== 'SmEdgeID' && key !== 'SmGeoPosition') {
-              //   arr.push(item)
-              // }
+        if(smArr.length > 1) {
+          smArr.sort(tempfunc)
+        }
 
-              if(key.substring(0,2).toLocaleUpperCase() === 'SM'){
-                smArr.push(item)
-              } else {
-                arr.push(item)
-              }
-
-            }
-            // 记录点击管线的唯一id
-            if(key === 'SmID'){
-              srcId =  result[key]
+        arr = arr.concat(smArr)
+        // 将数据放入redux里
+        const prePipeLineAttribute = AppToolBar.getProps().pipeLineAttribute
+        let preSrcId: string | undefined = undefined
+        if(prePipeLineAttribute && prePipeLineAttribute.length > 0){
+          const value = prePipeLineAttribute?.find((element) => {
+            if(element.title === 'SmID') {
+              return element
             }
           })
-
-          const tempfunc = function (pre: PipeLineAttributeType, nex: PipeLineAttributeType) {
-            const preStr = pre.title
-            const nextStr = nex.title
-            if(preStr < nextStr){
-              return -1
-            } else if(preStr > nextStr) {
-              return 1
-            }
-            return 0
-          }
-          if(arr.length > 1) {
-            arr.sort(tempfunc)
-          }
-
-          if(smArr.length > 1) {
-            smArr.sort(tempfunc)
-          }
-
-          arr = arr.concat(smArr)
-          // 将数据放入redux里
-          const prePipeLineAttribute = AppToolBar.getProps().pipeLineAttribute
-          let preSrcId: string | undefined = undefined
-          if(prePipeLineAttribute && prePipeLineAttribute.length > 0){
-            const value = prePipeLineAttribute?.find((element) => {
-              if(element.title === 'SmID') {
-                return element
-              }
-            })
-            preSrcId = value && value.value
-          }
-          if(arr.length > 0) {
-            // 若此次点击与上一次点击的是同一个管，就是隐藏，即将数据置为空数组
-            if(preSrcId && preSrcId === srcId) {
-              AppToolBar.getProps().setPipeLineAttribute([])
-            } else {
-              AppToolBar.getProps().setPipeLineAttribute(arr)
-            }
-          } else {
-            AppToolBar.getProps().setPipeLineAttribute([])
-          }
-
-        } catch (error) {
-          console.error("三维管线监听回调函数出错")
+          preSrcId = value && value.value
         }
+        if(arr.length > 0) {
+          // 若此次点击与上一次点击的是同一个管，就是隐藏，即将数据置为空数组
+          if(preSrcId && preSrcId === srcId) {
+            AppToolBar.getProps().setPipeLineAttribute([])
+          } else {
+            AppToolBar.getProps().setPipeLineAttribute(arr)
+          }
+        } else {
+          AppToolBar.getProps().setPipeLineAttribute([])
+        }
+
+      } catch (error) {
+        console.error("三维管线监听回调函数出错")
       }
-    })
+    }
+    )
   }
 
   componentDidUpdate(prevProps: Props) {

@@ -1,10 +1,10 @@
-import { ARElement, ARElementStyle, IAnimationParam, IARTransform, ARLayer } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
+import { ARElement, ARElementStyle, IAnimationParam, IARTransform, ARLayer, ARWidgetStyle } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 import ToolBarContainer from "imobile_for_reactnative/components/ToolbarKit/ToolbarContainer"
 import { Props } from "../Toolbar"
 import { ModuleList } from "../Toolbar/modules"
 import CameraRoll from "@react-native-community/cameraroll"
 import { GeometrySelectedEvent } from "imobile_for_reactnative/types/interface/mapping/SMap"
-import { AIRecognitionInfo, ARAttributeStyle, ARNodeStyle } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
+import { AIRecognitionInfo, ARAttributeStyle } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 let toolbarRef: ToolBarContainer<ModuleList>
 
 export const arLayerType:  {
@@ -68,7 +68,9 @@ interface ToolBarData {
     arPhotos?: CameraRoll.PhotoIdentifier[]
     /** 相册名称 */
     albumName?:string
-    videoType?:number
+    /** 地图册选中的地图 */
+    selectedMapPath?: string[]
+    videoType?:0 | 1
     /** 添加模型时模型路径 */
     modelPath?: string
     /** 设置AR对象变换时的临时数据 */
@@ -80,6 +82,8 @@ interface ToolBarData {
     selectARLayer?: ARLayer
     /** 选中的AR对象 */
     selectARElement?: ARElement
+    /** 选中的AR相册相关小组件 touchtype */
+    selectTouchType?: number
     /** AR对象内子节点的序号 */
     selectedChildIndex?: number
     /** 添加的AR对象 */
@@ -112,10 +116,9 @@ interface ToolBarData {
      /** 判断node点击相应 */
     isNodeTouch?:boolean
     /** node风格 */
-    nodeStyle?: ARNodeStyle
-    currentNodeStyle?: ARNodeStyle
+    currentNodeStyle?: ARWidgetStyle
     /** 特效图层的持续时间 */
-    secondsToPlay?: number
+    duration?: number
     /** 特效图层的中心x坐标 */
     centerX?: number
     /** 特效图层的中心y坐标 */

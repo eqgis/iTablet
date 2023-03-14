@@ -15,7 +15,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Container, Input } from '../../../../components'
-import { SMap, SProcess, SData } from 'imobile_for_reactnative'
+import { SMap, SData } from 'imobile_for_reactnative'
 import { DatasetType, } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { getLanguage } from '../../../../language'
 import { scaleSize, Toast, dataUtil } from '../../../../utils'

@@ -1,8 +1,6 @@
 import React from 'react'
 import { MyDataPage } from '../component'
 import {
-  SMap,
-  SProcess,
   SData,
   PrjCoordSysType,
   GeoCoordSysType,

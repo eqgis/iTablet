@@ -7,7 +7,7 @@ import { scaleSize, Toast } from '../../../../utils'
 import { color } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
 import { View, Text, ScrollView } from 'react-native'
-import { SProcess, SData } from 'imobile_for_reactnative'
+import { SData } from 'imobile_for_reactnative'
 import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 

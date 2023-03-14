@@ -133,9 +133,11 @@ async function getThemeExpress(type, key = '', name = '') {
     // selectedExpression = await STheme.getRangeExpression(param)
     selectedExpression = (await STheme.getThemeRangeInfo(param.LayerName || "")).expression
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION) {
-    selectedExpression = await STheme.getUniformLabelExpression(
-      param,
-    )
+    const info = await STheme.getUniformLabelInfo(param.LayerName || "")
+    selectedExpression = info.labelExpression
+    // selectedExpression = await STheme.getUniformLabelExpression(
+    //   param,
+    // )
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_EXPRESSION) {
     selectedExpression = (await STheme.getUniqueThemeLabelLayerInfo(param?.LayerName || "")).expression
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_LABEL_EXPRESSION) {
@@ -990,11 +992,12 @@ async function listAction(type, params = {}) {
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION) { // 统一标签表达式
 
     const Params = {
-      LabelExpression: item.expression,
-      LayerName: _params.currentLayer.name,
+      labelExpression: item.expression,
+      // LayerName: _params.currentLayer.name,
     }
     params.refreshList && (await params.refreshList(item.expression))
-    await STheme.setUniformLabelExpression(Params)
+    await STheme.modifyUniformLabelLayer(_params.currentLayer.name||"",Params)
+    // await STheme.setUniformLabelExpression(Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_LABEL_EXPRESSION) {// 单值标签表达式
     const Params = {
       labelExpression: item.expression,
@@ -1093,7 +1096,7 @@ async function listAction(type, params = {}) {
       const { dataset } = datasetData
       const _list = []
       datasetData.list.forEach(item => {
-        if (
+        if (constants.THEME_UNIFY_LABEL === themeCreateType ||
           ThemeMenuData.isThemeFieldTypeAvailable(
             item.fieldTypeStr,
             themeCreateType,
@@ -1918,8 +1921,11 @@ function setTouchProgressInfo(title, value) {
       }
       // 分段标签
       if (themeType === ThemeType.LABELRANGE) {
-        _params.type = 'range'
+        // _params.type = 'range'
         STheme.setLabelFontSize(_params)
+      }
+      if(themeType === ThemeType.LABEL){
+        STheme.modifyUniformLabelLayer(Params.currentLayer.name||"",{labelStyle:{TextSize:parseInt(value)}})
       }
       if(themeType === ThemeType.LABELUNIQUE){
         STheme.modifyUniqueThemeLabelLayer(Params.currentLayer.name||"",{labelStyle:{TextSize:parseInt(value)}})

@@ -189,7 +189,6 @@ export default class InterpolationAnalystView extends Component {
   getFieldInfos = async info => {
     let infos = []
     let fieldInfos = await SData.getFieldInfos(info)
-    console.warn(info, fieldInfos)
 
     fieldInfos.forEach(item => {
       item.key = item.name
@@ -623,7 +622,6 @@ export default class InterpolationAnalystView extends Component {
                     },
                     filter,
                   )
-                  console.warn(dataSets)
                   if (dataSets && dataSets.length > 0 && dataSets[0]) {
                     // 获取默认插值字段
                     let filter2 = {}
@@ -758,7 +756,6 @@ export default class InterpolationAnalystView extends Component {
                     bottom: parseFloat(this.state.bottom),
                     right: parseFloat(this.state.right),
                   })
-                  console.warn(this.state.method.key, data)
                   NavigationService.navigate('InterpolationAnalystDetailView', {
                     title: this.state.method.key,
                     data,

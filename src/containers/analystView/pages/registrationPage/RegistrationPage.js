@@ -99,7 +99,9 @@ export default class RegistrationPage extends Component {
       if (!this.myIsNaN(originalY)) {
         originalY = parseFloat(originalY)
       }
-      SRectify.setOriginalControlPoint(index, originalX, originalY)
+      SRectify.setControlPoint(0, index, {
+        x: originalX, y: originalY,
+      })
     }
     if (
       point.targetPoint !== null &&
@@ -114,7 +116,9 @@ export default class RegistrationPage extends Component {
       if (!this.myIsNaN(targetY)) {
         targetY = parseFloat(targetY)
       }
-      SRectify.setTargetControlPoint(index, targetX, targetY)
+      SRectify.setControlPoint(1, index, {
+        x: targetX, y: targetY,
+      })
     }
   }
 
@@ -516,7 +520,9 @@ export default class RegistrationPage extends Component {
         if (isNaN(originalY)) {
           originalY = 0
         }
-        SRectify.setOriginalControlPoint(i, originalX, originalY)
+        SRectify.setControlPoint(0, i, {
+          x: originalX, y: originalY,
+        })
       }
       if (
         _showPointsData[i].targetPoint !== null &&
@@ -537,7 +543,9 @@ export default class RegistrationPage extends Component {
         if (isNaN(targetY)) {
           targetY = 0
         }
-        SRectify.setTargetControlPoint(i, targetX, targetY)
+        SRectify.setControlPoint(1, i, {
+          x: targetX, y: targetY,
+        })
       }
     }
 

@@ -81,7 +81,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
     const _params: any = ToolbarModule.getParams()
     await DataHandler.createPoiSearchDatasource(_params.user.currentUser)
     if(this.state.results) {
-      SARNavigation.addSearchPois(this.state.results)
+      SARNavigation.addSearchPois(await this.transPoiCoordSys(this.state.results))
     }
     SARMap.setAction(ARAction.SELECT)
 
@@ -223,7 +223,7 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
           history: [key].concat(history)
         })
         await SARNavigation.removeSearchPois()
-        SARNavigation.addSearchPois(infos)
+        SARNavigation.addSearchPois(await this.transPoiCoordSys(infos))
       } else {
         Toast.show(getLanguage(global.language).ARMap.NO_SEARCH_RESULT)
       }
@@ -233,6 +233,25 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
     } else {
       Toast.show(getLanguage(global.language).ARMap.PLEASE_INPUT_KEYWORD)
     }
+  }
+
+  /** 搜索点坐标转为AR地图坐标 */
+  transPoiCoordSys = async (info: (POIInfo | POIInfoOnline)[]) => {
+    const result:(POIInfo | POIInfoOnline)[] = []
+
+    const locations = info.map(item => item.location)
+    const mercatorXml =await SData.prjCoordSysToXml({type: PrjCoordSysType.PCS_SPHERE_MERCATOR})
+    const armapXml = await SARMap.getPrjCoordSys()
+    const mapPoints = await SData.CoordSysTranslator(mercatorXml, armapXml, locations)
+
+    for(let i = 0; i < mapPoints.length; i++) {
+      result.push({
+        ...info[i],
+        location: mapPoints[i],
+      })
+    }
+
+    return result
   }
 
   /** 清除输入框 */
@@ -284,12 +303,12 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
               const datasetPrj = await SData.getDatasetPrjCoordSys({datasourceName: roadNetDataset.datasourceAlias, datasetName: roadNetDataset.datasetName})
               const merctorPrj = await SData.prjCoordSysToXml({type: PrjCoordSysType.PCS_SPHERE_MERCATOR})
               //结果坐标转换
-              r.route = await SData.CoordSysTranslator(datasetPrj, merctorPrj, {...r.route})
+              r.route = await SData.CoordSysTranslator(datasetPrj, merctorPrj, [...r.route])
               let pathPoints: Point2D[] = []
               for(let i = 0; i < r.naviPath.naviStep.length; i++) {
                 pathPoints.push({...r.naviPath.naviStep[i].point})
               }
-              pathPoints = await SData.CoordSysTranslator(datasetPrj, merctorPrj, {...pathPoints})
+              pathPoints = await SData.CoordSysTranslator(datasetPrj, merctorPrj, [...pathPoints])
               for(let i = 0; i < r.naviPath.naviStep.length; i++) {
                 r.naviPath.naviStep[i].point = pathPoints[i]
               }
@@ -327,11 +346,31 @@ class ARPoiSearchView extends React.PureComponent<Props, State> {
     }
   }
 
+
+  /** 路径分析结果墨卡托转AR地图点 */
+  transCoordSys = async (param: RouteAnalyzeResult): Promise<RouteAnalyzeResult> => {
+    const result = JSON.parse(JSON.stringify(param)) as RouteAnalyzeResult
+    //结果坐标转换
+    const merctorPrj = await SData.prjCoordSysToXml({type: PrjCoordSysType.PCS_SPHERE_MERCATOR})
+    const mapPrj = await SARMap.getPrjCoordSys()
+    result.pathPoints = await SData.CoordSysTranslator(merctorPrj, mapPrj, [...result.pathPoints])
+    let juctions: Point2D[] = []
+    for(let i = 0; i < result.pathInfos.length; i++) {
+      juctions.push({...result.pathInfos[i].junction})
+    }
+    juctions = await SData.CoordSysTranslator(merctorPrj, mapPrj, [...juctions])
+    for(let i = 0; i < result.pathInfos.length; i++) {
+      result.pathInfos[i].junction = juctions[i]
+    }
+    return result
+  }
+
   /** 进入AR导航 */
   onNavi = async () => {
     try {
-      const result = await this.analyzeRoute()
-      if(result) {
+      const r = await this.analyzeRoute()
+      if(r) {
+        const result = await this.transCoordSys(r)
         // await SARMap.startNavigation(result)
         await SARNavigation.loadNaviRoute({
           route: result.pathPoints,

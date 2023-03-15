@@ -1087,7 +1087,7 @@ export const language_cn = {
   TOOLS_UNIFIED_SETTING: "统一设置",
   MAP_CLIP: "地图裁剪",
 
-  CAMERA: "多媒体采集",
+  CAMERA: "影像",
   TOUR: "旅行轨迹",
   TOUR_NAME: "旅行轨迹名称",
   SCAN: "扫一扫",

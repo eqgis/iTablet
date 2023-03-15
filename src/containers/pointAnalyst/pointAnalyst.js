@@ -398,11 +398,14 @@ export default class PointAnalyst extends Component {
    * @param {*} key 查询关键字
    */
   getSearchResult = async key => {
-    let location
+    let location, currentLocation
     if (this.is3D) {
       location = await SScene.getSceneCenter()
+      currentLocation = location
     } else {
       location = await SMap.getMapcenterPosition()
+      const _location = await SMap.getCurrentLocation()
+      currentLocation = { x: _location.longitude, y: _location.latitude }
     }
     this.location = location
     LocateUtils.getSearchResult(
@@ -411,7 +414,7 @@ export default class PointAnalyst extends Component {
         location: JSON.stringify(location),
         radius: this.radius,
       },
-      location,
+      currentLocation,
       res => {
         if (!res) return
         this.setState({

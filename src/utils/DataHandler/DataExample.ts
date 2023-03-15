@@ -74,9 +74,27 @@ export const AREffectExample3: ExampleData = {
 export const AREffectExample4: ExampleData = {
   userName: '927528',
   downloadName: 'Snow.mp4',
-  toName: 'Snow.areffect',
+  toName: 'WTSnow.areffect',
   dir: 'AREffect/Snow',
 }
+
+export const AREffectExamples: ExampleData[] = [
+  AREffectExample,
+  AREffectExample3,
+  AREffectExample4,
+  {
+    userName: '927528',
+    downloadName: 'WT电闪雷鸣.mp4',
+    toName: 'WT电闪雷鸣.areffect',
+    dir: 'AREffect/Lighting',
+  },
+  {
+    userName: '927528',
+    downloadName: 'WT大雨滂沱.mp4',
+    toName: 'WT大雨滂沱.areffect',
+    dir: 'AREffect/Rain',
+  }
+]
 
 async function downloadExampleData(exampleData: ExampleData, onProgress: (progress: number) => void): Promise<boolean> {
   const option = await getDataDownloadOption(exampleData)

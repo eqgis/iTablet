@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "&#x547c;&#x53eb;&#x4e2d;&#x5fc3;.app"
+               BuildableName = "&#x5e94;&#x6025;&#x547c;&#x53eb;.app"
                BlueprintName = "iTablet"
                ReferencedContainer = "container:iTablet.xcodeproj">
             </BuildableReference>
@@ -55,7 +55,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "&#x547c;&#x53eb;&#x4e2d;&#x5fc3;.app"
+            BuildableName = "&#x5e94;&#x6025;&#x547c;&#x53eb;.app"
             BlueprintName = "iTablet"
             ReferencedContainer = "container:iTablet.xcodeproj">
          </BuildableReference>
@@ -72,7 +72,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "&#x547c;&#x53eb;&#x4e2d;&#x5fc3;.app"
+            BuildableName = "&#x5e94;&#x6025;&#x547c;&#x53eb;.app"
             BlueprintName = "iTablet"
             ReferencedContainer = "container:iTablet.xcodeproj">
          </BuildableReference>

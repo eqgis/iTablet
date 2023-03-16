@@ -283,7 +283,7 @@
 		0AC8AFEA28082C4000435541 /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "iPhoneOS/libstdc++.6.0.9.tbd"; sourceTree = "<group>"; };
 		0ADD189429545175003D44CF /* langchaoWs.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = langchaoWs.zip; sourceTree = "<group>"; };
 		0AF851192831DB6800287BA5 /* iTablet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iTablet-Bridging-Header.h"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* 呼叫中心.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "呼叫中心.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* 应急呼叫.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "应急呼叫.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = iTablet/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = iTablet/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = iTablet/Images.xcassets; sourceTree = "<group>"; };
@@ -637,7 +637,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* 呼叫中心.app */,
+				13B07F961A680F5B00A75B9A /* 应急呼叫.app */,
 				00E356EE1AD99517003FC87E /* iTabletTests.xctest */,
 			);
 			name = Products;
@@ -723,7 +723,7 @@
 			);
 			name = iTablet;
 			productName = iTablet;
-			productReference = 13B07F961A680F5B00A75B9A /* 呼叫中心.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* 应急呼叫.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1111,7 +1111,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = EJEV229UWS;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1242,7 +1242,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.inspur.ide.onekeycall;
-				PRODUCT_NAME = "呼叫中心";
+				PRODUCT_NAME = "应急呼叫";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "iTablet-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1263,7 +1263,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = EJEV229UWS;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1397,7 +1397,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.inspur.ide.onekeycall;
-				PRODUCT_NAME = "呼叫中心";
+				PRODUCT_NAME = "应急呼叫";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "iTablet-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

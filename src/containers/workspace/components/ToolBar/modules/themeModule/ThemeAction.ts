@@ -135,15 +135,14 @@ async function getThemeExpress(type, key = '', name = '') {
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION) {
     const info = await STheme.getUniformLabelInfo(param.LayerName || "")
     selectedExpression = info.labelExpression
-    // selectedExpression = await STheme.getUniformLabelExpression(
-    //   param,
-    // )
-  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_EXPRESSION) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_EXPRESSION) {//单值标签单值表达式
     selectedExpression = (await STheme.getUniqueThemeLabelLayerInfo(param?.LayerName || "")).expression
-  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_LABEL_EXPRESSION) {
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_LABEL_EXPRESSION) {//单值标签表达式
     selectedExpression = (await STheme.getUniqueThemeLabelLayerInfo(param?.LayerName || "")).labelExpression
-  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_EXPRESSION) {
-    selectedExpression = await STheme.getRangeLabelExpression(param)
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_EXPRESSION) {//分段标签分段表达式
+    selectedExpression = (await STheme.getUniqueThemeLabelLayerInfo(param?.LayerName || "")).expression
+  }else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_LABEL_EXPRESSION) {//分段标签表达式
+    selectedExpression = (await STheme.getUniqueThemeLabelLayerInfo(param?.LayerName || "")).labelExpression
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_EXPRESSION) {
     selectedExpression = await STheme.getDotDensityExpression(param)
   } else if (
@@ -161,7 +160,7 @@ async function getThemeExpress(type, key = '', name = '') {
     if (
       type === ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION ||
       type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_LABEL_EXPRESSION ||
-      // type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_EXPRESSION ||
+      type === ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_LABEL_EXPRESSION ||
       // type === ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_EXPRESSION ||
       ThemeMenuData.isThemeFieldTypeAvailable(
         item.fieldTypeStr,
@@ -997,15 +996,10 @@ async function listAction(type, params = {}) {
     }
     params.refreshList && (await params.refreshList(item.expression))
     await STheme.modifyUniformLabelLayer(_params.currentLayer.name||"",Params)
-    // await STheme.setUniformLabelExpression(Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_LABEL_EXPRESSION) {// 单值标签表达式
-    const Params = {
-      labelExpression: item.expression,
-      // LayerName: _params.currentLayer.name,
-    }
+    const Params = {labelExpression: item.expression}
     params.refreshList && (await params.refreshList(item.expression))
     await STheme.modifyUniqueThemeLabelLayer(_params.currentLayer.name || "", Params)
-    // await STheme.setUniqueLabelExpression(Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIQUELABEL_EXPRESSION) {// 单值标签表单值达式
     const Params = {
       expression: item.expression,
@@ -1029,30 +1023,19 @@ async function listAction(type, params = {}) {
       // await STheme.setUniqueLabelColorScheme(Params)
       await STheme.modifyUniqueThemeLabelLayer(_params.currentLayer.name||"",Params)
     }
-  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_EXPRESSION) {// 分段标签表达式
-
-    const Params = {
-      RangeExpression: item.expression,
-      LayerName: _params.currentLayer.name,
-    }
+  } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_EXPRESSION) {// 分段标签分段表达式
+    const Params = {expression: item.expression}
     params.refreshList && (await params.refreshList(item.expression))
-    await STheme.setRangeLabelExpression(Params)
+    await STheme.modifyRangeThemeLabelLayer(_params.currentLayer.name||"",Params)
+  }else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_LABEL_EXPRESSION) {// 分段标签表达式
+    const Params = {labelExpression: item.expression}
+    params.refreshList && (await params.refreshList(item.expression))
+    await STheme.modifyRangeThemeLabelLayer(_params.currentLayer.name||"",Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_COLOR) { // 分段标签专题图颜色表
-
     ToolbarModule.addData({ themeColor: item.key })
-    let Params
-    if (item.colors) {
-      Params = {
-        Colors: item.colors,
-        LayerName: _params.currentLayer.name,
-      }
-    } else {
-      Params = {
-        ColorScheme: item.key,
-        LayerName: _params.currentLayer.name,
-      }
-    }
-    await STheme.setRangeLabelColorScheme(Params)
+    const Params = {colorScheme: item.key}
+    await STheme.modifyRangeThemeLabelLayer(_params.currentLayer.name||"",Params)
+    // await STheme.setRangeLabelColorScheme(Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_CREATE_DATASETS) {// 数据集选择列表(跳转到专题图字段选择列表)
 
     try {

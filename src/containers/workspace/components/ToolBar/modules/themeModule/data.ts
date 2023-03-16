@@ -3093,7 +3093,7 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       break
     }case constants.THEME_RANGE_LABEL:{
       // 分段标签
-      const params = {
+      const params:ThemeRangeLabel = {
         // DatasourceAlias: ToolbarParams.themeDatasourceAlias,
         // DatasetName: ToolbarParams.themeDatasetName,
         expression: item.expression,
@@ -3102,6 +3102,8 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
         colorScheme: 'CD_Cyans',
         themeType:ThemeType.LABELRANGE,
         labelExpression:item.expression,
+        // labelBackShape:2,
+        // alongLineDirection:2,
       }
       // await STheme.createRangeThemeLabelMap(paramsTheme).then(
       await STheme.createRangeThemeLabelLayer(datasetInfo,params).then(
@@ -3671,7 +3673,7 @@ const rangeLabelMenuInfo = param => [
     // getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     action: () => {
       ThemeAction.getThemeExpress(
-        ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION,
+        ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_LABEL_EXPRESSION,
         getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
       )
     },

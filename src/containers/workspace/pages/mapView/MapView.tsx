@@ -1610,6 +1610,8 @@ export default class MapView extends React.Component {
       try {
         if (!this.props.selection || !this.props.selection.length === 0) return
 
+        global.removeObjectDialog &&
+          global.removeObjectDialog.setDialogVisible(false)
         let result = true
         //使用for循环等待，在forEach里await没有用
         for (const item of this.props.selection) {
@@ -1660,8 +1662,6 @@ export default class MapView extends React.Component {
         } else {
           Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
         }
-        global.removeObjectDialog &&
-          global.removeObjectDialog.setDialogVisible(false)
       } catch (e) {
         Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
         global.removeObjectDialog &&

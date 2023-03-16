@@ -1,28 +1,51 @@
-import React, { PureComponent } from 'react'
-import { View, Text, Image, StyleSheet } from 'react-native'
+import React, { PureComponent, ReactNode } from 'react'
+import { View, Text, Image, StyleSheet, ViewStyle, TextStyle } from 'react-native'
 import { Dialog } from '../../../../components'
 import { scaleSize } from '../../../../utils/screen'
 import { color } from '../../../../styles'
 import { getLanguage } from '../../../../language/index'
 
-export default class SimpleDialog extends PureComponent {
-  props: {
-    confirmAction?: () => void,
-    cancelAction?: () => void,
-    dismissAction?: () => void,
-    installAction?: () => void,
-    renderExtra?: () => void,
-    style?: Object,
-    text?: String,
-    confirmText?: String,
-    installText?: String,
-    cancelText?: String,
-    disableBackTouch?: boolean,
-    buttonMode?: String,
-    confirmTitleStyle?: Object,
-    cancelTitleStyle?: Object,
-    installBtnVisible?:boolean,
-  }
+interface Props {
+  confirmAction?: () => void,
+  cancelAction?: () => void,
+  dismissAction?: () => void,
+  installAction?: () => void,
+  renderExtra?: () => void,
+  style?: ViewStyle,
+  text?: string,
+  confirmText?: string,
+  installText?: string,
+  cancelText?: string,
+  disableBackTouch?: boolean,
+  buttonMode: string,
+  confirmTitleStyle?: TextStyle,
+  cancelTitleStyle?: TextStyle,
+  installBtnVisible?:boolean,
+}
+
+interface State {
+  visible: boolean,
+  confirmAction: () => void,
+  cancelAction: () => void,
+  dismissAction: () => void,
+  installAction: () => void,
+  text: string,
+  textStyle: TextStyle,
+  renderExtra: () => ReactNode,
+  dialogStyle: ViewStyle,
+  showTitleImage: boolean,
+  confirmText: string,
+  cancelText: string,
+  renderCustomeView: (() => ReactNode )| undefined,
+  disableBackTouch: boolean,
+  buttonMode: string,
+  cancelBtnVisible: boolean,
+  installBtnVisible: boolean,
+}
+
+export default class SimpleDialog extends PureComponent<Props, State> {
+
+  Dialog: Dialog | undefined | null
 
   static defaultProps = {
     disableBackTouch: true,
@@ -32,7 +55,7 @@ export default class SimpleDialog extends PureComponent {
     cancelText: '',
   }
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       visible: false,
@@ -48,34 +71,50 @@ export default class SimpleDialog extends PureComponent {
       confirmText: '',
       cancelText: '',
       renderCustomeView: undefined,
-      disableBackTouch: this.props.disableBackTouch,
+      disableBackTouch: !!this.props.disableBackTouch,
       buttonMode: props.buttonMode,
       cancelBtnVisible:true,
       installBtnVisible:this.props.installBtnVisible || false,
     }
   }
 
-  setVisible(visible) {
-    this.Dialog.setDialogVisible(visible)
+  setVisible(visible: boolean) {
+    this.Dialog?.setDialogVisible(visible)
   }
 
-  set = ({
-    text,
-    textStyle,
-    confirmAction,
-    cancelAction,
-    dismissAction,
-    renderExtra,
-    dialogStyle,
-    showTitleImage,
-    confirmText,
-    cancelText,
-    renderCustomeView,
-    disableBackTouch,
-    buttonMode,
-    cancelBtnVisible,
+  set = (params: {
+    text?: string,
+    textStyle?: TextStyle,
+    confirmAction?: () => void,
+    cancelAction?: () => void,
+    dismissAction?: () => void,
+    renderExtra?: () => ReactNode,
+    dialogStyle?: ViewStyle,
+    showTitleImage?: boolean,
+    confirmText?: string,
+    cancelText?: string,
+    renderCustomeView?: () => ReactNode,
+    disableBackTouch?: boolean,
+    buttonMode?: string,
+    cancelBtnVisible?: boolean,
   }) => {
     let confirm, cancel, dismiss
+    const {
+      text,
+      textStyle,
+      confirmAction,
+      cancelAction,
+      dismissAction,
+      renderExtra,
+      dialogStyle,
+      showTitleImage,
+      confirmText,
+      cancelText,
+      renderCustomeView,
+      disableBackTouch,
+      buttonMode,
+      cancelBtnVisible,
+    } = params
     if (confirmAction && typeof confirmAction === 'function') {
       confirm = () => {
         this.setVisible(false)
@@ -108,7 +147,7 @@ export default class SimpleDialog extends PureComponent {
       renderCustomeView: renderCustomeView,
       disableBackTouch:
         disableBackTouch === undefined
-          ? this.props.disableBackTouch
+          ? !!this.props.disableBackTouch
           : disableBackTouch,
       buttonMode: buttonMode ? buttonMode : this.props.buttonMode,
       cancelBtnVisible: cancelBtnVisible === undefined? true : cancelBtnVisible,
@@ -128,7 +167,7 @@ export default class SimpleDialog extends PureComponent {
       confirmText: '',
       cancelText: '',
       renderCustomeView: undefined,
-      disableBackTouch: this.props.disableBackTouch,
+      disableBackTouch: !!this.props.disableBackTouch,
       buttonMode: this.props.buttonMode,
     })
   }

@@ -1815,9 +1815,13 @@ async function getTouchProgressInfo(title) {
       if(_params.currentLayer.themeType === ThemeType.LABELUNIQUE){
         value = (await STheme.getUniqueThemeLabelLayerInfo(_params.currentLayer.name||"")).labelStyle?.TextSize || 0
       }else{
-        value = await STheme.getLabelFontSize({
-          LayerName: _params.currentLayer.name,
-        })
+
+        const info = await STheme.getUniformLabelInfo(_params.currentLayer.name || "")
+        value = info.labelStyle?.TextSize
+
+        // value = await STheme.getLabelFontSize({
+        //   LayerName: _params.currentLayer.name,
+        // })
       }
       break
     }case getLanguage(_params.language).Map_Main_Menu.THEME_MAX_VISIBLE_SIZE:

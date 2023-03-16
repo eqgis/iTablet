@@ -69,14 +69,14 @@ function getData(type) {
     data.push({
       key: 'start',
       title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
-      action: () => SCollector.startCollect(type),
+      action: () => SCollector.startGPSCollect(type),
       size: 'large',
       image: getThemeAssets().collection.icon_track_start,
     })
     data.push({
       key: 'stop',
       title: getLanguage(global.language).Map_Main_Menu.COLLECTION_STOP,
-      action: () => SCollector.pauseCollect(type),
+      action: () => SCollector.pauseGPSCollect(type),
       size: 'large',
       image: getThemeAssets().collection.icon_track_stop,
     })

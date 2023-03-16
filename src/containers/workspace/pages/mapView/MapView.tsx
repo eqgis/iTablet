@@ -1623,8 +1623,11 @@ export default class MapView extends React.Component {
             }
             result =
               result &&
-              (await SCollector.removeByIds(item.ids, item.layerInfo.path))
-            result = result && (await SMediaCollector.removeByIds(item.ids, item.layerInfo.name))
+              (await SCollector.remove({
+                datasourceName: item.layerInfo.datasourceAlias,
+                datasetName: item.layerInfo.datasetName,
+              }, item.ids))
+            result = result && (await SMediaCollector.removeByIds(item.layerInfo.name, item.ids))
             if (result && global.coworkMode) {
               // 在线协作-成功删除数据,修改图层状态
               await SMap._setLayerModified(this.props.currentLayer.path, true)
@@ -1661,6 +1664,8 @@ export default class MapView extends React.Component {
           global.removeObjectDialog.setDialogVisible(false)
       } catch (e) {
         Toast.show(getLanguage(global.language).Prompt.FAILED_TO_DELETE)
+        global.removeObjectDialog &&
+          global.removeObjectDialog.setDialogVisible(false)
       }
     }.bind(this)())
   }

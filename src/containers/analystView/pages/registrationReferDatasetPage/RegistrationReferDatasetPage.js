@@ -121,7 +121,7 @@ export default class RegistrationReferDatasetPage extends Component {
           let datasetInfoData = datasourceInfo.data
           for (let j = 0; j < datasetInfoData.length; j++) {
             let datasetInfo = datasetInfoData[j]
-            if (item.index === datasetInfo) {
+            if (item.datasetName === datasetInfo) {
               hasSelect = true
               return hasSelect
             }

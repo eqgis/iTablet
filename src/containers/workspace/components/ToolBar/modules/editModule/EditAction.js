@@ -259,8 +259,11 @@ async function deleteLabel() {
   
   _selection.forEach(async item => {
     if (item.ids.length > 0) {
-      await SCollector.removeByIds(item.ids, item.layerInfo.path)
-      await SMediaCollector.removeByIds(item.ids, item.layerInfo.name)
+      await SCollector.remove({
+        datasourceName: item.layerInfo.datasourceAlias,
+        datasetName: item.layerInfo.datasetName,
+      }, item.ids)
+      await SMediaCollector.removeByIds(item.layerInfo.name, item.ids)
     }
   })
   _params.setSelection()

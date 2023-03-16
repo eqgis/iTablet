@@ -244,7 +244,8 @@ export default class LinkageList extends React.Component {
       }
     }
     if (datasourceIndex != -1) {
-      let desetIndex = this.indexOf(data[datasourceIndex].data, index)
+      // let desetIndex = this.indexOf(data[datasourceIndex].data, index)
+      let desetIndex = this.indexOf(data[datasourceIndex].data, item.datasetName)
       if (desetIndex != -1) {
         isSelect = true
       }
@@ -270,7 +271,8 @@ export default class LinkageList extends React.Component {
                 let datasourceIndex = -1
                 for (let i = 0; i < data.length; i++) {
                   if (item.datasourceName === data[i].datasourceName) {
-                    data[i].data.push(item.index)
+                    // data[i].data.push(item.index)
+                    data[i].data.push(item.datasetName)
                     datasourceIndex = i
                     break
                   }
@@ -280,16 +282,19 @@ export default class LinkageList extends React.Component {
                   dataItem.datasourceName = item.datasourceName
                   let datasetArray = []
                   datasetArray.splice()
-                  datasetArray.push(item.index)
+                  // datasetArray.push(item.index)
+                  datasetArray.push(item.datasetName)
                   dataItem.data = datasetArray
                   data.push(dataItem)
                 }
               } else {
-                for (let i = 0; i < data.length; i++) {
-                  if (item.datasourceName === data[i].datasourceName) {
-                    let datasetIndex = this.indexOf(data[i].data, item.index)
+                // for (let i = 0; i < data.length; i++) {
+                for (const _data of data) {
+                  if (item.datasourceName === _data.datasourceName) {
+                    // let datasetIndex = this.indexOf(_data.data, item.index)
+                    let datasetIndex = this.indexOf(_data.data, item.datasetName)
                     if (datasetIndex != -1) {
-                      data[i].data.splice(datasetIndex, 1)
+                      _data.data.splice(datasetIndex, 1)
                     }
                     break
                   }

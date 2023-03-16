@@ -530,8 +530,11 @@ async function deleteLabel() {
     for (let i = 0; i < _selection.length; i++) {
       const item = _selection[i]
       if (item.ids.length > 0) {
-        result = result && (await SCollector.removeByIds(item.ids, item.layerInfo.path))
-        result = result && (await SMediaCollector.removeByIds(item.ids, item.layerInfo.name))
+        result = result && (await SCollector.remove({
+          datasourceName: item.layerInfo.datasourceAlias,
+          datasetName: item.layerInfo.datasetName,
+        }, item.ids))
+        result = result && (await SMediaCollector.removeByIds(item.layerInfo.name, item.ids))
       }
     }
     // _selection.forEach(async item => {

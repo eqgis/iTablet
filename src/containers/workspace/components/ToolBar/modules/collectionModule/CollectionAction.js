@@ -263,11 +263,11 @@ async function createCollector(type, layerName) {
     }
   }
 
-  layerInfo = await SCollector.setDataset(params)
+  const layerInfo = await SCollector.setDataset(params)
   if (!layerInfo) return
   // 设置绘制风格
   await SCollector.setStyle(collectorStyle)
-  await SCollector.initCollect(type)
+  await SCollector.setCollector(type)
   if (isGPSCollect(type)) {
     await SLocation.setBackgroundLocationEnable(true)
   } else {

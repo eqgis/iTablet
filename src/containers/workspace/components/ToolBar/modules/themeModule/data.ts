@@ -3091,28 +3091,29 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       )
 
       break
-    }case constants.THEME_RANGE_LABEL:
+    }case constants.THEME_RANGE_LABEL:{
       // 分段标签
-      paramsTheme = {
-        DatasourceAlias: ToolbarParams.themeDatasourceAlias,
-        DatasetName: ToolbarParams.themeDatasetName,
-        RangeExpression: item.expression,
-        RangeMode: RangeMode.EQUALINTERVAL,
-        RangeParameter: '5.0',
-        ColorScheme: 'CD_Cyans',
+      const params = {
+        // DatasourceAlias: ToolbarParams.themeDatasourceAlias,
+        // DatasetName: ToolbarParams.themeDatasetName,
+        expression: item.expression,
+        rangeMode: RangeMode.EQUALINTERVAL,
+        rangeParameter: 5.0,
+        colorScheme: 'CD_Cyans',
+        themeType:ThemeType.LABELRANGE,
+        labelExpression:item.expression,
       }
-      await STheme.createRangeThemeLabelMap(paramsTheme).then(
-        msg => {
-          isSuccess = msg.result
-          if (isSuccess && msg.layer) {
-            ThemeAction.sendAddThemeMsg(msg.layer)
+      // await STheme.createRangeThemeLabelMap(paramsTheme).then(
+      await STheme.createRangeThemeLabelLayer(datasetInfo,params).then(
+        layerInfo => {
+          if (layerInfo) {
+            isSuccess = true
+            ThemeAction.sendAddThemeMsg(layerInfo)
           }
         },
       )
-      // .catch(err => {
-      //   errorInfo = err.message
-      // })
       break
+    }
   }
   if (isSuccess) {
     Toast.show(getLanguage(ToolbarParams.language).Prompt.CREATE_SUCCESSFULLY)
@@ -3253,28 +3254,28 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
         },
       )
       break
-    }case constants.THEME_RANGE_LABEL:
+    }case constants.THEME_RANGE_LABEL:{
       // 分段标签
-      paramsTheme = {
-        DatasourceAlias: item.datasourceName,
-        DatasetName: item.datasetName,
-        RangeExpression: item.expression,
-        RangeMode: RangeMode.EQUALINTERVAL,
-        RangeParameter: '5.0',
-        ColorScheme: 'CD_Cyans',
+      const params = {
+        // DatasourceAlias: item.datasourceName,
+        // DatasetName: item.datasetName,
+        expression: item.expression,
+        rangeMode: RangeMode.EQUALINTERVAL,
+        rangeParameter: 5.0,
+        colorScheme: 'CD_Cyans',
+        themeType:ThemeType.LABELRANGE,
+        labelExpression:item.expression,
       }
-      await STheme.createRangeThemeLabelMap(paramsTheme).then(
-        msg => {
-          isSuccess = msg.result
-          if (isSuccess && msg.layer) {
-            ThemeAction.sendAddThemeMsg(msg.layer)
+      await STheme.createRangeThemeLabelLayer(datasetInfo,params).then(
+        layerInfo => {
+          if (layerInfo) {
+            isSuccess = true
+            ThemeAction.sendAddThemeMsg(layerInfo)
           }
         },
       )
-      // .catch(err => {
-      //   errorInfo = err.message
-      // })
       break
+    }
   }
   if (isSuccess) {
     Toast.show(getLanguage(ToolbarParams.language).Prompt.CREATE_SUCCESSFULLY)

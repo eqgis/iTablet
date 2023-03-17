@@ -80,9 +80,7 @@ class DatumPointCalibration extends Component<IProps,IState> {
             h: param.z + '',
           })
           // 关闭校准界面
-          this.setState({
-            close: true,
-          })
+          this._onClose()
         }}
         windowSize={this.props.windowSize}
       />
@@ -101,9 +99,7 @@ class DatumPointCalibration extends Component<IProps,IState> {
         onSubmit = {() => {
           // 两点定位点击了提交按钮
           // 关闭校准界面
-          this.setState({
-            close: true,
-          })
+          this._onClose()
         }}
         windowSize={this.props.windowSize}
       />

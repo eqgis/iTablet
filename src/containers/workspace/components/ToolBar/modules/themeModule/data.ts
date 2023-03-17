@@ -915,15 +915,13 @@ function getGridRangeMode() {
 function setLabelFont() {
   const _params = ToolbarModule.getData().themeParams
 
-  if(_params.ThemeType == ThemeType.LABELUNIQUE){
+  if(_params.ThemeType == ThemeType.LABELUNIQUE){//单值标签
     return STheme.modifyUniqueThemeLabelLayer(_params?.LayerName||"",{labelStyle:{TextFont:[_params?.FontName]}})
-  }else if(_params.ThemeType == ThemeType.LABEL){
+  }else if(_params.ThemeType == ThemeType.LABEL){//标签
     return STheme.modifyUniformLabelLayer(_params?.LayerName||"",{labelStyle:{TextFont:[_params?.FontName]}})
-  }else{
-    return STheme.setLabelFontName(_params)
+  }else{//分段标签
+    return STheme.modifyRangeThemeLabelLayer(_params?.LayerName||"",{labelStyle:{TextFont:[_params?.FontName]}})
   }
-
- 
 }
 function getLabelFont() {
   const data = [
@@ -1176,7 +1174,7 @@ function setLabelFontRotation() {
   }else if(_params.ThemeType == ThemeType.LABEL){
     return STheme.modifyUniformLabelLayer(_params?.LayerName||"",{labelStyle:{TextAngle:parseInt(_params?.Rotaion)}})
   }else{
-    return STheme.setLabelRotation(_params)
+    return STheme.modifyRangeThemeLabelLayer(_params?.LayerName||"",{labelStyle:{TextAngle:parseInt(_params?.Rotaion)}})
   }
   
 }

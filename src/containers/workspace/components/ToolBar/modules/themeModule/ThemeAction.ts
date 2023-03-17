@@ -1905,7 +1905,7 @@ function setTouchProgressInfo(title, value) {
       // 分段标签
       if (themeType === ThemeType.LABELRANGE) {
         // _params.type = 'range'
-        STheme.setLabelFontSize(_params)
+        STheme.modifyRangeThemeLabelLayer(Params.currentLayer.name||"",{labelStyle:{TextSize:parseInt(value)}})
       }
       if(themeType === ThemeType.LABEL){
         STheme.modifyUniformLabelLayer(Params.currentLayer.name||"",{labelStyle:{TextSize:parseInt(value)}})

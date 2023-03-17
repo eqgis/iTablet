@@ -55,59 +55,59 @@ interface State {
   isRefreshing: boolean,
 }
 
-// const morckdata = [
-//   {
-//     UserId: '101',
-//     Contacts: '王五',
-//     Tel: '',
-//     MobilePhone: '17711245121',
-//     Email: '2648987605@qq.com',
-//     PostalCode: '635000',
-//     Address: '中国四川成都',
-//     uuid: getUUid(),
-//   },
-//   {
-//     UserId: '102',
-//     Contacts: '李四',
-//     Tel: '',
-//     MobilePhone: '17358999687',
-//     Email: '1540546372@qq.com',
-//     PostalCode: '635000',
-//     Address: '中国四川达州',
-//     uuid: getUUid(),
-//   },
-//   {
-//     UserId: '103',
-//     Contacts: '田七',
-//     Tel: '',
-//     MobilePhone: '15882929792',
-//     Email: '1540546372@qq.com',
-//     PostalCode: '635000',
-//     Address: '中国四川达州',
-//     uuid: getUUid(),
-//   },
-//   {
-//     UserId: '101',
-//     Contacts: '赵六',
-//     Tel: '',
-//     MobilePhone: '13408188995',
-//     Email: '1540546372@qq.com',
-//     PostalCode: '635000',
-//     Address: '中国四川达州',
-//     uuid: getUUid(),
-//   },
-//   {
-//     UserId: '101',
-//     Contacts: '王六',
-//     Tel: '',
-//     MobilePhone: '13408188995',
-//     Email: '1540546372@qq.com',
-//     PostalCode: '635000',
-//     Address: '中国四川达州',
-//     uuid: getUUid(),
-//   },
+const morckdata = [
+  {
+    UserId: '101',
+    Contacts: '政治处',
+    Tel: '',
+    MobilePhone: '17711245121',
+    Email: '2648987605@qq.com',
+    PostalCode: '635000',
+    Address: '中国四川成都',
+    uuid: getUUid(),
+  },
+  {
+    UserId: '102',
+    Contacts: '领事侨务处',
+    Tel: '',
+    MobilePhone: '17358999687',
+    Email: '1540546372@qq.com',
+    PostalCode: '635000',
+    Address: '中国四川达州',
+    uuid: getUUid(),
+  },
+  {
+    UserId: '103',
+    Contacts: '经商处',
+    Tel: '',
+    MobilePhone: '15882929792',
+    Email: '1540546372@qq.com',
+    PostalCode: '635000',
+    Address: '中国四川达州',
+    uuid: getUUid(),
+  },
+  {
+    UserId: '101',
+    Contacts: '武官处',
+    Tel: '',
+    MobilePhone: '13408188995',
+    Email: '1540546372@qq.com',
+    PostalCode: '635000',
+    Address: '中国四川达州',
+    uuid: getUUid(),
+  },
+  {
+    UserId: '101',
+    Contacts: '文化处',
+    Tel: '',
+    MobilePhone: '15760661277',
+    Email: '1540546372@qq.com',
+    PostalCode: '635000',
+    Address: '中国四川达州',
+    uuid: getUUid(),
+  },
 
-// ]
+]
 
 class ContactsList extends Component<Props, State> {
 
@@ -131,7 +131,12 @@ class ContactsList extends Component<Props, State> {
 
   getData = async () => {
     try {
-      const telBookInfo = await getTelBook()
+      let telBookInfo = []
+      if(this.props.userId === 'iTablet123') {
+        telBookInfo = morckdata
+      } else {
+        telBookInfo = await getTelBook()
+      }
       // const telBookInfo = morckdata
       if(telBookInfo.length > 0) {
         let telBookTemp = []

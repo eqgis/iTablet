@@ -88,7 +88,7 @@ function getPlotOperationData(type, params) {
           title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
           // '开始播放',
           action: async () => {
-            await SPlot.initAnimation()
+            // await SPlot.initAnimation()
             await SPlot.animationPlay()
           },
           size: 'large',
@@ -316,7 +316,7 @@ async function getAnimationList() {
         // '当前场景无态势推演'
       )
     } else {
-      SPlot.initAnimation()
+      // SPlot.initAnimation()
     }
 
     const data = [

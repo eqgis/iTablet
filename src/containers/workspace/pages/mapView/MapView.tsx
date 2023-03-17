@@ -1567,7 +1567,9 @@ export default class MapView extends React.Component {
       if (global.Type === ChunkType.MAP_PLOTTING) {
         const params = ToolbarModule.getParams()
         const libIds = params.template.plotLibIds
-        await SPlot.removePlotSymbolLibraryArr(libIds)
+        for(let i =0 ;i<libIds.length;i++){
+          await SPlot.removePlotSymbolLibrary(libIds[i])
+        }
       }
       LayerUtils.setMapLayerAttribute(undefined, undefined, true)
       this.setLoading(false)

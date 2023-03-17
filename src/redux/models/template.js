@@ -4,7 +4,7 @@ import { handleActions } from 'redux-actions'
 import { SMap, RNFS as fs, SData, SPlot } from 'imobile_for_reactnative'
 import xml2js from 'react-native-xml2js'
 import { FileTools } from '../../native'
-import { ConstInfo } from '../../constants'
+import { ConstInfo ,ConstPath} from '../../constants'
 import { WorkspaceType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 const parser = new xml2js.Parser()
@@ -167,7 +167,9 @@ export const importWorkspace = (params, cb = () => {}) => async (
 // 导入标绘库
 // export const importPlotLib= async (params) => {
 export const importPlotLib = (params, cb = () => {}) => async () => {
-  const result = await SPlot.importPlotLibData(params.path)
+  let dest = await FileTools.appendingHomeDirectory(ConstPath.UserPath + this.props.currentUser.userName + '/Data/Plotting/')
+  const result = await FileTools.copyFilefilter(params.filePath, dest,{filterFileSuffix:"plot",filterFileDicName:"Symbol",otherFileDicName:"SymbolIcon"}, false)
+  // const result = await SPlot.importPlotLibData()
   cb && cb({ result })
   return { result }
 }
@@ -318,13 +320,7 @@ export const getSymbolPlots = (params, cb = () => {}) => async (
         plotLibPaths.push(data[i].path)
       }
       // await SMap.addCadLayer('PlotEdit')
-      const resultArr = await SPlot.initPlotSymbol(plotLibPaths, {layerPath: currentLayer.layerPath})
-      // const resultArr = await SMap.initPlotSymbolLibrary(
-      //   plotLibPaths,
-      //   isFirst,
-      //   newName,
-      //   isDefaultNew,
-      // )
+      const resultArr = await SPlot.initPlotSymbol(plotLibPaths)
       Object.keys(resultArr).forEach(key => {
         plotLibIds.push(resultArr[key])
         plotlibIdAndNameArr.push([key, resultArr[key]])

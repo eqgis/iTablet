@@ -118,7 +118,10 @@ async function importXmlTemplate(item: IExternalData) {
 
 async function importPlotLib(item: IExternalData) {
   try {
-    return await SPlot.importPlotLibData(item.filePath)
+    const dest = await FileTools.appendingHomeDirectory(ConstPath.UserPath + AppUser.getCurrentUser().userName + '/Data/Plotting/')
+    return await FileTools.copyFilefilter(item.filePath, dest,{filterFileSuffix:"plot",filterFileDicName:"Symbol",otherFileDicName:"SymbolIcon"}, false)
+
+    // return await SPlot.importPlotLibData(item.filePath)
   } catch (error) {
     return false
   }

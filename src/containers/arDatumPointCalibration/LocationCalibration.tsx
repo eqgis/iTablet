@@ -14,17 +14,14 @@ interface Props extends ReduxProps{
   close: () => void
   visible: boolean
 
-  param: {x: string, y: string, z: string}
-  onConfirm: (parms: Point3D) => void
+  onConfirm: () => void
   onEnhance: () => void
-  onSelectPoint: () => void
-  onScan: () => void
+  gotoSinglePointPage: () => void
+  gotoTwoPointPage: () => void
 }
 
 interface State {
-  x: string
-  y: string
-  z: string
+  // to do
 }
 
 class LocationCalibration extends React.Component<Props, State> {
@@ -34,32 +31,8 @@ class LocationCalibration extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state ={
-      x: props.param.x,
-      y: props.param.y,
-      z: props.param.z
     }
     this.timer = null
-  }
-
-  componentDidUpdate(prevProps: Readonly<Props>): void {
-    if(prevProps.param.x !== this.props.param.x
-      || prevProps.param.y !== this.props.param.y
-      || prevProps.param.z !== this.props.param.z) {
-      this.setState({
-        x: this.props.param.x,
-        y: this.props.param.y,
-        z: this.props.param.z
-      })
-    }
-  }
-
-  getCurrentLocation = () => {
-    SMap.getCurrentLocation().then(result =>{
-      this.setState({
-        x: result.longitude + '',
-        y: result.latitude + '',
-      })
-    })
   }
 
   /**
@@ -69,110 +42,18 @@ class LocationCalibration extends React.Component<Props, State> {
     this.props.onEnhance()
   }
 
-
-  selectPoint = () => {
-    this.props.onSelectPoint()
+  /** 去单点定位页面 */
+  gotoSinglePointPage = () => {
+    this.props.gotoSinglePointPage()
   }
 
-
-  gotoScan = () => {
-    this.props.onScan()
-  }
-
-  getValue = (n: string): number => {
-    const value = parseFloat(n)
-    return isNaN(value) ? 0 : value
+  /** 去两点定位页面 */
+  gotoTwoPointPage = () => {
+    this.props.gotoTwoPointPage()
   }
 
   onConfirm = () =>{
-    this.props.onConfirm({x: this.getValue(this.state.x), y: this.getValue(this.state.y), z: this.getValue(this.state.z)})
-  }
-
-
-  renderInput = (props: {
-    text: string,
-    value: string,
-    onChange: (text:string) => void
-    onClear: () => void
-  }) => {
-    return (
-      <View style={styles.inputItem}>
-        <Text style={[AppStyle.h2, {marginRight: dp(18)}]}>
-          {props.text}
-        </Text>
-        <TextInput
-          style={{flex: 1,
-            fontSize: dp(13),
-            padding: 0,
-            borderBottomWidth: dp(1),
-            borderBottomColor: '#ECECEC',
-          }}
-          keyboardType={'numeric'}
-          returnKeyType={'done'}
-          defaultValue={props.value}
-          value={props.value}
-          onChangeText={(text: string) => {
-            if(text !== '' && text !== '-') {
-              text = formatFloat(text)
-            }
-            props.onChange(text)
-          }}
-        />
-        <TouchableOpacity
-          onPress={props.onClear}
-        >
-          <Image
-            source={getImage().icon_close}
-            style={{...AppStyle.Image_Style_Small, tintColor: AppStyle.Color.GRAY}}
-          />
-
-        </TouchableOpacity>
-      </View>
-    )
-  }
-
-  renderInputs = () => {
-    const horizontal = this.props.windowSize.height < styles.containerStyle.height
-    return (
-      <View style={[
-        styles.inputContainer,
-        horizontal ? {
-          marginTop: dp(11)
-        }: {
-          marginTop: dp(5)
-        }]}>
-        {this.renderInput({
-          text: 'X',
-          value: this.state.x,
-          onChange: text => {
-            this.setState({x: text})
-          },
-          onClear: () => {
-            this.setState({x: '0'})
-          }
-        })}
-        {this.renderInput({
-          text: 'Y',
-          value: this.state.y,
-          onChange: text => {
-            this.setState({y: text})
-          },
-          onClear: () => {
-            this.setState({y: '0'})
-          }
-        })}
-        {this.renderInput({
-          text: 'H',
-          value: this.state.z,
-          onChange: text => {
-            this.setState({z: text})
-          },
-          onClear: () => {
-            this.setState({z: '0'})
-          }
-        })}
-      </View>
-    )
+    this.props.onConfirm()
   }
 
   renderItem = (text: string, image: ImageRequireSource, onPress: () => void) => {
@@ -211,57 +92,34 @@ class LocationCalibration extends React.Component<Props, State> {
         styles.selectContainer
         ]}
       >
-        {/* 自动定位部分 */}
-        <View style={styles.selectAuto}>
-          <Text
-            numberOfLines={1}
-            style={[styles.selectTitle, {maxWidth: dp(70)}]}
-          >
-            {getLanguage().MAP_AR_DATUM_AUTO_LOCATION}
-          </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginTop: dp(10),
+            justifyContent: 'space-between',
+            width: '100%',
+          }}
+        >
+          {/* AR增强定位 */}
+          {this.renderItem(
+            getLanguage().MAP_AR_ENHANCE_POSITION,
+            getImage().icon_ar_enhance,
+            this.arEnhancePosition,
+          )}
+          {/* 单点定位 */}
+          {this.renderItem(
+            getLanguage().SINGLE_POINT_POSITION,
+            getThemeAssets().collection.icon_location,
+            this.gotoSinglePointPage,
+          )}
 
-          <View style={{marginTop: dp(10), marginRight: dp(5)}}>
-            {this.renderItem(
-              getLanguage().MAP_AR_ENHANCE_POSITION,
-              getImage().icon_ar_enhance,
-              this.arEnhancePosition,
-            )}
-          </View>
-        </View>
+          {/* 两点定位 */}
+          {this.renderItem(
+            getLanguage().TWO_POINT_POSITION,
+            getImage().icon_two_point_position,
+            this.gotoTwoPointPage,
+          )}
 
-        {/* 手动定位部分 */}
-        <View style={styles.selectManual}>
-          <Text
-            numberOfLines={2}
-            style={styles.selectTitle}
-          >
-            {getLanguage().MAP_AR_DATUM_MANUAL_LOCATION}
-          </Text>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              marginTop: dp(10),
-              justifyContent: 'space-between',
-              width: '100%',
-            }}
-          >
-            {this.renderItem(
-              getLanguage().MAR_AR_DATUM_PICTURE_LOCATION,
-              getImage().icon_scan,
-              this.gotoScan,
-            )}
-            {this.renderItem(
-              getLanguage().MAP_AR_DATUM_MAP_SELECT_POINT,
-              getImage().icon_map_selection,
-              this.selectPoint,
-            )}
-            {this.renderItem(
-              getLanguage().MAP_AR_DATUM_GPS_LOCATION,
-              getThemeAssets().collection.icon_location,
-              this.getCurrentLocation,
-            )}
-          </View>
         </View>
       </View>
 
@@ -338,7 +196,6 @@ class LocationCalibration extends React.Component<Props, State> {
       <View style={styles.containerStyleL}>
         {this.renderClose()}
         <View style={{flex: 1}}>
-          {this.renderInputs()}
           {this.renderSelect()}
         </View>
         <View style={{ height: '100%', justifyContent: 'space-between', alignItems: 'center', marginLeft: dp(28)}}>
@@ -350,7 +207,6 @@ class LocationCalibration extends React.Component<Props, State> {
       <View style={styles.containerStyle}>
         {this.renderClose()}
         {this.renderHeader()}
-        {this.renderInputs()}
         {this.renderSelect()}
         {this.renderButton()}
       </View>
@@ -387,7 +243,8 @@ export default connector(LocationCalibration)
 const styles = StyleSheet.create({
   containerStyle: {
     width: dp(335),
-    height: dp(519),
+    // height: dp(519),
+    height: dp(400),
     borderRadius: dp(21),
     backgroundColor: AppStyle.Color.WHITE,
     alignItems: 'center',

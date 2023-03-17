@@ -27,6 +27,11 @@ const icon_ar_scan_back = require('./icon_ar_scan_back.png')
 const icon_ar_height = require('./icon_height.png')
 const icon_point_black = require('./icon_point_black.png')
 const scan_tip = require('./img_scan.png')
+const icon_two_point_position = require('./icon_two_point_position.png')
+const icon_ar_coord = require('./icon_ar_coord.png')
+const icon_gps_position = require('./icon_gps_position.png')
+const icon_tips_select_location_point = require('./icon_tips_select_location_point.png')
+
 export default {
   icon_collection_change,
   icon_symbol,
@@ -58,4 +63,8 @@ export default {
   icon_ar_height,
   icon_point_black,
   scan_tip,
+  icon_two_point_position,
+  icon_ar_coord,
+  icon_gps_position,
+  icon_tips_select_location_point,
 }

@@ -1,20 +1,17 @@
 import React, { Component } from 'react'
-import { SMap, SARMap} from 'imobile_for_reactnative'
-import NavigationService from '../../containers/NavigationService'
+import { SARMap} from 'imobile_for_reactnative'
 import { ChunkType } from '../../constants'
 import AREnhancePosition from './AREnhancePosition'
 import LocationCalibration from './LocationCalibration'
-import QRScan from './QRScan'
 import { RootState } from '@/redux/types'
 import { connect, ConnectedProps } from 'react-redux'
+import SinglePointPositionPage from './SinglePointPositionPage'
+import TwoPointPositionPage from './TwoPointPositionPage'
 
 interface IState {
   close: boolean,
-  showStatus: 'main' | 'scan' | 'arEnhance',
+  showStatus: 'main' | 'arEnhance' | 'twoPoint' | 'singlePoint',
   activeBtn: number,
-  latitude: string,
-  longitude: string,
-  height: string,
 }
 
 interface IProps extends ReduxProps {
@@ -29,28 +26,9 @@ class DatumPointCalibration extends Component<IProps,IState> {
       close: false,
       showStatus: 'main',
       activeBtn: 2,
-      longitude: '',
-      latitude: '',
-      height: "1.5",
     }
   }
 
-  async componentDidMount(){
-    let position
-    if (global.SELECTPOINTLATITUDEANDLONGITUDE) {
-      position = global.SELECTPOINTLATITUDEANDLONGITUDE
-      this.setState({
-        longitude: position.x + '',
-        latitude: position.y + '',
-      })
-    }else {
-      position = await SMap.getCurrentLocation()
-      this.setState({
-        longitude: position.longitude + '',
-        latitude: position.latitude + '',
-      })
-    }
-  }
 
   _onClose = async () => {
     // 点击关闭使用当前定位
@@ -61,22 +39,6 @@ class DatumPointCalibration extends Component<IProps,IState> {
     })
   }
 
-  // 地图选点
-  _mapSelectPoint = async () => {
-    const { longitude, latitude } = this.state
-    this.setState({
-      activeBtn: 1,
-    })
-    NavigationService.navigate('SelectLocation', {
-      cb: () => {
-        this.setState({
-          longitude: global.SELECTPOINTLATITUDEANDLONGITUDETEMP.x + '',
-          latitude: global.SELECTPOINTLATITUDEANDLONGITUDETEMP.y + '',
-        })
-      },
-    })
-    global.SELECTPOINTLATITUDEANDLONGITUDETEMP = { x: Number(longitude), y: Number(latitude) }
-  }
 
   /** ar增强定位的扫描界面的渲染 */
   _renderEnhanceScan = () => {
@@ -101,21 +63,59 @@ class DatumPointCalibration extends Component<IProps,IState> {
     )
   }
 
-  renderMain = () => {
+  /** 单点定位页面 */
+  _renderSinglePointPage = () => {
     return (
-      <LocationCalibration
-        visible
-        param={{
-          x: this.state.longitude + '',
-          y: this.state.latitude + '',
-          z: this.state.height + ''}}
-        close={this._onClose}
-        onConfirm={param => {
+      <SinglePointPositionPage
+        onBack = {() => {
+          this.setState({
+            showStatus: 'main'
+          })
+        }}
+        onSubmit = {(param: {x: string, y: string, z: string}) => {
+          // 单点定位点击了提交按钮
           this.props.onConfirm?.({
             x: param.x + '',
             y: param.y + '',
             h: param.z + '',
           })
+          // 关闭校准界面
+          this.setState({
+            close: true,
+          })
+        }}
+        windowSize={this.props.windowSize}
+      />
+    )
+  }
+
+  /** 两点定位页面 */
+  _renderTwoPointPage = () => {
+    return (
+      <TwoPointPositionPage
+        onBack = {() => {
+          this.setState({
+            showStatus: 'main'
+          })
+        }}
+        onSubmit = {() => {
+          // 两点定位点击了提交按钮
+          // 关闭校准界面
+          this.setState({
+            close: true,
+          })
+        }}
+        windowSize={this.props.windowSize}
+      />
+    )
+  }
+
+  renderMain = () => {
+    return (
+      <LocationCalibration
+        visible
+        close={this._onClose}
+        onConfirm={() => {
           this.setState({
             close: true,
           })
@@ -128,36 +128,17 @@ class DatumPointCalibration extends Component<IProps,IState> {
             showStatus: 'arEnhance',
           })
         }}
-        onSelectPoint={this._mapSelectPoint}
-        onScan={() => {
+        gotoSinglePointPage={() => {
           this.setState({
-            showStatus: 'scan',
+            showStatus: 'singlePoint'
           })
         }}
-      />
-    )
-  }
-
-  renderScan = () => {
-    if(global.Type === ChunkType.MAP_AR_MAPPING){
-      SARMap.measuerPause(true)
-    }
-    return (
-      <QRScan
-        onBack={() => {
+        gotoTwoPointPage={async () => {
+          // await SARMap.setCenterHitTest(true)
           this.setState({
-            showStatus: 'main',
+            showStatus: 'twoPoint'
           })
         }}
-        onSuccess={point => {
-          this.setState({
-            showStatus: 'main',
-            longitude: point.x +'',
-            latitude: point.y + '',
-            height: point.h + '',
-          })
-        }}
-        windowSize={this.props.windowSize}
       />
     )
   }
@@ -168,9 +149,13 @@ class DatumPointCalibration extends Component<IProps,IState> {
     switch(showStatus){
       case 'main': content = this.renderMain()
         break
-      case 'scan': content = this.renderScan()
-        break
       case 'arEnhance' : content = this._renderEnhanceScan()
+        break
+      case 'singlePoint':
+        content = this._renderSinglePointPage()
+        break
+      case 'twoPoint':
+        content = this._renderTwoPointPage()
         break
     }
     return (

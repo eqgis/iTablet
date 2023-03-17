@@ -19,6 +19,8 @@ interface Props extends ReduxProps{
   onEnhance: () => void
   onSelectPoint: () => void
   onScan: () => void
+  gotoSinglePointPage: () => void
+  gotoTwoPointPage: () => void
 }
 
 interface State {
@@ -69,6 +71,15 @@ class LocationCalibration extends React.Component<Props, State> {
     this.props.onEnhance()
   }
 
+  /** 去单点定位页面 */
+  gotoSinglePointPage = () => {
+    this.props.gotoSinglePointPage()
+  }
+
+  /** 去两点定位页面 */
+  gotoTwoPointPage = () => {
+    this.props.gotoTwoPointPage()
+  }
 
   selectPoint = () => {
     this.props.onSelectPoint()
@@ -198,7 +209,7 @@ class LocationCalibration extends React.Component<Props, State> {
     )
   }
 
-  renderSelect = () => {
+  renderSelect01 = () => {
     const horizontal = this.props.windowSize.height < styles.containerStyle.height
     return (
       <View
@@ -262,6 +273,53 @@ class LocationCalibration extends React.Component<Props, State> {
               this.getCurrentLocation,
             )}
           </View>
+        </View>
+      </View>
+
+    )
+  }
+
+  renderSelect = () => {
+    const horizontal = this.props.windowSize.height < styles.containerStyle.height
+    return (
+      <View
+        style={[horizontal ? {
+          marginTop: dp(8),
+        } : {
+          marginTop: dp(20),
+          marginBottom: dp(5),
+        },
+        styles.selectContainer
+        ]}
+      >
+        <View
+          style={{
+            flexDirection: 'row',
+            marginTop: dp(10),
+            justifyContent: 'space-between',
+            width: '100%',
+          }}
+        >
+          {/* AR增强定位 */}
+          {this.renderItem(
+            getLanguage().MAP_AR_ENHANCE_POSITION,
+            getImage().icon_ar_enhance,
+            this.arEnhancePosition,
+          )}
+          {/* 单点定位 */}
+          {this.renderItem(
+            getLanguage().SINGLE_POINT_POSITION,
+            getThemeAssets().collection.icon_location,
+            this.gotoSinglePointPage,
+          )}
+
+          {/* 两点定位 */}
+          {this.renderItem(
+            getLanguage().TWO_POINT_POSITION,
+            getImage().icon_two_point_position,
+            this.gotoTwoPointPage,
+          )}
+
         </View>
       </View>
 
@@ -338,7 +396,7 @@ class LocationCalibration extends React.Component<Props, State> {
       <View style={styles.containerStyleL}>
         {this.renderClose()}
         <View style={{flex: 1}}>
-          {this.renderInputs()}
+          {/* {this.renderInputs()} */}
           {this.renderSelect()}
         </View>
         <View style={{ height: '100%', justifyContent: 'space-between', alignItems: 'center', marginLeft: dp(28)}}>
@@ -350,7 +408,7 @@ class LocationCalibration extends React.Component<Props, State> {
       <View style={styles.containerStyle}>
         {this.renderClose()}
         {this.renderHeader()}
-        {this.renderInputs()}
+        {/* {this.renderInputs()} */}
         {this.renderSelect()}
         {this.renderButton()}
       </View>
@@ -387,7 +445,8 @@ export default connector(LocationCalibration)
 const styles = StyleSheet.create({
   containerStyle: {
     width: dp(335),
-    height: dp(519),
+    // height: dp(519),
+    height: dp(400),
     borderRadius: dp(21),
     backgroundColor: AppStyle.Color.WHITE,
     alignItems: 'center',

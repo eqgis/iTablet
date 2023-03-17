@@ -2370,6 +2370,15 @@ export const language_cn = {
   CALIBRATION_TIMEOUT: '校准超时',
   CALIBRATION_SUCCESSFUL: '校准成功',
   AR_ENHANCE_POSITION_EXITED: '已退出AR增强定位',
+  SINGLE_POINT_POSITION:'单点定位',
+  TWO_POINT_POSITION:'两点定位',
+  ANCHOR_POINT_ONE:'定位点一',
+  ANCHOR_POINT_TWO:'定位点二',
+  COORD_PARAM:'坐标',
+  AIM_REAL_POSITION: "请对准实景的正射位置",
+  SELECT_POSITION_POINT:'选择定位点',
+  LESS_TWO_POSITION_POINT:'定位点不足两个，请继续添加定位点',
+
   // ar地图
   COLLECT_SCENE_RENAME: "重命名",
   COLLECT_SCENE_RENAME_SUCCEED: "重命名成功",

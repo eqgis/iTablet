@@ -2368,6 +2368,14 @@ export const language_tr: typeof language_cn = {
   CALIBRATION_TIMEOUT: 'Kalibrasyon zaman aşımı',
   CALIBRATION_SUCCESSFUL: 'Kalibrasyon başarılı',
   AR_ENHANCE_POSITION_EXITED: 'AR gelişmiş konumlandırmadan çıkıldı',
+  SINGLE_POINT_POSITION:'Single point position', // To be translated
+  TWO_POINT_POSITION:'Two Point position', // To be translated
+  ANCHOR_POINT_ONE:'Anchor point one', // To be translated
+  ANCHOR_POINT_TWO:'Anchor point two', // To be translated
+  COORD_PARAM:'coord', // To be translated
+  AIM_REAL_POSITION: "Aim for the real shot position",  // To be translated
+  SELECT_POSITION_POINT:'Select position point', // To be translated
+  LESS_TWO_POSITION_POINT:'If there are less than two registration points, add more registration points', // To be translated
 
   // ar地图
   COLLECT_SCENE_RENAME: "Yeniden adlandırma",

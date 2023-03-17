@@ -7,10 +7,12 @@ import LocationCalibration from './LocationCalibration'
 import QRScan from './QRScan'
 import { RootState } from '@/redux/types'
 import { connect, ConnectedProps } from 'react-redux'
+import SinglePointPositionPage from './SinglePointPositionPage'
+import TwoPointPositionPage from './TwoPointPositionPage'
 
 interface IState {
   close: boolean,
-  showStatus: 'main' | 'scan' | 'arEnhance',
+  showStatus: 'main' | 'scan' | 'arEnhance' | 'twoPoint' | 'singlePoint',
   activeBtn: number,
   latitude: string,
   longitude: string,
@@ -101,6 +103,53 @@ class DatumPointCalibration extends Component<IProps,IState> {
     )
   }
 
+  /** 单点定位页面 */
+  _renderSinglePointPage = () => {
+    return (
+      <SinglePointPositionPage
+        onBack = {() => {
+          this.setState({
+            showStatus: 'main'
+          })
+        }}
+        onSubmit = {(param: {x: string, y: string, z: string}) => {
+          // 单点定位点击了提交按钮
+          this.props.onConfirm?.({
+            x: param.x + '',
+            y: param.y + '',
+            h: param.z + '',
+          })
+          // 关闭校准界面
+          this.setState({
+            close: true,
+          })
+        }}
+        windowSize={this.props.windowSize}
+      />
+    )
+  }
+
+  /** 两点定位页面 */
+  _renderTwoPointPage = () => {
+    return (
+      <TwoPointPositionPage
+        onBack = {() => {
+          this.setState({
+            showStatus: 'main'
+          })
+        }}
+        onSubmit = {() => {
+          // 两点定位点击了提交按钮
+          // 关闭校准界面
+          this.setState({
+            close: true,
+          })
+        }}
+        windowSize={this.props.windowSize}
+      />
+    )
+  }
+
   renderMain = () => {
     return (
       <LocationCalibration
@@ -132,6 +181,17 @@ class DatumPointCalibration extends Component<IProps,IState> {
         onScan={() => {
           this.setState({
             showStatus: 'scan',
+          })
+        }}
+        gotoSinglePointPage={() => {
+          this.setState({
+            showStatus: 'singlePoint'
+          })
+        }}
+        gotoTwoPointPage={async () => {
+          // await SARMap.setCenterHitTest(true)
+          this.setState({
+            showStatus: 'twoPoint'
           })
         }}
       />
@@ -171,6 +231,12 @@ class DatumPointCalibration extends Component<IProps,IState> {
       case 'scan': content = this.renderScan()
         break
       case 'arEnhance' : content = this._renderEnhanceScan()
+        break
+      case 'singlePoint':
+        content = this._renderSinglePointPage()
+        break
+      case 'twoPoint':
+        content = this._renderTwoPointPage()
         break
     }
     return (

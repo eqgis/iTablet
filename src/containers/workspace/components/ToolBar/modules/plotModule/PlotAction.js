@@ -40,7 +40,7 @@ async function geometrySelected(event) {
   const currentToolbarType = ToolbarModule.getData().type
   switch (currentToolbarType) {
     case ConstToolType.SM_MAP_PLOT_ANIMATION: {
-      const type = await SPlot.getGeometryTypeById(
+      const type = await SPlot.getGraphicObjectType(
         event.layerInfo.name,
         event.id,
       )
@@ -59,7 +59,7 @@ async function geometrySelected(event) {
             customView: _props => (
               <PlotAnimationView
                 ref={ref => (plotAnimationView = ref)}
-                saveAndContinue={() => {
+                saveAndContinue={async () => {
                   const createInfo =
                     plotAnimationView &&
                     plotAnimationView.getCreateInfo()
@@ -71,10 +71,14 @@ async function geometrySelected(event) {
                     createInfo.layerName = _props.selection[0].layerInfo.name
                   }
                   if (createInfo.animationMode !== -1) {
-                    SPlot.createAnimation(createInfo, params.map.currentMap.name)
+                    const mapName = await SMap.getMapName()
+                    if(mapName===''){
+                      SMap.saveMap()
+                    }
+                    SPlot.createAnimation(createInfo)
                   }
                 }}
-                savePlotAnimationNode={() => {
+                savePlotAnimationNode={async () => {
                   const createInfo =
                     plotAnimationView &&
                     plotAnimationView.getCreateInfo()
@@ -86,7 +90,11 @@ async function geometrySelected(event) {
                     createInfo.layerName = _props.selection[0].layerInfo.name
                   }
                   if (createInfo.animationMode !== -1) {
-                    SPlot.createAnimation(createInfo, params.map.currentMap.name)
+                    const mapName = await SMap.getMapName()
+                    if(mapName===''){
+                      SMap.saveMap()
+                    }
+                    SPlot.createAnimation(createInfo)
                   }
                   global.TouchType = TouchType.NULL
                   global.animationWayData && (global.animationWayData = null)
@@ -199,7 +207,7 @@ async function endAnimationWayPoint() {
 }
 
 async function animationWayUndo() {
-  await SPlot.addAnimationWayPoint(null, false)
+  await SPlot.unDoAnimationWayPoint()
 }
 
 async function collectionSubmit(libId, symbolCode) {
@@ -272,7 +280,10 @@ async function changePlotLib(item) {
     )
     const libIds = params.template.plotLibIds
     if (libIds !== undefined) {
-      const result = await SPlot.removePlotSymbolLibraryArr(libIds)
+      let result
+      for(let i =0 ;i<libIds.length;i++){
+        result = await SPlot.removePlotSymbolLibrary(libIds[i])
+      }
       if (result) {
         const plotPath = await FileTools.appendingHomeDirectory(
           // ConstPath.UserPath + ConstPath.RelativeFilePath.Plotting,

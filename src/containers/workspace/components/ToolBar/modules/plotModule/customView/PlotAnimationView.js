@@ -62,7 +62,7 @@ export default class PlotAnimationView extends React.Component {
   }
 
   getCurrentGeometryType = async () => {
-    let type = await SPlot.getGeometryTypeById(
+    let type = await SPlot.getGraphicObjectType(
       this.props.layerName,
       this.props.geoId,
     )

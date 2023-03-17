@@ -9,7 +9,7 @@ import QRScan from './QRScan'
 import { ChunkType } from '@/constants'
 import NavigationService from '../NavigationService'
 import { Point3D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
-import { TwoPointPositionParamType } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
+import { ARAction, TwoPointPositionParamType } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 
 interface Props {
 	onBack?: () => void
@@ -89,7 +89,7 @@ class TwoPointPositionPage extends React.Component<Props, State> {
         p2y: position.latitude + '',
       })
     }
-    await SARMap.setCenterHitTest(true)
+    await SARMap.setAction(ARAction.FOCUS)
 
     // 提示五秒后消失
     this.tipTimer = setTimeout(() => {
@@ -106,9 +106,9 @@ class TwoPointPositionPage extends React.Component<Props, State> {
   componentDidUpdate = async (prevProps: Readonly<Props>, prevState: Readonly<State>): Promise<void>  => {
     if(this.state.showStatus !== prevState.showStatus) {
       if(this.state.showStatus === "main") {
-        await SARMap.setCenterHitTest(true)
+        await SARMap.setAction(ARAction.FOCUS)
       } else {
-        await SARMap.setCenterHitTest(false)
+        await SARMap.setAction(ARAction.NULL)
       }
     }
   }
@@ -117,7 +117,7 @@ class TwoPointPositionPage extends React.Component<Props, State> {
   goBackAction = async () => {
     switch(this.state.showStatus) {
       case 'main':
-        await SARMap.setCenterHitTest(false)
+        await SARMap.setAction(ARAction.NULL)
         this.props.onBack?.()
         break
       case 'coord':
@@ -158,7 +158,7 @@ class TwoPointPositionPage extends React.Component<Props, State> {
 
           const result =  await SARMap.twoPointPosition(param)
           if(result) {
-            await SARMap.setCenterHitTest(false)
+            await SARMap.setAction(ARAction.NULL)
             this.props.onSubmit?.()
           }
         } else {
@@ -180,7 +180,7 @@ class TwoPointPositionPage extends React.Component<Props, State> {
         anchorARPoint1: null,
       })
     } else {
-      const arPoint1 =  await SARMap.getCurrentCenterHitPoint()
+      const arPoint1 =  await SARMap.getFocusPosition()
       const result = await SMap.getCurrentLocation()
       if(result && arPoint1 && JSON.stringify(arPoint1) !== "{}") {
         this.setState({
@@ -200,7 +200,7 @@ class TwoPointPositionPage extends React.Component<Props, State> {
         anchorARPoint2: null,
       })
     } else {
-      const arPoint2 =  await SARMap.getCurrentCenterHitPoint()
+      const arPoint2 =  await SARMap.getFocusPosition()
       const result = await SMap.getCurrentLocation()
 
       if(result && arPoint2 && JSON.stringify(arPoint2) !== "{}") {

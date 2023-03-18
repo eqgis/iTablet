@@ -50,30 +50,11 @@ export default class ProtocolDialog extends Component {
   }
 
   renderWebView = () => {
-    let source
-    if (Platform.OS === 'android') {
-      // source =
-      //   this.props.language === 'CN'
-      //     ? {
-      //       uri: 'file:///android_asset/SuperMapUserPrivacyPolicy_CN.html',
-      //     }
-      //     : {
-      //       uri: 'file:///android_asset/SuperMapUserPrivacyPolicy_EN.html',
-      //     }
-      source = {
-        uri: 'file:///android_asset/一键呼叫隐私政策.html'
-      }
-    } else {
-      // source =
-      //   this.props.language === 'CN'
-      //     ? require('../../../../assets/Protocol/SuperMapUserPrivacyPolicy_CN.html')
-      //     : require('../../../../assets/Protocol/SuperMapUserPrivacyPolicy_EN.html')
-      // source = getHtml().LangchaoUserPrivacyPolicy_CN
-      source = {
-        html: getHtml().LangchaoUserPrivacyPolicy_CN,
-        baseUrl: "",
-      }
+    let source = {
+      html: getHtml().LangchaoUserPrivacyPolicy_CN,
+      baseUrl: "",
     }
+
     return (
       <WebView
         ref={ref => (this.webView = ref)}

@@ -132,7 +132,7 @@ class ContactsList extends Component<Props, State> {
   getData = async () => {
     try {
       let telBookInfo = []
-      if(this.props.userId === 'iTablet123') {
+      if(this.props.userId === 'test123') {
         telBookInfo = morckdata
       } else {
         telBookInfo = await getTelBook()

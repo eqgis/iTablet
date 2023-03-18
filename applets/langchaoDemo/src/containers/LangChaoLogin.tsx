@@ -105,10 +105,10 @@ class LangChaoLogin extends Component<Props, State> {
     if(this.state.userId !== "") {
       if(this.state.password !== "") {
         // 如果输入的是模拟账号，就跳过登录的步骤
-        if(this.state.userId === 'iTablet123' && this.state.password === "123456") {
+        if(this.state.userId === 'test123' && this.state.password === "123456") {
           await this.props.setServerUserId(this.state.userId)
           await this.props.setPassword(this.state.password)
-          await this.props.setServerUserName('iTablet123')
+          await this.props.setServerUserName('test123')
           await this.getUserData()
           const type: string | undefined = this.props.route.params?.type
           if(type === "setting") {

@@ -10,7 +10,7 @@ import MapToolbar from "@/containers/workspace/components/MapToolbar"
 import settingData from "./settingData"
 import NavigationService from "@/containers/NavigationService"
 import { getImage } from "../../assets/Image"
-import { setLangchaoUserInfo, setServerUserId } from "../../reduxModels/langchao"
+import { setLangchaoUserInfo, setPassword, setServerUserId } from "../../reduxModels/langchao"
 import Toast from "@/utils/Toast"
 
 
@@ -77,6 +77,7 @@ class SettingPage extends Component<Props, State> {
         confirmAction: async () => {
           // 登出
           this.props.setServerUserId("")
+          this.props.setPassword("")
           this.props.setLangchaoUserInfo(null)
           this.getData()
           Toast.show(getLanguage(global.language).Map_Layer.LOGGED_OUT)
@@ -241,6 +242,7 @@ const mapStateToProp = (state: any) => ({
 const mapDispatch = {
   setServerUserId,
   setLangchaoUserInfo,
+  setPassword,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

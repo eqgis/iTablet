@@ -361,7 +361,7 @@ export const users = async (params: UserInfoType) => {
     printLog(`\n users error : ${JSON.stringify(error)}`)
 
     // 是模拟账号，返回模拟用户数据
-    if(params.UserId === 'iTablet123') {
+    if(params.UserId === 'test123') {
       return [
         {
           id: 'hhh',

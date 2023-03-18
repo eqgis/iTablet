@@ -7,7 +7,7 @@ import { getLanguage } from "@/language"
 import { setCurrentSymbol } from "@/redux/models/symbol"
 import { getPublicAssets } from "@/assets"
 import { setServerUserId, setPassword, setServerUserName, setServerPubkey, setLangchaoUserInfo } from '../reduxModels/langchao'
-import { dateFormat, getServerPubKeyUtil, getToken, login, setSysOrgid, setUserId, setUserInfo, setUserName, users } from "../utils/langchaoServer"
+import { dateFormat, getServerPubKeyUtil, getToken, login, printLog, setSysOrgid, setUserId, setUserInfo, setUserName, users } from "../utils/langchaoServer"
 import { color } from "@/styles"
 import NavigationService from "@/containers/NavigationService"
 import { Picker } from '@react-native-picker/picker'
@@ -111,6 +111,7 @@ class LangChaoLogin extends Component<Props, State> {
         if(this.state.userId === 'test123' && this.state.password === "123456") {
           // 1. 登录成功,主动归还许可
           await SMap.recycleLicense()
+          printLog(`\n 登录成功,先归还许可 loginAction : ${recycleResult}`)
 
           await this.props.setServerUserId(this.state.userId)
           await this.props.setPassword(this.state.password)
@@ -136,7 +137,8 @@ class LangChaoLogin extends Component<Props, State> {
 
           if(result) {
             // 1. 登录成功,主动归还许可
-            await SMap.recycleLicense()
+            const recycleResult = await SMap.recycleLicense()
+            printLog(`\n 登录成功,先归还许可 loginAction : ${recycleResult}`)
 
             await this.props.setServerUserId(this.state.userId)
             await this.props.setPassword(this.state.password)
@@ -145,7 +147,8 @@ class LangChaoLogin extends Component<Props, State> {
             // UserAuthCode 激活码
             if (result.UserAuthCode) {
               // 2. 激活许可
-              await SMap.activateLicense(result.UserAuthCod)
+              const activateResult = await SMap.activateLicense(result.UserAuthCod)
+              printLog(`\n 登录成功,归还后,重新激活许可 loginAction : ${activateResult}`)
             }
 
             await this.getUserData()

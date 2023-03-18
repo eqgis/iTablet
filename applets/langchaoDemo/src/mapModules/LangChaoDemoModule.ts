@@ -153,8 +153,8 @@ export default class LangChaoDemoModule extends Module {
 
   onMapOpenSuccess = async () => {
 
-    const a = await SMap.recycleLicense()
-    console.warn('onMapOpenSuccess 归还', a)
+    const recycleResult = await SMap.recycleLicense()
+    langchaoServer.printLog(`\n 打开地图,归还许可 onMapOpenSuccess : ${recycleResult}`)
 
     const userId = langchaoServer.getUserParam().userId
     const password = langchaoServer.getPassword()
@@ -162,7 +162,9 @@ export default class LangChaoDemoModule extends Module {
     /** 测试用户 */
     if(userId === 'test123' && password === "123456") {
       // 2. 激活许可
-      await SMap.activateLicense('79B28-29Q19-71690-SM56W-NP5JP')
+      const activateResult = await SMap.activateLicense('79B28-29Q19-71690-SM56W-NP5JP')
+      langchaoServer.printLog(`\n 打开地图,用户登录,激活许可 onMapOpenSuccess : ${activateResult}`)
+
     } else if (userId && password) {
       const pubkey = await langchaoServer.getServerPubKeyUtil()
       if(pubkey !== "") {
@@ -172,7 +174,8 @@ export default class LangChaoDemoModule extends Module {
           // UserAuthCode 激活码
           if (result.UserAuthCode) {
             // 2. 激活许可
-            await SMap.activateLicense(result.UserAuthCod)
+            const activateResult = await SMap.activateLicense(result.UserAuthCod)
+            langchaoServer.printLog(`\n 打开地图,用户登录,激活许可 onMapOpenSuccess : ${activateResult}`)
           }
         }
       }

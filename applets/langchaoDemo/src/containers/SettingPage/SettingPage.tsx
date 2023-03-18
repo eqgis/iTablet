@@ -13,6 +13,7 @@ import { getImage } from "../../assets/Image"
 import { setLangchaoUserInfo, setPassword, setServerUserId } from "../../reduxModels/langchao"
 import Toast from "@/utils/Toast"
 import { SMap } from "imobile_for_reactnative"
+import { printLog } from "../../utils/langchaoServer"
 
 
 interface settingDataType {
@@ -82,7 +83,9 @@ class SettingPage extends Component<Props, State> {
           this.props.setLangchaoUserInfo(null)
           this.getData()
           // 退出APP,主动归还许可
-          SMap.recycleLicense()
+          const recycleResult = await SMap.recycleLicense()
+          printLog(`\n 退出登录,归还许可 loginAction : ${recycleResult}`)
+
           Toast.show(getLanguage(global.language).Map_Layer.LOGGED_OUT)
         },
         cancelAction: () => {

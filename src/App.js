@@ -48,7 +48,7 @@ import { setAnalystParams } from './redux/models/analyst'
 import { setCollectionInfo } from './redux/models/collection'
 import { setShow } from './redux/models/device'
 import { setLicenseInfo } from './redux/models/license'
-import { BundleTools, RNFS as fs } from 'imobile_for_reactnative'
+import { BundleTools, RNFS as fs, SData } from 'imobile_for_reactnative'
 import { FileTools, SplashScreen } from './native'
 import ConfigStore from './redux/store'
 import { scaleSize, Toast, screen, DialogUtils, GetUserBaseMapUtil } from './utils'
@@ -301,6 +301,9 @@ class AppRoot extends Component {
   }
 
   componentWillUnmount() {
+    // 退出APP,主动归还许可
+    SData.recycleLicense()
+
     BackHandler.removeEventListener('hardwareBackPress', this.back)
     SLocation.removeChangeDeviceSuccessListener()
     // NetInfo.removeEventListener('connectionChange', this.handleNetworkState)

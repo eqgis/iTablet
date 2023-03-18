@@ -31,6 +31,7 @@ let serverClientid = "Gvvy19yU"
 
 
 let userId = ""
+let password = ""
 let username = ""
 let sysOrgid = ""
 let userInfo: userInfoType | null | undefined = null
@@ -67,6 +68,14 @@ export const setUserInfo = (info: userInfoType | null | undefined) => {
 
 export const setUserId = (id: string) => {
   userId = id
+}
+
+export const setPassword = (pw: string) => {
+  password = pw
+}
+
+export const getPassword = (): string => {
+  return password
 }
 
 export const setUserName = (name: string) => {

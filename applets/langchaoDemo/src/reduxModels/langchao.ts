@@ -2,7 +2,7 @@ import { getLastLaunchState } from '@/redux/store'
 import { fromJS } from 'immutable'
 import { handleActions } from 'redux-actions'
 import { REHYDRATE } from 'redux-persist'
-import { setServerIPUtil, setServerTokenUtil, setServerClientidUtil, setUserId, setUserName, setSysOrgid, setPubKey, getServerPubKeyUtil, setUserInfo } from '../utils/langchaoServer'
+import { setServerIPUtil, setServerTokenUtil, setServerClientidUtil, setUserId, setUserName, setSysOrgid, setPubKey, setPassword as setPw, setUserInfo } from '../utils/langchaoServer'
 // Constants
 // --------------------------------------------------
 export const LANGCHAO_SET_SERVER_IP = "LANGCHAO_SET_SERVER_IP"
@@ -131,6 +131,7 @@ export const setPassword = (
   params = "",
   cb = () => {},
 ) => async (dispatch: (arg0: any) => any) => {
+  setPw(params)
   await dispatch({
     type: LANGCHAO_SET_PASSWORD,
     payload: params,
@@ -235,6 +236,7 @@ export default handleActions(
         setServerTokenUtil(data.token)
         setServerClientidUtil(data.clientid)
         setUserId(data.userId)
+        setPw(data.password)
         setUserName(data.userName)
         setSysOrgid(data.departmentId)
         setPubKey(data.pubkey)

@@ -12,6 +12,7 @@ import NavigationService from "@/containers/NavigationService"
 import { getImage } from "../../assets/Image"
 import { setLangchaoUserInfo, setPassword, setServerUserId } from "../../reduxModels/langchao"
 import Toast from "@/utils/Toast"
+import { SMap } from "imobile_for_reactnative"
 
 
 interface settingDataType {
@@ -80,6 +81,8 @@ class SettingPage extends Component<Props, State> {
           this.props.setPassword("")
           this.props.setLangchaoUserInfo(null)
           this.getData()
+          // 退出APP,主动归还许可
+          SMap.recycleLicense()
           Toast.show(getLanguage(global.language).Map_Layer.LOGGED_OUT)
         },
         cancelAction: () => {

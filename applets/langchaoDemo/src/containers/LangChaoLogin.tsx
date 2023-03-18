@@ -13,6 +13,8 @@ import NavigationService from "@/containers/NavigationService"
 import { Picker } from '@react-native-picker/picker'
 import { getJson } from "../assets/data"
 import { getImage } from "../assets/Image"
+import { Toast } from "@/utils"
+import { SMap } from "imobile_for_reactnative"
 // import { setServerIP, setServerUserId, setServerUserName, setServerDepartmentId } from "@/redux/models/langchao"
 
 
@@ -104,11 +106,19 @@ class LangChaoLogin extends Component<Props, State> {
     }
     if(this.state.userId !== "") {
       if(this.state.password !== "") {
+
         // 如果输入的是模拟账号，就跳过登录的步骤
         if(this.state.userId === 'test123' && this.state.password === "123456") {
+          // 1. 登录成功,主动归还许可
+          await SMap.recycleLicense()
+
           await this.props.setServerUserId(this.state.userId)
           await this.props.setPassword(this.state.password)
           await this.props.setServerUserName('test123')
+          // UserAuthCode 激活码
+          // 2. 激活许可
+          await SMap.activateLicense('79B28-29Q19-71690-SM56W-NP5JP')
+
           await this.getUserData()
           const type: string | undefined = this.props.route.params?.type
           if(type === "setting") {
@@ -125,9 +135,19 @@ class LangChaoLogin extends Component<Props, State> {
           const result = await login(this.state.userId, this.state.password)
 
           if(result) {
+            // 1. 登录成功,主动归还许可
+            await SMap.recycleLicense()
+
             await this.props.setServerUserId(this.state.userId)
             await this.props.setPassword(this.state.password)
             await this.props.setServerUserName(result.UserName)
+
+            // UserAuthCode 激活码
+            if (result.UserAuthCode) {
+              // 2. 激活许可
+              await SMap.activateLicense(result.UserAuthCod)
+            }
+
             await this.getUserData()
             // NavigationService.goBack()
             const type: string | undefined = this.props.route.params?.type

@@ -112,9 +112,7 @@ class DatumPointCalibration extends Component<IProps,IState> {
         visible
         close={this._onClose}
         onConfirm={() => {
-          this.setState({
-            close: true,
-          })
+          this._onClose()
         }}
         onEnhance={() => {
           // 调用ar增强定位的方法获取定位

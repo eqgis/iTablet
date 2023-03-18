@@ -162,19 +162,30 @@ export default class LangChaoDemoModule extends Module {
     /** 测试用户 */
     if(userId === 'test123' && password === "123456") {
       // 2. 激活许可
+      console.warn(`\n 打开地图,用户登录,即将激活许可`)
+      langchaoServer.printLog(`\n 打开地图,用户登录,即将激活许可`)
       const activateResult = await SMap.activateLicense('79B28-29Q19-71690-SM56W-NP5JP')
+      console.warn(`\n 打开地图,用户登录,激活许可 onMapOpenSuccess : ${activateResult}`)
       langchaoServer.printLog(`\n 打开地图,用户登录,激活许可 onMapOpenSuccess : ${activateResult}`)
 
     } else if (userId && password) {
       const pubkey = await langchaoServer.getServerPubKeyUtil()
+      console.warn(`\n 打开地图,用户登录,pubkey  ${pubkey}`)
+      langchaoServer.printLog(`\n 打开地图,用户登录,pubkey  ${pubkey}`)
       if(pubkey !== "") {
+        console.warn(`\n 打开地图,用户登录,userId : ${userId} password: ${password}`)
+        langchaoServer.printLog(`\n 打开地图,用户登录,userId : ${userId} password: ${password}`)
         const result = await langchaoServer.login(userId, password)
-
+        console.warn(`\n 打开地图,用户登录结果,result : ${JSON.stringify(result)} `)
+        langchaoServer.printLog(`\n 打开地图,用户登录,打开地图,用户登录结果,result : ${JSON.stringify(result)} `)
         if(result) {
           // UserAuthCode 激活码
           if (result.UserAuthCode) {
+            console.warn(`\n 打开地图,用户登录,即将激活许可`)
+            langchaoServer.printLog(`\n 打开地图,用户登录,即将激活许可`)
             // 2. 激活许可
             const activateResult = await SMap.activateLicense(result.UserAuthCod)
+            console.warn(`\n 打开地图,用户登录,激活许可 onMapOpenSuccess : ${activateResult}`)
             langchaoServer.printLog(`\n 打开地图,用户登录,激活许可 onMapOpenSuccess : ${activateResult}`)
           }
         }

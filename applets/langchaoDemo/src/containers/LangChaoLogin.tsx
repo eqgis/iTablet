@@ -109,8 +109,11 @@ class LangChaoLogin extends Component<Props, State> {
 
         // 如果输入的是模拟账号，就跳过登录的步骤
         if(this.state.userId === 'test123' && this.state.password === "123456") {
+          console.warn(`\n 登录成功模拟账号 loginAction : ${this.state.userId}  - pw: ${this.state.password}`)
+          printLog(`\n 登录成功模拟账号 loginAction : ${this.state.userId}  - pw: ${this.state.password}`)
           // 1. 登录成功,主动归还许可
-          await SMap.recycleLicense()
+          const recycleResult = await SMap.recycleLicense()
+          console.warn(`\n 登录成功,先归还许可 loginAction : ${recycleResult}`)
           printLog(`\n 登录成功,先归还许可 loginAction : ${recycleResult}`)
 
           await this.props.setServerUserId(this.state.userId)
@@ -118,7 +121,11 @@ class LangChaoLogin extends Component<Props, State> {
           await this.props.setServerUserName('test123')
           // UserAuthCode 激活码
           // 2. 激活许可
-          await SMap.activateLicense('79B28-29Q19-71690-SM56W-NP5JP')
+          console.warn(`\n 登录成功,即将激活许可`)
+          printLog(`\n 登录成功,即将激活许可`)
+          const activeLicenseResult =  await SMap.activateLicense('74QC6-4SCXA-XD6YG-I626V-9L91C')
+          console.warn(`\n 登录成功,激活许可 ${activeLicenseResult}`)
+          printLog(`\n 登录成功,激活许可 ${activeLicenseResult}`)
 
           await this.getUserData()
           const type: string | undefined = this.props.route.params?.type
@@ -147,6 +154,7 @@ class LangChaoLogin extends Component<Props, State> {
             // UserAuthCode 激活码
             if (result.UserAuthCode) {
               // 2. 激活许可
+              printLog(`\n 登录成功,激活许可 UserAuthCode: ${result.UserAuthCode}`)
               const activateResult = await SMap.activateLicense(result.UserAuthCod)
               printLog(`\n 登录成功,归还后,重新激活许可 loginAction : ${activateResult}`)
             }

@@ -397,7 +397,7 @@ function _getAddTab(): ToolbarTabItem[] {
 
               // 先矫正定位
               // if(Platform.OS === 'android') {
-              const center = await SARMap.getCurrentPosition()
+              const center = await SARMap.getCurrentARPosition()
               if(center) {
                 const p = await SARMap.CoordSysTranslatorARToMapPrj([center])
                 SARMap.setEffectLayerCenter(item.name.substring(0, item.name.lastIndexOf('.')), {x: p[0].x, y:p[0].y})

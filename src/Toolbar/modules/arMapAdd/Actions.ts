@@ -333,13 +333,13 @@ export async function addARSceneLayer(option?: AddOption) {
           }
         })
       }
-      addLayerName = await SARMap.addSceneLayerOnline(datasourceName, datasetName, serverUrl, sceneName, {position: option?.translation}, sceneOffset)
+      addLayerName = await SARMap.addSceneLayerOnline({datasourceName, datasetName}, serverUrl, sceneName, {position: option?.translation}, sceneOffset)
     } else {
       path = homePath + path
       const pxp = await DataLocal.getPxpContent(path)
       if(pxp === null) return
       const wsPath = homePath + AppPath.User.path + '/' + props.currentUser.userName + UserRoot.Data.ARScene.path +  '/' + pxp.Workspace.server
-      addLayerName = await SARMap.addSceneLayer(datasourceName, datasetName, wsPath, {position: option?.translation})
+      addLayerName = await SARMap.addSceneLayer({datasourceName, datasetName}, wsPath, {position: option?.translation})
     }
     if(addLayerName !== ''){
       const layers = await props.getARLayers()
@@ -487,7 +487,7 @@ async function checkARElementLayer(type: TARLayerType) {
         markerLineContent = ""
       }
 
-      const layerName = await SARMap.addElementLayer(datasourceName, datasetName, type, false)
+      const layerName = await SARMap.addElementLayer({datasourceName, datasetName}, type, false)
       if(type === ARLayerType.AR_MARKER_LINE_LAYER) {
         await SARMap.setLayerStyle(layerName, {markerSymbolPath: markerLineContent})
       }

@@ -321,10 +321,14 @@ export const getSymbolPlots = (params, cb = () => {}) => async (
       }
       // await SMap.addCadLayer('PlotEdit')
       const resultArr = await SPlot.initPlotSymbol(plotLibPaths)
-      Object.keys(resultArr).forEach(key => {
-        plotLibIds.push(resultArr[key])
-        plotlibIdAndNameArr.push([key, resultArr[key]])
+      resultArr.forEach(item=>{
+        plotLibIds.push(item.libId)
+        plotlibIdAndNameArr.push(item.libName)
       })
+      // Object.keys(resultArr).forEach(key => {
+      //   plotLibIds.push(resultArr[key])
+      //   plotlibIdAndNameArr.push([key, resultArr[key]])
+      // })
 
       // plotLibIds = [22,421]
       // let plotlibIdAndNameArr = [['常用标号',22],['警用标号',421]]

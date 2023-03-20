@@ -156,7 +156,7 @@ class LangChaoLogin extends Component<Props, State> {
             if (result.UserAuthCode) {
               // 2. 激活许可
               printLog(`\n 登录成功,激活许可 UserAuthCode: ${result.UserAuthCode}`)
-              const activateResult = await SMap.activateLicense(result.UserAuthCod)
+              const activateResult = await SMap.activateLicense(result.UserAuthCode)
               printLog(`\n 登录成功,归还后,重新激活许可 loginAction : ${activateResult}`)
             }
 

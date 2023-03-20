@@ -87,7 +87,7 @@
       </activity>
       <meta-data
           android:name="com.amap.api.v2.apikey"
-          android:value="b753b833332dd562a9a906e2f7f85c16"/>
+          android:value="2bb809fa844f475def866cf4907057d3"/>
       <!-- 定位需要的服务 适配Android Q需要加上android:foregroundServiceType="location"-->
       <service
           android:name="com.amap.api.location.APSService"

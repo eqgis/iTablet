@@ -41,7 +41,7 @@ export default class CustomModePage extends Component {
 
   constructor(props) {
     super(props)
-    let { params } = this.props.route
+    const { params } = this.props.route
     this.type = (params && params.type) || ToolbarModule.getData().customType
     this.state = {
       originData: [],
@@ -55,7 +55,7 @@ export default class CustomModePage extends Component {
     if (data) {
       length = data.length
     } else {
-      let layerParams = {
+      const layerParams = {
         LayerName: this.props.currentLayer.name || '',
       }
       switch (this.type) {
@@ -64,7 +64,8 @@ export default class CustomModePage extends Component {
           // data = await STheme.getRangeList(layerParams)
           break
         case ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_MODE:
-          data = await STheme.getRangeLabelList(layerParams)
+          data = (await STheme.getRangeThemeLabelLayerInfo(layerParams.LayerName)).items
+          // data = await STheme.getRangeLabelList(layerParams)
           break
         case ConstToolType.SM_MAP_THEME_PARAM_UNIQUE_COLOR:
           data = (await STheme.getThemeUniqueInfo(layerParams.LayerName)).items
@@ -179,7 +180,7 @@ export default class CustomModePage extends Component {
   }
 
   _changeItemVisible = index => {
-    let data = JSON.parse(JSON.stringify(this.state.data))
+    const data = JSON.parse(JSON.stringify(this.state.data))
     data[index].isVisible = !data[index].isVisible
     this.setState({
       data,
@@ -190,9 +191,9 @@ export default class CustomModePage extends Component {
       Toast.show(getLanguage(global.language).Prompt.ONLY_INTEGER)
       return
     }
-    let data = JSON.parse(JSON.stringify(this.state.data))
-    let item = data[index]
-    let nextItem = data[index + 1]
+    const data = JSON.parse(JSON.stringify(this.state.data))
+    const item = data[index]
+    const nextItem = data[index + 1]
     let val = text
     if (text <= Math.round(item.start)) {
       val = Math.round(item.start) + 1
@@ -216,13 +217,13 @@ export default class CustomModePage extends Component {
       )
       return
     }
-    let data = JSON.parse(JSON.stringify(this.state.data))
-    let min = data[0].end - 0
-    let max = data[this.lastLength - 1].start - 0
+    const data = JSON.parse(JSON.stringify(this.state.data))
+    const min = data[0].end - 0
+    const max = data[this.lastLength - 1].start - 0
 
-    let rand = (max - min) / (length - 2)
+    const rand = (max - min) / (length - 2)
 
-    let minusRel = this.lastLength - length
+    const minusRel = this.lastLength - length
     if (minusRel > 0) {
       data.splice(this.lastLength - 1 - minusRel, minusRel)
     } else {
@@ -231,7 +232,7 @@ export default class CustomModePage extends Component {
         geoStyle.setFillForeColor(255,255,255)
         geoStyle.setLineColor(255,255,255)
         geoStyle.setPointColor(255,255,255)
-        let newObj = {
+        const newObj = {
           style:JSON.stringify(geoStyle),
           isVisible: true,
         }
@@ -254,11 +255,11 @@ export default class CustomModePage extends Component {
   }
 
   _preView = async () => {
-    let data = {
+    const data = {
       LayerName: this.props.currentLayer.name,
       items: this.state.data,
     }
-    let rel = await this._setAttrToMap(data)
+    const rel = await this._setAttrToMap(data)
     if (rel) {
       const params = ToolbarModule.getParams()
       params.showFullMap && params.showFullMap(true)
@@ -274,18 +275,18 @@ export default class CustomModePage extends Component {
   }
 
   _confirm = async () => {
-    let data = {
+    const data = {
       LayerName: this.props.currentLayer.name,
       items: this.state.data,
     }
-    let rel = await this._setAttrToMap(data)
+    const rel = await this._setAttrToMap(data)
     if (rel) {
       global.PreviewHeader && global.PreviewHeader.setVisible(false)
       global.ToolBar && global.ToolBar.existFullMap()
       global.TouchType = TouchType.NORMAL
       // 在线协作,专题,实时同步
       if (global.coworkMode) {
-        let layerInfo = await SMap.getLayerInfo(this.props.currentLayer.path)
+        const layerInfo = await SMap.getLayerInfo(this.props.currentLayer.path)
         ThemeAction.sendUpdateThemeMsg(layerInfo)
       }
       ToolbarModule.setData({})
@@ -297,7 +298,7 @@ export default class CustomModePage extends Component {
 
   _pressColor = index => {
     const _params = ToolbarModule.getParams()
-    let type = ConstToolType.SM_MAP_COLOR_PICKER
+    const type = ConstToolType.SM_MAP_COLOR_PICKER
     ToolbarModule.addData({
       customModeData: this.state.data,
       customType: this.type,
@@ -354,7 +355,7 @@ export default class CustomModePage extends Component {
   _renderInput = () => {
     const minus = require('../../assets/mapTool/icon_minus.png')
     const plus = require('../../assets/mapTool/icon_plus.png')
-    let length = this.state.length
+    const length = this.state.length
     return (
       <View style={styles.row}>
         <Text style={styles.itemTitle}>
@@ -414,7 +415,7 @@ export default class CustomModePage extends Component {
   }
 
   _renderItem = ({ item, index }) => {
-    let visibleImg = item.isVisible
+    const visibleImg = item.isVisible
       ? require('../../assets/mapTools/icon_multi_selected_disable_black.png')
       : require('../../assets/mapTools/icon_multi_unselected_disable_black.png')
     let start, end, str
@@ -462,7 +463,7 @@ export default class CustomModePage extends Component {
                   keyboardType={'number-pad'}
                   returnKeyType={'done'}
                   onChangeText={text => {
-                    let data = JSON.parse(JSON.stringify(this.state.data))
+                    const data = JSON.parse(JSON.stringify(this.state.data))
                     data[index].end = ~~text
                     this.setState({
                       data,

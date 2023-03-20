@@ -915,15 +915,13 @@ function getGridRangeMode() {
 function setLabelFont() {
   const _params = ToolbarModule.getData().themeParams
 
-  if(_params.ThemeType == ThemeType.LABELUNIQUE){
+  if(_params.ThemeType == ThemeType.LABELUNIQUE){//单值标签
     return STheme.modifyUniqueThemeLabelLayer(_params?.LayerName||"",{labelStyle:{TextFont:[_params?.FontName]}})
-  }else if(_params.ThemeType == ThemeType.LABEL){
+  }else if(_params.ThemeType == ThemeType.LABEL){//标签
     return STheme.modifyUniformLabelLayer(_params?.LayerName||"",{labelStyle:{TextFont:[_params?.FontName]}})
-  }else{
-    return STheme.setLabelFontName(_params)
+  }else{//分段标签
+    return STheme.modifyRangeThemeLabelLayer(_params?.LayerName||"",{labelStyle:{TextFont:[_params?.FontName]}})
   }
-
- 
 }
 function getLabelFont() {
   const data = [
@@ -1176,7 +1174,7 @@ function setLabelFontRotation() {
   }else if(_params.ThemeType == ThemeType.LABEL){
     return STheme.modifyUniformLabelLayer(_params?.LayerName||"",{labelStyle:{TextAngle:parseInt(_params?.Rotaion)}})
   }else{
-    return STheme.setLabelRotation(_params)
+    return STheme.modifyRangeThemeLabelLayer(_params?.LayerName||"",{labelStyle:{TextAngle:parseInt(_params?.Rotaion)}})
   }
   
 }
@@ -3091,28 +3089,31 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       )
 
       break
-    }case constants.THEME_RANGE_LABEL:
+    }case constants.THEME_RANGE_LABEL:{
       // 分段标签
-      paramsTheme = {
-        DatasourceAlias: ToolbarParams.themeDatasourceAlias,
-        DatasetName: ToolbarParams.themeDatasetName,
-        RangeExpression: item.expression,
-        RangeMode: RangeMode.EQUALINTERVAL,
-        RangeParameter: '5.0',
-        ColorScheme: 'CD_Cyans',
+      const params:ThemeRangeLabel = {
+        // DatasourceAlias: ToolbarParams.themeDatasourceAlias,
+        // DatasetName: ToolbarParams.themeDatasetName,
+        expression: item.expression,
+        rangeMode: RangeMode.EQUALINTERVAL,
+        rangeParameter: 5.0,
+        colorScheme: 'CD_Cyans',
+        themeType:ThemeType.LABELRANGE,
+        labelExpression:item.expression,
+        // labelBackShape:2,
+        // alongLineDirection:2,
       }
-      await STheme.createRangeThemeLabelMap(paramsTheme).then(
-        msg => {
-          isSuccess = msg.result
-          if (isSuccess && msg.layer) {
-            ThemeAction.sendAddThemeMsg(msg.layer)
+      // await STheme.createRangeThemeLabelMap(paramsTheme).then(
+      await STheme.createRangeThemeLabelLayer(datasetInfo,params).then(
+        layerInfo => {
+          if (layerInfo) {
+            isSuccess = true
+            ThemeAction.sendAddThemeMsg(layerInfo)
           }
         },
       )
-      // .catch(err => {
-      //   errorInfo = err.message
-      // })
       break
+    }
   }
   if (isSuccess) {
     Toast.show(getLanguage(ToolbarParams.language).Prompt.CREATE_SUCCESSFULLY)
@@ -3253,28 +3254,28 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
         },
       )
       break
-    }case constants.THEME_RANGE_LABEL:
+    }case constants.THEME_RANGE_LABEL:{
       // 分段标签
-      paramsTheme = {
-        DatasourceAlias: item.datasourceName,
-        DatasetName: item.datasetName,
-        RangeExpression: item.expression,
-        RangeMode: RangeMode.EQUALINTERVAL,
-        RangeParameter: '5.0',
-        ColorScheme: 'CD_Cyans',
+      const params = {
+        // DatasourceAlias: item.datasourceName,
+        // DatasetName: item.datasetName,
+        expression: item.expression,
+        rangeMode: RangeMode.EQUALINTERVAL,
+        rangeParameter: 5.0,
+        colorScheme: 'CD_Cyans',
+        themeType:ThemeType.LABELRANGE,
+        labelExpression:item.expression,
       }
-      await STheme.createRangeThemeLabelMap(paramsTheme).then(
-        msg => {
-          isSuccess = msg.result
-          if (isSuccess && msg.layer) {
-            ThemeAction.sendAddThemeMsg(msg.layer)
+      await STheme.createRangeThemeLabelLayer(datasetInfo,params).then(
+        layerInfo => {
+          if (layerInfo) {
+            isSuccess = true
+            ThemeAction.sendAddThemeMsg(layerInfo)
           }
         },
       )
-      // .catch(err => {
-      //   errorInfo = err.message
-      // })
       break
+    }
   }
   if (isSuccess) {
     Toast.show(getLanguage(ToolbarParams.language).Prompt.CREATE_SUCCESSFULLY)
@@ -3670,7 +3671,7 @@ const rangeLabelMenuInfo = param => [
     // getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
     action: () => {
       ThemeAction.getThemeExpress(
-        ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION,
+        ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_LABEL_EXPRESSION,
         getLanguage(param).Map_Main_Menu.THEME_EXPRESSION,
       )
     },

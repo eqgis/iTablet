@@ -57,7 +57,7 @@ function getData(type) {
     data.push({
       key: 'addGPSPoint',
       title: getLanguage(global.language).Map_Main_Menu.COLLECTION_ADD_POINT,
-      action: () => SCollector.addGPSPoint(type),
+      action: () => SCollector.addGPSPoint(),
       size: 'large',
       image: getThemeAssets().collection.icon_collect_point,
     })

@@ -5180,7 +5180,7 @@ export default class MapView extends React.Component {
       case ChunkType.MAP_PLOTTING:
         return 0x80
       default:
-        return undefined
+        return 0x08  // 临时设置为外业采集的许可id
     }
   }
 

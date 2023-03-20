@@ -1755,12 +1755,14 @@ async function getTouchProgressInfo(title) {
     // 其他专题图
     case getLanguage(global.language).Map_Main_Menu.RANGE_COUNT:
       if (
-        themeType === ThemeType.RANGE ||
-        themeType === ThemeType.LABELRANGE
+        themeType === ThemeType.RANGE
       ) {
         const items = (await STheme.getThemeRangeInfo(_params.currentLayer.name || "")).items
         value = items?.length || 0
         // value = await STheme.getRangeCount({LayerName: _params.currentLayer.name })
+      }else if( themeType === ThemeType.LABELRANGE){
+        const items = (await STheme.getRangeThemeLabelLayerInfo(_params.currentLayer.name || "")).items
+        value = items?.length || 0
       } else if (themeType === ThemeType.GRIDRANGE) {
         value = await STheme.getGridRangeCount({
           LayerName: _params.currentLayer.name,
@@ -1794,13 +1796,11 @@ async function getTouchProgressInfo(title) {
       })
       break
     case getLanguage(_params.language).Map_Main_Menu.STYLE_FONT_SIZE:{
-      range = [1, 20]  
+      range = [1, 20]
       if(_params.currentLayer.themeType === ThemeType.LABELUNIQUE){
         value = (await STheme.getUniqueThemeLabelLayerInfo(_params.currentLayer.name||"")).labelStyle?.TextSize || 0
-      }else{
-        value = await STheme.getLabelFontSize({
-          LayerName: _params.currentLayer.name,
-        })
+      }else if (_params.currentLayer.themeType === ThemeType.LABELRANGE){
+        value = (await STheme.getRangeThemeLabelLayerInfo(_params.currentLayer.name||"")).labelStyle?.TextSize || 0
       }
       break
     }case getLanguage(_params.language).Map_Main_Menu.THEME_MAX_VISIBLE_SIZE:
@@ -1858,7 +1858,8 @@ function setTouchProgressInfo(title, value) {
       }
       Object.assign(_params, ToolbarModule.getData().themeParams)
       if (themeType === ThemeType.LABELRANGE) {
-        STheme.modifyThemeLabelRangeMap(_params)
+        STheme.modifyRangeThemeLabelLayer(Params.currentLayer.name || "", _params)
+        // STheme.modifyThemeLabelRangeMap(_params)
       } else if (themeType === ThemeType.RANGE) {
         STheme.modifyThemeRangeLayer(Params.currentLayer.name || "", _params)
         // STheme.modifyThemeRangeMap(_params)

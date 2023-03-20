@@ -649,7 +649,7 @@ class TwoPointPositionPage extends React.Component<Props, State> {
 
   renderScanView = () => {
     if(global.Type === ChunkType.MAP_AR_MAPPING){
-      SARMap.measuerPause(true)
+      SARMap.setAction(ARAction.NULL)
     }
     return (
       <QRScan

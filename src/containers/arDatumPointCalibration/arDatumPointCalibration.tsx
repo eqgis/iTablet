@@ -7,6 +7,7 @@ import { RootState } from '@/redux/types'
 import { connect, ConnectedProps } from 'react-redux'
 import SinglePointPositionPage from './SinglePointPositionPage'
 import TwoPointPositionPage from './TwoPointPositionPage'
+import { ARAction } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 
 interface IState {
   close: boolean,
@@ -43,7 +44,7 @@ class DatumPointCalibration extends Component<IProps,IState> {
   /** ar增强定位的扫描界面的渲染 */
   _renderEnhanceScan = () => {
     if(global.Type === ChunkType.MAP_AR_MAPPING){
-      SARMap.measuerPause(true)
+      SARMap.setAction(ARAction.NULL)
     }
     return (
       <AREnhancePosition

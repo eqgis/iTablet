@@ -13,7 +13,7 @@ import { Container } from '../../components'
 import { getThemeAssets } from '../../assets'
 import { color } from '../../styles'
 import { getLanguage } from '../../language'
-import { SMap, SCollectSceneFormView, SARMap, SData} from 'imobile_for_reactnative'
+import { SMap, SCollectSceneFormView, SARMap, SData, SARMeasure} from 'imobile_for_reactnative'
 import { Toast, scaleSize } from '../../utils'
 import { ConstOnline, TouchType } from '../../constants'
 import NavigationService from '../NavigationService'
@@ -408,7 +408,7 @@ class CollectSceneFormSet extends Component {
               value={this.props.showARLabel}
               onValueChange={value => {
                 this.props.setARLabel(value)
-                SARMap.showARLabel(value)
+                SARMeasure.showARLabel(value)
               }}
             />
           </View>

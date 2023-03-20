@@ -8,6 +8,7 @@ import { formatFloat } from '@/utils/CheckUtils'
 import QRScan from './QRScan'
 import { ChunkType } from '@/constants'
 import NavigationService from '../NavigationService'
+import { ARAction } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 
 interface Props {
 	onBack?: () => void
@@ -315,7 +316,7 @@ class SinglePointPositionPage extends React.Component<Props, State> {
 
   renderScanView = () => {
     if(global.Type === ChunkType.MAP_AR_MAPPING){
-      SARMap.measuerPause(true)
+      SARMap.setAction(ARAction.NULL)
     }
     return (
       <QRScan

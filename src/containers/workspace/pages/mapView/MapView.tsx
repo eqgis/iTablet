@@ -1314,13 +1314,7 @@ export default class MapView extends React.Component {
   }
 
   _onLoad = async () => {
-    // if (Platform.OS === 'ios') {
-    //   SARMap.setMeasureMode('arCollect')
-    // }else{
-    // SARMap.showMeasureView(false)
-    // SARMap.showTrackView(false)
-    // SARMap.showPointCloud(false)
-    SARMap.showARLabel(this.props.showARLabel)
+    SARMeasure.showARLabel(this.props.showARLabel)
     // }
     this.initBaseMapPosistion(Dimensions.get('screen'))
     this.onMapLoad?.('ar')
@@ -1553,16 +1547,6 @@ export default class MapView extends React.Component {
       if (global.Type === ChunkType.MAP_AR) {
         await this.props.closeARMap()
         await this.props.setCurrentARLayer()
-      }
-      if (
-        this.isARModule()
-      ) {
-        // if (Platform.OS === 'android') {
-        //   await SARMap.showMeasureView(false)
-        //   await SARMap.showTrackView(false)
-        //   await SARMap.showPointCloud(false)
-        // }
-        // this.props.showAR(false)
       }
       if (global.Type === ChunkType.MAP_PLOTTING) {
         const params = ToolbarModule.getParams()
@@ -2802,7 +2786,7 @@ export default class MapView extends React.Component {
   }
 
   measure = params => {
-    this.listeners = SARMap.addMeasureStatusListeners({
+    SARMap.setARStatusListener({
       infoListener: result => {
         if (result.none) {
           this.onshowLog(result)
@@ -2811,7 +2795,7 @@ export default class MapView extends React.Component {
           this.onshowLog(result)
         }
       },
-      addListener: async result => {
+      onTrackingStateChange: async result => {
         if (result) {
           if (this.state.isfirst) {
             this.setState({ showADD: true, showADDPoint: true, is_showLog: true })
@@ -2948,21 +2932,7 @@ export default class MapView extends React.Component {
         this.point = params.point
         this.isCollect = true
         this.isnew = false
-        // if (Platform.OS === 'android') {
-        //   SARMap.setMeasureMode('NULL')
-        //   SARMap.showMeasureView(true)
-        //   SARMap.showTrackView(true)
-        // } else {
-        //   SARMap.setMeasureMode('arCollect')
-        // }
-        // SARCollector.setCollectMode('TRACK_MANUAL')
-      } else {
-        if (Platform.OS === 'android') {
-          // SARMap.showTrackView(true)
-          // SARMap.showMeasureView(true)
-        }
       }
-      // SARMap.setAction(300)
 
       SARMap.showPointCloud(true)
 
@@ -3001,7 +2971,6 @@ export default class MapView extends React.Component {
         datasourceAlias = 'Label_' + this.props.user.currentUser.userName + '#'
         datasetName = 'Default_Tagging'
       }
-      // SARMap.setMeasurePath(datasourceAlias, datasetName)
       SARCollector.setDataset({datasourceName: datasourceAlias, datasetName: datasetName})
 
       this.setState({ showArMappingButton: true, showSave: this.showSave, isfirst: true, showGenera: true, isDrawing: this.isDrawing, isCollect: this.isCollect, isnew: this.isnew, canContinuousDraw: this.canContinuousDraw, measureType: this.measureType, isMeasure: this.isMeasure })
@@ -4692,8 +4661,8 @@ export default class MapView extends React.Component {
 
   /** 设置 */
   setting = async () => {
-    const isSnap = await SARMap.getIsSnapRange()
-    const tole = await SARMap.getSnapTolerance()
+    const isSnap = await SARMeasure.getIsSnapRange()
+    const tole = await SARMeasure.getSnapTolerance()
     const showGenera = this.state.showGenera
     NavigationService.navigate('CollectSceneFormSet', {
       point: this.point,
@@ -4709,7 +4678,7 @@ export default class MapView extends React.Component {
       tole: tole,
       showGenera: showGenera,
       autoCatch: value => {
-        SARMap.setIsSnapRange(value)
+        SARMeasure.setIsSnapRange(value)
       },
       setTolerance: value => {
         if (value > 100) {
@@ -4718,7 +4687,7 @@ export default class MapView extends React.Component {
         if (value < 0) {
           value = 0
         }
-        SARMap.setSnapTolerance(value)
+        SARMeasure.setSnapTolerance(value)
       },
       showGeneracb: value => {
         this.setState({ showGenera: value })
@@ -4744,14 +4713,14 @@ export default class MapView extends React.Component {
 
   /** 量算的设置（界面传入数据有区别）add jiakai */
   Measuresetting = async () => {
-    const isSnap = await SARMap.getIsSnapRange()
-    const tole = await SARMap.getSnapTolerance()
+    const isSnap = await SARMeasure.getIsSnapRange()
+    const tole = await SARMeasure.getSnapTolerance()
     NavigationService.navigate('CollectSceneFormSet', {
       isMeasure: true,
       isSnap: isSnap,
       tole: tole,
       autoCatch: value => {
-        SARMap.setIsSnapRange(value)
+        SARMeasure.setIsSnapRange(value)
       },
       setTolerance: value => {
         NavigationService.goBack()
@@ -4761,7 +4730,7 @@ export default class MapView extends React.Component {
         if (value < 0) {
           value = 0
         }
-        SARMap.setSnapTolerance(value)
+        SARMeasure.setSnapTolerance(value)
       },
     })
   }
@@ -4769,7 +4738,7 @@ export default class MapView extends React.Component {
   _onDatumPointClose = () => {
     this.props.setDatumPoint(false)
     if (global.Type === ChunkType.MAP_AR_MAPPING) {
-      SARMap.measuerPause(false)
+      SARMap.setAction(ARAction.MEASURE)
     }
     global.haslocation = true
   }
@@ -4778,16 +4747,12 @@ export default class MapView extends React.Component {
     SARMap.setPosition(Number(point.x), Number(point.y), Number(point.h))
     this.props.setDatumPoint(false)
     if (global.Type === ChunkType.MAP_AR_MAPPING) {
-      SARMap.measuerPause(false)
+      SARMap.setAction(ARAction.MEASURE)
     }
     global.haslocation = true
   }
 
   ARMappingHeaderBack = () => {
-    //todo 区分采集和测量
-    // SARMap.stopLocation()
-    // SARMap.cancelCurrent()
-    // SARMap.clearMeasure()
     if(this.isMeasure) {
       SARMeasure.cancel()
       SARMeasure.clear()
@@ -4797,15 +4762,7 @@ export default class MapView extends React.Component {
       SARCollector.clear()
       SARCollector.setCollectMode('NULL')
     }
-    this.listeners && this.listeners.infoListener?.remove()
-    this.listeners && this.listeners.addListener?.remove()
-    // SARMap.showMeasureView(false)
-    // SARMap.showTrackView(false)
-    // SARMap.showPointCloud(false)
-    // if (Platform.OS === 'android') {
-    //   SARMap.stopTracking()
-    // }
-    // }
+    SARMap.setARStatusListener()
     this.setState({ showArMappingButton: false, isTrack: false, showCurrentHeightView: false })
     this.showFullMap(false)
   }
@@ -4875,15 +4832,9 @@ export default class MapView extends React.Component {
   /** 添加 **/
   addNewRecord = async () => {
     if (this.state.isCollect) {
-      // if (Platform.OS === 'ios') {
-      //   await SARMap.draw()
-      // } else {
-      //   SARMap.addTrackPoint()
-      // }
       SARCollector.addTrackPoint()
       this.setState({ showADDPoint: false, isfirst: false })
     } else {
-      // SARMap.draw()
       if(this.isMeasure) {
         SARMeasure.addHitPoint()
       } else {

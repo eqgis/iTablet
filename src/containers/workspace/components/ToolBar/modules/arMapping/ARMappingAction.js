@@ -30,7 +30,7 @@ function collectSceneForm() {
     // let _point = await SMap.getCurrentLocation()
     // let point = { x: _point.longitude, y: _point.latitude }
     // global.MeasureCollectData.point = point
-    SARMap.changeTrackingMode(1)
+    // SARMap.changeTrackingMode(1)
     global.toolBox && global.toolBox.setVisible(false,undefined,{isExistFullMap:false,measureType:'arCollect'})
 
     // let time = await SCollectSceneFormView.getSystemTime()

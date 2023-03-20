@@ -33,30 +33,31 @@ import NavigationService from '../../../../containers/NavigationService'
 import ToolbarModule from '../ToolBar/modules/ToolbarModule'
 import ARMeasureAction from '../ToolBar/modules/arMeasure/ARMeasureAction'
 
+interface Props {
+  language: any,
+  device: any,
+  showSave: any,
+  showSwitch: () => {},//控制二级菜单弹起时是否显示添加按钮等
+  isDrawing: boolean,
+  isMeasure: boolean,
+  isCollect: boolean,
+  canContinuousDraw: boolean,
+  user: unknown,
+  nav: unknown,
+  currentLayer: SMap.LayerInfo,
+  measureType: any,
+  setCurrentHeight: () => {},
+  isnew: () => {},//判断是否新建采集
+  isTrack: () => {},//判断是轨迹采集还是打点采集
+  showCurrentHeightView: () => {},
+}
 
 //ar测量底部按钮
-export default class ArMappingButton extends React.Component {
-  props: {
-    language: any,
-    device: any,
-    showSave: any,
-    showSwitch: () => {},//控制二级菜单弹起时是否显示添加按钮等
-    isDrawing: any,
-    isMeasure: any,
-    isCollect: any,
-    canContinuousDraw: any,
-    user: Object,
-    nav: Object,
-    currentLayer: SMap.LayerInfo,
-    measureType: any,
-    setCurrentHeight: () => {},
-    isnew: () => {},//判断是否新建采集
-    isTrack: () => {},//判断是轨迹采集还是打点采集
-    showCurrentHeightView: () => {},
-  }
+export default class ArMappingButton extends React.Component<Props> {
 
+  trackMode: 'track_auto' | 'track_manual' | undefined
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
 
     this.isDrawing = this.props.isDrawing
@@ -71,7 +72,7 @@ export default class ArMappingButton extends React.Component {
         key: 'replease',
         title: getLanguage(global.language).Map_Main_Menu
           .MAP_AR_AI_ASSISTANT_NEWDATA,
-        action: () => { this.switchStatus() },
+        action: () => { this.starCollect() },
         size: 'large',
         image: getThemeAssets().ar.toolbar.icon_new,
       },
@@ -547,11 +548,16 @@ export default class ArMappingButton extends React.Component {
     Toast.show(getLanguage(global.language).Prompt.SAVE_SUCCESSFULLY)
   }
 
-  switchStatus = () => {
-    if (Platform.OS === 'android') {
-      SARMap.startTracking()
-    }else{
-      SARMap.draw()
+  starCollect = () => {
+    // if (Platform.OS === 'android') {
+    //   SARMap.startTracking()
+    // }else{
+    //   SARMap.draw()
+    // }
+    if(this.trackMode === 'track_auto') {
+      SARCollector.setCollectMode('TRACK_AUTO')
+    } else {
+      SARCollector.setCollectMode('TRACK_MANUAL')
     }
     this.props.isnew()
     Toast.show(
@@ -561,28 +567,41 @@ export default class ArMappingButton extends React.Component {
   }
 
   clearTrack = () => {
-    if (Platform.OS === 'ios') {
-      this.clearAll()
-    }else{
-      SARMap.clearTracking()
+    // if (Platform.OS === 'ios') {
+    //   this.clearAll()
+    // }else{
+    //   SARMap.clearTracking()
+    // }
+    SARCollector.clear()
+  }
+
+  clearAllTracking = () => {
+    if(this.state.measureType==='arCollect'){
+      // SARMap.clearAllTracking()
+      SARCollector.clear()
     }
   }
 
   saveline = async () => {
     try {
-      if (Platform.OS === 'ios') {
-        // this.save()
-        SARMap.setMeasurePath(this.props.currentLayer.datasourceAlias, this.props.currentLayer.datasetName)
-        const result = await SARMap.saveTrackingLine()
-        if (!result) {
-          Toast.show(getLanguage(global.language).Prompt.SAVE_LINE_FAIL)
-        }
-      }else{
-        await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
-          this.props.currentLayer.datasetName)
-        const result = await SARMap.saveTrackingLine()
+      SARCollector.setDataset({datasourceName: this.props.currentLayer.datasourceAlias, datasetName: this.props.currentLayer.datasetName})
+      const result = await SARCollector.saveTrackingLine()
+      if (!result) {
         Toast.show(result ? getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(global.language).Prompt.SAVE_FAILED)
       }
+      // if (Platform.OS === 'ios') {
+      //   // this.save()
+      //   SARMap.setMeasurePath(this.props.currentLayer.datasourceAlias, this.props.currentLayer.datasetName)
+      //   const result = await SARMap.saveTrackingLine()
+      //   if (!result) {
+      //     Toast.show(getLanguage(global.language).Prompt.SAVE_LINE_FAIL)
+      //   }
+      // }else{
+      //   await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
+      //     this.props.currentLayer.datasetName)
+      //   const result = await SARMap.saveTrackingLine()
+      //   Toast.show(result ? getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(global.language).Prompt.SAVE_FAILED)
+      // }
     } catch (e) {
       global.Loading.setLoading(false)
       Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
@@ -591,19 +610,24 @@ export default class ArMappingButton extends React.Component {
 
   savepoint = async () => {
     try {
-      if (Platform.OS === 'ios') {
-        // this.save()
-        SARMap.setMeasurePath(this.props.currentLayer.datasourceAlias, this.props.currentLayer.datasetName)
-        const result = await SARMap.saveTrackingPoint()
-        if (!result) {
-          Toast.show(getLanguage(global.language).Prompt.SAVE_FAIL_POINT)
-        }
-      }else{
-        await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
-          this.props.currentLayer.datasetName)
-        const result = await SARMap.saveTrackingPoint()
+      SARCollector.setDataset({datasourceName: this.props.currentLayer.datasourceAlias, datasetName: this.props.currentLayer.datasetName})
+      const result = await SARCollector.saveTrackingPoint()
+      if (!result) {
         Toast.show(result ? getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(global.language).Prompt.SAVE_FAILED)
       }
+      // if (Platform.OS === 'ios') {
+      //   // this.save()
+      //   SARMap.setMeasurePath(this.props.currentLayer.datasourceAlias, this.props.currentLayer.datasetName)
+      //   const result = await SARMap.saveTrackingPoint()
+      //   if (!result) {
+      //     Toast.show(getLanguage(global.language).Prompt.SAVE_FAIL_POINT)
+      //   }
+      // }else{
+      //   await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
+      //     this.props.currentLayer.datasetName)
+      //   const result = await SARMap.saveTrackingPoint()
+      //   Toast.show(result ? getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(global.language).Prompt.SAVE_FAILED)
+      // }
     } catch (e) {
       global.Loading.setLoading(false)
       Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
@@ -612,19 +636,24 @@ export default class ArMappingButton extends React.Component {
 
   saveRegion = async () => {
     try {
-      if (Platform.OS === 'ios') {
-        // this.save()
-        SARMap.setMeasurePath(this.props.currentLayer.datasourceAlias, this.props.currentLayer.datasetName)
-        const result = await SARMap.saveTrackingRegion()
-        if (!result) {
-          Toast.show(getLanguage(global.language).Prompt.SAVE_REGION_FAIL)
-        }
-      } else {
-        await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
-          this.props.currentLayer.datasetName)
-        const result = await SARMap.saveTrackingRegion()
+      SARCollector.setDataset({datasourceName: this.props.currentLayer.datasourceAlias, datasetName: this.props.currentLayer.datasetName})
+      const result = await SARCollector.saveTrackingRegion()
+      if (!result) {
         Toast.show(result ? getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(global.language).Prompt.SAVE_FAILED)
       }
+      // if (Platform.OS === 'ios') {
+      //   // this.save()
+      //   SARMap.setMeasurePath(this.props.currentLayer.datasourceAlias, this.props.currentLayer.datasetName)
+      //   const result = await SARMap.saveTrackingRegion()
+      //   if (!result) {
+      //     Toast.show(getLanguage(global.language).Prompt.SAVE_REGION_FAIL)
+      //   }
+      // } else {
+      //   await SARMap.setTrackingLayer(this.props.currentLayer.datasourceAlias,
+      //     this.props.currentLayer.datasetName)
+      //   const result = await SARMap.saveTrackingRegion()
+      //   Toast.show(result ? getLanguage(global.language).Map_Main_Menu.MAP_AR_AI_SAVE_SUCCESS : getLanguage(global.language).Prompt.SAVE_FAILED)
+      // }
     } catch (e) {
       global.Loading.setLoading(false)
       Toast.show(getLanguage(global.language).Prompt.SAVE_FAILED)
@@ -634,11 +663,13 @@ export default class ArMappingButton extends React.Component {
   /** 轨迹式 **/
   trackCollect = () => {
     try {
-      if (Platform.OS === 'android') {
-        SARMap.changeTrackingMode(0)
-      } else {
-        SARMap.setMeasureMode('arCollect_auto')
-      }
+      this.trackMode = 'track_auto'
+      // if (Platform.OS === 'android') {
+      //   SARMap.changeTrackingMode(0)
+      // } else {
+      //   SARMap.setMeasureMode('arCollect_auto')
+      // }
+      // SARCollector.setCollectMode('TRACK_AUTO')
       this.props.isTrack(true)
       this.setState({ data: this.collectdata })
     } catch (e) {
@@ -649,11 +680,13 @@ export default class ArMappingButton extends React.Component {
   /** 打点式 **/
   pointCollect = () => {
     try {
-      if (Platform.OS === 'android') {
-        SARMap.changeTrackingMode(1)
-      }else{
-        SARMap.setMeasureMode('arCollect')
-      }
+      this.trackMode = 'track_manual'
+      // if (Platform.OS === 'android') {
+      //   SARMap.changeTrackingMode(1)
+      // }else{
+      //   SARMap.setMeasureMode('arCollect')
+      // }
+      // SARCollector.setCollectMode('TRACK_MANUAL')
       this.props.isTrack(false)
       this.setState({data:this.collectdata})
     } catch (e) {
@@ -662,13 +695,15 @@ export default class ArMappingButton extends React.Component {
   }
 
   arCollect = () => {
+    console.log('zxt', 'arCollect')
     // SARMap.clearMeasure()
-    if (Platform.OS === 'android') {
-      SARMap.setMeasureMode('NULL')
-      SARMap.showMeasureView(true)
-      SARMap.showTrackView(true)
-      SARMap.changeTrackingMode(1)
-    }
+    // if (Platform.OS === 'android') {
+    //   SARMap.setMeasureMode('NULL')
+    //   SARMap.showMeasureView(true)
+    //   SARMap.showTrackView(true)
+    //   SARMap.changeTrackingMode(1)
+    // }
+    this.trackMode = 'track_manual'
     this.props.isTrack(false)
     this.props.showSwitch(false)
     this.setState({ isCollect: true, data: this.collectdata, showSwitch: true })
@@ -676,15 +711,14 @@ export default class ArMappingButton extends React.Component {
     global.toolBox && global.toolBox.measure({ isExistFullMap: false, measureType: 'arCollect' ,haslocation:true})
   }
 
+
   drawPoint = async () => {
-    if(this.state.measureType==='arCollect'){
-      SARMap.clearAllTracking()
-    }
-    SARMap.stopLocation()
-    if (Platform.OS === 'android') {
-      SARMap.showMeasureView(true)
-      SARMap.showTrackView(true)
-    }
+    this.clearAllTracking()
+    // SARMap.stopLocation()
+    // if (Platform.OS === 'android') {
+    //   SARMap.showMeasureView(true)
+    //   SARMap.showTrackView(true)
+    // }
     this.props.isTrack(false)
     this.isDrawing = true
     SARCollector.setCollectMode('DRAW_POINT')
@@ -748,14 +782,12 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawLine = async () => {
-    if(this.state.measureType==='arCollect'){
-      SARMap.clearAllTracking()
-    }
-    SARMap.stopLocation()
-    if (Platform.OS === 'android') {
-      SARMap.showMeasureView(true)
-      SARMap.showTrackView(true)
-    }
+    this.clearAllTracking()
+    // SARMap.stopLocation()
+    // if (Platform.OS === 'android') {
+    //   SARMap.showMeasureView(true)
+    //   SARMap.showTrackView(true)
+    // }
     this.props.isTrack(false)
     this.isDrawing = true
     SARCollector.setCollectMode('DRAW_LINE')
@@ -818,14 +850,12 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawPolygon = async () => {
-    if(this.state.measureType==='arCollect'){
-      SARMap.clearAllTracking()
-    }
-    SARMap.stopLocation()
-    if (Platform.OS === 'android') {
-      SARMap.showMeasureView(true)
-      SARMap.showTrackView(true)
-    }
+    this.clearAllTracking()
+    // SARMap.stopLocation()
+    // if (Platform.OS === 'android') {
+    //   SARMap.showMeasureView(true)
+    //   SARMap.showTrackView(true)
+    // }
     this.props.isTrack(false)
     this.isDrawing = true
     SARCollector.setCollectMode('DRAW_AREA')
@@ -888,14 +918,12 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawRectangle = async () => {
-    if(this.state.measureType==='arCollect'){
-      SARMap.clearAllTracking()
-    }
-    SARMap.stopLocation()
-    if (Platform.OS === 'android') {
-      SARMap.showMeasureView(true)
-      SARMap.showTrackView(true)
-    }
+    this.clearAllTracking()
+    // SARMap.stopLocation()
+    // if (Platform.OS === 'android') {
+    //   SARMap.showMeasureView(true)
+    //   SARMap.showTrackView(true)
+    // }
     this.props.isTrack(false)
     this.isDrawing = true
     SARCollector.setCollectMode('DRAW_RECTANGLE')
@@ -957,14 +985,12 @@ export default class ArMappingButton extends React.Component {
   }
 
   drawCircular = async () => {
-    if(this.state.measureType==='arCollect'){
-      SARMap.clearAllTracking()
-    }
-    SARMap.stopLocation()
-    if (Platform.OS === 'android') {
-      SARMap.showMeasureView(true)
-      SARMap.showTrackView(true)
-    }
+    this.clearAllTracking()
+    // SARMap.stopLocation()
+    // if (Platform.OS === 'android') {
+    //   SARMap.showMeasureView(true)
+    //   SARMap.showTrackView(true)
+    // }
     this.props.isTrack(false)
     this.isDrawing = true
     SARCollector.setCollectMode('DRAW_CIRCLE')

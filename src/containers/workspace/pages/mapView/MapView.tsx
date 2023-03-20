@@ -1317,9 +1317,9 @@ export default class MapView extends React.Component {
     // if (Platform.OS === 'ios') {
     //   SARMap.setMeasureMode('arCollect')
     // }else{
-    SARMap.showMeasureView(false)
-    SARMap.showTrackView(false)
-    SARMap.showPointCloud(false)
+    // SARMap.showMeasureView(false)
+    // SARMap.showTrackView(false)
+    // SARMap.showPointCloud(false)
     SARMap.showARLabel(this.props.showARLabel)
     // }
     this.initBaseMapPosistion(Dimensions.get('screen'))
@@ -1557,11 +1557,11 @@ export default class MapView extends React.Component {
       if (
         this.isARModule()
       ) {
-        if (Platform.OS === 'android') {
-          await SARMap.showMeasureView(false)
-          await SARMap.showTrackView(false)
-          await SARMap.showPointCloud(false)
-        }
+        // if (Platform.OS === 'android') {
+        //   await SARMap.showMeasureView(false)
+        //   await SARMap.showTrackView(false)
+        //   await SARMap.showPointCloud(false)
+        // }
         // this.props.showAR(false)
       }
       if (global.Type === ChunkType.MAP_PLOTTING) {
@@ -2948,19 +2948,21 @@ export default class MapView extends React.Component {
         this.point = params.point
         this.isCollect = true
         this.isnew = false
-        if (Platform.OS === 'android') {
-          SARMap.setMeasureMode('NULL')
-          SARMap.showMeasureView(true)
-          SARMap.showTrackView(true)
-        } else {
-          SARMap.setMeasureMode('arCollect')
-        }
+        // if (Platform.OS === 'android') {
+        //   SARMap.setMeasureMode('NULL')
+        //   SARMap.showMeasureView(true)
+        //   SARMap.showTrackView(true)
+        // } else {
+        //   SARMap.setMeasureMode('arCollect')
+        // }
+        // SARCollector.setCollectMode('TRACK_MANUAL')
       } else {
         if (Platform.OS === 'android') {
-          SARMap.showTrackView(true)
-          SARMap.showMeasureView(true)
+          // SARMap.showTrackView(true)
+          // SARMap.showMeasureView(true)
         }
       }
+      // SARMap.setAction(300)
 
       SARMap.showPointCloud(true)
 
@@ -4783,24 +4785,26 @@ export default class MapView extends React.Component {
 
   ARMappingHeaderBack = () => {
     //todo 区分采集和测量
-    SARMap.stopLocation()
+    // SARMap.stopLocation()
     // SARMap.cancelCurrent()
     // SARMap.clearMeasure()
     if(this.isMeasure) {
       SARMeasure.cancel()
       SARMeasure.clear()
+      SARMeasure.setMeasureMode('NULL')
     } else {
       SARCollector.cancel()
       SARCollector.clear()
+      SARCollector.setCollectMode('NULL')
     }
     this.listeners && this.listeners.infoListener?.remove()
     this.listeners && this.listeners.addListener?.remove()
-    SARMap.showMeasureView(false)
-    SARMap.showTrackView(false)
-    SARMap.showPointCloud(false)
-    if (Platform.OS === 'android') {
-      SARMap.stopTracking()
-    }
+    // SARMap.showMeasureView(false)
+    // SARMap.showTrackView(false)
+    // SARMap.showPointCloud(false)
+    // if (Platform.OS === 'android') {
+    //   SARMap.stopTracking()
+    // }
     // }
     this.setState({ showArMappingButton: false, isTrack: false, showCurrentHeightView: false })
     this.showFullMap(false)
@@ -4871,11 +4875,12 @@ export default class MapView extends React.Component {
   /** 添加 **/
   addNewRecord = async () => {
     if (this.state.isCollect) {
-      if (Platform.OS === 'ios') {
-        await SARMap.draw()
-      } else {
-        SARMap.addTrackPoint()
-      }
+      // if (Platform.OS === 'ios') {
+      //   await SARMap.draw()
+      // } else {
+      //   SARMap.addTrackPoint()
+      // }
+      SARCollector.addTrackPoint()
       this.setState({ showADDPoint: false, isfirst: false })
     } else {
       // SARMap.draw()

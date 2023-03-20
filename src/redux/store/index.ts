@@ -29,6 +29,7 @@ const persistConfig: PersistConfig<any, any, any, any> = {
     'armap',
     'mapModules',
     'scenes',
+    'location',
   ],
   blacklist: [
     'nav',

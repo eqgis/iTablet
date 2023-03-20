@@ -2219,6 +2219,12 @@ export const language_cn = {
   LOADING_POINT_NAME:"加载点名", // Loading point name
   CHECK_LITE_RTK_DEVICE_IS_CONNECTED:"请确认千寻设备是否处于可连接状态", // Pease confirm that the Lite RTK device is connected
 
+  LOCATION_SETTING: '定位设置',
+  DEVICE_TYPE: '设备类型',
+  CONNECTION_MODE: "连接模式",
+  PAIRED_BT_DEVICE_LIST:"我的设备",
+  OTHER_BT_DEVICE_LIST:"其他设备",
+
   // 许可
   LICENSE: "许可",
   LICENSE_CURRENT: "当前许可",

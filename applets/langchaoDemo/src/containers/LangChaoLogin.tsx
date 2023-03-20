@@ -123,8 +123,9 @@ class LangChaoLogin extends Component<Props, State> {
           // 2. 激活许可
           console.warn(`\n 登录成功,即将激活许可`)
           printLog(`\n 登录成功,即将激活许可`)
-          const activeLicenseResult =  await SMap.activateLicense('74QC6-4SCXA-XD6YG-I626V-9L91C')
-          console.warn(`\n 登录成功,激活许可 ${activeLicenseResult}`)
+          const activeKey = '79B28-29Q19-71690-SM56W-NP5JP'
+          const activeLicenseResult =  await SMap.activateLicense(activeKey)
+          console.warn(`\n 登录成功,激活许可 ${activeLicenseResult}${activeKey}`)
           printLog(`\n 登录成功,激活许可 ${activeLicenseResult}`)
 
           await this.getUserData()

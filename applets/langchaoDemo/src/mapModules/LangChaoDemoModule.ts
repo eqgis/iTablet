@@ -164,7 +164,7 @@ export default class LangChaoDemoModule extends Module {
       // 2. 激活许可
       console.warn(`\n 打开地图,用户登录,即将激活许可`)
       langchaoServer.printLog(`\n 打开地图,用户登录,即将激活许可`)
-      const activateResult = await SMap.activateLicense('V3RRN-DF1K1-B77XK-VX721-240C4')
+      const activateResult = await SMap.activateLicense('79B28-29Q19-71690-SM56W-NP5JP')
       console.warn(`\n 打开地图,用户登录,激活许可 onMapOpenSuccess : ${activateResult}`)
       langchaoServer.printLog(`\n 打开地图,用户登录,激活许可 onMapOpenSuccess : ${activateResult}`)
 

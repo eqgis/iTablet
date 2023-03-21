@@ -6,9 +6,12 @@ import { NtripMountPoint, PositionAccuracyType } from "imobile_for_reactnative/N
 
 // 类型定义
 // --------------------------------------------------
+
+export type PositionServerTypes = 'NTRIPV1' | 'qianxun' | 'huace' | 'China Mobile'
+
 export interface EssentialInfo {
   /** 协议 */
-  agreement: 'NTRIPV1' | "China Mobile"
+  agreement: string // PositionServerTypes
   address: string
   port: string
   userName: string
@@ -30,6 +33,8 @@ const SET_POSITION_DEVICE_MANUFACTURER = 'SET_POSITION_DEVICE_MANUFACTURER'
 const SET_POSITION_DEVICE_TYPE = "SET_POSITION_DEVICE_TYPE"
 const SET_POSITION_DEVICE_CONNECTION_MODE = "SET_POSITION_DEVICE_CONNECTION_MODE"
 const SET_BLUETOOTH_DEVIC_INFO = "SET_BLUETOOTH_DEVIC_INFO"
+const SET_POSITION_SERVER_TYPE = "SET_POSITION_SERVER_TYPE"
+const SET_POSITION_AGREEMENT_TYPE = "SET_POSITION_AGREEMENT_TYPE"
 
 
 // Actions Type
@@ -73,9 +78,18 @@ export interface BluetoothDeviceInfoType {
 }
 export interface BluetoothDeviceInfoAction {
   type: typeof SET_BLUETOOTH_DEVIC_INFO
-  payload: BluetoothDeviceInfoType
+  payload: BluetoothDeviceInfoType | null
 }
 
+export interface PositionServerTypeAction {
+  type: typeof SET_POSITION_SERVER_TYPE
+  payload: PositionServerTypes
+}
+
+export interface PositionAgreementTypeAction {
+  type: typeof SET_POSITION_AGREEMENT_TYPE
+  payload: string
+}
 
 
 // Actions
@@ -198,11 +212,43 @@ export const setBluetoothDeviceInfo = (
   }
 }
 
+/** 设置蓝牙设备定位的服务类型 */
+export const setPositionServerType = (
+  positionServerType: PositionServerTypes
+) => async (
+  dispatch: (arg0: PositionServerTypeAction) => void
+) => {
+  try {
+    await dispatch({
+      type: SET_POSITION_SERVER_TYPE,
+      payload: positionServerType,
+    })
+  } catch (error) {
+    // to do
+  }
+}
+
+/** 设置蓝牙设备定位的协议类型 */
+export const setPositionAgreementType = (
+  agreementType: string
+) => async (
+  dispatch: (arg0: PositionAgreementTypeAction) => void
+) => {
+  try {
+    await dispatch({
+      type: SET_POSITION_AGREEMENT_TYPE,
+      payload: agreementType,
+    })
+  } catch (error) {
+    // to do
+  }
+}
+
 // 初始值
 // --------------------------------------------------
 const initialState = fromJS({
   essentialInfo:{
-    agreement: 'NTRIPV1',
+    agreement: 'ntrip',
     address: '',
     port: '',
     userName: '',
@@ -217,9 +263,13 @@ const initialState = fromJS({
   deviceManufacturer: '当前设备',
   deviceType: 'gps',
   /** 蓝牙是否打开 */
-  isOpenBlutooth: 'true',
+  isOpenBlutooth: true,
   /** 连接的蓝牙设备  BluetoothDeviceInfoType 类型 */
   bluetoohDevice: null,
+  /** 服务类型 */
+  positionServerType: 'NTRIPV1',
+  /** 协议类型 */
+  positionAgreementType: 'ntripv1',
 })
 
 
@@ -252,6 +302,12 @@ export default handleActions(
     },
     [`${SET_BLUETOOTH_DEVIC_INFO}`]: (state: any, { payload }) => {
       return state.setIn(['bluetoohDevice'], fromJS(payload))
+    },
+    [`${SET_POSITION_SERVER_TYPE}`]: (state: any, { payload }) => {
+      return state.setIn(['positionServerType'], fromJS(payload))
+    },
+    [`${SET_POSITION_AGREEMENT_TYPE}`]: (state: any, { payload }) => {
+      return state.setIn(['positionAgreementType'], fromJS(payload))
     },
 
     [REHYDRATE]: (state, { payload }) => {

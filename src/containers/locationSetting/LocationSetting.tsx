@@ -7,7 +7,7 @@ import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import color from '../../styles/color'
 import { getImage } from '@/assets'
-import { LocationConnectionParam } from '../BluetoothDevices/BluetoothDevices'
+// import { LocationConnectionParam } from '../BluetoothDevices/BluetoothDevices'
 import { TSNonNullExpression } from '@babel/types'
 import { Picker } from '@react-native-picker/picker'
 import { PositionAccuracyType } from 'imobile_for_reactnative/NativeModule/interfaces/SLocation'
@@ -18,8 +18,8 @@ const radio_off = require('../../assets/public/radio_select_no.png')
 
 interface Props {
   navigation: any
-  peripheralDevice: LocationConnectionParam
-  setDevice: (param: LocationConnectionParam) => void
+  peripheralDevice: SLocation.LocationConnectionParam
+  setDevice: (param: SLocation.LocationConnectionParam) => void
   positionAccuracy: PositionAccuracyType
   setPositionAccuracy: (type: PositionAccuracyType) => void
   deviceManufacturer: DeviceManufacturer
@@ -33,8 +33,8 @@ interface Props {
 }
 
 interface State {
-  devices: LocationConnectionParam[]
-  currentOption: LocationConnectionParam
+  devices: SLocation.LocationConnectionParam[]
+  currentOption: SLocation.LocationConnectionParam
   // showSearch: boolean
   // searchNotify: string
   distanceLocation: boolean
@@ -58,7 +58,7 @@ interface RowType {
 
 
 class LocationSetting extends React.Component<Props, State> {
-  prevOption: LocationConnectionParam
+  prevOption: SLocation.LocationConnectionParam
 
   positionAccuracyArray: Array<positionAccuracyItemType> = [
     {label: "米级", value:1},
@@ -72,7 +72,7 @@ class LocationSetting extends React.Component<Props, State> {
     5: "亚米级",
   }
 
-  ManufacturerToBrand = {
+  ManufacturerToBrand: {[key: string]:'other' | 'situoli' | 'woncan' | 'mijiaH20'} = {
     '当前设备': 'other',
     '华测': 'mijiaH20',
     '思拓力': 'situoli',
@@ -159,7 +159,7 @@ class LocationSetting extends React.Component<Props, State> {
     // }
 
 
-    
+
 
 
     // 直接将redux里的值拿给原生, 选择好的设备先放在了redux里，所以保存的时候直接修改原生的设备就好了
@@ -171,7 +171,7 @@ class LocationSetting extends React.Component<Props, State> {
 
 
     // 蓝牙打开和选择了准备连接的蓝牙设备
-    if(this.props.isOpenBlutooth && this.props.bluetoohDevice) {
+    if(this.props.isOpenBlutooth && this.props.bluetoohDevice && this.props.deviceManufacturer !== '当前设备') {
       tempDevice = {
         type: 'bluetooth',
         mac: this.props.bluetoohDevice.address,
@@ -195,19 +195,24 @@ class LocationSetting extends React.Component<Props, State> {
     //   tempDevice = this.props.peripheralDevice
     // }
     tempDevice && SLocation.changeLocationDevice(tempDevice).then(() => {
-      let toastText = getLanguage().CHANGE_DEVICE_LOCAL
-      switch (this.props.peripheralDevice.type) {
-        case "local":
-          toastText = getLanguage().CHANGE_DEVICE_LOCAL
-          break
-        case "external" :
-          toastText = getLanguage().CHANGE_DEVICE_EXTERNAL
-          break
-        case "bluetooth" :
-          toastText = getLanguage().CHANGE_DEVICE_BLUETOOTH
-          break
+      if(tempDevice) {
+        // 设置成功了，将redux里的数据也更新一下
+        this.props.setDevice(tempDevice)
+        let toastText = getLanguage().CHANGE_DEVICE_LOCAL
+        switch (tempDevice.type) {
+          case "local":
+            toastText = getLanguage().CHANGE_DEVICE_LOCAL
+            break
+          case "external" :
+            toastText = getLanguage().CHANGE_DEVICE_EXTERNAL
+            break
+          case "bluetooth" :
+            toastText = getLanguage().CHANGE_DEVICE_BLUETOOTH
+            break
+        }
+        Toast.show(toastText)
       }
-      Toast.show(toastText)
+
     })
     NavigationService.goBack()
   }
@@ -327,29 +332,7 @@ class LocationSetting extends React.Component<Props, State> {
         })}
         {this.renderSeperator()}
 
-        {this.renderRowItem({
-          title:getLanguage(global.language).Profile.DEVICE_TYPE,
-          value: this.props.deviceType,
-          action: this.gotoChangeDeviceTypePage,
-        })}
-        {this.renderSeperator()}
 
-
-        {/* 连接模式 */}
-        {this.renderRowItem({
-          title:getLanguage(global.language).Profile.CONNECTION_MODE,
-          value: this.props.isOpenBlutooth ? getLanguage(global.language).Profile.SETTING_LOCATION_BLUETOOTH : undefined,
-          action: this.gotoDeviceConnectionMode,
-        })}
-        {this.renderSeperator()}
-
-        {/* 精度选择 */}
-        {this.renderRowItem({
-          title:getLanguage(global.language).Profile.POSITION_ACCURACY,
-          value: this.positionAccuracyName[this.props.positionAccuracy],
-          action: this.gotoLocationAccuracy,
-        })}
-        {this.renderSeperator()}
 
       </View>
     )
@@ -413,13 +396,45 @@ class LocationSetting extends React.Component<Props, State> {
   renderOtherSetting = () => {
     return(
       <View style={{ flexDirection: 'column' }}>
-        <TouchableOpacity
+
+        {this.renderRowItem({
+          title:getLanguage(global.language).Profile.DEVICE_TYPE,
+          value: this.props.deviceType,
+          action: this.gotoChangeDeviceTypePage,
+        })}
+        {this.renderSeperator()}
+
+
+        {/* 连接模式 */}
+        {this.renderRowItem({
+          title:getLanguage(global.language).Profile.CONNECTION_MODE,
+          value: this.props.isOpenBlutooth ? getLanguage(global.language).Profile.SETTING_LOCATION_BLUETOOTH : undefined,
+          action: this.gotoDeviceConnectionMode,
+        })}
+        {this.renderSeperator()}
+
+        {/* 精度选择 */}
+        {this.renderRowItem({
+          title:getLanguage(global.language).Profile.POSITION_ACCURACY,
+          value: this.positionAccuracyName[this.props.positionAccuracy],
+          action: this.gotoLocationAccuracy,
+        })}
+        {this.renderSeperator()}
+
+        {/* 差分服务 */}
+        {this.renderRowItem({
+          title:getLanguage(global.language).Profile.NTRIP_SETTING,
+          action: this.gotoNtripSettingPage,
+        })}
+        {this.renderSeperator()}
+
+        {/* <TouchableOpacity
           style={styles.itemView}
           onPress={this.gotoNtripSettingPage}
         >
           <Text style={styles.text}>{getLanguage(global.language).Profile.NTRIP_SETTING}</Text>
         </TouchableOpacity>
-        {this.renderSeperator()}
+        {this.renderSeperator()} */}
 
         {/* <View
           style={[styles.itemView]}
@@ -531,8 +546,9 @@ class LocationSetting extends React.Component<Props, State> {
         <View style={styles.container}>
           {/* {this.renderList01()} */}
           {this.renderList()}
+          {this.props.deviceManufacturer !== '当前设备' && this.renderOtherSetting()}
           {this.renderLocation()}
-          {this.props.peripheralDevice.type === 'bluetooth' && this.renderOtherSetting()}
+          {/* {this.props.peripheralDevice.type === 'bluetooth' && this.renderOtherSetting()} */}
           {/* {this.state.showSearch && this.renderSearch()} */}
         </View>
       </Container>

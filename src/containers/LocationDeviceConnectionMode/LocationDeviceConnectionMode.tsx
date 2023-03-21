@@ -2,9 +2,9 @@
  * 设备厂家页面  设计里的定位设备
  */
 import React, { Component } from "react"
-import { Text, Image, TouchableOpacity, ScrollView, Switch, View, FlatList } from 'react-native'
+import { Text, Image, TouchableOpacity, ScrollView, Switch, View, FlatList, ActivityIndicator, Platform } from 'react-native'
 import Container from '../../components/Container'
-import { dp} from '../../utils'
+import { dp, Toast} from '../../utils'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import { BluetoothDeviceInfoType, DeviceManufacturer, DeviceType } from '@/redux/models/location'
@@ -13,6 +13,7 @@ import { MainStackScreenNavigationProps } from "@/types"
 import { LocationConnectionParam } from "imobile_for_reactnative/NativeModule/interfaces/SLocation"
 import { SLocation } from "imobile_for_reactnative"
 import { color } from "@/styles"
+import { getThemeAssets } from "@/assets"
 
 
 const radio_on = require('../../assets/public/radio_select.png')
@@ -32,21 +33,31 @@ interface State {
   otherBTDevices: BluetoothDeviceInfoType[],
   isOpenBlutooth: boolean,
   curBlueToothDevice: BluetoothDeviceInfoType | null,
+  isSearch: boolean,
 }
 
 class LocationDeviceConnectionMode extends Component<Props, State> {
+  timer: NodeJS.Timeout | null = null
   constructor(props: Props) {
     super(props)
     this.state = {
       pairedBTDevices: [],
       otherBTDevices: [],
       isOpenBlutooth: this.props.isOpenBlutooth || false,
-      curBlueToothDevice: null,
+      curBlueToothDevice: this.props.bluetoohDevice || null,
+      isSearch: false,
     }
   }
 
   componentDidMount = async () => {
+    if(this.state.isOpenBlutooth) {
+      this.getDevice()
+    }
+  }
+
+  getDevice = async() => {
     try {
+      Platform.OS === 'android' && this.addBtnScanlistner()
       // 已连接过的蓝牙
       const devicesSym: BluetoothDeviceInfoType[] = await SLocation.getPairedBTDevices()
       const pairedBTDevices: BluetoothDeviceInfoType[] = []
@@ -62,30 +73,119 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
         otherBTDevices: []
       })
 
-      // 未配对的
-      SLocation.setBTScanListner(async (devicesResult: BluetoothDeviceInfoType) => {
+      if(this.props.deviceManufacturer === '千寻' && Platform.OS === 'android') {
+        SLocation.scanBluetooth()
         this.setState({
-          otherBTDevices: [devicesResult],
+          isSearch: true,
         })
-      })
+        this.timer = setTimeout(() => {
+          if(this.timer) {
+            SLocation.setBTScanListner()
+            this.setState({
+              isSearch: false,
+            })
+            clearTimeout(this.timer)
+          }
+        }, 10000)
+      }
 
     } catch (error) {
       console.warn("BluetoothDevices mount error!")
     }
+
+  }
+
+  addBtnScanlistner = () => {
+    SLocation.setBTScanListner(async (devicesResult: BluetoothDeviceInfoType) => {
+      const devicesSym: BluetoothDeviceInfoType[] = await SLocation.getPairedBTDevices()
+      const pairedBTDevices: BluetoothDeviceInfoType[] = []
+      pairedBTDevices.push(devicesResult)
+      devicesSym.map((item: BluetoothDeviceInfoType) => {
+        const pairedBTDevice: BluetoothDeviceInfoType = {
+          name: item.name,
+          address: item.address,
+        }
+        pairedBTDevices.push(pairedBTDevice)
+      })
+      this.setState({
+        pairedBTDevices,
+        otherBTDevices: [devicesResult],
+        isSearch: false,
+      })
+    })
   }
 
   changeDeviceType = () => {
-    // this.props?.setDeviceType(this.state.curDeviceType)
-    this.props?.setDeviceConnectionMode(this.state.isOpenBlutooth)
-    console.warn("curBlueToothDevice: " + JSON.stringify(this.state.curBlueToothDevice))
-    this.props?.setBluetoothDeviceInfo(this.state.curBlueToothDevice)
-    NavigationService.goBack()
+    if(this.state.isOpenBlutooth && this.state.curBlueToothDevice) {
+      this.props?.setDeviceConnectionMode(this.state.isOpenBlutooth)
+      this.props?.setBluetoothDeviceInfo(this.state.curBlueToothDevice)
+      NavigationService.goBack()
+    }
+    if(!this.state.isOpenBlutooth) {
+      this.props?.setBluetoothDeviceInfo(this.state.curBlueToothDevice)
+      NavigationService.goBack()
+    }
   }
 
   /** 蓝牙开关按钮点击事件 */
   blueSwitchAction = (value: boolean) => {
     this.setState({ isOpenBlutooth: value})
     // 调打开蓝牙的方法 todo
+    // 处理界面
+    if(value) {
+      this.getDevice()
+      this.setState({
+        isSearch: true,
+      })
+      this.timer = setTimeout(() => {
+        if(this.timer) {
+          SLocation.setBTScanListner()
+          this.setState({
+            isSearch: false,
+          })
+          clearTimeout(this.timer)
+        }
+      }, 10000)
+    } else {
+      this.setState({
+        pairedBTDevices: [],
+        otherBTDevices: [],
+        isSearch: false,
+      })
+      if(this.timer) {
+        SLocation.setBTScanListner()
+        clearTimeout(this.timer)
+      }
+    }
+  }
+
+  /** 刷新按钮点击事件 */
+  searchAction = () => {
+    try {
+      if(this.state.isSearch) {
+        SLocation.setBTScanListner()
+        this.setState({
+          isSearch: false,
+        })
+        this.timer && clearTimeout(this.timer)
+      } else {
+        this.getDevice()
+        this.setState({
+          isSearch: true,
+        })
+        this.timer = setTimeout(() => {
+          if(this.timer) {
+            SLocation.setBTScanListner()
+            this.setState({
+              isSearch: false,
+            })
+            clearTimeout(this.timer)
+          }
+        }, 10000)
+      }
+    } catch (error) {
+      // to do
+    }
   }
 
   /** 确认按钮 */
@@ -122,17 +222,18 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
     )
   }
 
-  _renderItem = ({ item }: BluetoothDeviceInfoType) => {
+  _renderItem = ({ item }: {item: BluetoothDeviceInfoType}) => {
 
     const isSelect = this.state.curBlueToothDevice && JSON.stringify(this.state.curBlueToothDevice) === JSON.stringify(item)
 
     return (
       <TouchableOpacity
         key = {item.address}
-        style={[styles.itemView]}
+        style={[styles.itemView,{
+          marginLeft: dp(30),
+        }]}
         activeOpacity={0.9}
         onPress={() => {
-          console.warn("item: " + JSON.stringify(item))
           this.setState({
             curBlueToothDevice: item,
           })
@@ -159,6 +260,14 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
     )
   }
 
+  renderSearchview = () => {
+    return (
+      <ActivityIndicator size="small" color="#505050" />
+    )
+  }
+
+
+
   renderPairedBTDevices = () => {
     return (
       <View>
@@ -166,8 +275,9 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
           style={[{
             width: '100%',
             height: dp(60),
-            justifyContent:'center',
-            alignItems: 'flex-start',
+            flexDirection: 'row',
+            justifyContent:'space-between',
+            alignItems: 'center',
             paddingHorizontal: dp(10),
           }]}
         >
@@ -176,6 +286,28 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
               fontSize: dp(16),
             }]}
           >{getLanguage(global.language).Profile.PAIRED_BT_DEVICE_LIST}</Text>
+          {this.state.isOpenBlutooth && (
+            <TouchableOpacity
+              style={[{
+                width: dp(30),
+                height:dp(30),
+                justifyContent: 'center',
+                alignItems: 'center',
+              }]}
+              onPress={this.searchAction}
+            >
+              {!this.state.isSearch && (
+                <Image
+                  source={getThemeAssets().edit.icon_redo}
+                  style={[{
+                    width: dp(23),
+                    height:dp(23),
+                  }]}
+                />
+              )}
+              {this.state.isSearch && this.renderSearchview()}
+            </TouchableOpacity>
+          )}
         </View>
         <FlatList
           style={[{

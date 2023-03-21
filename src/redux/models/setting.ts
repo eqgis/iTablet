@@ -9,7 +9,8 @@ import { ModelUtils } from '../../utils'
 import { ChunkType } from '../../constants'
 import { setCurrentLanguage } from '@/language'
 import { setLastLaunchState } from '../store'
-import { LocationConnectionParam } from '@/containers/BluetoothDevices/BluetoothDevices'
+import { LocationConnectionParam } from 'imobile_for_reactnative/NativeModule/interfaces/SLocation'
+// import { LocationConnectionParam } from '@/containers/BluetoothDevices/BluetoothDevices'
 
 const { AppUtils } = NativeModules
 // Constants

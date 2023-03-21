@@ -13,9 +13,11 @@ const styles = StyleSheet.create({
   itemView: {
     flexDirection: 'row',
     alignItems: 'center',
-    // justifyContent: 'space-between',
-    paddingHorizontal: dp(40),
-    height:dp(40),
+    justifyContent: 'space-between',
+    paddingHorizontal: dp(10),
+    height:dp(50),
+    // borderBottomColor: '#f9f9f9',
+    // borderBottomWidth: dp(1),
   },
   itemSeperator: {
     width: '100%',
@@ -25,7 +27,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   itemSeperatorLine: {
-    width: '80%',
+    width: '90%',
     height: dp(1),
     backgroundColor: '#efeff4'
   },
@@ -36,11 +38,11 @@ const styles = StyleSheet.create({
     marginTop: dp(20),
   },
   text: {
-    width: dp(88),
     fontSize: dp(16),
     color: '#A0A0A0',
     textAlign: 'right',
-    marginRight: dp(20),
+    marginRight: dp(10),
+    paddingLeft: dp(10),
   },
   itemValueBtn: {
     // width: dp(150),
@@ -54,7 +56,8 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
     // fontSize: dp(14),
     color: '#A0A0A0',
-    textAlign: 'left',
+    textAlign: 'right',
+    paddingRight: dp(10),
     // lineHeight: dp(30),
   },
   // itemValueBtnText: {
@@ -69,7 +72,7 @@ const styles = StyleSheet.create({
   pickerView:{
     width: '100%',
     flexDirection: 'column',
-    paddingVertical: dp(20),
+    // paddingVertical: dp(20),
   },
   pickerSize: {
     width: dp(160),

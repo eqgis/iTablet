@@ -1314,6 +1314,9 @@ export default class MapView extends React.Component {
   }
 
   _onLoad = async () => {
+    if (global.Type === ChunkType.MAP_AR_MAPPING) {
+      SARMap.setAction(ARAction.MEASURE)
+    }
     SARMeasure.showARLabel(this.props.showARLabel)
     // }
     this.initBaseMapPosistion(Dimensions.get('screen'))

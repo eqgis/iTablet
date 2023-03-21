@@ -2477,7 +2477,8 @@ function getGridUniqueColorScheme() {
 /** 设置统计专题图类型 */
 function setThemeGraphType() {
   const _params = ToolbarModule.getData().themeParams
-  return STheme.setThemeGraphType(_params)
+  const layerName = ToolbarModule.getParams().currentLayer.name
+  return STheme.modifyThemeGraphLayer(layerName||"",_params)
 }
 
 function getThemeGraphType() {
@@ -2606,7 +2607,8 @@ function getThemeGraphType() {
 /** 设置统计专题图统计值计算方法 */
 function setThemeGraphGraduatedMode() {
   const _params = ToolbarModule.getData().themeParams
-  return STheme.setThemeGraphGraduatedMode(_params)
+  const layerName = ToolbarModule.getParams().currentLayer.name
+  return STheme.modifyThemeGraphLayer(layerName||"",_params)
 }
 
 function getGraphThemeGradutedMode() {
@@ -4126,7 +4128,7 @@ async function getGraphThemeExpressionsData() {
   const param = {
     LayerName: _params.currentLayer.name,
   }
-  const expressions = await STheme.getGraphExpressions(param)
+  const expressions = await STheme.getThemeGraphInfo(_params.currentLayer.name)
   const selectedExpressions = expressions.list // 已选择的字段列表
   const listExpressionsArr = []
 

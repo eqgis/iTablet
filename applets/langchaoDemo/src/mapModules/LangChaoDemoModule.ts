@@ -159,14 +159,14 @@ export default class LangChaoDemoModule extends Module {
     if (isInit) {
       this.initUser()
     } else {
-      let timer = setInterval(async () => {
+      let timer = setInterval(() => {
         isInit = langchaoServer.getInitState()
         langchaoServer.printLog(`\n init onMapOpenSuccess timer : ${isInit}`)
         if (isInit) {
-          await this.initUser()
+          this.initUser()
           timer && clearInterval(timer)
         }
-      }, 100)
+      }, 1000)
     }
   }
 

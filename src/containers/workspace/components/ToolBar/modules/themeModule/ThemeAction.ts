@@ -1,5 +1,5 @@
 import { STheme, SMap, SData } from 'imobile_for_reactnative'
-import { ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
+import { ThemeType ,ThemeGraphItem} from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
 import {
   ConstToolType,
   ToolbarType,
@@ -763,21 +763,21 @@ async function getLabelFontSize(type, key = '', name = '') {
 // 统计专题图多选字段列表，修改所需字段，实时更新地图
 async function listSelectableAction({ selectList }) {
   const _params = ToolbarModule.getParams()
-  let list = []
-
+  let list:ThemeGraphItem[] = []
   const keys = Object.keys(selectList)
   for (const key of keys) {
     if (selectList[key]) {
-      list = list.concat(selectList[key])
+      for(let i=0;i<selectList[key].length;i++)
+        list = list.concat({expression:selectList[key][i].expression})
     }
   }
 
   ToolbarModule.addData({ selectList })
   const Params = {
-    LayerName: _params.currentLayer.name,
-    GraphExpressions: list,
+    // layerName: _params.currentLayer.name,
+    items: list,
   }
-  await STheme.setThemeGraphExpressions(Params)
+  await STheme.modifyThemeGraphLayer(_params.currentLayer.name || "",Params)
 }
 
 /**
@@ -963,16 +963,14 @@ async function listAction(type, params = {}) {
     let Params
     if (item.colors) {
       Params = {
-        Colors: item.colors,
-        LayerName: _params.currentLayer.name,
+        colors: item.colors,
       }
     } else {
       Params = {
-        GraphColorType: item.key,
-        LayerName: _params.currentLayer.name,
+        graphColorType: item.key,
       }
     }
-    await STheme.setThemeGraphColorScheme(Params)
+    await STheme.modifyThemeGraphLayer(_params.currentLayer.name||"",Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_HEAT_AGGREGATION_COLOR) { // 热力图颜色表
 
     ToolbarModule.addData({ themeColor: item.key })
@@ -1271,24 +1269,23 @@ async function commit(type) {
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_CREATE_EXPRESSION) {
     const expressions = []
     for (const item of selectList[_data.themeDatasetName]) {
-      expressions.push(item.expression)
+      expressions.push({expression:item.expression})
     }
+    const datasetInfo = { datasourceName: _data.themeDatasourceAlias, datasetName: _data.themeDatasetName }
     // 数据集->创建统计专题图
     const params = {
-      DatasourceAlias: _data.themeDatasourceAlias,
-      DatasetName: _data.themeDatasetName,
-      GraphExpressions: expressions,
-      ThemeGraphType: themeCreateType,
+      items: expressions,
+      graphType: themeCreateType,
     }
-    const { result, layer } = await STheme.createThemeGraphMap(params)
-    if (result && layer) {
+    const layer = await STheme.createThemeGraphLayer(datasetInfo,params)
+    if (layer) {
       sendAddThemeMsg(layer)
     }
-    result &&
+    layer &&
       _params.getLayers(-1, layers => {
         _params.setCurrentLayer(layers.length > 0 && layers[layers.length - 1])
       })
-    if (result) {
+    if (layer) {
       _params.setToolbarVisible(false)
       global.prjDialog.setDialogVisible(true)
       Toast.show(getLanguage(_params.language).Prompt.CREATE_SUCCESSFULLY)
@@ -1300,23 +1297,23 @@ async function commit(type) {
   ) {
     const expressions = []
     for (const item of selectList[Object.keys(selectList)[0]]) {
-      expressions.push(item.expression)
+      expressions.push({expression:item.expression})
     }
+    const datasetInfo = { datasourceName: _data.themeDatasourceAlias, datasetName: _data.themeDatasetName }
     // 图层->创建统计专题图
     const params = {
-      LayerName: _data.currentLayer.name || '', // 图层名称
-      GraphExpressions: expressions,
-      ThemeGraphType: themeCreateType,
+      items: expressions,
+      graphType: themeCreateType,
     }
-    let { result, layer } = await STheme.createThemeGraphMapByLayer(params)
-    if (result && layer) {
+    const layer = await STheme.createThemeGraphLayer(datasetInfo,params)
+    if (layer) {
       sendAddThemeMsg(layer)
     }
-    result &&
+    layer &&
       _params.getLayers(-1, layers => {
         _params.setCurrentLayer(layers.length > 0 && layers[layers.length - 1])
       })
-    if (result) {
+    if (layer) {
       _params.setToolbarVisible(false)
       global.prjDialog.setDialogVisible(true)
       Toast.show(getLanguage(_params.language).Prompt.CREATE_SUCCESSFULLY)
@@ -1411,7 +1408,7 @@ function tableAction(type, item = {}) {
       // 统计专题图类型
       themeParams = {
         LayerName: currentLayer.name,
-        ThemeGraphType: item.key,
+        graphType: item.key,
         ThemeType:currentLayer.themeType
       }
       break
@@ -1826,9 +1823,7 @@ async function getTouchProgressInfo(title) {
       break
     }case getLanguage(_params.language).Map_Main_Menu.THEME_MAX_VISIBLE_SIZE:
       range = [1, 20]
-      value = await STheme.getGraphMaxValue({
-        LayerName: _params.currentLayer.name,
-      })
+      value = (await STheme.getThemeGraphInfo(_params.currentLayer.name||"")).maxSize
       unit = 'X'
       break
   }
@@ -1940,10 +1935,9 @@ function setTouchProgressInfo(title, value) {
       if (value > range[1]) value = range[1]
       else if (value <= range[0]) value = range[0]
       _params = {
-        LayerName: Params.currentLayer.name,
-        MaxValue: value,
+        maxSize: value,
       }
-      STheme.setGraphMaxValue(_params)
+      STheme.modifyThemeGraphLayer(Params.currentLayer.name||"",_params)
       break
   }
 }

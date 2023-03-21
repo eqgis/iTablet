@@ -148,6 +148,7 @@ import {
 } from '@/containers/workspace/components/ToolBar/modules'
 import TourAction from '../../../../../applets/langchaoDemo/src/mapFunctionModules/Langchao/TourAction'
 import { getImage } from '../../../../../applets/langchaoDemo/src/assets/Image'
+import { printLog } from 'applets/÷langchaoDemo/src/utils/langchaoServer'
 
 global.markerTag = 118082
 
@@ -1671,7 +1672,10 @@ export default class MapView extends React.Component {
       this.exit.setDialogVisible(false)
       this.setLoading(true, getLanguage(this.props.language).Prompt.CLOSING)
       const timer = setTimeout(async()=> {
-        await this.saveMap()
+        // await this.saveMap()
+
+        const recycleResult = await SMap.recycleLicense()
+        // printLog(`\n 退出APP,归还许可 onMapOpenSuccess : ${recycleResult}`)
         await appUtilsModule.AppExit()
         clearTimeout(timer)
       }, 1500)
@@ -2066,7 +2070,7 @@ export default class MapView extends React.Component {
       }else{
         SMap.moveToCurrent()
       }
-      await this.onMapOpenSuccess?.()
+      this.onMapOpenSuccess?.()
 
     }.bind(this)())
   }

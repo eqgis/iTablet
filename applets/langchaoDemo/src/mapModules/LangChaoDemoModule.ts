@@ -153,24 +153,24 @@ export default class LangChaoDemoModule extends Module {
 
   onMapOpenSuccess = async () => {
     let isInit = langchaoServer.getInitState()
-    
     langchaoServer.printLog(`\n init onMapOpenSuccess : ${isInit}`)
     // 判断redux langchao.ts数据是否初始化
     if (isInit) {
-      this.initUser()
+      this.initLicense()
     } else {
       let timer = setInterval(() => {
         isInit = langchaoServer.getInitState()
         langchaoServer.printLog(`\n init onMapOpenSuccess timer : ${isInit}`)
         if (isInit) {
-          this.initUser()
+          this.initLicense()
           timer && clearInterval(timer)
         }
-      }, 1000)
+      }, 500)
     }
+    this.initMap()
   }
 
-  initUser = async () => {
+  initLicense = async ()=>{
     try {
       const recycleResult = await SMap.recycleLicense()
 
@@ -210,7 +210,12 @@ export default class LangChaoDemoModule extends Module {
           }
         }
       }
-
+    } catch (error) {
+      
+    }
+  }
+  initMap = async () => {
+    try {
       const layers = await AppToolBar.getProps().getLayers()
 
       const datasetName = "line_965018"
@@ -245,7 +250,7 @@ export default class LangChaoDemoModule extends Module {
       // const countryCode = await TourAction.getCountryCode(-20.7143528, 40.0059731)
       console.warn("countryCode: " + countryCode)
       if(countryCode !== 142 && countryCode !== 143 && countryCode !== 110 && countryCode !== 121) {
-        OpenData(ConstOnline.Google, 0)
+        // OpenData(ConstOnline.Google, 0)
       }
       // const result = OpenData(ConstOnline.Google, 0)
 

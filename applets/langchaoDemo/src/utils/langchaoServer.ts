@@ -25,6 +25,8 @@ function getSign(){
   return Math.round(Math.random() * 100)
 }
 
+let isInit = false
+
 let serverIP = ""
 let serverToken = ""
 let serverClientid = "Gvvy19yU"
@@ -41,6 +43,14 @@ let pubKey =  `MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDYdvhxlmpCV5iE3iaWv7M0Fe/x
 /L1qfXzDuBovOoWkzN78/pYpatRouPOSO634Hl9mekWbuUXFwI3hCoTDvk1M/Kbc
 pcXAgIiavv/KvGxgeIdaHMAFH7gzHaF0fsayF9DrLdrgyDttw+qeV3z//DVpxUn6
 Gdig1KA4pvB/3DhfsQIDAQAB`
+
+export const init = () => {
+  isInit = true
+}
+
+export const getInitState = (): boolean => {
+  return isInit
+}
 
 export const getPubKey = () => {
   return pubKey

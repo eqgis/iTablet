@@ -152,91 +152,113 @@ export default class LangChaoDemoModule extends Module {
 
 
   onMapOpenSuccess = async () => {
+    let isInit = langchaoServer.getInitState()
+    
+    langchaoServer.printLog(`\n init onMapOpenSuccess : ${isInit}`)
+    // 判断redux langchao.ts数据是否初始化
+    if (isInit) {
+      this.initUser()
+    } else {
+      let timer = setInterval(async () => {
+        isInit = langchaoServer.getInitState()
+        langchaoServer.printLog(`\n init onMapOpenSuccess timer : ${isInit}`)
+        if (isInit) {
+          await this.initUser()
+          timer && clearInterval(timer)
+        }
+      }, 100)
+    }
+  }
 
-    const recycleResult = await SMap.recycleLicense()
-    langchaoServer.printLog(`\n 打开地图,归还许可 onMapOpenSuccess : ${recycleResult}`)
+  initUser = async () => {
+    try {
+      const recycleResult = await SMap.recycleLicense()
 
-    const userId = langchaoServer.getUserParam().userId
-    const password = langchaoServer.getPassword()
+      const userId = langchaoServer.getUserParam().userId
+      const password = langchaoServer.getPassword()
+      langchaoServer.printLog(`\n 打开地图,归还许可 onMapOpenSuccess : ${recycleResult} - ${userId} - ${password}`)
 
-    /** 测试用户 */
-    if(userId === 'test123' && password === "123456") {
-      // 2. 激活许可
-      console.warn(`\n 打开地图,用户登录,即将激活许可`)
-      langchaoServer.printLog(`\n 打开地图,用户登录,即将激活许可`)
-      const activateResult = await SMap.activateLicense('79B28-29Q19-71690-SM56W-NP5JP')
-      console.warn(`\n 打开地图,用户登录,激活许可 onMapOpenSuccess : ${activateResult}`)
-      langchaoServer.printLog(`\n 打开地图,用户登录,激活许可 onMapOpenSuccess : ${activateResult}`)
+      /** 测试用户 */
+      if(userId === 'test123' && password === "123456") {
+        // 2. 激活许可
+        console.warn(`\n 打开地图,用户登录,即将激活许可`)
+        langchaoServer.printLog(`\n 打开地图,用户登录,即将激活许可`)
+        const activateResult = await SMap.activateLicense('V3RRN-DF1K1-B77XK-VX721-240C4')
+        console.warn(`\n 打开地图,用户登录,激活许可 onMapOpenSuccess : ${activateResult}`)
+        langchaoServer.printLog(`\n 打开地图,用户登录,激活许可 onMapOpenSuccess : ${activateResult}`)
 
-    } else if (userId && password) {
-      const pubkey = await langchaoServer.getServerPubKeyUtil()
-      console.warn(`\n 打开地图,用户登录,pubkey  ${pubkey}`)
-      langchaoServer.printLog(`\n 打开地图,用户登录,pubkey  ${pubkey}`)
-      if(pubkey !== "") {
-        console.warn(`\n 打开地图,用户登录,userId : ${userId} password: ${password}`)
-        langchaoServer.printLog(`\n 打开地图,用户登录,userId : ${userId} password: ${password}`)
-        const result = await langchaoServer.login(userId, password)
-        console.warn(`\n 打开地图,用户登录结果,result : ${JSON.stringify(result)} `)
-        langchaoServer.printLog(`\n 打开地图,用户登录,打开地图,用户登录结果,result : ${JSON.stringify(result)} `)
-        if(result) {
-          // UserAuthCode 激活码
-          if (result.UserAuthCode) {
-            console.warn(`\n 打开地图,用户登录,即将激活许可`)
-            langchaoServer.printLog(`\n 打开地图,用户登录,即将激活许可`)
-            // 2. 激活许可
-            const activateResult = await SMap.activateLicense(result.UserAuthCode)
-            console.warn(`\n 打开地图,用户登录,激活许可 onMapOpenSuccess : ${activateResult}`)
-            langchaoServer.printLog(`\n 打开地图,用户登录,激活许可 onMapOpenSuccess : ${activateResult}`)
+      } else if (userId && password) {
+        const pubkey = await langchaoServer.getServerPubKeyUtil()
+        console.warn(`\n 打开地图,用户登录,pubkey  ${pubkey}`)
+        langchaoServer.printLog(`\n 打开地图,用户登录,pubkey  ${pubkey}`)
+        if(pubkey !== "") {
+          console.warn(`\n 打开地图,用户登录,userId : ${userId} password: ${password}`)
+          langchaoServer.printLog(`\n 打开地图,用户登录,userId : ${userId} password: ${password}`)
+          const result = await langchaoServer.login(userId, password)
+          console.warn(`\n 打开地图,用户登录结果,result : ${JSON.stringify(result)} `)
+          langchaoServer.printLog(`\n 打开地图,用户登录,打开地图,用户登录结果,result : ${JSON.stringify(result)} `)
+          if(result) {
+            // UserAuthCode 激活码
+            if (result.UserAuthCode) {
+              console.warn(`\n 打开地图,用户登录,即将激活许可`)
+              langchaoServer.printLog(`\n 打开地图,用户登录,即将激活许可`)
+              // 2. 激活许可
+              const activateResult = await SMap.activateLicense(result.UserAuthCode)
+              console.warn(`\n 打开地图,用户登录,激活许可 onMapOpenSuccess : ${activateResult}`)
+              langchaoServer.printLog(`\n 打开地图,用户登录,激活许可 onMapOpenSuccess : ${activateResult}`)
+            }
           }
         }
       }
-    }
 
-    const layers = await AppToolBar.getProps().getLayers()
+      const layers = await AppToolBar.getProps().getLayers()
 
-    const datasetName = "line_965018"
-    if(layers) {
-      for(let i = 0; i < layers.length; i ++) {
-        const layerDatasetName = layers[i].datasetName
-        if(layerDatasetName === datasetName) {
-          ToolbarModule.getParams().setCurrentLayer(layers[i])
-          await SMap.setLayerVisible(layers[i].path, false)
+      const datasetName = "line_965018"
+      if(layers) {
+        for(let i = 0; i < layers.length; i ++) {
+          const layerDatasetName = layers[i].datasetName
+          if(layerDatasetName === datasetName) {
+            ToolbarModule.getParams().setCurrentLayer(layers[i])
+            await SMap.setLayerVisible(layers[i].path, false)
 
-          const isMediaLayer = await SMediaCollector.isMediaLayer(layers[i].name)
-          console.warn("isMediaLayer: " + isMediaLayer)
-          if (isMediaLayer){
-            const isShow = await SMediaCollector.hideMedia(layers[i].name, false)
-            console.warn("isShow: " + isShow)
+            const isMediaLayer = await SMediaCollector.isMediaLayer(layers[i].name)
+            console.warn("isMediaLayer: " + isMediaLayer)
+            if (isMediaLayer){
+              const isShow = await SMediaCollector.hideMedia(layers[i].name, false)
+              console.warn("isShow: " + isShow)
+            }
+
           }
-
         }
       }
-    }
 
-    const position = await SMap.getCurrentLocation()
-    // 地图定位到指定点位置
-    // await SMap.toLocationPoint({
-    //   x: position.longitude,
-    //   y: position.latitude,
-    // }, false)
+      const position = await SMap.getCurrentLocation()
+      // 地图定位到指定点位置
+      // await SMap.toLocationPoint({
+      //   x: position.longitude,
+      //   y: position.latitude,
+      // }, false)
 
-    const countryCode = await TourAction.getCountryCode(position.longitude, position.latitude)
-    // const countryCode = await TourAction.getCountryCode(40.7143528, 74.0059731)
-    // const countryCode = await TourAction.getCountryCode(-90.7143528, 40.0059731)
-    // const countryCode = await TourAction.getCountryCode(-20.7143528, 40.0059731)
-    console.warn("countryCode: " + countryCode)
-    if(countryCode !== 142 && countryCode !== 143 && countryCode !== 110 && countryCode !== 121) {
-      OpenData(ConstOnline.Google, 0)
-    }
-    // const result = OpenData(ConstOnline.Google, 0)
+      const countryCode = await TourAction.getCountryCode(position.longitude, position.latitude)
+      // const countryCode = await TourAction.getCountryCode(40.7143528, 74.0059731)
+      // const countryCode = await TourAction.getCountryCode(-90.7143528, 40.0059731)
+      // const countryCode = await TourAction.getCountryCode(-20.7143528, 40.0059731)
+      console.warn("countryCode: " + countryCode)
+      if(countryCode !== 142 && countryCode !== 143 && countryCode !== 110 && countryCode !== 121) {
+        OpenData(ConstOnline.Google, 0)
+      }
+      // const result = OpenData(ConstOnline.Google, 0)
 
-    const homePath = await FileTools.getHomeDirectory()
-    const path = homePath + ConstPath.CachePath + "langchaoWs/langchaoLog.txt"
-    const logfileExist = await FileTools.fileIsExist(path)
-    if(!logfileExist){
-      await RNFetchBlob.fs.createFile(path, "", "utf8")
+      const homePath = await FileTools.getHomeDirectory()
+      const path = homePath + ConstPath.CachePath + "langchaoWs/langchaoLog.txt"
+      const logfileExist = await FileTools.fileIsExist(path)
+      if(!logfileExist){
+        await RNFetchBlob.fs.createFile(path, "", "utf8")
+      }
+      await FileTools.appendToFile(path, "\n================ 进入了浪潮app ================ \n国家：" + countryCode)
+    } catch (error) {
+      
     }
-    await FileTools.appendToFile(path, "\n================ 进入了浪潮app ================ \n国家：" + countryCode)
   }
 
   getDefaultData = () => {

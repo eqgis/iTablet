@@ -2,7 +2,7 @@ import { getLastLaunchState } from '@/redux/store'
 import { fromJS } from 'immutable'
 import { handleActions } from 'redux-actions'
 import { REHYDRATE } from 'redux-persist'
-import { setServerIPUtil, setServerTokenUtil, setServerClientidUtil, setUserId, setUserName, setSysOrgid, setPubKey, setPassword as setPw, setUserInfo } from '../utils/langchaoServer'
+import { setServerIPUtil, setServerTokenUtil, setServerClientidUtil, setUserId, setUserName, setSysOrgid, setPubKey, setPassword as setPw, setUserInfo, printLog, init } from '../utils/langchaoServer'
 // Constants
 // --------------------------------------------------
 export const LANGCHAO_SET_SERVER_IP = "LANGCHAO_SET_SERVER_IP"
@@ -230,6 +230,7 @@ export default handleActions(
     },
     [REHYDRATE]: (state, { payload }) => {
       const langchao = getLastLaunchState()?.langchao
+      printLog(`\n redux 初始化 ${JSON.stringify(langchao)}`)
       if(langchao) {
         const data = langchao
         setServerIPUtil(data.serverIP)
@@ -242,6 +243,8 @@ export default handleActions(
         setPubKey(data.pubkey)
         setUserInfo(data.langchaoUserInfo)
       }
+      // 保证初始化成功后，再执激活许可
+      init()
       // console.warn(" ======================= langchao demo   ==============================")
       // console.warn("langchao redux: " + JSON.stringify(langchao))
       // console.warn("langchao redux payload: " + JSON.stringify(payload?.langchao))

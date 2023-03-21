@@ -20,16 +20,16 @@ export const getThematicMapSettings = (hasUser = false) => {
         NavigationService.navigate('LanguageSetting')
       },
     },
-    {
-      title: getLanguage(global.language).Map_Settings.LICENSE_CENTER,
-      leftImage: getImage().icon_license_setting,
-      action: () => {
-        const user = AppToolBar.getProps().user
-        NavigationService.navigate('LicensePage', {
-          user: user,
-        })
-      },
-    },
+    // {
+    //   title: getLanguage(global.language).Map_Settings.LICENSE_CENTER,
+    //   leftImage: getImage().icon_license_setting,
+    //   action: () => {
+    //     const user = AppToolBar.getProps().user
+    //     NavigationService.navigate('LicensePage', {
+    //       user: user,
+    //     })
+    //   },
+    // },
     {
       title: getLanguage(global.language).Map_Settings.SERVER_SETTING,
       leftImage: getImage().icon_server_setting,

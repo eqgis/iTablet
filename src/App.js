@@ -302,7 +302,7 @@ class AppRoot extends Component {
 
   componentWillUnmount() {
     // 退出APP,主动归还许可
-    SData.recycleLicense()
+    SMap.recycleLicense()
 
     BackHandler.removeEventListener('hardwareBackPress', this.back)
     SLocation.removeChangeDeviceSuccessListener()

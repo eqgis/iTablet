@@ -105,7 +105,7 @@ export const printLog = async (str: string) => {
     const path = homePath + ConstPath.CachePath + "langchaoWs/langchaoLog.txt"
     const logfileExist = await FileTools.fileIsExist(path)
     if(logfileExist) {
-      await FileTools.appendToFile(path, str)
+      await FileTools.appendToFile(path, `\n${new Date().toDateString()}: ${str}`)
     }
   } catch (error) {
     Toast.show("日志文件写入失败：" + str)

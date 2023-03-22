@@ -85,9 +85,9 @@ export const getThematicMapSettings = (hasUser = false) => {
     },
   }
 
-  const app_version = " 1.0"
+  const app_version = global.APP_VERSION + '_' + global.SYSTEM_VERSION // " 1.0"
   const versionCode = {
-    title: getLanguage(global.language).Map_Settings.VERSION_CODE + app_version,
+    title: getLanguage(global.language).Map_Settings.VERSION_CODE + "  "+ app_version,
     leftImage: getImage().icon_app_version,
     action: () => {
       Toast.show(app_version)

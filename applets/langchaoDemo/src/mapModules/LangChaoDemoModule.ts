@@ -265,7 +265,7 @@ export default class LangChaoDemoModule extends Module {
       if(!logfileExist){
         await RNFetchBlob.fs.createFile(path, "", "utf8")
       }
-      await FileTools.appendToFile(path, "\n================ 进入了浪潮app ================ \n国家：" + countryCode)
+      await FileTools.appendToFile(path, "\n================ 进入了浪潮app ================ \n国家：" + countryCode + "\n 版本号：" + global.APP_VERSION + '_' + global.SYSTEM_VERSION)
     } catch (error) {
       
     }

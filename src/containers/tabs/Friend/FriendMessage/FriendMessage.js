@@ -281,9 +281,9 @@ class FriendMessage extends Component {
         style={styles.listHeader}
         ref={ref => (this.listRefs['info'] = ref)}
         activeOpacity={0.75}
-        onLongPress={() => {
-          this._showPopover(this.listRefs['info'])
-        }}
+        // onLongPress={() => {
+        //   this._showPopover(this.listRefs['info'])
+        // }}
         onPress={() => {
           MessageDataHandle.readMessage({
             //清除未读信息
@@ -335,9 +335,9 @@ class FriendMessage extends Component {
           onPress={() => {
             this._onSectionselect(item, index)
           }}
-          onLongPress={() => {
-            this._showPopover(this.listRefs[item.id], item)
-          }}
+          // onLongPress={() => {
+          //   this._showPopover(this.listRefs[item.id], item)
+          // }}
         >
           <View>
             <Image

@@ -340,7 +340,7 @@ class CallDetailPage extends Component<Props, State> {
           '/' +
           ConstPath.RelativeFilePath.Media,
       )
-      let addToMap = this.info.addToMap !== undefined ? this.info.addToMap : true
+      let addToMap = this.info.addToMap !== undefined ? this.info.addToMap : false
       // 若原本有图片,且修改后的图片第一张与修改前一致,或者所有图片都被清除,并有callout则不添加到地图上
       if (this.info.mediaFilePaths.length > 0) {
         for (const item of modifiedData) {
@@ -571,13 +571,13 @@ class CallDetailPage extends Component<Props, State> {
                 }
 
                 const selectionAttribute = false
-                const index = this.state.data.SmID - 1
+                // const index = this.state.data.SmID
                 const layerAttribute = false
 
                 NavigationService.navigate('Camera', {
                   datasourceAlias,
                   datasetName,
-                  index,
+                  index:0,
                   attribute: true,
                   selectionAttribute,
                   layerAttribute,

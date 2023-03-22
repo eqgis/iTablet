@@ -250,7 +250,9 @@ export default class LangChaoDemoModule extends Module {
       // const countryCode = await TourAction.getCountryCode(-20.7143528, 40.0059731)
       console.warn("countryCode: " + countryCode)
       if(countryCode !== 142 && countryCode !== 143 && countryCode !== 110 && countryCode !== 121) {
-        // OpenData(ConstOnline.Google, 0)
+        OpenData(ConstOnline.Google, 0).then(() => {
+          SMap.moveToCurrent()
+        })
       }
       // const result = OpenData(ConstOnline.Google, 0)
 

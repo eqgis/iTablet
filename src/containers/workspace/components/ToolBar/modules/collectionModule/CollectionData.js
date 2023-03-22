@@ -241,8 +241,7 @@ function getData(type) {
         console.warn("locationInfo: " + JSON.stringify(locationInfo))
 
 
-        const length = layerAttributedata.length
-        for(let i = 0; i < length; i ++) {
+        for(let i = 0; i < layerAttributedata?.length; i ++) {
           let item = layerAttributedata[i]
           console.warn("item info : " + item.name + " - " + i)
           if(item.name === "SmID") {

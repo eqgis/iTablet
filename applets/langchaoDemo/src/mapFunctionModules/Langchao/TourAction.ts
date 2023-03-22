@@ -603,6 +603,7 @@ const uploadTrack = async (id: number, type: uploadType) => {
 const uploadDialog = async (id: number, type: uploadType) => {
   try {
     console.warn("enter uploadDialog")
+    printLog(`================== ploadDialog =======================`)
     global.SimpleDialog.set({
       text: getLanguage(global.language).Map_Layer.WHETHER_UPLOAD_DATA,
       // text: "是否上传该数据",
@@ -624,6 +625,7 @@ const uploadDialog = async (id: number, type: uploadType) => {
           global.SimpleDialog.setVisible(false)
           global.Loading.setLoading(true, getLanguage(global.language).Prompt.RESOURCE_UPLOADING)
           let result = false
+          printLog(`\nploadDialog : ${type}`)
           switch(type) {
             case "line":
               result = await sendMessagePhone(id, 'line')
@@ -635,6 +637,7 @@ const uploadDialog = async (id: number, type: uploadType) => {
               result = await sendMessagePhone(id, 'media')
               break
             case "all":
+              printLog(`\nploadDialog sendInfoAll`)
               await sendInfoAll()
               result = true
               break
@@ -675,20 +678,24 @@ const uploadDialog = async (id: number, type: uploadType) => {
 const sendInfoAll = async() => {
   try {
 
+    printLog(`\n================ sendInfoAll ==================`)
     let successCount = 0
     let failedCount = 0
 
     const userparam =  getUserParam()
     // 线的整体提交
-    const datasetArrayL = await SMap.querybyAttributeValue("langchao", "line_965018", "isUploaded=0 AND langchaoUser=" + userparam.userId)
+    const datasetArrayL = await SMap.querybyAttributeValue("langchao", "line_965018", "isUploaded=0 AND langchaoUser='" + userparam.userId+"'")
     const datasetArrayLengthL = datasetArrayL.length
-    console.warn("dataser Arr: " + JSON.stringify(datasetArrayL) + " \n length: " + datasetArrayLengthL)
+    console.warn("sendInfoAll dataser Arr: " + JSON.stringify(datasetArrayL) + " \n length: " + datasetArrayLengthL)
+    printLog("sendInfoAll dataser Arr: " + JSON.stringify(datasetArrayL) + " \n length: " + datasetArrayLengthL)
     if(datasetArrayLengthL > 0) {
       // const ids = []
       for(let i =0; i < datasetArrayLengthL; i ++) {
         const item = JSON.parse(JSON.stringify(datasetArrayL[i]))
+        printLog(`\n sendInfoAll item : ${item}`)
         // ids.push(Number(item.SmID))
         const result = await sendMessagePhone(Number(item.SmID), 'line')
+        printLog(`\n sendInfoAll up result : ${result}`)
         if(result){
           successCount += 1
         } else {
@@ -726,6 +733,7 @@ const sendInfoAll = async() => {
 
   } catch (error) {
     // to do
+    Toast.show("error: " + error)
   }
 }
 

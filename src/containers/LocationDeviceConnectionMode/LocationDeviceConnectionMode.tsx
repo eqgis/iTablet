@@ -122,39 +122,62 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
       NavigationService.goBack()
     }
     if(!this.state.isOpenBlutooth) {
-      this.props?.setBluetoothDeviceInfo(this.state.curBlueToothDevice)
+      this.props?.setDeviceConnectionMode(this.state.isOpenBlutooth)
       NavigationService.goBack()
     }
   }
 
   /** 蓝牙开关按钮点击事件 */
-  blueSwitchAction = (value: boolean) => {
-    this.setState({ isOpenBlutooth: value})
-    // 调打开蓝牙的方法 todo
-    // 处理界面
+  blueSwitchAction = async (value: boolean) => {
     if(value) {
-      this.getDevice()
-      this.setState({
-        isSearch: true,
-      })
-      this.timer = setTimeout(() => {
-        if(this.timer) {
-          SLocation.setBTScanListner()
+      // 调打开蓝牙的方法
+      const result = await SLocation.openBluetooth()
+      console.warn("打开蓝牙：" + result)
+      if(result) {
+        // 处理界面
+        const tempTimer = setInterval(async () => {
+          const isOpen = await SLocation.bluetoothIsOpen()
+          console.warn("蓝牙打开状态： " + isOpen)
+          if(isOpen) {
+            this.getDevice()
+            clearInterval(tempTimer)
+          }
+        },500)
+        this.setState({
+          isOpenBlutooth: value,
+          isSearch: true,
+        })
+        this.timer = setTimeout(() => {
+          if(this.timer) {
+            SLocation.setBTScanListner()
+            this.setState({
+              isSearch: false,
+            })
+            clearTimeout(this.timer)
+          }
+        }, 10000)
+      }
+
+    } else {
+      // 调蓝牙关闭方法
+      const isStopScan = await SLocation.stopScanBluetooth()
+      console.warn("停止扫描： " +  isStopScan)
+      if(isStopScan) {
+        const result = await SLocation.closeBluetooth()
+        console.warn("关闭蓝牙：" + result)
+        if(result) {
           this.setState({
+            isOpenBlutooth: value,
+            pairedBTDevices: [],
+            otherBTDevices: [],
             isSearch: false,
           })
-          clearTimeout(this.timer)
+          if(this.timer) {
+            SLocation.setBTScanListner()
+            clearTimeout(this.timer)
+          }
         }
-      }, 10000)
-    } else {
-      this.setState({
-        pairedBTDevices: [],
-        otherBTDevices: [],
-        isSearch: false,
-      })
-      if(this.timer) {
-        SLocation.setBTScanListner()
-        clearTimeout(this.timer)
+
       }
     }
   }
@@ -298,7 +321,7 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
             >
               {!this.state.isSearch && (
                 <Image
-                  source={getThemeAssets().edit.icon_redo}
+                  source={getThemeAssets().edit.icon_refresh}
                   style={[{
                     width: dp(23),
                     height:dp(23),

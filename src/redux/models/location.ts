@@ -2,6 +2,7 @@ import { fromJS } from "immutable"
 import { handleActions } from 'redux-actions'
 import { REHYDRATE } from 'redux-persist'
 import { NtripMountPoint, PositionAccuracyType } from "imobile_for_reactnative/NativeModule/interfaces/SLocation"
+import { SLocation } from "imobile_for_reactnative"
 
 
 // 类型定义

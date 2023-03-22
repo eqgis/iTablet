@@ -115,11 +115,11 @@ class CallDetailPage extends Component<Props, State> {
         if (item.indexOf('file://') === 0) {
           path = item.replace('file://', '')
           // item = path
-        } else if (item.indexOf(ConstPath.AppPath) === 0) {
+        } else if (item.indexOf('/iTablet') === 0) {
           path = await FileTools.appendingHomeDirectory(item)
         }
         info = await SMediaCollector.getVideoInfo(path)
-      } else if (item.indexOf(ConstPath.AppPath) === 0) {
+      } else if (item.indexOf('/iTablet') === 0) {
         // 判断是否是已存的图片
         path = await FileTools.appendingHomeDirectory(item)
       }
@@ -285,7 +285,7 @@ class CallDetailPage extends Component<Props, State> {
 
         //   if (key === 'mediaFilePaths') {
         //     this.state.mediaFilePaths.forEach(item => {
-        //       if (item.indexOf(ConstPath.AppPath + 'User/') !== 0) {
+        //       if (item.indexOf('/iTablet/User/') !== 0) {
         //         // 把新添加的图片记录下来
         //         // TODO 区分同一张图片删除后重新添加
         //         this._newMediaFiles.push(item)

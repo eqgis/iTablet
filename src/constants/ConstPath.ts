@@ -1,4 +1,4 @@
-const AppPath = '/OneKeyCall/'
+const AppPath = '/iTablet/'
 const Data = 'Data/'
 const DefaultData = 'DefaultData/'
 // const Bundles = 'Bundles/'

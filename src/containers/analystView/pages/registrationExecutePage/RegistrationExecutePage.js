@@ -80,7 +80,7 @@ export default class RegistrationExecutePage extends Component {
                     datasetIndex < tempDatasource.data.length;
                     datasetIndex++
                   ) {
-                    if (tempDetasetInfoIndex === datasetIndex) {
+                    if (tempDetasetInfoIndex === tempDatasource.data[datasetIndex].datasetName) {
                       datasetArr.push(tempDatasource.data[datasetIndex])
                     }
                   }
@@ -133,10 +133,11 @@ export default class RegistrationExecutePage extends Component {
         } else {
           datasets[i].saveAs = 0
         }
-        datasets[i].transformationMode = arithmeticMode
+        // datasets[i].transformationMode = arithmeticMode
 
         let result = await SRectify.rectifyExecute(
           datasets[i],
+          arithmeticMode,
         )
         if (result) {
           count++

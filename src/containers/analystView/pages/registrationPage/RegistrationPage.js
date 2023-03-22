@@ -191,8 +191,8 @@ export default class RegistrationPage extends Component {
 
   confirm = async () => {
     //判断是否有无效点
-    let _isAllPointEffect = await SRectify.isAllPointEffect()
-    if (!_isAllPointEffect) {
+    let _isAllPointValid = await SRectify.isAllPointValid()
+    if (!_isAllPointValid) {
       Toast.show(
         getLanguage(global.language).Analyst_Prompt
           .REGISTRATION_POINTS_NUMBER_ERROR,
@@ -286,8 +286,8 @@ export default class RegistrationPage extends Component {
 
   export = async () => {
     //判断是否有无效点
-    let _isAllPointEffect = await SRectify.isAllPointEffect()
-    if (!_isAllPointEffect) {
+    let _isAllPointValid = await SRectify.isAllPointValid()
+    if (!_isAllPointValid) {
       Toast.show(
         getLanguage(global.language).Analyst_Prompt
           .REGISTRATION_POINTS_NUMBER_ERROR,

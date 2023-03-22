@@ -117,7 +117,7 @@ export default class RegistrationExecutePage extends Component {
                     datasetIndex < tempDatasource.data.length;
                     datasetIndex++
                   ) {
-                    if (tempDetasetInfoIndex === datasetIndex) {
+                    if (tempDetasetInfoIndex === tempDatasource.data[datasetIndex].datasetName) {
                       datasetArr.push(tempDatasource.data[datasetIndex])
                     }
                   }
@@ -189,10 +189,10 @@ export default class RegistrationExecutePage extends Component {
         } else {
           datasets[i].saveAs = 0
         }
-        datasets[i].rectifyFilePath = _registrationFile.path
+        // datasets[i].rectifyFilePath = _registrationFile.path
         // datasets[i].transformationMode = arithmeticMode
 
-        let result = await SRectify.rectifyFast(datasets[i])
+        let result = await SRectify.rectifyFast(datasets[i], _registrationFile.path)
         if (result) {
           count++
         }

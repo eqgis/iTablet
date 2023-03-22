@@ -165,7 +165,7 @@ export default class LangChaoDemoModule extends Module {
           this.initLicense()
           timer && clearInterval(timer)
         }
-      }, 500)
+      }, 100)
     }
     this.initMap()
   }
@@ -251,7 +251,10 @@ export default class LangChaoDemoModule extends Module {
       console.warn("countryCode: " + countryCode)
       if(countryCode !== 142 && countryCode !== 143 && countryCode !== 110 && countryCode !== 121) {
         OpenData(ConstOnline.Google, 0).then(() => {
-          SMap.moveToCurrent()
+          let timer = setInterval(() => {
+            SMap.moveToCurrent()
+            timer && clearInterval(timer)
+          }, 500)
         })
       }
       // const result = OpenData(ConstOnline.Google, 0)

@@ -7,6 +7,7 @@ import { scaleSize, Toast } from '../../../../utils'
 import { color } from '../../../../styles'
 import NavigationService from '../../../NavigationService'
 import { getThemeAssets, getPublicAssets } from '../../../../assets'
+import { Users } from '@/redux/models/user'
 import {
   View,
   Text,
@@ -16,11 +17,13 @@ import {
   Platform,
 } from 'react-native'
 
-import { SMRectifyView, SRectify } from 'imobile_for_reactnative'
+import { FileTools, SMRectifyView, SRectify } from 'imobile_for_reactnative'
+import { ConstPath } from '@/constants'
 
 export default class RegistrationPage extends Component {
   props: {
     navigation: Object,
+    user: Users,
   }
 
   constructor(props) {
@@ -76,9 +79,9 @@ export default class RegistrationPage extends Component {
           rectifyReferDatasets,
           global.RegistrationArithmeticMode
         )
-        if (Platform.OS === 'android') {
-          await SRectify.setSplit(0.49)
-        }
+        // if (Platform.OS === 'android') {
+        //   await SRectify.setSplit(0.49)
+        // }
       }, 500)
     } catch (e) {
       return
@@ -318,7 +321,9 @@ export default class RegistrationPage extends Component {
           true,
           getLanguage(global.language).Analyst_Labels.REGISTRATION_EXPORT,
         )
-        let result = await SRectify.rectifyInfoSaveAs(value)
+        const parentPath = await FileTools.appendingHomeDirectory(ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativeFilePath.Rectify)
+
+        const result = await SRectify.rectifyInfoSaveAs(parentPath + value + '.drfu')
         global.Loading.setLoading(false)
         if (result) {
           Toast.show(

@@ -57,6 +57,7 @@ import {
 import { getService } from '@/utils/OnlineServicesUtils'
 import { LongitudeAndLatitude } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { NetInfoState } from "@react-native-community/netinfo"
+import { FileServiceCallback } from 'imobile_for_reactnative/NativeModule/interfaces/SMessageService'
 
 const SMessageServiceiOS = NativeModules.SMessageService
 const appUtilsModule = NativeModules.AppUtils
@@ -648,19 +649,28 @@ export default class Friend extends Component {
     }
   }
 
-  onReceiveProgress = value => {
-    const msg = this.getMsgByMsgId(value.talkId, value.msgId)
+  onReceiveProgress = (value: FileServiceCallback) => {
+    const md5 = value.sourceUrl.substring(value.sourceUrl.lastIndexOf('/') + 1)
+    if (!value.listenerID) {
+      return
+    }
+    const talkId = value.listenerID
+    const msg = this.getFileMsgByUrl(talkId, value.sourceUrl)
     if (msg?.originMsg?.message?.message) {
       msg.originMsg.message.message.progress = value.percentage
       MessageDataHandle.editMessage({
         userId: this.props.user.currentUser.userName,
-        talkId: value.talkId,
-        msgId: value.msgId,
+        talkId: talkId,
+        msgId: msg.msgId,
         editItem: msg,
       })
 
-      if (this.curChat && this.curChat.targetUser.id === value.talkId) {
-        this.curChat.onReceiveProgress(value)
+      if (this.curChat && this.curChat.targetUser.id === talkId) {
+        this.curChat.onReceiveProgress({
+          msgId: msg.msgId,
+          percentage: value.percentage,
+          // sourceUrl: value.sourceUrl,
+        })
       }
     }
   }
@@ -1598,6 +1608,25 @@ export default class Friend extends Component {
     return msg
   }
 
+  /** 根据资源路径，查找对应消息 */
+  getFileMsgByUrl = (talkId: string, sourceUrl: string) => {
+    const userId = this.props.user.currentUser.userName
+    let chatHistory = []
+    let msg = undefined
+    if (this.props.chat[userId] && this.props.chat[userId][talkId]) {
+      chatHistory = this.props.chat[userId][talkId].history
+    }
+    if (chatHistory.length !== 0) {
+      for (let i = chatHistory.length - 1; i >= 0; i--) {
+        if (typeof chatHistory[i].originMsg.message === 'object' && chatHistory[i].originMsg.message?.message?.sourceUrl === sourceUrl) {
+          msg = chatHistory[i]
+          break
+        }
+      }
+    }
+    return msg
+  }
+
   getMsgFromTime = (talkId, fromTime) => {
     const userId = this.props.user.currentUser.userName
     let chatHistory = []
@@ -1620,7 +1649,7 @@ export default class Friend extends Component {
   /**
    * 发送到第三方服务器
    */
-  sendFile = async (message: string, filePath: string, talkId: string, msgId: string, cb: (result: boolean) => void) => {
+  sendFile = async (message: string, filePath: string, talkId: string, msgId: number, cb: (result: boolean) => void) => {
     try {
       if (!SMessageServiceHTTP.serviceInfo.FILE_UPLOAD_SERVER_URL) {
         cb && cb(false)
@@ -1629,13 +1658,12 @@ export default class Friend extends Component {
       const res = await SMessageService.uploadFile({
         serverUrl: SMessageServiceHTTP.serviceInfo.FILE_UPLOAD_SERVER_URL,
         filePath: filePath,
-        userId: this.props.user.currentUser.userName,
-        talkId: talkId,
-        msgId: msgId,
+        ownerId: this.props.user.currentUser.userName,
+        listenerID: talkId,
       })
 
       const msg = this.getMsgByMsgId(talkId, msgId)
-      msg.originMsg.message.message.md5 = res.md5
+      msg.originMsg.message.message.sourceUrl = res.sourceUrl
       MessageDataHandle.editMessage({
         userId: this.props.user.currentUser.userName,
         talkId: talkId,
@@ -1643,7 +1671,7 @@ export default class Friend extends Component {
         editItem: msg,
       })
 
-      message.message.message.md5 = res.md5
+      message.message.message.sourceUrl = res.sourceUrl
       this._sendMessage(JSON.stringify(message), talkId, false)
       cb && cb(true)
     } catch (error) {
@@ -1660,16 +1688,12 @@ export default class Friend extends Component {
         cb && cb(false)
         return
       }
+      console.warn(chatMessage, receivePath, fileName, talkId)
       const homePath = await FileTools.appendingHomeDirectory()
       const res = await SMessageService.downloadFile({
-        serverUrl: SMessageServiceHTTP.serviceInfo.FILE_DOWNLOAD_SERVER_URL,
-        fileOwnerId: chatMessage.originMsg.user.id,
-        md5: chatMessage.originMsg.message.message.md5,
-        fileSize: chatMessage.originMsg.message.message.fileSize,
-        receivePath: homePath + receivePath,
-        fileName: fileName,
-        talkId: talkId,
-        msgId: chatMessage._id,
+        sourceUrl: SMessageServiceHTTP.serviceInfo.FILE_DOWNLOAD_SERVER_URL + chatMessage.originMsg.message.message.sourceUrl,
+        receivePath: homePath + receivePath + '/' + fileName,
+        listenerID: talkId,
       })
 
       const message = this.props.chat[this.props.user.currentUser.userName][talkId]

@@ -136,7 +136,7 @@ export default StyleSheet.create({
   wrapper: {
     width: '100%',
     height: scaleSize(440),
-    backgroundColor: 'rgba(245,245,245,0.5)',
+    // backgroundColor: 'rgba(245,245,245,0.5)',
     paddingHorizontal: scaleSize(20),
   },
   searchIconWrap: {

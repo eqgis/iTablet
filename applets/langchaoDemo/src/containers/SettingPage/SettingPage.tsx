@@ -109,7 +109,7 @@ class SettingPage extends Component<Props, State> {
               width: dp(30),
               height: dp(30),
             }]}
-            source={getImage().login}
+            source={this.props.userId === "" ? getImage().login : getImage().logout}
           />
         </TouchableOpacity>
       </View>

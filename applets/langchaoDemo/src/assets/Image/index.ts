@@ -45,7 +45,8 @@ const icon_zoomUp = require('./zoomUp.png')
 const app_start_bg = require('./app_start_bg.png')
 const bg_login = require('./bg_login.png')
 const login_setting = require('./login_setting.png')
-const login = require('./login.png')
+const login = require('./icon_login.png')
+const logout = require('./icon_logout.png')
 const icon_app_version = require('./icon_app_version.png')
 
 const image = {
@@ -93,6 +94,7 @@ const image = {
   bg_login,
   login_setting,
   login,
+  logout,
   icon_app_version,
 }
 

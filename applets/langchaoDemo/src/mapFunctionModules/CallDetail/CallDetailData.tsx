@@ -12,7 +12,7 @@ import ToolbarModule from '@/containers/workspace/components/ToolBar/modules/Too
 import { Header } from '@/components'
 import { color } from '@/styles'
 import { getImage } from '../../assets/Image'
-import { AppEvent } from '@/utils'
+import { AppEvent, screen } from '@/utils'
 import { getLanguage } from '@/language'
 
 interface DataItem {
@@ -95,7 +95,7 @@ function getHeaderView(type: string | number) {
         <View
           style={[{
             width: '100%',
-            height: dp(60),
+            height: screen.getHeaderHeight(),
             backgroundColor: '#fff',
             flexDirection: 'row',
             // alignContent: 'center',
@@ -103,6 +103,7 @@ function getHeaderView(type: string | number) {
             borderBottomColor: color.colorEF,
             borderBottomWidth: dp(1),
             paddingHorizontal: dp(10),
+            paddingTop: screen.getIphonePaddingTop(),
           }]}
         >
           <TouchableOpacity

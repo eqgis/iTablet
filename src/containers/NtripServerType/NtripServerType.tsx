@@ -1,7 +1,7 @@
 import React, { Component } from "react"
-import { Text, Image, TouchableOpacity, ScrollView } from 'react-native'
+import { Text, Image, TouchableOpacity, ScrollView, View } from 'react-native'
 import Container from '../../components/Container'
-import { dp} from '../../utils'
+import { dp, scaleSize} from '../../utils'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import { PositionServerTypes, DeviceManufacturer } from '@/redux/models/location'
@@ -59,21 +59,29 @@ class NtripServerType extends Component<Props, State> {
       <TouchableOpacity
         onPress={this.confirm}
         style={[{
-          marginRight: dp(10),
+          marginRight: scaleSize(30),
         }]}
       >
-        <Text style={[styles.headerRightText, { color: textColor }]}>
+        <Text style={[styles.headerRightText]}>
           {getLanguage(global.language).Profile.CONFIRM}
         </Text>
       </TouchableOpacity>
     )
   }
 
+  /** 分割线 */
+  renderSeperator = () => {
+    return  <View style={styles.seperator} />
+  }
   /** 列表项 */
-  renderItem = (agreementArray: PositionServerType) => {
+  renderItem = (agreementArray: PositionServerType, index: number) => {
     return (
       <TouchableOpacity
-        style={styles.itemView}
+        style={[styles.itemView,
+          index === this.agreementArray.length - 1 && {
+            borderBottomColor: '#fff',
+          }
+        ]}
         activeOpacity={0.9}
         onPress={() => {
           this.setState({
@@ -92,8 +100,8 @@ class NtripServerType extends Component<Props, State> {
 
   /** 渲染列表 */
   renderItems = () => {
-    return this.agreementArray.map(agreementArray => {
-      return this.renderItem(agreementArray)
+    return this.agreementArray.map((agreementArray: PositionServerType, index: number) => {
+      return this.renderItem(agreementArray, index)
     })
   }
 
@@ -115,6 +123,7 @@ class NtripServerType extends Component<Props, State> {
           style={[styles.listContentView]}
         >
           {this.renderItems()}
+          {this.renderSeperator()}
         </ScrollView>
       </Container>
     )

@@ -167,7 +167,15 @@ class LocationSetting extends React.Component<Props, State> {
 
 
     const brand = this.ManufacturerToBrand[this.props.deviceManufacturer]
-    const gnssTppe = this.props.deviceType
+    let gnssTppe: 'gps' | 'rtk' = 'gps'
+    switch(this.props.deviceType) {
+      case "GPS" :
+        gnssTppe = 'gps'
+        break
+      case "RTK" :
+        gnssTppe = 'rtk'
+        break
+    }
 
 
     // 蓝牙打开和选择了准备连接的蓝牙设备
@@ -262,7 +270,7 @@ class LocationSetting extends React.Component<Props, State> {
   }
 
   /** 去连接模式的页面 */
-  gotoDeviceConnectionMode = () => {
+  gotoDeviceConnectionMode = async () => {
     NavigationService.navigate("LocationDeviceConnectionMode")
   }
 
@@ -306,16 +314,16 @@ class LocationSetting extends React.Component<Props, State> {
               marginRight: dp(20),
             }]}
           >
-            <Text style={styles.text}>{param.value}</Text>
+            <Text style={styles.titleText}>{param.value}</Text>
           </View>
         )}
 
         <Image
           source={getImage().arrow}
           style={[{
-            width: dp(20),
-            height: dp(20),
-            marginRight: dp(10),
+            width: dp(15),
+            height: dp(15),
+            // marginRight: dp(10),
           }]}
         />
       </TouchableOpacity>
@@ -330,9 +338,12 @@ class LocationSetting extends React.Component<Props, State> {
           value: this.props.deviceManufacturer,
           action: this.gotoLocationDevice,
         })}
-        {this.renderSeperator()}
-
-
+        {this.renderItemSeperator()}
+        {this.renderRowItem({
+          title:getLanguage(global.language).Profile.DEVICE_TYPE,
+          value: this.props.deviceType,
+          action: this.gotoChangeDeviceTypePage,
+        })}
 
       </View>
     )
@@ -354,17 +365,17 @@ class LocationSetting extends React.Component<Props, State> {
             returnKeyType={'done'}
           />}
           <Switch
-            // style={styles.switch}
-            trackColor={{ false: color.bgG, true: color.switch }}
-            thumbColor={this.state.distanceLocation ? color.bgW : color.bgW}
-            ios_backgroundColor={this.state.distanceLocation ? color.switch : color.bgG}
+            style={styles.switch}
+            trackColor={{ false: '#F0F0F0', true:  "#2D2D2D" }}
+            thumbColor={this.state.distanceLocation ? "#fff" : "#fff"}
+            ios_backgroundColor={this.state.distanceLocation ?"#2D2D2D" : '#F0F0F0'}
             value={this.state.distanceLocation}
             onValueChange={value => {
               this.setState({ distanceLocation: value ,timeLocation:false})
             }}
           />
         </View>
-        {this.renderSeperator()}
+        {this.renderItemSeperator()}
         <View style={styles.itemView}>
           <Text style={styles.text}>{getLanguage(global.language).Profile.TIME_LOCATION}</Text>
           {this.state.timeLocation && !this.state.distanceLocation && <TextInput
@@ -378,17 +389,17 @@ class LocationSetting extends React.Component<Props, State> {
             returnKeyType={'done'}
           />}
           <Switch
-            // style={styles.switch}
-            trackColor={{ false: color.bgG, true: color.switch }}
-            thumbColor={this.state.timeLocation ? color.bgW : color.bgW}
-            ios_backgroundColor={this.state.timeLocation ? color.switch : color.bgG}
+            style={styles.switch}
+            trackColor={{ false: '#F0F0F0', true: "#2D2D2D" }}
+            thumbColor={this.state.timeLocation ? "#fff" : "#fff"}
+            ios_backgroundColor={this.state.timeLocation ? "#2D2D2D" : '#F0F0F0'}
             value={this.state.timeLocation}
             onValueChange={value => {
               this.setState({ timeLocation: value ,distanceLocation:false})
             }}
           />
         </View>
-        {this.renderSeperator()}
+        {/* {this.renderItemSeperator()} */}
       </View>
     )
   }
@@ -397,13 +408,6 @@ class LocationSetting extends React.Component<Props, State> {
     return(
       <View style={{ flexDirection: 'column' }}>
 
-        {this.renderRowItem({
-          title:getLanguage(global.language).Profile.DEVICE_TYPE,
-          value: this.props.deviceType,
-          action: this.gotoChangeDeviceTypePage,
-        })}
-        {this.renderSeperator()}
-
 
         {/* 连接模式 */}
         {this.renderRowItem({
@@ -411,7 +415,7 @@ class LocationSetting extends React.Component<Props, State> {
           value: this.props.isOpenBlutooth ? getLanguage(global.language).Profile.SETTING_LOCATION_BLUETOOTH : undefined,
           action: this.gotoDeviceConnectionMode,
         })}
-        {this.renderSeperator()}
+        {this.renderItemSeperator()}
 
         {/* 精度选择 */}
         {this.renderRowItem({
@@ -419,14 +423,14 @@ class LocationSetting extends React.Component<Props, State> {
           value: this.positionAccuracyName[this.props.positionAccuracy],
           action: this.gotoLocationAccuracy,
         })}
-        {this.renderSeperator()}
+        {this.renderItemSeperator()}
 
         {/* 差分服务 */}
         {this.renderRowItem({
           title:getLanguage(global.language).Profile.NTRIP_SETTING,
           action: this.gotoNtripSettingPage,
         })}
-        {this.renderSeperator()}
+        
 
         {/* <TouchableOpacity
           style={styles.itemView}
@@ -434,7 +438,7 @@ class LocationSetting extends React.Component<Props, State> {
         >
           <Text style={styles.text}>{getLanguage(global.language).Profile.NTRIP_SETTING}</Text>
         </TouchableOpacity>
-        {this.renderSeperator()} */}
+        {this.renderItemSeperator()} */}
 
         {/* <View
           style={[styles.itemView]}
@@ -456,13 +460,22 @@ class LocationSetting extends React.Component<Props, State> {
 
           </Picker>
         </View>
-        {this.renderSeperator()} */}
+        {this.renderItemSeperator()} */}
       </View>
     )
   }
 
+  /** 分割线 */
   renderSeperator = () => {
-    return <View style={styles.seperator} />
+    return  <View style={styles.seperator} />
+  }
+
+  renderItemSeperator = () => {
+    return (
+      <View style={[styles.itemSeperator]}>
+        <View style={[styles.itemSeperatorLine]}></View>
+      </View>
+    )
   }
 
   renderRight = () => {
@@ -473,7 +486,9 @@ class LocationSetting extends React.Component<Props, State> {
     textColor = 'black'
     // }
     return (
-      <View>
+      <View style={[{
+        marginRight: scaleSize(30),
+      }]}>
         <TouchableOpacity
           // disabled={this.state.currentOption === this.prevOption}
           onPress={this.changeDevice}
@@ -546,8 +561,11 @@ class LocationSetting extends React.Component<Props, State> {
         <View style={styles.container}>
           {/* {this.renderList01()} */}
           {this.renderList()}
+          {this.renderSeperator()}
           {this.props.deviceManufacturer !== '当前设备' && this.renderOtherSetting()}
+          {this.renderSeperator()}
           {this.renderLocation()}
+          {this.renderSeperator()}
           {/* {this.props.peripheralDevice.type === 'bluetooth' && this.renderOtherSetting()} */}
           {/* {this.state.showSearch && this.renderSearch()} */}
         </View>
@@ -565,9 +583,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: scaleSize(20),
+    marginHorizontal: scaleSize(30),
+    marginLeft: scaleSize(60),
     height:scaleSize(80),
     // marginVertical: scaleSize(20),
+    // backgroundColor: '#f00',
   },
   itemViewLeft: {
     flexDirection: 'row',
@@ -586,8 +606,12 @@ const styles = StyleSheet.create({
     fontSize: scaleSize(26),
     marginHorizontal: scaleSize(20),
   },
-  text: {
+  titleText: {
     fontSize: scaleSize(26),
+  },
+  text: {
+    fontSize: scaleSize(28),
+    color: '#333',
   },
   image: {
     height: scaleSize(60),
@@ -602,8 +626,9 @@ const styles = StyleSheet.create({
     width: scaleSize(35),
   },
   seperator: {
-    height: 1,
-    backgroundColor: '#E0E0E0',
+    height: dp(5),
+    backgroundColor: '#f9f9f9',
+    // marginTop: dp(10),
   },
   headerRightText: {
     fontSize: scaleSize(26),
@@ -668,6 +693,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: dp(10),
     paddingLeft: dp(40),
     height:dp(50),
+  },
+  itemSeperator: {
+    width: '100%',
+    height: dp(1),
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  itemSeperatorLine: {
+    // width: '90%',
+    // width:'100%',
+    flex:1,
+    height: dp(1),
+    backgroundColor: 'rgba(0,0,0,0.05)',
+    marginLeft: scaleSize(60),
+    marginRight: scaleSize(30),
+  },
+  switch: {
+    marginRight: dp(-10),
   },
 })
 export default LocationSetting

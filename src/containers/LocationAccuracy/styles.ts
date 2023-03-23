@@ -1,4 +1,5 @@
 /** 外部设备页面的样式文件 */
+import { scaleSize } from "@/utils"
 import { dp } from "imobile_for_reactnative/utils/size"
 import { StyleSheet } from "react-native"
 
@@ -15,10 +16,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginHorizontal: dp(10),
+    marginHorizontal: scaleSize(30),
+    marginLeft: scaleSize(60),
     height:dp(50),
-    // backgroundColor: '#fff',
-    borderBottomColor: '#f9f9f9',
+    // backgroundColor: '#f00',
+    borderBottomColor: 'rgba(0,0,0,0.05)',
     borderBottomWidth: dp(1),
   },
   text: {
@@ -30,6 +32,11 @@ const styles = StyleSheet.create({
   },
   headerRightText: {
     fontSize: dp(16),
+  },
+  seperator: {
+    height: dp(5),
+    backgroundColor: '#f9f9f9',
+    // marginTop: dp(10),
   },
 
 })

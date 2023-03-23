@@ -2,9 +2,9 @@
  * 设备厂家页面  设计里的定位设备
  */
 import React, { Component } from "react"
-import { Text, Image, TouchableOpacity, ScrollView } from 'react-native'
+import { Text, Image, TouchableOpacity, ScrollView, View } from 'react-native'
 import Container from '../../components/Container'
-import { dp} from '../../utils'
+import { dp, scaleSize} from '../../utils'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import { DeviceManufacturer } from '@/redux/models/location'
@@ -47,21 +47,30 @@ class LocationDevice extends Component<Props, State> {
       <TouchableOpacity
         onPress={this.changeDeviceManufacturer}
         style={[{
-          marginRight: dp(10),
+          marginRight: scaleSize(30),
         }]}
       >
-        <Text style={[styles.headerRightText, { color: textColor }]}>
+        <Text style={[styles.headerRightText]}>
           {getLanguage(global.language).Profile.CONFIRM}
         </Text>
       </TouchableOpacity>
     )
   }
 
+  /** 分割线 */
+  renderSeperator = () => {
+    return  <View style={styles.seperator} />
+  }
+
   /** 列表项 */
-  renderItem = (manufacturer: DeviceManufacturer) => {
+  renderItem = (manufacturer: DeviceManufacturer, index: number) => {
     return (
       <TouchableOpacity
-        style={styles.itemView}
+        style={[styles.itemView,
+          index === this.manufacturers.length - 1 && {
+            borderBottomColor: '#fff',
+          }
+        ]}
         activeOpacity={0.9}
         onPress={() => {
           this.setState({
@@ -80,8 +89,8 @@ class LocationDevice extends Component<Props, State> {
 
   /** 渲染列表 */
   renderItems = () => {
-    return this.manufacturers.map(manufacturer => {
-      return this.renderItem(manufacturer)
+    return this.manufacturers.map((manufacturer: DeviceManufacturer, index: number) => {
+      return this.renderItem(manufacturer, index)
     })
   }
 
@@ -103,6 +112,7 @@ class LocationDevice extends Component<Props, State> {
           style={[styles.listContentView]}
         >
           {this.renderItems()}
+          {this.renderSeperator()}
         </ScrollView>
       </Container>
     )

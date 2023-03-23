@@ -1,7 +1,7 @@
 import React, { Component } from "react"
-import { Text, Image, TouchableOpacity, ScrollView } from 'react-native'
+import { Text, Image, TouchableOpacity, ScrollView, View } from 'react-native'
 import Container from '../../components/Container'
-import { dp} from '../../utils'
+import { dp, scaleSize} from '../../utils'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import { DeviceManufacturer } from '@/redux/models/location'
@@ -55,21 +55,30 @@ class LocationAccuracy extends Component<Props, State> {
       <TouchableOpacity
         onPress={this.confirm}
         style={[{
-          marginRight: dp(10),
+          marginRight: scaleSize(30),
         }]}
       >
-        <Text style={[styles.headerRightText, { color: textColor }]}>
+        <Text style={[styles.headerRightText]}>
           {getLanguage(global.language).Profile.CONFIRM}
         </Text>
       </TouchableOpacity>
     )
   }
 
+  /** 分割线 */
+  renderSeperator = () => {
+    return  <View style={styles.seperator} />
+  }
+
   /** 列表项 */
-  renderItem = (positionAccuracy: positionAccuracyItemType) => {
+  renderItem = (positionAccuracy: positionAccuracyItemType, index: number) => {
     return (
       <TouchableOpacity
-        style={styles.itemView}
+        style={[styles.itemView,
+          index === this.positionAccuracyArray.length - 1 && {
+            borderBottomColor: '#fff',
+          }
+        ]}
         activeOpacity={0.9}
         onPress={() => {
           this.setState({
@@ -88,8 +97,8 @@ class LocationAccuracy extends Component<Props, State> {
 
   /** 渲染列表 */
   renderItems = () => {
-    return this.positionAccuracyArray.map(positionAccuracy => {
-      return this.renderItem(positionAccuracy)
+    return this.positionAccuracyArray.map((positionAccuracy: positionAccuracyItemType, index: number) => {
+      return this.renderItem(positionAccuracy, index)
     })
   }
 
@@ -111,6 +120,7 @@ class LocationAccuracy extends Component<Props, State> {
           style={[styles.listContentView]}
         >
           {this.renderItems()}
+          {this.renderSeperator()}
         </ScrollView>
       </Container>
     )

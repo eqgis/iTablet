@@ -6,7 +6,7 @@ import { TouchableOpacity, View, Text, TextInput, Image, ScrollView } from "reac
 import { SLocation } from "imobile_for_reactnative"
 import styles from "./style"
 import { Picker } from '@react-native-picker/picker'
-import { dp, Toast } from '@/utils'
+import { dp, scaleSize, Toast } from '@/utils'
 import { NtripMountPoint } from 'imobile_for_reactnative/NativeModule/interfaces/SLocation'
 import NavigationService from '../NavigationService'
 import { PositionServerTypes, EssentialInfo, DeviceManufacturer } from '@/redux/models/location'
@@ -233,9 +233,12 @@ class NtripSetting extends Component<Props, State> {
       <View>
         <TouchableOpacity
           // disabled={isDisabled}
+          style={[{
+            marginRight: scaleSize(30),
+          }]}
           onPress={this.setNtrip}
         >
-          <Text style={[styles.headerRightText, { color: textColor }]}>
+          <Text style={[styles.headerRightText]}>
             {getLanguage(global.language).Profile.CONFIRM}
           </Text>
         </TouchableOpacity>
@@ -249,7 +252,7 @@ class NtripSetting extends Component<Props, State> {
         style={styles.itemView}
         onPress={param.action}
       >
-        <Text style={styles.text}>{param.title}</Text>
+        <Text style={styles.titletext}>{param.title}</Text>
         {param.value && (
           <View
             style={[{
@@ -266,9 +269,9 @@ class NtripSetting extends Component<Props, State> {
         <Image
           source={getImage().arrow}
           style={[{
-            width: dp(20),
-            height: dp(20),
-            marginRight: dp(10),
+            width: dp(15),
+            height: dp(15),
+            // marginRight: dp(10),
           }]}
         />
       </TouchableOpacity>
@@ -280,6 +283,7 @@ class NtripSetting extends Component<Props, State> {
     value: string,
     secureTextEntry?:boolean,
     showArray?:boolean,
+    diseditable?:boolean,
     onChangeText: (text: string) => void,
     onEndEditing?: () => void,
     onSubmitEditing?: () => void,
@@ -289,13 +293,14 @@ class NtripSetting extends Component<Props, State> {
       <View
         style={[styles.itemView]}
       >
-        <Text style={styles.text}>{props.title}</Text>
+        <Text style={styles.titletext}>{props.title}</Text>
         <TextInput
           style={[styles.itemValueBtn]}
           autoFocus={false}
           // placeholder={this.state.placeholder}
           secureTextEntry={props.secureTextEntry || false}
           value={props.value}
+          editable={!props.diseditable}
           onChangeText={props.onChangeText}
           onEndEditing={() => {
             props?.onEndEditing?.()
@@ -309,10 +314,11 @@ class NtripSetting extends Component<Props, State> {
           <TouchableOpacity
             style={[{
               width: dp(20),
-              height: dp(20),
-              marginRight: dp(10),
+              height: dp(30),
+              // marginRight: dp(10),
               justifyContent: 'center',
-              alignItems: 'center',
+              alignItems: 'flex-end',
+              // backgroundColor: '#f00',
             }]}
             onPress={() => {
               props?.onRightBtn?.()
@@ -321,8 +327,8 @@ class NtripSetting extends Component<Props, State> {
             <Image
               source={getImage().arrow}
               style={[{
-                width: dp(20),
-                height: dp(20),
+                width: dp(15),
+                height: dp(15),
               }]}
             />
           </TouchableOpacity>
@@ -356,9 +362,10 @@ class NtripSetting extends Component<Props, State> {
         {this.renderInputItem({
           title:getLanguage(global.language).Profile.PROTOCOL_TYPE,
           value: this.state.agreement,
+          diseditable: true,
           onChangeText: this.changeAgreementType.bind(this),
         })}
-        {this.renderItemSeperator()}
+        {/* {this.renderItemSeperator()} */}
         {this.renderSeperator()}
 
       </View>
@@ -427,13 +434,13 @@ class NtripSetting extends Component<Props, State> {
             this.setState({
               userName: text,
             })
-            await this.refreshLoadPoint()
+            // await this.refreshLoadPoint()
           },
           onEndEditing: async () => {
-            await this.refreshLoadPoint()
+            // await this.refreshLoadPoint()
           },
           onSubmitEditing:async () => {
-            await this.refreshLoadPoint()
+            // await this.refreshLoadPoint()
           },
         })}
 
@@ -448,17 +455,17 @@ class NtripSetting extends Component<Props, State> {
             this.setState({
               password: text,
             })
-            await this.refreshLoadPoint()
+            // await this.refreshLoadPoint()
           },
           onEndEditing: async () => {
-            await this.refreshLoadPoint()
+            // await this.refreshLoadPoint()
           },
           onSubmitEditing:async () => {
-            await this.refreshLoadPoint()
+            // await this.refreshLoadPoint()
           },
         })}
 
-        {this.renderItemSeperator()}
+        {/* {this.renderItemSeperator()} */}
         {this.renderSeperator()}
       </View>
     )
@@ -492,7 +499,7 @@ class NtripSetting extends Component<Props, State> {
             })
           },
         })}
-        {this.renderItemSeperator()}
+        {/* {this.renderItemSeperator()} */}
 
         {this.renderSeperator()}
 

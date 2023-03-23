@@ -2,9 +2,9 @@
  * 设备厂家页面  设计里的定位设备
  */
 import React, { Component } from "react"
-import { Text, Image, TouchableOpacity, ScrollView } from 'react-native'
+import { Text, Image, TouchableOpacity, ScrollView, View } from 'react-native'
 import Container from '../../components/Container'
-import { dp} from '../../utils'
+import { dp, scaleSize} from '../../utils'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import { DeviceType } from '@/redux/models/location'
@@ -26,12 +26,12 @@ interface State {
 }
 
 class LocationDeviceType extends Component<Props, State> {
-  devicetypes: Array<DeviceType> = ['gps', 'rtk']
+  devicetypes: Array<DeviceType> = ['GPS', 'RTK']
 
   constructor(props: Props) {
     super(props)
     this.state = {
-      curDeviceType: this.props.deviceType || "gps",
+      curDeviceType: this.props.deviceType || "GPS",
     }
   }
 
@@ -47,21 +47,30 @@ class LocationDeviceType extends Component<Props, State> {
       <TouchableOpacity
         onPress={this.changeDeviceType}
         style={[{
-          marginRight: dp(10),
+          marginRight: scaleSize(30),
         }]}
       >
-        <Text style={[styles.headerRightText, { color: textColor }]}>
+        <Text style={[styles.headerRightText]}>
           {getLanguage(global.language).Profile.CONFIRM}
         </Text>
       </TouchableOpacity>
     )
   }
 
+  /** 分割线 */
+  renderSeperator = () => {
+    return  <View style={styles.seperator} />
+  }
+
   /** 列表项 */
-  renderItem = (devicetype: DeviceType) => {
+  renderItem = (devicetype: DeviceType, index: number) => {
     return (
       <TouchableOpacity
-        style={styles.itemView}
+        style={[styles.itemView,
+          index === this.devicetypes.length - 1 && {
+            borderBottomColor: '#fff',
+          }
+        ]}
         activeOpacity={0.9}
         onPress={() => {
           this.setState({
@@ -80,8 +89,8 @@ class LocationDeviceType extends Component<Props, State> {
 
   /** 渲染列表 */
   renderItems = () => {
-    return this.devicetypes.map(devicetype => {
-      return this.renderItem(devicetype)
+    return this.devicetypes.map((devicetype: DeviceType, index: number) => {
+      return this.renderItem(devicetype, index)
     })
   }
 
@@ -103,6 +112,7 @@ class LocationDeviceType extends Component<Props, State> {
           style={[styles.listContentView]}
         >
           {this.renderItems()}
+          {this.renderSeperator()}
         </ScrollView>
       </Container>
     )

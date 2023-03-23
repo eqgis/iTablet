@@ -4,7 +4,7 @@
 import React, { Component } from "react"
 import { Text, Image, TouchableOpacity, ScrollView, Switch, View, FlatList, ActivityIndicator, Platform } from 'react-native'
 import Container from '../../components/Container'
-import { dp, Toast} from '../../utils'
+import { dp, scaleSize, Toast} from '../../utils'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import { BluetoothDeviceInfoType, DeviceManufacturer, DeviceType } from '@/redux/models/location'
@@ -13,7 +13,7 @@ import { MainStackScreenNavigationProps } from "@/types"
 import { LocationConnectionParam } from "imobile_for_reactnative/NativeModule/interfaces/SLocation"
 import { SLocation } from "imobile_for_reactnative"
 import { color } from "@/styles"
-import { getThemeAssets } from "@/assets"
+import { getImage, getThemeAssets } from "@/assets"
 
 
 const radio_on = require('../../assets/public/radio_select.png')
@@ -132,12 +132,10 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
     if(value) {
       // 调打开蓝牙的方法
       const result = await SLocation.openBluetooth()
-      console.warn("打开蓝牙：" + result)
       if(result) {
         // 处理界面
         const tempTimer = setInterval(async () => {
           const isOpen = await SLocation.bluetoothIsOpen()
-          console.warn("蓝牙打开状态： " + isOpen)
           if(isOpen) {
             this.getDevice()
             clearInterval(tempTimer)
@@ -161,10 +159,8 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
     } else {
       // 调蓝牙关闭方法
       const isStopScan = await SLocation.stopScanBluetooth()
-      console.warn("停止扫描： " +  isStopScan)
       if(isStopScan) {
         const result = await SLocation.closeBluetooth()
-        console.warn("关闭蓝牙：" + result)
         if(result) {
           this.setState({
             isOpenBlutooth: value,
@@ -218,10 +214,10 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
       <TouchableOpacity
         onPress={this.changeDeviceType}
         style={[{
-          marginRight: dp(10),
+          marginRight: scaleSize(26),
         }]}
       >
-        <Text style={[styles.headerRightText, { color: textColor }]}>
+        <Text style={[styles.headerRightText]}>
           {getLanguage(global.language).Profile.CONFIRM}
         </Text>
       </TouchableOpacity>
@@ -231,13 +227,13 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
   /** 蓝牙开关 */
   renderBluetoothSwitch = () => {
     return (
-      <View style={styles.itemView}>
+      <View style={[styles.itemView]}>
         <Text style={styles.text}>{getLanguage(global.language).Profile.SETTING_LOCATION_BLUETOOTH}</Text>
         <Switch
-        // style={styles.switch}
-          trackColor={{ false: color.bgG, true: color.switch }}
-          thumbColor={this.state.isOpenBlutooth ? color.bgW : color.bgW}
-          ios_backgroundColor={this.state.isOpenBlutooth ? color.switch : color.bgG}
+          // style={styles.switch}
+          trackColor={{ false: '#F0F0F0', true: "#2D2D2D" }}
+          thumbColor={this.state.isOpenBlutooth ? "#fff" : "#fff"}
+          ios_backgroundColor={this.state.isOpenBlutooth ? "#2D2D2D" : '#F0F0F0'}
           value={this.state.isOpenBlutooth}
           onValueChange={this.blueSwitchAction}
         />
@@ -253,7 +249,7 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
       <TouchableOpacity
         key = {item.address}
         style={[styles.itemView,{
-          marginLeft: dp(30),
+          marginLeft: dp(60),
         }]}
         activeOpacity={0.9}
         onPress={() => {
@@ -262,10 +258,21 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
           })
         }}
       >
-        <Text style={styles.text}>{item.name}</Text>
-        <Image
+        <Text style={[styles.text, {
+          flex: 1,
+        }]}>{item.name}</Text>
+        {/* <Image
           style={styles.image}
           source={isSelect? radio_on : radio_off}
+        /> */}
+        <Text>{isSelect? "已连接": "未连接"}</Text>
+        <Image
+          source={getImage().arrow}
+          style={[{
+            width: dp(16),
+            height: dp(16),
+            marginLeft: dp(10),
+          }]}
         />
       </TouchableOpacity>
     )
@@ -283,6 +290,14 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
     )
   }
 
+  renderItemSeperator = () => {
+    return (
+      <View style={[styles.itemSeperator]}>
+        <View style={[styles.itemSeperatorLine]}></View>
+      </View>
+    )
+  }
+
   renderSearchview = () => {
     return (
       <ActivityIndicator size="small" color="#505050" />
@@ -296,23 +311,23 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
       <View>
         <View
           style={[{
-            width: '100%',
+            // width: '100%',
             height: dp(60),
             flexDirection: 'row',
             justifyContent:'space-between',
             alignItems: 'center',
-            paddingHorizontal: dp(10),
+            marginRight: scaleSize(33),
+            marginLeft: scaleSize(60),
+            // backgroundColor: '#f00',
           }]}
         >
           <Text
-            style={[{
-              fontSize: dp(16),
-            }]}
+            style={[styles.text]}
           >{getLanguage(global.language).Profile.PAIRED_BT_DEVICE_LIST}</Text>
           {this.state.isOpenBlutooth && (
             <TouchableOpacity
               style={[{
-                width: dp(30),
+                width: dp(23),
                 height:dp(30),
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -335,12 +350,13 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
         <FlatList
           style={[{
             width: '100%',
-            height: dp(200),
+            // height: dp(200),
             flexDirection: 'column',
           }]}
           renderItem={this._renderItem}
           data={this.state.pairedBTDevices}
           keyExtractor={(item, index) => item.address + index}
+          ItemSeparatorComponent={this.renderItemSeperator}
         />
       </View>
     )

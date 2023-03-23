@@ -65,14 +65,15 @@ export default StyleSheet.create({
     width: scaleSize(60),
     height: scaleSize(60),
     backgroundColor: '#rgba(255, 255, 255, 0)',
-    marginRight: 3,
+    // marginRight: 3,
   },
   iconBtnBg: {
-    width: 30,
-    height: 30,
+    width: scaleSize(60),
+    height: scaleSize(60),
     borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
+    // marginLeft: scaleSize(20),
   },
   iconBtnBgDarkColor: {
     backgroundColor: '#rgba(0, 0, 0, 0.6)',
@@ -81,7 +82,7 @@ export default StyleSheet.create({
     position: 'absolute',
     zIndex: zIndexLevel.FOUR + 1,
     // width: 60,
-    marginLeft: scaleSize(20),
+    marginLeft: scaleSize(10),
     alignItems: 'flex-start',
     justifyContent: 'center',
     backgroundColor: 'transparent',
@@ -127,7 +128,7 @@ export default StyleSheet.create({
   count: {
     position: 'absolute',
     color: '#fa575c',
-    left: 38,
+    // left: 38,
   },
   responseHeader: {
     flex: 1,

@@ -1,4 +1,5 @@
 /** NTRIP设置页面的样式文件 */
+import { scaleSize } from "@/utils"
 import { dp } from "imobile_for_reactnative/utils/size"
 import { StyleSheet } from "react-native"
 
@@ -14,7 +15,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: dp(10),
+    marginHorizontal: scaleSize(30),
+    marginLeft: scaleSize(60),
     height:dp(50),
     // borderBottomColor: '#f9f9f9',
     // borderBottomWidth: dp(1),
@@ -25,24 +27,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
   },
   itemSeperatorLine: {
-    width: '90%',
+    flex:1,
     height: dp(1),
-    backgroundColor: '#efeff4'
+    backgroundColor: 'rgba(0,0,0,0.05)',
+    marginLeft: scaleSize(60),
+    marginRight: scaleSize(30),
   },
 
   seperator: {
-    height: dp(10),
+    height: dp(5),
     backgroundColor: '#f9f9f9',
-    marginTop: dp(20),
+    // marginTop: dp(20),
+  },
+  titletext: {
+    fontSize: scaleSize(28),
+    color: '#333',
   },
   text: {
     fontSize: dp(16),
     color: '#A0A0A0',
     textAlign: 'right',
     marginRight: dp(10),
-    paddingLeft: dp(10),
+    // paddingLeft: dp(10),
   },
   itemValueBtn: {
     // width: dp(150),
@@ -57,7 +66,7 @@ const styles = StyleSheet.create({
     // fontSize: dp(14),
     color: '#A0A0A0',
     textAlign: 'right',
-    paddingRight: dp(10),
+    // paddingRight: dp(10),
     // lineHeight: dp(30),
   },
   // itemValueBtnText: {

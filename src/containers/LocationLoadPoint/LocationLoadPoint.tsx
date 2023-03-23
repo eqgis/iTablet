@@ -1,7 +1,7 @@
 import React, { Component } from "react"
-import { Text, Image, TouchableOpacity, ScrollView } from 'react-native'
+import { Text, Image, TouchableOpacity, ScrollView, View } from 'react-native'
 import Container from '../../components/Container'
-import { dp} from '../../utils'
+import { dp, scaleSize} from '../../utils'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import styles from "./styles"
@@ -45,21 +45,30 @@ class LocationLoadPoint extends Component<Props, State> {
       <TouchableOpacity
         onPress={this.confirm}
         style={[{
-          marginRight: dp(10),
+          marginRight: scaleSize(30),
         }]}
       >
-        <Text style={[styles.headerRightText, { color: textColor }]}>
+        <Text style={[styles.headerRightText]}>
           {getLanguage(global.language).Profile.CONFIRM}
         </Text>
       </TouchableOpacity>
     )
   }
 
+  /** 分割线 */
+  renderSeperator = () => {
+    return  <View style={styles.seperator} />
+  }
+
   /** 列表项 */
-  renderItem = (loadPoint: SLocation.NtripMountPoint) => {
+  renderItem = (loadPoint: SLocation.NtripMountPoint, index: number) => {
     return (
       <TouchableOpacity
-        style={styles.itemView}
+        style={[styles.itemView,
+          index === this.state.loadPointArr.length - 1 && {
+            borderBottomColor: '#fff',
+          }
+        ]}
         activeOpacity={0.9}
         onPress={() => {
           this.setState({
@@ -78,8 +87,8 @@ class LocationLoadPoint extends Component<Props, State> {
 
   /** 渲染列表 */
   renderItems = () => {
-    return this.state.loadPointArr.map(loadPoint => {
-      return this.renderItem(loadPoint)
+    return this.state.loadPointArr.map((loadPoint: SLocation.NtripMountPoint, index: number) => {
+      return this.renderItem(loadPoint, index)
     })
   }
 
@@ -100,6 +109,7 @@ class LocationLoadPoint extends Component<Props, State> {
           style={[styles.listContentView]}
         >
           {this.renderItems()}
+          {this.renderSeperator()}
         </ScrollView>
       </Container>
     )

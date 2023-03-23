@@ -62,7 +62,7 @@ export interface DeviceManufacturerAction {
   payload: DeviceManufacturer
 }
 
-export type DeviceType = 'gps' | "rtk"
+export type DeviceType = 'GPS' | "RTK"
 export interface DeviceTypeAction {
   type: typeof SET_POSITION_DEVICE_TYPE
   payload: DeviceType
@@ -249,7 +249,7 @@ export const setPositionAgreementType = (
 // --------------------------------------------------
 const initialState = fromJS({
   essentialInfo:{
-    agreement: 'ntrip',
+    agreement: 'Ntripv1',
     address: '',
     port: '',
     userName: '',
@@ -262,7 +262,7 @@ const initialState = fromJS({
   pointStateText: '',
   positionAccuracy: 5,
   deviceManufacturer: '当前设备',
-  deviceType: 'gps',
+  deviceType: 'GPS',
   /** 蓝牙是否打开 */
   isOpenBlutooth: true,
   /** 连接的蓝牙设备  BluetoothDeviceInfoType 类型 */
@@ -270,7 +270,7 @@ const initialState = fromJS({
   /** 服务类型 */
   positionServerType: 'NTRIPV1',
   /** 协议类型 */
-  positionAgreementType: 'ntripv1',
+  positionAgreementType: 'Ntripv1',
 })
 
 

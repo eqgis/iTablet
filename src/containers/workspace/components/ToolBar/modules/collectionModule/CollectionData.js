@@ -150,7 +150,7 @@ function getData(type) {
         const callInfo = CollectionAction.getCallInfo()
         let durationTime = 0
         if(callInfo.startTime >= 0) {
-          durationTime = (nowDate - callInfo.startTime) / (60 * 1000)
+          durationTime = parseFloat(((nowDate - callInfo.startTime) / (60 * 1000)).toFixed(2))
         }
 
         let infos = getUserInfo()

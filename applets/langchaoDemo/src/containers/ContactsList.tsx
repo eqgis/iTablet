@@ -178,6 +178,7 @@ class ContactsList extends Component<Props, State> {
   }
 
   itemAction = async (telephone: string, name: string) => {
+    let timer: NodeJS.Timer | undefined
     try {
       if(telephone === '') return
       NavigationService.navigate('MapView',{type: 'langchao'})
@@ -199,22 +200,24 @@ class ContactsList extends Component<Props, State> {
         startTime: date.getTime(),
       })
 
-      const timer = setTimeout(async () => {
+      timer = setInterval(async () => {
         const layer = ToolbarModule.getParams().currentLayer
         if(layer) {
           await SMap.setLayerVisible(layer.path, false)
         }
         await SCollector.startCollect(type)
+        const navState = this.props.navigation.getState()
+        // 跳转到MapStack再打电话
+        if (navState.routes[navState.index].name === 'MapStack') {
+          RNImmediatePhoneCall.immediatePhoneCall(telephone)
+          timer && clearInterval(timer)
+        }
 
-        // const url = 'tel:' + telephone
-        // Linking.openURL(url)
-        RNImmediatePhoneCall.immediatePhoneCall(telephone)
-
-        clearTimeout(timer)
-      }, 1000)
+      }, 300)
 
 
     } catch (error) {
+      timer && clearInterval(timer)
       console.warn("error：" + JSON.stringify(error))
     }
   }

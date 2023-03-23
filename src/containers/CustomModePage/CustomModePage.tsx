@@ -322,7 +322,8 @@ export default class CustomModePage extends Component {
         // result = await STheme.setCustomThemeRange(params)
         break
       case ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_MODE:
-        result = await STheme.setCustomRangeLabel(params)
+        result = await STheme.modifyRangeThemeLabelLayer(params.LayerName,params)
+        // result = await STheme.setCustomRangeLabel(params)
         break
       case ConstToolType.SM_MAP_THEME_PARAM_UNIQUE_COLOR:
         result = await STheme.modifyThemeUniqueLayer(params.LayerName,params)

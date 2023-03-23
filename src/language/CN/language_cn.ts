@@ -2384,6 +2384,8 @@ export const language_cn = {
   AIM_REAL_POSITION: "请对准实景的正射位置",
   SELECT_POSITION_POINT:'选择定位点',
   LESS_TWO_POSITION_POINT:'定位点不足两个，请继续添加定位点',
+  SCAN_POSITION_CODE: '扫描定位码，实景中自动定位',
+  OPEN_GPS_TWO_POINT: '打开卫星，实景中选择两个定位点',
 
   // ar地图
   COLLECT_SCENE_RENAME: "重命名",

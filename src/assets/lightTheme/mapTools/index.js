@@ -74,6 +74,11 @@ const icon_tool_clip_out = require('./icon_tool_clip_out.png')
 const icon_submitdata = require('./icon_submitdata.png')
 const icon_mobile = require('./icon_mobile.png')
 
+const icon_position_single_point = require('./icon_position_single_point.png')
+const icon_position_swell = require('./icon_position_swell.png')
+const icon_position_two_point = require('./icon_position_two_point.png')
+
+
 
 export default {
   icon_free_line_disable,
@@ -146,4 +151,7 @@ export default {
 
   icon_submitdata,
   icon_mobile,
+  icon_position_single_point,
+  icon_position_swell,
+  icon_position_two_point,
 }

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { SARMap} from 'imobile_for_reactnative'
 import { ChunkType } from '../../constants'
 import AREnhancePosition from './AREnhancePosition'
-import LocationCalibration from './LocationCalibration'
+import LocationCalibration, { CalibrationMode } from './LocationCalibration'
 import { RootState } from '@/redux/types'
 import { connect, ConnectedProps } from 'react-redux'
 import SinglePointPositionPage from './SinglePointPositionPage'
@@ -112,28 +112,31 @@ class DatumPointCalibration extends Component<IProps,IState> {
       <LocationCalibration
         visible
         close={this._onClose}
-        onConfirm={() => {
-          this._onClose()
-        }}
-        onEnhance={() => {
-          // 调用ar增强定位的方法获取定位
-          SARMap.setAREnhancePosition()
-          // 跳转到扫描界面
+        onConfirm={(calinrationMode: CalibrationMode) => {
+          // this._onClose()
           this.setState({
-            showStatus: 'arEnhance',
+            showStatus: calinrationMode,
           })
         }}
-        gotoSinglePointPage={() => {
-          this.setState({
-            showStatus: 'singlePoint'
-          })
-        }}
-        gotoTwoPointPage={async () => {
-          // await SARMap.setCenterHitTest(true)
-          this.setState({
-            showStatus: 'twoPoint'
-          })
-        }}
+        // onEnhance={() => {
+        //   // 调用ar增强定位的方法获取定位
+        //   SARMap.setAREnhancePosition()
+        //   // 跳转到扫描界面
+        //   this.setState({
+        //     showStatus: 'arEnhance',
+        //   })
+        // }}
+        // gotoSinglePointPage={() => {
+        //   this.setState({
+        //     showStatus: 'singlePoint'
+        //   })
+        // }}
+        // gotoTwoPointPage={async () => {
+        //   // await SARMap.setCenterHitTest(true)
+        //   this.setState({
+        //     showStatus: 'twoPoint'
+        //   })
+        // }}
       />
     )
   }

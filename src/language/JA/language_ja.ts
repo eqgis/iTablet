@@ -2379,6 +2379,8 @@ export const language_ja: typeof language_cn = {
   AIM_REAL_POSITION: "Aim for the real shot position",  // To be translated
   SELECT_POSITION_POINT:'Select position point', // To be translated
   LESS_TWO_POSITION_POINT:'If there are less than two registration points, add more registration points', // To be translated
+  SCAN_POSITION_CODE: 'Scan the location code and automatically locate in the real scene', // To be translated
+  OPEN_GPS_TWO_POINT: 'Open the satellite and select two positioning points in the real scene', // To be translated
 
   // ar地图
   COLLECT_SCENE_RENAME: "名前変更",

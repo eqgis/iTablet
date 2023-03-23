@@ -14,14 +14,17 @@ interface Props extends ReduxProps{
   close: () => void
   visible: boolean
 
-  onConfirm: () => void
-  onEnhance: () => void
-  gotoSinglePointPage: () => void
-  gotoTwoPointPage: () => void
+  onConfirm: (calinrationMode: CalibrationMode) => void
+  // onEnhance: () => void
+  // gotoSinglePointPage: () => void
+  // gotoTwoPointPage: () => void
 }
+
+export type CalibrationMode = "arEnhance" | "singlePoint" | "twoPoint"
 
 interface State {
   // to do
+  selectPositionMode: CalibrationMode
 }
 
 class LocationCalibration extends React.Component<Props, State> {
@@ -31,6 +34,7 @@ class LocationCalibration extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state ={
+      selectPositionMode: 'singlePoint'
     }
     this.timer = null
   }
@@ -39,35 +43,61 @@ class LocationCalibration extends React.Component<Props, State> {
    * AR增强定位点击调用方法
    */
   arEnhancePosition = () => {
-    this.props.onEnhance()
+    // this.props.onEnhance()
+    this.setState({
+      selectPositionMode: 'arEnhance',
+    })
   }
 
   /** 去单点定位页面 */
   gotoSinglePointPage = () => {
-    this.props.gotoSinglePointPage()
+    // this.props.gotoSinglePointPage()
+    this.setState({
+      selectPositionMode: 'singlePoint',
+    })
   }
 
   /** 去两点定位页面 */
   gotoTwoPointPage = () => {
-    this.props.gotoTwoPointPage()
+    // this.props.gotoTwoPointPage()
+    this.setState({
+      selectPositionMode: 'twoPoint',
+    })
   }
 
   onConfirm = () =>{
-    this.props.onConfirm()
+    this.props.onConfirm(this.state.selectPositionMode)
+    // switch(this.state.selectPositionMode) {
+    //   case 'arEnhance':
+    //     this.props.onEnhance()
+    //     break
+    //   case 'singlePoint':
+    //     this.props.gotoSinglePointPage()
+    //     break
+    //   case 'twoPoint':
+    //     this.props.gotoTwoPointPage()
+    //     break
+
+    // }
   }
 
-  renderItem = (text: string, image: ImageRequireSource, onPress: () => void) => {
+  renderItem = (text: string, image: ImageRequireSource, onPress: () => void, mode:CalibrationMode ) => {
     return (
-      <View style={styles.selectItem}>
-        <TouchableOpacity
+      <TouchableOpacity style={[styles.selectItem,
+        this.state.selectPositionMode === mode && {
+          borderColor: '#007AFF',
+        }
+      ]}
+      onPress={onPress}
+      >
+        <View
           style={styles.selectItemTouch}
-          onPress={onPress}
         >
           <Image
             source={image}
             style={styles.selectItemImage}
           />
-        </TouchableOpacity>
+        </View>
 
         <Text
           numberOfLines={2}
@@ -75,7 +105,7 @@ class LocationCalibration extends React.Component<Props, State> {
         >
           {text + ''}
         </Text>
-      </View>
+      </TouchableOpacity>
     )
   }
 
@@ -100,17 +130,12 @@ class LocationCalibration extends React.Component<Props, State> {
             width: '100%',
           }}
         >
-          {/* AR增强定位 */}
-          {this.renderItem(
-            getLanguage().MAP_AR_ENHANCE_POSITION,
-            getImage().icon_ar_enhance,
-            this.arEnhancePosition,
-          )}
           {/* 单点定位 */}
           {this.renderItem(
             getLanguage().SINGLE_POINT_POSITION,
             getThemeAssets().collection.icon_location,
             this.gotoSinglePointPage,
+            'singlePoint',
           )}
 
           {/* 两点定位 */}
@@ -118,6 +143,15 @@ class LocationCalibration extends React.Component<Props, State> {
             getLanguage().TWO_POINT_POSITION,
             getImage().icon_two_point_position,
             this.gotoTwoPointPage,
+            'twoPoint',
+          )}
+
+          {/* AR增强定位 */}
+          {this.renderItem(
+            getLanguage().MAP_AR_ENHANCE_POSITION,
+            getImage().icon_ar_enhance,
+            this.arEnhancePosition,
+            'arEnhance'
           )}
 
         </View>
@@ -153,23 +187,45 @@ class LocationCalibration extends React.Component<Props, State> {
   }
 
   renderHeader = () => {
+    let title = getLanguage().SINGLE_POINT_POSITION
+    let descript = getLanguage().MAP_AR_TOWARDS_NORTH
+    let imageSrc = getImage().icon_position_single_point
+    switch(this.state.selectPositionMode) {
+      case 'arEnhance':
+        title = getLanguage().MAP_AR_ENHANCE_POSITION
+        descript = getLanguage().SCAN_POSITION_CODE
+        imageSrc = getImage().icon_position_single_point
+        break
+      case 'singlePoint':
+        title = getLanguage().SINGLE_POINT_POSITION
+        descript = getLanguage().MAP_AR_TOWARDS_NORTH
+        imageSrc = getImage().icon_position_swell
+        break
+      case 'twoPoint':
+        title = getLanguage().TWO_POINT_POSITION
+        descript = getLanguage().OPEN_GPS_TWO_POINT
+        imageSrc = getImage().icon_position_two_point
+        break
+
+    }
     return (
       <View style={[styles.header, this.horizontal && { marginTop: dp(34), width: dp(142)}]}>
         <View style={styles.circle1}>
-          <View style={styles.circle2}>
+          {/* <View style={styles.circle2}>
             <View style={styles.circle3}>
-              <Image
-                style={styles.headerImage}
-                source={getImage().icon_mobile}
-              />
+
             </View>
-          </View>
+          </View> */}
+          <Image
+            style={styles.headerImage}
+            source={imageSrc}
+          />
         </View>
         <Text style={styles.headerText1}>
-          {getLanguage().MAR_AR_POSITION_CORRECT}
+          {title}
         </Text>
         <Text style={[styles.headerText2, {textAlign: 'center'}]}>
-          {getLanguage().MAP_AR_TOWARDS_NORTH}
+          {descript}
         </Text>
       </View>
     )
@@ -181,7 +237,11 @@ class LocationCalibration extends React.Component<Props, State> {
    */
   renderButton = () => {
     return (
-      <View style={[styles.confirmButtonContainer]}>
+      <View style={[styles.confirmButtonContainer,
+        !this.horizontal && {
+          marginTop: dp(10),
+        }
+      ]}>
         <Button
           style={styles.confirmButtom}
           title={getLanguage().Common.CONFIRM}
@@ -244,7 +304,7 @@ const styles = StyleSheet.create({
   containerStyle: {
     width: dp(335),
     // height: dp(519),
-    height: dp(400),
+    height: dp(390),
     borderRadius: dp(21),
     backgroundColor: AppStyle.Color.WHITE,
     alignItems: 'center',
@@ -293,8 +353,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   headerImage: {
-    height: dp(59),
-    width: dp(59),
+    // height: dp(59),
+    // width: dp(59),
+    width: dp(109),
+    height: dp(109),
   },
   headerText1: {
     ...AppStyle.h2,
@@ -340,8 +402,11 @@ const styles = StyleSheet.create({
   selectItem: {
     justifyContent: 'flex-start',
     alignItems: 'center',
-    width: dp(70),
+    width: dp(80),
     height: dp(80),
+    borderWidth: dp(1),
+    borderRadius: dp(10),
+    borderColor: '#fff',
   },
   selectItemTouch: {
     width: dp(59),

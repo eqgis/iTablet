@@ -7,25 +7,34 @@ import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import color from '../../styles/color'
 import { getImage } from '@/assets'
-import { LocationConnectionParam } from '../BluetoothDevices/BluetoothDevices'
+// import { LocationConnectionParam } from '../BluetoothDevices/BluetoothDevices'
 import { TSNonNullExpression } from '@babel/types'
 import { Picker } from '@react-native-picker/picker'
 import { PositionAccuracyType } from 'imobile_for_reactnative/NativeModule/interfaces/SLocation'
+import { BluetoothDeviceInfoType, DeviceManufacturer, DeviceType } from '@/redux/models/location'
 
 const radio_on = require('../../assets/public/radio_select.png')
 const radio_off = require('../../assets/public/radio_select_no.png')
 
 interface Props {
   navigation: any
-  peripheralDevice: LocationConnectionParam
-  setDevice: (param: LocationConnectionParam) => void
+  peripheralDevice: SLocation.LocationConnectionParam
+  setDevice: (param: SLocation.LocationConnectionParam) => void
   positionAccuracy: PositionAccuracyType
   setPositionAccuracy: (type: PositionAccuracyType) => void
+  deviceManufacturer: DeviceManufacturer
+  setDeviceManufacturer: (manufacturer: DeviceManufacturer) => void
+  deviceType: DeviceType,
+	setDeviceType: (devicetype: DeviceType) => void
+  isOpenBlutooth: boolean,
+  setDeviceConnectionMode: (isBluetoothMode: boolean) => void,
+  bluetoohDevice: BluetoothDeviceInfoType,
+  setBluetoothDeviceInfo: (bluetoothInfo: BluetoothDeviceInfoType) => void,
 }
 
 interface State {
-  devices: LocationConnectionParam[]
-  currentOption: LocationConnectionParam
+  devices: SLocation.LocationConnectionParam[]
+  currentOption: SLocation.LocationConnectionParam
   // showSearch: boolean
   // searchNotify: string
   distanceLocation: boolean
@@ -41,14 +50,35 @@ interface positionAccuracyItemType {
   value: PositionAccuracyType
 }
 
+interface RowType {
+  title: string,
+  value?: string,
+  action?: () => void,
+}
+
+
 class LocationSetting extends React.Component<Props, State> {
-  prevOption: LocationConnectionParam
+  prevOption: SLocation.LocationConnectionParam
 
   positionAccuracyArray: Array<positionAccuracyItemType> = [
     {label: "米级", value:1},
     {label: "亚米级", value:5},
     {label: "厘米级", value:4},
   ]
+
+  positionAccuracyName = {
+    1: "米级",
+    4: "厘米级",
+    5: "亚米级",
+  }
+
+  ManufacturerToBrand: {[key: string]:'other' | 'situoli' | 'woncan' | 'mijiaH20'} = {
+    '当前设备': 'other',
+    '华测': 'mijiaH20',
+    '思拓力': 'situoli',
+    '千寻': 'woncan',
+  }
+
 
   constructor(props:Props) {
     super(props)
@@ -123,37 +153,74 @@ class LocationSetting extends React.Component<Props, State> {
     }
 
     // 当当前选择的精度与之前的精度不同时，才去设置
-    if(this.state.positionAccuracy !== this.props.positionAccuracy) {
-      SLocation.setPositionAccuracy(this.state.positionAccuracy)
-      this.props.setPositionAccuracy(this.state.positionAccuracy)
-    }
+    // if(this.state.positionAccuracy !== this.props.positionAccuracy) {
+    //   SLocation.setPositionAccuracy(this.state.positionAccuracy)
+    //   this.props.setPositionAccuracy(this.state.positionAccuracy)
+    // }
+
+
+
+
 
     // 直接将redux里的值拿给原生, 选择好的设备先放在了redux里，所以保存的时候直接修改原生的设备就好了
     let tempDevice: SLocation.LocationConnectionParam | null = null
-    if(this.props.peripheralDevice.type === 'bluetooth') {
+
+
+    const brand = this.ManufacturerToBrand[this.props.deviceManufacturer]
+    let gnssTppe: 'gps' | 'rtk' = 'gps'
+    switch(this.props.deviceType) {
+      case "GPS" :
+        gnssTppe = 'gps'
+        break
+      case "RTK" :
+        gnssTppe = 'rtk'
+        break
+    }
+
+
+    // 蓝牙打开和选择了准备连接的蓝牙设备
+    if(this.props.isOpenBlutooth && this.props.bluetoohDevice && this.props.deviceManufacturer !== '当前设备') {
       tempDevice = {
         type: 'bluetooth',
-        mac: this.props.peripheralDevice.mac,
-        gnssTppe: this.props.peripheralDevice.gnssTppe,
-        brand: this.props.peripheralDevice.brand,
+        mac: this.props.bluetoohDevice.address,
+        gnssTppe: gnssTppe,
+        brand: brand,
       }
     } else {
-      tempDevice = this.props.peripheralDevice
-    }
-    tempDevice && SLocation.changeLocationDevice(tempDevice).then(() => {
-      let toastText = getLanguage().CHANGE_DEVICE_LOCAL
-      switch (this.props.peripheralDevice.type) {
-        case "local":
-          toastText = getLanguage().CHANGE_DEVICE_LOCAL
-          break
-        case "external" :
-          toastText = getLanguage().CHANGE_DEVICE_EXTERNAL
-          break
-        case "bluetooth" :
-          toastText = getLanguage().CHANGE_DEVICE_BLUETOOTH
-          break
+      tempDevice = {
+        type: 'local',
       }
-      Toast.show(toastText)
+    }
+
+    // if(this.props.peripheralDevice.type === 'bluetooth') {
+    //   tempDevice = {
+    //     type: 'bluetooth',
+    //     mac: this.props.peripheralDevice.mac,
+    //     gnssTppe: this.props.peripheralDevice.gnssTppe,
+    //     brand: this.props.peripheralDevice.brand,
+    //   }
+    // } else {
+    //   tempDevice = this.props.peripheralDevice
+    // }
+    tempDevice && SLocation.changeLocationDevice(tempDevice).then(() => {
+      if(tempDevice) {
+        // 设置成功了，将redux里的数据也更新一下
+        this.props.setDevice(tempDevice)
+        let toastText = getLanguage().CHANGE_DEVICE_LOCAL
+        switch (tempDevice.type) {
+          case "local":
+            toastText = getLanguage().CHANGE_DEVICE_LOCAL
+            break
+          case "external" :
+            toastText = getLanguage().CHANGE_DEVICE_EXTERNAL
+            break
+          case "bluetooth" :
+            toastText = getLanguage().CHANGE_DEVICE_BLUETOOTH
+            break
+        }
+        Toast.show(toastText)
+      }
+
     })
     NavigationService.goBack()
   }
@@ -192,6 +259,26 @@ class LocationSetting extends React.Component<Props, State> {
     NavigationService.navigate("NtripSetting")
   }
 
+  /** 去修改设备厂家页面 */
+  gotoLocationDevice = () => {
+    NavigationService.navigate("LocationDevice")
+  }
+
+  /** 去修改设备类型页面 */
+  gotoChangeDeviceTypePage = () => {
+    NavigationService.navigate("LocationDeviceType")
+  }
+
+  /** 去连接模式的页面 */
+  gotoDeviceConnectionMode = async () => {
+    NavigationService.navigate("LocationDeviceConnectionMode")
+  }
+
+  /** 去往精度选择页面 */
+  gotoLocationAccuracy = () => {
+    NavigationService.navigate("LocationAccuracy")
+  }
+
   back = () => {
     // 恢复之前的设备
     this.props.setDevice(this.prevOption)
@@ -199,13 +286,65 @@ class LocationSetting extends React.Component<Props, State> {
     this.props.navigation.goBack()
   }
 
-  renderList = () => {
+  renderList01 = () => {
     return (
       <View style={{ flexDirection: 'row', justifyContent: 'space-evenly',paddingVertical: dp(20) }}>
         {/* {this.renderItems()} */}
         {this.renderDevicesSelectItem('local', getLanguage(global.language).Profile.SETTING_LOCATION_LOCAL, this.selectLocalDevice)}
         {this.renderDevicesSelectItem('external', getLanguage(global.language).Profile.SETTING_LOCATION_EXTERNAL, this.selectExternalDevice)}
         {Platform.OS === "android" && this.renderDevicesSelectItem('bluetooth', getLanguage(global.language).Profile.SETTING_LOCATION_BLUETOOTH, this.selectBluetoothDevice)}
+      </View>
+    )
+  }
+
+  renderRowItem = (param: RowType) => {
+    return (
+      <TouchableOpacity
+        style={styles.itemView}
+        onPress={param.action}
+      >
+        <Text style={styles.text}>{param.title}</Text>
+        {param.value && (
+          <View
+            style={[{
+              flex: 1,
+              height: '100%',
+              justifyContent:'center',
+              alignItems:'flex-end',
+              marginRight: dp(20),
+            }]}
+          >
+            <Text style={styles.titleText}>{param.value}</Text>
+          </View>
+        )}
+
+        <Image
+          source={getImage().arrow}
+          style={[{
+            width: dp(15),
+            height: dp(15),
+            // marginRight: dp(10),
+          }]}
+        />
+      </TouchableOpacity>
+    )
+  }
+
+  renderList = () => {
+    return (
+      <View style={{ flexDirection: 'column' }}>
+        {this.renderRowItem({
+          title:getLanguage(global.language).Profile.SETTING_LOCATION_DEVICE,
+          value: this.props.deviceManufacturer,
+          action: this.gotoLocationDevice,
+        })}
+        {this.renderItemSeperator()}
+        {this.renderRowItem({
+          title:getLanguage(global.language).Profile.DEVICE_TYPE,
+          value: this.props.deviceType,
+          action: this.gotoChangeDeviceTypePage,
+        })}
+
       </View>
     )
   }
@@ -226,17 +365,17 @@ class LocationSetting extends React.Component<Props, State> {
             returnKeyType={'done'}
           />}
           <Switch
-            // style={styles.switch}
-            trackColor={{ false: color.bgG, true: color.switch }}
-            thumbColor={this.state.distanceLocation ? color.bgW : color.bgW}
-            ios_backgroundColor={this.state.distanceLocation ? color.switch : color.bgG}
+            style={styles.switch}
+            trackColor={{ false: '#F0F0F0', true:  "#2D2D2D" }}
+            thumbColor={this.state.distanceLocation ? "#fff" : "#fff"}
+            ios_backgroundColor={this.state.distanceLocation ?"#2D2D2D" : '#F0F0F0'}
             value={this.state.distanceLocation}
             onValueChange={value => {
               this.setState({ distanceLocation: value ,timeLocation:false})
             }}
           />
         </View>
-        {this.renderSeperator()}
+        {this.renderItemSeperator()}
         <View style={styles.itemView}>
           <Text style={styles.text}>{getLanguage(global.language).Profile.TIME_LOCATION}</Text>
           {this.state.timeLocation && !this.state.distanceLocation && <TextInput
@@ -250,17 +389,17 @@ class LocationSetting extends React.Component<Props, State> {
             returnKeyType={'done'}
           />}
           <Switch
-            // style={styles.switch}
-            trackColor={{ false: color.bgG, true: color.switch }}
-            thumbColor={this.state.timeLocation ? color.bgW : color.bgW}
-            ios_backgroundColor={this.state.timeLocation ? color.switch : color.bgG}
+            style={styles.switch}
+            trackColor={{ false: '#F0F0F0', true: "#2D2D2D" }}
+            thumbColor={this.state.timeLocation ? "#fff" : "#fff"}
+            ios_backgroundColor={this.state.timeLocation ? "#2D2D2D" : '#F0F0F0'}
             value={this.state.timeLocation}
             onValueChange={value => {
               this.setState({ timeLocation: value ,distanceLocation:false})
             }}
           />
         </View>
-        {this.renderSeperator()}
+        {/* {this.renderItemSeperator()} */}
       </View>
     )
   }
@@ -268,15 +407,40 @@ class LocationSetting extends React.Component<Props, State> {
   renderOtherSetting = () => {
     return(
       <View style={{ flexDirection: 'column' }}>
-        <TouchableOpacity
+
+
+        {/* 连接模式 */}
+        {this.renderRowItem({
+          title:getLanguage(global.language).Profile.CONNECTION_MODE,
+          value: this.props.isOpenBlutooth ? getLanguage(global.language).Profile.SETTING_LOCATION_BLUETOOTH : undefined,
+          action: this.gotoDeviceConnectionMode,
+        })}
+        {this.renderItemSeperator()}
+
+        {/* 精度选择 */}
+        {this.renderRowItem({
+          title:getLanguage(global.language).Profile.POSITION_ACCURACY,
+          value: this.positionAccuracyName[this.props.positionAccuracy],
+          action: this.gotoLocationAccuracy,
+        })}
+        {this.renderItemSeperator()}
+
+        {/* 差分服务 */}
+        {this.renderRowItem({
+          title:getLanguage(global.language).Profile.NTRIP_SETTING,
+          action: this.gotoNtripSettingPage,
+        })}
+        
+
+        {/* <TouchableOpacity
           style={styles.itemView}
           onPress={this.gotoNtripSettingPage}
         >
           <Text style={styles.text}>{getLanguage(global.language).Profile.NTRIP_SETTING}</Text>
         </TouchableOpacity>
-        {this.renderSeperator()}
+        {this.renderItemSeperator()} */}
 
-        <View
+        {/* <View
           style={[styles.itemView]}
         >
           <Text style={styles.text}>{getLanguage(global.language).Profile.POSITION_ACCURACY}</Text>
@@ -296,13 +460,22 @@ class LocationSetting extends React.Component<Props, State> {
 
           </Picker>
         </View>
-        {this.renderSeperator()}
+        {this.renderItemSeperator()} */}
       </View>
     )
   }
 
+  /** 分割线 */
   renderSeperator = () => {
-    return <View style={styles.seperator} />
+    return  <View style={styles.seperator} />
+  }
+
+  renderItemSeperator = () => {
+    return (
+      <View style={[styles.itemSeperator]}>
+        <View style={[styles.itemSeperatorLine]}></View>
+      </View>
+    )
   }
 
   renderRight = () => {
@@ -313,7 +486,9 @@ class LocationSetting extends React.Component<Props, State> {
     textColor = 'black'
     // }
     return (
-      <View>
+      <View style={[{
+        marginRight: scaleSize(30),
+      }]}>
         <TouchableOpacity
           // disabled={this.state.currentOption === this.prevOption}
           onPress={this.changeDevice}
@@ -375,7 +550,7 @@ class LocationSetting extends React.Component<Props, State> {
     return (
       <Container
         headerProps={{
-          title: getLanguage(global.language).Profile.SETTING_LOCATION_DEVICE,
+          title: getLanguage(global.language).Profile.LOCATION_SETTING,
           withoutBack: false,
           navigation: this.props.navigation,
           headerRight: this.renderRight(),
@@ -384,9 +559,14 @@ class LocationSetting extends React.Component<Props, State> {
         }}
       >
         <View style={styles.container}>
+          {/* {this.renderList01()} */}
           {this.renderList()}
+          {this.renderSeperator()}
+          {this.props.deviceManufacturer !== '当前设备' && this.renderOtherSetting()}
+          {this.renderSeperator()}
           {this.renderLocation()}
-          {this.props.peripheralDevice.type === 'bluetooth' && this.renderOtherSetting()}
+          {this.renderSeperator()}
+          {/* {this.props.peripheralDevice.type === 'bluetooth' && this.renderOtherSetting()} */}
           {/* {this.state.showSearch && this.renderSearch()} */}
         </View>
       </Container>
@@ -403,9 +583,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: scaleSize(20),
+    marginHorizontal: scaleSize(30),
+    marginLeft: scaleSize(60),
     height:scaleSize(80),
     // marginVertical: scaleSize(20),
+    // backgroundColor: '#f00',
   },
   itemViewLeft: {
     flexDirection: 'row',
@@ -424,8 +606,12 @@ const styles = StyleSheet.create({
     fontSize: scaleSize(26),
     marginHorizontal: scaleSize(20),
   },
-  text: {
+  titleText: {
     fontSize: scaleSize(26),
+  },
+  text: {
+    fontSize: scaleSize(28),
+    color: '#333',
   },
   image: {
     height: scaleSize(60),
@@ -440,8 +626,9 @@ const styles = StyleSheet.create({
     width: scaleSize(35),
   },
   seperator: {
-    height: 1,
-    backgroundColor: '#E0E0E0',
+    height: dp(5),
+    backgroundColor: '#f9f9f9',
+    // marginTop: dp(10),
   },
   headerRightText: {
     fontSize: scaleSize(26),
@@ -506,6 +693,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: dp(10),
     paddingLeft: dp(40),
     height:dp(50),
+  },
+  itemSeperator: {
+    width: '100%',
+    height: dp(1),
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  itemSeperatorLine: {
+    // width: '90%',
+    // width:'100%',
+    flex:1,
+    height: dp(1),
+    backgroundColor: 'rgba(0,0,0,0.05)',
+    marginLeft: scaleSize(60),
+    marginRight: scaleSize(30),
+  },
+  switch: {
+    marginRight: dp(-10),
   },
 })
 export default LocationSetting

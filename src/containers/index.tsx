@@ -198,6 +198,12 @@ import NtripSetting from './NtripSetting'
 import ARAnimation from './ARAnimation/ARAnimation'
 import AttributeDetail from './AttributeDetail'
 import AppletOnline from './applet/appletOnline'
+import LocationDevice from './LocationDevice'
+import LocationDeviceType from './LocationDeviceType'
+import LocationDeviceConnectionMode from './LocationDeviceConnectionMode'
+import LocationAccuracy from './LocationAccuracy'
+import NtripServerType from './NtripServerType'
+import LocationLoadPoint from './LocationLoadPoint'
 
 const Stack = createNativeStackNavigator()
 
@@ -453,6 +459,12 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="ARAnimation" component={ARAnimation} options={modalOption(params)} />
       <Stack.Screen name="AttributeDetail" component={AttributeDetail} options={modalOption(params)} />
       <Stack.Screen name="AppletOnline" component={AppletOnline} options={modalOption(params)} />
+      <Stack.Screen name="LocationDevice" component={LocationDevice} options={modalOption(params)} />
+      <Stack.Screen name="LocationDeviceType" component={LocationDeviceType} options={modalOption(params)} />
+      <Stack.Screen name="LocationDeviceConnectionMode" component={LocationDeviceConnectionMode} options={modalOption(params)} />
+      <Stack.Screen name="LocationAccuracy" component={LocationAccuracy} options={modalOption(params)} />
+      <Stack.Screen name="NtripServerType" component={NtripServerType} options={modalOption(params)} />
+      <Stack.Screen name="LocationLoadPoint" component={LocationLoadPoint} options={modalOption(params)} />
       {
         params?.otherNavigators
       }

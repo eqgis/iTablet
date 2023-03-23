@@ -49,10 +49,12 @@ class BackButton extends PureComponent<Props> {
         accessible={true}
         accessibilityLabel={'返回'}
         style={[{
-          width: scaleSize(80),
-          height: scaleSize(80),
+          width: scaleSize(60),
+          height: scaleSize(60),
           justifyContent: 'center',
           alignContent: 'center',
+          marginLeft: scaleSize(-20),
+          // backgroundColor: '#f00',
         }, this.props.style]}
         activeOpacity={this.props.activeOpacity}
         onPress={this.onPress}

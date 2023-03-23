@@ -2,13 +2,17 @@ import { fromJS } from "immutable"
 import { handleActions } from 'redux-actions'
 import { REHYDRATE } from 'redux-persist'
 import { NtripMountPoint, PositionAccuracyType } from "imobile_for_reactnative/NativeModule/interfaces/SLocation"
+import { SLocation } from "imobile_for_reactnative"
 
 
 // 类型定义
 // --------------------------------------------------
+
+export type PositionServerTypes = 'NTRIPV1' | 'qianxun' | 'huace' | 'China Mobile'
+
 export interface EssentialInfo {
   /** 协议 */
-  agreement: 'NTRIPV1' | "China Mobile"
+  agreement: string // PositionServerTypes
   address: string
   port: string
   userName: string
@@ -26,6 +30,12 @@ export interface NtripInfoType {
 const UPDATE_NTRIP_INFO = 'UPDATE_NTRIP_INFO'
 const SET_POINT_STATE_TEXT = 'SET_POINT_STATE_TEXT'
 const SET_POSITION_ACCURACY = 'SET_POSITION_ACCURACY'
+const SET_POSITION_DEVICE_MANUFACTURER = 'SET_POSITION_DEVICE_MANUFACTURER'
+const SET_POSITION_DEVICE_TYPE = "SET_POSITION_DEVICE_TYPE"
+const SET_POSITION_DEVICE_CONNECTION_MODE = "SET_POSITION_DEVICE_CONNECTION_MODE"
+const SET_BLUETOOTH_DEVIC_INFO = "SET_BLUETOOTH_DEVIC_INFO"
+const SET_POSITION_SERVER_TYPE = "SET_POSITION_SERVER_TYPE"
+const SET_POSITION_AGREEMENT_TYPE = "SET_POSITION_AGREEMENT_TYPE"
 
 
 // Actions Type
@@ -44,6 +54,42 @@ export interface pointStateTextAction {
 export interface positionAccuracyAction {
   type: typeof SET_POSITION_ACCURACY
   payload: PositionAccuracyType
+}
+
+export type DeviceManufacturer = '当前设备' | '华测' | '千寻' | '思拓力'
+export interface DeviceManufacturerAction {
+  type: typeof SET_POSITION_DEVICE_MANUFACTURER
+  payload: DeviceManufacturer
+}
+
+export type DeviceType = 'GPS' | "RTK"
+export interface DeviceTypeAction {
+  type: typeof SET_POSITION_DEVICE_TYPE
+  payload: DeviceType
+}
+
+export interface DeviceConnectionModeAction {
+  type: typeof SET_POSITION_DEVICE_CONNECTION_MODE
+  payload: boolean
+}
+
+export interface BluetoothDeviceInfoType {
+  name: string,
+  address: string,
+}
+export interface BluetoothDeviceInfoAction {
+  type: typeof SET_BLUETOOTH_DEVIC_INFO
+  payload: BluetoothDeviceInfoType | null
+}
+
+export interface PositionServerTypeAction {
+  type: typeof SET_POSITION_SERVER_TYPE
+  payload: PositionServerTypes
+}
+
+export interface PositionAgreementTypeAction {
+  type: typeof SET_POSITION_AGREEMENT_TYPE
+  payload: string
 }
 
 
@@ -103,11 +149,107 @@ export const setPositionAccuracy = (
   }
 }
 
+/** 设置定位的设备厂家 */
+export const setDeviceManufacturer = (
+  manufacturer: DeviceManufacturer
+) => async (
+  dispatch: (arg0: DeviceManufacturerAction) => void
+) => {
+  try {
+    await dispatch({
+      type: SET_POSITION_DEVICE_MANUFACTURER,
+      payload: manufacturer,
+    })
+  } catch (error) {
+    // to do
+  }
+}
+
+/** 设置定位的设备类型 */
+export const setDeviceType = (
+  deviceType: DeviceType
+) => async (
+  dispatch: (arg0: DeviceTypeAction) => void
+) => {
+  try {
+    await dispatch({
+      type: SET_POSITION_DEVICE_TYPE,
+      payload: deviceType,
+    })
+  } catch (error) {
+    // to do
+  }
+}
+
+/** 设置定位的连接模式 */
+export const setDeviceConnectionMode = (
+  isBluetooth: boolean
+) => async (
+  dispatch: (arg0: DeviceConnectionModeAction) => void
+) => {
+  try {
+    await dispatch({
+      type: SET_POSITION_DEVICE_CONNECTION_MODE,
+      payload: isBluetooth,
+    })
+  } catch (error) {
+    // to do
+  }
+}
+
+/** 设置蓝牙设备的信息 */
+export const setBluetoothDeviceInfo = (
+  bluetoothInfo: BluetoothDeviceInfoType | null
+) => async (
+  dispatch: (arg0: BluetoothDeviceInfoAction) => void
+) => {
+  try {
+    await dispatch({
+      type: SET_BLUETOOTH_DEVIC_INFO,
+      payload: bluetoothInfo,
+    })
+  } catch (error) {
+    // to do
+  }
+}
+
+/** 设置蓝牙设备定位的服务类型 */
+export const setPositionServerType = (
+  positionServerType: PositionServerTypes
+) => async (
+  dispatch: (arg0: PositionServerTypeAction) => void
+) => {
+  try {
+    await dispatch({
+      type: SET_POSITION_SERVER_TYPE,
+      payload: positionServerType,
+    })
+  } catch (error) {
+    // to do
+  }
+}
+
+/** 设置蓝牙设备定位的协议类型 */
+export const setPositionAgreementType = (
+  agreementType: string
+) => async (
+  dispatch: (arg0: PositionAgreementTypeAction) => void
+) => {
+  try {
+    await dispatch({
+      type: SET_POSITION_AGREEMENT_TYPE,
+      payload: agreementType,
+    })
+  } catch (error) {
+    // to do
+  }
+}
+
 // 初始值
 // --------------------------------------------------
 const initialState = fromJS({
   essentialInfo:{
-    agreement: 'NTRIPV1',
+    agreement: 'Ntripv1',
     address: '',
     port: '',
     userName: '',
@@ -119,6 +261,16 @@ const initialState = fromJS({
   },
   pointStateText: '',
   positionAccuracy: 5,
+  deviceManufacturer: '当前设备',
+  deviceType: 'GPS',
+  /** 蓝牙是否打开 */
+  isOpenBlutooth: true,
+  /** 连接的蓝牙设备  BluetoothDeviceInfoType 类型 */
+  bluetoohDevice: null,
+  /** 服务类型 */
+  positionServerType: 'NTRIPV1',
+  /** 协议类型 */
+  positionAgreementType: 'Ntripv1',
 })
 
 
@@ -139,6 +291,24 @@ export default handleActions(
     },
     [`${SET_POSITION_ACCURACY}`]: (state: any, { payload }) => {
       return state.setIn(['positionAccuracy'], fromJS(payload))
+    },
+    [`${SET_POSITION_DEVICE_MANUFACTURER}`]: (state: any, { payload }) => {
+      return state.setIn(['deviceManufacturer'], fromJS(payload))
+    },
+    [`${SET_POSITION_DEVICE_TYPE}`]: (state: any, { payload }) => {
+      return state.setIn(['deviceType'], fromJS(payload))
+    },
+    [`${SET_POSITION_DEVICE_CONNECTION_MODE}`]: (state: any, { payload }) => {
+      return state.setIn(['isOpenBlutooth'], fromJS(payload))
+    },
+    [`${SET_BLUETOOTH_DEVIC_INFO}`]: (state: any, { payload }) => {
+      return state.setIn(['bluetoohDevice'], fromJS(payload))
+    },
+    [`${SET_POSITION_SERVER_TYPE}`]: (state: any, { payload }) => {
+      return state.setIn(['positionServerType'], fromJS(payload))
+    },
+    [`${SET_POSITION_AGREEMENT_TYPE}`]: (state: any, { payload }) => {
+      return state.setIn(['positionAgreementType'], fromJS(payload))
     },
 
     [REHYDRATE]: (state, { payload }) => {

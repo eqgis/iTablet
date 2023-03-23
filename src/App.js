@@ -22,7 +22,7 @@ import PropTypes from 'prop-types'
 import { setNav } from './redux/models/nav'
 import { setUser, setUsers, deleteUser, setExpireDate } from './redux/models/user'
 import { setAgreeToProtocol, setLanguage, setMapSetting } from './redux/models/setting'
-import { setPointStateText } from './redux/models/location'
+import { setPointStateText, setDeviceConnectionMode } from './redux/models/location'
 import {
   setEditLayer,
   setSelection,
@@ -210,6 +210,7 @@ class AppRoot extends Component {
     setMapAnalystGuide: PropTypes.func,
     loadAddedModule: PropTypes.func,
     setPointStateText: PropTypes.func,
+    setDeviceConnectionMode: PropTypes.func,
   }
 
   /** 是否是华为设备 */
@@ -399,6 +400,7 @@ class AppRoot extends Component {
       // 'android.permission.RECORD_AUDIO',
       'android.permission.BLUETOOTH',
       'android.permission.BLUETOOTH_ADMIN',
+
     ]
     if(Platform.OS === 'android') {
       const sdkVesion = Platform.Version
@@ -406,6 +408,8 @@ class AppRoot extends Component {
       if(sdkVesion >= 31) {
         permissionList.push('android.permission.BLUETOOTH_CONNECT')
         permissionList.push('android.permission.BLUETOOTH_SCAN')
+        permissionList.push("android.permission.RECEIVE_BOOT_COMPLETED")
+        permissionList.push('android.permission.BLUETOOTH_ADVERTISE')
       }
     }
     const results = await PermissionsAndroid.requestMultiple(permissionList)
@@ -434,6 +438,11 @@ class AppRoot extends Component {
     }
   }
 
+  initBluetooth = async () => {
+    const isOpen = await SLocation.bluetoothIsOpen()
+    this.props.setDeviceConnectionMode(isOpen)
+  }
+
   init = async (hasPermission) => {
     await this.initEnvironment()
     await this.initLocation()
@@ -442,6 +451,7 @@ class AppRoot extends Component {
     this.checkImportData()
     // this.initOrientation()
     this.reCircleLogin()
+    await this.initBluetooth()
 
     if(hasPermission) {
       addNetworkChangeEventListener()
@@ -1529,6 +1539,7 @@ const AppRootWithRedux = connect(mapStateToProps, {
   setBaseMap,
   loadAddedModule,
   setPointStateText,
+  setDeviceConnectionMode,
 })(AppRoot)
 
 const App = () =>

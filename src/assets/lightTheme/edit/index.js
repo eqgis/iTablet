@@ -26,6 +26,7 @@ const icon_back_off_ash = require('./icon_back_off_ash.png')
 const icon_redo_ash = require('./icon_redo_ash.png')
 const icon_undo_ash = require('./icon_undo_ash.png')
 
+const icon_refresh = require('./icon_refresh.png')
 export default {
   icon_acquisition_track,
   icon_click_track,
@@ -53,4 +54,5 @@ export default {
   icon_delete,
   icon_back_off,
   icon_back_off_ash,
+  icon_refresh,
 }

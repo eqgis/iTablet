@@ -41,13 +41,12 @@ export default class SymbolList extends React.Component {
       global.Type === ChunkType.MAP_THEME &&
       this.props.layerData.themeType > 0
     ) {
-      let params = {
-        LayerName: this.props.layerData.name,
+      const params = {
         SymbolID: data.id,
       }
       switch (this.props.type) {
         case ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_SYMBOLS:
-          STheme.modifyDotDensityThemeMap(params)
+          STheme.modifyThemeDotDensityLayer(this.props.layerData.name,params)
           break
         case ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOLS:
           STheme.modifyGraduatedSymbolThemeMap(params)

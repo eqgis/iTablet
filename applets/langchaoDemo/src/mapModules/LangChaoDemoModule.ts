@@ -172,6 +172,8 @@ export default class LangChaoDemoModule extends Module {
 
   initLicense = async ()=>{
     try {
+      SMap.setMaxScale(1/2000)
+      SMap.setMinScale(1/300000000)
       const recycleResult = await SMap.recycleLicense()
 
       const userId = langchaoServer.getUserParam().userId

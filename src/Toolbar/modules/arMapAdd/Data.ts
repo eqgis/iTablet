@@ -800,11 +800,9 @@ function addElementLine(option: IToolbarOption, addFunc: (addOption?: AddOption)
       AppEvent.addListener('ar_on_tap_add_buttun', async () => {
         const isLineAdd = AppToolBar.getData().isLineAdd
         if(!isLineAdd) return
-        const option: AddOption = {
-          foucus: false,
-        }
+
         // 线的节点添加完成
-        addFunc(option).then(() => {
+        addFunc().then(() => {
           Toast.show(getLanguage().LINE_POINT_ADD_SUCCESSED)
         }).catch(() => {
           AppToolBar.addData({isLineAdd:false})

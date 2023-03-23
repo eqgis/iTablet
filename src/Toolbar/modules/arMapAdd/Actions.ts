@@ -75,7 +75,9 @@ export async function addARLinePoint(option?: AddOption) {
   const layer = AppToolBar.getProps()?.arMapInfo?.currentLayer
   // 当前图层是线图层
   if(layer && layer.type === ARLayerType.AR_LINE_LAYER) {
-    SARMap.addARLinePoint(layer.name, option)
+    SARMap.addARLinePoint(layer.name, {
+      position: option?.translation,
+    })
   }
 }
 
@@ -89,7 +91,9 @@ export async function addARMarkerLinePoint(option?: AddOption) {
   // 当前图层是线图层
   if(layer && layer.type === ARLayerType.AR_MARKER_LINE_LAYER) {
     // SARMap.addARLinePoint(layer.name, option?.translation)
-    SARMap.addARLinePoint(layer.name, option)
+    SARMap.addARLinePoint(layer.name, {
+      position: option?.translation,
+    })
   }
 }
 
@@ -130,7 +134,9 @@ export async function editAddLinePoint(option?: AddOption) {
   const elementEdit = AppToolBar.getData().selectARElement
   if(elementEdit) {
     const layerName = elementEdit?.layerName
-    SARMap.addARLinePoint(layerName, option)
+    SARMap.addARLinePoint(layerName, {
+      position: option?.translation,
+    })
   }
 }
 

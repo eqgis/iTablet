@@ -323,7 +323,7 @@ export const getSymbolPlots = (params, cb = () => {}) => async (
       const resultArr = await SPlot.initPlotSymbol(plotLibPaths)
       resultArr.forEach(item=>{
         plotLibIds.push(item.libId)
-        plotlibIdAndNameArr.push(item.libName)
+        plotlibIdAndNameArr.push([item.libName,item.libId])
       })
       // Object.keys(resultArr).forEach(key => {
       //   plotLibIds.push(resultArr[key])

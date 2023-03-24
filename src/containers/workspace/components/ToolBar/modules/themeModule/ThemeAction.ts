@@ -144,7 +144,7 @@ async function getThemeExpress(type, key = '', name = '') {
   }else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGELABEL_LABEL_EXPRESSION) {//分段标签表达式
     selectedExpression = (await STheme.getUniqueThemeLabelLayerInfo(param?.LayerName || "")).labelExpression
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_EXPRESSION) {
-    selectedExpression = await STheme.getDotDensityExpression(param)
+    selectedExpression = (await STheme.getThemeDotDensityInfo(param?.LayerName || "")).expression
   } else if (
     type === ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_EXPRESSION
   ) {
@@ -910,11 +910,10 @@ async function listAction(type, params = {}) {
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_DOT_DENSITY_EXPRESSION) {// 点密度专题图表达式
 
     const Params = {
-      DotExpression: item.expression,
-      LayerName: _params.currentLayer.name,
+      expression: item.expression,
     }
     params.refreshList && (await params.refreshList(item.expression))
-    await STheme.modifyDotDensityThemeMap(Params)
+    await STheme.modifyThemeDotDensityLayer(_params.currentLayer.name|| "",Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_EXPRESSION) {// 等级符号专题图表达式
 
     const Params = {
@@ -1769,16 +1768,12 @@ async function getTouchProgressInfo(title) {
       break
     case getLanguage(_params.language).Map_Main_Menu.DOT_VALUE:
       range = [0, 100]
-      value = await STheme.getDotDensityValue({
-        LayerName: _params.currentLayer.name,
-      })
+      value = (await STheme.getThemeDotDensityInfo(_params.currentLayer.name)).value
       break
     case getLanguage(_params.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
       range = [0, 100]
       if (themeType === ThemeType.DOTDENSITY) {
-        value = await STheme.getDotDensityDotSize({
-          LayerName: _params.currentLayer.name,
-        })
+        value = (await STheme.getThemeDotDensityInfo(_params.currentLayer.name)).SymbolSize
       } else if (themeType === ThemeType.GRADUATEDSYMBOL) {
         value = await STheme.getGraduatedSymbolSize({
           LayerName: _params.currentLayer.name,
@@ -1864,18 +1859,16 @@ function setTouchProgressInfo(title, value) {
       break
     case getLanguage(Params.language).Map_Main_Menu.DOT_VALUE:
       _params = {
-        LayerName: Params.currentLayer.name,
-        Value: value,
+        value: value,
       }
-      STheme.modifyDotDensityThemeMap(_params)
+      STheme.modifyThemeDotDensityLayer(Params.currentLayer.name || "",_params)
       break
     case getLanguage(Params.language).Map_Main_Menu.STYLE_SYMBOL_SIZE:
       _params = {
-        LayerName: Params.currentLayer.name,
         SymbolSize: value,
       }
       if (themeType === ThemeType.DOTDENSITY) {
-        STheme.modifyDotDensityThemeMap(_params)
+        STheme.modifyThemeDotDensityLayer(Params.currentLayer.name||"",_params)
       } else if (themeType === ThemeType.GRADUATEDSYMBOL) {
         STheme.modifyGraduatedSymbolThemeMap(_params)
       }

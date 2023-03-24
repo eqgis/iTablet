@@ -1233,7 +1233,7 @@ function setColor() {
     return STheme.modifyUniformLabelLayer(_params.LayerName,{labelBackColor:SMap._translate16ToRgb(_params.Color)})
   }
   if (_params.colorType === 'DOT_DENSITY_COLOR') {
-    return STheme.modifyDotDensityThemeMap(_params)
+    return STheme.modifyThemeDotDensityLayer(_params.LayerName,{lineColor:SMap._translate16ToRgb(_params.LineColor)})
   }
   if (_params.colorType === 'GRADUATED_SYMBOL_COLOR') {
     return STheme.modifyGraduatedSymbolThemeMap(_params)
@@ -3018,16 +3018,14 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
     }case constants.THEME_DOT_DENSITY:
       // 点密度专题图
       paramsTheme = {
-        DatasourceAlias: ToolbarParams.themeDatasourceAlias,
-        DatasetName: ToolbarParams.themeDatasetName,
-        DotExpression: item.expression,
-        Value: '20',
+        expression: item.expression,
+        value: '20',
       }
-      await STheme.createDotDensityThemeMap(paramsTheme).then(
-        msg => {
-          isSuccess = msg.result
-          if (isSuccess && msg.layer) {
-            ThemeAction.sendAddThemeMsg(msg.layer)
+      await STheme.createThemeDotDensityLayer(datasetInfo,paramsTheme).then(
+        layer => {
+          if (layer) {
+            isSuccess = true
+            ThemeAction.sendAddThemeMsg(layer)
           }
         },
       )
@@ -3181,12 +3179,10 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
     }case constants.THEME_DOT_DENSITY:
       // 点密度专题图
       paramsTheme = {
-        DatasourceAlias: item.datasourceName,
-        DatasetName: item.datasetName,
-        DotExpression: item.expression,
-        Value: '20',
+        expression: item.expression,
+        value: '20',
       }
-      await STheme.createDotDensityThemeMap(paramsTheme).then(
+      await STheme.createThemeDotDensityLayer(datasetInfo,paramsTheme).then(
         msg => {
           isSuccess = msg.result
           if (isSuccess && msg.layer) {

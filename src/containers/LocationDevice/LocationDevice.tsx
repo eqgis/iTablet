@@ -2,7 +2,7 @@
  * 设备厂家页面  设计里的定位设备
  */
 import React, { Component } from "react"
-import { Text, Image, TouchableOpacity, ScrollView, View } from 'react-native'
+import { Text, Image, TouchableOpacity, ScrollView, View, Platform } from 'react-native'
 import Container from '../../components/Container'
 import { dp, scaleSize} from '../../utils'
 import NavigationService from '../NavigationService'
@@ -26,7 +26,7 @@ interface State {
 }
 
 class LocationDevice extends Component<Props, State> {
-  manufacturers: Array<DeviceManufacturer> = ['当前设备', '华测', '千寻', '思拓力']
+  manufacturers: Array<DeviceManufacturer> = Platform.OS === 'android' ? ['当前设备', '华测', '千寻', '思拓力'] : ['当前设备']
 
   constructor(props: Props) {
     super(props)

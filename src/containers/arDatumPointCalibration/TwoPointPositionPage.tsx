@@ -401,7 +401,7 @@ class TwoPointPositionPage extends React.Component<Props, State> {
           <View
             style={[{
               flex: 1,
-              height: dp(120),
+              height: dp(102),
               backgroundColor: '#f9f9f9',
               paddingHorizontal: dp(8),
               borderRadius: dp(16),
@@ -559,8 +559,8 @@ class TwoPointPositionPage extends React.Component<Props, State> {
           </View>
           <View
             style={[{
-              width: dp(50),
-              height: dp(120),
+              width: dp(46),
+              height: dp(102),
               justifyContent: 'center',
               alignItems:'center',
               marginLeft: dp(10),
@@ -568,8 +568,8 @@ class TwoPointPositionPage extends React.Component<Props, State> {
           >
             <TouchableOpacity
               style={[{
-                width: dp(46),
-                height: dp(90),
+                width: dp(40),
+                height: dp(80),
                 flexDirection: 'column',
                 backgroundColor: '#505050',
                 borderRadius:dp(23),
@@ -639,7 +639,7 @@ class TwoPointPositionPage extends React.Component<Props, State> {
       <View
         style={[{
           marginBottom: dp(5),
-          marginTop: dp(-5),
+          marginTop: dp(-7),
         },
         styles.selectContainer
         ]}
@@ -1038,7 +1038,7 @@ const styles = StyleSheet.create({
     bottom: dp(20),
     left:0,
     width: '100%',
-    height: dp(210),
+    height: dp(185),
     // backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
@@ -1048,8 +1048,8 @@ const styles = StyleSheet.create({
     // marginHorizontal: dp(20),
     borderRadius: dp(16),
     backgroundColor: '#fff',
-    paddingHorizontal: dp(10),
-    paddingBottom: dp(10),
+    paddingHorizontal: dp(8),
+    paddingBottom: dp(8),
     paddingTop: dp(5),
     textShadowOffset:{
       width:dp(2),
@@ -1065,7 +1065,7 @@ const styles = StyleSheet.create({
     shadowRadius: dp(2),
   },
   inputItem: {
-    height: dp(40),
+    height: dp(34),
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',

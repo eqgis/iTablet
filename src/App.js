@@ -439,8 +439,10 @@ class AppRoot extends Component {
   }
 
   initBluetooth = async () => {
-    const isOpen = await SLocation.bluetoothIsOpen()
-    this.props.setDeviceConnectionMode(isOpen)
+    if(Platform.OS === 'android') {
+      const isOpen = await SLocation.bluetoothIsOpen()
+      this.props.setDeviceConnectionMode(isOpen)
+    }
   }
 
   init = async (hasPermission) => {

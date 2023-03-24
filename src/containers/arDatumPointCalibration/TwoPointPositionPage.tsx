@@ -27,6 +27,9 @@ interface State {
   y: string
 	/** 定位点1的高程 */
   z: string
+  xClearHiden: boolean
+  yClearHiden: boolean
+  zClearHiden: boolean
 	/** 当前操作的定位点 */
 	curPoint: 'p1' | 'p2'
 	/** 定位点2的经度 */
@@ -35,6 +38,9 @@ interface State {
 	p2y: string
 	/** 定位点2的高程 */
 	p2z: string
+  p2xClearHiden: boolean
+  p2yClearHiden: boolean
+  p2zClearHiden: boolean
 
 	/** AR点1 */
 	anchorARPoint1: Point3D | null
@@ -59,10 +65,16 @@ class TwoPointPositionPage extends React.Component<Props, State> {
       x: '0',
       y: '0',
       z: '0',
+      xClearHiden: true,
+      yClearHiden: true,
+      zClearHiden: true,
       curPoint: 'p1',
       p2x: '0',
       p2y: '0',
       p2z: '0',
+      p2xClearHiden: true,
+      p2yClearHiden: true,
+      p2zClearHiden: true,
       anchorARPoint1: null,
       anchorARPoint2: null,
       isTipsShow: true,
@@ -287,7 +299,7 @@ class TwoPointPositionPage extends React.Component<Props, State> {
   renderBackBtn = () => {
     return (
       <TouchableOpacity style={styles.closeBtn} onPress={this.goBackAction}>
-        <Image source={getImage().back} style={{ width: dp(26), height: dp(26) }} />
+        <Image source={getImage().icon_nav_back_white} style={{ width: dp(30), height: dp(30) }} />
       </TouchableOpacity>
     )
   }
@@ -305,8 +317,12 @@ class TwoPointPositionPage extends React.Component<Props, State> {
     image: ImageRequireSource,
     text: string,
     value: string,
+    isHidenClearBtn?: boolean, // true不显示  false显示
+    isHidenBottomLine?: boolean,  // true不显示  false显示
     onChange: (text:string) => void
     onClear: () => void
+    onFocus?: () => void
+    onBlur?: () => void
   }) => {
     return (
       <View style={styles.inputItem}>
@@ -322,13 +338,18 @@ class TwoPointPositionPage extends React.Component<Props, State> {
           {props.text}
         </Text>
         <TextInput
-          style={{
+          style={[{
             flex: 1,
             fontSize: dp(13),
             padding: 0,
+            height: dp(39),
             borderBottomWidth: dp(1),
+            borderBottomColor: 'transparent',
+
+          },
+          !props.isHidenBottomLine && {
             borderBottomColor: '#ECECEC',
-          }}
+          },]}
           keyboardType={'numeric'}
           returnKeyType={'done'}
           defaultValue={props.value}
@@ -339,16 +360,30 @@ class TwoPointPositionPage extends React.Component<Props, State> {
             }
             props.onChange(text)
           }}
+          onFocus={props.onFocus}
+          onBlur={props.onBlur}
         />
-        <TouchableOpacity
-          onPress={props.onClear}
-        >
-          <Image
-            source={getImage().icon_close}
-            style={{...AppStyle.Image_Style_Small, tintColor: AppStyle.Color.GRAY}}
-          />
+        {props.value !== '' && props.value !== "0" && !props.isHidenClearBtn && (
+          <TouchableOpacity
+            onPress={props.onClear}
+            style={[{
+              position: 'absolute',
+              right: 0,
+              top: 0,
+              height: '100%',
+              width: dp(18),
+              justifyContent: 'center',
+              alignItems: 'center',
+            // backgroundColor: '#f00',
+            }]}
+          >
+            <Image
+              source={getImage().icon_close}
+              style={{...AppStyle.Image_Style_Small, tintColor: AppStyle.Color.GRAY}}
+            />
+          </TouchableOpacity>
+        )}
 
-        </TouchableOpacity>
       </View>
     )
   }
@@ -358,74 +393,211 @@ class TwoPointPositionPage extends React.Component<Props, State> {
       <View style={[
         styles.inputContainer]}>
         {this.renderSelectHeaderView()}
-        {/* 定位点一的界面 */}
-        {this.state.curPoint === 'p1' && this.renderInput({
-          image:getThemeAssets().collection.icon_lines,
-          text: '经度:',
-          value: this.state.x,
-          onChange: text => {
-            this.setState({x: text})
-          },
-          onClear: () => {
-            this.setState({x: '0'})
-          }
-        })}
-        {this.state.curPoint === 'p1' && this.renderInput({
-          image:getThemeAssets().collection.icon_latitudes,
-          text: '纬度:',
-          value: this.state.y,
-          onChange: text => {
-            this.setState({y: text})
-          },
-          onClear: () => {
-            this.setState({y: '0'})
-          }
-        })}
-        {this.state.curPoint === 'p1' && this.renderInput({
-          image:getThemeAssets().collection.icon_ar_height,
-          text: '高程:',
-          value: this.state.z,
-          onChange: text => {
-            this.setState({z: text})
-          },
-          onClear: () => {
-            this.setState({z: '0'})
-          }
-        })}
+        <View
+          style={[{
+            flexDirection: 'row',
+          }]}
+        >
+          <View
+            style={[{
+              flex: 1,
+              height: dp(120),
+              backgroundColor: '#f9f9f9',
+              paddingHorizontal: dp(8),
+              borderRadius: dp(16),
 
-        {this.state.curPoint === 'p2' && this.renderInput({
-          image:getThemeAssets().collection.icon_lines,
-          text: '经度:',
-          value: this.state.p2x,
-          onChange: text => {
-            this.setState({p2x: text})
-          },
-          onClear: () => {
-            this.setState({p2x: '0'})
-          }
-        })}
-        {this.state.curPoint === 'p2' && this.renderInput({
-          image:getThemeAssets().collection.icon_latitudes,
-          text: '纬度:',
-          value: this.state.p2y,
-          onChange: text => {
-            this.setState({p2y: text})
-          },
-          onClear: () => {
-            this.setState({p2y: '0'})
-          }
-        })}
-        {this.state.curPoint === 'p2' && this.renderInput({
-          image:getThemeAssets().collection.icon_ar_height,
-          text: '高程:',
-          value: this.state.p2z,
-          onChange: text => {
-            this.setState({p2z: text})
-          },
-          onClear: () => {
-            this.setState({p2z: '0'})
-          }
-        })}
+            }]}
+          >
+            {/* 定位点一的界面 */}
+            {this.state.curPoint === 'p1' && this.renderInput({
+              image:getThemeAssets().collection.icon_lines,
+              text: '经度:',
+              value: this.state.x,
+              onChange: text => {
+                this.setState({x: text})
+              },
+              onClear: () => {
+                this.setState({x: '0'})
+              },
+              isHidenClearBtn: this.state.xClearHiden,
+              onFocus: () => {
+              // 获取焦点 显示
+                this.setState({
+                  xClearHiden: false,
+                })
+              },
+              onBlur: () => {
+              // 失去焦点 隐藏
+                this.setState({
+                  xClearHiden: true,
+                })
+              },
+            })}
+            {this.state.curPoint === 'p1' && this.renderInput({
+              image:getThemeAssets().collection.icon_latitudes,
+              text: '纬度:',
+              value: this.state.y,
+              onChange: text => {
+                this.setState({y: text})
+              },
+              onClear: () => {
+                this.setState({y: '0'})
+              },
+              isHidenClearBtn: this.state.yClearHiden,
+              onFocus: () => {
+                // 获取焦点 显示
+                this.setState({
+                  yClearHiden: false,
+                })
+              },
+              onBlur: () => {
+                // 失去焦点 隐藏
+                this.setState({
+                  yClearHiden: true,
+                })
+              },
+            })}
+            {this.state.curPoint === 'p1' && this.renderInput({
+              image:getThemeAssets().collection.icon_ar_height,
+              text: '高程:',
+              value: this.state.z,
+              isHidenBottomLine: true,
+              onChange: text => {
+                this.setState({z: text})
+              },
+              onClear: () => {
+                this.setState({z: '0'})
+              },
+              isHidenClearBtn: this.state.zClearHiden,
+              onFocus: () => {
+                // 获取焦点 显示
+                this.setState({
+                  zClearHiden: false,
+                })
+              },
+              onBlur: () => {
+                // 失去焦点 隐藏
+                this.setState({
+                  zClearHiden: true,
+                })
+              },
+            })}
+
+            {this.state.curPoint === 'p2' && this.renderInput({
+              image:getThemeAssets().collection.icon_lines,
+              text: '经度:',
+              value: this.state.p2x,
+              onChange: text => {
+                this.setState({p2x: text})
+              },
+              onClear: () => {
+                this.setState({p2x: '0'})
+              },
+              isHidenClearBtn: this.state.p2xClearHiden,
+              onFocus: () => {
+                // 获取焦点 显示
+                this.setState({
+                  p2xClearHiden: false,
+                })
+              },
+              onBlur: () => {
+                // 失去焦点 隐藏
+                this.setState({
+                  p2xClearHiden: true,
+                })
+              },
+            })}
+            {this.state.curPoint === 'p2' && this.renderInput({
+              image:getThemeAssets().collection.icon_latitudes,
+              text: '纬度:',
+              value: this.state.p2y,
+              onChange: text => {
+                this.setState({p2y: text})
+              },
+              onClear: () => {
+                this.setState({p2y: '0'})
+              },
+              isHidenClearBtn: this.state.p2yClearHiden,
+              onFocus: () => {
+                // 获取焦点 显示
+                this.setState({
+                  p2yClearHiden: false,
+                })
+              },
+              onBlur: () => {
+                // 失去焦点 隐藏
+                this.setState({
+                  p2yClearHiden: true,
+                })
+              },
+            })}
+            {this.state.curPoint === 'p2' && this.renderInput({
+              image:getThemeAssets().collection.icon_ar_height,
+              text: '高程:',
+              value: this.state.p2z,
+              isHidenBottomLine: true,
+              onChange: text => {
+                this.setState({p2z: text})
+              },
+              onClear: () => {
+                this.setState({p2z: '0'})
+              },
+              isHidenClearBtn: this.state.p2zClearHiden,
+              onFocus: () => {
+                // 获取焦点 显示
+                this.setState({
+                  p2zClearHiden: false,
+                })
+              },
+              onBlur: () => {
+                // 失去焦点 隐藏
+                this.setState({
+                  p2zClearHiden: true,
+                })
+              },
+            })}
+          </View>
+          <View
+            style={[{
+              width: dp(50),
+              height: dp(120),
+              justifyContent: 'center',
+              alignItems:'center',
+              marginLeft: dp(10),
+            }]}
+          >
+            <TouchableOpacity
+              style={[{
+                width: dp(46),
+                height: dp(90),
+                flexDirection: 'column',
+                backgroundColor: '#505050',
+                borderRadius:dp(23),
+                justifyContent: 'center',
+                alignItems: 'center',
+              }]}
+              onPress={this.submitAction}
+            >
+              <Image
+                source={getImage().icon_ar_slide_down}
+                style={[{
+                  width: dp(18),
+                  height:dp(18),
+                }]}
+              />
+              <Text
+                style={[{
+                  color: '#fff',
+                  marginTop: dp(8),
+                  fontSize: dp(13),
+                }]}
+              >{getLanguage().CONFIRM}</Text>
+            </TouchableOpacity>
+
+
+          </View>
+        </View>
+
       </View>
     )
   }
@@ -467,6 +639,7 @@ class TwoPointPositionPage extends React.Component<Props, State> {
       <View
         style={[{
           marginBottom: dp(5),
+          marginTop: dp(-5),
         },
         styles.selectContainer
         ]}
@@ -686,12 +859,13 @@ class TwoPointPositionPage extends React.Component<Props, State> {
       <View
         style={[{
           width: '100%',
-          height: dp(30),
+          height: dp(35),
           backgroundColor: '#fff',
           justifyContent: 'flex-start',
           alignItems: 'center',
           flexDirection: 'row',
           borderRadius: dp(16),
+          // paddingHorizontal: dp(5),
         }]}
       >
         <TouchableOpacity
@@ -702,13 +876,22 @@ class TwoPointPositionPage extends React.Component<Props, State> {
             })
           }}
         >
-          <Text
-            style={[styles.selectHeaderText,
-              this.state.curPoint === 'p1' && {
-                fontWeight: 'bold',
-              }
-            ]}
-          >{"p1"}</Text>
+          <View
+            style={[{
+              width: '100%',
+              height: dp(20),
+              justifyContent: 'flex-start',
+              alignItems:'center',
+            }]}
+          >
+            <Text
+              style={[styles.selectHeaderText,
+                this.state.curPoint === 'p1' && {
+                  fontWeight: 'bold',
+                }
+              ]}
+            >{getLanguage().ANCHOR_POINT_ONE}</Text>
+          </View>
           <View
             style={[{
               marginTop: dp(3),
@@ -730,13 +913,23 @@ class TwoPointPositionPage extends React.Component<Props, State> {
             })
           }}
         >
-          <Text
-            style={[styles.selectHeaderText,
-              this.state.curPoint === 'p2' && {
-                fontWeight: 'bold',
-              }
-            ]}
-          >{"p2"}</Text>
+          <View
+            style={[{
+              width: '100%',
+              height: dp(20),
+              justifyContent: 'center',
+              alignItems:'center',
+            }]}
+          >
+            <Text
+              style={[styles.selectHeaderText,
+                this.state.curPoint === 'p2' && {
+                  fontWeight: 'bold',
+                }
+              ]}
+            >{getLanguage().ANCHOR_POINT_TWO}</Text>
+          </View>
+
           <View
             style={[{
               marginTop: dp(3),
@@ -761,7 +954,7 @@ class TwoPointPositionPage extends React.Component<Props, State> {
         <View style={[{
           width: '90%',
           height: '100%',
-          backgroundColor: '#ECEDEB',
+          backgroundColor: 'rgba(255,255,255,.9)',
           borderRadius: dp(16),
         }]}>
           {this.renderInputs()}
@@ -776,7 +969,7 @@ class TwoPointPositionPage extends React.Component<Props, State> {
     return (
       <View style={[styles.container]}>
         {this.renderBackBtn()}
-        {this.renderSubmitBtn()}
+        {/* {this.renderSubmitBtn()} */}
         {this.renderContentView()}
       </View>
     )
@@ -819,9 +1012,9 @@ const styles = StyleSheet.create({
   },
   closeBtn: {
     position: 'absolute',
-    top: dp(30),
+    top: dp(16),
     left: dp(10),
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     width: dp(45),
     height: dp(45),
     justifyContent:'center',
@@ -845,7 +1038,7 @@ const styles = StyleSheet.create({
     bottom: dp(20),
     left:0,
     width: '100%',
-    height: dp(220),
+    height: dp(210),
     // backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
@@ -856,6 +1049,8 @@ const styles = StyleSheet.create({
     borderRadius: dp(16),
     backgroundColor: '#fff',
     paddingHorizontal: dp(10),
+    paddingBottom: dp(10),
+    paddingTop: dp(5),
     textShadowOffset:{
       width:dp(2),
       hegith:dp(2),
@@ -864,13 +1059,13 @@ const styles = StyleSheet.create({
     textShadowColor:'#000',
     shadowOffset: {
       width: dp(0),
-      height: dp(0),
+      height: dp(3),
     },
     shadowColor: '#000',
-    shadowRadius: dp(1),
+    shadowRadius: dp(2),
   },
   inputItem: {
-    height: dp(44),
+    height: dp(40),
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
@@ -879,7 +1074,7 @@ const styles = StyleSheet.create({
   },
   selectItem: {
     width: dp(100),
-    height: dp(40),
+    height: dp(30),
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
@@ -924,11 +1119,12 @@ const styles = StyleSheet.create({
   },
 
   selectHeader: {
-    width: dp(28),
-    height: dp(28),
+    width: dp(60),
+    height: dp(30),
     // backgroundColor: '#f00',
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: dp(8),
   },
   selectHeaderText: {
     fontSize: dp(14),

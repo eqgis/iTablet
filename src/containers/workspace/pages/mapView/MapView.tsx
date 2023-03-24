@@ -1555,7 +1555,7 @@ export default class MapView extends React.Component {
         const params = ToolbarModule.getParams()
         const libIds = params.template.plotLibIds
         for(let i =0 ;i<libIds.length;i++){
-          await SPlot.removePlotSymbolLibrary(libIds[i])
+          await SPlot.removePlotLibrary(libIds[i])
         }
       }
       LayerUtils.setMapLayerAttribute(undefined, undefined, true)

@@ -131,9 +131,32 @@ function getData(type) {
     key: constants.SUBMIT,
     title: getLanguage(global.language).Map_Main_Menu.COLLECTION_SUBMIT,
     action: async () => {
-      await CollectionAction.collectionSubmit(type)
+      // await CollectionAction.collectionSubmit(type)
       // langchao code
       {
+        let have = await SMap.haveCurrentGeometry()
+        if (!have) {
+          const p = await SCollector.getGPSPoint()
+          // 若无移动，则提交，便自动打两个点成线，保存（线图层，一个点无法保存）
+          await SCollector.addGPSPoint({x: p.x + 0.00001, y: p.y + 0.00001})
+          await SCollector.addGPSPoint({x: p.x - 0.00001, y: p.y + 0.00001})
+        }
+
+        have = await SMap.haveCurrentGeometry()
+        const submitResult = await SCollector.submit(type)
+        if (submitResult) {
+          global.HAVEATTRIBUTE = true
+          switch (type) {
+            case SMCollectorType.LINE_GPS_PATH:
+            case SMCollectorType.REGION_GPS_PATH:
+              await SCollector.stopCollect()
+              await SCollector.cancel(type) // 防止GPS轨迹提交后，点击开始无法再次采集
+              break
+          }
+          // 采集后 需要刷新属性表
+          global.NEEDREFRESHTABLE = true
+        }
+
         const date = new Date()
 
 

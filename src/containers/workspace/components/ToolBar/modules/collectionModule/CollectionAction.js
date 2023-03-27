@@ -270,7 +270,13 @@ async function createCollector(type, layerName) {
 
   let hasDataset = false
   let _datasource = await SData.getDatasourceByAlias(datasourceName)
-  if (!_datasource) {
+  if (params?.layerPath) {
+    // 判断所选图层是否存在
+    const layer = await SMap.getLayerInfo(params?.layerPath)
+    hasDataset = !!layer
+    datasourceName = layer.datasourceAlias
+    datasetName = layer.datasetName
+  } else if (!_datasource) {
     // 若没有数据源则创建
     const createDsResult = await SData.createDatasource({
       server: datasourcePath + datasourceName + '.udb',
@@ -290,10 +296,6 @@ async function createCollector(type, layerName) {
     if (!dataset) {
       hasDataset = await SData.createDataset(datasourceName, datasetName, mType)
       hasDataset = hasDataset && await SMap.addLayer({datasource: datasourceName, dataset: datasetName}, true)
-    } else if (params?.layerPath) {
-      // 判断所选图层是否存在
-      const layer = await SMap.getLayerInfo(params?.layerPath)
-      hasDataset = !!layer
     } else {
       const layers = await SMap.getLayersInfo()
       // 查看数据集是否已经添加到地图上

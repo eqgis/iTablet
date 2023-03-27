@@ -1,7 +1,7 @@
 import {
   SMap,
   SMediaCollector,
-  SCollector,
+  SData,
 } from 'imobile_for_reactnative'
 import { ConstToolType, ToolbarType } from '../../../../../../constants'
 import { StyleUtils, Toast } from '../../../../../../utils'
@@ -259,10 +259,21 @@ async function deleteLabel() {
   
   _selection.forEach(async item => {
     if (item.ids.length > 0) {
-      await SCollector.remove({
+      let filter = ''
+      for (let i = 0; i < item.ids.length; i++) {
+        filter += `SmID=${item.ids[i]} `
+        if (i < item.ids.length - 1) {
+          filter += 'OR '
+        }
+      }
+      result = result && await SData.deleteRecordsetValue({
         datasourceName: item.layerInfo.datasourceAlias,
         datasetName: item.layerInfo.datasetName,
-      }, item.ids)
+      }, { filter })
+      // await SCollector.remove({
+      //   datasourceName: item.layerInfo.datasourceAlias,
+      //   datasetName: item.layerInfo.datasetName,
+      // }, item.ids)
       await SMediaCollector.removeByIds(item.layerInfo.name, item.ids)
     }
   })

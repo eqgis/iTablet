@@ -7,7 +7,7 @@ import {
   SData,
   SNavigation,
 } from 'imobile_for_reactnative'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
+import { DatasetType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import {
   ConstToolType,
   ConstPath,
@@ -218,20 +218,25 @@ async function createCollector(type, layerName) {
   }
 
   let params = {}
+  let datasourcePath = ''
+  let datasourceName = ''
+  let datasetName = ''
   if (_params.template.currentTemplateInfo.layerPath) {
     params = {
       layerPath: _params.template.currentTemplateInfo
         .layerPath,
     }
+    datasourceName = _params.template.currentTemplateInfo.datasetInfo.datasourceName
+    datasetName = _params.template.currentTemplateInfo.datasetInfo.datasetName
   } else if (layerName !== undefined) {
     params = { layerPath: layerName }
   } else {
-    const datasetName = _params.symbol.currentSymbol.type
+    datasetName = _params.symbol.currentSymbol.type
       ? `${_params.symbol.currentSymbol.type}_${
         _params.symbol.currentSymbol.id
       }`
       : ''
-    const datasourcePath =
+    datasourcePath =
       _params.collection.datasourceParentPath ||
       (await FileTools.appendingHomeDirectory(
         _params.user &&
@@ -246,12 +251,12 @@ async function createCollector(type, layerName) {
 
     const mapInfo = await SMap.getMapInfo()
 
-    const datasourceName =
+    datasourceName =
       _params.collection.datasourceName ||
       (_params.map &&
         _params.map.currentMap.name &&
         `${_params.map.currentMap.name}_collection`) ||
-      `${mapInfo.name}_collection` ||
+      mapInfo.name && `${mapInfo.name}_collection` ||
       `Collection-${new Date().getTime()}`
 
     params = {
@@ -263,11 +268,58 @@ async function createCollector(type, layerName) {
     }
   }
 
-  const layerInfo = await SCollector.setDataset(params)
+  let hasDataset = false
+  let _datasource = await SData.getDatasourceByAlias(datasourceName)
+  if (!_datasource) {
+    // 若没有数据源则创建
+    const createDsResult = await SData.createDatasource({
+      server: datasourcePath + datasourceName + '.udb',
+      alias: datasourceName,
+      engineType: EngineType.UDB,
+    })
+    if (createDsResult) {
+      // 创建数据集
+      hasDataset = await SData.createDataset(datasourceName, datasetName, mType)
+      hasDataset = hasDataset && await SMap.addLayer({datasource: datasourceName, dataset: datasetName}, true)
+    }
+  } else {
+    const dataset = await SData.getDatasetInfo({
+      datasourceName,
+      datasetName,
+    })
+    if (!dataset) {
+      hasDataset = await SData.createDataset(datasourceName, datasetName, mType)
+      hasDataset = hasDataset && await SMap.addLayer({datasource: datasourceName, dataset: datasetName}, true)
+    } else {
+      const layers = await SMap.getLayersInfo()
+      // 查看数据集是否已经添加到地图上
+      let isAddLayer = false
+      for (const layer of layers) {
+        if (layer.datasetName === dataset.datasetName && layer.themeType <= 0) {
+          isAddLayer = true
+        }
+      }
+      // 若数据集没有添加到地图上，则添加图层
+      if (!isAddLayer) {
+        hasDataset = await SMap.addLayer({datasource: datasourceName, dataset: datasetName}, true)
+      } else {
+        hasDataset = true
+      }
+    }
+  }
+
+  if (!hasDataset) {
+    return
+  }
+
+  const layerInfo = await SCollector.setDataset({
+    datasourceName,
+    datasetName,
+  }, geoStyle)
   if (!layerInfo) return
   // 设置绘制风格
   await SCollector.setStyle(collectorStyle)
-  await SCollector.setCollector(type)
+  await SCollector.setCollectorType(type)
   if (isGPSCollect(type)) {
     await SLocation.setBackgroundLocationEnable(true)
   } else {

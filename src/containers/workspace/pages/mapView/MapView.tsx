@@ -1612,12 +1612,22 @@ export default class MapView extends React.Component {
               const layerType = LayerUtils.getLayerType(item.layerInfo)
               isRealTime && layerType !== 'TAGGINGLAYER' && global.getFriend().onGeometryDelete(item.layerInfo, item.fieldInfo, item.ids[0], item.geometryType)
             }
-            result =
-              result &&
-              (await SCollector.remove({
-                datasourceName: item.layerInfo.datasourceAlias,
-                datasetName: item.layerInfo.datasetName,
-              }, item.ids))
+
+            let filter = ''
+            for (let i = 0; i < item.ids.length; i++) {
+              filter += `SmID=${item.ids[i]} `
+              if (i < item.ids.length - 1) {
+                filter += 'OR '
+              }
+            }
+            result = result && await SData.deleteRecordsetValue({
+              datasourceName: item.layerInfo.datasourceAlias,
+              datasetName: item.layerInfo.datasetName,
+            }, { filter })
+            // (await SCollector.remove({
+            //   datasourceName: item.layerInfo.datasourceAlias,
+            //   datasetName: item.layerInfo.datasetName,
+            // }, item.ids))
             result = result && (await SMediaCollector.removeByIds(item.layerInfo.name, item.ids))
             if (result && global.coworkMode) {
               // 在线协作-成功删除数据,修改图层状态

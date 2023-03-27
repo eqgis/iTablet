@@ -15,7 +15,7 @@ import NavigationService from '@/containers/NavigationService'
 // import { Action, LayerInfo } from 'imobile_for_reactnative/types/interface/mapping/SMap'
 import CheckData from './CheckData'
 import { FieldInfo, GeometryType, TGeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
-import { Action,TAction } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { Action,LayerInfo,TAction } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 function startCheck() {
   try {
@@ -355,10 +355,21 @@ async function deleteLabel() {
 
     _selection.forEach(async item => {
       if (item.ids.length > 0) {
-        await SCollector.remove({
+        let filter = ''
+        for (let i = 0; i < item.ids.length; i++) {
+          filter += `SmID=${item.ids[i]} `
+          if (i < item.ids.length - 1) {
+            filter += 'OR '
+          }
+        }
+        await SData.deleteRecordsetValue({
           datasourceName: item.layerInfo.datasourceAlias,
           datasetName: item.layerInfo.datasetName,
-        }, item.ids)
+        }, { filter })
+        // await SCollector.remove({
+        //   datasourceName: item.layerInfo.datasourceAlias,
+        //   datasetName: item.layerInfo.datasetName,
+        // }, item.ids)
         await SMediaCollector.removeByIds(item.layerInfo.name, item.ids)
       }
     })

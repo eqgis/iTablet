@@ -28,7 +28,7 @@ class CollectionModule extends FunctionModule {
         Toast.show(getLanguage(params.language).Template.TEMPLATE_ERROR)
       }
     } else {
-      if (params.currentTask.id) {
+      if (params.currentTask?.id) {
         // 若没有当前图层或者当前图层不是我的图层
         let layerType = LayerUtils.getLayerType(params.currentLayer)
         if (layerType === '' || layerType === 'TAGGINGLAYER' || layerType === 'CADLAYER' || layerType === 'TEXTLAYER' ) {

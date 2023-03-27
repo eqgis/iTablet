@@ -32,6 +32,9 @@ interface State {
 }
 
 class SinglePointPositionPage extends React.Component<Props, State> {
+
+  horizontal: boolean
+
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -44,6 +47,7 @@ class SinglePointPositionPage extends React.Component<Props, State> {
       yClearHiden: true,
       zClearHiden: true,
     }
+    this.horizontal = this.props.windowSize.height < this.props.windowSize.width
   }
 
   componentDidMount = async () => {
@@ -401,12 +405,25 @@ class SinglePointPositionPage extends React.Component<Props, State> {
   /** 内容区 */
   renderContentView = () => {
     return (
-      <View style={[styles.content]}>
+      <View style={[styles.content,
+        !this.horizontal && {
+          bottom: dp(20),
+          left:0,
+        },
+        this.horizontal && {
+          width: dp(335),
+          height: dp(185),
+          bottom: dp(10),
+          right: dp(10),
+        }]}>
         <View style={[{
           width: '90%',
           height: '100%',
           backgroundColor: 'rgba(255,255,255,.9)',
           borderRadius: dp(16),
+        },
+        this.horizontal && {
+          width: '100%',
         }]}>
           {this.renderInputs()}
           {this.renderSelect()}
@@ -451,6 +468,7 @@ class SinglePointPositionPage extends React.Component<Props, State> {
 
 
   render() {
+    this.horizontal = this.props.windowSize.height < this.props.windowSize.width
     const { close, showStatus } = this.state
     let content = null
     switch(showStatus){
@@ -492,8 +510,6 @@ const styles = StyleSheet.create({
 
   content: {
     position: 'absolute',
-    bottom: dp(20),
-    left:0,
     width: '100%',
     height: dp(185),
     // backgroundColor: '#fff',

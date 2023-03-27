@@ -31,6 +31,8 @@ const icon_two_point_position = require('./icon_two_point_position.png')
 const icon_ar_coord = require('./icon_ar_coord.png')
 const icon_gps_position = require('./icon_gps_position.png')
 const icon_tips_select_location_point = require('./icon_tips_select_location_point.png')
+const icon_function_ok = require('./icon_function_ok.png')
+const icon_function_undo = require('./icon_function_undo.png')
 
 export default {
   icon_collection_change,
@@ -67,4 +69,6 @@ export default {
   icon_ar_coord,
   icon_gps_position,
   icon_tips_select_location_point,
+  icon_function_ok,
+  icon_function_undo,
 }

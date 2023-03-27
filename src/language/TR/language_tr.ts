@@ -2374,7 +2374,8 @@ export const language_tr: typeof language_cn = {
   ANCHOR_POINT_TWO:'Anchor point two', // To be translated
   COORD_PARAM:'coord', // To be translated
   AIM_REAL_POSITION: "Aim for the real shot position",  // To be translated
-  SELECT_POSITION_POINT:'Select position point', // To be translated
+  SELECT_FIRST_POSITION_POINT:'Select first position point', // To be translated
+  SELECT_SECOND_POSITION_POINT:'Select second position point', // To be translated
   LESS_TWO_POSITION_POINT:'If there are less than two registration points, add more registration points', // To be translated
   SCAN_POSITION_CODE: 'Scan the location code and automatically locate in the real scene', // To be translated
   OPEN_GPS_TWO_POINT: 'Open the satellite and select two positioning points in the real scene', // To be translated

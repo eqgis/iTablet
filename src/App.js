@@ -370,17 +370,19 @@ class AppRoot extends Component {
       await this.init(true)
       global.Loading.setLoading(false)
     } else {
-      global.SimpleDialog.set({
-        text: getLanguage(this.props.language).Prompt.NO_PERMISSION_ALERT,
-        cancelText: getLanguage(this.props.language).Prompt.CONTINUE,
-        cancelAction: /*AppUtils.AppExit*/ async () =>{
-          await this.init(false)
-          global.Loading.setLoading(false)
-        },
-        confirmText: getLanguage(this.props.language).Prompt.REQUEST_PERMISSION,
-        confirmAction: this.requestPermission,
-      })
-      global.SimpleDialog.setVisible(true)
+      await this.init(false)
+      global.Loading.setLoading(false)
+      // global.SimpleDialog.set({
+      //   text: getLanguage(this.props.language).Prompt.NO_PERMISSION_ALERT,
+      //   cancelText: getLanguage(this.props.language).Prompt.CONTINUE,
+      //   cancelAction: /*AppUtils.AppExit*/ async () =>{
+      //     await this.init(false)
+      //     global.Loading.setLoading(false)
+      //   },
+      //   confirmText: getLanguage(this.props.language).Prompt.REQUEST_PERMISSION,
+      //   confirmAction: this.requestPermission,
+      // })
+      // global.SimpleDialog.setVisible(true)
     }
   }
 

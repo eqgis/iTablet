@@ -83,7 +83,7 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
         otherBTDevices: []
       })
 
-      if(this.props.deviceManufacturer === '千寻' && Platform.OS === 'android') {
+      if(this.props.deviceManufacturer === 'woncan' && Platform.OS === 'android') {
         SLocation.scanBluetooth()
         this.setState({
           isSearch: true,

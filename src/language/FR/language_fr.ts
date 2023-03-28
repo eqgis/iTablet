@@ -2899,5 +2899,9 @@ export const language_fr: typeof language_cn = {
   METER_LEVEL:"Meter level", // To be tanslated
   SUBMETER_LEVEL: 'Submeter level', // To be tanslated
   CENTIMETER_LEVEL:'centermeter level', // To be tanslated
+  LOCAL_DEVICE:'Local device', // To be tanslated
+  HUACHE:"huache", // To be tanslated
+  QIANXUN:"qianxun", // To be tanslated
+  SITUOLI:"situoli", // To be tanslated
 
 }

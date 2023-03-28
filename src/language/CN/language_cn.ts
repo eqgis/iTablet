@@ -2907,4 +2907,9 @@ export const language_cn = {
   METER_LEVEL:"米级",
   SUBMETER_LEVEL: '亚米级',
   CENTIMETER_LEVEL:'厘米级',
+  LOCAL_DEVICE:'当前设备',
+  HUACHE:"华测",
+  QIANXUN:"千寻",
+  SITUOLI:"思拓力",
+
 }

@@ -96,7 +96,7 @@ class NtripSetting extends Component<Props, State> {
   componentDidMount = async () => {
     await this.refreshLoadPoint()
     this.getAddressAndPort()
-    if(this.props.deviceManufacturer === '华测') {
+    if(this.props.deviceManufacturer === 'mijiaH20') {
       Toast.show(getLanguage(global.language).Profile.CHECK_DEVICE_SUPPORTS_DIFFERENTIAL_SERVICE)
     }
   }

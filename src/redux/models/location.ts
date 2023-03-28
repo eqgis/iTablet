@@ -56,7 +56,7 @@ export interface positionAccuracyAction {
   payload: PositionAccuracyType
 }
 
-export type DeviceManufacturer = '当前设备' | '华测' | '千寻' | '思拓力'
+export type DeviceManufacturer = 'other' | 'situoli' | 'woncan' | 'mijiaH20'
 export interface DeviceManufacturerAction {
   type: typeof SET_POSITION_DEVICE_MANUFACTURER
   payload: DeviceManufacturer
@@ -261,7 +261,7 @@ const initialState = fromJS({
   },
   pointStateText: '',
   positionAccuracy: 5,
-  deviceManufacturer: '当前设备',
+  deviceManufacturer: 'other',
   deviceType: 'GPS',
   /** 蓝牙是否打开 */
   isOpenBlutooth: true,

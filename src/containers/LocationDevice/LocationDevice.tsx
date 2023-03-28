@@ -15,6 +15,11 @@ import { MainStackScreenNavigationProps } from "@/types"
 const radio_on = require('../../assets/public/radio_select.png')
 const radio_off = require('../../assets/public/radio_select_no.png')
 
+interface DeviceManufacturerItemType {
+  label: string
+  value: DeviceManufacturer
+}
+
 interface Props {
 	navigation: MainStackScreenNavigationProps<'LocationDevice'>,
 	deviceManufacturer: DeviceManufacturer,
@@ -26,12 +31,34 @@ interface State {
 }
 
 class LocationDevice extends Component<Props, State> {
-  manufacturers: Array<DeviceManufacturer> = Platform.OS === 'android' ? ['当前设备', '华测', '千寻', '思拓力'] : ['当前设备']
+  manufacturers: Array<DeviceManufacturerItemType> =  Platform.OS === 'android' ? [
+    {
+      label: getLanguage().LOCAL_DEVICE,
+      value: 'other',
+    },
+    {
+      label: getLanguage().HUACHE,
+      value: 'mijiaH20',
+    },
+    {
+      label: getLanguage().QIANXUN,
+      value: 'woncan',
+    },
+    {
+      label: getLanguage().SITUOLI,
+      value: 'situoli',
+    },
+  ]: [
+    {
+      label: getLanguage().LOCAL_DEVICE,
+      value: 'other',
+    },
+  ]
 
   constructor(props: Props) {
     super(props)
     this.state = {
-      curDeviceManufacturer: this.props.deviceManufacturer || "当前设备",
+      curDeviceManufacturer: this.props.deviceManufacturer || "other",
     }
   }
 
@@ -63,7 +90,7 @@ class LocationDevice extends Component<Props, State> {
   }
 
   /** 列表项 */
-  renderItem = (manufacturer: DeviceManufacturer, index: number) => {
+  renderItem = (manufacturer: DeviceManufacturerItemType, index: number) => {
     return (
       <TouchableOpacity
         style={[styles.itemView,
@@ -74,14 +101,14 @@ class LocationDevice extends Component<Props, State> {
         activeOpacity={0.9}
         onPress={() => {
           this.setState({
-            curDeviceManufacturer: manufacturer,
+            curDeviceManufacturer: manufacturer.value,
           })
         }}
       >
-        <Text style={styles.text}>{manufacturer}</Text>
+        <Text style={styles.text}>{manufacturer.label}</Text>
         <Image
           style={styles.image}
-          source={this.state.curDeviceManufacturer === manufacturer? radio_on : radio_off}
+          source={this.state.curDeviceManufacturer === manufacturer.value? radio_on : radio_off}
         />
       </TouchableOpacity>
     )
@@ -89,7 +116,7 @@ class LocationDevice extends Component<Props, State> {
 
   /** 渲染列表 */
   renderItems = () => {
-    return this.manufacturers.map((manufacturer: DeviceManufacturer, index: number) => {
+    return this.manufacturers.map((manufacturer: DeviceManufacturerItemType, index: number) => {
       return this.renderItem(manufacturer, index)
     })
   }

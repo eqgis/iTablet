@@ -2919,4 +2919,7 @@ export const language_ar: typeof language_cn = {
   RTK_AUTO_CALIBRATION: "RTK auto calibration",  // To be tanslated
   SHOW_POINT_INFO:"Display location infomation",  // To be tanslated
   POSITION_ACCURACY:"Positioning accuracy ",  // To be tanslated
+  METER_LEVEL:"Meter level", // To be tanslated
+  SUBMETER_LEVEL: 'Submeter level', // To be tanslated
+  CENTIMETER_LEVEL:'centermeter level', // To be tanslated
 }

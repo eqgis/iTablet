@@ -31,9 +31,9 @@ interface State {
 
 class LocationAccuracy extends Component<Props, State> {
   positionAccuracyArray: Array<positionAccuracyItemType> = [
-    {label: "米级", value:1},
-    {label: "亚米级", value:5},
-    {label: "厘米级", value:4},
+    {label: getLanguage().METER_LEVEL, value:1},
+    {label: getLanguage().SUBMETER_LEVEL, value:5},
+    {label: getLanguage().CENTIMETER_LEVEL, value:4},
   ]
 
   constructor(props: Props) {

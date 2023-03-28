@@ -61,15 +61,15 @@ class LocationSetting extends React.Component<Props, State> {
   prevOption: SLocation.LocationConnectionParam
 
   positionAccuracyArray: Array<positionAccuracyItemType> = [
-    {label: "米级", value:1},
-    {label: "亚米级", value:5},
-    {label: "厘米级", value:4},
+    {label: getLanguage().METER_LEVEL, value:1},
+    {label: getLanguage().SUBMETER_LEVEL, value:5},
+    {label: getLanguage().CENTIMETER_LEVEL, value:4},
   ]
 
   positionAccuracyName = {
-    1: "米级",
-    4: "厘米级",
-    5: "亚米级",
+    1: getLanguage().METER_LEVEL,
+    4: getLanguage().CENTIMETER_LEVEL,
+    5: getLanguage().SUBMETER_LEVEL,
   }
 
   ManufacturerToBrand: {[key: string]:'other' | 'situoli' | 'woncan' | 'mijiaH20'} = {

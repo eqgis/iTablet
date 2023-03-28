@@ -2904,4 +2904,7 @@ export const language_cn = {
   RTK_AUTO_CALIBRATION: "RTK自动校准",
   SHOW_POINT_INFO:"显示定位信息",
   POSITION_ACCURACY:"定位精度",
+  METER_LEVEL:"米级",
+  SUBMETER_LEVEL: '亚米级',
+  CENTIMETER_LEVEL:'厘米级',
 }

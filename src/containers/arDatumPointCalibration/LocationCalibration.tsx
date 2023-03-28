@@ -272,8 +272,8 @@ class LocationCalibration extends React.Component<Props, State> {
           height: dp(300),
           paddingTop: dp(13),
         }]}>
-        {this.renderClose()}
         {this.renderHeader()}
+        {this.renderClose()}
         {this.renderSelect()}
         {this.renderButton()}
       </View>

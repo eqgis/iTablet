@@ -110,11 +110,11 @@ class LocationCalibration extends React.Component<Props, State> {
   }
 
   renderSelect = () => {
-    const horizontal = this.props.windowSize.height < styles.containerStyle.height
+  //  const horizontal = this.props.windowSize.height < styles.containerStyle.heigh
     return (
       <View
-        style={[horizontal ? {
-          marginTop: dp(8),
+        style={[this.horizontal ? {
+          marginTop: dp(2),
         } : {
           marginTop: dp(20),
           marginBottom: dp(5),
@@ -123,12 +123,15 @@ class LocationCalibration extends React.Component<Props, State> {
         ]}
       >
         <View
-          style={{
+          style={[{
             flexDirection: 'row',
             marginTop: dp(10),
             justifyContent: 'space-between',
             width: '100%',
-          }}
+          },
+          this.horizontal && {
+            marginTop: dp(5),
+          }]}
         >
           {/* 单点定位 */}
           {this.renderItem(
@@ -194,12 +197,12 @@ class LocationCalibration extends React.Component<Props, State> {
       case 'arEnhance':
         title = getLanguage().MAP_AR_ENHANCE_POSITION
         descript = getLanguage().SCAN_POSITION_CODE
-        imageSrc = getImage().icon_position_single_point
+        imageSrc = getImage().icon_position_swell
         break
       case 'singlePoint':
         title = getLanguage().SINGLE_POINT_POSITION
         descript = getLanguage().MAP_AR_TOWARDS_NORTH
-        imageSrc = getImage().icon_position_swell
+        imageSrc = getImage().icon_position_single_point
         break
       case 'twoPoint':
         title = getLanguage().TWO_POINT_POSITION
@@ -208,20 +211,20 @@ class LocationCalibration extends React.Component<Props, State> {
         break
 
     }
+    // this.horizontal && { marginTop: dp(14), width: dp(142)}
     return (
-      <View style={[styles.header, this.horizontal && { marginTop: dp(34), width: dp(142)}]}>
+      <View style={[styles.header]}>
         <View style={styles.circle1}>
-          {/* <View style={styles.circle2}>
-            <View style={styles.circle3}>
-
-            </View>
-          </View> */}
           <Image
             style={styles.headerImage}
             source={imageSrc}
           />
         </View>
-        <Text style={styles.headerText1}>
+        <Text style={[styles.headerText1,
+          this.horizontal && {
+            marginTop: dp(3)
+          }
+        ]}>
           {title}
         </Text>
         <Text style={[styles.headerText2, {textAlign: 'center'}]}>
@@ -240,10 +243,19 @@ class LocationCalibration extends React.Component<Props, State> {
       <View style={[styles.confirmButtonContainer,
         !this.horizontal && {
           marginTop: dp(10),
+        },
+        this.horizontal && {
+          width: dp(110),
+          height: dp(35),
+          marginTop: dp(5),
         }
       ]}>
         <Button
-          style={styles.confirmButtom}
+          style={[styles.confirmButtom,
+            this.horizontal && {
+              width: dp(110),
+              height: dp(35),
+            }]}
           title={getLanguage().Common.CONFIRM}
           onPress={this.onConfirm}
         />
@@ -252,31 +264,46 @@ class LocationCalibration extends React.Component<Props, State> {
   }
 
   renderContainer= () => {
-    return this.horizontal ? (
-      <View style={styles.containerStyleL}>
-        {this.renderClose()}
-        <View style={{flex: 1}}>
-          {this.renderSelect()}
-        </View>
-        <View style={{ height: '100%', justifyContent: 'space-between', alignItems: 'center', marginLeft: dp(28)}}>
-          {this.renderHeader()}
-          {this.renderButton()}
-        </View>
-      </View>
-    ): (
-      <View style={styles.containerStyle}>
-        {this.renderClose()}
+    return (
+      <View style={[styles.containerStyle,
+        this.horizontal && {
+        // backgroundColor: '#f00',
+          width: dp(350),
+          height: dp(300),
+          paddingTop: dp(13),
+        }]}>
         {this.renderHeader()}
+        {this.renderClose()}
         {this.renderSelect()}
         {this.renderButton()}
       </View>
     )
+    // return this.horizontal ? (
+    //   <View style={styles.containerStyleL}>
+    //     {this.renderClose()}
+    //     <View style={{flex: 1}}>
+    //       {this.renderSelect()}
+    //     </View>
+    //     <View style={{ height: '100%', justifyContent: 'space-between', alignItems: 'center', marginLeft: dp(28)}}>
+    //       {this.renderHeader()}
+    //       {this.renderButton()}
+    //     </View>
+    //   </View>
+    // ): (
+    //   <View style={styles.containerStyle}>
+    //     {this.renderClose()}
+    //     {this.renderHeader()}
+    //     {this.renderSelect()}
+    //     {this.renderButton()}
+    //   </View>
+    // )
   }
 
   horizontal = true
   render() {
     if (!this.props.visible) return null
-    this.horizontal = this.props.windowSize.height < styles.containerStyle.height
+    // this.horizontal = this.props.windowSize.height < styles.containerStyle.height
+    this.horizontal = this.props.windowSize.height < this.props.windowSize.width
     return (
       <View  style={[StyleSheet.absoluteFill, {elevation: 100}]}>
         <View  style={[StyleSheet.absoluteFill, {backgroundColor: 'black', opacity: 0.7}]} />
@@ -304,11 +331,11 @@ const styles = StyleSheet.create({
   containerStyle: {
     width: dp(335),
     // height: dp(519),
-    height: dp(390),
+    height: dp(355),
     borderRadius: dp(21),
     backgroundColor: AppStyle.Color.WHITE,
     alignItems: 'center',
-    paddingTop: dp(31),
+    paddingTop: dp(15),
     paddingBottom: dp(13),
     paddingHorizontal: dp(21),
   },
@@ -333,8 +360,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: dp(55),
-    borderWidth: dp(1),
-    borderColor: '#E7E7E77F',
+    // borderWidth: dp(1),
+    // borderColor: '#E7E7E77F',
   },
   circle2: {
     width: dp(92),

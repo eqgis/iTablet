@@ -77,6 +77,8 @@ const icon_mobile = require('./icon_mobile.png')
 const icon_position_single_point = require('./icon_position_single_point.png')
 const icon_position_swell = require('./icon_position_swell.png')
 const icon_position_two_point = require('./icon_position_two_point.png')
+const icon_nav_back_white = require('./icon_nav_back_white.png')
+const icon_ar_slide_down = require('./icon_slide_down.png')
 
 
 
@@ -154,4 +156,6 @@ export default {
   icon_position_single_point,
   icon_position_swell,
   icon_position_two_point,
+  icon_nav_back_white,
+  icon_ar_slide_down,
 }

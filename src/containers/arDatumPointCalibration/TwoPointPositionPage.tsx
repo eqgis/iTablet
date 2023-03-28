@@ -27,6 +27,9 @@ interface State {
   y: string
 	/** 定位点1的高程 */
   z: string
+  xClearHiden: boolean
+  yClearHiden: boolean
+  zClearHiden: boolean
 	/** 当前操作的定位点 */
 	curPoint: 'p1' | 'p2'
 	/** 定位点2的经度 */
@@ -35,6 +38,9 @@ interface State {
 	p2y: string
 	/** 定位点2的高程 */
 	p2z: string
+  p2xClearHiden: boolean
+  p2yClearHiden: boolean
+  p2zClearHiden: boolean
 
 	/** AR点1 */
 	anchorARPoint1: Point3D | null
@@ -43,6 +49,8 @@ interface State {
 
   /** 提示是否显示 */
   isTipsShow: boolean
+  /** 当前正在添加的点标识 */
+  curAddPoint: 'p1' | 'p2'
 
 }
 
@@ -59,13 +67,20 @@ class TwoPointPositionPage extends React.Component<Props, State> {
       x: '0',
       y: '0',
       z: '0',
+      xClearHiden: true,
+      yClearHiden: true,
+      zClearHiden: true,
       curPoint: 'p1',
       p2x: '0',
       p2y: '0',
       p2z: '0',
+      p2xClearHiden: true,
+      p2yClearHiden: true,
+      p2zClearHiden: true,
       anchorARPoint1: null,
       anchorARPoint2: null,
       isTipsShow: true,
+      curAddPoint: 'p1',
     }
     this.horizontal = this.props.windowSize.height < this.props.windowSize.width
   }
@@ -89,23 +104,24 @@ class TwoPointPositionPage extends React.Component<Props, State> {
         p2y: position.latitude + '',
       })
     }
-    await SARMap.setAction(ARAction.FOCUS)
+    // await SARMap.setAction(ARAction.FOCUS)
 
     // 提示五秒后消失
-    this.tipTimer = setTimeout(() => {
+    this.tipTimer = setTimeout(async () => {
       this.setState({
         isTipsShow: false,
       })
+      // await SARMap.setAction(ARAction.FOCUS)
       if(this.tipTimer) {
         clearTimeout(this.tipTimer)
         this.tipTimer = null
       }
-    }, 5000)
+    }, 3000)
   }
 
   componentDidUpdate = async (prevProps: Readonly<Props>, prevState: Readonly<State>): Promise<void>  => {
-    if(this.state.showStatus !== prevState.showStatus) {
-      if(this.state.showStatus === "main") {
+    if(this.state.showStatus !== prevState.showStatus || this.state.isTipsShow !== prevState.isTipsShow) {
+      if(this.state.showStatus === "main" && !this.state.isTipsShow) {
         await SARMap.setAction(ARAction.FOCUS)
       } else {
         await SARMap.setAction(ARAction.NULL)
@@ -118,6 +134,8 @@ class TwoPointPositionPage extends React.Component<Props, State> {
     switch(this.state.showStatus) {
       case 'main':
         await SARMap.setAction(ARAction.NULL)
+        // 清除已添加到实景中的所有图片
+        await SARMap.removeAllTrackingMarker()
         this.props.onBack?.()
         break
       case 'coord':
@@ -159,6 +177,8 @@ class TwoPointPositionPage extends React.Component<Props, State> {
           const result =  await SARMap.twoPointPosition(param)
           if(result) {
             await SARMap.setAction(ARAction.NULL)
+            // 清除已添加到实景中的所有图片
+            await SARMap.removeAllTrackingMarker()
             this.props.onSubmit?.()
           }
         } else {
@@ -173,45 +193,103 @@ class TwoPointPositionPage extends React.Component<Props, State> {
     }
   }
 
+  /** 打点按钮的点击响应方法 */
+  addPointBtnAction = async() => {
+    if(this.state.curAddPoint === 'p1') {
+      this.selectAnchorOne()
+    } else {
+      this.selectAnchorTwo()
+    }
+  }
+
   /** 定位点一的点击方法 */
   selectAnchorOne = async () => {
-    if(this.state.anchorARPoint1) {
+    const arPoint1 =  await SARMap.getFocusPosition()
+    const result = await SMap.getCurrentLocation()
+    if(result && arPoint1 && JSON.stringify(arPoint1) !== "{}") {
+      await SARMap.addTrackingMarker("icon_ar_point01.png", arPoint1, 'point1')
       this.setState({
-        anchorARPoint1: null,
+        anchorARPoint1: arPoint1,
+        x: result.longitude + '',
+        y: result.latitude + '',
+        curAddPoint: 'p2',
+        isTipsShow: true,
       })
-    } else {
-      const arPoint1 =  await SARMap.getFocusPosition()
-      const result = await SMap.getCurrentLocation()
-      if(result && arPoint1 && JSON.stringify(arPoint1) !== "{}") {
-        this.setState({
-          anchorARPoint1: arPoint1,
-          x: result.longitude + '',
-          y: result.latitude + '',
-        })
+      if(this.tipTimer) {
+        clearTimeout(this.tipTimer)
+        this.tipTimer = null
       }
+      this.tipTimer = setTimeout(() => {
+        this.setState({
+          isTipsShow: false,
+        })
+        if(this.tipTimer) {
+          clearTimeout(this.tipTimer)
+          this.tipTimer = null
+        }
+      }, 3000)
     }
 
   }
 
   /** 定位点二的点击方法 */
   selectAnchorTwo = async () => {
-    if(this.state.anchorARPoint2) {
-      this.setState({
-        anchorARPoint2: null,
-      })
-    } else {
-      const arPoint2 =  await SARMap.getFocusPosition()
-      const result = await SMap.getCurrentLocation()
+    const arPoint2 =  await SARMap.getFocusPosition()
+    const result = await SMap.getCurrentLocation()
 
-      if(result && arPoint2 && JSON.stringify(arPoint2) !== "{}") {
-        this.setState({
-          anchorARPoint2: arPoint2,
-          p2x: result.longitude + '',
-          p2y: result.latitude + '',
-        })
-      }
+    if(result && arPoint2 && JSON.stringify(arPoint2) !== "{}") {
+      await SARMap.addTrackingMarker("icon_ar_point02.png", arPoint2, 'point2')
+      this.setState({
+        anchorARPoint2: arPoint2,
+        p2x: result.longitude + '',
+        p2y: result.latitude + '',
+      })
     }
 
+  }
+
+  /** 撤销按钮响应方法 */
+  cancelBtnAction = async() => {
+    try {
+      // 当定位点二已经存在了，才撤销定位点二，撤销点二 ，为打点二状态
+      if(this.state.anchorARPoint2 && JSON.stringify(this.state.anchorARPoint2) !== "{}") {
+        await SARMap.removeTrackingMarker("point2")
+        this.setState({
+          anchorARPoint2: null,
+          curAddPoint: 'p2',
+        })
+      }else if(this.state.anchorARPoint1 && JSON.stringify(this.state.anchorARPoint1) !== "{}"){
+        // 当定位点二不存在，定位点一存在时，才撤销定位点一，撤销点一 ，为打点一状态
+        await SARMap.removeTrackingMarker("point1")
+        if(this.state.curAddPoint === 'p2') {
+          if(this.tipTimer) {
+            clearTimeout(this.tipTimer)
+            this.tipTimer = null
+          }
+          this.tipTimer = setTimeout(() => {
+            this.setState({
+              isTipsShow: false,
+            })
+            if(this.tipTimer) {
+              clearTimeout(this.tipTimer)
+              this.tipTimer = null
+            }
+          }, 3000)
+          this.setState({
+            anchorARPoint1: null,
+            curAddPoint: 'p1',
+            isTipsShow: true,
+          })
+        } else {
+          this.setState({
+            anchorARPoint1: null,
+            curAddPoint: 'p1',
+          })
+        }
+      }
+    } catch (error) {
+      console.error("cancelbtn Action error: " + JSON.stringify(error))
+    }
   }
 
   /** 去往坐标参数界面 */
@@ -287,7 +365,7 @@ class TwoPointPositionPage extends React.Component<Props, State> {
   renderBackBtn = () => {
     return (
       <TouchableOpacity style={styles.closeBtn} onPress={this.goBackAction}>
-        <Image source={getImage().back} style={{ width: dp(26), height: dp(26) }} />
+        <Image source={getImage().icon_nav_back_white} style={{ width: dp(30), height: dp(30) }} />
       </TouchableOpacity>
     )
   }
@@ -295,8 +373,31 @@ class TwoPointPositionPage extends React.Component<Props, State> {
   /** 提交按钮 */
   renderSubmitBtn = () => {
     return (
-      <TouchableOpacity style={styles.submitBtn} onPress={this.submitAction}>
-        <Image source={getImage().icon_submit} style={{ width: dp(26), height: dp(26) }} />
+      <TouchableOpacity
+        style={[styles.submitBtn,
+          !this.horizontal && {
+            bottom: dp(35),
+            right: dp(10),
+          },
+          this.horizontal && {
+            top: dp(10),
+            right: dp(20),
+          },
+        ]}
+        onPress={this.submitAction}>
+        <Image source={getThemeAssets().collection.icon_function_ok} style={{ width: dp(35), height: dp(35) }} />
+        <Text
+          style={[{
+            fontSize: dp(12),
+            color: '#fff',
+            textShadowOffset:{
+              width:dp(1),
+              height:dp(1),
+            },
+            textShadowRadius:dp(1),
+            textShadowColor:'#000',
+          }]}
+        >{getLanguage().MAP_AR_AI_CONFIRM}</Text>
       </TouchableOpacity>
     )
   }
@@ -305,8 +406,12 @@ class TwoPointPositionPage extends React.Component<Props, State> {
     image: ImageRequireSource,
     text: string,
     value: string,
+    isHidenClearBtn?: boolean, // true不显示  false显示
+    isHidenBottomLine?: boolean,  // true不显示  false显示
     onChange: (text:string) => void
     onClear: () => void
+    onFocus?: () => void
+    onBlur?: () => void
   }) => {
     return (
       <View style={styles.inputItem}>
@@ -322,13 +427,18 @@ class TwoPointPositionPage extends React.Component<Props, State> {
           {props.text}
         </Text>
         <TextInput
-          style={{
+          style={[{
             flex: 1,
             fontSize: dp(13),
             padding: 0,
+            height: dp(39),
             borderBottomWidth: dp(1),
+            borderBottomColor: 'transparent',
+
+          },
+          !props.isHidenBottomLine && {
             borderBottomColor: '#ECECEC',
-          }}
+          },]}
           keyboardType={'numeric'}
           returnKeyType={'done'}
           defaultValue={props.value}
@@ -339,16 +449,30 @@ class TwoPointPositionPage extends React.Component<Props, State> {
             }
             props.onChange(text)
           }}
+          onFocus={props.onFocus}
+          onBlur={props.onBlur}
         />
-        <TouchableOpacity
-          onPress={props.onClear}
-        >
-          <Image
-            source={getImage().icon_close}
-            style={{...AppStyle.Image_Style_Small, tintColor: AppStyle.Color.GRAY}}
-          />
+        {props.value !== '' && props.value !== "0" && !props.isHidenClearBtn && (
+          <TouchableOpacity
+            onPress={props.onClear}
+            style={[{
+              position: 'absolute',
+              right: 0,
+              top: 0,
+              height: '100%',
+              width: dp(18),
+              justifyContent: 'center',
+              alignItems: 'center',
+            // backgroundColor: '#f00',
+            }]}
+          >
+            <Image
+              source={getImage().icon_close}
+              style={{...AppStyle.Image_Style_Small, tintColor: AppStyle.Color.GRAY}}
+            />
+          </TouchableOpacity>
+        )}
 
-        </TouchableOpacity>
       </View>
     )
   }
@@ -358,74 +482,211 @@ class TwoPointPositionPage extends React.Component<Props, State> {
       <View style={[
         styles.inputContainer]}>
         {this.renderSelectHeaderView()}
-        {/* 定位点一的界面 */}
-        {this.state.curPoint === 'p1' && this.renderInput({
-          image:getThemeAssets().collection.icon_lines,
-          text: '经度:',
-          value: this.state.x,
-          onChange: text => {
-            this.setState({x: text})
-          },
-          onClear: () => {
-            this.setState({x: '0'})
-          }
-        })}
-        {this.state.curPoint === 'p1' && this.renderInput({
-          image:getThemeAssets().collection.icon_latitudes,
-          text: '纬度:',
-          value: this.state.y,
-          onChange: text => {
-            this.setState({y: text})
-          },
-          onClear: () => {
-            this.setState({y: '0'})
-          }
-        })}
-        {this.state.curPoint === 'p1' && this.renderInput({
-          image:getThemeAssets().collection.icon_ar_height,
-          text: '高程:',
-          value: this.state.z,
-          onChange: text => {
-            this.setState({z: text})
-          },
-          onClear: () => {
-            this.setState({z: '0'})
-          }
-        })}
+        <View
+          style={[{
+            flexDirection: 'row',
+          }]}
+        >
+          <View
+            style={[{
+              flex: 1,
+              height: dp(102),
+              backgroundColor: '#f9f9f9',
+              paddingHorizontal: dp(8),
+              borderRadius: dp(16),
 
-        {this.state.curPoint === 'p2' && this.renderInput({
-          image:getThemeAssets().collection.icon_lines,
-          text: '经度:',
-          value: this.state.p2x,
-          onChange: text => {
-            this.setState({p2x: text})
-          },
-          onClear: () => {
-            this.setState({p2x: '0'})
-          }
-        })}
-        {this.state.curPoint === 'p2' && this.renderInput({
-          image:getThemeAssets().collection.icon_latitudes,
-          text: '纬度:',
-          value: this.state.p2y,
-          onChange: text => {
-            this.setState({p2y: text})
-          },
-          onClear: () => {
-            this.setState({p2y: '0'})
-          }
-        })}
-        {this.state.curPoint === 'p2' && this.renderInput({
-          image:getThemeAssets().collection.icon_ar_height,
-          text: '高程:',
-          value: this.state.p2z,
-          onChange: text => {
-            this.setState({p2z: text})
-          },
-          onClear: () => {
-            this.setState({p2z: '0'})
-          }
-        })}
+            }]}
+          >
+            {/* 定位点一的界面 */}
+            {this.state.curPoint === 'p1' && this.renderInput({
+              image:getThemeAssets().collection.icon_lines,
+              text: '经度:',
+              value: this.state.x,
+              onChange: text => {
+                this.setState({x: text})
+              },
+              onClear: () => {
+                this.setState({x: '0'})
+              },
+              isHidenClearBtn: this.state.xClearHiden,
+              onFocus: () => {
+              // 获取焦点 显示
+                this.setState({
+                  xClearHiden: false,
+                })
+              },
+              onBlur: () => {
+              // 失去焦点 隐藏
+                this.setState({
+                  xClearHiden: true,
+                })
+              },
+            })}
+            {this.state.curPoint === 'p1' && this.renderInput({
+              image:getThemeAssets().collection.icon_latitudes,
+              text: '纬度:',
+              value: this.state.y,
+              onChange: text => {
+                this.setState({y: text})
+              },
+              onClear: () => {
+                this.setState({y: '0'})
+              },
+              isHidenClearBtn: this.state.yClearHiden,
+              onFocus: () => {
+                // 获取焦点 显示
+                this.setState({
+                  yClearHiden: false,
+                })
+              },
+              onBlur: () => {
+                // 失去焦点 隐藏
+                this.setState({
+                  yClearHiden: true,
+                })
+              },
+            })}
+            {this.state.curPoint === 'p1' && this.renderInput({
+              image:getThemeAssets().collection.icon_ar_height,
+              text: '高程:',
+              value: this.state.z,
+              isHidenBottomLine: true,
+              onChange: text => {
+                this.setState({z: text})
+              },
+              onClear: () => {
+                this.setState({z: '0'})
+              },
+              isHidenClearBtn: this.state.zClearHiden,
+              onFocus: () => {
+                // 获取焦点 显示
+                this.setState({
+                  zClearHiden: false,
+                })
+              },
+              onBlur: () => {
+                // 失去焦点 隐藏
+                this.setState({
+                  zClearHiden: true,
+                })
+              },
+            })}
+
+            {this.state.curPoint === 'p2' && this.renderInput({
+              image:getThemeAssets().collection.icon_lines,
+              text: '经度:',
+              value: this.state.p2x,
+              onChange: text => {
+                this.setState({p2x: text})
+              },
+              onClear: () => {
+                this.setState({p2x: '0'})
+              },
+              isHidenClearBtn: this.state.p2xClearHiden,
+              onFocus: () => {
+                // 获取焦点 显示
+                this.setState({
+                  p2xClearHiden: false,
+                })
+              },
+              onBlur: () => {
+                // 失去焦点 隐藏
+                this.setState({
+                  p2xClearHiden: true,
+                })
+              },
+            })}
+            {this.state.curPoint === 'p2' && this.renderInput({
+              image:getThemeAssets().collection.icon_latitudes,
+              text: '纬度:',
+              value: this.state.p2y,
+              onChange: text => {
+                this.setState({p2y: text})
+              },
+              onClear: () => {
+                this.setState({p2y: '0'})
+              },
+              isHidenClearBtn: this.state.p2yClearHiden,
+              onFocus: () => {
+                // 获取焦点 显示
+                this.setState({
+                  p2yClearHiden: false,
+                })
+              },
+              onBlur: () => {
+                // 失去焦点 隐藏
+                this.setState({
+                  p2yClearHiden: true,
+                })
+              },
+            })}
+            {this.state.curPoint === 'p2' && this.renderInput({
+              image:getThemeAssets().collection.icon_ar_height,
+              text: '高程:',
+              value: this.state.p2z,
+              isHidenBottomLine: true,
+              onChange: text => {
+                this.setState({p2z: text})
+              },
+              onClear: () => {
+                this.setState({p2z: '0'})
+              },
+              isHidenClearBtn: this.state.p2zClearHiden,
+              onFocus: () => {
+                // 获取焦点 显示
+                this.setState({
+                  p2zClearHiden: false,
+                })
+              },
+              onBlur: () => {
+                // 失去焦点 隐藏
+                this.setState({
+                  p2zClearHiden: true,
+                })
+              },
+            })}
+          </View>
+          <View
+            style={[{
+              width: dp(46),
+              height: dp(102),
+              justifyContent: 'center',
+              alignItems:'center',
+              marginLeft: dp(10),
+            }]}
+          >
+            <TouchableOpacity
+              style={[{
+                width: dp(40),
+                height: dp(80),
+                flexDirection: 'column',
+                backgroundColor: '#505050',
+                borderRadius:dp(23),
+                justifyContent: 'center',
+                alignItems: 'center',
+              }]}
+              onPress={this.submitAction}
+            >
+              <Image
+                source={getImage().icon_ar_slide_down}
+                style={[{
+                  width: dp(18),
+                  height:dp(18),
+                }]}
+              />
+              <Text
+                style={[{
+                  color: '#fff',
+                  marginTop: dp(8),
+                  fontSize: dp(13),
+                }]}
+              >{getLanguage().CONFIRM}</Text>
+            </TouchableOpacity>
+
+
+          </View>
+        </View>
+
       </View>
     )
   }
@@ -467,6 +728,7 @@ class TwoPointPositionPage extends React.Component<Props, State> {
       <View
         style={[{
           marginBottom: dp(5),
+          marginTop: dp(-7),
         },
         styles.selectContainer
         ]}
@@ -553,30 +815,109 @@ class TwoPointPositionPage extends React.Component<Props, State> {
     )
   }
 
+
+  /** 打点按钮 */
+  renderAddButton = () => {
+    return (
+      <TouchableOpacity
+        style={[styles.addButton,
+          !this.horizontal && {
+            bottom: dp(30),
+          },
+          this.horizontal && {
+            alignItems: 'center',
+            right: dp(8),
+            top: this.props.windowSize.height / 2 - dp(70) / 2,          }
+        ]}
+        onPress={this.addPointBtnAction}
+      >
+        <Image
+          style={{width: dp(70), height: dp(70)}}
+          source={getImage().icon_ar_measure_add}
+        />
+      </TouchableOpacity>
+    )
+  }
+
+  /** 撤销按钮 */
+  renderCancelBtn = () => {
+    return (
+      <TouchableOpacity
+        style={[styles.cancelBtn,
+          !this.horizontal && {
+            bottom: dp(35),
+            right: dp(65),
+          },
+          this.horizontal && {
+            top: dp(65),
+            right: dp(20),
+          },
+        ]}
+        onPress={this.cancelBtnAction}
+      >
+        <Image
+          style={{width: dp(35), height: dp(35)}}
+          source={getThemeAssets().collection.icon_function_undo}
+        />
+        <Text
+          style={[{
+            fontSize: dp(12),
+            color: '#fff',
+            textShadowOffset:{
+              width:dp(1),
+              height:dp(1),
+            },
+            textShadowRadius:dp(1),
+            textShadowColor:'#000',
+          }]}
+        >{getLanguage().COLLECTION_UNDO}</Text>
+      </TouchableOpacity>
+    )
+  }
+
+
   /** 去往坐标参数界面的按钮 */
   renderCoordBtn = () => {
     return (
       <TouchableOpacity
         style={[{
           position: 'absolute',
-          bottom: dp(30),
-          right: dp(10),
-          width: dp(75),
-          height: dp(75),
+          width: dp(33),
+          height: dp(33),
           borderRadius: dp(40),
           // backgroundColor: '#fff',
           justifyContent: 'center',
           alignItems: 'center',
-        }]}
+        },
+        !this.horizontal ? {
+          bottom: dp(35),
+          left: dp(10),
+        } : {
+          right: dp(25),
+          bottom: dp(10),
+        },
+        ]}
         onPress={this.gotoCoordpage}
       >
         <Image
           source={getThemeAssets().collection.icon_ar_coord}
           style={[{
-            width: dp(75),
-            height: dp(75),
+            width: dp(35),
+            height: dp(35),
           }]}
         />
+        <Text
+          style={[{
+            fontSize: dp(12),
+            color: '#fff',
+            textShadowOffset:{
+              width:dp(1),
+              height:dp(1),
+            },
+            textShadowRadius:dp(1),
+            textShadowColor:'#000',
+          }]}
+        >{getLanguage().COORD_PARAM}</Text>
       </TouchableOpacity>
     )
   }
@@ -603,31 +944,53 @@ class TwoPointPositionPage extends React.Component<Props, State> {
           style={[{
             width: dp(200),
             height: dp(140),
-            backgroundColor: 'rgba(0,0,0,.5)',
             borderRadius: dp(16),
             justifyContent: 'center',
             alignItems: 'center',
           }]}
         >
-          <Image
-            source={getThemeAssets().collection.icon_tips_select_location_point}
+          <View
             style={[{
-              width: dp(60),
-              height: dp(60),
+              width: dp(66),
+              height: dp(66),
+              backgroundColor: '#232324',
+              borderRadius: dp(33),
+              justifyContent:'center',
+              alignItems:'center',
             }]}
-          />
+          >
+            <Image
+              source={getThemeAssets().collection.icon_tips_select_location_point}
+              style={[{
+                width: dp(60),
+                height: dp(60),
+              }]}
+            />
+          </View>
           <Text
             style={[{
               fontSize: dp(16),
-              color: '#fff',
+              color:"#fff",
+              textShadowOffset:{
+                width:dp(1),
+                height:dp(1),
+              },
+              textShadowRadius:dp(1),
+              textShadowColor:'#000',
             }]}
           >{getLanguage().AIM_REAL_POSITION}</Text>
           <Text
             style={[{
               fontSize: dp(16),
               color: '#fff',
+              textShadowOffset:{
+                width:dp(1),
+                height:dp(1),
+              },
+              textShadowRadius:dp(1),
+              textShadowColor:'#000',
             }]}
-          >{getLanguage().SELECT_POSITION_POINT}</Text>
+          >{this.state.curAddPoint === 'p1' ? getLanguage().SELECT_FIRST_POSITION_POINT : getLanguage().SELECT_SECOND_POSITION_POINT}</Text>
         </View>
 
       </View>
@@ -638,7 +1001,10 @@ class TwoPointPositionPage extends React.Component<Props, State> {
   renderMainView = () => {
     return (
       <View style={[styles.container]}>
-        {this.renderAnchorView()}
+        {/* {this.renderAnchorView()} */}
+        {this.renderAddButton()}
+        {/* {this.state.anchorARPoint1 && JSON.stringify(this.state.anchorARPoint1) !== "{}" && this.renderCancelBtn()} */}
+        {this.renderCancelBtn()}
         {this.renderCoordBtn()}
         {this.renderBackBtn()}
         {this.renderSubmitBtn()}
@@ -686,12 +1052,13 @@ class TwoPointPositionPage extends React.Component<Props, State> {
       <View
         style={[{
           width: '100%',
-          height: dp(30),
+          height: dp(35),
           backgroundColor: '#fff',
           justifyContent: 'flex-start',
           alignItems: 'center',
           flexDirection: 'row',
           borderRadius: dp(16),
+          // paddingHorizontal: dp(5),
         }]}
       >
         <TouchableOpacity
@@ -702,13 +1069,22 @@ class TwoPointPositionPage extends React.Component<Props, State> {
             })
           }}
         >
-          <Text
-            style={[styles.selectHeaderText,
-              this.state.curPoint === 'p1' && {
-                fontWeight: 'bold',
-              }
-            ]}
-          >{"p1"}</Text>
+          <View
+            style={[{
+              width: '100%',
+              height: dp(20),
+              justifyContent: 'flex-start',
+              alignItems:'center',
+            }]}
+          >
+            <Text
+              style={[styles.selectHeaderText,
+                this.state.curPoint === 'p1' && {
+                  fontWeight: 'bold',
+                }
+              ]}
+            >{getLanguage().ANCHOR_POINT_ONE}</Text>
+          </View>
           <View
             style={[{
               marginTop: dp(3),
@@ -730,13 +1106,23 @@ class TwoPointPositionPage extends React.Component<Props, State> {
             })
           }}
         >
-          <Text
-            style={[styles.selectHeaderText,
-              this.state.curPoint === 'p2' && {
-                fontWeight: 'bold',
-              }
-            ]}
-          >{"p2"}</Text>
+          <View
+            style={[{
+              width: '100%',
+              height: dp(20),
+              justifyContent: 'center',
+              alignItems:'center',
+            }]}
+          >
+            <Text
+              style={[styles.selectHeaderText,
+                this.state.curPoint === 'p2' && {
+                  fontWeight: 'bold',
+                }
+              ]}
+            >{getLanguage().ANCHOR_POINT_TWO}</Text>
+          </View>
+
           <View
             style={[{
               marginTop: dp(3),
@@ -757,12 +1143,25 @@ class TwoPointPositionPage extends React.Component<Props, State> {
   /** 坐标参数的内容界面 */
   renderContentView = () => {
     return (
-      <View style={[styles.content]}>
+      <View style={[styles.content,
+        !this.horizontal && {
+          bottom: dp(20),
+          left:0,
+        },
+        this.horizontal && {
+          width: dp(335),
+          height: dp(185),
+          bottom: dp(10),
+          right: dp(10),
+        }]}>
         <View style={[{
           width: '90%',
           height: '100%',
-          backgroundColor: '#ECEDEB',
+          backgroundColor: 'rgba(255,255,255,.9)',
           borderRadius: dp(16),
+        },
+        this.horizontal && {
+          width: '100%',
         }]}>
           {this.renderInputs()}
           {this.renderSelect()}
@@ -776,7 +1175,7 @@ class TwoPointPositionPage extends React.Component<Props, State> {
     return (
       <View style={[styles.container]}>
         {this.renderBackBtn()}
-        {this.renderSubmitBtn()}
+        {/* {this.renderSubmitBtn()} */}
         {this.renderContentView()}
       </View>
     )
@@ -819,9 +1218,9 @@ const styles = StyleSheet.create({
   },
   closeBtn: {
     position: 'absolute',
-    top: dp(30),
+    top: dp(16),
     left: dp(10),
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     width: dp(45),
     height: dp(45),
     justifyContent:'center',
@@ -830,9 +1229,16 @@ const styles = StyleSheet.create({
   },
   submitBtn: {
     position: 'absolute',
-    top: dp(30),
-    right: dp(10),
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
+    width: dp(45),
+    height: dp(45),
+    justifyContent:'center',
+    alignItems: 'center',
+    borderRadius: dp(10),
+  },
+  cancelBtn: {
+    position: 'absolute',
+    // backgroundColor: '#fff',
     width: dp(45),
     height: dp(45),
     justifyContent:'center',
@@ -842,10 +1248,8 @@ const styles = StyleSheet.create({
 
   content: {
     position: 'absolute',
-    bottom: dp(20),
-    left:0,
     width: '100%',
-    height: dp(220),
+    height: dp(185),
     // backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
@@ -855,7 +1259,9 @@ const styles = StyleSheet.create({
     // marginHorizontal: dp(20),
     borderRadius: dp(16),
     backgroundColor: '#fff',
-    paddingHorizontal: dp(10),
+    paddingHorizontal: dp(8),
+    paddingBottom: dp(8),
+    paddingTop: dp(5),
     textShadowOffset:{
       width:dp(2),
       hegith:dp(2),
@@ -864,13 +1270,13 @@ const styles = StyleSheet.create({
     textShadowColor:'#000',
     shadowOffset: {
       width: dp(0),
-      height: dp(0),
+      height: dp(3),
     },
     shadowColor: '#000',
-    shadowRadius: dp(1),
+    shadowRadius: dp(2),
   },
   inputItem: {
-    height: dp(44),
+    height: dp(34),
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
@@ -879,7 +1285,7 @@ const styles = StyleSheet.create({
   },
   selectItem: {
     width: dp(100),
-    height: dp(40),
+    height: dp(30),
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
@@ -924,14 +1330,20 @@ const styles = StyleSheet.create({
   },
 
   selectHeader: {
-    width: dp(28),
-    height: dp(28),
+    width: dp(60),
+    height: dp(30),
     // backgroundColor: '#f00',
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: dp(8),
   },
   selectHeaderText: {
     fontSize: dp(14),
+  },
+  addButton: {
+    // ...AppStyle.FloatStyle,
+    position: 'absolute',
+    alignSelf: 'center',
   },
 
 })

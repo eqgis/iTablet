@@ -26,9 +26,15 @@ interface State {
   y: string
 	/** 高程 */
   z: string
+  xClearHiden: boolean
+  yClearHiden: boolean
+  zClearHiden: boolean
 }
 
 class SinglePointPositionPage extends React.Component<Props, State> {
+
+  horizontal: boolean
+
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -37,7 +43,11 @@ class SinglePointPositionPage extends React.Component<Props, State> {
       x: '0',
       y: '0',
       z: '1.5',
+      xClearHiden: true,
+      yClearHiden: true,
+      zClearHiden: true,
     }
+    this.horizontal = this.props.windowSize.height < this.props.windowSize.width
   }
 
   componentDidMount = async () => {
@@ -96,22 +106,7 @@ class SinglePointPositionPage extends React.Component<Props, State> {
       <TouchableOpacity style={styles.closeBtn} onPress={() => {
         this.props.onBack?.()
       }}>
-        <Image source={getImage().back} style={{ width: dp(26), height: dp(26) }} />
-      </TouchableOpacity>
-    )
-  }
-
-  /** 提交按钮 */
-  renderSubmitBtn = () => {
-    return (
-      <TouchableOpacity style={styles.submitBtn} onPress={() => {
-        this.props.onSubmit?.({
-          x: this.state.x,
-          y: this.state.y,
-          z: this.state.z,
-        })
-      }}>
-        <Image source={getImage().icon_submit} style={{ width: dp(26), height: dp(26) }} />
+        <Image source={getImage().icon_nav_back_white} style={{ width: dp(30), height: dp(30) }} />
       </TouchableOpacity>
     )
   }
@@ -120,8 +115,12 @@ class SinglePointPositionPage extends React.Component<Props, State> {
     image: ImageRequireSource,
     text: string,
     value: string,
+    isHidenClearBtn?: boolean, // true不显示  false显示
+    isHidenBottomLine?: boolean,  // true不显示  false显示
     onChange: (text:string) => void
     onClear: () => void
+    onFocus?: () => void
+    onBlur?: () => void
   }) => {
     return (
       <View style={styles.inputItem}>
@@ -137,13 +136,18 @@ class SinglePointPositionPage extends React.Component<Props, State> {
           {props.text}
         </Text>
         <TextInput
-          style={{
+          style={[{
             flex: 1,
             fontSize: dp(13),
             padding: 0,
+            height: dp(39),
             borderBottomWidth: dp(1),
+            borderBottomColor: 'transparent',
+
+          },
+          !props.isHidenBottomLine && {
             borderBottomColor: '#ECECEC',
-          }}
+          },]}
           keyboardType={'numeric'}
           returnKeyType={'done'}
           defaultValue={props.value}
@@ -154,16 +158,30 @@ class SinglePointPositionPage extends React.Component<Props, State> {
             }
             props.onChange(text)
           }}
+          onFocus={props.onFocus}
+          onBlur={props.onBlur}
         />
-        <TouchableOpacity
-          onPress={props.onClear}
-        >
-          <Image
-            source={getImage().icon_close}
-            style={{...AppStyle.Image_Style_Small, tintColor: AppStyle.Color.GRAY}}
-          />
+        {props.value !== '' && props.value !== "0" && !props.isHidenClearBtn && (
+          <TouchableOpacity
+            onPress={props.onClear}
+            style={[{
+              position: 'absolute',
+              right: 0,
+              top: 0,
+              height: '100%',
+              width: dp(18),
+              justifyContent: 'center',
+              alignItems: 'center',
+            // backgroundColor: '#f00',
+            }]}
+          >
+            <Image
+              source={getImage().icon_close}
+              style={{...AppStyle.Image_Style_Small, tintColor: AppStyle.Color.GRAY}}
+            />
+          </TouchableOpacity>
+        )}
 
-        </TouchableOpacity>
       </View>
     )
   }
@@ -173,41 +191,139 @@ class SinglePointPositionPage extends React.Component<Props, State> {
       <View style={[
         styles.inputContainer,
         {
-          paddingVertical: dp(5),
+          paddingVertical: dp(10),
+          flexDirection: 'row',
         }]}>
-        {this.renderInput({
-          image:getThemeAssets().collection.icon_lines,
-          text: '经度:',
-          value: this.state.x,
-          onChange: text => {
-            this.setState({x: text})
-          },
-          onClear: () => {
-            this.setState({x: '0'})
-          }
-        })}
-        {this.renderInput({
-          image:getThemeAssets().collection.icon_latitudes,
-          text: '纬度:',
-          value: this.state.y,
-          onChange: text => {
-            this.setState({y: text})
-          },
-          onClear: () => {
-            this.setState({y: '0'})
-          }
-        })}
-        {this.renderInput({
-          image:getThemeAssets().collection.icon_ar_height,
-          text: '高程:',
-          value: this.state.z,
-          onChange: text => {
-            this.setState({z: text})
-          },
-          onClear: () => {
-            this.setState({z: '0'})
-          }
-        })}
+        <View
+          style={[{
+            flex: 1,
+            height: dp(120),
+            backgroundColor: '#f9f9f9',
+            paddingHorizontal: dp(8),
+            borderRadius: dp(16),
+
+          }]}
+        >
+          {this.renderInput({
+            image:getThemeAssets().collection.icon_lines,
+            text: '经度:',
+            value: this.state.x,
+            onChange: text => {
+              this.setState({x: text})
+            },
+            onClear: () => {
+              this.setState({x: '0'})
+            },
+            isHidenClearBtn: this.state.xClearHiden,
+            onFocus: () => {
+              // 获取焦点 显示
+              this.setState({
+                xClearHiden: false,
+              })
+            },
+            onBlur: () => {
+              // 失去焦点 隐藏
+              this.setState({
+                xClearHiden: true,
+              })
+            },
+          })}
+          {this.renderInput({
+            image:getThemeAssets().collection.icon_latitudes,
+            text: '纬度:',
+            value: this.state.y,
+            onChange: text => {
+              this.setState({y: text})
+            },
+            onClear: () => {
+              this.setState({y: '0'})
+            },
+            isHidenClearBtn: this.state.yClearHiden,
+            onFocus: () => {
+              // 获取焦点 显示
+              this.setState({
+                yClearHiden: false,
+              })
+            },
+            onBlur: () => {
+              // 失去焦点 隐藏
+              this.setState({
+                yClearHiden: true,
+              })
+            },
+          })}
+          {this.renderInput({
+            image:getThemeAssets().collection.icon_ar_height,
+            text: '高程:',
+            value: this.state.z,
+            isHidenBottomLine: true,
+            onChange: text => {
+              this.setState({z: text})
+            },
+            onClear: () => {
+              this.setState({z: '0'})
+            },
+            isHidenClearBtn: this.state.zClearHiden,
+            onFocus: () => {
+              // 获取焦点 显示
+              this.setState({
+                zClearHiden: false,
+              })
+            },
+            onBlur: () => {
+              // 失去焦点 隐藏
+              this.setState({
+                zClearHiden: true,
+              })
+            },
+          })}
+        </View>
+        <View
+          style={[{
+            width: dp(50),
+            height: dp(120),
+            justifyContent: 'center',
+            alignItems:'center',
+            marginLeft: dp(10),
+          }]}
+        >
+          <TouchableOpacity
+            style={[{
+              width: dp(46),
+              height: dp(90),
+              flexDirection: 'column',
+              backgroundColor: '#505050',
+              borderRadius:dp(23),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }]}
+            onPress={() => {
+              this.props.onSubmit?.({
+                x: this.state.x,
+                y: this.state.y,
+                z: this.state.z,
+              })
+            }}
+          >
+            <Image
+              source={getImage().icon_ar_slide_down}
+              style={[{
+                width: dp(18),
+                height:dp(18),
+              }]}
+            />
+            <Text
+              style={[{
+                color: '#fff',
+                marginTop: dp(8),
+                fontSize: dp(13),
+              }]}
+            >{getLanguage().CONFIRM}</Text>
+          </TouchableOpacity>
+
+
+        </View>
+
       </View>
     )
   }
@@ -289,12 +405,25 @@ class SinglePointPositionPage extends React.Component<Props, State> {
   /** 内容区 */
   renderContentView = () => {
     return (
-      <View style={[styles.content]}>
+      <View style={[styles.content,
+        !this.horizontal && {
+          bottom: dp(20),
+          left:0,
+        },
+        this.horizontal && {
+          width: dp(335),
+          height: dp(185),
+          bottom: dp(10),
+          right: dp(10),
+        }]}>
         <View style={[{
           width: '90%',
           height: '100%',
-          backgroundColor: '#ECEDEB',
+          backgroundColor: 'rgba(255,255,255,.9)',
           borderRadius: dp(16),
+        },
+        this.horizontal && {
+          width: '100%',
         }]}>
           {this.renderInputs()}
           {this.renderSelect()}
@@ -308,7 +437,6 @@ class SinglePointPositionPage extends React.Component<Props, State> {
     return (
       <View style={[styles.container]}>
         {this.renderBackBtn()}
-        {this.renderSubmitBtn()}
         {this.renderContentView()}
       </View>
     )
@@ -340,6 +468,7 @@ class SinglePointPositionPage extends React.Component<Props, State> {
 
 
   render() {
+    this.horizontal = this.props.windowSize.height < this.props.windowSize.width
     const { close, showStatus } = this.state
     let content = null
     switch(showStatus){
@@ -369,20 +498,9 @@ const styles = StyleSheet.create({
   },
   closeBtn: {
     position: 'absolute',
-    top: dp(30),
+    top: dp(16),
     left: dp(10),
-    backgroundColor: '#fff',
-    width: dp(45),
-    height: dp(45),
-    justifyContent:'center',
-    alignItems: 'center',
-    borderRadius: dp(10),
-  },
-  submitBtn: {
-    position: 'absolute',
-    top: dp(30),
-    right: dp(10),
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     width: dp(45),
     height: dp(45),
     justifyContent:'center',
@@ -392,10 +510,8 @@ const styles = StyleSheet.create({
 
   content: {
     position: 'absolute',
-    bottom: dp(20),
-    left:0,
     width: '100%',
-    height: dp(200),
+    height: dp(185),
     // backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
@@ -414,22 +530,22 @@ const styles = StyleSheet.create({
     textShadowColor:'#000',
     shadowOffset: {
       width: dp(0),
-      height: dp(0),
+      height: dp(3),
     },
     shadowColor: '#000',
-    shadowRadius: dp(1),
+    shadowRadius: dp(2),
   },
   inputItem: {
-    height: dp(44),
+    height: dp(40),
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     marginRight: dp(10),
-    // backgroundColor: '#f00',
+    // backgroundColor:"#f00",
   },
   selectItem: {
     width: dp(100),
-    height: dp(40),
+    height: dp(30),
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',

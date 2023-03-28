@@ -2,7 +2,7 @@
 import { SMap, SMediaCollector } from 'imobile_for_reactnative'
 import { FileTools } from '@/native'
 import { ConstPath } from '@/constants'
-import { AppToolBar, LayerUtils, Toast } from '@/utils'
+import { AppEvent, AppToolBar, LayerUtils, Toast } from '@/utils'
 import { getLanguage } from '@/language'
 import { getJson } from '../../assets/data'
 import { uploadFile, MessageInfoType, message, getUserParam, printLog, getUUid } from '../../utils/langchaoServer'
@@ -620,6 +620,8 @@ const uploadDialog = async (id: number, type: uploadType) => {
             phoneNumber: '',
             startTime: -1,
           })
+          AppEvent.emitEvent("langchaoLocation", "")
+          SMap.clearTrackingLayer()
           NavigationService.navigate('HistoricalRecord')
 
           global.SimpleDialog.setVisible(false)
@@ -661,6 +663,8 @@ const uploadDialog = async (id: number, type: uploadType) => {
           phoneNumber: '',
           startTime: -1,
         })
+        AppEvent.emitEvent("langchaoLocation", "")
+        SMap.clearTrackingLayer()
         NavigationService.navigate('HistoricalRecord')
 
         global.SimpleDialog.setVisible(false)

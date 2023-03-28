@@ -270,7 +270,7 @@ async function touchCallback(event) {
       )
       break
     case TouchType.ANIMATION_WAY:
-      SPlot.addAnimationWayPoint(event.screenPoint)
+      // SPlot.addAnimationWayPoint(event.screenPoint)
       break
     case TouchType.MAP_SELECT_POINT: {
       const mapPt = await SMap.pixelToMap({ x: event.screenPoint.x, y: event.screenPoint.y })

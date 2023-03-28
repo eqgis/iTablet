@@ -219,9 +219,9 @@ declare interface Device {
 
 /** 标绘动画数据类型 */
 declare interface AnimationWayData {
-  animationMode: number,
-  startTime: string,
-  durationTime: string,
+  animationType: number,
+  startTime: number,
+  durationTime: number,
   startMode: number,
   wayPoints: Array<Point>,
 }

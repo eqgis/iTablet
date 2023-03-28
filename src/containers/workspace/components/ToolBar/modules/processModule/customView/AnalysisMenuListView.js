@@ -39,9 +39,9 @@ export default class AnalysisMenuListView extends React.Component {
     let tempAnalysData = this.getData(global.language)
     this.state = {
       //   data: props.data,
-      animationMode: -1,
-      startTime: 0 + '',
-      durationTime: 5 + '',
+      animationType: -1,
+      startTime: 0,
+      durationTime: 5,
       startMode: 1,
       data: toolData,
       analysData: tempAnalysData,

@@ -66,7 +66,7 @@ export default class AnimationNodeEditView extends React.Component {
   }
 
   getAnimationGoInfo = async () => {
-    let animationGoInfo = await SPlot.getAnimationGoInfo(this.state.index)
+    let animationGoInfo = (await SPlot.getAnimationInfo())[this.state.index]
     this.setState({
       data: animationGoInfo,
       animationType: animationGoInfo.animationType,
@@ -74,7 +74,7 @@ export default class AnimationNodeEditView extends React.Component {
   }
 
   confirm = async () => {
-    await SPlot.modifyAnimationNode(this.state.index, this.state.data)
+    await SPlot.modifyAnimation(this.state.index, this.state.data)
     this.cb && this.cb()
   }
 
@@ -107,7 +107,7 @@ export default class AnimationNodeEditView extends React.Component {
     if (tempNum < 0) {
       tempNum = 0
     }
-    return tempNum + ''
+    return tempNum
   }
 
   modifyRotateStartAngle = () => {
@@ -158,7 +158,7 @@ export default class AnimationNodeEditView extends React.Component {
     } else if (value == '') {
       value = 0
     }
-    return value + ''
+    return value
   }
 
   //属性动画
@@ -363,7 +363,7 @@ export default class AnimationNodeEditView extends React.Component {
                   // let color='#'+this.state.data.blinkAnimationStartColor.toString(16).slice(1)
                   NavigationService.navigate('ColorPickerPage', {
                     defaultColor: this.rgbToHex(this.state.data.startLineColor),
-                    colorViewType: 'ColorWheel',
+                    // colorViewType: 'ColorWheel',
                     cb: color => {
                       let startLineColor = this.hexToRgb(color)
                       let tempData = this.state.data
@@ -411,7 +411,7 @@ export default class AnimationNodeEditView extends React.Component {
                 onPress={() => {
                   NavigationService.navigate('ColorPickerPage', {
                     defaultColor: this.rgbToHex(this.state.data.endLineColor),
-                    colorViewType: 'ColorWheel',
+                    // colorViewType: 'ColorWheel',
                     cb: color => {
                       let endLineColor = this.hexToRgb(color)
                       let tempData = this.state.data
@@ -646,7 +646,7 @@ export default class AnimationNodeEditView extends React.Component {
                     defaultColor: this.rgbToHex(
                       this.state.data.startSurroundLineColor,
                     ),
-                    colorViewType: 'ColorWheel',
+                    // colorViewType: 'ColorWheel',
                     cb: color => {
                       let startSurroundLineColor = this.hexToRgb(color)
                       let tempData = this.state.data
@@ -696,7 +696,7 @@ export default class AnimationNodeEditView extends React.Component {
                     defaultColor: this.rgbToHex(
                       this.state.data.endSurroundLineColor,
                     ),
-                    colorViewType: 'ColorWheel',
+                    // colorViewType: 'ColorWheel',
                     cb: color => {
                       let endSurroundLineColor = this.hexToRgb(color)
                       let tempData = this.state.data
@@ -1073,7 +1073,7 @@ export default class AnimationNodeEditView extends React.Component {
                     defaultColor: this.rgbToHex(
                       this.state.data.blinkAnimationStartColor,
                     ),
-                    colorViewType: 'ColorWheel',
+                    // colorViewType: 'ColorWheel',
                     cb: color => {
                       let blinkAnimationStartColor = this.hexToRgb(color)
                       let tempData = this.state.data
@@ -1126,7 +1126,7 @@ export default class AnimationNodeEditView extends React.Component {
                     defaultColor: this.rgbToHex(
                       this.state.data.blinkAnimationReplaceColor,
                     ),
-                    colorViewType: 'ColorWheel',
+                    // colorViewType: 'ColorWheel',
                     cb: color => {
                       let blinkAnimationReplaceColor = this.hexToRgb(color)
                       let tempData = this.state.data
@@ -1168,26 +1168,35 @@ export default class AnimationNodeEditView extends React.Component {
   }
 
   rgbToHex = rgb => {
-    if (rgb < 0) {
-      rgb =
-        ((rgb >> 16) & 0xff) * 65536 + ((rgb >> 8) & 0xff) * 256 + (rgb & 0xff)
-    }
-    let str = rgb.toString(16) + ''
-    if (str.length < 6) {
-      for (let i = str.length; i < 6; i++) {
-        str = '0' + str
-      }
-    }
-    return '#' + str
+    // if (rgb < 0) {
+    //   rgb =
+    //     ((rgb >> 16) & 0xff) * 65536 + ((rgb >> 8) & 0xff) * 256 + (rgb & 0xff)
+    // }
+    // let str = rgb.toString(16) + ''
+    // if (str.length < 6) {
+    //   for (let i = str.length; i < 6; i++) {
+    //     str = '0' + str
+    //   }
+    // }
+    // return '#' + str
+    var a = parseFloat(rgb.a || 1),
+      r = Math.floor(a * parseInt(rgb.r) + (1 - a) * 255),
+      g = Math.floor(a * parseInt(rgb.g) + (1 - a) * 255),
+      b = Math.floor(a * parseInt(rgb.b) + (1 - a) * 255)
+    return '#' +
+      ('0' + r.toString(16)).slice(-2) +
+      ('0' + g.toString(16)).slice(-2) +
+      ('0' + b.toString(16)).slice(-2)
   }
 
   hexToRgb = hex => {
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
-    return (
-      parseInt(result[1], 16) * 65536 +
-      parseInt(result[2], 16) * 256 +
-      parseInt(result[3], 16)
-    )
+    // var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+    // return (
+    //   parseInt(result[1], 16) * 65536 +
+    //   parseInt(result[2], 16) * 256 +
+    //   parseInt(result[3], 16)
+    // )
+    return SMap._translate16ToRgb(hex)
   }
 
   //比例动画
@@ -1593,6 +1602,7 @@ export default class AnimationNodeEditView extends React.Component {
               onChangeText={text => {
                 // this.state.data.startTime=Number(text.replace(/[^0-9.]*/g, ''))+''
                 let tempData = this.state.data
+                console.warn(this.clearNoNum(text))
                 tempData.startTime = this.clearNoNum(text)
                 this.setState({
                   data: tempData,

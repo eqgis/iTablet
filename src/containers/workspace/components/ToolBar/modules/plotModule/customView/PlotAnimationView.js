@@ -15,7 +15,7 @@ import { scaleSize, setSpText } from '../../../../../../../utils'
 import { getLanguage } from '../../../../../../../language'
 import { getThemeAssets } from '../../../../../../../assets'
 // import { TextInput } from 'react-native-gesture-handler';
-import { SMap, SPlot } from 'imobile_for_reactnative'
+import { SMap, SPlot,SData } from 'imobile_for_reactnative'
 import { Action,  } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 
 var StartMode = {
@@ -40,15 +40,16 @@ export default class PlotAnimationView extends React.Component {
     saveAndContinue: () => {},
     savePlotAnimationNode: () => {},
     showToolbar: () => {},
+    layerInfo:any,
   }
 
   constructor(props) {
     super(props)
     this.state = {
       //   data: props.data,
-      animationMode: -1,
-      startTime: 0 + '',
-      durationTime: 5 + '',
+      animationType: -1,
+      startTime: 0,
+      durationTime: 5,
       startMode: 1,
       data: [],
       wayPoints: [],
@@ -62,10 +63,19 @@ export default class PlotAnimationView extends React.Component {
   }
 
   getCurrentGeometryType = async () => {
-    let type = await SPlot.getGraphicObjectType(
-      this.props.layerName,
-      this.props.geoId,
+    const recordArry = await SData.queryRecordset(
+      {
+        datasetName: this.props.layerInfo.datasetName,
+        datasourceName: this.props.layerInfo.datasourceAlias
+      },
+      {queryIDs:[this.props.geoId]}
     )
+    const type = recordArry[0].geometry.type
+
+    // let type = await SPlot.getGraphicObjectType(
+    //   this.props.layerName,
+    //   this.props.geoId,
+    // )
     let data = this.getData()
     let subData = []
     switch (type) {
@@ -85,12 +95,12 @@ export default class PlotAnimationView extends React.Component {
         break
     }
 
-    let types = await SPlot.getGeoAnimationTypes(this.props.geoId)
+    let types = await SPlot.getCurrentGeoAnimationArray(this.props.geoId)
 
     if (global.animationWayData) {
       this.setState({
         data: subData,
-        animationMode: global.animationWayData.animationMode,
+        animationType: global.animationWayData.animationType,
         startTime: global.animationWayData.startTime,
         durationTime: global.animationWayData.durationTime,
         startMode: global.animationWayData.startMode,
@@ -109,7 +119,7 @@ export default class PlotAnimationView extends React.Component {
 
   getCreateInfo = () => {
     return {
-      animationMode: this.state.animationMode,
+      animationType: this.state.animationType,
       startTime: parseFloat(this.state.startTime),
       durationTime: parseFloat(this.state.durationTime),
       startMode: this.state.startMode,
@@ -123,38 +133,38 @@ export default class PlotAnimationView extends React.Component {
     data.push({
       name: getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_WAY,
       image: getThemeAssets().plot.plot_animation_grow,
-      animationMode: AnimationMode.WAY,
+      animationType: AnimationMode.WAY,
     })
     data.push({
       name: getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_BLINK,
       image: getThemeAssets().plot.plot_animation_appear,
-      animationMode: AnimationMode.BLINK,
+      animationType: AnimationMode.BLINK,
     })
     data.push({
       name: getLanguage(global.language).Map_Plotting
         .PLOTTING_ANIMATION_ATTRIBUTE,
       image: getThemeAssets().plot.plot_animation_arcs,
-      animationMode: AnimationMode.ATTRIBUTE,
+      animationType: AnimationMode.ATTRIBUTE,
     })
     data.push({
       name: getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_SHOW,
       image: getThemeAssets().plot.plot_animation_shrink,
-      animationMode: AnimationMode.SHOW,
+      animationType: AnimationMode.SHOW,
     })
     data.push({
       name: getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_ROTATE,
       image: getThemeAssets().plot.plot_animation_fade_in,
-      animationMode: AnimationMode.ROTATE,
+      animationType: AnimationMode.ROTATE,
     })
     data.push({
       name: getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_SCALE,
       image: getThemeAssets().plot.plot_animation_fade_out,
-      animationMode: AnimationMode.SCALE,
+      animationType: AnimationMode.SCALE,
     })
     data.push({
       name: getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_GROW,
       image: getThemeAssets().plot.plot_animation_flash,
-      animationMode: AnimationMode.GROW,
+      animationType: AnimationMode.GROW,
     })
     return data
   }
@@ -169,7 +179,7 @@ export default class PlotAnimationView extends React.Component {
       }
     }
     this.setState({
-      animationMode: item.animationMode,
+      animationType: item.animationType,
       data: _data,
     })
   }
@@ -200,7 +210,7 @@ export default class PlotAnimationView extends React.Component {
           alignItems: 'center',
           flexDirection: 'column',
           backgroundColor:
-            item.animationMode === this.state.animationMode
+            item.animationType === this.state.animationType
               ? color.gray3
               : color.bgW,
         }}
@@ -212,9 +222,9 @@ export default class PlotAnimationView extends React.Component {
             style={{
               position: 'absolute',
               backgroundColor: 'red',
-              // height: item.animationMode === 0 ? scaleSize(15) : 0,
+              // height: item.animationType === 0 ? scaleSize(15) : 0,
               height:
-                this.state.types && this.state.types[item.animationMode] > 0
+                this.state.types && this.state.types[item.animationType] > 0
                   ? scaleSize(15)
                   : 0,
               width: scaleSize(15),
@@ -231,7 +241,7 @@ export default class PlotAnimationView extends React.Component {
               }}
             >
               {/* {this.state.wayPoints.length + ''} */}
-              {this.state.types && this.state.types[item.animationMode] + ''}
+              {this.state.types && this.state.types[item.animationType] + ''}
             </Text>
           </View>
           <Image source={item.image} style={styles.tableItemImg} />
@@ -386,13 +396,13 @@ export default class PlotAnimationView extends React.Component {
         {this.renderStartItem(getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_FLLOW_LAST, startFollowLastImg, this.setStratModeFllowLast)}
         {this.renderStartItem(getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_CLICK_START, startImg, this.setStratModePointStart)}
         {this.renderStartItem(getLanguage(global.language).Map_Plotting.PLOTTING_ANIMATION_TOGETHER_LAST, startTogetherImg, this.setStratModeTogetherLast)}
-        {this.state.animationMode != 0 ? null : (
+        {this.state.animationType != 0 ? null : (
           <View style={styles.endlineStyle} />
         )}
-        {this.state.animationMode != 0 ? null : (
+        {this.state.animationType != 0 ? null : (
           <TouchableOpacity
             style={{
-              height: this.state.animationMode === 0 ? scaleSize(80) : 0,
+              height: this.state.animationType === 0 ? scaleSize(80) : 0,
             }}
             onPress={this.createAnimationWay}
           >
@@ -439,9 +449,9 @@ export default class PlotAnimationView extends React.Component {
     // this.scrollView.scrollTo(0,0)
     this.scrollView.scrollTo({ x: 0, y: 0, animated: true })
     // let types=await SMap.getGeoAnimationTypes(this.props.geoId);
-    if (this.state.animationMode != -1 && this.state.types) {
-      this.state.types[this.state.animationMode] =
-        this.state.types[this.state.animationMode] + 1
+    if (this.state.animationType != -1 && this.state.types) {
+      this.state.types[this.state.animationType] =
+        this.state.types[this.state.animationType] + 1
       this.setState({
         types: this.state.types,
         data: this.state.data.concat(),
@@ -451,28 +461,28 @@ export default class PlotAnimationView extends React.Component {
   addDurationTime = () => {
     let time = (Number(this.state.durationTime) * 1000 + 1 * 1000) / 1000
     this.setState({
-      durationTime: time + '',
+      durationTime: time,
     })
   }
   subDurationTime = () => {
     let time = (Number(this.state.durationTime) * 1000 - 1 * 1000) / 1000
     time = time < 0 ? 0 : time
     this.setState({
-      durationTime: time + '',
+      durationTime: time,
     })
   }
   modifyDurationTime = ({ offset }) => {
     let time = this.state.durationTime + offset
     time = time > 0 ? time : this.state.durationTime
     this.setState({
-      durationTime: time + '',
+      durationTime: time,
     })
   }
 
   addStartTime = () => {
     let time = (Number(this.state.startTime) * 1000 + 1 * 1000) / 1000
     this.setState({
-      startTime: time + '',
+      startTime: time,
     })
   }
   subStartTime = () => {
@@ -517,7 +527,7 @@ export default class PlotAnimationView extends React.Component {
 
   cancle = () => {
     // SMap.endAnimationWayPoint(false)
-    SPlot.cancelAnimationWayPoint()
+    // SPlot.cancelAnimationWayPoint()
     global.TouchType = TouchType.NULL
     global.animationWayData && (global.animationWayData = null)
     let height = 0
@@ -531,7 +541,7 @@ export default class PlotAnimationView extends React.Component {
   }
 
   createAnimationWay = () => {
-    if (this.state.animationMode === 0) {
+    if (this.state.animationType === 0) {
       global.animationWayData = this.getCreateInfo()
       this.props.showToolbar(true, ConstToolType.SM_MAP_PLOT_ANIMATION_WAY, {
         containerType: 'table',

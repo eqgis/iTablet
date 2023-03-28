@@ -22,6 +22,7 @@ import { addContact } from "../reduxModels/langchao"
 import { color } from "@/styles"
 import { getTelBook, getUUid, upDateTelBook } from "../utils/langchaoServer"
 import { getData } from "@/Toolbar/modules/arSandTable/Data"
+import { ConstToolType } from "@/constants"
 
 
 interface telBookItemInfoType {
@@ -191,30 +192,24 @@ class ContactsList extends Component<Props, State> {
       // })
       // await collectionModule().actions.createCollector(type, undefined)
 
-      collectionModule().actions.showCollection(type)
+      const cModule = collectionModule()
+      cModule.setModuleData(ConstToolType.SM_MAP_COLLECTION)
+      cModule.actions.showCollection(type)
       const date = new Date()
 
-      collectionModule().actions.setCallInfo({
+      cModule.actions.setCallInfo({
         name: name,
         phoneNumber: telephone,
         startTime: date.getTime(),
       })
 
-      timer = setInterval(async () => {
-        const layer = ToolbarModule.getParams().currentLayer
+      const layer = ToolbarModule.getParams().currentLayer
         if(layer) {
           await SMap.setLayerVisible(layer.path, false)
         }
         await SCollector.startCollect(type)
         const navState = this.props.navigation.getState()
-        // 跳转到MapStack再打电话
-        if (navState.routes[navState.index].name === 'MapStack') {
-          RNImmediatePhoneCall.immediatePhoneCall(telephone)
-          timer && clearInterval(timer)
-        }
-
-      }, 300)
-
+        RNImmediatePhoneCall.immediatePhoneCall(telephone)
 
     } catch (error) {
       timer && clearInterval(timer)

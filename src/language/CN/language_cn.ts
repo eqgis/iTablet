@@ -2913,5 +2913,9 @@ export const language_cn = {
   SITUOLI:"思拓力",
   NO_CONNECTED: "未连接",
   CONNECTED: '已连接',
+  CHINESE_MOBILE: '中国移动',
+  QIANXUN_CORS: '千寻知寸',
+  OTHER_CORSE: "其他",
+  UNKONW: '未知',
 
 }

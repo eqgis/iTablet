@@ -34,10 +34,10 @@ interface State {
 class NtripServerType extends Component<Props, State> {
 
   agreementArray: Array<PositionServerType> = [
-    {label: '其他', value: 'NTRIPV1'},
-    {label: "千寻知寸", value:'qianxun'},
-    {label: "华测", value:'huace'},
-    {label: '中国移动', value: 'China Mobile'},
+    {label: getLanguage().OTHER_CORSE, value: 'NTRIPV1'},
+    {label: getLanguage().QIANXUN_CORS, value:'qianxun'},
+    {label: getLanguage().HUACHE, value:'huace'},
+    {label: getLanguage().CHINESE_MOBILE, value: 'China Mobile'},
   ]
 
   constructor(props: Props) {

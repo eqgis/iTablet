@@ -1,3 +1,4 @@
+import { getLanguage } from "@/language"
 import React, {Component} from "react"
 import { Text, Animated } from 'react-native'
 import styles from './style'
@@ -22,10 +23,13 @@ export default class PositionStateView extends Component<Props> {
       <Animated.View
         style={[
           styles.container,
-          (!this.props.isPointParamShow || this.props.pointStateText == "") && styles.containerHiden
+          !this.props.isPointParamShow && styles.containerHiden
         ]}
       >
-        <Text style={[styles.text]}>{this.props.pointStateText}</Text>
+        <Text style={[styles.text]}>{
+          this.props.pointStateText === "" ? this.props.pointStateText
+            : getLanguage().SLOCATION_STATE_CURRENT + ": "+ getLanguage().UNKONW
+        }</Text>
       </Animated.View>
     )
   }

@@ -2910,4 +2910,8 @@ export const language_en: typeof language_cn = {
   SITUOLI:"situoli", // To be tanslated
   NO_CONNECTED: "Don`t connected", // To be tanslated
   CONNECTED: 'Connected', // To be tanslated
+  CHINESE_MOBILE: 'Chinese mobile', // To be tanslated
+  QIANXUN_CORS: 'Qianxun cors', // To be tanslated
+  OTHER_CORSE: "Other cors", // To be tanslated
+  UNKONW:'Unknow', // To be tanslated
 }

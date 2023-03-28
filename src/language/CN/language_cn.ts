@@ -2911,5 +2911,7 @@ export const language_cn = {
   HUACHE:"华测",
   QIANXUN:"千寻",
   SITUOLI:"思拓力",
+  NO_CONNECTED: "未连接",
+  CONNECTED: '已连接',
 
 }

@@ -2219,6 +2219,12 @@ export const language_fr: typeof language_cn = {
   LOADING_POINT_NAME:"Loading point name", // To be translated
   CHECK_LITE_RTK_DEVICE_IS_CONNECTED:"Pease confirm that the Lite RTK device is connected", // To be translated
 
+  LOCATION_SETTING: 'Location setting', // To be translated
+  DEVICE_TYPE: 'Device type', // To be translated
+  CONNECTION_MODE: "Connection mode", // To be translated
+  PAIRED_BT_DEVICE_LIST:"My devices", // To be translated
+  OTHER_BT_DEVICE_LIST:"Other devices", // To be translated
+
   // 许可
   LICENSE: "License",
   LICENSE_CURRENT: "Licence actuelle",
@@ -2903,5 +2909,7 @@ export const language_fr: typeof language_cn = {
   HUACHE:"huache", // To be tanslated
   QIANXUN:"qianxun", // To be tanslated
   SITUOLI:"situoli", // To be tanslated
+  NO_CONNECTED: "Don`t connected", // To be tanslated
+  CONNECTED: 'Connected', // To be tanslated
 
 }

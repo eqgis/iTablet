@@ -61,22 +61,22 @@ class LocationSetting extends React.Component<Props, State> {
   prevOption: SLocation.LocationConnectionParam
 
   positionAccuracyArray: Array<positionAccuracyItemType> = [
-    {label: "米级", value:1},
-    {label: "亚米级", value:5},
-    {label: "厘米级", value:4},
+    {label: getLanguage().METER_LEVEL, value:1},
+    {label: getLanguage().SUBMETER_LEVEL, value:5},
+    {label: getLanguage().CENTIMETER_LEVEL, value:4},
   ]
 
   positionAccuracyName = {
-    1: "米级",
-    4: "厘米级",
-    5: "亚米级",
+    1: getLanguage().METER_LEVEL,
+    4: getLanguage().CENTIMETER_LEVEL,
+    5: getLanguage().SUBMETER_LEVEL,
   }
 
-  ManufacturerToBrand: {[key: string]:'other' | 'situoli' | 'woncan' | 'mijiaH20'} = {
-    '当前设备': 'other',
-    '华测': 'mijiaH20',
-    '思拓力': 'situoli',
-    '千寻': 'woncan',
+  manufactureName = {
+    'other': getLanguage().LOCAL_DEVICE,
+    'mijiaH20': getLanguage().HUACHE,
+    'woncan': getLanguage().QIANXUN,
+    'situoli': getLanguage().SITUOLI,
   }
 
 
@@ -166,7 +166,7 @@ class LocationSetting extends React.Component<Props, State> {
     let tempDevice: SLocation.LocationConnectionParam | null = null
 
 
-    const brand = this.ManufacturerToBrand[this.props.deviceManufacturer]
+    const brand = this.props.deviceManufacturer
     let gnssTppe: 'gps' | 'rtk' = 'gps'
     switch(this.props.deviceType) {
       case "GPS" :
@@ -179,7 +179,7 @@ class LocationSetting extends React.Component<Props, State> {
 
 
     // 蓝牙打开和选择了准备连接的蓝牙设备
-    if(this.props.isOpenBlutooth && this.props.bluetoohDevice && this.props.deviceManufacturer !== '当前设备') {
+    if(this.props.isOpenBlutooth && this.props.bluetoohDevice && this.props.deviceManufacturer !== 'other') {
       tempDevice = {
         type: 'bluetooth',
         mac: this.props.bluetoohDevice.address,
@@ -335,7 +335,7 @@ class LocationSetting extends React.Component<Props, State> {
       <View style={{ flexDirection: 'column' }}>
         {this.renderRowItem({
           title:getLanguage(global.language).Profile.SETTING_LOCATION_DEVICE,
-          value: this.props.deviceManufacturer,
+          value: this.manufactureName[this.props.deviceManufacturer],
           action: this.gotoLocationDevice,
         })}
         {this.renderItemSeperator()}
@@ -562,7 +562,7 @@ class LocationSetting extends React.Component<Props, State> {
           {/* {this.renderList01()} */}
           {this.renderList()}
           {this.renderSeperator()}
-          {this.props.deviceManufacturer !== '当前设备' && this.renderOtherSetting()}
+          {this.props.deviceManufacturer !== 'other' && this.renderOtherSetting()}
           {this.renderSeperator()}
           {this.renderLocation()}
           {this.renderSeperator()}

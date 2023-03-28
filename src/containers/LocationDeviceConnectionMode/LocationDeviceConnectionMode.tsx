@@ -83,7 +83,7 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
         otherBTDevices: []
       })
 
-      if(this.props.deviceManufacturer === '千寻' && Platform.OS === 'android') {
+      if(this.props.deviceManufacturer === 'woncan' && Platform.OS === 'android') {
         SLocation.scanBluetooth()
         this.setState({
           isSearch: true,
@@ -305,7 +305,7 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
           style={styles.image}
           source={isSelect? radio_on : radio_off}
         /> */}
-        <Text>{isSelect? "已连接": "未连接"}</Text>
+        <Text>{isSelect? getLanguage().CONNECTED: getLanguage().NO_CONNECTED}</Text>
         <Image
           source={getImage().arrow}
           style={[{

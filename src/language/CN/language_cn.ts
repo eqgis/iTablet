@@ -2904,4 +2904,18 @@ export const language_cn = {
   RTK_AUTO_CALIBRATION: "RTK自动校准",
   SHOW_POINT_INFO:"显示定位信息",
   POSITION_ACCURACY:"定位精度",
+  METER_LEVEL:"米级",
+  SUBMETER_LEVEL: '亚米级',
+  CENTIMETER_LEVEL:'厘米级',
+  LOCAL_DEVICE:'当前设备',
+  HUACHE:"华测",
+  QIANXUN:"千寻",
+  SITUOLI:"思拓力",
+  NO_CONNECTED: "未连接",
+  CONNECTED: '已连接',
+  CHINESE_MOBILE: '中国移动',
+  QIANXUN_CORS: '千寻知寸',
+  OTHER_CORSE: "其他",
+  UNKONW: '未知',
+
 }

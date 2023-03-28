@@ -2220,6 +2220,12 @@ export const language_ja: typeof language_cn = {
   LOADING_POINT_NAME:"Loading point name", // To be translated
   CHECK_LITE_RTK_DEVICE_IS_CONNECTED:"Pease confirm that the Lite RTK device is connected", // To be translated
 
+  LOCATION_SETTING: 'Location setting', // To be translated
+  DEVICE_TYPE: 'Device type', // To be translated
+  CONNECTION_MODE: "Connection mode", // To be translated
+  PAIRED_BT_DEVICE_LIST:"My devices", // To be translated
+  OTHER_BT_DEVICE_LIST:"Other devices", // To be translated
+
   // ライセンス
   LICENSE: "ライセンス",
   LICENSE_CURRENT: "現在ライセンス",
@@ -2898,5 +2904,18 @@ export const language_ja: typeof language_cn = {
   RTK_AUTO_CALIBRATION: "RTK auto calibration",  // To be tanslated
   SHOW_POINT_INFO:"Display location infomation",  // To be tanslated
   POSITION_ACCURACY:"Positioning accuracy ",  // To be tanslated
+  METER_LEVEL:"Meter level", // To be tanslated
+  SUBMETER_LEVEL: 'Submeter level', // To be tanslated
+  CENTIMETER_LEVEL:'centermeter level', // To be tanslated
+  LOCAL_DEVICE:'Local device', // To be tanslated
+  HUACHE:"huache", // To be tanslated
+  QIANXUN:"qianxun", // To be tanslated
+  SITUOLI:"situoli", // To be tanslated
+  NO_CONNECTED: "Don`t connected", // To be tanslated
+  CONNECTED: 'Connected', // To be tanslated
+  CHINESE_MOBILE: 'Chinese mobile', // To be tanslated
+  QIANXUN_CORS: 'Qianxun cors', // To be tanslated
+  OTHER_CORSE: "Other cors", // To be tanslated
+  UNKONW:'Unknow', // To be tanslated
 
 }

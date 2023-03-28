@@ -47,10 +47,10 @@ interface State extends EssentialInfo {
 
 class NtripSetting extends Component<Props, State> {
   serverAgreement = {
-    ["NTRIPV1"]: '其他',
-    ["qianxun"]: '千寻知寸',
-    ["huace"]: '华测',
-    ['China Mobile']: '中国移动',
+    ["NTRIPV1"]: getLanguage().OTHER_CORSE,
+    ["qianxun"]: getLanguage().QIANXUN_CORS,
+    ["huace"]: getLanguage().HUACHE,
+    ['China Mobile']: getLanguage().CHINESE_MOBILE,
   }
 
   chinaMobileLoadPoint:Array<NtripMountPoint> = [
@@ -96,7 +96,7 @@ class NtripSetting extends Component<Props, State> {
   componentDidMount = async () => {
     await this.refreshLoadPoint()
     this.getAddressAndPort()
-    if(this.props.deviceManufacturer === '华测') {
+    if(this.props.deviceManufacturer === 'mijiaH20') {
       Toast.show(getLanguage(global.language).Profile.CHECK_DEVICE_SUPPORTS_DIFFERENTIAL_SERVICE)
     }
   }

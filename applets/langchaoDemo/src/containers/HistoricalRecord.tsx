@@ -214,9 +214,10 @@ class HistoricalRecord extends Component<Props, State> {
         true,
       ).then(async () => {
 
-        CallDetail()().action()
+        const callDetail = CallDetail()()
+        callDetail.setModuleData(AppletsToolType.APPLETS_CALL_DETAIL_HOME)
         const type = AppletsToolType.APPLETS_CALL_DETAIL_HOME
-        const { buttons, customView } =CallDetailData.getData(type)
+        const { buttons, customView } = CallDetailData.getData(type)
         ToolbarModule.getParams().showFullMap(true)
         ToolbarModule.getParams().setToolbarVisible(true, type, {
           isFullScreen: false,

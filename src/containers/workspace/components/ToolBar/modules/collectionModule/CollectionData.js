@@ -69,14 +69,17 @@ function getData(type) {
     data.push({
       key: 'start',
       title: getLanguage(global.language).Map_Main_Menu.COLLECTION_START,
-      action: () => SCollector.startGPSCollect(type),
+      action: async () => {
+        await SCollector.setCollectorType(type)
+        await SCollector.startTrack()
+      },
       size: 'large',
       image: getThemeAssets().collection.icon_track_start,
     })
     data.push({
       key: 'stop',
       title: getLanguage(global.language).Map_Main_Menu.COLLECTION_STOP,
-      action: () => SCollector.pauseGPSCollect(type),
+      action: () => SCollector.pauseTrack(),
       size: 'large',
       image: getThemeAssets().collection.icon_track_stop,
     })

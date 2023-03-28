@@ -686,6 +686,12 @@ export default class LayerManager_tolbar extends React.Component {
           type,
           this.state.layerData.name,
         )
+        const params = ToolbarModule.getParams()
+        // 在当前图层采集，重置符号
+        params.setCurrentSymbol?.()
+        // 在当前图层采集，重置模板
+        params.setCurrentTemplateInfo?.()
+
         this.setVisible(false)
         this.props.navigation.navigate('MapView')
       }

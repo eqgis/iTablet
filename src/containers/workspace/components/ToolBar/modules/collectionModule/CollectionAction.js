@@ -153,7 +153,7 @@ function showSymbol() {
 async function createCollector(type, layerName) {
   const _params = ToolbarModule.getParams()
   // 风格
-  const geoStyle = new GeoStyle()
+  let geoStyle = null
   const collectorStyle = new GeoStyle()
   collectorStyle.setPointColor(0, 255, 0)
   // 线颜色
@@ -174,6 +174,7 @@ async function createCollector(type, layerName) {
         _params.symbol.currentSymbol.type.toLowerCase() ===
           'marker'
       ) {
+        geoStyle = new GeoStyle()
         geoStyle.setMarkerStyle(
           _params.symbol.currentSymbol.id,
         )
@@ -193,6 +194,7 @@ async function createCollector(type, layerName) {
         _params.symbol.currentSymbol.type.toLowerCase() ===
           'line'
       ) {
+        geoStyle = new GeoStyle()
         geoStyle.setLineStyle(_params.symbol.currentSymbol.id)
       }
       mType = DatasetType.LINE
@@ -210,6 +212,7 @@ async function createCollector(type, layerName) {
         _params.symbol.currentSymbol.type.toLowerCase() ===
           'fill'
       ) {
+        geoStyle = new GeoStyle()
         geoStyle.setFillStyle(_params.symbol.currentSymbol.id)
       }
       mType = DatasetType.REGION
@@ -221,6 +224,7 @@ async function createCollector(type, layerName) {
   let datasourcePath = ''
   let datasourceName = ''
   let datasetName = ''
+  let layer = null
   if (_params.template.currentTemplateInfo.layerPath) {
     params = {
       layerPath: _params.template.currentTemplateInfo
@@ -272,7 +276,7 @@ async function createCollector(type, layerName) {
   let _datasource = await SData.getDatasourceByAlias(datasourceName)
   if (params?.layerPath) {
     // 判断所选图层是否存在
-    const layer = await SMap.getLayerInfo(params?.layerPath)
+    layer = await SMap.getLayerInfo(params?.layerPath)
     hasDataset = !!layer
     datasourceName = layer.datasourceAlias
     datasetName = layer.datasetName
@@ -286,7 +290,8 @@ async function createCollector(type, layerName) {
     if (createDsResult) {
       // 创建数据集
       hasDataset = await SData.createDataset(datasourceName, datasetName, mType)
-      hasDataset = hasDataset && await SMap.addLayer({datasource: datasourceName, dataset: datasetName}, true)
+      layer = await SMap.addLayer({datasource: datasourceName, dataset: datasetName}, true)
+      hasDataset = hasDataset && layer
     }
   } else {
     const dataset = await SData.getDatasetInfo({
@@ -295,19 +300,23 @@ async function createCollector(type, layerName) {
     })
     if (!dataset) {
       hasDataset = await SData.createDataset(datasourceName, datasetName, mType)
-      hasDataset = hasDataset && await SMap.addLayer({datasource: datasourceName, dataset: datasetName}, true)
+      layer = await SMap.addLayer({datasource: datasourceName, dataset: datasetName}, true)
+      hasDataset = hasDataset && layer
     } else {
       const layers = await SMap.getLayersInfo()
       // 查看数据集是否已经添加到地图上
       let isAddLayer = false
-      for (const layer of layers) {
-        if (layer.datasetName === dataset.datasetName && layer.themeType <= 0) {
+      for (const _layer of layers) {
+        if (_layer.datasetName === dataset.datasetName && _layer.themeType <= 0) {
           isAddLayer = true
+          layer = _layer
+          break
         }
       }
       // 若数据集没有添加到地图上，则添加图层
       if (!isAddLayer) {
-        hasDataset = await SMap.addLayer({datasource: datasourceName, dataset: datasetName}, true)
+        layer = await SMap.addLayer({datasource: datasourceName, dataset: datasetName}, true)
+        hasDataset = !!layer
       } else {
         hasDataset = true
       }
@@ -318,11 +327,11 @@ async function createCollector(type, layerName) {
     return
   }
 
-  const layerInfo = await SCollector.setDataset({
+  const result = await SCollector.setDataset({
     datasourceName,
     datasetName,
   }, geoStyle)
-  if (!layerInfo) return
+  if (!result) return
   // 设置绘制风格
   await SCollector.setStyle(collectorStyle)
   await SCollector.setCollectorType(type)
@@ -332,7 +341,7 @@ async function createCollector(type, layerName) {
     await SLocation.setBackgroundLocationEnable(false)
   }
   ToolbarModule.getParams().getLayers(-1, () => {
-    ToolbarModule.getParams().setCurrentLayer(layerInfo)
+    layer && ToolbarModule.getParams().setCurrentLayer(layer)
   })
 }
 
@@ -384,13 +393,14 @@ async function cancel(type) {
   ) {
     type = -1
   }
-  switch (type) {
-    case SMCollectorType.LINE_GPS_PATH:
-    case SMCollectorType.REGION_GPS_PATH:
-      await SCollector.stopCollect()
-      break
-  }
-  return SCollector.cancel(type)
+  // switch (type) {
+  //   case SMCollectorType.LINE_GPS_PATH:
+  //   case SMCollectorType.REGION_GPS_PATH:
+  //     await SCollector.stopCollect()
+  //     break
+  // }
+  await SCollector.stopCollect()
+  return SCollector.cancel()
 }
 
 function undo(type) {
@@ -400,7 +410,7 @@ function undo(type) {
   ) {
     type = -1
   }
-  return SCollector.undo(type)
+  return SCollector.undo()
 }
 
 function redo(type) {
@@ -410,7 +420,7 @@ function redo(type) {
   ) {
     type = -1
   }
-  return SCollector.redo(type)
+  return SCollector.redo()
 }
 
 async function close(type) {

@@ -103,7 +103,7 @@ class AimPointCollector extends Component<Props, State> {
 
   /** 画点 */
   drawPoint = async (LLPoint: Point2D) => {
-    await SCollector.addGPSPoint(LLPoint)
+    await SCollector.addPoint(LLPoint)
   }
 
   /**

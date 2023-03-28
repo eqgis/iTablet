@@ -38,7 +38,11 @@ export default class AnimationNodeListView extends React.Component {
   }
 
   getAnimationNodeList = async () => {
-    let animationNodeData = await SPlot.getAnimationNodeList()
+    let info = await SPlot.getAnimationInfo()
+    let animationNodeData = []
+    for(let i=0;i<info.length;i++){
+      animationNodeData.push({ index: i, name: info[i].name })
+    }
     let subData = []
     subData.push({ name: '动画', index: 0 })
     subData.push({ name: '动画2', index: 1 })
@@ -101,17 +105,17 @@ export default class AnimationNodeListView extends React.Component {
   }
 
   downMoveItem = async item => {
-    await SPlot.moveAnimationNode(item.index, false)
+    await SPlot.moveAnimation(item.index, false)
     this.getAnimationNodeList()
   }
 
   upMoveItem = async item => {
-    await SPlot.moveAnimationNode(item.index, true)
+    await SPlot.moveAnimation(item.index, true)
     this.getAnimationNodeList()
   }
 
   deleteAnimationNode = async item => {
-    SPlot.deleteAnimationNode(item.name)
+    SPlot.deleteAnimation(item.name)
     this.getAnimationNodeList()
   }
 

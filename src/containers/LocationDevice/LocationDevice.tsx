@@ -7,7 +7,7 @@ import Container from '../../components/Container'
 import { dp, scaleSize} from '../../utils'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
-import { DeviceManufacturer } from '@/redux/models/location'
+import { DeviceManufacturer, DeviceType } from '@/redux/models/location'
 import styles from "./styles"
 import { MainStackScreenNavigationProps } from "@/types"
 
@@ -24,6 +24,7 @@ interface Props {
 	navigation: MainStackScreenNavigationProps<'LocationDevice'>,
 	deviceManufacturer: DeviceManufacturer,
 	setDeviceManufacturer: (manufacturer: DeviceManufacturer) => void
+  setDeviceType: (devicetype: DeviceType) => void
 }
 
 interface State {
@@ -64,6 +65,11 @@ class LocationDevice extends Component<Props, State> {
 
   changeDeviceManufacturer = () => {
     this.props?.setDeviceManufacturer(this.state.curDeviceManufacturer)
+    if(this.state.curDeviceManufacturer !== 'other') {
+      this.props?.setDeviceType("RTK")
+    } else {
+      this.props?.setDeviceType("GPS")
+    }
     NavigationService.goBack()
   }
 

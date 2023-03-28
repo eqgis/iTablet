@@ -55,6 +55,16 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
     }
   }
 
+  componentDidUpdate(prevProps: Readonly<Props>): void {
+    if(this.props.isOpenBlutooth !== prevProps.isOpenBlutooth) {
+      if(this.props.isOpenBlutooth) {
+        this.bluetoothStateOpen()
+      } else {
+        this.bluetoothStateClose()
+      }
+    }
+  }
+
   getDevice = async() => {
     try {
       Platform.OS === 'android' && this.addBtnScanlistner()
@@ -124,6 +134,36 @@ class LocationDeviceConnectionMode extends Component<Props, State> {
     if(!this.state.isOpenBlutooth) {
       this.props?.setDeviceConnectionMode(this.state.isOpenBlutooth)
       NavigationService.goBack()
+    }
+  }
+
+  bluetoothStateOpen = () => {
+    this.getDevice()
+    this.setState({
+      isOpenBlutooth: true,
+      isSearch: true,
+    })
+    this.timer = setTimeout(() => {
+      if(this.timer) {
+        SLocation.setBTScanListner()
+        this.setState({
+          isSearch: false,
+        })
+        clearTimeout(this.timer)
+      }
+    }, 10000)
+  }
+
+  bluetoothStateClose = () => {
+    this.setState({
+      isOpenBlutooth: false,
+      pairedBTDevices: [],
+      otherBTDevices: [],
+      isSearch: false,
+    })
+    if(this.timer) {
+      SLocation.setBTScanListner()
+      clearTimeout(this.timer)
     }
   }
 

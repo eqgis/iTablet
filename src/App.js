@@ -337,6 +337,8 @@ class AppRoot extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.back)
     SLocation.removeChangeDeviceSuccessListener()
+    // 移除蓝牙状态变化监听
+    SLocation.setBluetoothStateListener()
     // NetInfo.removeEventListener('connectionChange', this.handleNetworkState)
   }
 
@@ -439,10 +441,23 @@ class AppRoot extends Component {
   }
 
   initBluetooth = async () => {
+    // 进入app，同步到系统的蓝牙状态
     if(Platform.OS === 'android') {
       const isOpen = await SLocation.bluetoothIsOpen()
       this.props.setDeviceConnectionMode(isOpen)
     }
+
+    // 监听蓝牙状态变化
+    SLocation.setBluetoothStateListener((bluetoothState: SLocation.bluetoothStateType) => {
+      switch(bluetoothState){
+        case 1:
+          this.props.setDeviceConnectionMode(true)
+          break
+        case 2:
+          this.props.setDeviceConnectionMode(false)
+          break
+      }
+    })
   }
 
   init = async (hasPermission) => {

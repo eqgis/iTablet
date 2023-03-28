@@ -226,6 +226,33 @@ function openTemplateList() {
 //   }
 // }
 
+async function importDefaultLib(mapName: string) {
+  try {
+    const params = ToolbarModule.getParams()
+    const userPath = `${ConstPath.UserPath +
+      (params.user.currentUser.userName || 'Customer')}/`
+    const fillLibPath = await FileTools.appendingHomeDirectory(
+      `${userPath +
+        ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.bru`,
+    )
+    const lineLibPath = await FileTools.appendingHomeDirectory(
+      `${userPath +
+        ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.lsl`,
+    )
+    const markerLibPath = await FileTools.appendingHomeDirectory(
+      `${userPath +
+        ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.sym`,
+    )
+    await SData.clearSymbolLibrary() // 清空符号库
+    await SData.importSymbolLibrary(mapName, fillLibPath) // 导入面符号库
+    await SData.importSymbolLibrary(mapName, lineLibPath) // 导入线符号库
+    await SData.importSymbolLibrary(mapName, markerLibPath) // 导入点符号库
+    return true
+  } catch (e) {
+    return false
+  }
+}
+
 /** 新建 * */
 async function create() {
   // 不是从xml加载地图
@@ -271,23 +298,7 @@ async function create() {
         // 移除多媒体采集Callout
         SMediaCollector.removeMedias()
         await params.closeMap()
-        const userPath = `${ConstPath.UserPath +
-          (params.user.currentUser.userName || 'Customer')}/`
-        const fillLibPath = await FileTools.appendingHomeDirectory(
-          `${userPath +
-            ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.bru`,
-        )
-        const lineLibPath = await FileTools.appendingHomeDirectory(
-          `${userPath +
-            ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.lsl`,
-        )
-        const markerLibPath = await FileTools.appendingHomeDirectory(
-          `${userPath +
-            ConstPath.RelativeFilePath.DefaultWorkspaceDir}Workspace.sym`,
-        )
-        await SData.importSymbolLibrary(value, fillLibPath) // 导入面符号库
-        await SData.importSymbolLibrary(value, lineLibPath) // 导入线符号库
-        await SData.importSymbolLibrary(value, markerLibPath) // 导入点符号库
+        await importDefaultLib(value)
         // await params.setCurrentMap()
         // await SMap.removeAllLayer() // 移除所有图层
 
@@ -738,6 +749,7 @@ async function headerAction(type, section = {}) {
           params.setCurrentTemplateInfo() // 清空当前模板
           params.setCurrentPlotInfo() // 清空模板
           params.setTemplate() // 清空模板
+          await importDefaultLib(value)
 
           // 重新打开工作空间，防止Resource被删除或破坏
           const customerPath =

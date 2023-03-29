@@ -22,7 +22,7 @@ import PropTypes from 'prop-types'
 import { setNav } from './redux/models/nav'
 import { setUser, setUsers, deleteUser, setExpireDate } from './redux/models/user'
 import { setAgreeToProtocol, setLanguage, setMapSetting } from './redux/models/setting'
-import { setPointStateText, setDeviceConnectionMode } from './redux/models/location'
+import { setPointStateText, setDeviceConnectionMode, setPositionGGA } from './redux/models/location'
 import {
   setEditLayer,
   setSelection,
@@ -211,6 +211,7 @@ class AppRoot extends Component {
     loadAddedModule: PropTypes.func,
     setPointStateText: PropTypes.func,
     setDeviceConnectionMode: PropTypes.func,
+    setPositionGGA: PropTypes.func,
   }
 
   /** 是否是华为设备 */
@@ -504,49 +505,57 @@ class AppRoot extends Component {
 
   initLocation = async () => {
     await SLocation.openGPS()
-    SLocation.addSlocationStateListener((type) => {
-      let text = ''
-      switch (type) {
-        case 0:
-          text = "Invalid"
-          break
-        case 1:
-          text = "GPS"
-          break
-        case 2:
-          text = "DGPS"
-          break
-        case 3:
-          text = "PPS"
-          break
-        case 4:
-          text = "RTK"
-          break
-        case 5:
-          text = "FloatRTK"
-          break
-        case 6:
-          text = "Estimated"
-          break
-        case 7:
-          text = "Manual"
-          break
-        case 8:
-          text = "Simulation"
-          break
-        case 9:
-          text = "WAAS"
-          break
-        default:
-          text = 'No data'
-          break
-      }
-      // Toast.show(getLanguage().SLOCATION_STATE_CURRENT + ":( " + type + " )")
-      if(type === RTKFixType.invalid || type === -1) {
-        text = getLanguage().WEAK_POSITIONING_SIGNAL
-      }
-      this.props.setPointStateText(getLanguage().SLOCATION_STATE_CURRENT + ": "+ text)
+    // SLocation.addSlocationStateListener((type) => {
+    //   let text = ''
+    //   switch (type) {
+    //     case 0:
+    //       text = "Invalid"
+    //       break
+    //     case 1:
+    //       text = "GPS"
+    //       break
+    //     case 2:
+    //       text = "DGPS"
+    //       break
+    //     case 3:
+    //       text = "PPS"
+    //       break
+    //     case 4:
+    //       text = "RTK"
+    //       break
+    //     case 5:
+    //       text = "FloatRTK"
+    //       break
+    //     case 6:
+    //       text = "Estimated"
+    //       break
+    //     case 7:
+    //       text = "Manual"
+    //       break
+    //     case 8:
+    //       text = "Simulation"
+    //       break
+    //     case 9:
+    //       text = "WAAS"
+    //       break
+    //     default:
+    //       text = 'No data'
+    //       break
+    //   }
+    //   // Toast.show(getLanguage().SLOCATION_STATE_CURRENT + ":( " + type + " )")
+    //   if(type === RTKFixType.invalid || type === -1) {
+    //     text = getLanguage().UNKONW
+    //   }
+    //   // console.warn("state text: " + JSON.stringify(text))
+    //   // this.props.setPointStateText(getLanguage().SLOCATION_STATE_CURRENT + ": "+ text)
+    //   this.props.setPointStateText(text)
 
+    // })
+
+    // 差分信息
+    SLocation.setNMEAGGAListener((gga: SLocation.GGA) =>{
+      // console.warn("gga: " + JSON.stringify(gga))
+      gga && this.props?.setPositionGGA(gga)
     })
   }
 
@@ -1557,6 +1566,7 @@ const AppRootWithRedux = connect(mapStateToProps, {
   loadAddedModule,
   setPointStateText,
   setDeviceConnectionMode,
+  setPositionGGA,
 })(AppRoot)
 
 const App = () =>

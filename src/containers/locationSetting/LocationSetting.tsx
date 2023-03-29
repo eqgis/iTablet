@@ -344,7 +344,6 @@ class LocationSetting extends React.Component<Props, State> {
           value: this.props.deviceType,
           action: this.gotoChangeDeviceTypePage,
         })}
-
       </View>
     )
   }
@@ -430,7 +429,7 @@ class LocationSetting extends React.Component<Props, State> {
           title:getLanguage(global.language).Profile.NTRIP_SETTING,
           action: this.gotoNtripSettingPage,
         })}
-        
+
 
         {/* <TouchableOpacity
           style={styles.itemView}
@@ -565,6 +564,15 @@ class LocationSetting extends React.Component<Props, State> {
           {this.props.deviceManufacturer !== 'other' && this.renderOtherSetting()}
           {this.renderSeperator()}
           {this.renderLocation()}
+          {this.renderSeperator()}
+
+          {this.renderRowItem({
+            title:getLanguage(global.language).Profile.LOCATION_INFORMATION,
+            // value: this.props.deviceType,
+            action: () => {
+              NavigationService.navigate('LocationInformation')
+            },
+          })}
           {this.renderSeperator()}
           {/* {this.props.peripheralDevice.type === 'bluetooth' && this.renderOtherSetting()} */}
           {/* {this.state.showSearch && this.renderSearch()} */}

@@ -204,6 +204,7 @@ import LocationDeviceConnectionMode from './LocationDeviceConnectionMode'
 import LocationAccuracy from './LocationAccuracy'
 import NtripServerType from './NtripServerType'
 import LocationLoadPoint from './LocationLoadPoint'
+import LocationInformation from './LocationInformation'
 
 const Stack = createNativeStackNavigator()
 
@@ -465,6 +466,7 @@ export default function(params: StackNavigatorProps) {
       <Stack.Screen name="LocationAccuracy" component={LocationAccuracy} options={modalOption(params)} />
       <Stack.Screen name="NtripServerType" component={NtripServerType} options={modalOption(params)} />
       <Stack.Screen name="LocationLoadPoint" component={LocationLoadPoint} options={modalOption(params)} />
+      <Stack.Screen name="LocationInformation" component={LocationInformation} options={modalOption(params)} />
       {
         params?.otherNavigators
       }

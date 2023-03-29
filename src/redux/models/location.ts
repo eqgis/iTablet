@@ -1,7 +1,7 @@
 import { fromJS } from "immutable"
 import { handleActions } from 'redux-actions'
 import { REHYDRATE } from 'redux-persist'
-import { NtripMountPoint, PositionAccuracyType } from "imobile_for_reactnative/NativeModule/interfaces/SLocation"
+import { GGA, NtripMountPoint, PositionAccuracyType } from "imobile_for_reactnative/NativeModule/interfaces/SLocation"
 import { SLocation } from "imobile_for_reactnative"
 
 
@@ -36,6 +36,7 @@ const SET_POSITION_DEVICE_CONNECTION_MODE = "SET_POSITION_DEVICE_CONNECTION_MODE
 const SET_BLUETOOTH_DEVIC_INFO = "SET_BLUETOOTH_DEVIC_INFO"
 const SET_POSITION_SERVER_TYPE = "SET_POSITION_SERVER_TYPE"
 const SET_POSITION_AGREEMENT_TYPE = "SET_POSITION_AGREEMENT_TYPE"
+const SET_POSITION_GGA = "SET_POSITION_GGA"
 
 
 // Actions Type
@@ -92,6 +93,10 @@ export interface PositionAgreementTypeAction {
   payload: string
 }
 
+export interface PositionGGAAction {
+  type: typeof SET_POSITION_GGA
+  payload:  GGA
+}
 
 // Actions
 // --------------------------------------------------
@@ -245,6 +250,22 @@ export const setPositionAgreementType = (
   }
 }
 
+/** 设置蓝牙设备定位的协议类型 */
+export const setPositionGGA = (
+  gga: GGA
+) => async (
+  dispatch: (arg0: PositionGGAAction) => void
+) => {
+  try {
+    await dispatch({
+      type: SET_POSITION_GGA,
+      payload: gga,
+    })
+  } catch (error) {
+    console.error("setPositionGGA error: " + JSON.stringify(error))
+  }
+}
+
 // 初始值
 // --------------------------------------------------
 const initialState = fromJS({
@@ -271,6 +292,8 @@ const initialState = fromJS({
   positionServerType: 'NTRIPV1',
   /** 协议类型 */
   positionAgreementType: 'Ntripv1',
+  /** 差分参数 */
+  gga:null,
 })
 
 
@@ -309,6 +332,9 @@ export default handleActions(
     },
     [`${SET_POSITION_AGREEMENT_TYPE}`]: (state: any, { payload }) => {
       return state.setIn(['positionAgreementType'], fromJS(payload))
+    },
+    [`${SET_POSITION_GGA}`]: (state: any, { payload }) => {
+      return state.setIn(['gga'], fromJS(payload))
     },
 
     [REHYDRATE]: (state, { payload }) => {

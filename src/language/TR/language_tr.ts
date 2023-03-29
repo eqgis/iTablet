@@ -2914,5 +2914,11 @@ export const language_tr: typeof language_cn = {
   QIANXUN_CORS: 'Qianxun cors', // To be tanslated
   OTHER_CORSE: "Other cors", // To be tanslated
   UNKONW:'Unknow', // To be tanslated
+  LOCATION_INFORMATION: 'Location Infomation', // To be tanslated
+  NTRIP_DATA_ORIGIN: 'Ntrip data origin', // To be tanslated
+  SAT_NUMBER: 'Satellite number', // To be tanslated
+  SAT_LIST:"Satellite list", // To be tanslated
+  NTRIP_TIMEOUT:"Ntrip delay", // To be tanslated
+  ELLIPSOID_HEIGHT: "Ellipsoid height", // To be tanslated
 
 }

@@ -1,5 +1,5 @@
 import { STheme, SMap, SData } from 'imobile_for_reactnative'
-import { ThemeType ,ThemeGraphItem} from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
+import { ThemeType ,ThemeGraphItem,ThemeGraphType} from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
 import {
   ConstToolType,
   ToolbarType,
@@ -1254,10 +1254,65 @@ async function commit(type) {
       expressions.push({expression:item.expression})
     }
     const datasetInfo = { datasourceName: _data.themeDatasourceAlias, datasetName: _data.themeDatasetName }
+    let type
+    switch (themeCreateType){
+      case "面积图":{
+        type = ThemeGraphType.AREA
+        break
+      }
+      case "阶梯图":{
+        type = ThemeGraphType.STEP
+        break
+      }
+      case "折线图":{
+        type = ThemeGraphType.LINE
+        break
+      }
+      case "散点图":{
+        type = ThemeGraphType.POINT
+        break
+      }
+      case "柱状图":{
+        type = ThemeGraphType.BAR
+        break
+      }
+      case "三维柱状图":{
+        type = ThemeGraphType.BAR3D
+        break
+      }
+      case "饼状图":{
+        type = ThemeGraphType.PIE
+        break
+      }
+      case "三维饼状图":{
+        type = ThemeGraphType.PIE3D
+        break
+      }
+      case "玫瑰图":{
+        type = ThemeGraphType.ROSE
+        break
+      }
+      case "三维玫瑰图":{
+        type = ThemeGraphType.ROSE3D
+        break
+      }
+      case "堆叠图":{
+        type = ThemeGraphType.STACK_BAR
+        break
+      }
+      case "三维堆叠图":{
+        type = ThemeGraphType.STACK_BAR3D
+        break
+      }
+      case "环状图":{
+        type = ThemeGraphType.RING
+        break
+      }
+    }
     // 数据集->创建统计专题图
     const params = {
       items: expressions,
-      graphType: themeCreateType,
+      graphType: type,
     }
     const layer = await STheme.createThemeGraphLayer(datasetInfo,params)
     if (layer) {
@@ -1282,10 +1337,65 @@ async function commit(type) {
       expressions.push({expression:item.expression})
     }
     const datasetInfo = { datasourceName: _data.themeDatasourceAlias, datasetName: _data.themeDatasetName }
+    let type
+    switch (themeCreateType){
+      case "面积图":{
+        type = ThemeGraphType.AREA
+        break
+      }
+      case "阶梯图":{
+        type = ThemeGraphType.STEP
+        break
+      }
+      case "折线图":{
+        type = ThemeGraphType.LINE
+        break
+      }
+      case "散点图":{
+        type = ThemeGraphType.POINT
+        break
+      }
+      case "柱状图":{
+        type = ThemeGraphType.BAR
+        break
+      }
+      case "三维柱状图":{
+        type = ThemeGraphType.BAR3D
+        break
+      }
+      case "饼状图":{
+        type = ThemeGraphType.PIE
+        break
+      }
+      case "三维饼状图":{
+        type = ThemeGraphType.PIE3D
+        break
+      }
+      case "玫瑰图":{
+        type = ThemeGraphType.ROSE
+        break
+      }
+      case "三维玫瑰图":{
+        type = ThemeGraphType.ROSE3D
+        break
+      }
+      case "堆叠图":{
+        type = ThemeGraphType.STACK_BAR
+        break
+      }
+      case "三维堆叠图":{
+        type = ThemeGraphType.STACK_BAR3D
+        break
+      }
+      case "环状图":{
+        type = ThemeGraphType.RING
+        break
+      }
+    }
     // 图层->创建统计专题图
     const params = {
       items: expressions,
-      graphType: themeCreateType,
+      graphType: type,
     }
     const layer = await STheme.createThemeGraphLayer(datasetInfo,params)
     if (layer) {

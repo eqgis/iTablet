@@ -15,7 +15,7 @@ import ThemeData from './ThemeData'
 import ThemeAction from './ThemeAction'
 import NavigationService from '../../../../../NavigationService'
 import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
-import { RangeMode, ThemeLabel, ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
+import { RangeMode, ThemeLabel, ThemeType ,ThemeRangeLabel,ThemeGraduated,GraduatedMode} from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
 /**
  *
  * @param type
@@ -2478,6 +2478,7 @@ function getGridUniqueColorScheme() {
 function setThemeGraphType() {
   const _params = ToolbarModule.getData().themeParams
   const layerName = ToolbarModule.getParams().currentLayer.name
+  console.warn(_params)
   return STheme.modifyThemeGraphLayer(layerName||"",_params)
 }
 
@@ -2608,6 +2609,17 @@ function getThemeGraphType() {
 function setThemeGraphGraduatedMode() {
   const _params = ToolbarModule.getData().themeParams
   const layerName = ToolbarModule.getParams().currentLayer.name
+  switch(_params.GraduatedMode){
+    case "CONSTANT":
+      _params.GraduatedMode = GraduatedMode.CONSTANT
+      break
+    case "SQUAREROOT":
+      _params.GraduatedMode = GraduatedMode.SQUAREROOT
+      break
+    case "LOGARITHM":
+      _params.GraduatedMode = GraduatedMode.LOGARITHM
+      break
+  }
   return STheme.modifyThemeGraphLayer(layerName||"",_params)
 }
 
@@ -3019,7 +3031,7 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       // 点密度专题图
       paramsTheme = {
         expression: item.expression,
-        value: '20',
+        value: 20,
       }
       await STheme.createThemeDotDensityLayer(datasetInfo,paramsTheme).then(
         layer => {
@@ -3033,23 +3045,22 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       //   errorInfo = err.message
       // })
       break
-    case constants.THEME_GRADUATED_SYMBOL:
+    case constants.THEME_GRADUATED_SYMBOL:{
       // 等级符号专题图
-      paramsTheme = {
-        DatasourceAlias: ToolbarParams.themeDatasourceAlias,
-        DatasetName: ToolbarParams.themeDatasetName,
-        GraSymbolExpression: item.expression,
-        GraduatedMode: 'LOGARITHM',
+      const params:ThemeGraduated = {
+        expression: item.expression||"",
+        GraduatedMode: GraduatedMode.LOGARITHM,
         // SymbolSize: '30',
       }
-      await STheme.createGraduatedSymbolThemeMap(paramsTheme).then(
-        msg => {
-          isSuccess = msg.result
-          if (isSuccess && msg.layer) {
-            ThemeAction.sendAddThemeMsg(msg.layer)
+      await STheme.createThemeGraduatedSymbolLayer(datasetInfo,params).then(
+        layer => {
+          if (layer) {
+            isSuccess = true
+            ThemeAction.sendAddThemeMsg(layer)
           }
         },
       )
+    }
       // .catch(err => {
       //   errorInfo = err.message
       // })
@@ -3180,7 +3191,7 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
       // 点密度专题图
       paramsTheme = {
         expression: item.expression,
-        value: '20',
+        value: 20,
       }
       await STheme.createThemeDotDensityLayer(datasetInfo,paramsTheme).then(
         layer => {
@@ -3194,23 +3205,21 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
       //   errorInfo = err.message
       // })
       break
-    case constants.THEME_GRADUATED_SYMBOL:
-      // 等级符号专题图
-      paramsTheme = {
-        DatasourceAlias: item.datasourceName,
-        DatasetName: item.datasetName,
-        GraSymbolExpression: item.expression,
-        GraduatedMode: 'LOGARITHM',
+    case constants.THEME_GRADUATED_SYMBOL:{
+      const params:ThemeGraduated = {
+        expression: item.expression||"",
+        GraduatedMode: GraduatedMode.LOGARITHM,
         // SymbolSize: '30',
       }
-      await STheme.createGraduatedSymbolThemeMap(paramsTheme).then(
-        msg => {
-          isSuccess = msg.result
-          if (isSuccess && msg.layer) {
-            ThemeAction.sendAddThemeMsg(msg.layer)
+      await STheme.createThemeGraduatedSymbolLayer(datasetInfo,params).then(
+        layer => {
+          if (layer) {
+            isSuccess = true
+            ThemeAction.sendAddThemeMsg(layer)
           }
         },
       )
+    }
       // .catch(err => {
       //   errorInfo = err.message
       // })

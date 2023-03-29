@@ -24,6 +24,7 @@ import { getPublicAssets, getThemeAssets } from '../../../assets'
 import TabBar from '../TabBar'
 import FindItem from './FindItem'
 import CoworkFileHandle from './CoworkManagePage/CoworkFileHandle'
+import { requestAllPermission } from '@/utils/PermissionAndroidUtils'
 
 var SUPERMAPKNOWN_UPDATE_TIME = 'SUPERMAPKNOWN_UPDATE_TIME'
 var SUPERMAPGROUP_UPDATE_TIME = 'SUPERMAPGROUP_UPDATE_TIME'
@@ -61,6 +62,8 @@ export default class Find extends Component {
   }
 
   componentDidMount() {
+    //申请权限
+    requestAllPermission()
     this._getSuperMapGroupData()
     this._getSuperMapKnownData()
     CoworkFileHandle.initCoworkList(this.props.user.currentUser)

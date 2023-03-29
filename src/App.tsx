@@ -13,6 +13,7 @@ import {
   StatusBar,
   TextInput,
   PermissionsAndroid,
+  Permission,
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 // import NetInfo from "@react-native-community/netinfo"
@@ -90,6 +91,7 @@ import AppInputDialog from '@/utils/AppInputDialog'
 import BundleUtils from './utils/BundleUtils'
 import { addNetworkChangeEventListener } from '@/utils/NetworkHandler'
 import { RTKFixType } from 'imobile_for_reactnative/NativeModule/interfaces/SLocation'
+import { checkAllPermission } from './utils/PermissionAndroidUtils'
 
 //字体不随系统字体变化
 Text.defaultProps = Object.assign({}, Text.defaultProps, { allowFontScaling: false })
@@ -384,7 +386,7 @@ class AppRoot extends Component {
 
   prevLoad = async () => {
     if (Platform.OS === 'android') {
-      this.requestPermission()
+      this.checkPermission()
     } else {
       global.Loading.setLoading(true, 'Loading')
       await this.init(true)
@@ -392,53 +394,51 @@ class AppRoot extends Component {
     }
   }
 
-  requestPermission = async () => {
+  checkPermission = async () => {
     global.Loading.setLoading(true, 'Loading')
-    const permissionList = [
-      'android.permission.READ_PHONE_STATE',
-      // 'android.permission.ACCESS_FINE_LOCATION',
-      'android.permission.READ_EXTERNAL_STORAGE',
-      'android.permission.WRITE_EXTERNAL_STORAGE',
-      // 'android.permission.CAMERA',
-      // 'android.permission.RECORD_AUDIO',
-      'android.permission.BLUETOOTH',
-      'android.permission.BLUETOOTH_ADMIN',
-
-    ]
-    if(Platform.OS === 'android') {
-      const sdkVesion = Platform.Version
-      // android 12 的版本api编号 31 32 android 13的版本api编号 33
-      if(sdkVesion >= 31) {
-        permissionList.push('android.permission.BLUETOOTH_CONNECT')
-        permissionList.push('android.permission.BLUETOOTH_SCAN')
-        permissionList.push("android.permission.RECEIVE_BOOT_COMPLETED")
-        permissionList.push('android.permission.BLUETOOTH_ADVERTISE')
-      }
-    }
-    const results = await PermissionsAndroid.requestMultiple(permissionList)
-    let isAllGranted = true
-    for (let key in results) {
-      isAllGranted = results[key] === 'granted' && isAllGranted
-    }
-    //申请 android 11 读写权限
-    let permisson11 = await AppUtils.requestStoragePermissionR()
-    if (isAllGranted && permisson11) {
+    const permission = await checkAllPermission()
+    if(permission){
       await SData.setPermission(true)
       await this.init(true)
       global.Loading.setLoading(false)
-    } else {
-      global.SimpleDialog.set({
-        text: getLanguage(this.props.language).Prompt.NO_PERMISSION_ALERT,
-        cancelText: getLanguage(this.props.language).Prompt.CONTINUE,
-        cancelAction: /*AppUtils.AppExit*/ async () =>{
-          await this.init(false)
-          global.Loading.setLoading(false)
-        },
-        confirmText: getLanguage(this.props.language).Prompt.REQUEST_PERMISSION,
-        confirmAction: this.requestPermission,
-      })
-      global.SimpleDialog.setVisible(true)
+    }else{
+      await this.init(false)
+      global.Loading.setLoading(false)
     }
+    // if(Platform.OS === 'android') {
+    //   const sdkVesion = Platform.Version
+    //   // android 12 的版本api编号 31 32 android 13的版本api编号 33
+    //   if(sdkVesion >= 31) {
+    //     permissionList.push('android.permission.BLUETOOTH_CONNECT')
+    //     permissionList.push('android.permission.BLUETOOTH_SCAN')
+    //     permissionList.push("android.permission.RECEIVE_BOOT_COMPLETED")
+    //     permissionList.push('android.permission.BLUETOOTH_ADVERTISE')
+    //   }
+    // }
+    // const results = await PermissionsAndroid.requestMultiple(permissionList)
+    // let isAllGranted = true
+    // for (let key in results) {
+    //   isAllGranted = results[key] === 'granted' && isAllGranted
+    // }
+    //申请 android 11 读写权限
+    // let permisson11 = await AppUtils.requestStoragePermissionR()
+    // if (isAllGranted && permisson11) {
+    //   await SData.setPermission(true)
+    //   await this.init(true)
+    //   global.Loading.setLoading(false)
+    // } else {
+    //   global.SimpleDialog.set({
+    //     text: getLanguage(this.props.language).Prompt.NO_PERMISSION_ALERT,
+    //     cancelText: getLanguage(this.props.language).Prompt.CONTINUE,
+    //     cancelAction: /*AppUtils.AppExit*/ async () =>{
+    //       await this.init(false)
+    //       global.Loading.setLoading(false)
+    //     },
+    //     confirmText: getLanguage(this.props.language).Prompt.REQUEST_PERMISSION,
+    //     confirmAction: this.requestPermission,
+    //   })
+    //   global.SimpleDialog.setVisible(true)
+    // }
   }
 
   initBluetooth = async () => {

@@ -43,6 +43,7 @@ import ImageResizer from 'react-native-image-resizer'
 import DataHandler from '../../../../utils/DataHandler'
 import 'moment/locale/zh-cn'
 import CoworkInfo from '../Cowork/CoworkInfo'
+import { requestAllPermission } from '@/utils/PermissionAndroidUtils'
 const AppUtils = NativeModules.AppUtils
 
 let Top = scaleSize(38)
@@ -145,16 +146,8 @@ class Chat extends React.Component {
   setPermission = async () => {
     try {
       if (Platform.OS === 'android') {
-        const permissionList = [
-          'android.permission.READ_PHONE_STATE',
-          'android.permission.ACCESS_FINE_LOCATION',
-        ]
-        const results = await PermissionsAndroid.requestMultiple(permissionList)
 
-        let isAllGranted = true
-        for (let key in results) {
-          isAllGranted = results[key] === 'granted' && isAllGranted
-        }
+        const isAllGranted = await requestAllPermission()
         if (isAllGranted) {
           await SLocation.openGPS()
         }

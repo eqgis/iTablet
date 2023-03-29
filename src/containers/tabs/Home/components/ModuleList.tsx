@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, ScrollView ,  PermissionsAndroid ,NativeModules ,Platform} from 'react-native'
+import { View, StyleSheet, ScrollView ,  PermissionsAndroid ,NativeModules ,Platform, Permission} from 'react-native'
 import NetInfo from "@react-native-community/netinfo"
 import { ConstPath, ChunkType } from '../../../../constants'
 import { scaleSize, Toast, FetchUtils } from '../../../../utils'
@@ -23,7 +23,8 @@ import { getLanguage } from '../../../../language'
 import ModuleItem from './ModuleItem'
 import SizeUtil from '../SizeUtil'
 import { addNetworkChangeEventListener } from '@/utils/NetworkHandler'
-let AppUtils = NativeModules.AppUtils
+import { requestAllPermission } from '@/utils/PermissionAndroidUtils'
+const AppUtils = NativeModules.AppUtils
 
 async function composeWaiting(action) {
   if (global.clickWait) return
@@ -92,9 +93,9 @@ class ModuleList extends Component {
   }
 
   getData = () => {
-    let data = []
+    const data = []
     const modules = this.props.mapModules.modules[this.props.currentUser.userName] || []
-    for (let item of modules) {
+    for (const item of modules) {
       if (item && item.getChunk) {
         data.push(item.getChunk(this.props.language))
       } else {
@@ -118,20 +119,20 @@ class ModuleList extends Component {
   _showAlert = (ref, downloadData, currentUserName) => {
     (async function() {
       if (!downloadData.example || downloadData.example.length === 0) return
-      let item = downloadData.example[0] // 默认下载第一个EXAMPLE
-      let keyword = item.name.endsWith('_EXAMPLE')
+      const item = downloadData.example[0] // 默认下载第一个EXAMPLE
+      const keyword = item.name.endsWith('_EXAMPLE')
         ? item.name
         : item.name + '_EXAMPLE'
-      let isConnected = (await NetInfo.fetch()).isConnected // 检测网络，有网的时候再去检查数据
+      const isConnected = (await NetInfo.fetch()).isConnected // 检测网络，有网的时候再去检查数据
       if (!isConnected) return
       if (!downloadData.url) {
-        let result = await FetchUtils.getDataInfoByUrl(
+        const result = await FetchUtils.getDataInfoByUrl(
           downloadData,
           keyword,
           '.zip',
         )
         // TODO 测试模块下载
-        let downloadInfo = result.content[0]
+        const downloadInfo = result.content[0]
         item.size = downloadInfo.size
         item.url = downloadInfo.url
       }
@@ -153,14 +154,14 @@ class ModuleList extends Component {
 
   _downloadModuleData = async (ref, downloadData) => {
     ref.setDownloading(true)
-    let cachePath = downloadData.cachePath
-    let item = downloadData.example[0] // 默认下载第一个EXAMPLE
-    let fileDirPath =
+    const cachePath = downloadData.cachePath
+    const item = downloadData.example[0] // 默认下载第一个EXAMPLE
+    const fileDirPath =
       cachePath +
       (item.name.endsWith('_EXAMPLE') ? item.name : item.name + '_EXAMPLE')
     try {
-      let fileCachePath = fileDirPath + '.zip'
-      let downloadOptions = {
+      const fileCachePath = fileDirPath + '.zip'
+      const downloadOptions = {
         // fromUrl: dataUrl,
         fromUrl: item.url,
         toFile: fileCachePath,
@@ -174,7 +175,7 @@ class ModuleList extends Component {
         .downloadFile(downloadOptions)
         .then(async () => {
           await FileTools.unZipFile(fileCachePath, cachePath)
-          let tempData = await DataHandler.getExternalData(fileDirPath) || []
+          const tempData = await DataHandler.getExternalData(fileDirPath) || []
           if (downloadData.itemData.mapType === Module.MapType.SCENE || downloadData.itemData.mapType === Module.MapType.AR) {
             await DataHandler.importWorkspace3D(tempData[0])
           } else if (downloadData.itemData.mapType === Module.MapType.MAP) {
@@ -232,18 +233,18 @@ class ModuleList extends Component {
   getDownloadData = (language, item, index) => {
     const modules = this.props.mapModules.modules[this.props.currentUser.userName] || []
     if (index > modules.length - 1) return {}
-    let module = modules[index]
+    const module = modules[index]
     // let example = module.example
-    let example = module?.getExampleName?.(language)
+    const example = module?.getExampleName?.(language)
     if (!example || example.length === 0) return {}
-    let moduleKey = item.key
+    const moduleKey = item.key
 
-    let tmpCurrentUser = this.props.currentUser
+    const tmpCurrentUser = this.props.currentUser
 
     // let toPath = this.homePath + ConstPath.CachePath + fileName
 
-    let cachePath = this.homePath + ConstPath.CachePath
-    let defaultExample = {}
+    const cachePath = this.homePath + ConstPath.CachePath
+    const defaultExample = {}
     if (example) {
       if (example.checkUrl === undefined) {
         defaultExample.checkUrl =
@@ -273,15 +274,15 @@ class ModuleList extends Component {
    */
   checkData = async index => {
     let moduleKey
-    let module = this.props.mapModules.modules[this.props.currentUser.userName][index]
-    let examples =
+    const module = this.props.mapModules.modules[this.props.currentUser.userName][index]
+    const examples =
       module &&
       module.getExampleName &&
       module.getExampleName(this.props.language)
     if (!examples || examples.length === 0) return ''
     let fileName = examples[0].name
     if (!fileName.endsWith('_EXAMPLE')) fileName += '_EXAMPLE'
-    let result = await FetchUtils.getDataInfoByUrl(
+    const result = await FetchUtils.getDataInfoByUrl(
       {
         nickname: 'xiezhiyan123',
       },
@@ -289,8 +290,8 @@ class ModuleList extends Component {
       '.zip',
     )
     if (result.content.length > 0) {
-      for (let _item of result.content) {
-        let _itemFileName = _item.fileName.replace('.zip', '')
+      for (const _item of result.content) {
+        const _itemFileName = _item.fileName.replace('.zip', '')
         if (_itemFileName === fileName) {
           moduleKey = _item.id
           break
@@ -304,36 +305,11 @@ class ModuleList extends Component {
   itemAction = async (language, { item, index }) => {
     try {
       if (Platform.OS === 'android') {
-        const permissionList = [
-          'android.permission.READ_PHONE_STATE',
-          'android.permission.ACCESS_FINE_LOCATION',
-          'android.permission.READ_EXTERNAL_STORAGE',
-          'android.permission.WRITE_EXTERNAL_STORAGE',
-          'android.permission.CAMERA',
-          'android.permission.RECORD_AUDIO',
-          'android.permission.BLUETOOTH',
-          'android.permission.BLUETOOTH_ADMIN',
-        ]
-        const sdkVesion = Platform.Version
-        // android 12 的版本api编号 31 32 android 13的版本api编号 33
-        if(sdkVesion >= 31) {
-          permissionList.push('android.permission.BLUETOOTH_CONNECT')
-          permissionList.push('android.permission.BLUETOOTH_SCAN')
-        }
-        const results = await PermissionsAndroid.requestMultiple(permissionList)
-
-        let isAllGranted = true
-        for (let key in results) {
-          isAllGranted = results[key] === 'granted' && isAllGranted
-        }
-        //申请 android 11 读写权限
-        let permisson11 = await AppUtils.requestStoragePermissionR()
-        if (isAllGranted && permisson11) {
+        //申请 android权限
+        const permisson11 = await requestAllPermission()
+        if (permisson11) {
           await SData.setPermission(true)
-          // this.init()
-
           addNetworkChangeEventListener()
-
           // 重新设置权限后，重新打开定位
           await SLocation.openGPS()
 
@@ -354,8 +330,8 @@ class ModuleList extends Component {
       }
 
       item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(true)
-      let tmpCurrentUser = this.props.currentUser
-      let currentUserName = tmpCurrentUser.userName
+      const tmpCurrentUser = this.props.currentUser
+      const currentUserName = tmpCurrentUser.userName
         ? tmpCurrentUser.userName
         : 'Customer'
 
@@ -378,7 +354,7 @@ class ModuleList extends Component {
       //   return
       // }
 
-      let downloadData = this.getDownloadData(language, item, index)
+      const downloadData = this.getDownloadData(language, item, index)
 
       // let moduleKey = await this.checkData(index)
       // if (moduleKey) {
@@ -387,9 +363,9 @@ class ModuleList extends Component {
       //   downloadData = {}
       // }
 
-      let currentDownloadData = this.getCurrentDownloadData(downloadData)
+      const currentDownloadData = this.getCurrentDownloadData(downloadData)
 
-      let cachePath = this.homePath + ConstPath.CachePath
+      const cachePath = this.homePath + ConstPath.CachePath
       let arrFile = []
       if (downloadData && downloadData.example) {
         for (let i = 0; i < downloadData.example.length; i++) {
@@ -406,7 +382,7 @@ class ModuleList extends Component {
       }
       if (arrFile.length === 0) {
         this.props.setCurrentMapModule(index).then(async() => {
-          let result = item.action && await item.action(tmpCurrentUser, latestMap)
+          const result = item.action && await item.action(tmpCurrentUser, latestMap)
           item.key !== ChunkType.APPLET_ADD && item.spin && item.spin(false) // 停止转圈
           if (
             result &&
@@ -425,9 +401,9 @@ class ModuleList extends Component {
         })
       } else {
         let filePath2
-        let filePath = arrFile[0].filePath
-        let fileType = filePath.substr(filePath.lastIndexOf('.')).toLowerCase()
-        let fileName = filePath.substring(
+        const filePath = arrFile[0].filePath
+        const fileType = filePath.substr(filePath.lastIndexOf('.')).toLowerCase()
+        const fileName = filePath.substring(
           filePath.lastIndexOf('/') + 1,
           filePath.lastIndexOf('.'),
         )
@@ -440,8 +416,8 @@ class ModuleList extends Component {
             fileName +
             '.pxp'
         } else {
-          let maps = await SMap._getMapsByFile(filePath)
-          let mapName = maps[0]
+          const maps = await SMap._getMapsByFile(filePath)
+          const mapName = maps[0]
           filePath2 =
             this.homePath +
             ConstPath.UserPath +
@@ -450,7 +426,7 @@ class ModuleList extends Component {
             mapName +
             '.xml'
         }
-        let isExist = await FileTools.fileIsExist(filePath2)
+        const isExist = await FileTools.fileIsExist(filePath2)
         if (!isExist) {
           await this.props.importWorkspace(filePath)
         }
@@ -493,7 +469,7 @@ class ModuleList extends Component {
   }
 
   _renderItem = ({ item, index }) => {
-    let downloadData = this.getDownloadData(global.language, item, index)
+    const downloadData = this.getDownloadData(global.language, item, index)
     return (
       <ModuleItem
         key={item.key}
@@ -521,7 +497,7 @@ class ModuleList extends Component {
           //市场不允许出现beta标志，在审核期间把标去掉 add xiezhy
           //去掉beta标识吧，一年了，继续加油！！！
           /*!global.isAudit*/ false && (
-          item.key === ChunkType.MAP_AR ||
+            item.key === ChunkType.MAP_AR ||
           item.key === ChunkType.MAP_AR_MAPPING ||
           item.key === ChunkType.MAP_AR_ANALYSIS)
         }
@@ -546,20 +522,20 @@ class ModuleList extends Component {
 
   /** 获取竖屏数据 **/
   _renderPortraitRows = () => {
-    let data = this.state.data
-    let width =
+    const data = this.state.data
+    const width =
       SizeUtil.getItemWidth(this.props.device.orientation, global.isPad) * 2 +
       SizeUtil.getItemGap() * 2
-    let rowStyle = [styles.row, { width }]
+    const rowStyle = [styles.row, { width }]
     let _list = [],
       _row = [],
       column = 2
     let arIndex = -1
     for (let index = 0; index < data.length; index++) {
       if (data[index].key === STAR_MODULE) arIndex = index
-      let itemView = this._renderItem({ item: data[index], index })
+      const itemView = this._renderItem({ item: data[index], index })
       if (index === arIndex) {
-        let row = (
+        const row = (
           <View key={'r_' + index} style={rowStyle}>
             {itemView}
           </View>
@@ -568,7 +544,7 @@ class ModuleList extends Component {
       } else {
         _row.push(itemView)
         if (_row.length === column) {
-          let row = (
+          const row = (
             <View key={'r_' + index} style={rowStyle}>
               {_row}
             </View>
@@ -576,7 +552,7 @@ class ModuleList extends Component {
           _list.push(row)
           _row = []
         } else if (index === data.length - 1) {
-          let row = (
+          const row = (
             <View key={'r_' + index} style={rowStyle}>
               {itemView}
             </View>
@@ -590,23 +566,23 @@ class ModuleList extends Component {
 
   /** 获取横屏数据 **/
   _renderLandscapeColumns = () => {
-    let data = this.state.data
-    let height =
+    const data = this.state.data
+    const height =
       SizeUtil.getItemHeight(this.props.device.orientation, global.isPad) * 2 +
       SizeUtil.getItemGap() * 2
-    let columnStyle = [styles.column, { height }]
+    const columnStyle = [styles.column, { height }]
     let _list = [],
       _column = [],
       row = 2
-    let _subRow = []
+    const _subRow = []
     let arIndex = -1
     for (let index = 0; index < data.length; index++) {
       if (data[index].key === STAR_MODULE) arIndex = index
-      let itemView = this._renderItem({ item: data[index], index })
+      const itemView = this._renderItem({ item: data[index], index })
       if (arIndex >= 0 && (index === arIndex + 1 || index === arIndex + 2)) {
         _subRow.push(itemView)
         if (_subRow.length === row) {
-          let rowView = (
+          const rowView = (
             <View key={'c_r_' + index} style={styles.row}>
               {_subRow}
             </View>
@@ -619,7 +595,7 @@ class ModuleList extends Component {
         _column.push(itemView)
       }
       if (_column.length === row) {
-        let column = (
+        const column = (
           <View key={'c_' + index} style={columnStyle}>
             {_column}
           </View>
@@ -627,7 +603,7 @@ class ModuleList extends Component {
         _list.push(column)
         _column = []
       } else if (index === data.length - 1) {
-        let column = (
+        const column = (
           <View key={'c_' + index} style={columnStyle}>
             {itemView}
           </View>

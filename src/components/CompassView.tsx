@@ -77,8 +77,8 @@ class CompassView extends React.Component<Props, State> {
         <Animated.Image
           source={getThemeAssets().publicAssets.compass}
           style={{
-            width: scaleSize(80),
-            height: scaleSize(80),
+            width: scaleSize(104),
+            height: scaleSize(104),
             transform:[
               {rotate: this.state.direction + this.getScreenRotation() + 'deg'},
             ],

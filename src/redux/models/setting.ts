@@ -395,7 +395,7 @@ const initialState = fromJS({
   aiClassifyData: {},
   is3dSceneFirst: false,
   isRTKAutoCalibration: false,
-  isPointParamShow: false,
+  isPointParamShow: true,
 })
 
 interface Legend {

@@ -2917,5 +2917,11 @@ export const language_cn = {
   QIANXUN_CORS: '千寻知寸',
   OTHER_CORSE: "其他",
   UNKONW: '未知',
+  LOCATION_INFORMATION: '定位信息',
+  NTRIP_DATA_ORIGIN: '差分数据来源',
+  SAT_NUMBER: '卫星数',
+  SAT_LIST:"卫星列表",
+  NTRIP_TIMEOUT:"差分延迟",
+  ELLIPSOID_HEIGHT: "椭球高",
 
 }

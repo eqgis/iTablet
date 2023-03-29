@@ -2016,7 +2016,7 @@ export default class MapView extends React.Component {
           },
         )
 
-        
+
         this.showMarker &&
           SMap.showMarker(
             this.showMarker.longitude,
@@ -5392,15 +5392,6 @@ export default class MapView extends React.Component {
           this._renderFloorListView()}
         {global.Type === ChunkType.MAP_NAVIGATION && this._renderTrafficView()}
 
-
-        {/* 是否使用了差分服务的定位状态提示 */}
-        {/* {this.props?.peripheralDevice?.type === "bluetooth"
-        && this.props?.essentialInfo?.userName !== ""
-        && this.props.pointStateText !== ""
-        && this._renderPositionStateView()
-        } */}
-        {this._renderPositionStateView()}
-
         {this._renderAIDetectChange()}
         <SurfaceView
           ref={ref => (global.MapSurfaceView = ref)}
@@ -5548,6 +5539,7 @@ export default class MapView extends React.Component {
         {this.getInfoText()}
         {global.Type === ChunkType.MAP_COLLECTION &&  this.rendercollectorAimPoint()}
 
+        {this._renderPositionStateView()}
         <Toolbar
           navigation={this.props.navigation}
           visibleChange={visible => {

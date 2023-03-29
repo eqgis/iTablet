@@ -2919,6 +2919,10 @@ export const language_tr: typeof language_cn = {
   SAT_NUMBER: 'Satellite number', // To be tanslated
   SAT_LIST:"Satellite list", // To be tanslated
   NTRIP_TIMEOUT:"Ntrip delay", // To be tanslated
-  ELLIPSOID_HEIGHT: "Ellipsoid height", // To be tanslated
+  ELLIPSOID_HEIGHT: "Normol height", // To be tanslated
+  FIXED_SOLUTION: 'Fixed solution', // To be tanslated
+  FLOAT_SOLUTION:'Float solution', // To be tanslated
+  SIGING_POINT_SOLUTION: 'Siging point solution', // To be tanslated
+  INVALIDE_SOLUTION:'Invalid solution', // To be tanslated
 
 }

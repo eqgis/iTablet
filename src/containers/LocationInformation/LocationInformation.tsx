@@ -44,13 +44,6 @@ interface State {
 
 class LocationInformation extends Component<Props, State> {
 
-  manufactureName = {
-    'other': getLanguage().LOCAL_DEVICE,
-    'mijiaH20': getLanguage().HUACHE,
-    'woncan': getLanguage().QIANXUN,
-    'situoli': getLanguage().SITUOLI,
-  }
-
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -62,7 +55,7 @@ class LocationInformation extends Component<Props, State> {
     NavigationService.goBack()
   }
 
-  getPositionSatateText = (type: number) => {
+  getPositionSatateText01 = (type: number) => {
     let text = getLanguage().UNKONW
     switch (type) {
       case 0:
@@ -94,6 +87,34 @@ class LocationInformation extends Component<Props, State> {
         break
       case 9:
         text = "WAAS"
+        break
+      default:
+        text = getLanguage().UNKONW
+        break
+    }
+    return text
+  }
+
+  getPositionSatateText = (type: number) => {
+    let text = getLanguage().UNKONW
+    switch (type) {
+      case 4: // "RTK"
+        text = getLanguage().FIXED_SOLUTION
+        break
+      case 5: // "FloatRTK"
+        text = getLanguage().FLOAT_SOLUTION
+        break
+      case 1: // "GPS"
+      case 2: // "DGPS"
+      case 3: // "PPS"
+      case 6: // "Estimated"
+      case 7: // "Manual"
+      case 8: // "Simulation"
+      case 9: // "WAAS"
+        text = getLanguage().SIGING_POINT_SOLUTION
+        break
+      case 0: // "Invalid"
+        text = getLanguage().INVALIDE_SOLUTION
         break
       default:
         text = getLanguage().UNKONW
@@ -194,11 +215,6 @@ class LocationInformation extends Component<Props, State> {
       <ScrollView
         style={[styles.listContentView]}
       >
-        {this.renderRowItem({
-          title: getLanguage().NTRIP_DATA_ORIGIN,
-          value: this.manufactureName[this.props.deviceManufacturer],
-          isHiddenRightImage: true,
-        })}
 
         {this.renderRowItem({
           title: getLanguage().SLOCATION_STATE_CURRENT,
@@ -209,6 +225,7 @@ class LocationInformation extends Component<Props, State> {
         {this.renderRowItem({
           title: getLanguage().SAT_NUMBER,
           value: (this.props.gga?.satNums || 0) + "",
+          isHiddenRightImage: true,
         })}
 
         {this.renderRowItem({

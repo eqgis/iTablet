@@ -2922,6 +2922,10 @@ export const language_cn = {
   SAT_NUMBER: '卫星数',
   SAT_LIST:"卫星列表",
   NTRIP_TIMEOUT:"差分延迟",
-  ELLIPSOID_HEIGHT: "椭球高",
+  ELLIPSOID_HEIGHT: "正常高",
+  FIXED_SOLUTION: '固定解',
+  FLOAT_SOLUTION:'浮点解',
+  SIGING_POINT_SOLUTION: '单点解',
+  INVALIDE_SOLUTION:'无效解',
 
 }

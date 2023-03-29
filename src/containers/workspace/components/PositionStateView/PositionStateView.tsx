@@ -21,7 +21,7 @@ export default class PositionStateView extends Component<Props> {
     }
   }
 
-  getPositionSatateText = (type: number) => {
+  getPositionSatateText01 = (type: number) => {
     let text = getLanguage().UNKONW
     switch (type) {
       case 0:
@@ -61,8 +61,56 @@ export default class PositionStateView extends Component<Props> {
     return text
   }
 
+  getPositionSatateText = (type: number) => {
+    let text = getLanguage().UNKONW
+    switch (type) {
+      case 4: // "RTK"
+        text = getLanguage().FIXED_SOLUTION
+        break
+      case 5: // "FloatRTK"
+        text = getLanguage().FLOAT_SOLUTION
+        break
+      case 1: // "GPS"
+      case 2: // "DGPS"
+      case 3: // "PPS"
+      case 6: // "Estimated"
+      case 7: // "Manual"
+      case 8: // "Simulation"
+      case 9: // "WAAS"
+        text = getLanguage().SIGING_POINT_SOLUTION
+        break
+      case 0: // "Invalid"
+        text = getLanguage().INVALIDE_SOLUTION
+        break
+      default:
+        text = getLanguage().UNKONW
+        break
+    }
+    return text
+  }
+
 
   render() {
+    let imgState = getThemeAssets().publicAssets.icon_position_state_red
+    switch (this.props.gga?.fixType || -1) {
+      case 4: // "RTK"
+        imgState = getThemeAssets().publicAssets.icon_position_state_green
+        break
+      case 5: // "FloatRTK"
+        imgState = getThemeAssets().publicAssets.icon_position_state_yellow
+        break
+      // case 0: // "Invalid"
+      case 1: // "GPS"
+      case 2: // "DGPS"
+      case 3: // "PPS"
+      case 6: // "Estimated"
+      case 7: // "Manual"
+      case 8: // "Simulation"
+      case 9: // "WAAS"
+      default:
+        imgState = getThemeAssets().publicAssets.icon_position_state_red
+        break
+    }
     return this.props.isPointParamShow ? (
       <TouchableOpacity
         style={[
@@ -78,7 +126,7 @@ export default class PositionStateView extends Component<Props> {
           style={[styles.itemStyle]}
         >
           <Image
-            source={getThemeAssets().publicAssets.icon_position_state}
+            source={imgState}
             style={[styles.image]}
           />
           <Text style={[styles.text]}>{this.getPositionSatateText(this.props?.gga?.fixType || -1)}</Text>

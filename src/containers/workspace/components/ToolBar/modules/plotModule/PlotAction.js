@@ -47,7 +47,13 @@ async function geometrySelected(event) {
         },
         {queryIDs:[event.id]}
       )
-      const type = recordArry[0].geometry.type
+
+      let type = -1
+      for(let i=0;i<recordArry.length;i++){
+        if(recordArry[i].geometry.id === event.id){
+          type = recordArry[i].geometry.type
+        }
+      }
       // const type = await SPlot.getGraphicObjectType(
       //   event.layerInfo.name,
       //   event.id,

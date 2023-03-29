@@ -17,6 +17,7 @@ import PlotData from './PlotData'
 import { PlotAnimationView, AnimationNodeListView } from './customView'
 import NavigationService from '../../../../../NavigationService'
 
+
 async function listAction(type, params = {}) {
   const _params = ToolbarModule.getParams()
   switch (type) {
@@ -51,14 +52,15 @@ async function geometrySelected(event) {
       let type = -1
       for(let i=0;i<recordArry.length;i++){
         if(recordArry[i].geometry.id === event.id){
-          type = recordArry[i].geometry.type
+          type = recordArry[i].geometry.graphicObjectType
         }
       }
+
       // const type = await SPlot.getGraphicObjectType(
       //   event.layerInfo.name,
       //   event.id,
       // )
-      if (type === -1) {
+      if (type === -1 || type == undefined) {
         Toast.show(
           getLanguage(global.language).Prompt.PLEASE_SELECT_PLOT_SYMBOL,
         )

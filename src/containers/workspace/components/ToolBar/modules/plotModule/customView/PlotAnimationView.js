@@ -70,8 +70,12 @@ export default class PlotAnimationView extends React.Component {
       },
       {queryIDs:[this.props.geoId]}
     )
-    const type = recordArry[0].geometry.type
-
+    let type = -1
+    for(let i=0;i<recordArry.length;i++){
+      if(recordArry[i].geometry.id === this.props.geoId){
+        type = recordArry[i].geometry.graphicObjectType
+      }
+    }
     // let type = await SPlot.getGraphicObjectType(
     //   this.props.layerName,
     //   this.props.geoId,

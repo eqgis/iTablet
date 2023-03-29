@@ -358,32 +358,23 @@ class AppRoot extends Component {
         permissionList.push('android.permission.BLUETOOTH_SCAN')
       }
     }
-    const results = await PermissionsAndroid.requestMultiple(permissionList)
-    let isAllGranted = true
-    for (let key in results) {
-      isAllGranted = results[key] === 'granted' && isAllGranted
-    }
-    //申请 android 11 读写权限
-    let permisson11 = await AppUtils.requestStoragePermissionR()
-    if (isAllGranted && permisson11) {
-      await SMap.setPermisson(true)
-      await this.init(true)
-      global.Loading.setLoading(false)
-    } else {
-      await this.init(false)
-      global.Loading.setLoading(false)
-      // global.SimpleDialog.set({
-      //   text: getLanguage(this.props.language).Prompt.NO_PERMISSION_ALERT,
-      //   cancelText: getLanguage(this.props.language).Prompt.CONTINUE,
-      //   cancelAction: /*AppUtils.AppExit*/ async () =>{
-      //     await this.init(false)
-      //     global.Loading.setLoading(false)
-      //   },
-      //   confirmText: getLanguage(this.props.language).Prompt.REQUEST_PERMISSION,
-      //   confirmAction: this.requestPermission,
-      // })
-      // global.SimpleDialog.setVisible(true)
-    }
+    await this.init(false)
+    global.Loading.setLoading(false)
+    // const results = await PermissionsAndroid.requestMultiple(permissionList)
+    // let isAllGranted = true
+    // for (let key in results) {
+    //   isAllGranted = results[key] === 'granted' && isAllGranted
+    // }
+    // //申请 android 11 读写权限
+    // let permisson11 = await AppUtils.requestStoragePermissionR()
+    // if (isAllGranted && permisson11) {
+    //   await SMap.setPermisson(true)
+    //   await this.init(true)
+    //   global.Loading.setLoading(false)
+    // } else {
+    //   await this.init(false)
+    //   global.Loading.setLoading(false)
+    // }
   }
 
   init = async (hasPermission) => {

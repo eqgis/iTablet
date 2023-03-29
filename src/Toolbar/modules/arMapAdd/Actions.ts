@@ -326,6 +326,7 @@ export async function addARSceneLayer(option?: AddOption) {
       const co = new SCoordination('online')
       const recordinfo = await co.downloadRecordset(datasetUrl, 0 , 1)
       const sceneOffset: Point3D = {x: 0, y: 0, z: 0}
+      let childCoordSysType: 0 | 1 = 0
       if(recordinfo.length > 0) {
         recordinfo[0].featureInfo.forEach(feature => {
           if(feature.name === 'AR_SCENE_X') {
@@ -337,9 +338,15 @@ export async function addARSceneLayer(option?: AddOption) {
           if(feature.name === 'AR_SCENE_Z') {
             sceneOffset.z = feature.value as number
           }
+          if(feature.name === 'AR_SCENE_CHILD_COORDSYS') {
+            const value = feature.value as number
+            if(value === 0 || value === 1) {
+              childCoordSysType = value
+            }
+          }
         })
       }
-      addLayerName = await SARMap.addSceneLayerOnline({datasourceName, datasetName}, serverUrl, sceneName, {position: option?.translation}, sceneOffset)
+      addLayerName = await SARMap.addSceneLayerOnline({datasourceName, datasetName}, serverUrl, sceneName, {position: option?.translation}, {offset: sceneOffset, childCoordSysType: childCoordSysType})
     } else {
       path = homePath + path
       const pxp = await DataLocal.getPxpContent(path)

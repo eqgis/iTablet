@@ -14,18 +14,28 @@ export const permissionList: Array<Permission> = [
   'android.permission.WRITE_EXTERNAL_STORAGE',
   'android.permission.CAMERA',
   'android.permission.RECORD_AUDIO',
-  'android.permission.BLUETOOTH_CONNECT',
-  'android.permission.BLUETOOTH_SCAN',
-  'android.permission.BLUETOOTH_ADVERTISE'
-
+  'android.permission.BLUETOOTH',
+  'android.permission.BLUETOOTH_ADMIN',
 ]
 export async function checkAllPermission(): Promise<boolean> {
 
-  if(Platform.OS === "android"){
+  if (Platform.OS === "android") {
+    const sdkVesion = Platform.Version
+    // android 12 的版本api编号 31 32 android 13的版本api编号 33
+    if (sdkVesion >= 31) {
+      if (permissionList.indexOf('android.permission.BLUETOOTH_CONNECT') == -1) {
+        permissionList.push('android.permission.BLUETOOTH_CONNECT')
+      }
+      if (permissionList.indexOf('android.permission.BLUETOOTH_SCAN') == -1) {
+        permissionList.push('android.permission.BLUETOOTH_SCAN')
+      }
+    }
+
     let permission = false
     for (let i = 0; i < permissionList.length; i++) {
       permission = await PermissionsAndroid.check(permissionList[i])
       if (!permission) {
+        break
         console.log(permissionList[i])
       }
     }
@@ -39,16 +49,30 @@ export async function checkAllPermission(): Promise<boolean> {
 
 export async function requestAllPermission(): Promise<boolean> {
 
-  if(Platform.OS === "android"){
+  if (Platform.OS === "android") {
+    const sdkVesion = Platform.Version
+    // android 12 的版本api编号 31 32 android 13的版本api编号 33
+    if (sdkVesion >= 31) {
+      if (permissionList.indexOf('android.permission.BLUETOOTH_CONNECT') == -1) {
+        permissionList.push('android.permission.BLUETOOTH_CONNECT')
+      }
+      if (permissionList.indexOf('android.permission.BLUETOOTH_SCAN') == -1) {
+        permissionList.push('android.permission.BLUETOOTH_SCAN')
+      }
+    }
     const results = await PermissionsAndroid.requestMultiple(permissionList)
     let isAllGranted = true
-    let key : keyof typeof results
+    let key: keyof typeof results
     for (key in results) {
       isAllGranted = results[key] === 'granted' && isAllGranted
+      if (!isAllGranted) {
+        console.log(key + "+" + results[key])
+        break
+      }
     }
     //申请 android 11 读写权限
     const permisson11 = await AppUtils.requestStoragePermissionR()
-    return isAllGranted&&permisson11
+    return isAllGranted && permisson11
   }
   return true
 }

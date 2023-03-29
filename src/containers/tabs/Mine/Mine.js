@@ -17,6 +17,7 @@ import { getThemeAssets } from '../../../assets'
 import { MineHeader } from './component'
 import styles from './styles'
 import TabBar from '../TabBar'
+import { requestAllPermission } from '@/utils/PermissionAndroidUtils'
 
 export default class Mine extends Component {
   props: {
@@ -38,6 +39,9 @@ export default class Mine extends Component {
     this.searchText = ''
   }
 
+  componentDidMount(){
+    requestAllPermission()
+  }
   componentDidUpdate(previousProps) {
     if (
       this.props.user.currentUser.userType !== UserType.PROBATION_USER &&

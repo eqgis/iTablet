@@ -23,6 +23,7 @@ import { getLanguage } from '../../../../language'
 import ModuleItem from './ModuleItem'
 import SizeUtil from '../SizeUtil'
 import { addNetworkChangeEventListener } from '@/utils/NetworkHandler'
+import { requestAllPermission } from '@/utils/PermissionAndroidUtils'
 let AppUtils = NativeModules.AppUtils
 
 async function composeWaiting(action) {
@@ -303,31 +304,32 @@ class ModuleList extends Component {
   itemAction = async (language, { item, index }) => {
     try {
       if (Platform.OS === 'android') {
-        const permissionList = [
-          'android.permission.READ_PHONE_STATE',
-          'android.permission.ACCESS_FINE_LOCATION',
-          'android.permission.READ_EXTERNAL_STORAGE',
-          'android.permission.WRITE_EXTERNAL_STORAGE',
-          'android.permission.CAMERA',
-          'android.permission.RECORD_AUDIO',
-          'android.permission.BLUETOOTH',
-          'android.permission.BLUETOOTH_ADMIN',
-        ]
-        const sdkVesion = Platform.Version
-        // android 12 的版本api编号 31 32 android 13的版本api编号 33
-        if(sdkVesion >= 31) {
-          permissionList.push('android.permission.BLUETOOTH_CONNECT')
-          permissionList.push('android.permission.BLUETOOTH_SCAN')
-        }
-        const results = await PermissionsAndroid.requestMultiple(permissionList)
+        // const permissionList = [
+        //   'android.permission.READ_PHONE_STATE',
+        //   'android.permission.ACCESS_FINE_LOCATION',
+        //   'android.permission.READ_EXTERNAL_STORAGE',
+        //   'android.permission.WRITE_EXTERNAL_STORAGE',
+        //   'android.permission.CAMERA',
+        //   'android.permission.RECORD_AUDIO',
+        //   'android.permission.BLUETOOTH',
+        //   'android.permission.BLUETOOTH_ADMIN',
+        // ]
+        // const sdkVesion = Platform.Version
+        // // android 12 的版本api编号 31 32 android 13的版本api编号 33
+        // if(sdkVesion >= 31) {
+        //   permissionList.push('android.permission.BLUETOOTH_CONNECT')
+        //   permissionList.push('android.permission.BLUETOOTH_SCAN')
+        // }
+        // const results = await PermissionsAndroid.requestMultiple(permissionList)
 
-        let isAllGranted = true
-        for (let key in results) {
-          isAllGranted = results[key] === 'granted' && isAllGranted
-        }
+        // let isAllGranted = true
+        // for (let key in results) {
+        //   isAllGranted = results[key] === 'granted' && isAllGranted
+        // }
         //申请 android 11 读写权限
-        let permisson11 = await AppUtils.requestStoragePermissionR()
-        if (isAllGranted && permisson11) {
+        // let permisson11 = await AppUtils.requestStoragePermissionR()
+        const isAllGranted = await requestAllPermission()
+        if (isAllGranted) {
           await SMap.setPermisson(true)
           // this.init()
 

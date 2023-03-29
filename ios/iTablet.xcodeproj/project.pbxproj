@@ -1180,6 +1180,7 @@
 					"\"$(SRCROOT)/../node_modules/imobile_for_reactnative/ios\"/**",
 				);
 				INFOPLIST_FILE = iTablet/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1205,7 +1206,7 @@
 					"$(PROJECT_DIR)/iPhoneSimulator",
 					"$(PROJECT_DIR)/iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib",
 				);
-				MARKETING_VERSION = 11.0.2;
+				MARKETING_VERSION = 11.0.14;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -1331,6 +1332,7 @@
 					"\"$(SRCROOT)/../node_modules/imobile_for_reactnative/ios\"/**",
 				);
 				INFOPLIST_FILE = iTablet/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1359,7 +1361,7 @@
 					"$(SRCROOT)/iTablet",
 					"$(PROJECT_DIR)/iPhoneOS.sdk/SuperMap.framework/Versions/A/Resources/ThirdLib",
 				);
-				MARKETING_VERSION = 11.0.2;
+				MARKETING_VERSION = 11.0.14;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"$(inherited)",

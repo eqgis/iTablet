@@ -79,6 +79,21 @@ public class AppUtils extends ReactContextBaseJavaModule {
         }
     }
 
+
+    @ReactMethod
+    public void checkStoragePermissionR(Promise promise) {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                // 先判断有没有权限
+                promise.resolve(Environment.isExternalStorageManager());
+            } else {
+                promise.resolve(true);
+            }
+        } catch (Exception e) {
+            promise.resolve(false);
+        }
+    }
+
     @ReactMethod
     public void requestStoragePermissionR(Promise promise) {
         try {

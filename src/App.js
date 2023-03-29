@@ -88,6 +88,7 @@ import { setBaseMap } from './redux/models/map'
 import AppDialog from '@/utils/AppDialog'
 import AppInputDialog from '@/utils/AppInputDialog'
 import { addNetworkChangeEventListener } from '@/utils/NetworkHandler'
+import { checkAllPermission } from './utils/PermissionAndroidUtils'
 
 //字体不随系统字体变化
 Text.defaultProps = Object.assign({}, Text.defaultProps, { allowFontScaling: false })
@@ -340,32 +341,10 @@ class AppRoot extends Component {
 
   requestPermission = async () => {
     global.Loading.setLoading(true, 'Loading')
-    const permissionList = [
-      'android.permission.READ_PHONE_STATE',
-      // 'android.permission.ACCESS_FINE_LOCATION',
-      'android.permission.READ_EXTERNAL_STORAGE',
-      'android.permission.WRITE_EXTERNAL_STORAGE',
-      // 'android.permission.CAMERA',
-      // 'android.permission.RECORD_AUDIO',
-      'android.permission.BLUETOOTH',
-      'android.permission.BLUETOOTH_ADMIN',
-    ]
-    if(Platform.OS === 'android') {
-      const sdkVesion = Platform.Version
-      // android 12 的版本api编号 31 32 android 13的版本api编号 33
-      if(sdkVesion >= 31) {
-        permissionList.push('android.permission.BLUETOOTH_CONNECT')
-        permissionList.push('android.permission.BLUETOOTH_SCAN')
-      }
-    }
-    const results = await PermissionsAndroid.requestMultiple(permissionList)
-    let isAllGranted = true
-    for (let key in results) {
-      isAllGranted = results[key] === 'granted' && isAllGranted
-    }
+    const isAllGranted = await checkAllPermission()
     //申请 android 11 读写权限
-    let permisson11 = await AppUtils.requestStoragePermissionR()
-    if (isAllGranted && permisson11) {
+    // let permisson11 = await AppUtils.requestStoragePermissionR()
+    if (isAllGranted) {
       await SMap.setPermisson(true)
       await this.init(true)
       global.Loading.setLoading(false)

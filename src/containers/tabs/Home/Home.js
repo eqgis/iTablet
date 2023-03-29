@@ -1062,49 +1062,6 @@ export default class Home extends Component {
   renderTabBar = () => {
     return <TabBar navigation={this.props.navigation} currentRoute={'Home'} />
   }
-
-  requestPermission = async () => {
-    const permissionList = [
-      'android.permission.READ_PHONE_STATE',
-      'android.permission.ACCESS_FINE_LOCATION',
-      'android.permission.READ_EXTERNAL_STORAGE',
-      'android.permission.WRITE_EXTERNAL_STORAGE',
-      'android.permission.CAMERA',
-      'android.permission.RECORD_AUDIO',
-      'android.permission.BLUETOOTH',
-      'android.permission.BLUETOOTH_ADMIN',
-    ]
-    if(Platform.OS === 'android') {
-      const sdkVesion = Platform.Version
-      // android 12 的版本api编号 31 32 android 13的版本api编号 33
-      if(sdkVesion >= 31) {
-        permissionList.push('android.permission.BLUETOOTH_CONNECT')
-        permissionList.push('android.permission.BLUETOOTH_SCAN')
-      }
-    }
-    const results = await PermissionsAndroid.requestMultiple(permissionList)
-    let isAllGranted = true
-    for (let key in results) {
-      isAllGranted = results[key] === 'granted' && isAllGranted
-    }
-    //申请 android 11 读写权限
-    let permisson11 = await appUtilsModule.requestStoragePermissionR()
-    if (isAllGranted && permisson11) {
-      SMap.setPermisson(true)
-      // this.init()
-    } else {
-      this._closeModal()
-      this.SimpleDialog.set({
-        text: getLanguage(this.props.language).Prompt.NO_PERMISSION,
-        cancelText: getLanguage(this.props.language).Prompt.CANCEL,
-        cancelAction: this.SimpleDialog.setVisible(false),
-        confirmText: getLanguage(this.props.language).Prompt.REQUEST_PERMISSION,
-        confirmAction: this.requestPermission,
-      })
-      this.SimpleDialog.setVisible(true)
-    }
-  }
-
   render() {
     this.width = screen.getScreenWidth(this.props.device.orientation) - screen.getScreenWidth(this.props.device.orientation) / 6
     this.height = scaleSize(600)

@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Image, StyleSheet, TouchableOpacity, Text, ScaledSize, TextInput, ImageRequireSource } from 'react-native'
-import { SARMap, SMap } from "imobile_for_reactnative"
+import { AppInfo, FileTools, SARMap, SMap } from "imobile_for_reactnative"
 import { AppStyle, dp, Toast } from '../../utils'
 import { getImage, getThemeAssets } from '../../assets'
 import { getLanguage } from '../../language'
@@ -9,7 +9,7 @@ import QRScan from './QRScan'
 import { ChunkType } from '@/constants'
 import NavigationService from '../NavigationService'
 import { Point3D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
-import { ARAction, TwoPointPositionParamType } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
+import { ARAction, ARTrackingMarkerType, TwoPointPositionParamType } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
 
 interface Props {
 	onBack?: () => void
@@ -58,6 +58,7 @@ class TwoPointPositionPage extends React.Component<Props, State> {
 
   horizontal: boolean
   tipTimer: NodeJS.Timeout | null | undefined = null
+  path: string
 
   constructor(props: Props) {
     super(props)
@@ -83,9 +84,16 @@ class TwoPointPositionPage extends React.Component<Props, State> {
       curAddPoint: 'p1',
     }
     this.horizontal = this.props.windowSize.height < this.props.windowSize.width
+    this.path = ""
   }
 
   componentDidMount = async () => {
+
+    const homePath = await FileTools.getHomeDirectory()
+    const apppath = await AppInfo.getRootPath()
+    const userName = await AppInfo.getUserName()
+    this.path = homePath + apppath + "/User/" + userName + "/Data/Temp" // /ARModels
+
     let position
     if (global.SELECTPOINTLATITUDEANDLONGITUDE) {
       position = global.SELECTPOINTLATITUDEANDLONGITUDE
@@ -207,7 +215,17 @@ class TwoPointPositionPage extends React.Component<Props, State> {
     const arPoint1 =  await SARMap.getFocusPosition()
     const result = await SMap.getCurrentLocation()
     if(result && arPoint1 && JSON.stringify(arPoint1) !== "{}") {
-      await SARMap.addTrackingMarker("icon_ar_point01.png", arPoint1, 'point1')
+      const  modelPath = this.path + "/FirstPoint.glb"
+      const info: Pick<SARMap.Transform,"position" | 'scale'> = {
+        position: arPoint1,
+        scale: {
+          x:0.1,
+          y:0.1,
+          z: 0.1,
+        },
+      }
+      // await SARMap.addTrackingMarker(this.path + "/icon_ar_point01.png", info, 'point1', ARTrackingMarkerType.IMAGE)
+      await SARMap.addTrackingMarker(modelPath, info, 'point1', ARTrackingMarkerType.MODEL)
       this.setState({
         anchorARPoint1: arPoint1,
         x: result.longitude + '',
@@ -238,7 +256,16 @@ class TwoPointPositionPage extends React.Component<Props, State> {
     const result = await SMap.getCurrentLocation()
 
     if(result && arPoint2 && JSON.stringify(arPoint2) !== "{}") {
-      await SARMap.addTrackingMarker("icon_ar_point02.png", arPoint2, 'point2')
+      const  modelPath = this.path + "/SecondPoint.glb"
+      const info: Pick<SARMap.Transform,"position" | 'scale'> = {
+        position: arPoint2,
+        scale: {
+          x:0.1,
+          y:0.1,
+          z: 0.1,
+        },
+      }
+      await SARMap.addTrackingMarker(modelPath, info, 'point2', ARTrackingMarkerType.MODEL)
       this.setState({
         anchorARPoint2: arPoint2,
         p2x: result.longitude + '',

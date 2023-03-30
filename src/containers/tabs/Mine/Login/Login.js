@@ -134,12 +134,12 @@ export default class Login extends React.Component {
       }
       if (isCreate) {
         let result = await FileTools.initUserDefaultData(userName)
-        !result && Toast.show('初始化用户数据失败')
+        !result && console.error('初始化用户数据失败')
       } else {
-        Toast.show('创建用户目录失败')
+        console.error('创建用户目录失败')
       }
     } catch (e) {
-      Toast.show('创建用户目录失败')
+      console.error('创建用户目录失败')
     }
   }
 

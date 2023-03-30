@@ -152,7 +152,7 @@ class Attribute extends React.Component<Props, State> {
         this.canBeRefresh = this.state.startIndex > 0
         if (!attributes || !attributes.data || attributes.data.length <= 0) {
           this.noMore = true
-          Toast.show('加载完毕')
+          // Toast.show('加载完毕')
           // this.currentPage--
         }
       },

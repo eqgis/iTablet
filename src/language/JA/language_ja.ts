@@ -1237,7 +1237,7 @@ export const language_ja: typeof language_cn = {
   COLLECTION_POINTS_BY_GPS: "GPSプロット方式",
   COLLECTION_LINE_BY_GPS: "GPS軌跡式",
   COLLECTION_POINT_DRAW: "ポイント描画式",
-  COLLECTION_AIM_POINT_DEAW:"Aim Point Draw", // To be translated
+  COLLECTION_AIM_POINT_DEAW:"フロントサイト式",
   COLLECTION_FREE_DRAW: "自由式",
   COLLECTION_ADD_POINT: "プロット",
   COLLECTION_START: "開始",
@@ -1348,7 +1348,7 @@ export const language_ja: typeof language_cn = {
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_SEARCHING: "平面を検索中",
   MAP_AR_AI_ASSISTANT_LAYOUT_COLLECT_VIEW_DISTANCE: "ビューポイント距離:",
 
-  MAP_AR_AI_ASSISTANT_LAYOUT_FAR:"Keep close Away", // To be translated
+  MAP_AR_AI_ASSISTANT_LAYOUT_FAR:"近づいてください",
   MAP_AR_AI_ASSISTANT_LAYOUT_CLOSE: "離れてください",
   MAP_AR_AI_ASSISTANT_LAYOUT_DARK: "現在の環境は暗すぎます。適切な照明を提供してください",
   MAP_AR_AI_ASSISTANT_LAYOUT_FAST: "デバイスの動きが速すぎます。速度を落としてください",
@@ -1991,7 +1991,7 @@ export const language_ja: typeof language_cn = {
   // 我的——登录
   LOGIN: "ログイン",
   LOGINING: "ログイン中..",
-  SAVE_LOGOUT: "Save and logout", // need to translate
+  SAVE_LOGOUT: "保存して、ログアウト",
   LOGIN_TIMEOUT: "ログインタイムアウト、後で再度試してださい。",
   LOGIN_CURRENT: "現在ユーザーはログインしました。",
   LOGIN_INVALID: "ログインに失敗しました。再度ログインしてください。",
@@ -2106,9 +2106,9 @@ export const language_ja: typeof language_cn = {
   BATCH_ADD: "バッチ追加",
   BATCH_OPERATE: "バッチ操作",
   MY_APPLET: "使用できるアプレット",
-  UN_DOWNLOADED_APPLET: "アプレットダウンロードの取り消し", // 带下载
-  NOT_LOADED_APPLET: "Applets that have not been loaded", // need to translate
-  LOCAL_APPLET: "Local Applets", // need to translate
+  UN_DOWNLOADED_APPLET: "ダウンロードしていないアプレット", // 带下载
+  NOT_LOADED_APPLET: "ロードしていないアプレット",
+  LOCAL_APPLET: "ローカルアプレット",
   DELETE_APPLET: "アプレットの削除",
   ADD_APPLET: "アプレットの追加",
   MOVE_UP: "上へ",
@@ -2215,16 +2215,16 @@ export const language_ja: typeof language_cn = {
   SLOCATION_STATE_CURRENT: "測位状態",
   WEAK_POSITIONING_SIGNAL: "測位信号は弱いです",
 
-  CHECK_DEVICE_SUPPORTS_DIFFERENTIAL_SERVICE:"Check whether the device supports differential service", // To be translated
-  CURRENT_LOADING_POINT:"Current loading point", // To be translated
-  LOADING_POINT_NAME:"Loading point name", // To be translated
-  CHECK_LITE_RTK_DEVICE_IS_CONNECTED:"Pease confirm that the Lite RTK device is connected", // To be translated
+  CHECK_DEVICE_SUPPORTS_DIFFERENTIAL_SERVICE:"デバイスが差分サービスをサポートしているかどうかを確認してください",
+  CURRENT_LOADING_POINT:"現在のロードポイント",
+  LOADING_POINT_NAME:"ロードポイント名",
+  CHECK_LITE_RTK_DEVICE_IS_CONNECTED:"Lite RTK デバイスは接続できるかどうかを確認してください",
 
-  LOCATION_SETTING: 'Location setting', // To be translated
-  DEVICE_TYPE: 'Device type', // To be translated
-  CONNECTION_MODE: "Connection mode", // To be translated
-  PAIRED_BT_DEVICE_LIST:"My devices", // To be translated
-  OTHER_BT_DEVICE_LIST:"Other devices", // To be translated
+  LOCATION_SETTING: 'ポジショニング設定',
+  DEVICE_TYPE: 'デバイスタイプ',
+  CONNECTION_MODE: "接続モード",
+  PAIRED_BT_DEVICE_LIST:"当デバイス",
+  OTHER_BT_DEVICE_LIST:"他のデバイス",
 
   // ライセンス
   LICENSE: "ライセンス",
@@ -2277,7 +2277,7 @@ export const language_ja: typeof language_cn = {
   LICENSE_ACTIVATING: "アクティブ中",
   LICENSE_ACTIVATION_SUCCESS: "アクティブに成功",
   LICENSE_ACTIVATION_FAIL: "アクティブに失敗",
-  LICENSE_ACTIVATED_OTHER_DEVICE: "The current license has been activated on another device",  // To be translated
+  LICENSE_ACTIVATED_OTHER_DEVICE: "当ライセンスは他のデバイスでアクティブされています",
   LICENSE_SELECT_LICENSE: "ライセンスの選択",
   LICENSE_REAMIN_DAYS: "残り",
   LICENSE_SHOW_DETAIL: "詳細の表示",
@@ -2377,17 +2377,17 @@ export const language_ja: typeof language_cn = {
   CALIBRATION_TIMEOUT: 'タイムアウト',
   CALIBRATION_SUCCESSFUL: '成功',
   AR_ENHANCE_POSITION_EXITED: 'AR拡張測位を閉じる',
-  SINGLE_POINT_POSITION:'Single point position', // To be translated
-  TWO_POINT_POSITION:'Two Point position', // To be translated
-  ANCHOR_POINT_ONE:'Anchor point one', // To be translated
-  ANCHOR_POINT_TWO:'Anchor point two', // To be translated
-  COORD_PARAM:'coord', // To be translated
-  AIM_REAL_POSITION: "Aim for the real shot position",  // To be translated
-  SELECT_FIRST_POSITION_POINT:'Select first position point', // To be translated
-  SELECT_SECOND_POSITION_POINT:'Select second position point', // To be translated
-  LESS_TWO_POSITION_POINT:'If there are less than two registration points, add more registration points', // To be translated
-  SCAN_POSITION_CODE: 'Scan the location code and automatically locate in the real scene', // To be translated
-  OPEN_GPS_TWO_POINT: 'Open the satellite and select two positioning points in the real scene', // To be translated
+  SINGLE_POINT_POSITION:'シングルポイントロケーション',
+  TWO_POINT_POSITION:'2つポイントロケーション',
+  ANCHOR_POINT_ONE:'ロケーションポイント1',
+  ANCHOR_POINT_TWO:'ロケーションポイント2',
+  COORD_PARAM:'座標',
+  AIM_REAL_POSITION: "実際の正射位置に置いてください",
+  SELECT_FIRST_POSITION_POINT:'ロケーションポイント1を選択してください',
+  SELECT_SECOND_POSITION_POINT:'ロケーションポイント2を選択してください',
+  LESS_TWO_POSITION_POINT:'ロケーションポイントは2より少ないです。ロケーションポイント1を選択してください',
+  SCAN_POSITION_CODE: 'QRコードをスキャンして、自動でロケーションを実行します',
+  OPEN_GPS_TWO_POINT: '衛星をオンにして、2つの測位ポイントを選択します',
 
   // ar地图
   COLLECT_SCENE_RENAME: "名前変更",

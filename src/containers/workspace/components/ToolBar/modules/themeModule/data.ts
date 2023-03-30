@@ -1236,7 +1236,7 @@ function setColor() {
     return STheme.modifyThemeDotDensityLayer(_params.LayerName,{color:SMap._translate16ToRgb(_params.LineColor)})
   }
   if (_params.colorType === 'GRADUATED_SYMBOL_COLOR') {
-    return STheme.modifyGraduatedSymbolThemeMap(_params)
+    return STheme.modifyThemeGraduatedSymbolLayer(_params.LayerName,{color:SMap._translate16ToRgb(_params.LineColor)})
   }
 }
 
@@ -2478,7 +2478,6 @@ function getGridUniqueColorScheme() {
 function setThemeGraphType() {
   const _params = ToolbarModule.getData().themeParams
   const layerName = ToolbarModule.getParams().currentLayer.name
-  console.warn(_params)
   return STheme.modifyThemeGraphLayer(layerName||"",_params)
 }
 
@@ -2660,7 +2659,18 @@ function getGraphThemeGradutedMode() {
 /** 设置等级符号专题图分级方式 */
 function setThemeGraduatedSymbolGraduatedMode() {
   const _params = ToolbarModule.getData().themeParams
-  return STheme.modifyGraduatedSymbolThemeMap(_params)
+  switch(_params.GraduatedMode){
+    case "CONSTANT":
+      _params.GraduatedMode = GraduatedMode.CONSTANT
+      break
+    case "SQUAREROOT":
+      _params.GraduatedMode = GraduatedMode.SQUAREROOT
+      break
+    case "LOGARITHM":
+      _params.GraduatedMode = GraduatedMode.LOGARITHM
+      break
+  }
+  return STheme.modifyThemeGraduatedSymbolLayer(_params.LayerName,_params)
 }
 
 function getGraduatedSymbolGradutedMode() {

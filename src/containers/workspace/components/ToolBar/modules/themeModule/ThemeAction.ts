@@ -148,9 +148,7 @@ async function getThemeExpress(type, key = '', name = '') {
   } else if (
     type === ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_EXPRESSION
   ) {
-    selectedExpression = await STheme.getGraduatedSymbolExpress(
-      param,
-    )
+    selectedExpression = (await STheme.getThemeGraduatedSymbolInfo(param?.LayerName || "")).expression
   }
   const { dataset } = expressionData
   const allExpressions = []
@@ -917,11 +915,10 @@ async function listAction(type, params = {}) {
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_EXPRESSION) {// 等级符号专题图表达式
 
     const Params = {
-      GraSymbolExpression: item.expression,
-      LayerName: _params.currentLayer.name,
+      expression: item.expression,
     }
     params.refreshList && (await params.refreshList(item.expression))
-    await STheme.modifyGraduatedSymbolThemeMap(Params)
+    await STheme.modifyThemeGraduatedSymbolLayer(_params.currentLayer.name,Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGE_COLOR) {// 分段专题图颜色表
 
     ToolbarModule.addData({ themeColor: item.key })
@@ -1885,17 +1882,13 @@ async function getTouchProgressInfo(title) {
       if (themeType === ThemeType.DOTDENSITY) {
         value = (await STheme.getThemeDotDensityInfo(_params.currentLayer.name)).SymbolSize
       } else if (themeType === ThemeType.GRADUATEDSYMBOL) {
-        value = await STheme.getGraduatedSymbolSize({
-          LayerName: _params.currentLayer.name,
-        })
+        value = (await STheme.getThemeGraduatedSymbolInfo(_params.currentLayer.name)).SymbolSize
       }
       unit = 'mm'
       break
     case getLanguage(_params.language).Map_Main_Menu.DATUM_VALUE:
       range = [1, 10000]
-      value = await STheme.getGraduatedSymbolValue({
-        LayerName: _params.currentLayer.name,
-      })
+      value = (await STheme.getThemeGraduatedSymbolInfo(_params.currentLayer.name)).BaseValue
       break
     case getLanguage(_params.language).Map_Main_Menu.STYLE_FONT_SIZE:{
       range = [1, 20]
@@ -1980,7 +1973,7 @@ function setTouchProgressInfo(title, value) {
       if (themeType === ThemeType.DOTDENSITY) {
         STheme.modifyThemeDotDensityLayer(Params.currentLayer.name||"",_params)
       } else if (themeType === ThemeType.GRADUATEDSYMBOL) {
-        STheme.modifyGraduatedSymbolThemeMap(_params)
+        STheme.modifyThemeGraduatedSymbolLayer(Params.currentLayer.name||"",_params)
       }
       break
     case getLanguage(Params.language).Map_Main_Menu.DATUM_VALUE:
@@ -1988,10 +1981,9 @@ function setTouchProgressInfo(title, value) {
       if (value > range[1]) value = range[1]
       else if (value <= range[0]) value = range[0]
       _params = {
-        LayerName: Params.currentLayer.name,
         BaseValue: value,
       }
-      STheme.modifyGraduatedSymbolThemeMap(_params)
+      STheme.modifyThemeGraduatedSymbolLayer(Params.currentLayer.name||"",_params)
       break
     case getLanguage(Params.language).Map_Main_Menu.STYLE_FONT_SIZE:
       range = [1, 20]

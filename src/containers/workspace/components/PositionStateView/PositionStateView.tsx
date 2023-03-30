@@ -1,7 +1,7 @@
 import { getThemeAssets } from "@/assets"
 import NavigationService from "@/containers/NavigationService"
 import { getLanguage } from "@/language"
-import { GGA } from "imobile_for_reactnative/NativeModule/interfaces/SLocation"
+import { GGA, IRTKFixType, RTKFixType } from "imobile_for_reactnative/NativeModule/interfaces/SLocation"
 import React, {Component} from "react"
 import { Text, View, Image, TouchableOpacity } from 'react-native'
 import styles from './style'
@@ -21,38 +21,39 @@ export default class PositionStateView extends Component<Props> {
     }
   }
 
-  getPositionSatateText = (type: number) => {
+
+  getPositionSatateText = (type: IRTKFixType[keyof IRTKFixType] | -1) => {
     let text = getLanguage().UNKONW
     switch (type) {
-      case 0:
-        text = "Invalid"
+      case RTKFixType.invalid: // "Invalid"
+        text = getLanguage().INVALIDE_SOLUTION
         break
-      case 1:
-        text = "GPS"
+      case RTKFixType.GPS: // "GPS"
+        text = getLanguage().SIGING_POINT_SOLUTION
         break
-      case 2:
-        text = "DGPS"
+      case RTKFixType.DGPS: // "DGPS"  Differential Global Position System  差分全球定位系统
+        text = getLanguage().DGPS
         break
-      case 3:
-        text = "PPS"
+      case RTKFixType.PPS: // "PPS"  Pulse Per Second
+        text = getLanguage().PPS
         break
-      case 4:
-        text = "RTK"
+      case RTKFixType.RTK: // "RTK"
+        text = getLanguage().FIXED_SOLUTION
         break
-      case 5:
-        text = "FloatRTK"
+      case RTKFixType.floatRTK: // "FloatRTK"
+        text = getLanguage().FLOAT_SOLUTION
         break
-      case 6:
-        text = "Estimated"
+      case RTKFixType.estimated: // "Estimated"  Estimated Positioning Error 估计定位误差
+        text = getLanguage().ESTIMATED
         break
-      case 7:
-        text = "Manual"
+      case RTKFixType.manual: // "Manual"
+        text = getLanguage().MANUAL
         break
-      case 8:
-        text = "Simulation"
+      case RTKFixType.simulation: // "Simulation"
+        text = getLanguage().SIMULATION
         break
-      case 9:
-        text = "WAAS"
+      case RTKFixType.WAAS: // "WAAS"  Wide Area Augmentation System 广域扩充系统
+        text = getLanguage().WAAS
         break
       default:
         text = getLanguage().UNKONW
@@ -63,6 +64,26 @@ export default class PositionStateView extends Component<Props> {
 
 
   render() {
+    let imgState = getThemeAssets().publicAssets.icon_position_state_red
+    switch (this.props.gga?.fixType || -1) {
+      case 4: // "RTK"
+        imgState = getThemeAssets().publicAssets.icon_position_state_green
+        break
+      case 5: // "FloatRTK"
+        imgState = getThemeAssets().publicAssets.icon_position_state_yellow
+        break
+      // case 0: // "Invalid"
+      case 1: // "GPS"
+      case 2: // "DGPS"
+      case 3: // "PPS"
+      case 6: // "Estimated"
+      case 7: // "Manual"
+      case 8: // "Simulation"
+      case 9: // "WAAS"
+      default:
+        imgState = getThemeAssets().publicAssets.icon_position_state_red
+        break
+    }
     return this.props.isPointParamShow ? (
       <TouchableOpacity
         style={[
@@ -78,10 +99,10 @@ export default class PositionStateView extends Component<Props> {
           style={[styles.itemStyle]}
         >
           <Image
-            source={getThemeAssets().publicAssets.icon_position_state}
+            source={imgState}
             style={[styles.image]}
           />
-          <Text style={[styles.text]}>{this.getPositionSatateText(this.props?.gga?.fixType || -1)}</Text>
+          <Text style={[styles.text]}>{this.getPositionSatateText(this.props.gga ? this.props.gga.fixType : -1)}</Text>
         </View>
 
         <View

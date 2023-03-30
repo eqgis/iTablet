@@ -2,7 +2,7 @@
  * 设备厂家页面  设计里的定位设备
  */
 import React, { Component } from "react"
-import { Text, Image, TouchableOpacity, ScrollView, View, Platform, Switch } from 'react-native'
+import { Text, Image, TouchableOpacity, ScrollView, View, Switch } from 'react-native'
 import Container from '../../components/Container'
 import { dp, scaleSize} from '../../utils'
 import NavigationService from '../NavigationService'
@@ -11,12 +11,8 @@ import { DeviceManufacturer, DeviceType } from '@/redux/models/location'
 import styles from "./styles"
 import { MainStackScreenNavigationProps } from "@/types"
 import { getImage } from "@/assets"
-import { GGA } from "imobile_for_reactnative/NativeModule/interfaces/SLocation"
+import { GGA, IRTKFixType, RTKFixType } from "imobile_for_reactnative/NativeModule/interfaces/SLocation"
 
-interface DeviceManufacturerItemType {
-  label: string
-  value: DeviceManufacturer
-}
 
 interface RowType {
   title: string,
@@ -33,23 +29,14 @@ interface Props {
 	deviceManufacturer: DeviceManufacturer,
 	setDeviceManufacturer: (manufacturer: DeviceManufacturer) => void
   setDeviceType: (devicetype: DeviceType) => void
-  gga:GGA
+  gga?:GGA
   isPointParamShow: boolean,
   setPointParamShow: (value: boolean)=> void,
 }
 
-interface State {
-	// curDeviceManufacturer: DeviceManufacturer,
-}
 
-class LocationInformation extends Component<Props, State> {
 
-  manufactureName = {
-    'other': getLanguage().LOCAL_DEVICE,
-    'mijiaH20': getLanguage().HUACHE,
-    'woncan': getLanguage().QIANXUN,
-    'situoli': getLanguage().SITUOLI,
-  }
+class LocationInformation extends Component<Props> {
 
   constructor(props: Props) {
     super(props)
@@ -62,38 +49,39 @@ class LocationInformation extends Component<Props, State> {
     NavigationService.goBack()
   }
 
-  getPositionSatateText = (type: number) => {
+
+  getPositionSatateText = (type: IRTKFixType[keyof IRTKFixType] | -1) => {
     let text = getLanguage().UNKONW
     switch (type) {
-      case 0:
-        text = "Invalid"
+      case RTKFixType.invalid: // "Invalid"
+        text = getLanguage().INVALIDE_SOLUTION
         break
-      case 1:
-        text = "GPS"
+      case RTKFixType.GPS: // "GPS"
+        text = getLanguage().SIGING_POINT_SOLUTION
         break
-      case 2:
-        text = "DGPS"
+      case RTKFixType.DGPS: // "DGPS"  Differential Global Position System  差分全球定位系统
+        text = getLanguage().DGPS
         break
-      case 3:
-        text = "PPS"
+      case RTKFixType.PPS: // "PPS"  Pulse Per Second
+        text = getLanguage().PPS
         break
-      case 4:
-        text = "RTK"
+      case RTKFixType.RTK: // "RTK"
+        text = getLanguage().FIXED_SOLUTION
         break
-      case 5:
-        text = "FloatRTK"
+      case RTKFixType.floatRTK: // "FloatRTK"
+        text = getLanguage().FLOAT_SOLUTION
         break
-      case 6:
-        text = "Estimated"
+      case RTKFixType.estimated: // "Estimated"  Estimated Positioning Error 估计定位误差
+        text = getLanguage().ESTIMATED
         break
-      case 7:
-        text = "Manual"
+      case RTKFixType.manual: // "Manual"
+        text = getLanguage().MANUAL
         break
-      case 8:
-        text = "Simulation"
+      case RTKFixType.simulation: // "Simulation"
+        text = getLanguage().SIMULATION
         break
-      case 9:
-        text = "WAAS"
+      case RTKFixType.WAAS: // "WAAS"  Wide Area Augmentation System 广域扩充系统
+        text = getLanguage().WAAS
         break
       default:
         text = getLanguage().UNKONW
@@ -194,21 +182,23 @@ class LocationInformation extends Component<Props, State> {
       <ScrollView
         style={[styles.listContentView]}
       >
-        {this.renderRowItem({
-          title: getLanguage().NTRIP_DATA_ORIGIN,
-          value: this.manufactureName[this.props.deviceManufacturer],
-          isHiddenRightImage: true,
-        })}
 
         {this.renderRowItem({
           title: getLanguage().SLOCATION_STATE_CURRENT,
-          value: this.getPositionSatateText(this.props?.gga?.fixType || -1),
+          value: this.getPositionSatateText(this.props.gga ? this.props.gga.fixType : -1),
           isHiddenRightImage: true,
         })}
 
         {this.renderRowItem({
           title: getLanguage().SAT_NUMBER,
           value: (this.props.gga?.satNums || 0) + "",
+          isHiddenRightImage: true,
+        })}
+
+        {this.renderRowItem({
+          title: getLanguage().HORIZONTAL_ACCURACY,
+          value: (this.props.gga?.HDOP || getLanguage().UNKONW) + "",
+          isHiddenRightImage: true,
         })}
 
         {this.renderRowItem({

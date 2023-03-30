@@ -3670,13 +3670,17 @@ export default class MapView extends React.Component {
       this.props.device.orientation.indexOf('LANDSCAPE') === 0
     ) {
       right = {
-        right: scaleSize(120),
-        bottom: scaleSize(26),
+        right: scaleSize(this.state.isFull ? 120 : 20),
+        bottom: scaleSize(this.props.isShowCompass? 130 : 24),
       }
     } else {
+      let bottom = this.props.isShowCompass? 255 : 135
+      if(!this.state.isFull) {
+        bottom -= 100
+      }
       right = {
         right: scaleSize(20),
-        bottom: scaleSize(135),
+        bottom: scaleSize(bottom),
       }
     }
     return (
@@ -5164,11 +5168,18 @@ export default class MapView extends React.Component {
     if (!this.props.isShowCompass) return null
     return (
       <CompassView
-        style={{
+        style={[{
           position: 'absolute',
-          top: scaleSize(this.type === 'MAP_NAVIGATION' ? 300 : 180),
-          left: scaleSize(10),
-        }}
+          // top: scaleSize(this.type === 'MAP_NAVIGATION' ? 300 : 180),
+          // left: scaleSize(10),
+          bottom: scaleSize(this.state.isFull ? 135 : 35),
+          right: scaleSize(27),
+        },
+        this.props.device.orientation.indexOf('LANDSCAPE') === 0 && {
+          right: scaleSize(this.state.isFull ? 124 : 24),
+          bottom: scaleSize(24),
+        }
+      ]}
         orientation={this.props.device.orientation}
       />
     )

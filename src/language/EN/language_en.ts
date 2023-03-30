@@ -2919,5 +2919,17 @@ export const language_en: typeof language_cn = {
   SAT_NUMBER: 'Satellite number', // To be tanslated
   SAT_LIST:"Satellite list", // To be tanslated
   NTRIP_TIMEOUT:"Ntrip delay", // To be tanslated
-  ELLIPSOID_HEIGHT: "Ellipsoid height", // To be tanslated
+  ELLIPSOID_HEIGHT: "Normol height", // To be tanslated
+  FIXED_SOLUTION: 'Fixed solution', // To be tanslated
+  FLOAT_SOLUTION:'Float solution', // To be tanslated
+  SIGING_POINT_SOLUTION: 'Siging point solution', // To be tanslated
+  INVALIDE_SOLUTION:'Invalid solution', // To be tanslated
+  ABSOLUTE_HEIGHT:"Absolute height", // To be tanslated
+  HORIZONTAL_ACCURACY:"Horizontal accuracy", // To be tanslated
+  MANUAL:"Manual", // To be tanslated
+  SIMULATION:"Simulation", // To be tanslated
+  DGPS: "DGPS", // To be tanslated
+  PPS: "PPS", // To be tanslated
+  ESTIMATED: "Estimated", // To be tanslated
+  WAAS:"WAAS", // To be tanslated
 }

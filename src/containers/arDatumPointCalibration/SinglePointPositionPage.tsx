@@ -206,7 +206,7 @@ class SinglePointPositionPage extends React.Component<Props, State> {
         >
           {this.renderInput({
             image:getThemeAssets().collection.icon_lines,
-            text: '经度:',
+            text: getLanguage().MAP_AR_DATUM_LONGITUDE + ':',
             value: this.state.x,
             onChange: text => {
               this.setState({x: text})
@@ -230,7 +230,7 @@ class SinglePointPositionPage extends React.Component<Props, State> {
           })}
           {this.renderInput({
             image:getThemeAssets().collection.icon_latitudes,
-            text: '纬度:',
+            text: getLanguage().MAP_AR_DATUM_LATITUDE + ':',
             value: this.state.y,
             onChange: text => {
               this.setState({y: text})
@@ -254,7 +254,7 @@ class SinglePointPositionPage extends React.Component<Props, State> {
           })}
           {this.renderInput({
             image:getThemeAssets().collection.icon_ar_height,
-            text: '高程:',
+            text: getLanguage().ABSOLUTE_HEIGHT + ':',
             value: this.state.z,
             isHidenBottomLine: true,
             onChange: text => {

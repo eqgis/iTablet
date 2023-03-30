@@ -58,8 +58,9 @@ const zoom_in = require('./icon_zoom_in.png')
 const icon_add_node = require('./icon_add_node.png')
 const icon_gps = require('./icon_gps.png')
 const icon_position_accuracy = require('./icon_position_accuracy.png')
-const icon_position_state = require('./icon_position_state.png')
-
+const icon_position_state_green = require('./icon_position_state_green.png')
+const icon_position_state_red = require('./icon_position_state_red.png')
+const icon_position_state_yellow = require('./icon_position_state_yellow.png')
 
 export default {
   icon_undo,
@@ -117,5 +118,7 @@ export default {
   icon_add_node,
   icon_gps,
   icon_position_accuracy,
-  icon_position_state,
+  icon_position_state_green,
+  icon_position_state_red,
+  icon_position_state_yellow,
 }

@@ -2927,5 +2927,7 @@ export const language_ja: typeof language_cn = {
   FLOAT_SOLUTION:'Float solution', // To be tanslated
   SIGING_POINT_SOLUTION: 'Siging point solution', // To be tanslated
   INVALIDE_SOLUTION:'Invalid solution', // To be tanslated
+  ABSOLUTE_HEIGHT:"Absolute height", // To be tanslated
+  HORIZONTAL_ACCURACY:"Horizontal accuracy", // To be tanslated
 
 }

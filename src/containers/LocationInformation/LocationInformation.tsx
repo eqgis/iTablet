@@ -229,6 +229,12 @@ class LocationInformation extends Component<Props, State> {
         })}
 
         {this.renderRowItem({
+          title: getLanguage().HORIZONTAL_ACCURACY,
+          value: (this.props.gga?.HDOP || getLanguage().UNKONW) + "",
+          isHiddenRightImage: true,
+        })}
+
+        {this.renderRowItem({
           title: getLanguage().MAP_AR_DATUM_LONGITUDE + '(B)',
           value: (this.props.gga?.longitude || 0) + "",
           isHiddenRightImage: true,

@@ -2927,5 +2927,7 @@ export const language_cn = {
   FLOAT_SOLUTION:'浮点解',
   SIGING_POINT_SOLUTION: '单点解',
   INVALIDE_SOLUTION:'无效解',
+  ABSOLUTE_HEIGHT:"高程",
+  HORIZONTAL_ACCURACY:"水平精度",
 
 }

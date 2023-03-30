@@ -379,7 +379,7 @@ class SinglePointPositionPage extends React.Component<Props, State> {
           }}
         >
           {this.renderItem(
-            getLanguage().MAR_AR_DATUM_PICTURE_LOCATION,
+            getLanguage().SCAN,
             getImage().icon_scan,
             this.gotoScan,
           )}

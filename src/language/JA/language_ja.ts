@@ -2896,44 +2896,44 @@ export const language_ja: typeof language_cn = {
   ATTRIBUTE_MAKE: 'Attribute to make',
   SAND_TABLE_MAKE: 'サンドテーブルの作成',
   PANE_ANIMATION: 'ペインのアニメーション',
-  CUR_ELE_NOT_SUPPORT_ATTRIBUTE: 'The current object does not support attribute creation', // To be tanslated
-  MODEL_DATA: 'Model data',   // To be tanslated
+  CUR_ELE_NOT_SUPPORT_ATTRIBUTE: '現在オブジェクトは属性作成を対応できません',
+  MODEL_DATA: 'モデルデータ',
 
-  RENDER_AR_SCENE_ON_3D: 'Render AR to 3D Scene',  // To be tanslated
-  RESTART_MODULE_INFO: 'This setting will take effect after restart the module. Would you like to restart module now?',  // To be tanslated
-  RTK_AUTO_CALIBRATION: "RTK auto calibration",  // To be tanslated
-  SHOW_POINT_INFO:"Display location infomation",  // To be tanslated
-  POSITION_ACCURACY:"Positioning accuracy ",  // To be tanslated
-  METER_LEVEL:"Meter level", // To be tanslated
-  SUBMETER_LEVEL: 'Submeter level', // To be tanslated
-  CENTIMETER_LEVEL:'centermeter level', // To be tanslated
-  LOCAL_DEVICE:'Local device', // To be tanslated
-  HUACHE:"huache", // To be tanslated
-  QIANXUN:"qianxun", // To be tanslated
-  SITUOLI:"situoli", // To be tanslated
-  NO_CONNECTED: "Don`t connected", // To be tanslated
-  CONNECTED: 'Connected', // To be tanslated
-  CHINESE_MOBILE: 'Chinese mobile', // To be tanslated
-  QIANXUN_CORS: 'Qianxun cors', // To be tanslated
-  OTHER_CORSE: "Other cors", // To be tanslated
-  UNKONW:'Unknow', // To be tanslated
-  LOCATION_INFORMATION: 'Location Infomation', // To be tanslated
-  NTRIP_DATA_ORIGIN: 'Ntrip data origin', // To be tanslated
-  SAT_NUMBER: 'Satellite number', // To be tanslated
-  SAT_LIST:"Satellite list", // To be tanslated
-  NTRIP_TIMEOUT:"Ntrip delay", // To be tanslated
-  ELLIPSOID_HEIGHT: "Normol height", // To be tanslated
-  FIXED_SOLUTION: 'Fixed solution', // To be tanslated
-  FLOAT_SOLUTION:'Float solution', // To be tanslated
-  SIGING_POINT_SOLUTION: 'Siging point solution', // To be tanslated
-  INVALIDE_SOLUTION:'Invalid solution', // To be tanslated
-  ABSOLUTE_HEIGHT:"Absolute height", // To be tanslated
-  HORIZONTAL_ACCURACY:"Horizontal accuracy", // To be tanslated
-  MANUAL:"Manual", // To be tanslated
-  SIMULATION:"Simulation", // To be tanslated
-  DGPS: "DGPS", // To be tanslated
-  PPS: "PPS", // To be tanslated
-  ESTIMATED: "Estimated", // To be tanslated
-  WAAS:"WAAS", // To be tanslated
+  RENDER_AR_SCENE_ON_3D: 'ARをシーンにレンダリング',
+  RESTART_MODULE_INFO: '当設定は、モデル再起動後で有効になります。再起動しますか?',
+  RTK_AUTO_CALIBRATION: "RTK 自動補正",
+  SHOW_POINT_INFO:"ロケーション情報の表示",
+  POSITION_ACCURACY:"ロケーション精度 ",
+  METER_LEVEL:"メートル",
+  SUBMETER_LEVEL: 'サブメートル',
+  CENTIMETER_LEVEL:'センチメートル',
+  LOCAL_DEVICE:'現在デバイス',
+  HUACHE:"huache",
+  QIANXUN:"qianxun",
+  SITUOLI:"situoli",
+  NO_CONNECTED: "未接続",
+  CONNECTED: '接続済み',
+  CHINESE_MOBILE: 'Chinese mobile',
+  QIANXUN_CORS: 'Qianxun cors',
+  OTHER_CORSE: "その他",
+  UNKONW:'未知',
+  LOCATION_INFORMATION: 'ロケーション情報',
+  NTRIP_DATA_ORIGIN: '差分データ元',
+  SAT_NUMBER: '衛星数',
+  SAT_LIST:"衛星リスト",
+  NTRIP_TIMEOUT:"差分ディレイ",
+  ELLIPSOID_HEIGHT: "正常高さ",
+  FIXED_SOLUTION: '固定',
+  FLOAT_SOLUTION:'浮動小数点',
+  SIGING_POINT_SOLUTION: 'シングルポイント',
+  INVALIDE_SOLUTION:'無効',
+  ABSOLUTE_HEIGHT:"絶対高さ",
+  HORIZONTAL_ACCURACY:"水平精度",
+  MANUAL:"手動",
+  SIMULATION:"シミュレーション",
+  DGPS: "DGPS",
+  PPS: "PPS",
+  ESTIMATED: "Estimated",
+  WAAS:"WAAS",
 
 }

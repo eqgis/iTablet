@@ -2929,5 +2929,11 @@ export const language_ja: typeof language_cn = {
   INVALIDE_SOLUTION:'Invalid solution', // To be tanslated
   ABSOLUTE_HEIGHT:"Absolute height", // To be tanslated
   HORIZONTAL_ACCURACY:"Horizontal accuracy", // To be tanslated
+  MANUAL:"Manual", // To be tanslated
+  SIMULATION:"Simulation", // To be tanslated
+  DGPS: "DGPS", // To be tanslated
+  PPS: "PPS", // To be tanslated
+  ESTIMATED: "Estimated", // To be tanslated
+  WAAS:"WAAS", // To be tanslated
 
 }

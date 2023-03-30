@@ -2929,5 +2929,11 @@ export const language_cn = {
   INVALIDE_SOLUTION:'无效解',
   ABSOLUTE_HEIGHT:"高程",
   HORIZONTAL_ACCURACY:"水平精度",
+  MANUAL:"手动",
+  SIMULATION:"模拟",
+  DGPS: "伪距",
+  PPS: "PPS",
+  ESTIMATED: "Estimated",
+  WAAS:"WAAS",
 
 }

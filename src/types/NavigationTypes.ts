@@ -9,6 +9,7 @@ export type MainStackParamList = {
   GroupSourceManagePage: GroupSourceManagePageParams,
   CoworkManagePage: CoworkManagePageParams,
   AlbumView: AlbumViewParams,
+  LocationInformation:undefined,
 }
 
 export type HomeTabParamList = {

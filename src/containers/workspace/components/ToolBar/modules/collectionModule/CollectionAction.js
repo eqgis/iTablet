@@ -393,13 +393,12 @@ async function cancel(type) {
   ) {
     type = -1
   }
-  // switch (type) {
-  //   case SMCollectorType.LINE_GPS_PATH:
-  //   case SMCollectorType.REGION_GPS_PATH:
-  //     await SCollector.stopCollect()
-  //     break
-  // }
-  await SCollector.stopCollect()
+  switch (type) {
+    case SMCollectorType.LINE_GPS_PATH:
+    case SMCollectorType.REGION_GPS_PATH:
+      await SCollector.stopCollect()
+      break
+  } 
   return SCollector.cancel()
 }
 

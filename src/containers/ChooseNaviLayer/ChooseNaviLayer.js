@@ -27,7 +27,7 @@ export default class ChooseNaviLayer extends React.Component {
 
   props: {
     navigation: Object,
-    language: String,
+    language: string,
   }
 
   constructor(props) {
@@ -134,68 +134,68 @@ export default class ChooseNaviLayer extends React.Component {
    * @param {Number} param0.index 序号
    * @param {String} param0.text 编辑的文字
    */
-    _endEditing = ({ index, text }) => {
-      let data = JSON.parse(JSON.stringify(this.state.data))
-      let regExp = /^[a-zA-Z0-9@#_]+$/
-      let isValid = regExp.test(text)
-      if (isValid) {
-        let { datasourceName, datasetName } = data[index]
-        data[index].datasetName = text
-        let selectedItem = JSON.parse(JSON.stringify(this.state.selectedItem))
-        selectedItem.datasetName = text
-        //更新datasteName
-        SData.renameDataset({
-          datasourceName,
-          datasetName,
-          newDatasetName: text,
-        })
-        this.setState({
-          data,
-          selectedItem,
-        })
-      } else {
-        Toast.show(getLanguage(global.language).Prompt.DATASET_RENAME_FAILED)
-      }
+  _endEditing = ({ index, text }) => {
+    let data = JSON.parse(JSON.stringify(this.state.data))
+    let regExp = /^[a-zA-Z0-9@#_]+$/
+    let isValid = regExp.test(text)
+    if (isValid) {
+      let { datasourceName, datasetName } = data[index]
+      data[index].datasetName = text
+      let selectedItem = JSON.parse(JSON.stringify(this.state.selectedItem))
+      selectedItem.datasetName = text
+      //更新datasteName
+      SData.renameDataset({
+        datasourceName,
+        datasetName,
+        newDatasetName: text,
+      })
+      this.setState({
+        data,
+        selectedItem,
+      })
+    } else {
+      Toast.show(getLanguage(global.language).Prompt.DATASET_RENAME_FAILED)
     }
+  }
 
-    createDataset = async ({ text }) => {
-      let regExp = /^[a-zA-Z0-9@#_]+$/
-      let isValid = regExp.test(text)
-      if (isValid) {
-        await SNavigationInner.createNaviDataset(text,global.INCREMENT_DATA.layerName).then(async returnData => {
-          if (returnData && returnData.datasetName) {
-            global.INCREMENT_DATA = returnData
-            this.setState({selectedItem:returnData})
-            this.getData()
-          }
-        })
-      } else {
-        Toast.show(getLanguage(global.language).Prompt.DATASET_RENAME_FAILED)
-      }
-    }
-
-    exportDatasource = async ({ text }) => {
-      let regExp = /^[a-zA-Z0-9@#_]+$/
-      let isValid = regExp.test(text)
-      if (isValid) {
-        const homePath = await FileTools.getHomeDirectory()
-        const udbpath = homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativePath.Temp + "default_increment_datasource@" + this.props.user.currentUser.userName + ".udb"
-        const udbtargetPath = homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativePath.Datasource + text + ".udb"
-        await FileTools.copyFile(udbpath, udbtargetPath, true)
-
-        const uddpath = homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativePath.Temp + "default_increment_datasource@" + this.props.user.currentUser.userName + ".udd"
-        const uddtargetPath = homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativePath.Datasource + text + ".udd"
-        let result = await FileTools.copyFile(uddpath, uddtargetPath, true)
-        if(result){
-          Toast.show(getLanguage(global.language).Prompt.EXPORT_SUCCESS)
-        }else{
-           
-          Toast.show(getLanguage(global.language).Prompt.EXPORT_FAILED)
+  createDataset = async ({ text }) => {
+    let regExp = /^[a-zA-Z0-9@#_]+$/
+    let isValid = regExp.test(text)
+    if (isValid) {
+      await SNavigationInner.createNaviDataset(text,global.INCREMENT_DATA.layerName).then(async returnData => {
+        if (returnData && returnData.datasetName) {
+          global.INCREMENT_DATA = returnData
+          this.setState({selectedItem:returnData})
+          this.getData()
         }
-      } else {
-        Toast.show(getLanguage(global.language).Prompt.DATASOURCE_RENAME_FAILED)
-      }
+      })
+    } else {
+      Toast.show(getLanguage(global.language).Prompt.DATASET_RENAME_FAILED)
     }
+  }
+
+  exportDatasource = async ({ text }) => {
+    let regExp = /^[a-zA-Z0-9@#_]+$/
+    let isValid = regExp.test(text)
+    if (isValid) {
+      const homePath = await FileTools.getHomeDirectory()
+      const udbpath = homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativePath.Temp + "default_increment_datasource@" + this.props.user.currentUser.userName + ".udb"
+      const udbtargetPath = homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativePath.Datasource + text + ".udb"
+      await FileTools.copyFile(udbpath, udbtargetPath, true)
+
+      const uddpath = homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativePath.Temp + "default_increment_datasource@" + this.props.user.currentUser.userName + ".udd"
+      const uddtargetPath = homePath + ConstPath.UserPath + this.props.user.currentUser.userName + '/' + ConstPath.RelativePath.Datasource + text + ".udd"
+      let result = await FileTools.copyFile(uddpath, uddtargetPath, true)
+      if(result){
+        Toast.show(getLanguage(global.language).Prompt.EXPORT_SUCCESS)
+      }else{
+
+        Toast.show(getLanguage(global.language).Prompt.EXPORT_FAILED)
+      }
+    } else {
+      Toast.show(getLanguage(global.language).Prompt.DATASOURCE_RENAME_FAILED)
+    }
+  }
 
   _onMorePress = ({ index , item}) => {
     this.index = index

@@ -632,10 +632,10 @@ class AppRoot extends Component {
       }
       isCreate = this.initUserDirectories(userName) && isCreate
       if (!isCreate) {
-        Toast.show('创建文件目录失败')
+        console.error('创建文件目录失败')
       }
     } catch (e) {
-      Toast.show('创建文件目录失败')
+      console.error('创建文件目录失败')
     }
   }
 

@@ -16,7 +16,6 @@
 		0AC8AEFF2808109F00435541 /* MyLaunchScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AC8AE7B2808109E00435541 /* MyLaunchScreenViewController.m */; };
 		0AC8AF002808109F00435541 /* MyLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE7C2808109E00435541 /* MyLaunchScreen.storyboard */; };
 		0AC8AF012808109F00435541 /* NativeMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AC8AE7F2808109E00435541 /* NativeMethod.m */; };
-		0AC8AF022808109F00435541 /* Images.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE822808109E00435541 /* Images.zip */; };
 		0AC8AF032808109F00435541 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE832808109E00435541 /* icon.png */; };
 		0AC8AF042808109F00435541 /* launch_slogan_en.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE842808109E00435541 /* launch_slogan_en.png */; };
 		0AC8AF052808109F00435541 /* Template.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0AC8AE852808109E00435541 /* Template.zip */; };
@@ -232,7 +231,6 @@
 		0AC8AE7D2808109E00435541 /* MyLaunchScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLaunchScreenViewController.h; sourceTree = "<group>"; };
 		0AC8AE7F2808109E00435541 /* NativeMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NativeMethod.m; sourceTree = "<group>"; };
 		0AC8AE802808109E00435541 /* NativeMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeMethod.h; sourceTree = "<group>"; };
-		0AC8AE822808109E00435541 /* Images.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Images.zip; sourceTree = "<group>"; };
 		0AC8AE832808109E00435541 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		0AC8AE842808109E00435541 /* launch_slogan_en.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch_slogan_en.png; sourceTree = "<group>"; };
 		0AC8AE852808109E00435541 /* Template.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Template.zip; sourceTree = "<group>"; };
@@ -474,7 +472,6 @@
 				4E28CE8F28378DEA0045CB07 /* ARWebView.xib */,
 				4E28CE8C28378DEA0045CB07 /* left_arrow.png */,
 				4E28CE9028378DEA0045CB07 /* publicMap.txt */,
-				0AC8AE822808109E00435541 /* Images.zip */,
 				0AC8AE832808109E00435541 /* icon.png */,
 				0AC8AE842808109E00435541 /* launch_slogan_en.png */,
 				0AC8AE852808109E00435541 /* Template.zip */,
@@ -871,7 +868,6 @@
 				0A33933D283386F90094AD2F /* SuperMap.bundle in Resources */,
 				E565E995286309A5007797E3 /* detect.tflite in Resources */,
 				65B76A7E289D0E62001888E6 /* ARListView.xib in Resources */,
-				0AC8AF022808109F00435541 /* Images.zip in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				0AC8AF78280810BF00435541 /* LaunchScreen.xib in Resources */,
 				65CDD18D28A4F53400B5A2C8 /* tab_icon_close01.png in Resources */,
@@ -901,7 +897,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
@@ -909,7 +905,7 @@
 			name = "Bundle React Native code and images";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
@@ -1111,7 +1107,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 6;
-				DEVELOPMENT_TEAM = EJEV229UWS;
+				DEVELOPMENT_TEAM = URZW253WPZ;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1263,7 +1259,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 6;
-				DEVELOPMENT_TEAM = EJEV229UWS;
+				DEVELOPMENT_TEAM = URZW253WPZ;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

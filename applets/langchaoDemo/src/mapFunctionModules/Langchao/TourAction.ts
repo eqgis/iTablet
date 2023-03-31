@@ -5,7 +5,7 @@ import { ConstPath } from '@/constants'
 import { AppEvent, AppToolBar, LayerUtils, Toast } from '@/utils'
 import { getLanguage } from '@/language'
 import { getJson } from '../../assets/data'
-import { uploadFile, MessageInfoType, message, getUserParam, printLog, getUUid } from '../../utils/langchaoServer'
+import { uploadFile, MessageInfoType, message, getUserParam, printLog, getUUid, uploadFileTest } from '../../utils/langchaoServer'
 import NavigationService from '@/containers/NavigationService'
 import CollectionAction from '@/containers/workspace/components/ToolBar/modules/collectionModule/CollectionAction'
 
@@ -328,8 +328,10 @@ const sendMessagePhone = async (id: number, type: uploadType) => {
         mediaUUidsArr.push({[fileName]: uuidM})
         continue
       } else {
-        // uploadFileTest(itemPath)
-        const mediaUploadInfo = await uploadFile(itemPath)
+        const mediaUploadInfo = await uploadFileTest(itemPath)
+        console.warn("mediaUploadInfo: " + mediaUploadInfo)
+        printLog(`\n mediaUploadInfo ${mediaUploadInfo}`)
+        // const mediaUploadInfo = await uploadFile(itemPath)
         if(mediaUploadInfo) {
           const mUUID = mediaUploadInfo.uuid
           if(photoUuids !== "") {
@@ -646,11 +648,11 @@ const uploadDialog = async (id: number, type: uploadType) => {
           }
           global.Loading.setLoading(false)
           if(type !== 'all') {
-            if(result) {
-              Toast.show(getLanguage(global.language).Prompt.RESOURCE_UPLOAD_SUCCESS)
-            } else {
-              Toast.show(getLanguage(global.language).Prompt.RESOURCE_UPLOAD_FAILED)
-            }
+            // if(result) {
+            //   Toast.show(getLanguage(global.language).Prompt.RESOURCE_UPLOAD_SUCCESS)
+            // } else {
+            //   Toast.show(getLanguage(global.language).Prompt.RESOURCE_UPLOAD_FAILED)
+            // }
           }
         }
 

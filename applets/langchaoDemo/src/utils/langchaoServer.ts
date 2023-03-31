@@ -7,6 +7,8 @@ import RNFetchBlob from 'rn-fetch-blob'
 import JSEncrypt from 'jsencrypt'
 import { Base64 } from 'js-base64'
 import { getLanguage } from '@/language'
+import { RNFS } from 'imobile_for_reactnative'
+import ChunkUpload from './ChunkUpload'
 
 export interface userInfoType {
   id: string,
@@ -220,7 +222,7 @@ export const getToken = async (clientid?: string, clientsecret?: string) => {
     console.log(response)
     printLog(`\n getToken response : ${JSON.stringify(response)}`)
     if(response.status === 200) {
-      const data = JSON.parse(JSON.stringify(response.data))
+      const data = response.data
       if(data.ok === true) {
         const token = data.data
         console.warn("token: " + token)
@@ -264,12 +266,11 @@ export const uploadFile = async (path: string) => {
     ])
     console.warn('res', res)
     printLog(`\n uploadFile response : ${JSON.stringify(res)}`)
-    res = JSON.parse(JSON.stringify(res))
-    const respInfo = JSON.parse(JSON.stringify(res.respInfo))
+    const respInfo = res.respInfo
     printLog(`\n uploadFile respInfo : ${JSON.stringify(respInfo)}`)
     let info = null
     if(respInfo.status === 200) {
-      const data = JSON.parse(res?.data)
+      const data = res?.data
       if(data.ok === true) {
         Toast.show("附件上传成功")
         info = JSON.parse(JSON.stringify(data.data))
@@ -285,46 +286,99 @@ export const uploadFile = async (path: string) => {
   }
 
 }
-
+const testUploadUrl = `http://192.168.11.215:8096/upload`
 export const uploadFileTest = async (path: string) => {
-  try {
-    const token = serverToken
-    const clientId = serverClientid
+  return new Promise(async resolve => {
+    try {
+      const IP = serverIP
+      const token = serverToken
+      const clientId = serverClientid
+  
+      const url = testUploadUrl
+  
+      const fileType = "image/video"
+  
+      const fileName = path.substring(path.lastIndexOf("/") + 1, path.length)
+      const _data = RNFetchBlob.wrap(path)
+      console.warn(_data)
+  
+      let statResult = await RNFS.stat(path)
+  
+      if (parseInt(statResult.size) < 10 * 1024 * 1024) {
+        // const url = `http://${IP}/api/app/osa/v1.0/attachment/upload`
+        printLog(`\n =========================== uploadFile 文件上传 =========================== 
+        \n uploadFile(path: ${path} ) \n url: ${url} \n clientid: ${clientId} token: ${token}`)
+        // 文件小于10mb用普通上传
+        RNFetchBlob.fetch('POST', url, {
+          'Content-Type': 'multipart/form-data',
+        }, [
+          // path是指文件的路径，wrap方法可以根据文件路径获取到文件信息
+          // { name: 'file', filename: 'fileName', type: 'image/foo', data: file.blob },
+          { name: 'file', filename: fileName, type: fileType, data: RNFetchBlob.wrap(path) },
+          //... 可能还会有其他非文件字段{name:'字段名',data:'对应值'}
+        ]).then(res => {
+          console.warn('upload', JSON.stringify(res))
 
-    const url = `http://192.168.11.21:8080/test/upFile`
+          printLog(`\n uploadFile response : ${JSON.stringify(res)}`)
+          const respInfo = res.respInfo
+          printLog(`\n uploadFile respInfo : ${JSON.stringify(respInfo)}`)
+          let info = null
+          if(respInfo.status === 200) {
+            const data = res?.data
+            if(data.ok === true) {
+              Toast.show("附件上传成功")
+              info = JSON.parse(JSON.stringify(data.data))
+              printLog(`\n uploadFile result : ${JSON.stringify(data.data)}`)
+            }
+          }
+          resolve(info)
+        })
+      } else {
+        // const url = `http://${IP}/api/app/osa/v1.0/attachment/bigFileUpload`
+        printLog(`\n =========================== uploadFile 大文件上传 =========================== 
+        \n uploadFile(path: ${path} ) \n url: ${url} \n clientid: ${clientId} token: ${token}`)
+        // 文件大于10mb用分片上传
+        const LIMIT_SIZE = 3 * 1024 * 1024
+        const chunk = new ChunkUpload({
+          url: testUploadUrl,
+          path: path,
+          chunkSize: LIMIT_SIZE,
+          chunkNum: 2,
+    
+          // Errors
+          onFetchBlobError: (e) => console.log(e),
+          onWriteFileError: (e) => console.log(e),
+          onComplate: (res) => {
+            console.warn('upload', JSON.stringify(res))
+  
+            printLog(`\n uploadFile onComplate res : ${JSON.stringify(res)}`)
+            const respInfo = res.respInfo
+            let info = null
+            if(respInfo?.status === 200) {
+              const data = res?.data
+              if(data.ok === true) {
+                Toast.show("附件上传成功")
+                info = JSON.parse(JSON.stringify(data.data))
+                printLog(`\n uploadFile onComplate data : ${JSON.stringify(data.data)}`)
+              }
+            }
+            resolve(info)
+          },
+          onProgress: (e) => {
+            console.log('progress:', e)
 
-    // const fileType = type || "image/foo"
-
-    const fileName = path.substring(path.lastIndexOf("/"), path.length)
-    const res = await RNFetchBlob.fetch('POST', url, {
-      // header...
-      'Content-Type': 'multipart/form-data'
-    }, [
-    // path是指文件的路径，wrap方法可以根据文件路径获取到文件信息
-      { name: 'file', filename: fileName, type: 'image/foo', data: RNFetchBlob.wrap(path) },
-      // { name: 'file', filename: fileName, type: fileType, data: RNFetchBlob.wrap(path) },
-    //... 可能还会有其他非文件字段{name:'字段名',data:'对应值'}
-    ])
-    console.warn('res', res)
-    res = JSON.parse(JSON.stringify(res))
-    const respInfo = JSON.parse(JSON.stringify(res.respInfo))
-    printLog(`\n uploadFile response : ${JSON.stringify(res)}`)
-    let info = null
-    if(respInfo.status === 200) {
-      const data = JSON.parse(res?.data)
-      if(data.ok === true) {
-        Toast.show("附件上传成功")
-        info = JSON.parse(JSON.stringify(data.data))
-        printLog(`\n uploadFile result : ${JSON.stringify(data.data)}`)
+            printLog(`\n progress: ${e}`)
+          },
+        });
+    
+        chunk.start();
       }
+    } catch (error) {
+      console.warn("error: " + error)
+      global.SimpleDialog.setVisible(false)
+      resolve(null)
     }
-    return info
-  } catch (error) {
-    console.warn("error: " + error)
-    global.SimpleDialog.setVisible(false)
-    return null
-  }
-
+  })
 }
 
 
@@ -460,8 +514,7 @@ export const message = async (params: MessageInfoType, uuid: string) => {
     printLog(`\n message res: ${JSON.stringify(res)}`)
     let infos = false
     if(res.status === 200) {
-      const data = JSON.parse(JSON.stringify(res.data))
-      if(data.ok === true) {
+      if(typeof res.data === 'string' || res.data.ok === true) {
         infos = true
         printLog(`\n message data: ${JSON.stringify(res.data)}`)
       }

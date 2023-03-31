@@ -112,14 +112,13 @@ class TwoPointPositionPage extends React.Component<Props, State> {
         p2y: position.latitude + '',
       })
     }
-    // await SARMap.setAction(ARAction.FOCUS)
+    await SARMap.setAction(ARAction.LineDot_CREATE_FOUCUS)
 
     // 提示五秒后消失
     this.tipTimer = setTimeout(async () => {
       this.setState({
         isTipsShow: false,
       })
-      // await SARMap.setAction(ARAction.FOCUS)
       if(this.tipTimer) {
         clearTimeout(this.tipTimer)
         this.tipTimer = null
@@ -128,11 +127,27 @@ class TwoPointPositionPage extends React.Component<Props, State> {
   }
 
   componentDidUpdate = async (prevProps: Readonly<Props>, prevState: Readonly<State>): Promise<void>  => {
-    if(this.state.showStatus !== prevState.showStatus || this.state.isTipsShow !== prevState.isTipsShow) {
-      if(this.state.showStatus === "main" && !this.state.isTipsShow) {
-        await SARMap.setAction(ARAction.FOCUS)
+    if(this.state.showStatus !== prevState.showStatus) { // || this.state.isTipsShow !== prevState.isTipsShow
+      if(this.state.showStatus === "main") { //  && !this.state.isTipsShow
+        // await SARMap.setAction(ARAction.LineDot_CREATE_FOUCUS)
+        SARMap.setDotLineFocusShow(true)
+        if(this.state.anchorARPoint1 && !this.state.anchorARPoint2) {
+          await SARMap.addDotLinePoint(this.state.anchorARPoint1)
+        }
+
+        // if(this.state.anchorARPoint1) {
+        //   await SARMap.addDotLinePoint(this.state.anchorARPoint1)
+        // }
+        // if(this.state.anchorARPoint2) {
+        //   await SARMap.addDotLinePoint(this.state.anchorARPoint2)
+        // }
       } else {
-        await SARMap.setAction(ARAction.NULL)
+        // await SARMap.setAction(ARAction.NULL)
+        // 当第一个点=存在，第二个点不存在时，将线隐藏
+        if(this.state.anchorARPoint1 && !this.state.anchorARPoint2) {
+          await SARMap.removeLastDotLinePoint()
+        }
+        SARMap.setDotLineFocusShow(false)
       }
     }
   }
@@ -226,6 +241,7 @@ class TwoPointPositionPage extends React.Component<Props, State> {
       }
       // await SARMap.addTrackingMarker(this.path + "/icon_ar_point01.png", info, 'point1', ARTrackingMarkerType.IMAGE)
       await SARMap.addTrackingMarker(modelPath, info, 'point1', ARTrackingMarkerType.MODEL)
+      await SARMap.addDotLinePoint(arPoint1)
       this.setState({
         anchorARPoint1: arPoint1,
         x: result.longitude + '',
@@ -252,26 +268,30 @@ class TwoPointPositionPage extends React.Component<Props, State> {
 
   /** 定位点二的点击方法 */
   selectAnchorTwo = async () => {
-    const arPoint2 =  await SARMap.getFocusPosition()
-    const result = await SMap.getCurrentLocation()
+    if(!this.state.anchorARPoint2) {
+      const arPoint2 =  await SARMap.getFocusPosition()
+      const result = await SMap.getCurrentLocation()
 
-    if(result && arPoint2 && JSON.stringify(arPoint2) !== "{}") {
-      const  modelPath = this.path + "/SecondPoint.glb"
-      const info: Pick<SARMap.Transform,"position" | 'scale'> = {
-        position: arPoint2,
-        scale: {
-          x:0.1,
-          y:0.1,
-          z: 0.1,
-        },
+      if(result && arPoint2 && JSON.stringify(arPoint2) !== "{}") {
+        const  modelPath = this.path + "/SecondPoint.glb"
+        const info: Pick<SARMap.Transform,"position" | 'scale'> = {
+          position: arPoint2,
+          scale: {
+            x:0.1,
+            y:0.1,
+            z: 0.1,
+          },
+        }
+        await SARMap.addTrackingMarker(modelPath, info, 'point2', ARTrackingMarkerType.MODEL)
+        await SARMap.addDotLinePoint(arPoint2)
+        this.setState({
+          anchorARPoint2: arPoint2,
+          p2x: result.longitude + '',
+          p2y: result.latitude + '',
+        })
       }
-      await SARMap.addTrackingMarker(modelPath, info, 'point2', ARTrackingMarkerType.MODEL)
-      this.setState({
-        anchorARPoint2: arPoint2,
-        p2x: result.longitude + '',
-        p2y: result.latitude + '',
-      })
     }
+
 
   }
 
@@ -281,6 +301,7 @@ class TwoPointPositionPage extends React.Component<Props, State> {
       // 当定位点二已经存在了，才撤销定位点二，撤销点二 ，为打点二状态
       if(this.state.anchorARPoint2 && JSON.stringify(this.state.anchorARPoint2) !== "{}") {
         await SARMap.removeTrackingMarker("point2")
+        await SARMap.removeLastDotLinePoint()
         this.setState({
           anchorARPoint2: null,
           curAddPoint: 'p2',
@@ -288,6 +309,7 @@ class TwoPointPositionPage extends React.Component<Props, State> {
       }else if(this.state.anchorARPoint1 && JSON.stringify(this.state.anchorARPoint1) !== "{}"){
         // 当定位点二不存在，定位点一存在时，才撤销定位点一，撤销点一 ，为打点一状态
         await SARMap.removeTrackingMarker("point1")
+        await SARMap.removeLastDotLinePoint()
         if(this.state.curAddPoint === 'p2') {
           if(this.tipTimer) {
             clearTimeout(this.tipTimer)
@@ -1042,7 +1064,8 @@ class TwoPointPositionPage extends React.Component<Props, State> {
 
   renderScanView = () => {
     if(global.Type === ChunkType.MAP_AR_MAPPING){
-      SARMap.setAction(ARAction.NULL)
+      // SARMap.setAction(ARAction.NULL)
+      SARMap.setDotLineFocusShow(false)
     }
     return (
       <QRScan

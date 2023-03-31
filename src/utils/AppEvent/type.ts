@@ -31,4 +31,6 @@ export interface Event {
   'on_exit_ar_map_module': undefined
 
   'network_change': NetInfoState
+  /** android权限申请后，初始化用户数据 */
+  "androidPremissionRequstCallback": undefined
 }

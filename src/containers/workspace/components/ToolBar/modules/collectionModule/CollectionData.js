@@ -1,3 +1,4 @@
+import React from 'react'
 import { SCollector, SMCollectorType } from 'imobile_for_reactnative'
 import constants from '../../../../constants'
 import ToolbarBtnType from '../../ToolbarBtnType'
@@ -7,6 +8,7 @@ import { ConstToolType } from '../../../../../../constants'
 import CollectionAction from './CollectionAction'
 import ToolbarModule from '../ToolbarModule'
 import { AppEvent } from '@/utils'
+import CollectionView from './CollectionView'
 
 /**
  * 获取采集操作数据
@@ -17,6 +19,7 @@ function getData(type) {
   const data = []
   let buttons = []
   let isCollection = false
+  let externalView = null
 
 
   if (type === ConstToolType.SM_MAP_TOOL_ATTRIBUTE_SELECTION_RELATE) {
@@ -109,15 +112,21 @@ function getData(type) {
     || type === SMCollectorType.POINT_AIM_POINT
     || type === SMCollectorType.REGION_AIM_POINT
   ) {
-    data.unshift({
-      key: 'addAimPoint',
-      title: getLanguage(global.language).Map_Main_Menu.COLLECTION_ADD_POINT,
-      action: () => {
-        AppEvent.emitEvent("collector_aim_point_add", type)
-      },
-      size: 'large',
-      image: getThemeAssets().collection.icon_collect_point,
-    })
+    // data.unshift({
+    //   key: 'addAimPoint',
+    //   title: getLanguage(global.language).Map_Main_Menu.COLLECTION_ADD_POINT,
+    //   action: () => {
+    //     AppEvent.emitEvent("collector_aim_point_add", type)
+    //   },
+    //   size: 'large',
+    //   image: getThemeAssets().collection.icon_collect_point,
+    // })
+
+    externalView = (
+      <CollectionView
+        type={type}
+      />
+    )
   }
 
   data.push({
@@ -170,7 +179,7 @@ function getData(type) {
     })
   }
 
-  return { data, buttons }
+  return { data, buttons, externalView }
 }
 
 /**

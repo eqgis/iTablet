@@ -21,6 +21,7 @@ import { AppEvent, Toast } from '../../../../../../utils'
 import { getLanguage } from '../../../../../../language'
 import { Login } from '@/containers/tabs'
 import { Action, } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import CollectionView from './CollectionView'
 
 function openTemplate(type) {
   const params = ToolbarModule.getParams()
@@ -97,7 +98,7 @@ function changeCollection(type) {
 
 /** 采集分类点击事件 * */
 function showCollection(type, layerName) {
-  const { data, buttons } = CollectionData.getData(type)
+  const { data, buttons, externalView } = CollectionData.getData(type)
   if (!ToolbarModule.getParams().setToolbarVisible) return
   // const column = 4
   // const rows = Math.ceil(data.length / column) - 1 + 1
@@ -127,6 +128,7 @@ function showCollection(type, layerName) {
     // height,
     data,
     buttons,
+    externalView: externalView,
     // column,
     cb: () => {
       ToolbarModule.addData({
@@ -398,7 +400,7 @@ async function cancel(type) {
     case SMCollectorType.REGION_GPS_PATH:
       await SCollector.stopCollect()
       break
-  } 
+  }
   return SCollector.cancel()
 }
 

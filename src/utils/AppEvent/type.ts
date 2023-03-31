@@ -33,4 +33,6 @@ export interface Event {
   'network_change': NetInfoState
   /** android权限申请后，初始化用户数据 */
   "androidPremissionRequstCallback": undefined
+  /** 准星采集打点事件 */
+  "collector_aim_point_add": number
 }

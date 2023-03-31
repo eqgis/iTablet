@@ -139,15 +139,42 @@ export default class CoworkInfo {
             message.message.geoType,
           )
         } else if (message.message.isHeatmap && message.message.layerHeatmap) {
-          let res = await STheme.createHeatMap({
-            DatasourceAlias: message.message.DatasourceAlias,
-            DatasetName: message.message.DatasetName,
+          let colorArr = []
+          for(let i=0;i<message.message.layerHeatmap.colorset.length;i++){
+            let arr = message.message.layerHeatmap.colorset[i]
+            let color = {
+              r:arr[0],
+              g:arr[1],
+              b:arr[2],
+              a:arr[3],
+            }
+            colorArr.push(color)
+          }
+
+          let maxColor = {
+            r:message.message.layerHeatmap.maxColor[0],
+            g:message.message.layerHeatmap.maxColor[1],
+            b:message.message.layerHeatmap.maxColor[2],
+            a:message.message.layerHeatmap.maxColor[3],
+          }
+
+          let minColor = {
+            r:message.message.layerHeatmap.minColor[0],
+            g:message.message.layerHeatmap.minColor[1],
+            b:message.message.layerHeatmap.minColor[2],
+            a:message.message.layerHeatmap.minColor[3],
+          }
+
+          let res = await STheme.createThemeHeatLayer({
+            datasourceName: message.message.DatasourceAlias,
+            datasetName: message.message.DatasetName,
+          }, {
             kernelRadius: message.message.layerHeatmap.kernelRadius,
             fuzzyDegree: message.message.layerHeatmap.fuzzyDegree,
             intensity: message.message.layerHeatmap.intensity,
-            maxColor: message.message.layerHeatmap.maxColor,
-            minColor: message.message.layerHeatmap.minColor,
-            colorset: message.message.layerHeatmap.colorset,
+            maxColor: maxColor,
+            minColor: minColor,
+            colorset: colorArr,
           })
           result = res.result
           result && SMap.refreshMap()
@@ -215,19 +242,44 @@ export default class CoworkInfo {
             message.message.geoType,
           )
         } else if (message.message.isHeatmap && message.message.layerHeatmap) {
+          let colorArr = []
+          for(let i=0;i<message.message.layerHeatmap.colorset.length;i++){
+            let arr = message.message.layerHeatmap.colorset[i]
+            let color = {
+              r:arr[0],
+              g:arr[1],
+              b:arr[2],
+              a:arr[3],
+            }
+            colorArr.push(color)
+          }
+
+          let maxColor = {
+            r:message.message.layerHeatmap.maxColor[0],
+            g:message.message.layerHeatmap.maxColor[1],
+            b:message.message.layerHeatmap.maxColor[2],
+            a:message.message.layerHeatmap.maxColor[3],
+          }
+
+          let minColor = {
+            r:message.message.layerHeatmap.minColor[0],
+            g:message.message.layerHeatmap.minColor[1],
+            b:message.message.layerHeatmap.minColor[2],
+            a:message.message.layerHeatmap.minColor[3],
+          }
           // 添加热力图
-          let res = await STheme.createHeatMap({
-            DatasourceAlias: message.message.DatasourceAlias,
-            DatasetName: message.message.DatasetName,
+          let res = await STheme.createThemeHeatLayer({
+            datasourceName: message.message.DatasourceAlias,
+            datasetName: message.message.DatasetName,
+          }, {
             kernelRadius: message.message.layerHeatmap.kernelRadius,
             fuzzyDegree: message.message.layerHeatmap.fuzzyDegree,
             intensity: message.message.layerHeatmap.intensity,
-            maxColor: message.message.layerHeatmap.maxColor,
-            minColor: message.message.layerHeatmap.minColor,
-            colorset: message.message.layerHeatmap.colorset,
+            maxColor: maxColor,
+            minColor: minColor,
+            colorset: colorArr,
           })
-          result = res.result
-          result && SMap.refreshMap()
+          res && SMap.refreshMap()
         } else if (message.message.themeType > 0 && message.message.layer) {
           // 添加专题图层
           let index = 0
@@ -271,12 +323,11 @@ export default class CoworkInfo {
               )
           }
         } else if (message.message.isHeatmap && message.message.layerHeatmap) {
-          let res = await STheme.modifyHeatMap(
-            message.message.layerPath,
+          let res = await STheme.modifyThemeHeatLayer(
+            message.message.layerName,
             message.message.layerHeatmap,
           )
-          result = res.result
-          result && SMap.refreshMap()
+          res && SMap.refreshMap()
         } else if (message.message.themeType > 0 && message.message.theme) {
           result = await SMap.setLayerThemeFromXML(
             message.message.layerPath,

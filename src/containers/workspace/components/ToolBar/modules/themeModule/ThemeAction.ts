@@ -972,16 +972,14 @@ async function listAction(type, params = {}) {
     let Params
     if (item.colors) {
       Params = {
-        Colors: item.colors,
-        LayerName: _params.currentLayer.name,
+        colorset: item.colors,
       }
     } else {
       Params = {
-        HeatmapColorScheme: item.key,
-        LayerName: _params.currentLayer.name,
+        colorScheme: item.key,
       }
     }
-    await STheme.setHeatMapColorScheme(Params)
+    await STheme.modifyThemeHeatLayer(_params.currentLayer.name||"",Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION) { // 统一标签表达式
 
     const Params = {
@@ -1836,25 +1834,23 @@ async function getTouchProgressInfo(title) {
     // 热力图
     case getLanguage(_params.language).Map_Main_Menu.THEME_HEATMAP_RADIUS:
       range = [1, 50]
-      value = await STheme.getHeatMapRadius({
-        LayerName: _params.currentLayer.name,
-      })
+      value = (await STheme.getThemeHeatInfo(_params.currentLayer.name||"")).kernelRadius
       unit = 'X'
       break
-    case getLanguage(_params.language).Map_Main_Menu.THEME_HEATMAP_FUZZY_DEGREE:
+    case getLanguage(_params.language).Map_Main_Menu.THEME_HEATMAP_FUZZY_DEGREE:{
+      const va = ((await STheme.getThemeHeatInfo(_params.currentLayer.name||"")).fuzzyDegree)
       range = [1, 100]
-      value = await STheme.getHeatMapFuzzyDegree({
-        LayerName: _params.currentLayer.name,
-      })
+      value = va?va*10:1
       unit = '%'
       break
-    case getLanguage(_params.language).Map_Main_Menu.THEME_HEATMAP_MAXCOLOR_WEIGHT:
+    }
+    case getLanguage(_params.language).Map_Main_Menu.THEME_HEATMAP_MAXCOLOR_WEIGHT:{
       range = [1, 100]
-      value = await STheme.getHeatMapMaxColorWeight({
-        LayerName: _params.currentLayer.name,
-      })
+      const va = (await STheme.getThemeHeatInfo(_params.currentLayer.name||"")).intensity
+      value = va?va*100.0:1
       unit = '%'
       break
+    }
     // 其他专题图
     case getLanguage(global.language).Map_Main_Menu.RANGE_COUNT:
       if (
@@ -1924,24 +1920,21 @@ function setTouchProgressInfo(title, value) {
       if (value > range[1]) value = range[1]
       else if (value <= range[0]) value = range[0]
       _params = {
-        LayerName: Params.currentLayer.name,
-        Radius: value,
+        kernelRadius: value,
       }
-      STheme.setHeatMapRadius(_params)
+      STheme.modifyThemeHeatLayer(Params.currentLayer.name||"",_params)
       break
     case getLanguage(Params.language).Map_Main_Menu.THEME_HEATMAP_FUZZY_DEGREE:
       _params = {
-        LayerName: Params.currentLayer.name,
-        fuzzyDegree: value,
+        fuzzyDegree: value/10,
       }
-      STheme.setHeatMapFuzzyDegree(_params)
+      STheme.modifyThemeHeatLayer(Params.currentLayer.name||"",_params)
       break
     case getLanguage(Params.language).Map_Main_Menu.THEME_HEATMAP_MAXCOLOR_WEIGHT:
       _params = {
-        LayerName: Params.currentLayer.name,
-        MaxColorWeight: value,
+        intensity: value/100.0,
       }
-      STheme.setHeatMapMaxColorWeight(_params)
+      STheme.modifyThemeHeatLayer(Params.currentLayer.name||"",_params)
       break
     // 其他专题图
     case getLanguage(global.language).Map_Main_Menu.RANGE_COUNT:

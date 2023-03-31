@@ -3388,28 +3388,28 @@ function getAggregationColorScheme() {
 
 // 通过数据集->创建热力图
 async function createHeatMap(params) {
-  let paramsTheme = {}
   let isSuccess = false
-  let errorInfo = ''
-  paramsTheme = {
-    DatasourceAlias: params.themeDatasourceAlias,
-    DatasetName: params.themeDatasetName,
+  // let errorInfo = ''
+  const datasetInfo = {
+    datasetName:params.themeDatasetName,
+    datasourceName:params.themeDatasourceAlias,
+  }
+  const paramsTheme = {
     kernelRadius: 40,
     fuzzyDegree: 0.8,
     intensity: 0.1,
-    colorType: 'ZA_Insights',
+    colorScheme: 'ZA_Insights',
   }
-  await STheme.createHeatMap(paramsTheme)
-    .then(msg => {
-      isSuccess = msg.result
-      errorInfo = msg.error && msg.error
-      if (isSuccess && msg.layer) {
-        ThemeAction.sendAddThemeMsg(msg.layer)
+  await STheme.createThemeHeatLayer(datasetInfo,paramsTheme)
+    .then(layer => {
+      if (layer) {
+        isSuccess = true
+        ThemeAction.sendAddThemeMsg(layer)
       }
     })
-    .catch(err => {
-      errorInfo = err.message
-    })
+    // .catch(err => {
+    //   errorInfo = err.message
+    // })
   if (isSuccess) {
     // Toast.show('创建专题图成功')
     // 设置当前图层

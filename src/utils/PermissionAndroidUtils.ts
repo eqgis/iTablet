@@ -4,6 +4,7 @@ import {
   NativeModules,
   Platform,
 } from 'react-native'
+import AppEvent from './AppEvent/AppEvent'
 
 const AppUtils = NativeModules.AppUtils
 
@@ -47,6 +48,7 @@ export async function checkAllPermission(): Promise<boolean> {
   return true
 }
 
+let isInitFirst = false
 export async function requestAllPermission(): Promise<boolean> {
 
   if (Platform.OS === "android") {
@@ -72,6 +74,10 @@ export async function requestAllPermission(): Promise<boolean> {
     }
     //申请 android 11 读写权限
     const permisson11 = await AppUtils.requestStoragePermissionR()
+    if(isAllGranted && permisson11 && !isInitFirst) {
+      AppEvent.emitEvent("androidPremissionRequstCallback")
+      isInitFirst = true
+    }
     return isAllGranted && permisson11
   }
   return true

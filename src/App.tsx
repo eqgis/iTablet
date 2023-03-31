@@ -219,6 +219,8 @@ class AppRoot extends Component {
   /** 是否是华为设备 */
   isHuawei = false
 
+  /** app是否初始化 */
+  // isAppInit = false
   /** 记录app状态,是否活跃 */
   appState = ''
 
@@ -296,7 +298,10 @@ class AppRoot extends Component {
   }
 
   componentDidMount() {
-    Platform.OS === 'android' && SplashScreen.hide()
+    if(Platform.OS === 'android'){
+      SplashScreen.hide()
+      AppEvent.addListener("androidPremissionRequstCallback",this.initUser)
+    }
     this.initOrientation()
     if (!this.state.showLaunchGuide) {
       this.showUserProtocol()
@@ -462,6 +467,7 @@ class AppRoot extends Component {
   }
 
   init = async (hasPermission) => {
+
     await this.initEnvironment()
     await this.initLocation()
     await this.initUser()

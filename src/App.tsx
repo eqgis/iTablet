@@ -647,7 +647,7 @@ class AppRoot extends Component {
 
   initUserDirectories = async (userName = 'Customer') => {
     if (!(await FileTools.fileIsExist(ConstPath.UserPath + userName))) {
-      await FileTools.initUserDefaultData(userName)
+      await AppInfo.initUserEnvironment(userName)
     }
   }
 
@@ -1082,9 +1082,8 @@ class AppRoot extends Component {
   getVersion = async () => {
     global.language = this.props.language
     let appInfo = await AppInfo.getAppInfo()
-    let bundleInfo = await AppInfo.getBundleVersion()
     global.APP_VERSION = 'V' + appInfo.versionName + '_' + appInfo.versionCode
-      + '_' + bundleInfo.BundleVersion + '_' + bundleInfo.BundleBuildVersion
+      + '_' + appInfo.BundleVersion + '_' + appInfo.BundleBuildVersion
     global.isAudit = await SData._isAudit()
     global.GUIDE_VERSION = appInfo.GuideVersion
   }

@@ -90,7 +90,7 @@ export default class Applet extends React.Component {
       if (data.total === 0) {
         this.setState({ data: [], initData: false, noData: true })
       } else {
-        let version = await AppInfo.getBundleVersion()
+        let version = await AppInfo.getAppInfo()
         let _data = []
         data.content.map(item => {
           let bundleVersion, buildVersion

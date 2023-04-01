@@ -133,7 +133,7 @@ export default class Login extends React.Component {
         isCreate = fileCreated && isCreate
       }
       if (isCreate) {
-        let result = await FileTools.initUserDefaultData(userName)
+        let result = await AppInfo.initUserEnvironment(userName)
         !result && console.error('初始化用户数据失败')
       } else {
         console.error('创建用户目录失败')
@@ -207,7 +207,7 @@ export default class Login extends React.Component {
         await this.props.setUser(user)
         global.isLogging = true
         global.getFriend?.().onUserLoggedin()
-        AppInfo.setServiceUrl('https://www.supermapol.com/web/')
+        AppInfo._setServiceUrl('https://www.supermapol.com/web/')
         NavigationService.popToTop()
         // 加载用户底图
         await this.loadUserBaseMaps()
@@ -280,7 +280,7 @@ export default class Login extends React.Component {
           global.isLogging = true
           await this.props.setUser(user)
           global.getFriend?.().onUserLoggedin()
-          AppInfo.setServiceUrl(url)
+          AppInfo._setServiceUrl(url)
           FriendListFileHandle.initFriendList(user) // iportal初始化好友列表信息,防止之前online用户留存信息的存在,把online的好友文件下载到iportal用户中
           // 加载用户底图
           await this.loadUserBaseMaps()

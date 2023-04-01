@@ -945,15 +945,14 @@ async function listAction(type, params = {}) {
     if (item.colors) {
       Params = {
         Colors: item.colors,
-        LayerName: _params.currentLayer.name,
+        // LayerName: _params.currentLayer.name,
       }
     } else {
       Params = {
-        GridRangeColorScheme: item.key,
-        LayerName: _params.currentLayer.name,
+        colorScheme: item.key,
       }
     }
-    await STheme.modifyThemeGridRangeMap(Params)
+    await STheme.modifyThemeGridRangeLayer(_params.currentLayer.name||"",Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_GRAPH_COLOR) {// 统计专题图颜色表
 
     ToolbarModule.addData({ themeColor: item.key })
@@ -1865,9 +1864,8 @@ async function getTouchProgressInfo(title) {
         const items = (await STheme.getRangeThemeLabelLayerInfo(_params.currentLayer.name || "")).items
         value = items?.length || 0
       } else if (themeType === ThemeType.GRIDRANGE) {
-        value = await STheme.getGridRangeCount({
-          LayerName: _params.currentLayer.name,
-        })
+        const items = (await STheme.getThemeGridRangeInfo(_params.currentLayer.name || "")).items
+        value = items?.length || 0
       }
       range = [2, 32]
       break
@@ -1952,7 +1950,7 @@ function setTouchProgressInfo(title, value) {
         STheme.modifyThemeRangeLayer(Params.currentLayer.name || "", _params)
         // STheme.modifyThemeRangeMap(_params)
       } else if (themeType === ThemeType.GRIDRANGE) {
-        STheme.modifyThemeGridRangeMap(_params)
+        STheme.modifyThemeGridRangeLayer(Params.currentLayer.name || "",_params)
       }
       break
     case getLanguage(Params.language).Map_Main_Menu.DOT_VALUE:

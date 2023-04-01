@@ -313,19 +313,20 @@ async function createThemeGridUniqueMap(params) {
 
 // 通过数据集->创建栅格分段专题图
 async function createThemeGridRangeMap(params) {
-  let paramsTheme = {}
   let isSuccess = false
-  // let errorInfo = ''
-  paramsTheme = {
-    DatasourceAlias: params.themeDatasourceAlias,
-    DatasetName: params.themeDatasetName,
-    GridRangeColorScheme: 'FF_Blues',
+  const datasetInfo = {
+    datasourceName: params.themeDatasourceAlias,
+    datasetName: params.themeDatasetName,
   }
-  await STheme.createThemeGridRangeMap(paramsTheme).then(msg => {
-    isSuccess = msg.result
+  // let errorInfo = ''
+  const paramsTheme = {
+    colorScheme: 'FF_Blues',
+  }
+  await STheme.createThemeGridRangeLayer(datasetInfo,paramsTheme).then(layer => {
     // errorInfo = msg.error && msg.error
-    if (isSuccess && msg.layer) {
-      ThemeAction.sendAddThemeMsg(msg.layer)
+    if (layer) {
+      isSuccess = true
+      ThemeAction.sendAddThemeMsg(layer)
     }
   })
   // .catch(err => {
@@ -381,19 +382,24 @@ async function createThemeGridUniqueMapByLayer() {
 // 通过图层->创建栅格分段专题图
 async function createThemeGridRangeMapByLayer() {
   const _params = ToolbarModule.getParams()
-  const _data = ToolbarModule.getData()
-  const currentLayer = _data.currentLayer || _params.currentLayer
+  // const _data = ToolbarModule.getData()
+  // const currentLayer = _data.currentLayer || _params.currentLayer
   let isSuccess = false
-  let paramsTheme = {
-    LayerName: currentLayer.name,
-    GridRangeColorScheme: 'FF_Blues',
+  const datasetName = _params.currentLayer.datasetName || ""
+  const datasourceName = _params.currentLayer.datasourceAlias || ""
+  const datasetInfo = {
+    datasetName:datasetName,
+    datasourceName:datasourceName,
   }
-  await STheme.createThemeGridRangeMapByLayer(paramsTheme).then(
-    msg => {
-      isSuccess = msg.result
+  const paramsTheme = {
+    colorScheme: 'FF_Blues',
+  }
+  await STheme.createThemeGridRangeLayer(datasetInfo,paramsTheme).then(
+    layer => {
       // errorInfo = msg.error && msg.error
-      if (isSuccess && msg.layer) {
-        ThemeAction.sendAddThemeMsg(msg.layer)
+      if (layer) {
+        isSuccess = true
+        ThemeAction.sendAddThemeMsg(layer)
       }
     },
   )
@@ -799,9 +805,12 @@ function setRangeMode(type, rangeMode) {
   }
 }
 
-function setGridRangeMode() {
+function setGridRangeMode(rangeMode) {
   const _params = ToolbarModule.getData().themeParams
-  STheme.modifyThemeGridRangeMap(_params)
+  if (rangeMode !== undefined) {
+    _params.rangeMode = rangeMode
+  }
+  STheme.modifyThemeGridRangeLayer(_params?.LayerName||"",_params)
 }
 
 function getRangeMode(type) {
@@ -878,7 +887,7 @@ function getGridRangeMode() {
       // 等距分段
       key: constants.MAP_THEME_PARAM_RANGE_MODE_EQUALINTERVAL,
       title: '等距分段',
-      action: setGridRangeMode,
+      action: ()=>setGridRangeMode(RangeMode.EQUALINTERVAL),
       size: 'large',
       image: require('../../../../../../assets/mapTools/range_mode_equalinterval_black.png'),
       selectedImage: require('../../../../../../assets/mapTools/range_mode_equalinterval_black.png'),
@@ -887,7 +896,7 @@ function getGridRangeMode() {
       // 平方根分段
       key: constants.MAP_THEME_PARAM_RANGE_MODE_SQUAREROOT,
       title: '平方根分段',
-      action: setGridRangeMode,
+      action: ()=>setGridRangeMode(RangeMode.SQUAREROOT),
       size: 'large',
       image: require('../../../../../../assets/mapTools/range_mode_squareroot_black.png'),
       selectedImage: require('../../../../../../assets/mapTools/range_mode_squareroot_black.png'),
@@ -896,7 +905,7 @@ function getGridRangeMode() {
       // 对数分段
       key: constants.MAP_THEME_PARAM_RANGE_MODE_LOGARITHM,
       title: '对数分段',
-      action: setGridRangeMode,
+      action: ()=>setGridRangeMode(RangeMode.LOGARITHM),
       size: 'large',
       image: require('../../../../../../assets/mapTools/range_mode_logarithm_black.png'),
       selectedImage: require('../../../../../../assets/mapTools/range_mode_logarithm_black.png'),

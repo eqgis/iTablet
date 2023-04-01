@@ -35,4 +35,6 @@ export interface Event {
   "androidPremissionRequstCallback": undefined
   /** 准星采集打点事件 */
   "collector_aim_point_add": number
+  /** 打点的准星是否显示  */
+  "collector_aim_point_show": boolean
 }

@@ -32,8 +32,8 @@ class AimPointCollector extends Component<Props, State> {
     super(props)
     this.state = {
       isShowAimPoint: false,
-      x: 0,
-      y: 0,
+      x: '0',
+      y: '0',
     }
   }
 
@@ -121,6 +121,21 @@ class AimPointCollector extends Component<Props, State> {
         if (Platform.OS === 'android') {
           pointX *= pixel
           pointY *= pixel
+        } else {
+          // ios 刘海屏
+          if(this.props.device.orientation.indexOf('LANDSCAPE') >= 0) {
+            const iosHorizontal = screen.getIphonePaddingHorizontal(this.props.device.orientation)
+            if(iosHorizontal.paddingLeft > 0) {
+              pointX -= iosHorizontal.paddingLeft
+            }
+          } else {
+            // iphonex 获取不出高度, 使用导出的高度
+            const headerHeight =  (screen.isIphoneX() &&
+            this.props.device.orientation.indexOf('PORTRAIT') >= 0
+            )? screen.X_TOP
+              : 0
+            pointY -= headerHeight
+          }
         }
         const point: Point2D = {
           x: pointX,

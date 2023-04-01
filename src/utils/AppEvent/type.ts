@@ -33,4 +33,8 @@ export interface Event {
   'network_change': NetInfoState
   /** android权限申请后，初始化用户数据 */
   "androidPremissionRequstCallback": undefined
+  /** 准星采集打点事件 */
+  "collector_aim_point_add": number
+  /** 打点的准星是否显示  */
+  "collector_aim_point_show": boolean
 }

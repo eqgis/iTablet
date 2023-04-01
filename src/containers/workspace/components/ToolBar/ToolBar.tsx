@@ -1,5 +1,5 @@
 import React from 'react'
-import { screen } from '../../../../utils'
+import { scaleSize, screen } from '../../../../utils'
 import { Header } from '../../../../components'
 import {
   ConstToolType,
@@ -185,6 +185,7 @@ interface State {
   hasSoftMenuBottom: boolean,
   showCustomHeader: boolean,
   customView: () => JSX.Element | null,
+  externalView: JSX.Element | null,
 }
 
 // 工具表格默认高度
@@ -252,6 +253,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
       hasSoftMenuBottom: false,
       showCustomHeader: false,
       customView: null,
+      externalView: null,
     }
     this.height = 0
     this.isShow = false
@@ -446,12 +448,14 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
           let data = params.data
           let buttons = params.buttons
           let customView = params.customView
+          let externalView = params?.externalView || null
           let pageAction = params.pageAction
           if (data === undefined || buttons === undefined) {
             const _data = await this.getData(type)
             data = data || _data.data
             buttons = buttons || _data.buttons
             customView = customView || _data.customView
+            externalView = externalView || _data?.externalView || null
             pageAction = pageAction || _data.pageAction
             if ((!data || data.length === 0) && (!buttons || buttons.length === 0) && !customView) {
               buttons = [ToolbarBtnType.CANCEL]
@@ -487,6 +491,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
               data: params.data || data || [],
               secdata: params.secdata || [],
               customView: customView,
+              externalView: externalView,
               buttons: params.buttons || buttons,
               isTouchProgress: params.isTouchProgress || false,
               isFullScreen:
@@ -631,6 +636,11 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
 
     // this.updateOverlayView()
     global.TouchType = TouchType.NORMAL
+    if(this.state.externalView !== null) {
+      this.setState({
+        externalView: null,
+      })
+    }
   }
 
   getToolbarModule = () => {
@@ -886,6 +896,10 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
     }
   }
 
+  renderExternalView = () => {
+    return this.state.externalView || null
+  }
+
   /** toolbarBottom 上的 ContentView */
   renderView = () => {
     return (
@@ -1124,6 +1138,7 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
       <>
         {this.renderCustomHeader()}
         {this.renderCustomView()}
+        {this.renderExternalView()}
         {this.renderBottom()}
       </>
     )

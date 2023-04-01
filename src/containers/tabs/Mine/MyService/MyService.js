@@ -141,7 +141,7 @@ export default class MyService extends Component {
             objServiceList = JSON.parse(strServiceList)
           }
 
-          let objArrServiceContent = objServiceList.content
+          let objArrServiceContent = objServiceList?.content || []
           for (let objContent of objArrServiceContent) {
             let arrScenes = objContent.scenes
             let arrMapInfos = objContent.mapInfos

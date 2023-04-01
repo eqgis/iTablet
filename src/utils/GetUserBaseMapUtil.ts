@@ -220,7 +220,7 @@ const _initSectionsData = async (currentPage: number, pageSize: number) => {
         }
 
         // 服务列表里（地图）服务对象的数组
-        const objArrServiceContent = objServiceList.content
+        const objArrServiceContent = objServiceList?.content
         // 遍历服务列表里（地图）服务对象的数组
         for (const objContent of objArrServiceContent) {
           // 场景数组

@@ -17,6 +17,8 @@ import Utils from '../../utils'
 import NavigationService from '../../../../../NavigationService'
 import DataHandler from '../../../../../../utils/DataHandler'
 import { LayerStyle } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { ColorGradientType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
+
 
 /**
  * 统一处理方法
@@ -891,11 +893,11 @@ async function listAction(type, params = {}) {
       }
     } else {
       Params = {
-        GridUniqueColorScheme: item.key,
-        LayerName: _params.currentLayer.name,
+        colorScheme: item.key,
+        // colorGradientType:ColorGradientType.PINKRED,
       }
     }
-    await STheme.modifyThemeGridUniqueMap(Params)
+    await STheme.modifyThemeGridUniqueLayer(_params.currentLayer.name||"",Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGE_EXPRESSION) { // 分段专题图表达式
 
     const Params = {

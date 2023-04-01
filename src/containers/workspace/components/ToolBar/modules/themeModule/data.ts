@@ -282,16 +282,18 @@ async function createThemeGridUniqueMap(params) {
   let paramsTheme = {}
   let isSuccess = false
   // let errorInfo = ''
-  paramsTheme = {
-    DatasourceAlias: params.themeDatasourceAlias,
-    DatasetName: params.themeDatasetName,
-    GridUniqueColorScheme: 'EE_Lake',
+  const datasetInfo={
+    datasetName:params.themeDatasetName,
+    datasourceName:params.themeDatasourceAlias,
   }
-  await STheme.createThemeGridUniqueMap(paramsTheme).then(msg => {
-    isSuccess = msg.result
+  paramsTheme = {
+    colorScheme: 'EE_Lake',
+  }
+  await STheme.createThemeGridUniqueLayer(datasetInfo,paramsTheme).then(layer => {
     // errorInfo = msg.error && msg.error
-    if (isSuccess && msg.layer) {
-      ThemeAction.sendAddThemeMsg(msg.layer)
+    if (layer) {
+      isSuccess = true
+      ThemeAction.sendAddThemeMsg(layer)
     }
   })
   // .catch(err => {
@@ -343,20 +345,21 @@ async function createThemeGridRangeMap(params) {
 
 // 通过图层->创建栅格单值专题图
 async function createThemeGridUniqueMapByLayer() {
-  const _params = ToolbarModule.getParams()
-  const _data = ToolbarModule.getData()
-  const currentLayer = _data.currentLayer || _params.currentLayer
   let isSuccess = false
-  let paramsTheme = {
-    LayerName: currentLayer.name,
-    GridUniqueColorScheme: 'EE_Lake',
+  const paramsTheme = {
+    colorScheme: 'EE_Lake',
   }
-  await STheme.createThemeGridUniqueMapByLayer(paramsTheme).then(
-    msg => {
-      isSuccess = msg.result
+  const datasetInfo={
+    datasetName:ToolbarModule.getData().currentLayer.datasetName || "",
+    datasourceName:ToolbarModule.getData().currentLayer.datasourceAlias || "",
+  }
+
+  await STheme.createThemeGridUniqueLayer(datasetInfo,paramsTheme).then(
+    layer => {
       // errorInfo = msg.error && msg.error
-      if (isSuccess && msg.layer) {
-        ThemeAction.sendAddThemeMsg(msg.layer)
+      if (layer) {
+        isSuccess = true
+        ThemeAction.sendAddThemeMsg(layer)
       }
     },
   )

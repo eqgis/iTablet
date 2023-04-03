@@ -785,6 +785,25 @@ function getMapLayerAttribute() {
   return layerAttribute
 }
 
+/** 选择集的数据类型 */
+export interface selectionParam {
+  /** 图层信息 */
+  layerInfo: LayerInfo,
+  /** 图层里被选中的对象的id数组 */
+  ids: Array<number>,
+}
+
+/** 清除选择状态 */
+async function clearSelection(selection: Array<selectionParam>) {
+  if(selection?.length || 0 > 0) {
+    for(let i = 0; i < selection.length; i ++) {
+      const layerInfo = selection[i].layerInfo
+      const layerPath = layerInfo.path
+      layerPath && await SMap.clearLayerSelection(layerPath)
+    }
+  }
+}
+
 export default {
   getLayerAttribute,
   searchLayerAttribute,
@@ -823,4 +842,5 @@ export default {
 
   setMapLayerAttribute,
   getMapLayerAttribute,
+  clearSelection,
 }

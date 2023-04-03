@@ -71,7 +71,11 @@ async function select(type) {
   }
 }
 
-function cancelSelect() {
+
+async function cancelSelect() {
+  const _params = ToolbarModule.getParams()
+  const _selection = _params.selection
+  await LayerUtils.clearSelection(_selection)
   ToolbarModule.getParams().setSelection(null)
   // SMap.clearSelection()
   select()
@@ -850,6 +854,9 @@ async function close(type) {
     type === ConstToolType.SM_MAP_TOOL_SELECT_BY_RECTANGLE ||
     type === ConstToolType.SM_MAP_TOOL_POINT_SELECT
   ) {
+    const _params = ToolbarModule.getParams()
+    const _selection = _params.selection
+    await LayerUtils.clearSelection(_selection)
     SMap.setAction(Action.PAN)
     // SMap.clearSelection()
     _params.setToolbarVisible(false)

@@ -10,7 +10,7 @@ import {
   TouchType,
   ConstToolType,
 } from '../../../../constants'
-import { Toast } from '../../../../utils'
+import { LayerUtils, Toast } from '../../../../utils'
 import { FileTools } from '../../../../native'
 import { getLayerIconByType, getLayerWhiteIconByType } from '../../../../assets'
 import { getLanguage } from '../../../../language'
@@ -251,8 +251,10 @@ export default class ReferenceAnalystView extends Component {
     // }.bind(this)())
   }
 
-  back = () => {
-    SMap.clearSelection()
+  back = async () => {
+    // SMap.clearSelection()
+    await LayerUtils.clearSelection(this.props.selection)
+
     SMap.setAction(Action.PAN)
     this.props.setSelection && this.props.setSelection(null)
     NavigationService.goBack('ReferenceAnalystView')

@@ -119,7 +119,7 @@ function showCollection(type, layerName) {
   let currentLayer
   if (layerName) {
     for (const layer of params.layers?.layers) {
-      if (layer.name === layerName) {
+      if (layer.path === layerName) {
         currentLayer = layer
         break
       }
@@ -128,7 +128,7 @@ function showCollection(type, layerName) {
 
   const symbols = params.template?.template?.symbols
   // 有模板符号 且 有layerName，则为模板采集
-  if (layerName && symbols?.length > 0) {
+  if (currentLayer && symbols?.length > 0) {
     let _symbol
 
     const getSymbol = function(features) {

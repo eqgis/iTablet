@@ -113,6 +113,65 @@ function showCollection(type, layerName) {
   //     break
   // }
 
+  const params = ToolbarModule.getParams()
+
+
+  let currentLayer
+  if (layerName) {
+    for (const layer of params.layers?.layers) {
+      if (layer.name === layerName) {
+        currentLayer = layer
+        break
+      }
+    }
+  }
+
+  const symbols = params.template?.template?.symbols
+  // 有模板符号 且 有layerName，则为模板采集
+  if (layerName && symbols?.length > 0) {
+    let _symbol
+
+    const getSymbol = function(features) {
+      for (const feature of features) {
+        if (currentLayer.datasetName === feature.$.datasetName) {
+          if (currentLayer.themeType === ThemeType.UNIQUE || currentLayer.themeType === 0) {
+            return feature
+          } else if (feature.feature?.length > 0) {
+            return getSymbol(feature.feature)
+          }
+        }
+      }
+      return undefined
+    }
+
+    for (const symbol of symbols) {
+      if (currentLayer.datasetName === symbol.$.datasetName) {
+        if (currentLayer.themeType === ThemeType.UNIQUE || currentLayer.themeType === 0) {
+          _symbol = symbol
+          break
+        }
+      }
+
+      if (symbol.feature?.length > 0) {
+        _symbol = getSymbol(symbol.feature)
+        if (_symbol) break
+      }
+    }
+
+    if (_symbol) {
+      let tempSymbol = Object.assign(
+        {},
+        _symbol.$,
+        { field: _symbol.fields[0].field },
+        { layerPath: (currentLayer && currentLayer.path) || '' },
+      )
+      console.warn(3, tempSymbol)
+      params.setCurrentTemplateInfo(
+        tempSymbol,
+      )
+    }
+  }
+
   // 是准星采集的话，就发消息让准星显示出来
   if(type === SMCollectorType.LINE_AIM_POINT
     || type === SMCollectorType.POINT_AIM_POINT
@@ -371,10 +430,11 @@ async function collectionSubmit(type) {
         await SCollector.cancel(type) // 防止GPS轨迹提交后，点击开始无法再次采集
         break
     }
-    if (ToolbarModule.getParams().template.currentTemplateInfo.layerPath) {
+    const params = ToolbarModule.getParams()
+    if (params.template.currentTemplateInfo.layerPath) {
       SData.setRecordsetValue(
-        ToolbarModule.getParams().template.currentTemplateInfo.datasetInfo,
-        ToolbarModule.getParams().template.currentTemplateInfo.field,
+        params.template.currentTemplateInfo.datasetInfo,
+        params.template.currentTemplateInfo.field,
         {index:-1}
       )
       // SMap.setLayerFieldInfo(

@@ -12,6 +12,8 @@ import styles from "./styles"
 import { MainStackScreenNavigationProps } from "@/types"
 import { getImage } from "@/assets"
 import { GGA, IRTKFixType, RTKFixType } from "imobile_for_reactnative/NativeModule/interfaces/SLocation"
+import { PointParamShowParam } from "@/redux/models/setting"
+import { ChunkType } from "@/constants"
 
 
 interface RowType {
@@ -30,8 +32,8 @@ interface Props {
 	setDeviceManufacturer: (manufacturer: DeviceManufacturer) => void
   setDeviceType: (devicetype: DeviceType) => void
   gga?:GGA
-  isPointParamShow: boolean,
-  setPointParamShow: (value: boolean)=> void,
+  isPointParamShow: PointParamShowParam,
+  setPointParamShow: (value: PointParamShowParam)=> void,
 }
 
 
@@ -121,11 +123,11 @@ class LocationInformation extends Component<Props> {
         <Switch
           // style={styles.switch}
           trackColor={{ false: '#F0F0F0', true: "#2D2D2D" }}
-          thumbColor={this.props.isPointParamShow ? "#fff" : "#fff"}
-          ios_backgroundColor={this.props.isPointParamShow ? "#2D2D2D" : '#F0F0F0'}
-          value={this.props.isPointParamShow}
+          thumbColor={(this.props.isPointParamShow === 1 || (this.props.isPointParamShow === -1 && global.Type !== ChunkType.MAP_THEME)) ? "#fff" : "#fff"}
+          ios_backgroundColor={(this.props.isPointParamShow === 1 || (this.props.isPointParamShow === -1 && global.Type !== ChunkType.MAP_THEME)) ? "#2D2D2D" : '#F0F0F0'}
+          value={(this.props.isPointParamShow === 1 || (this.props.isPointParamShow === -1 && global.Type !== ChunkType.MAP_THEME)) ? true: false}
           onValueChange={(value: boolean) => {
-            this.props.setPointParamShow(value)
+            this.props.setPointParamShow(value ? 1 : 0)
           }}
         />
       </View>

@@ -7,9 +7,10 @@ import { Container, SwitchItem } from '../../components'
 import { AppDialog, AppEvent, dp, scaleSize } from '../../utils'
 import { color, size } from '../../styles'
 import { getLanguage } from '../../language'
-import { setDatumPoint , arPoiSearch, set3dSceneFirst, setRTKAutoCalibration, setPointParamShow } from '../../redux/models/setting'
+import { setDatumPoint , arPoiSearch, set3dSceneFirst, setRTKAutoCalibration } from '../../redux/models/setting'
 import { MapToolbar } from '../workspace/components'
 import NavigationService from '../NavigationService'
+import { requestAllPermission } from '@/utils/PermissionAndroidUtils'
 
 type Props = ReduxProps
 
@@ -38,6 +39,23 @@ class ARMapSetting extends React.Component<Props,State> {
         >
           <Text style={styles.itemText}>
             {getLanguage(global.language).Profile.MAR_AR_POSITION_CORRECT}
+          </Text>
+          <Image
+            style={styles.itemImage}
+            source={getPublicAssets().common.icon_move}
+          />
+        </TouchableOpacity>
+
+        {/* 定位设置 */}
+        <TouchableOpacity style={styles.settingItem}
+          onPress={() => {
+            NavigationService.navigate('LocationSetting')
+            // 接入部分外部蓝牙设备需要先有定位权限
+            requestAllPermission()
+          }}
+        >
+          <Text style={styles.itemText}>
+            {getLanguage(global.language).Profile.LOCATION_SETTING}
           </Text>
           <Image
             style={styles.itemImage}
@@ -76,7 +94,7 @@ class ARMapSetting extends React.Component<Props,State> {
         )}
 
         {/* 显示定位信息 */}
-        {Platform.OS === 'android' && (
+        {/* {Platform.OS === 'android' && (
           <SwitchItem
             textStyle={styles.itemText}
             text={getLanguage().SHOW_POINT_INFO}
@@ -85,7 +103,8 @@ class ARMapSetting extends React.Component<Props,State> {
               this.props.setPointParamShow(value)
             }}
           />
-        )}
+        )} */}
+
       </View>
     )
   }
@@ -127,7 +146,7 @@ const mapStateToProp = (state: any) => ({
   mapModules: state.mapModules.toJS(),
   is3dSceneFirst: state.setting.toJS().is3dSceneFirst,
   isRTKAutoCalibration: state.setting.toJS().isRTKAutoCalibration,
-  isPointParamShow: state.setting.toJS().isPointParamShow,
+  // isPointParamShow: state.setting.toJS().isPointParamShow,
 })
 
 const mapDispatch = {
@@ -135,7 +154,7 @@ const mapDispatch = {
   arPoiSearch,
   set3dSceneFirst,
   setRTKAutoCalibration,
-  setPointParamShow,
+  // setPointParamShow,
 }
 
 type ReduxProps = ConnectedProps<typeof connector>

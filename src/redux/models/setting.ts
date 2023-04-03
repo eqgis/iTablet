@@ -314,7 +314,9 @@ export const setRTKAutoCalibration = (isRTKAutoCalibration: boolean) => async (d
   })
 }
 
-export const setPointParamShow = (isPointParamShow: boolean) => async (dispatch: (arg0: { type: string; payload: any }) => any) => {
+export type PointParamShowParam = -1 | 0 | 1
+/** 设置定位信息面板是否显示 -1:未设置状态 0:设置为不显示  1:设置为显示  */
+export const setPointParamShow = (isPointParamShow: PointParamShowParam) => async (dispatch: (arg0: { type: string; payload: any }) => any) => {
   await dispatch({
     type: SET_POINT_PARAM_SHOW,
     payload: isPointParamShow,
@@ -395,7 +397,7 @@ const initialState = fromJS({
   aiClassifyData: {},
   is3dSceneFirst: false,
   isRTKAutoCalibration: false,
-  isPointParamShow: true,
+  isPointParamShow: -1,
 })
 
 interface Legend {
@@ -462,7 +464,7 @@ interface SettingState {
   /** 是否RTK自动校准 */
   isRTKAutoCalibration: boolean,
   /** 是否显示定位信息 */
-  isPointParamShow: boolean,
+  isPointParamShow: PointParamShowParam,
 }
 
 type SettingStateType = Record<SettingState> & SettingState

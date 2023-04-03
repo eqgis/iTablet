@@ -1,6 +1,8 @@
 import { getThemeAssets } from "@/assets"
+import { ChunkType } from "@/constants"
 import NavigationService from "@/containers/NavigationService"
 import { getLanguage } from "@/language"
+import { PointParamShowParam } from "@/redux/models/setting"
 import { GGA, IRTKFixType, RTKFixType } from "imobile_for_reactnative/NativeModule/interfaces/SLocation"
 import React, {Component} from "react"
 import { Text, View, Image, TouchableOpacity } from 'react-native'
@@ -8,7 +10,7 @@ import styles from './style'
 
 interface Props {
   pointStateText: string,
-  isPointParamShow: boolean,
+  isPointParamShow: PointParamShowParam,
   gga: GGA,
 }
 
@@ -84,7 +86,9 @@ export default class PositionStateView extends Component<Props> {
         imgState = getThemeAssets().publicAssets.icon_position_state_red
         break
     }
-    return this.props.isPointParamShow ? (
+    // 定位信息第一次进入APP，设置除为专题制图外的其他模块都显示
+    const isShow =  (this.props.isPointParamShow === 1 || (this.props.isPointParamShow === -1 && global.Type !== ChunkType.MAP_THEME))
+    return isShow ? (
       <TouchableOpacity
         style={[
           styles.container,

@@ -288,6 +288,11 @@ export default class Container extends Component {
     // 防止动画过程中重复点击
     if(this.overlayCanClick){
       this.overlayCanClick = false
+      // 一秒后解除点击限制
+      const timer = setTimeout(() => {
+        this.overlayCanClick = true
+        clearTimeout(timer)
+      }, 1000)
     }else return
 
     if (this.props.onOverlayPress) {

@@ -180,9 +180,7 @@ export default class AppletItem extends Component<Props, State> {
     }
     this.getDownloadProgress()
     this.props.onDownloaded?.()
-    result
-      ? Toast.show(getLanguage(global.language).Find.DOWNLOADED)
-      : Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY)
+    result && Toast.show(getLanguage(global.language).Prompt.DOWNLOAD_SUCCESSFULLY)
   }
 
   render() {

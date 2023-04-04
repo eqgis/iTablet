@@ -16,7 +16,8 @@ import { color } from '../../../../../../styles'
 import { getThemeAssets } from '../../../../../../assets'
 import { View } from 'react-native'
 import AddAction from './AddAction'
-import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
+import { DatasetType ,EngineType} from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
+import dataType from '@/assets/lightTheme/dataType'
 
 /**
  * 获取数据源和地图菜单
@@ -164,11 +165,106 @@ async function getDatasets(type, params = {}) {
     const selectList =
       (ToolbarModule.getData() && ToolbarModule.getData().selectList) || []
     const path = await FileTools.appendingHomeDirectory(params.path)
-    let list = await STheme.getUDBName(path)
+    // let list = await STheme.getUDBName(path)
 
+    const datasources = await SData.getDatasources()
+    let datasouce
+    for(let i=0;i<datasources.length;i++){
+      if(datasources[i].server.toLowerCase() === path.toLowerCase()){
+        datasouce = datasources[i]
+      }
+    }
+    if(!datasouce.server){
+      let datasourceParams
+      datasourceParams.server = path
+      datasourceParams.engineType = EngineType.UDB
+      datasourceParams.alias = path.substring(path.lastIndexOf("."+1))
+      await SData.openDatasource(datasourceParams)
+
+      const datasources2 = await SData.getDatasources()
+      for(let i=0;i<datasources2.length;i++){
+        if(datasources2[i].server.toLowerCase() === path.toLowerCase()){
+          datasouce = datasources2[i]
+        }
+      }
+    }
+
+    const list = await SData.getDatasetsByDatasource(datasouce)
+    let flist = []
+    for(let i=0;i<list.length;i++){
+      let datype = ""
+      switch (list[i].datasetType) {
+        case DatasetType.CAD:
+          datype = "CAD"
+          break
+        case DatasetType.TABULAR:
+          datype = "TABULAR"
+          break
+        case DatasetType.POINT:
+          datype = "POINT"
+          break
+        case DatasetType.LINE:
+          datype = "LINE"
+          break
+        case DatasetType.Network:
+          datype = "Network"
+          break
+        case DatasetType.REGION:
+          datype = "REGION"
+          break
+        case DatasetType.TEXT:
+          datype = "TEXT"
+          break
+        case DatasetType.IMAGE:
+          datype = "IMAGE"
+          break
+        case DatasetType.MBImage:
+          datype = "MBImage"
+          break
+        case DatasetType.GRID:
+          datype = "GRID"
+          break
+        case DatasetType.DEM:
+          datype = "DEM"
+          break
+        case DatasetType.WMS:
+          datype = "WMS"
+          break
+        case DatasetType.WCS:
+          datype = "WCS"
+          break
+        case DatasetType.PointZ:
+          datype = "PointZ"
+          break
+        case DatasetType.LineZ:
+          datype = "LineZ"
+          break
+        case DatasetType.RegionZ:
+          datype = "RegionZ"
+          break
+        case DatasetType.WFS:
+          datype = "WFS"
+          break
+        case DatasetType.NETWORK3D:
+          datype = "NETWORK3D"
+          break
+      }
+
+      const prjInfo = await SData.getDatasetPrjCoordSys({datasourceName:list[i].datasourceName,datasetName:list[i].datasetName})
+      const prj = await SData.prjCoordSysFromXml(prjInfo)
+      const fdata = {
+        datasetName:list[i].datasetName,
+        datasetType:datype,
+        datasourceName:list[i].datasourceName,
+        description:list[i].description,
+        geoCoordSysType:prj.geoCoordSys.type,
+        prjCoordSysType:prj.projection.type,
+      }
+      flist.push(fdata)
+    }
     //过滤属性表
-    list = list.filter(item => item.datasetType !== 'TABULAR')
-    list.forEach(_params => {
+    flist = flist.filter(item => item.datasetType !== 'TABULAR')
+    flist.forEach(_params => {
       if (_params.geoCoordSysType && _params.prjCoordSysType) {
         _params.info = {
           infoType: 'dataset',
@@ -194,7 +290,7 @@ async function getDatasets(type, params = {}) {
         title: alias,
         // image: require('../../../../../../assets/mapToolbar/list_type_udb.png'),
         image: getThemeAssets().dataType.icon_data_source,
-        data: list,
+        data: flist,
       },
     ]
 

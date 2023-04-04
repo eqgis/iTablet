@@ -1,5 +1,5 @@
 import { STheme, SMap, SData } from 'imobile_for_reactnative'
-import { ThemeType ,ThemeGraphItem} from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
+import { ThemeType ,ThemeGraphItem,ThemeGraphType} from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
 import {
   ConstToolType,
   ToolbarType,
@@ -17,6 +17,8 @@ import Utils from '../../utils'
 import NavigationService from '../../../../../NavigationService'
 import DataHandler from '../../../../../../utils/DataHandler'
 import { LayerStyle } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
+import { ColorGradientType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
+
 
 /**
  * 统一处理方法
@@ -148,9 +150,7 @@ async function getThemeExpress(type, key = '', name = '') {
   } else if (
     type === ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_EXPRESSION
   ) {
-    selectedExpression = await STheme.getGraduatedSymbolExpress(
-      param,
-    )
+    selectedExpression = (await STheme.getThemeGraduatedSymbolInfo(param?.LayerName || "")).expression
   }
   const { dataset } = expressionData
   const allExpressions = []
@@ -893,11 +893,11 @@ async function listAction(type, params = {}) {
       }
     } else {
       Params = {
-        GridUniqueColorScheme: item.key,
-        LayerName: _params.currentLayer.name,
+        colorScheme: item.key,
+        // colorGradientType:ColorGradientType.PINKRED,
       }
     }
-    await STheme.modifyThemeGridUniqueMap(Params)
+    await STheme.modifyThemeGridUniqueLayer(_params.currentLayer.name||"",Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGE_EXPRESSION) { // 分段专题图表达式
 
     const Params = {
@@ -917,11 +917,10 @@ async function listAction(type, params = {}) {
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOL_EXPRESSION) {// 等级符号专题图表达式
 
     const Params = {
-      GraSymbolExpression: item.expression,
-      LayerName: _params.currentLayer.name,
+      expression: item.expression,
     }
     params.refreshList && (await params.refreshList(item.expression))
-    await STheme.modifyGraduatedSymbolThemeMap(Params)
+    await STheme.modifyThemeGraduatedSymbolLayer(_params.currentLayer.name,Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_RANGE_COLOR) {// 分段专题图颜色表
 
     ToolbarModule.addData({ themeColor: item.key })
@@ -946,15 +945,14 @@ async function listAction(type, params = {}) {
     if (item.colors) {
       Params = {
         Colors: item.colors,
-        LayerName: _params.currentLayer.name,
+        // LayerName: _params.currentLayer.name,
       }
     } else {
       Params = {
-        GridRangeColorScheme: item.key,
-        LayerName: _params.currentLayer.name,
+        colorScheme: item.key,
       }
     }
-    await STheme.modifyThemeGridRangeMap(Params)
+    await STheme.modifyThemeGridRangeLayer(_params.currentLayer.name||"",Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_GRAPH_COLOR) {// 统计专题图颜色表
 
     ToolbarModule.addData({ themeColor: item.key })
@@ -975,16 +973,14 @@ async function listAction(type, params = {}) {
     let Params
     if (item.colors) {
       Params = {
-        Colors: item.colors,
-        LayerName: _params.currentLayer.name,
+        colorset: item.colors,
       }
     } else {
       Params = {
-        HeatmapColorScheme: item.key,
-        LayerName: _params.currentLayer.name,
+        colorScheme: item.key,
       }
     }
-    await STheme.setHeatMapColorScheme(Params)
+    await STheme.modifyThemeHeatLayer(_params.currentLayer.name||"",Params)
   } else if (type === ConstToolType.SM_MAP_THEME_PARAM_UNIFORMLABEL_EXPRESSION) { // 统一标签表达式
 
     const Params = {
@@ -1068,11 +1064,27 @@ async function listAction(type, params = {}) {
           true,
           getLanguage(_params.language).Prompt.READING_DATA,
         )
-      const datasetData = await STheme.getThemeExpressionByDatasetName(
-        _params.language,
-        item.datasourceName,
-        item.datasetName,
-      )
+
+      const files = await SData.getFieldInfos({datasourceName:item.datasourceName,datasetName:item.datasetName})
+      const fileList = []
+      for(let i=0;i<files.length;i++){
+        fileList.push({
+          expression:files[i].name,
+          fieldType:ThemeMenuData.getFieldType(SData.getFieldTypeString(files[i].type)),
+          fieldTypeStr:SData.getFieldTypeString(files[i].type),
+          isSystemField:files[i].isSystemField,
+        })
+      }
+      const datasetIfo = await SData.getDatasetInfo({datasourceName:item.datasourceName,datasetName:item.datasetName})
+      const datasetData = {
+        list:fileList,
+        dataset:{datasetName:datasetIfo?.datasetName,datasetType:datasetIfo?.datasetType},
+      }
+      // const datasetData = await STheme.getThemeExpressionByDatasetName(
+      //   _params.language,
+      //   item.datasourceName,
+      //   item.datasetName,
+      // )
       const { dataset } = datasetData
       const _list = []
       datasetData.list.forEach(item => {
@@ -1254,10 +1266,65 @@ async function commit(type) {
       expressions.push({expression:item.expression})
     }
     const datasetInfo = { datasourceName: _data.themeDatasourceAlias, datasetName: _data.themeDatasetName }
+    let type
+    switch (themeCreateType){
+      case "面积图":{
+        type = ThemeGraphType.AREA
+        break
+      }
+      case "阶梯图":{
+        type = ThemeGraphType.STEP
+        break
+      }
+      case "折线图":{
+        type = ThemeGraphType.LINE
+        break
+      }
+      case "散点图":{
+        type = ThemeGraphType.POINT
+        break
+      }
+      case "柱状图":{
+        type = ThemeGraphType.BAR
+        break
+      }
+      case "三维柱状图":{
+        type = ThemeGraphType.BAR3D
+        break
+      }
+      case "饼状图":{
+        type = ThemeGraphType.PIE
+        break
+      }
+      case "三维饼状图":{
+        type = ThemeGraphType.PIE3D
+        break
+      }
+      case "玫瑰图":{
+        type = ThemeGraphType.ROSE
+        break
+      }
+      case "三维玫瑰图":{
+        type = ThemeGraphType.ROSE3D
+        break
+      }
+      case "堆叠图":{
+        type = ThemeGraphType.STACK_BAR
+        break
+      }
+      case "三维堆叠图":{
+        type = ThemeGraphType.STACK_BAR3D
+        break
+      }
+      case "环状图":{
+        type = ThemeGraphType.RING
+        break
+      }
+    }
     // 数据集->创建统计专题图
     const params = {
       items: expressions,
-      graphType: themeCreateType,
+      graphType: type,
     }
     const layer = await STheme.createThemeGraphLayer(datasetInfo,params)
     if (layer) {
@@ -1282,10 +1349,65 @@ async function commit(type) {
       expressions.push({expression:item.expression})
     }
     const datasetInfo = { datasourceName: _data.themeDatasourceAlias, datasetName: _data.themeDatasetName }
+    let type
+    switch (themeCreateType){
+      case "面积图":{
+        type = ThemeGraphType.AREA
+        break
+      }
+      case "阶梯图":{
+        type = ThemeGraphType.STEP
+        break
+      }
+      case "折线图":{
+        type = ThemeGraphType.LINE
+        break
+      }
+      case "散点图":{
+        type = ThemeGraphType.POINT
+        break
+      }
+      case "柱状图":{
+        type = ThemeGraphType.BAR
+        break
+      }
+      case "三维柱状图":{
+        type = ThemeGraphType.BAR3D
+        break
+      }
+      case "饼状图":{
+        type = ThemeGraphType.PIE
+        break
+      }
+      case "三维饼状图":{
+        type = ThemeGraphType.PIE3D
+        break
+      }
+      case "玫瑰图":{
+        type = ThemeGraphType.ROSE
+        break
+      }
+      case "三维玫瑰图":{
+        type = ThemeGraphType.ROSE3D
+        break
+      }
+      case "堆叠图":{
+        type = ThemeGraphType.STACK_BAR
+        break
+      }
+      case "三维堆叠图":{
+        type = ThemeGraphType.STACK_BAR3D
+        break
+      }
+      case "环状图":{
+        type = ThemeGraphType.RING
+        break
+      }
+    }
     // 图层->创建统计专题图
     const params = {
       items: expressions,
-      graphType: themeCreateType,
+      graphType: type,
     }
     const layer = await STheme.createThemeGraphLayer(datasetInfo,params)
     if (layer) {
@@ -1729,25 +1851,23 @@ async function getTouchProgressInfo(title) {
     // 热力图
     case getLanguage(_params.language).Map_Main_Menu.THEME_HEATMAP_RADIUS:
       range = [1, 50]
-      value = await STheme.getHeatMapRadius({
-        LayerName: _params.currentLayer.name,
-      })
+      value = (await STheme.getThemeHeatInfo(_params.currentLayer.name||"")).kernelRadius
       unit = 'X'
       break
-    case getLanguage(_params.language).Map_Main_Menu.THEME_HEATMAP_FUZZY_DEGREE:
+    case getLanguage(_params.language).Map_Main_Menu.THEME_HEATMAP_FUZZY_DEGREE:{
+      const va = ((await STheme.getThemeHeatInfo(_params.currentLayer.name||"")).fuzzyDegree)
       range = [1, 100]
-      value = await STheme.getHeatMapFuzzyDegree({
-        LayerName: _params.currentLayer.name,
-      })
+      value = va?va*10:1
       unit = '%'
       break
-    case getLanguage(_params.language).Map_Main_Menu.THEME_HEATMAP_MAXCOLOR_WEIGHT:
+    }
+    case getLanguage(_params.language).Map_Main_Menu.THEME_HEATMAP_MAXCOLOR_WEIGHT:{
       range = [1, 100]
-      value = await STheme.getHeatMapMaxColorWeight({
-        LayerName: _params.currentLayer.name,
-      })
+      const va = (await STheme.getThemeHeatInfo(_params.currentLayer.name||"")).intensity
+      value = va?va*100.0:1
       unit = '%'
       break
+    }
     // 其他专题图
     case getLanguage(global.language).Map_Main_Menu.RANGE_COUNT:
       if (
@@ -1760,9 +1880,8 @@ async function getTouchProgressInfo(title) {
         const items = (await STheme.getRangeThemeLabelLayerInfo(_params.currentLayer.name || "")).items
         value = items?.length || 0
       } else if (themeType === ThemeType.GRIDRANGE) {
-        value = await STheme.getGridRangeCount({
-          LayerName: _params.currentLayer.name,
-        })
+        const items = (await STheme.getThemeGridRangeInfo(_params.currentLayer.name || "")).items
+        value = items?.length || 0
       }
       range = [2, 32]
       break
@@ -1775,17 +1894,13 @@ async function getTouchProgressInfo(title) {
       if (themeType === ThemeType.DOTDENSITY) {
         value = (await STheme.getThemeDotDensityInfo(_params.currentLayer.name)).SymbolSize
       } else if (themeType === ThemeType.GRADUATEDSYMBOL) {
-        value = await STheme.getGraduatedSymbolSize({
-          LayerName: _params.currentLayer.name,
-        })
+        value = (await STheme.getThemeGraduatedSymbolInfo(_params.currentLayer.name)).SymbolSize
       }
       unit = 'mm'
       break
     case getLanguage(_params.language).Map_Main_Menu.DATUM_VALUE:
       range = [1, 10000]
-      value = await STheme.getGraduatedSymbolValue({
-        LayerName: _params.currentLayer.name,
-      })
+      value = (await STheme.getThemeGraduatedSymbolInfo(_params.currentLayer.name)).BaseValue
       break
     case getLanguage(_params.language).Map_Main_Menu.STYLE_FONT_SIZE:{
       range = [1, 20]
@@ -1821,24 +1936,21 @@ function setTouchProgressInfo(title, value) {
       if (value > range[1]) value = range[1]
       else if (value <= range[0]) value = range[0]
       _params = {
-        LayerName: Params.currentLayer.name,
-        Radius: value,
+        kernelRadius: value,
       }
-      STheme.setHeatMapRadius(_params)
+      STheme.modifyThemeHeatLayer(Params.currentLayer.name||"",_params)
       break
     case getLanguage(Params.language).Map_Main_Menu.THEME_HEATMAP_FUZZY_DEGREE:
       _params = {
-        LayerName: Params.currentLayer.name,
-        fuzzyDegree: value,
+        fuzzyDegree: value/10,
       }
-      STheme.setHeatMapFuzzyDegree(_params)
+      STheme.modifyThemeHeatLayer(Params.currentLayer.name||"",_params)
       break
     case getLanguage(Params.language).Map_Main_Menu.THEME_HEATMAP_MAXCOLOR_WEIGHT:
       _params = {
-        LayerName: Params.currentLayer.name,
-        MaxColorWeight: value,
+        intensity: value/100.0,
       }
-      STheme.setHeatMapMaxColorWeight(_params)
+      STheme.modifyThemeHeatLayer(Params.currentLayer.name||"",_params)
       break
     // 其他专题图
     case getLanguage(global.language).Map_Main_Menu.RANGE_COUNT:
@@ -1854,7 +1966,7 @@ function setTouchProgressInfo(title, value) {
         STheme.modifyThemeRangeLayer(Params.currentLayer.name || "", _params)
         // STheme.modifyThemeRangeMap(_params)
       } else if (themeType === ThemeType.GRIDRANGE) {
-        STheme.modifyThemeGridRangeMap(_params)
+        STheme.modifyThemeGridRangeLayer(Params.currentLayer.name || "",_params)
       }
       break
     case getLanguage(Params.language).Map_Main_Menu.DOT_VALUE:
@@ -1870,7 +1982,7 @@ function setTouchProgressInfo(title, value) {
       if (themeType === ThemeType.DOTDENSITY) {
         STheme.modifyThemeDotDensityLayer(Params.currentLayer.name||"",_params)
       } else if (themeType === ThemeType.GRADUATEDSYMBOL) {
-        STheme.modifyGraduatedSymbolThemeMap(_params)
+        STheme.modifyThemeGraduatedSymbolLayer(Params.currentLayer.name||"",_params)
       }
       break
     case getLanguage(Params.language).Map_Main_Menu.DATUM_VALUE:
@@ -1878,10 +1990,9 @@ function setTouchProgressInfo(title, value) {
       if (value > range[1]) value = range[1]
       else if (value <= range[0]) value = range[0]
       _params = {
-        LayerName: Params.currentLayer.name,
         BaseValue: value,
       }
-      STheme.modifyGraduatedSymbolThemeMap(_params)
+      STheme.modifyThemeGraduatedSymbolLayer(Params.currentLayer.name||"",_params)
       break
     case getLanguage(Params.language).Map_Main_Menu.STYLE_FONT_SIZE:
       range = [1, 20]

@@ -49,7 +49,7 @@ export default class SymbolList extends React.Component {
           STheme.modifyThemeDotDensityLayer(this.props.layerData.name,params)
           break
         case ConstToolType.SM_MAP_THEME_PARAM_GRADUATED_SYMBOLS:
-          STheme.modifyGraduatedSymbolThemeMap(params)
+          STheme.modifyThemeGraduatedSymbolLayer(this.props.layerData.name,params)
           break
       }
       return

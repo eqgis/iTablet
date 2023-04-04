@@ -14,8 +14,8 @@ import ToolbarModule from '../ToolbarModule'
 import ThemeData from './ThemeData'
 import ThemeAction from './ThemeAction'
 import NavigationService from '../../../../../NavigationService'
-import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
-import { RangeMode, ThemeLabel, ThemeType } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
+import { DatasetType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
+import { RangeMode, ThemeLabel, ThemeType ,ThemeRangeLabel,ThemeGraduated,GraduatedMode} from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
 /**
  *
  * @param type
@@ -27,8 +27,17 @@ import { RangeMode, ThemeLabel, ThemeType } from 'imobile_for_reactnative/Native
  */
 async function showDatasetsList(type, filter = {}) {
   const _params = ToolbarModule.getParams()
-  const isAnyOpenedDS = await STheme.isAnyOpenedDS()
-  if (!isAnyOpenedDS) {
+
+  const datasources =await SData.getDatasources()
+  let has = false
+  for(let i=0;i<datasources.length;i++){
+    if(datasources[i].engineType === EngineType.UDB && !datasources[i].alias.startsWith("Label")){
+      has = true
+    }
+  }
+
+  // const isAnyOpenedDS = await STheme.isAnyOpenedDS()
+  if (!has) {
     Toast.show(
       getLanguage(global.language).Prompt.PLEASE_ADD_DATASOURCE_BY_UNIFORM,
     )
@@ -74,71 +83,80 @@ async function showDatasetsList(type, filter = {}) {
   }
   const data = []
   const checkLabelAndPlot = /^(Label_|PlotEdit_(.*)@)(.*)#$/
-  STheme.getAllDatasetNames().then(getdata => {
-    getdata.reverse()
-    for (let i = 0; i < getdata.length; i++) {
-      const datalist = getdata[i]
-      if (datalist.datasource.alias.match(checkLabelAndPlot)) continue
-      const list = []
-      datalist.list.forEach(item => {
-        let isExist = false
-        if (filter.typeFilter && filter.typeFilter.length > 0) {
-          for (let j = 0; j < filter.typeFilter.length; j++) {
-            if (item.datasetType === filter.typeFilter[j]) {
-              isExist = true
-            }
-          }
-        } else {
-          isExist = true
-        }
-        if (!isExist) return
-        if (item.geoCoordSysType && item.prjCoordSysType) {
-          item.info = {
-            infoType: 'dataset',
-            geoCoordSysType: item.geoCoordSysType,
-            prjCoordSysType: item.prjCoordSysType,
+  // const allda = await SData.getDatasources()
+  const getdata = []
+  for(let i=0;i<datasources.length;i++){
+    const datasets = await SData.getDatasetsByDatasource(datasources[i])
+    getdata.push({
+      list:datasets,
+      datasource:{alias:datasources[i].alias}
+    })
+  }
+  // STheme.getAllDatasetNames().then(getdata => {
+  getdata.reverse()
+  for (let i = 0; i < getdata.length; i++) {
+    const datalist = getdata[i]
+    if (datalist.datasource.alias.match(checkLabelAndPlot)) continue
+    const list = []
+    datalist.list.forEach(item => {
+      let isExist = false
+      if (filter.typeFilter && filter.typeFilter.length > 0) {
+        for (let j = 0; j < filter.typeFilter.length; j++) {
+          if (item.datasetType === filter.typeFilter[j]) {
+            isExist = true
           }
         }
-        list.push(item)
-      })
-      if (list.length === 0) continue
-      data.push({
-        title: datalist.datasource.alias,
-        // image: require('../../../../../../assets/mapToolbar/list_type_udb.png'),
-        image: getThemeAssets().dataType.icon_data_source,
-        data: list,
-      })
-    }
-    const buttons = [ToolbarBtnType.CANCEL]
-    // const height =
-    //   _params.device.orientation.indexOf('LANDSCAPE') === 0
-    //     ? ConstToolType.THEME_HEIGHT[3]
-    //     : ConstToolType.THEME_HEIGHT[5]
-    const _type = ConstToolType.SM_MAP_THEME_PARAM_CREATE_DATASETS
-    const _data = {
-      type: _type,
-      getData: ThemeData.getData,
-      lastData: {
-        data,
-        buttons,
-        // height,
-      },
-      actions: ThemeAction,
-    }
-    ToolbarModule.addData(_data)
-    _params.setToolbarVisible &&
-      _params.setToolbarVisible(true, _type, {
-        containerType: ToolbarType.list,
-        isFullScreen: true,
-        isTouchProgress: false,
-        showMenuDialog: false,
-        // height,
-        data,
-        buttons,
-      })
-    _params.scrollListToLocation &&
-      _params.scrollListToLocation()
-  })
+      } else {
+        isExist = true
+      }
+      if (!isExist) return
+      if (item.geoCoordSysType && item.prjCoordSysType) {
+        item.info = {
+          infoType: 'dataset',
+          geoCoordSysType: item.geoCoordSysType,
+          prjCoordSysType: item.prjCoordSysType,
+        }
+      }
+      list.push(item)
+    })
+    if (list.length === 0) continue
+    data.push({
+      title: datalist.datasource.alias,
+      // image: require('../../../../../../assets/mapToolbar/list_type_udb.png'),
+      image: getThemeAssets().dataType.icon_data_source,
+      data: list,
+    })
+  }
+  const buttons = [ToolbarBtnType.CANCEL]
+  // const height =
+  //   _params.device.orientation.indexOf('LANDSCAPE') === 0
+  //     ? ConstToolType.THEME_HEIGHT[3]
+  //     : ConstToolType.THEME_HEIGHT[5]
+  const _type = ConstToolType.SM_MAP_THEME_PARAM_CREATE_DATASETS
+  const _data = {
+    type: _type,
+    getData: ThemeData.getData,
+    lastData: {
+      data,
+      buttons,
+      // height,
+    },
+    actions: ThemeAction,
+  }
+  ToolbarModule.addData(_data)
+  _params.setToolbarVisible &&
+    _params.setToolbarVisible(true, _type, {
+      containerType: ToolbarType.list,
+      isFullScreen: true,
+      isTouchProgress: false,
+      showMenuDialog: false,
+      // height,
+      data,
+      buttons,
+    })
+  _params.scrollListToLocation &&
+    _params.scrollListToLocation()
+  // })
 }
 
 function showExpressionList(type, themeType) {
@@ -282,16 +300,18 @@ async function createThemeGridUniqueMap(params) {
   let paramsTheme = {}
   let isSuccess = false
   // let errorInfo = ''
-  paramsTheme = {
-    DatasourceAlias: params.themeDatasourceAlias,
-    DatasetName: params.themeDatasetName,
-    GridUniqueColorScheme: 'EE_Lake',
+  const datasetInfo={
+    datasetName:params.themeDatasetName,
+    datasourceName:params.themeDatasourceAlias,
   }
-  await STheme.createThemeGridUniqueMap(paramsTheme).then(msg => {
-    isSuccess = msg.result
+  paramsTheme = {
+    colorScheme: 'EE_Lake',
+  }
+  await STheme.createThemeGridUniqueLayer(datasetInfo,paramsTheme).then(layer => {
     // errorInfo = msg.error && msg.error
-    if (isSuccess && msg.layer) {
-      ThemeAction.sendAddThemeMsg(msg.layer)
+    if (layer) {
+      isSuccess = true
+      ThemeAction.sendAddThemeMsg(layer)
     }
   })
   // .catch(err => {
@@ -311,19 +331,20 @@ async function createThemeGridUniqueMap(params) {
 
 // 通过数据集->创建栅格分段专题图
 async function createThemeGridRangeMap(params) {
-  let paramsTheme = {}
   let isSuccess = false
-  // let errorInfo = ''
-  paramsTheme = {
-    DatasourceAlias: params.themeDatasourceAlias,
-    DatasetName: params.themeDatasetName,
-    GridRangeColorScheme: 'FF_Blues',
+  const datasetInfo = {
+    datasourceName: params.themeDatasourceAlias,
+    datasetName: params.themeDatasetName,
   }
-  await STheme.createThemeGridRangeMap(paramsTheme).then(msg => {
-    isSuccess = msg.result
+  // let errorInfo = ''
+  const paramsTheme = {
+    colorScheme: 'FF_Blues',
+  }
+  await STheme.createThemeGridRangeLayer(datasetInfo,paramsTheme).then(layer => {
     // errorInfo = msg.error && msg.error
-    if (isSuccess && msg.layer) {
-      ThemeAction.sendAddThemeMsg(msg.layer)
+    if (layer) {
+      isSuccess = true
+      ThemeAction.sendAddThemeMsg(layer)
     }
   })
   // .catch(err => {
@@ -343,20 +364,21 @@ async function createThemeGridRangeMap(params) {
 
 // 通过图层->创建栅格单值专题图
 async function createThemeGridUniqueMapByLayer() {
-  const _params = ToolbarModule.getParams()
-  const _data = ToolbarModule.getData()
-  const currentLayer = _data.currentLayer || _params.currentLayer
   let isSuccess = false
-  let paramsTheme = {
-    LayerName: currentLayer.name,
-    GridUniqueColorScheme: 'EE_Lake',
+  const paramsTheme = {
+    colorScheme: 'EE_Lake',
   }
-  await STheme.createThemeGridUniqueMapByLayer(paramsTheme).then(
-    msg => {
-      isSuccess = msg.result
+  const datasetInfo={
+    datasetName:ToolbarModule.getData().currentLayer.datasetName || "",
+    datasourceName:ToolbarModule.getData().currentLayer.datasourceAlias || "",
+  }
+
+  await STheme.createThemeGridUniqueLayer(datasetInfo,paramsTheme).then(
+    layer => {
       // errorInfo = msg.error && msg.error
-      if (isSuccess && msg.layer) {
-        ThemeAction.sendAddThemeMsg(msg.layer)
+      if (layer) {
+        isSuccess = true
+        ThemeAction.sendAddThemeMsg(layer)
       }
     },
   )
@@ -378,19 +400,24 @@ async function createThemeGridUniqueMapByLayer() {
 // 通过图层->创建栅格分段专题图
 async function createThemeGridRangeMapByLayer() {
   const _params = ToolbarModule.getParams()
-  const _data = ToolbarModule.getData()
-  const currentLayer = _data.currentLayer || _params.currentLayer
+  // const _data = ToolbarModule.getData()
+  // const currentLayer = _data.currentLayer || _params.currentLayer
   let isSuccess = false
-  let paramsTheme = {
-    LayerName: currentLayer.name,
-    GridRangeColorScheme: 'FF_Blues',
+  const datasetName = _params.currentLayer.datasetName || ""
+  const datasourceName = _params.currentLayer.datasourceAlias || ""
+  const datasetInfo = {
+    datasetName:datasetName,
+    datasourceName:datasourceName,
   }
-  await STheme.createThemeGridRangeMapByLayer(paramsTheme).then(
-    msg => {
-      isSuccess = msg.result
+  const paramsTheme = {
+    colorScheme: 'FF_Blues',
+  }
+  await STheme.createThemeGridRangeLayer(datasetInfo,paramsTheme).then(
+    layer => {
       // errorInfo = msg.error && msg.error
-      if (isSuccess && msg.layer) {
-        ThemeAction.sendAddThemeMsg(msg.layer)
+      if (layer) {
+        isSuccess = true
+        ThemeAction.sendAddThemeMsg(layer)
       }
     },
   )
@@ -796,9 +823,12 @@ function setRangeMode(type, rangeMode) {
   }
 }
 
-function setGridRangeMode() {
+function setGridRangeMode(rangeMode) {
   const _params = ToolbarModule.getData().themeParams
-  STheme.modifyThemeGridRangeMap(_params)
+  if (rangeMode !== undefined) {
+    _params.rangeMode = rangeMode
+  }
+  STheme.modifyThemeGridRangeLayer(_params?.LayerName||"",_params)
 }
 
 function getRangeMode(type) {
@@ -875,7 +905,7 @@ function getGridRangeMode() {
       // 等距分段
       key: constants.MAP_THEME_PARAM_RANGE_MODE_EQUALINTERVAL,
       title: '等距分段',
-      action: setGridRangeMode,
+      action: ()=>setGridRangeMode(RangeMode.EQUALINTERVAL),
       size: 'large',
       image: require('../../../../../../assets/mapTools/range_mode_equalinterval_black.png'),
       selectedImage: require('../../../../../../assets/mapTools/range_mode_equalinterval_black.png'),
@@ -884,7 +914,7 @@ function getGridRangeMode() {
       // 平方根分段
       key: constants.MAP_THEME_PARAM_RANGE_MODE_SQUAREROOT,
       title: '平方根分段',
-      action: setGridRangeMode,
+      action: ()=>setGridRangeMode(RangeMode.SQUAREROOT),
       size: 'large',
       image: require('../../../../../../assets/mapTools/range_mode_squareroot_black.png'),
       selectedImage: require('../../../../../../assets/mapTools/range_mode_squareroot_black.png'),
@@ -893,7 +923,7 @@ function getGridRangeMode() {
       // 对数分段
       key: constants.MAP_THEME_PARAM_RANGE_MODE_LOGARITHM,
       title: '对数分段',
-      action: setGridRangeMode,
+      action: ()=>setGridRangeMode(RangeMode.LOGARITHM),
       size: 'large',
       image: require('../../../../../../assets/mapTools/range_mode_logarithm_black.png'),
       selectedImage: require('../../../../../../assets/mapTools/range_mode_logarithm_black.png'),
@@ -1236,7 +1266,7 @@ function setColor() {
     return STheme.modifyThemeDotDensityLayer(_params.LayerName,{color:SMap._translate16ToRgb(_params.LineColor)})
   }
   if (_params.colorType === 'GRADUATED_SYMBOL_COLOR') {
-    return STheme.modifyGraduatedSymbolThemeMap(_params)
+    return STheme.modifyThemeGraduatedSymbolLayer(_params.LayerName,{color:SMap._translate16ToRgb(_params.LineColor)})
   }
 }
 
@@ -2608,6 +2638,17 @@ function getThemeGraphType() {
 function setThemeGraphGraduatedMode() {
   const _params = ToolbarModule.getData().themeParams
   const layerName = ToolbarModule.getParams().currentLayer.name
+  switch(_params.GraduatedMode){
+    case "CONSTANT":
+      _params.GraduatedMode = GraduatedMode.CONSTANT
+      break
+    case "SQUAREROOT":
+      _params.GraduatedMode = GraduatedMode.SQUAREROOT
+      break
+    case "LOGARITHM":
+      _params.GraduatedMode = GraduatedMode.LOGARITHM
+      break
+  }
   return STheme.modifyThemeGraphLayer(layerName||"",_params)
 }
 
@@ -2648,7 +2689,18 @@ function getGraphThemeGradutedMode() {
 /** 设置等级符号专题图分级方式 */
 function setThemeGraduatedSymbolGraduatedMode() {
   const _params = ToolbarModule.getData().themeParams
-  return STheme.modifyGraduatedSymbolThemeMap(_params)
+  switch(_params.GraduatedMode){
+    case "CONSTANT":
+      _params.GraduatedMode = GraduatedMode.CONSTANT
+      break
+    case "SQUAREROOT":
+      _params.GraduatedMode = GraduatedMode.SQUAREROOT
+      break
+    case "LOGARITHM":
+      _params.GraduatedMode = GraduatedMode.LOGARITHM
+      break
+  }
+  return STheme.modifyThemeGraduatedSymbolLayer(_params.LayerName,_params)
 }
 
 function getGraduatedSymbolGradutedMode() {
@@ -3019,7 +3071,7 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       // 点密度专题图
       paramsTheme = {
         expression: item.expression,
-        value: '20',
+        value: 20,
       }
       await STheme.createThemeDotDensityLayer(datasetInfo,paramsTheme).then(
         layer => {
@@ -3033,23 +3085,22 @@ async function createThemeByDataset(item, ToolbarParams = {}) {
       //   errorInfo = err.message
       // })
       break
-    case constants.THEME_GRADUATED_SYMBOL:
+    case constants.THEME_GRADUATED_SYMBOL:{
       // 等级符号专题图
-      paramsTheme = {
-        DatasourceAlias: ToolbarParams.themeDatasourceAlias,
-        DatasetName: ToolbarParams.themeDatasetName,
-        GraSymbolExpression: item.expression,
-        GraduatedMode: 'LOGARITHM',
+      const params:ThemeGraduated = {
+        expression: item.expression||"",
+        GraduatedMode: GraduatedMode.LOGARITHM,
         // SymbolSize: '30',
       }
-      await STheme.createGraduatedSymbolThemeMap(paramsTheme).then(
-        msg => {
-          isSuccess = msg.result
-          if (isSuccess && msg.layer) {
-            ThemeAction.sendAddThemeMsg(msg.layer)
+      await STheme.createThemeGraduatedSymbolLayer(datasetInfo,params).then(
+        layer => {
+          if (layer) {
+            isSuccess = true
+            ThemeAction.sendAddThemeMsg(layer)
           }
         },
       )
+    }
       // .catch(err => {
       //   errorInfo = err.message
       // })
@@ -3180,7 +3231,7 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
       // 点密度专题图
       paramsTheme = {
         expression: item.expression,
-        value: '20',
+        value: 20,
       }
       await STheme.createThemeDotDensityLayer(datasetInfo,paramsTheme).then(
         layer => {
@@ -3194,23 +3245,21 @@ async function createThemeByLayer(item, ToolbarParams = {}) {
       //   errorInfo = err.message
       // })
       break
-    case constants.THEME_GRADUATED_SYMBOL:
-      // 等级符号专题图
-      paramsTheme = {
-        DatasourceAlias: item.datasourceName,
-        DatasetName: item.datasetName,
-        GraSymbolExpression: item.expression,
-        GraduatedMode: 'LOGARITHM',
+    case constants.THEME_GRADUATED_SYMBOL:{
+      const params:ThemeGraduated = {
+        expression: item.expression||"",
+        GraduatedMode: GraduatedMode.LOGARITHM,
         // SymbolSize: '30',
       }
-      await STheme.createGraduatedSymbolThemeMap(paramsTheme).then(
-        msg => {
-          isSuccess = msg.result
-          if (isSuccess && msg.layer) {
-            ThemeAction.sendAddThemeMsg(msg.layer)
+      await STheme.createThemeGraduatedSymbolLayer(datasetInfo,params).then(
+        layer => {
+          if (layer) {
+            isSuccess = true
+            ThemeAction.sendAddThemeMsg(layer)
           }
         },
       )
+    }
       // .catch(err => {
       //   errorInfo = err.message
       // })
@@ -3369,28 +3418,28 @@ function getAggregationColorScheme() {
 
 // 通过数据集->创建热力图
 async function createHeatMap(params) {
-  let paramsTheme = {}
   let isSuccess = false
-  let errorInfo = ''
-  paramsTheme = {
-    DatasourceAlias: params.themeDatasourceAlias,
-    DatasetName: params.themeDatasetName,
+  // let errorInfo = ''
+  const datasetInfo = {
+    datasetName:params.themeDatasetName,
+    datasourceName:params.themeDatasourceAlias,
+  }
+  const paramsTheme = {
     kernelRadius: 40,
     fuzzyDegree: 0.8,
     intensity: 0.1,
-    colorType: 'ZA_Insights',
+    colorScheme: 'ZA_Insights',
   }
-  await STheme.createHeatMap(paramsTheme)
-    .then(msg => {
-      isSuccess = msg.result
-      errorInfo = msg.error && msg.error
-      if (isSuccess && msg.layer) {
-        ThemeAction.sendAddThemeMsg(msg.layer)
+  await STheme.createThemeHeatLayer(datasetInfo,paramsTheme)
+    .then(layer => {
+      if (layer) {
+        isSuccess = true
+        ThemeAction.sendAddThemeMsg(layer)
       }
     })
-    .catch(err => {
-      errorInfo = err.message
-    })
+    // .catch(err => {
+    //   errorInfo = err.message
+    // })
   if (isSuccess) {
     // Toast.show('创建专题图成功')
     // 设置当前图层
@@ -3412,6 +3461,91 @@ function isThemeFieldTypeAvailable(fieldType, themeType) {
     fieldType === 'LONGBINARY' ||
     fieldType === 'SINGLE'
   )
+}
+
+function getFieldType(fieldType:string){
+  let type = "未知"
+  if (global.language === "CN") {
+    switch (fieldType) {
+      case "BOOLEAN":
+        type = "布尔型字段"
+        break
+      case "BYTE":
+        type = "字节型字段"
+        break
+      case "CHAR":
+        type = "定长的文本类型字段"
+        break
+      case "DATETIME":
+        type = "日期型字段"
+        break
+      case "DOUBLE":
+        type = "64位精度浮点型字段"
+        break
+      case "INT16":
+        type = "16位整型字段"
+        break
+      case "INT32":
+        type = "32位整型字段"
+        break
+      case "INT64":
+        type = "64位整型字段"
+        break
+      case "LONGBINARY":
+        type = "二进制型字段"
+        break
+      case "SINGLE":
+        type = "32位精度浮点型字段"
+        break
+      case "TEXT":
+        type = "变长的文本型字段"
+        break
+      case "WTEXT":
+        type = "宽字符类型字段"
+        break
+    }
+  } else if (global.language === "EN") {
+    type = "Unknown Type"
+    switch (fieldType) {
+      case "BOOLEAN":
+        type = "Boolean"
+        break
+      case "BYTE":
+        type = "Byte"
+        break
+      case "CHAR":
+        type = "Char"
+        break
+      case "DATETIME":
+        type = "Date"
+        break
+      case "DOUBLE":
+        type = "Double"
+        break
+      case "INT16":
+        type = "Short"
+        break
+      case "INT32":
+        type = "Int"
+        break
+      case "INT64":
+        type = "Long"
+        break
+      case "LONGBINARY":
+        type = "Long Binary"
+        break
+      case "SINGLE":
+        type = "Single"
+        break
+      case "TEXT":
+        type = "Text"
+        break
+      case "WTEXT":
+        type = "Wide Char"
+        break
+    }
+  }
+  return type
 }
 
 // 单值
@@ -4212,6 +4346,7 @@ export default {
   getGraphThemeExpressionsData,
 
   isThemeFieldTypeAvailable,
+  getFieldType,
 
   uniqueMenuInfo,
   rangeMenuInfo,

@@ -14,7 +14,7 @@ import ToolbarModule from '../ToolbarModule'
 import ThemeData from './ThemeData'
 import ThemeAction from './ThemeAction'
 import NavigationService from '../../../../../NavigationService'
-import { EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
+import { DatasetType, EngineType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { RangeMode, ThemeLabel, ThemeType ,ThemeRangeLabel,ThemeGraduated,GraduatedMode} from 'imobile_for_reactnative/NativeModule/interfaces/mapping/STheme'
 /**
  *
@@ -27,8 +27,17 @@ import { RangeMode, ThemeLabel, ThemeType ,ThemeRangeLabel,ThemeGraduated,Gradua
  */
 async function showDatasetsList(type, filter = {}) {
   const _params = ToolbarModule.getParams()
-  const isAnyOpenedDS = await STheme.isAnyOpenedDS()
-  if (!isAnyOpenedDS) {
+
+  const datasources =await SData.getDatasources()
+  let has = false
+  for(let i=0;i<datasources.length;i++){
+    if(datasources[i].engineType === EngineType.UDB && !datasources[i].alias.startsWith("Label")){
+      has = true
+    }
+  }
+
+  // const isAnyOpenedDS = await STheme.isAnyOpenedDS()
+  if (!has) {
     Toast.show(
       getLanguage(global.language).Prompt.PLEASE_ADD_DATASOURCE_BY_UNIFORM,
     )
@@ -74,71 +83,80 @@ async function showDatasetsList(type, filter = {}) {
   }
   const data = []
   const checkLabelAndPlot = /^(Label_|PlotEdit_(.*)@)(.*)#$/
-  STheme.getAllDatasetNames().then(getdata => {
-    getdata.reverse()
-    for (let i = 0; i < getdata.length; i++) {
-      const datalist = getdata[i]
-      if (datalist.datasource.alias.match(checkLabelAndPlot)) continue
-      const list = []
-      datalist.list.forEach(item => {
-        let isExist = false
-        if (filter.typeFilter && filter.typeFilter.length > 0) {
-          for (let j = 0; j < filter.typeFilter.length; j++) {
-            if (item.datasetType === filter.typeFilter[j]) {
-              isExist = true
-            }
-          }
-        } else {
-          isExist = true
-        }
-        if (!isExist) return
-        if (item.geoCoordSysType && item.prjCoordSysType) {
-          item.info = {
-            infoType: 'dataset',
-            geoCoordSysType: item.geoCoordSysType,
-            prjCoordSysType: item.prjCoordSysType,
+  // const allda = await SData.getDatasources()
+  const getdata = []
+  for(let i=0;i<datasources.length;i++){
+    const datasets = await SData.getDatasetsByDatasource(datasources[i])
+    getdata.push({
+      list:datasets,
+      datasource:{alias:datasources[i].alias}
+    })
+  }
+  // STheme.getAllDatasetNames().then(getdata => {
+  getdata.reverse()
+  for (let i = 0; i < getdata.length; i++) {
+    const datalist = getdata[i]
+    if (datalist.datasource.alias.match(checkLabelAndPlot)) continue
+    const list = []
+    datalist.list.forEach(item => {
+      let isExist = false
+      if (filter.typeFilter && filter.typeFilter.length > 0) {
+        for (let j = 0; j < filter.typeFilter.length; j++) {
+          if (item.datasetType === filter.typeFilter[j]) {
+            isExist = true
           }
         }
-        list.push(item)
-      })
-      if (list.length === 0) continue
-      data.push({
-        title: datalist.datasource.alias,
-        // image: require('../../../../../../assets/mapToolbar/list_type_udb.png'),
-        image: getThemeAssets().dataType.icon_data_source,
-        data: list,
-      })
-    }
-    const buttons = [ToolbarBtnType.CANCEL]
-    // const height =
-    //   _params.device.orientation.indexOf('LANDSCAPE') === 0
-    //     ? ConstToolType.THEME_HEIGHT[3]
-    //     : ConstToolType.THEME_HEIGHT[5]
-    const _type = ConstToolType.SM_MAP_THEME_PARAM_CREATE_DATASETS
-    const _data = {
-      type: _type,
-      getData: ThemeData.getData,
-      lastData: {
-        data,
-        buttons,
-        // height,
-      },
-      actions: ThemeAction,
-    }
-    ToolbarModule.addData(_data)
-    _params.setToolbarVisible &&
-      _params.setToolbarVisible(true, _type, {
-        containerType: ToolbarType.list,
-        isFullScreen: true,
-        isTouchProgress: false,
-        showMenuDialog: false,
-        // height,
-        data,
-        buttons,
-      })
-    _params.scrollListToLocation &&
-      _params.scrollListToLocation()
-  })
+      } else {
+        isExist = true
+      }
+      if (!isExist) return
+      if (item.geoCoordSysType && item.prjCoordSysType) {
+        item.info = {
+          infoType: 'dataset',
+          geoCoordSysType: item.geoCoordSysType,
+          prjCoordSysType: item.prjCoordSysType,
+        }
+      }
+      list.push(item)
+    })
+    if (list.length === 0) continue
+    data.push({
+      title: datalist.datasource.alias,
+      // image: require('../../../../../../assets/mapToolbar/list_type_udb.png'),
+      image: getThemeAssets().dataType.icon_data_source,
+      data: list,
+    })
+  }
+  const buttons = [ToolbarBtnType.CANCEL]
+  // const height =
+  //   _params.device.orientation.indexOf('LANDSCAPE') === 0
+  //     ? ConstToolType.THEME_HEIGHT[3]
+  //     : ConstToolType.THEME_HEIGHT[5]
+  const _type = ConstToolType.SM_MAP_THEME_PARAM_CREATE_DATASETS
+  const _data = {
+    type: _type,
+    getData: ThemeData.getData,
+    lastData: {
+      data,
+      buttons,
+      // height,
+    },
+    actions: ThemeAction,
+  }
+  ToolbarModule.addData(_data)
+  _params.setToolbarVisible &&
+    _params.setToolbarVisible(true, _type, {
+      containerType: ToolbarType.list,
+      isFullScreen: true,
+      isTouchProgress: false,
+      showMenuDialog: false,
+      // height,
+      data,
+      buttons,
+    })
+  _params.scrollListToLocation &&
+    _params.scrollListToLocation()
+  // })
 }
 
 function showExpressionList(type, themeType) {
@@ -3445,6 +3463,91 @@ function isThemeFieldTypeAvailable(fieldType, themeType) {
   )
 }
 
+function getFieldType(fieldType:string){
+  let type = "未知"
+  if (global.language === "CN") {
+    switch (fieldType) {
+      case "BOOLEAN":
+        type = "布尔型字段"
+        break
+      case "BYTE":
+        type = "字节型字段"
+        break
+      case "CHAR":
+        type = "定长的文本类型字段"
+        break
+      case "DATETIME":
+        type = "日期型字段"
+        break
+      case "DOUBLE":
+        type = "64位精度浮点型字段"
+        break
+      case "INT16":
+        type = "16位整型字段"
+        break
+      case "INT32":
+        type = "32位整型字段"
+        break
+      case "INT64":
+        type = "64位整型字段"
+        break
+      case "LONGBINARY":
+        type = "二进制型字段"
+        break
+      case "SINGLE":
+        type = "32位精度浮点型字段"
+        break
+      case "TEXT":
+        type = "变长的文本型字段"
+        break
+      case "WTEXT":
+        type = "宽字符类型字段"
+        break
+    }
+  } else if (global.language === "EN") {
+    type = "Unknown Type"
+    switch (fieldType) {
+      case "BOOLEAN":
+        type = "Boolean"
+        break
+      case "BYTE":
+        type = "Byte"
+        break
+      case "CHAR":
+        type = "Char"
+        break
+      case "DATETIME":
+        type = "Date"
+        break
+      case "DOUBLE":
+        type = "Double"
+        break
+      case "INT16":
+        type = "Short"
+        break
+      case "INT32":
+        type = "Int"
+        break
+      case "INT64":
+        type = "Long"
+        break
+      case "LONGBINARY":
+        type = "Long Binary"
+        break
+      case "SINGLE":
+        type = "Single"
+        break
+      case "TEXT":
+        type = "Text"
+        break
+      case "WTEXT":
+        type = "Wide Char"
+        break
+    }
+  }
+  return type
+}
+
 // 单值
 const uniqueMenuInfo = param => [
   {
@@ -4243,6 +4346,7 @@ export default {
   getGraphThemeExpressionsData,
 
   isThemeFieldTypeAvailable,
+  getFieldType,
 
   uniqueMenuInfo,
   rangeMenuInfo,

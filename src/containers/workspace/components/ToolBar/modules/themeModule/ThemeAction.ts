@@ -1064,11 +1064,27 @@ async function listAction(type, params = {}) {
           true,
           getLanguage(_params.language).Prompt.READING_DATA,
         )
-      const datasetData = await STheme.getThemeExpressionByDatasetName(
-        _params.language,
-        item.datasourceName,
-        item.datasetName,
-      )
+
+      const files = await SData.getFieldInfos({datasourceName:item.datasourceName,datasetName:item.datasetName})
+      const fileList = []
+      for(let i=0;i<files.length;i++){
+        fileList.push({
+          expression:files[i].name,
+          fieldType:ThemeMenuData.getFieldType(SData.getFieldTypeString(files[i].type)),
+          fieldTypeStr:SData.getFieldTypeString(files[i].type),
+          isSystemField:files[i].isSystemField,
+        })
+      }
+      const datasetIfo = await SData.getDatasetInfo({datasourceName:item.datasourceName,datasetName:item.datasetName})
+      const datasetData = {
+        list:fileList,
+        dataset:{datasetName:datasetIfo?.datasetName,datasetType:datasetIfo?.datasetType},
+      }
+      // const datasetData = await STheme.getThemeExpressionByDatasetName(
+      //   _params.language,
+      //   item.datasourceName,
+      //   item.datasetName,
+      // )
       const { dataset } = datasetData
       const _list = []
       datasetData.list.forEach(item => {

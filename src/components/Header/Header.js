@@ -150,7 +150,7 @@ class NavigationHeader extends Component {
     let backBtnSource = backImg || getPublicAssets().common.icon_back
     let backBtn = (
       <BackButton
-        // style={this.props.isResponseHeader ? {} : backStyle}
+        style={this.props.isResponseHeader ? {} : {width: scaleSize(80), paddingLeft: scaleSize(20)}}
         count={count}
         darkBackBtn={darkBackBtn}
         image={backBtnSource}

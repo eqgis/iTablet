@@ -2833,6 +2833,7 @@ export const language_en: typeof language_cn = {
   CANNOT_COLLECT_IN_CAD_LAYERS: "Cannot collect data on a CAD layer",
   CANNOT_COLLECT_IN_TEXT_LAYERS: "Cannot collect data on a Text layer",
   HEAT_MAP_DATASET_TYPE_ERROR: "Only the point dataset can be created",
+    PLEASE_ADD_POINT_DATASET_FIRST:"Please add point dataset first",//to translate
 
   INVALID_DATA_SET_FAILED: "Invalid data type. Failed to set",
   INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: "The layer is invisible, and so you cannot set it to the current layer",

@@ -2834,6 +2834,7 @@ export const language_tr: typeof language_cn = {
   CANNOT_COLLECT_IN_CAD_LAYERS: "CAD katmanlarında toplanamaz",
   CANNOT_COLLECT_IN_TEXT_LAYERS: "Metin katmanlarında toplanamaz",
   HEAT_MAP_DATASET_TYPE_ERROR: "Sadece nokta veri setleri oluşturulabilir",
+  PLEASE_ADD_POINT_DATASET_FIRST:"Please add point dataset first",//to translate
 
   INVALID_DATA_SET_FAILED: "Geçersiz veri türü. Ayarlama başarısız!",
 

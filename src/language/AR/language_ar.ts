@@ -2856,6 +2856,7 @@ export const language_ar: typeof language_cn = {
   CANNOT_COLLECT_IN_CAD_LAYERS: "لا يمكن جمعها في طبقة كندي",
   CANNOT_COLLECT_IN_TEXT_LAYERS: "لا يمكن جمعها في طبقة النص",
   HEAT_MAP_DATASET_TYPE_ERROR: "يمكن إنشاء مجموعة بيانات النقاط فقط",
+  PLEASE_ADD_POINT_DATASET_FIRST:"Please add point dataset first",//to translate
 
 
   //三维AR管线相关

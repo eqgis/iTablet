@@ -2835,6 +2835,7 @@ export const language_fr: typeof language_cn = {
   CANNOT_COLLECT_IN_CAD_LAYERS: "Impossible de collecter dans les couches CAO",
   CANNOT_COLLECT_IN_TEXT_LAYERS: "Impossible de collecter dans les couches de texte",
   HEAT_MAP_DATASET_TYPE_ERROR: "Seul le jeu de données ponctuel peut être créé",
+  PLEASE_ADD_POINT_DATASET_FIRST:"Please add point dataset first",//to translate
 
   INVALID_DATA_SET_FAILED: "Type de données non valide. Échec de paramètre",
 

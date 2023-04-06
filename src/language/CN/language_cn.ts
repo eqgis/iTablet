@@ -2836,6 +2836,7 @@ export const language_cn = {
   CANNOT_COLLECT_IN_CAD_LAYERS: "CAD图层不能采集",
   CANNOT_COLLECT_IN_TEXT_LAYERS: "文本图层不能采集",
   HEAT_MAP_DATASET_TYPE_ERROR: "只有点数据集可以创建",
+  PLEASE_ADD_POINT_DATASET_FIRST:"请先添加点数据集",
 
   INVALID_DATA_SET_FAILED: "数据类型不合法，设置失败",
   INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: "图层不可见，不能设置为当前图层",

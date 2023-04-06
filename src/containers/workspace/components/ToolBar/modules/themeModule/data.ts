@@ -87,19 +87,29 @@ async function showDatasetsList(type, filter = {}) {
   const getdata = []
   for(let i=0;i<datasources.length;i++){
     const datasets = await SData.getDatasetsByDatasource(datasources[i])
+    let finalDatasets = []
+    datasets.forEach(item=>{
+      finalDatasets.push({
+        datasourceName:item.datasourceName,
+        description:item.description,
+        datasetType:SData.getDatasetTypeString(item.datasetType),
+        index:item.index,
+        datasetName:item.datasetName,
+      })
+    })
     getdata.push({
-      list:datasets,
+      list:finalDatasets,
       datasource:{alias:datasources[i].alias}
     })
   }
   // STheme.getAllDatasetNames().then(getdata => {
   getdata.reverse()
+  let isExist = false
   for (let i = 0; i < getdata.length; i++) {
     const datalist = getdata[i]
     if (datalist.datasource.alias.match(checkLabelAndPlot)) continue
     const list = []
     datalist.list.forEach(item => {
-      let isExist = false
       if (filter.typeFilter && filter.typeFilter.length > 0) {
         for (let j = 0; j < filter.typeFilter.length; j++) {
           if (item.datasetType === filter.typeFilter[j]) {
@@ -126,6 +136,10 @@ async function showDatasetsList(type, filter = {}) {
       image: getThemeAssets().dataType.icon_data_source,
       data: list,
     })
+  }
+  if(!isExist){
+    Toast.show(getLanguage(global.language).Prompt.PLEASE_ADD_POINT_DATASET_FIRST)
+    return
   }
   const buttons = [ToolbarBtnType.CANCEL]
   // const height =

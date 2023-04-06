@@ -2837,6 +2837,7 @@ export const language_ja: typeof language_cn = {
   CANNOT_COLLECT_IN_CAD_LAYERS: "複合レイヤーはコレクションできません",
   CANNOT_COLLECT_IN_TEXT_LAYERS: "テキストレイヤーはコレクションできません",
   HEAT_MAP_DATASET_TYPE_ERROR: "ポイントデータセットしか作成できません",
+  PLEASE_ADD_POINT_DATASET_FIRST:"Please add point dataset first",//to translate
 
   INVALID_DATA_SET_FAILED: "データタイプは無効です。設定に失敗しました。", // ｊｐ0917
   INVISIBLE_LAYER_CAN_NOT_BE_SET_CURRENT: "非表示レイヤーを現在レイヤーに設定できません。",

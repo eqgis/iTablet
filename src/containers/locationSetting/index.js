@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { setDevice } from '../../redux/models/setting'
 import LocationSetting from './LocationSetting'
-import { setPositionAccuracy, setDeviceManufacturer, setDeviceType, setDeviceConnectionMode, setBluetoothDeviceInfo} from '../../redux/models/location'
+import { setPositionAccuracy, setDeviceManufacturer, setDeviceType, setDeviceConnectionMode, setBluetoothDeviceInfo, setPositionGGA} from '../../redux/models/location'
 
 const mapStateToProps = state => ({
   peripheralDevice: state.setting.toJS().peripheralDevice,
@@ -18,6 +18,7 @@ const mapDispatchToProps = {
   setDeviceType,
   setDeviceConnectionMode,
   setBluetoothDeviceInfo,
+  setPositionGGA,
 }
 export default connect(
   mapStateToProps,

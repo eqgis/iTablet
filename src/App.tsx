@@ -511,6 +511,7 @@ class AppRoot extends Component {
 
   initLocation = async () => {
     await SLocation.openGPS()
+    this.props?.setPositionGGA(null)
     // SLocation.addSlocationStateListener((type) => {
     //   let text = ''
     //   switch (type) {

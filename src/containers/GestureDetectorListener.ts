@@ -381,7 +381,7 @@ export async function drawSelectedLineOnTrackingLayer(params: {
       style.setLineColor(226, 255, 0)
     }
 
-    return await SMap.addGeometryToTrackingLayerByIDs({ ...datasetInfo }, [geoId], JSON.stringify(style))
+    return await SMap.addGeometryToTrackingLayerByIDs({ ...datasetInfo }, [geoId], style)
   }
 
   return false

@@ -1039,7 +1039,7 @@ export default class LayerAttribute extends React.Component {
             [(this.state.currentFieldInfo[0].name === 'SmID'
             ? this.state.currentFieldInfo[0].value
             : this.state.currentFieldInfo[1].value) + 1 - 1],
-            JSON.stringify(geoStyle),
+            geoStyle,
           ).then(() => {
         ToolbarModule.setToolBarData(
           ConstToolType.SM_MAP_TOOL_ATTRIBUTE_RELATE,

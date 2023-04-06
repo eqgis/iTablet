@@ -680,7 +680,7 @@ export default class LayerAttributeTabs extends React.Component {
                 ? selection.data[0].value
                 : selection.data[1].value,
             ], // 多条数据有序号时：0为序号，1为SmID；无序号时0为SmID
-            style: JSON.stringify(geoStyle),
+            style: geoStyle,
           }
         } else {
           objs = {

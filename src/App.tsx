@@ -738,6 +738,7 @@ class AppRoot extends Component {
         const currentDate = new Date().getTime()
         // 查看许可是否存在,否则退出
         if (
+          status.licenseType !== 3 &&
           (UserType.isOnlineUser(this.props.user.currentUser) || UserType.isIPortalUser(this.props.user.currentUser)) &&
           (!status.isLicenseValid || this.props.user.expireDate && this.props.user.expireDate < currentDate)
         ) {

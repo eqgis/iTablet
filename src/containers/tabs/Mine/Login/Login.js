@@ -184,8 +184,8 @@ export default class Login extends React.Component {
       const result = await new Promise.race([loginResult, timeout(30)])
       if (result === 'timeout') {
         Toast.show(getLanguage(this.props.language).Profile.LOGIN_TIMEOUT)
-      } else if (loginResult.userInfo) {
-        const loginUser = loginResult.userInfo
+      } else if (loginResult?.userInfo) {
+        const loginUser = loginResult?.userInfo
         if(loginUser.userName === this.props.user.currentUser.userId) {
           Toast.show(getLanguage().Profile.LOGIN_CURRENT)
           return
@@ -212,7 +212,7 @@ export default class Login extends React.Component {
         // 加载用户底图
         await this.loadUserBaseMaps()
       } else {
-        const errorInfo = loginResult.errorInfo
+        const errorInfo = loginResult?.errorInfo
         if (
           errorInfo === '用户名或用户密码错误' ||
           errorInfo === 'account not exist or password error'
@@ -231,7 +231,7 @@ export default class Login extends React.Component {
       //'登录异常')
     } finally {
       this.setState({covered:false})
-      this.onlineLogin.loginResult()
+      this.onlineLogin?.loginResult?.()
       // this.container && this.container.setLoading(false)
     }
   }
@@ -285,12 +285,12 @@ export default class Login extends React.Component {
           // 加载用户底图
           await this.loadUserBaseMaps()
         }
-        this.iportalLogin.loginResult()
+        this.iportalLogin?.loginResult?.()
         this.setState({covered:false})
         // this.container.setLoading(false)
         NavigationService.popToTop()
       } else {
-        this.iportalLogin.loginResult()
+        this.iportalLogin?.loginResult?.()
         this.setState({covered:false})
         // this.container.setLoading(false)
         if (result === false) {
@@ -306,7 +306,7 @@ export default class Login extends React.Component {
         }
       }
     } catch (e) {
-      this.iportalLogin.loginResult()
+      this.iportalLogin?.loginResult?.()
       this.setState({covered:false})
       // this.container.setLoading(false)
       Toast.show(getLanguage(this.props.language).Prompt.FAILED_TO_LOG)

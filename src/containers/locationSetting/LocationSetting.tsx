@@ -10,7 +10,7 @@ import { getImage } from '@/assets'
 // import { LocationConnectionParam } from '../BluetoothDevices/BluetoothDevices'
 import { TSNonNullExpression } from '@babel/types'
 import { Picker } from '@react-native-picker/picker'
-import { PositionAccuracyType } from 'imobile_for_reactnative/NativeModule/interfaces/SLocation'
+import { GGA, PositionAccuracyType } from 'imobile_for_reactnative/NativeModule/interfaces/SLocation'
 import { BluetoothDeviceInfoType, DeviceManufacturer, DeviceType } from '@/redux/models/location'
 
 const radio_on = require('../../assets/public/radio_select.png')
@@ -30,6 +30,7 @@ interface Props {
   setDeviceConnectionMode: (isBluetoothMode: boolean) => void,
   bluetoohDevice: BluetoothDeviceInfoType,
   setBluetoothDeviceInfo: (bluetoothInfo: BluetoothDeviceInfoType) => void,
+  setPositionGGA: (gga: GGA | null) => void,
 }
 
 interface State {
@@ -210,6 +211,7 @@ class LocationSetting extends React.Component<Props, State> {
         switch (tempDevice.type) {
           case "local":
             toastText = getLanguage().CHANGE_DEVICE_LOCAL
+            this.props.setPositionGGA(null)
             break
           case "external" :
             toastText = getLanguage().CHANGE_DEVICE_EXTERNAL

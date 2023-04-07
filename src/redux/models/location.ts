@@ -95,7 +95,7 @@ export interface PositionAgreementTypeAction {
 
 export interface PositionGGAAction {
   type: typeof SET_POSITION_GGA
-  payload:  GGA
+  payload:  GGA | null
 }
 
 // Actions
@@ -252,7 +252,7 @@ export const setPositionAgreementType = (
 
 /** 设置蓝牙设备定位的协议类型 */
 export const setPositionGGA = (
-  gga: GGA
+  gga: GGA | null
 ) => async (
   dispatch: (arg0: PositionGGAAction) => void
 ) => {

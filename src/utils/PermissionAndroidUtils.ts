@@ -18,26 +18,31 @@ export const permissionList: Array<Permission> = [
   'android.permission.BLUETOOTH',
   'android.permission.BLUETOOTH_ADMIN',
 ]
-export async function checkAllPermission(): Promise<boolean> {
+export async function checkAllPermission(permissions?: Array<Permission>): Promise<boolean> {
 
   if (Platform.OS === "android") {
+    let _permissions = permissionList
     const sdkVesion = Platform.Version
-    // android 12 的版本api编号 31 32 android 13的版本api编号 33
-    if (sdkVesion >= 31) {
-      if (permissionList.indexOf('android.permission.BLUETOOTH_CONNECT') == -1) {
-        permissionList.push('android.permission.BLUETOOTH_CONNECT')
-      }
-      if (permissionList.indexOf('android.permission.BLUETOOTH_SCAN') == -1) {
-        permissionList.push('android.permission.BLUETOOTH_SCAN')
+    if (permissions && permissions.length > 0) {
+      _permissions = permissions
+    } else {
+      // android 12 的版本api编号 31 32 android 13的版本api编号 33
+      if (sdkVesion >= 31) {
+        if (_permissions.indexOf('android.permission.BLUETOOTH_CONNECT') == -1) {
+          _permissions.push('android.permission.BLUETOOTH_CONNECT')
+        }
+        if (_permissions.indexOf('android.permission.BLUETOOTH_SCAN') == -1) {
+          _permissions.push('android.permission.BLUETOOTH_SCAN')
+        }
       }
     }
 
     let permission = false
-    for (let i = 0; i < permissionList.length; i++) {
-      permission = await PermissionsAndroid.check(permissionList[i])
+    for (let i = 0; i < _permissions.length; i++) {
+      permission = await PermissionsAndroid.check(_permissions[i])
       if (!permission) {
         break
-        console.log(permissionList[i])
+        console.log(_permissions[i])
       }
     }
     //  申请 android 11 读写权限

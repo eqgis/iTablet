@@ -36,6 +36,10 @@ class LicensePage extends Component {
     global.recycleCloudLicense = this._recycleCloudLicense
   }
 
+  componentDidMount() {
+    this.getLicenseInfo()
+  }
+
   componentWillUnmount() {
     global.recycleCloudLicense = null
   }

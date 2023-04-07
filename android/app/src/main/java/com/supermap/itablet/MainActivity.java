@@ -52,7 +52,7 @@ public class MainActivity extends ReactActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    SplashScreen.show(this);
+//    SplashScreen.show(this);
     super.onCreate(savedInstanceState);
     // 在JS申请权限以免没有权限导致崩溃
 //        requestPermissions();

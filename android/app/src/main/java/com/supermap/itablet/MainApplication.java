@@ -109,6 +109,14 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     sInstance = this;
     // 打包或测试bundle时开启，必须在initializeFlipper之前执行
+//    if (isBundle) {
+//      BundleUtils.initBundle(this);
+//    }
+//    SoLoader.init(this, /* native exopackage */ false);
+//    initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+  }
+
+  public void initEnvironment() {
     if (isBundle) {
       BundleUtils.initBundle(this);
     }

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SuperMap iTablet</string>
     <string name="app_full_name">SuperMap iTablet</string>
@@ -9,10 +8,11 @@
     <string name="copyright">Copyright © 2018-2023 SuperMap</string>
     <string name="company">All Right Reserved</string>
 
-    <string name="launch_title_1">AR测图</string>
-    <string name="launch_subtitle_1">AR快速测量，矢量数据采集</string>
-    <string name="launch_title_2">专题地图</string>
-    <string name="launch_subtitle_2">指滑制作20+专题图</string>
-    <string name="launch_title_3">室内外导航</string>
-    <string name="launch_subtitle_3">编译路网，实时导航</string>
+    <string name="launch_title_1">AR Surveying</string>
+    <string name="launch_subtitle_1">Surveying with AR, collecting vector data</string>
+    <string name="launch_title_2">Thematic Map</string>
+    <string name="launch_subtitle_2">Supporting 20+ thematic maps</string>
+    <string name="launch_title_3">Navigation</string>
+    <string name="launch_subtitle_3">Compiling road net, navigating instantly</string>
+
 </resources>

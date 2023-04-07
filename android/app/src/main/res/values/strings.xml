@@ -7,4 +7,11 @@
     <string name="selected_menu">Selected Menu</string>
     <string name="copyright">Copyright © 2018-2023 SuperMap</string>
     <string name="company">All Right Reserved</string>
+
+    <string name="launch_title_1">AR测图</string>
+    <string name="launch_subtitle_1">AR快速测量，矢量数据采集</string>
+    <string name="launch_title_2">专题地图</string>
+    <string name="launch_subtitle_2">指滑制作20+专题图</string>
+    <string name="launch_title_3">室内外导航</string>
+    <string name="launch_subtitle_3">编译路网，实时导航</string>
 </resources>

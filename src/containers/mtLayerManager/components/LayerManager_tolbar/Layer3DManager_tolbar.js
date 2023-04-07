@@ -24,6 +24,7 @@ import { color } from '../../../../styles'
 import { getThemeAssets } from '../../../../assets'
 import { screen, scaleSize, setSpText, dataUtil, Toast } from '../../../../utils'
 import { getLanguage } from '../../../../language/index'
+import { ImageFormatType, Layer3DType } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SScene'
 /** 工具栏类型 **/
 const list = 'list'
 
@@ -274,7 +275,7 @@ export default class LayerManager_tolbar extends React.Component {
     this.setOverlayViewVisible(this.isShow)
   }
 
-  listAction = ({ section }) => {
+  listAction = async ({ section }) => {
     if (section.action) {
       (async function() {
         await section.action()
@@ -312,13 +313,15 @@ export default class LayerManager_tolbar extends React.Component {
       //缩放至当前图层
       this.setVisible(false)
       this.props.overlayView && this.props.overlayView.setVisible(false)
-      SScene.ensureVisibleByLayer(this.layer3dItem.name)
+      const bounds = await SScene.getLayerBounds(this.layer3dItem.name)
+      bounds && SScene.ensureVisible(bounds)
       this.props.navigation.navigate('Map3D')
     } else if (section.type && section.type === 'scaleToLayer') {
       //缩放至当前图层
       this.setVisible(false)
       this.props.overlayView && this.props.overlayView.setVisible(false)
-      SScene.ensureVisibleByLayer(this.layer3dItem.name)
+      const bounds = await SScene.getLayerBounds(this.layer3dItem.name)
+      bounds && SScene.ensureVisible(bounds)
       this.props.navigation.navigate('Map3D')
     } else if (section.type && section.type === 'AddTerrain') {
       //添加地形图层
@@ -340,31 +343,29 @@ export default class LayerManager_tolbar extends React.Component {
       //添加具体地形
       this.setVisible(false)
       this.props.overlayView && this.props.overlayView.setVisible(false)
-      SScene.addTerrainLayer(section.path, section.title).then(name => {
-        if (name) {
-          this.props.layer3dRefresh()
-          SScene.ensureVisibleByLayer(name)
-        } else {
-          Toast.show(getLanguage(global.language).Prompt.ADD_FAILED)
-        }
-      }).catch(() => {
+      const name = await SScene.getAvailableTerrainLayerName(section.title)
+      const result = await SScene.addTerrainLayer(section.path, name, true)
+      if (result) {
+        this.props.layer3dRefresh()
+        const bounds = await SScene.getLayerBounds(name)
+        bounds && SScene.ensureVisible(bounds)
+      } else {
         Toast.show(getLanguage(global.language).Prompt.ADD_FAILED)
-      })
+      }
       this.props.navigation.navigate('Map3D')
     } else if (section.type && section.type === 'AddImage_second') {
       //添加具体影像
       this.setVisible(false)
       this.props.overlayView && this.props.overlayView.setVisible(false)
-      SScene.addLayer(section.path, section.title).then(name => {
-        if (name) {
-          this.props.layer3dRefresh()
-          SScene.ensureVisibleByLayer(name)
-        } else {
-          Toast.show(getLanguage(global.language).Prompt.ADD_FAILED)
-        }
-      }).catch(() => {
+      const name = await SScene.getAvailableLayerName(section.title)
+      const result = await SScene.addLayer(section.path, Layer3DType.IMAGEFILE, name, true)
+      if (result) {
+        this.props.layer3dRefresh()
+        const bounds = await SScene.getLayerBounds(name)
+        bounds && SScene.ensureVisible(bounds)
+      } else {
         Toast.show(getLanguage(global.language).Prompt.ADD_FAILED)
-      })
+      }
       this.props.navigation.navigate('Map3D')
     } else if (section.type && section.type === 'RemoveLayer3d_image') {
       //删除影像图层
@@ -384,17 +385,24 @@ export default class LayerManager_tolbar extends React.Component {
       //删除地形图层
       this.setVisible(false)
       this.props.overlayView && this.props.overlayView.setVisible(false)
-      SScene.changeBaseLayer(2).then(value => {
+      this._addTianditu().then(value => {
         value && this.props.layer3dRefresh()
       })
     } else if (section.type && section.type === 'AddTianditu') {
       //删除地形图层
       this.setVisible(false)
       this.props.overlayView && this.props.overlayView.setVisible(false)
-      SScene.changeBaseLayer(1).then(value => {
+      this._addTianditu().then(value => {
         value && this.props.layer3dRefresh()
       })
     }
+  }
+
+  _addTianditu = async() => {
+    SScene.addLayer('http://t0.tianditu.com/img_c/wmts', Layer3DType.l3dBingMaps, 'TianDitu', false, {
+      imageFormatType: ImageFormatType.JPG_PNG,
+      dpi: 96
+    })
   }
 
   getLayer3dItem = (layer3dItem, changeState = () => {}) => {

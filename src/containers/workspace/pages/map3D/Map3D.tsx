@@ -37,7 +37,7 @@ import {
 } from '../../components'
 import { MapHeaderButton } from '../../../../constants'
 import { getPublicAssets ,getThemeAssets} from '../../../../assets'
-import { Toast, scaleSize, screen } from '../../../../utils'
+import { Toast, scaleSize, screen, AppToolBar } from '../../../../utils'
 import { color } from '../../../../styles'
 import { share3DModule, tool3DModule } from '../../components/ToolBar/modules'
 import NavigationService from '../../../NavigationService'
@@ -49,48 +49,88 @@ import { BackHandlerUtil } from '../../util'
 import GuideViewMapSceneModel from '../../components/GuideViewMapSceneModel'
 import { Bar } from 'react-native-progress'
 import sceneInfoType from '../../../../redux/models/scenes'
-import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SScene'
+import { Action3D, AltitudeMode, GeoStyle3D, ImageFormatType, Layer3DType, SceneType, TLayer3DType } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SScene'
+import Scene3DLabelManager from './Scene3DLabelManager'
+import { Map3DTabScreenNavigationProp, Map3DTabScreenRouteProp } from '@/types'
+import { Container as ContainerA } from '@/components/Container'
+import { Point2D } from 'react-native-color-picker/dist/typeHelpers'
+import { GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 const SAVE_TITLE = '是否保存当前场景'
-export default class Map3D extends React.Component {
-  props: {
-    nav: Object,
-    language: string,
-    editLayer: Object,
-    latestMap: Object,
-    navigation: Object,
-    online: Object,
-    toolbarStatus: Object,
-    downloads: Array,
-    setEditLayer: () => {},
-    setLatestMap: () => {},
-    setCurrentAttribute: () => {},
-    setAttributes: () => {},
-    exportmap3DWorkspace: () => {},
-    refreshLayer3dList: () => {},
-    resetLayer3dList: () => {},
-    setCurSceneInfo: (params: typeof sceneInfoType | null) => void,
-    user: Object,
-    device: Object,
-    appConfig: Object,
-    mapModules: Object,
-    backActions: Object,
-    setBackAction: () => {},
-    removeBackAction: () => {},
-    setToolbarStatus: () => {},
-    mapSceneGuide: Object,
-    showSampleData: Object,
-    setSampleDataShow: () => {},
-  }
 
-  constructor(props) {
+interface ReduxProps {
+
+}
+
+interface Props extends ReduxProps {
+  nav: unknown
+  navigation: Map3DTabScreenNavigationProp<'Map3D'>,
+  route: Map3DTabScreenRouteProp<'Map3D'>
+  language: string,
+  editLayer: Object,
+  latestMap: Object,
+  online: Object,
+  toolbarStatus: Object,
+  downloads: Array,
+  setEditLayer: () => {},
+  setLatestMap: () => {},
+  setCurrentAttribute: () => {},
+  setAttributes: () => {},
+  exportmap3DWorkspace: () => {},
+  refreshLayer3dList: () => {},
+  resetLayer3dList: () => {},
+  setCurSceneInfo: (params: typeof sceneInfoType | null) => void,
+  user: Object,
+  device: Object,
+  appConfig: Object,
+  mapModules: Object,
+  backActions: Object,
+  setBackAction: () => {},
+  removeBackAction: () => {},
+  setToolbarStatus: () => {},
+  mapSceneGuide: Object,
+  showSampleData: Object,
+  setSampleDataShow: () => {},
+}
+
+interface State {
+  title: string
+  popShow: boolean
+  showErrorInfo: boolean
+  measureShow: boolean
+  measureResult: string
+  showMenuDialog: boolean
+  showPanResponderView: boolean
+  clipSetting: unknown
+  cutLayers: unknown[]
+  tips: string
+  samplescale: Animated.Value
+}
+
+export default class Map3D extends React.Component<Props, State> {
+
+
+  mapName: string | null
+  selectKey: string
+  changeLength: number
+  leftInterval: NodeJS.Timer | null
+  rightInterval: NodeJS.Timer | null
+
+  name: string
+  type: string //todo
+
+  mapLoaded: boolean
+
+  container: ContainerA | null = null
+
+  constructor(props: Props) {
     super(props)
     global.sceneName = ''
     global.openWorkspace = false
     global.action3d = Action3D.NULL
     global.offlineScene = false
     const params = this.props.route.params
-    this.mapName = params.mapName || null
+    this.mapName = params?.mapName || null
     this.state = {
       title: '',
       popShow: false,
@@ -109,60 +149,36 @@ export default class Map3D extends React.Component {
     this.changeLength = 0 //总的位移
     this.leftInterval = null // 作画定时器
     this.rightInterval = null //右滑定时器
-    this.name = params.name || ''
-    this.type = params.type || 'MAP_3D'
+    this.name = params?.name || ''
+    this.type = params?.type || 'MAP_3D'
     this.mapLoaded = false // 判断地图是否加载完成
   }
 
   componentDidMount() {
+    SScene.setGestureListener({
+      onSingleTap: event => {
+      },
+      onLongPress: event => {
+        this.showCirclePoint(event)
+      }
+    })
+    SScene.setFeature3DSelectListener(layer => {
+      this.onSelectFeature3D(layer)
+    })
     // if (global.isLicenseValid) {
-    this.container.setLoading(
+    this.container?.setLoading(
       true,
       getLanguage(this.props.language).Prompt.LOADING,
     )
-
-
-    this.unsubscribeFocus = () => {
-      if (this.showFullonBlur) {
-        this.showFullMap(false)
-        this.showFullonBlur = false
-      }
-      this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
-    }
-
-    this.unsubscribeDidFocus = () => {
-      if (this.showFullonBlur) {
-        this.showFullMap(false)
-        this.showFullonBlur = false
-      }
-      this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
-    }
-
-    this.unsubscribeBlur = () => {
-      if (!this.fullMap) {
-        this.showFullMap(true)
-        this.showFullonBlur = true
-      }
-      this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
-    }
-
     this.props.navigation.addListener('willFocus', this.unsubscribeFocus)
     //跳转回mapview速度太快时会来不及触发willFocus，在didFocus时重复处理相关逻辑
     this.props.navigation.addListener('didFocus', this.unsubscribeDidFocus)
     this.props.navigation.addListener('willBlur', this.unsubscribeBlur)
 
     BackHandler.addEventListener('hardwareBackPress', this.backHandler)
-    // } else {
-    //   global.SimpleDialog.set({
-    //     text: getLanguage(global.language).Prompt.APPLY_LICENSE_FIRST,
-    //     confirmAction: () => NavigationService.goBack(),
-    //     cancelAction: () => NavigationService.goBack(),
-    //   })
-    //   global.SimpleDialog.setVisible(true)
-    // }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (
       this.props.downloads.length > 0 &&
       JSON.stringify(this.props.downloads) !==
@@ -190,6 +206,8 @@ export default class Map3D extends React.Component {
         key: this.props.route.name,
       })
     }
+    SScene.setGestureListener()
+    SScene.setFeature3DSelectListener()
     global.Type = null
     this.attributeListener && this.attributeListener.remove()
     this.circleFlyListen && this.circleFlyListen.remove()
@@ -199,27 +217,103 @@ export default class Map3D extends React.Component {
     BackHandler.removeEventListener('hardwareBackPress', this.backHandler)
   }
 
+  unsubscribeFocus = () => {
+    if (this.showFullonBlur) {
+      this.showFullMap(false)
+      this.showFullonBlur = false
+    }
+    this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
+  }
+
+  unsubscribeDidFocus = () => {
+    if (this.showFullonBlur) {
+      this.showFullMap(false)
+      this.showFullonBlur = false
+    }
+    this.backgroundOverlay && this.backgroundOverlay.setVisible(false)
+  }
+
+  unsubscribeBlur = () => {
+    if (!this.fullMap) {
+      this.showFullMap(true)
+      this.showFullonBlur = true
+    }
+    this.backgroundOverlay && this.backgroundOverlay.setVisible(true)
+  }
+
   backHandler = () => {
     return BackHandlerUtil.backHandler(this.props.nav, this.props.backActions)
   }
 
+  _getLayer3DTypeStr = (type: TLayer3DType): string => {
+    switch(type) {
+      case Layer3DType.IMAGEFILE:
+        return 'IMAGEFILE'
+      case Layer3DType.KML:
+        return 'KML'
+      case Layer3DType.VECTORFILE:
+        return 'VECTORFILE'
+      case Layer3DType.OSGBFILE:
+        return 'OSGBFILE'
+      case Layer3DType.WMS:
+        return 'WMS'
+      case Layer3DType.WMTS:
+        return 'WMTS'
+      case Layer3DType.DYNAMICMODEL:
+        return 'DYNAMICMODEL'
+      case Layer3DType.l3dBingMaps:
+        return 'l3dBingMaps'
+      case Layer3DType.l3dGoogleMaps:
+        return 'l3dGoogleMaps'
+      case Layer3DType.OPENSTREETMAPS:
+        return 'OPENSTREETMAPS'
+
+    }
+  }
+
   getLayers = async () => {
     // 获取三维图层
-    let layerlist
+    let layerlist: {
+      name: string
+      visible: boolean
+      selectable: boolean
+      type: string // Layer3DType 的string todo 换成对应的int值
+    }[]
     try {
-      layerlist = await SScene.getLayers()
+      layerlist = (await SScene.getLayers()).map(item => {
+        return {
+          name: item.name,
+          visible: item.isVisible,
+          selectable: item.isSelectable,
+          type: this._getLayer3DTypeStr(item.type)
+        }
+      })
     } catch (e) {
       layerlist = []
     }
     // 获取三维地形
-    let terrainLayerList
+    let terrainLayerList: {
+      name: string
+      visible: boolean
+      type: 'Terrain',
+      baseMap: false,
+      selectable: false
+    }[]
     try {
-      terrainLayerList = await SScene.getTerrainLayers()
+      terrainLayerList = (await SScene.getTerrainLayers()).map(item => {
+        return {
+          name: item.name,
+          visible: item.isVisible,
+          type: 'Terrain',
+          baseMap: false,
+          selectable: false
+        }
+      })
     } catch (e) {
       terrainLayerList = []
     }
     layerlist = JSON.parse(JSON.stringify(layerlist.concat(terrainLayerList)))
-    let cutLayers = layerlist.map(layer => {
+    const cutLayers = layerlist.map(layer => {
       layer.selected = true
     })
     this.setState({
@@ -228,49 +322,65 @@ export default class Map3D extends React.Component {
     })
   }
   initListener = async () => {
-    SScene.initGestureListener().then(() => {
-      SScene.initAttributeListener()
-      SScene.initCircleFlyListener()
-      SScene.setAction(Action3D.PAN3D)
-      global.action3d = Action3D.PAN3D
+    SScene.setAction(Action3D.PAN3D)
+    global.action3d = Action3D.PAN3D
+  }
+
+  onSelectFeature3D = async (layerName: string) => {
+    const values = await SScene.getFieldValueOfSelectedObject(layerName)
+
+    const list = []
+    const arr: {
+      fieldInfo: { caption: string },
+      name: string,
+      value: string,
+    }[] = []
+    values.map(value => {
+      const item: {
+        fieldInfo: { caption: string },
+        name: string,
+        value: string,
+      } = {
+        fieldInfo: { caption: value.name },
+        name: value.name,
+        value: value.value !== null ? value.value + '' : '',
+      }
+      if (value.name === 'id') {
+        arr.unshift(item)
+      } else {
+        arr.push(item)
+      }
     })
+
+    list.push(arr)
+    this.props.setAttributes(list)
   }
 
-  addAttributeListener = async () => {
-    this.attributeListener = await SScene.addAttributeListener(result => {
-      global.action3d === Action3D.PAN3D && this.showFullMap(!this.fullMap)
 
-      let list = []
-      let arr = []
-      Object.keys(result).forEach(key => {
-        let item = {
-          fieldInfo: { caption: key },
-          name: key,
-          value: result[key],
-        }
-        if (key === 'id') {
-          arr.unshift(item)
-        } else {
-          arr.push(item)
-        }
-      })
-      list.push(arr)
-      this.props.setAttributes(list)
-    },
-    )
-  }
 
-  addCircleFlyListen = async () => {
-    this.circleFlyListen = SScene.addCircleFlyListener(() => {
-      tool3DModule().actions.circleFly()
+  /** 显示绕点飞行点 */
+  showCirclePoint = async (point: Point2D) => {
+    /** 兴趣点的风格 */
+    const style: Partial<GeoStyle3D> = {
+      altitudeMode: AltitudeMode.ABSOLUTE,
+      markerScale: 2,
+      markerFile: 'APP://config/Resource/icon_red.png'
     }
-    )
+
+    const p = await SScene.pixelToGlobe(point, 0)
+    await SScene.removeGeometryFromTrackingLayer('circlePoint')
+
+    SScene.addGeometryToTrackingLayer({type: GeometryType.GEOPLACEMARK, point: p, text: ''}, 'circlePoint', style)
+    AppToolBar.addData({scene_circleFly_point: p})
+
+    tool3DModule().actions.circleFly()
   }
+
 
   _addScene = async () => {
     if (!this.name) {
       setTimeout(() => {
-        this.container.setLoading(false)
+        this.container?.setLoading(false)
         Toast.show(getLanguage(this.props.language).Prompt.NO_SCENE)
         this.mapLoaded = true
         //'无场景显示')
@@ -282,7 +392,7 @@ export default class Map3D extends React.Component {
         global.openWorkspace = true
       }
       // if (this.props.showSampleData) {
-      let animatedList = []
+      const animatedList = []
       animatedList.push(
         Animated.timing(this.state.samplescale, {
           toValue: 1.2,
@@ -310,6 +420,7 @@ export default class Map3D extends React.Component {
         }
         SScene.setNavigationControlVisible(false)
         this.initListener()
+        await Scene3DLabelManager.addLabelLayer(this.name, false)
         global.openWorkspace = true
         global.sceneName = this.name
         global.offlineScene = true
@@ -319,8 +430,12 @@ export default class Map3D extends React.Component {
         }, 1500)
         this.mapLoaded = true
         // 只有是球面场景时才添加底图 add jiakai
-        if (await SScene.isEarthScene()) {
-          await SScene.changeBaseLayer(1)
+        const sceneType = await SScene.getSceneType()
+        if (sceneType === SceneType.EARTH_SPHERICAL) {
+          SScene.addLayer('http://t0.tianditu.com/img_c/wmts', Layer3DType.l3dBingMaps, 'TianDitu', false, {
+            imageFormatType: ImageFormatType.JPG_PNG,
+            dpi: 96
+          })
         }
         this.getLayers()
         this.props.refreshLayer3dList && this.props.refreshLayer3dList()
@@ -343,7 +458,7 @@ export default class Map3D extends React.Component {
       })
 
       // if (this.props.showSampleData) {
-      let animatedList = []
+      const animatedList = []
       animatedList.push(
         Animated.timing(this.state.samplescale, {
           toValue: 1.2,
@@ -400,8 +515,6 @@ export default class Map3D extends React.Component {
     // 三维地图只允许单例
     // setTimeout(this._addScene, 2000)
     this._addScene()
-    this.addAttributeListener()
-    this.addCircleFlyListen()
     // }
 
     // this._addScene()
@@ -416,14 +529,14 @@ export default class Map3D extends React.Component {
 
   _flyToPoint = () => {
     (async function() {
-      let point = await new Point3D().createObj(116.5, 39.9, 500)
+      const point = await new Point3D().createObj(116.5, 39.9, 500)
       this.scene.flyToPoint(point)
     }.bind(this)())
   }
 
   _flyToCamera = () => {
     (async function() {
-      let camera = await new Camera().createObj(
+      const camera = await new Camera().createObj(
         116.467575,
         39.91542777777778,
         1000,
@@ -436,8 +549,8 @@ export default class Map3D extends React.Component {
 
   _changeLayerColor = () => {
     (async function() {
-      let layers3ds = await this.scene.getLayer3Ds()
-      let layer3D = await layers3ds.get(4)
+      const layers3ds = await this.scene.getLayer3Ds()
+      const layer3D = await layers3ds.get(4)
       layer3D.setObjectsColor(1, 255, 0, 0, 0.8)
       await this.scene.refresh()
     }.bind(this)())
@@ -479,8 +592,8 @@ export default class Map3D extends React.Component {
     if (!this.mapLoaded) return
     try {
       if (global.isCircleFlying) {
-        await SScene.stopCircleFly()
-        await SScene.clearCircleFlyPoint()
+        await SScene.flyCircle({x:0, y:0, z:0}, 0)
+        await SScene.removeGeometryFromTrackingLayer('circlePoint')
       }
       if (Platform.OS === 'android') {
         if (this.state.showPanResponderView || this.state.showMenuDialog) {
@@ -517,7 +630,7 @@ export default class Map3D extends React.Component {
         // this.SaveDialog && this.SaveDialog.setDialogVisible(true)
         // await SScene.saveWorkspace()
       this.mapController?.stopCompass()
-      await SScene.closeWorkspace()
+      await SScene.exitScene()
       // 重置redux里的3d图层数据
       this.props.resetLayer3dList && await this.props.resetLayer3dList()
       this.props.setCurSceneInfo && await this.props.setCurSceneInfo()
@@ -560,7 +673,7 @@ export default class Map3D extends React.Component {
     })
   }
   renderMenuDialog = () => {
-    let data = [
+    const data = [
       {
         key: getLanguage(this.props.language).Map_Main_Menu
           .CLIP_AREA_SETTINGS_LENGTH,
@@ -611,7 +724,7 @@ export default class Map3D extends React.Component {
    * @private
    */
   _changeClipSetting = (type, cb) => {
-    let clipSetting = JSON.parse(JSON.stringify(this.state.clipSetting))
+    const clipSetting = JSON.parse(JSON.stringify(this.state.clipSetting))
     this.changeLength += 10 * type
     let distance = 0
     switch (this.selectKey) {
@@ -666,7 +779,7 @@ export default class Map3D extends React.Component {
 
   //移动
   _onHandleMove = async (evt, gestureState) => {
-    let { dx } = gestureState
+    const { dx } = gestureState
     if (dx > 10 && !this.rightInterval) {
       //右移
       if (this.leftInterval) {
@@ -692,7 +805,7 @@ export default class Map3D extends React.Component {
 
   //结束移动
   _onHandleMoveEnd = (evt, gestureState) => {
-    let { dx, dy } = gestureState
+    const { dx, dy } = gestureState
     if (Math.abs(dx) > 10 && Math.abs(dy) < Math.abs(dx)) {
       this._changeClipSetting(0, async clipSetting => {
         this.changeLength = 0
@@ -724,8 +837,8 @@ export default class Map3D extends React.Component {
   renderPanResponderView = () => {
     let tips = this.state.tips === '' ? this.state.clipSetting[this.selectKey] : this.state.tips
     tips = tips.toString().length > 8 ? tips.toFixed(6) : tips
-    let needTips = !!tips
-    let padding =
+    const needTips = !!tips
+    const padding =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0
         ? { paddingHorizontal: scaleSize(80) }
         : {}
@@ -801,7 +914,7 @@ export default class Map3D extends React.Component {
   showFullMap = isFull => {
     this.showFullonBlur = !isFull
     if (isFull === this.fullMap) return
-    let full = isFull === undefined ? !this.fullMap : !isFull
+    const full = isFull === undefined ? !this.fullMap : !isFull
     this.container && this.container.setHeaderVisible(full)
     this.container && this.container.setBottomVisible(full)
     this.functionToolbar && this.functionToolbar.setVisible(full)
@@ -830,19 +943,8 @@ export default class Map3D extends React.Component {
       return
     }
     // let point = this.toolBox.getPoint()
-    let point = this.toolBox.getToolbarModule().getData().point
-    SScene.addGeoText(
-      point.pointX,
-      point.pointY,
-      point.pointZ,
-      this.inputText,
-      // this.state.inputText,
-    ).then(() => {
-      this.inputText = ''
-      // this.setState({
-      //   inputText: '',
-      // })
-    })
+    const point = this.toolBox.getToolbarModule().getData().point
+
     // this.toolBox.showToolbar()
     this.dialog.setDialogVisible(false)
   }
@@ -940,6 +1042,9 @@ export default class Map3D extends React.Component {
     )
   }
 
+  /**
+   * @deprecated todo 用APPIputdialog，删掉
+   */
   renderDialog = () => {
     return (
       <Dialog
@@ -1031,19 +1136,19 @@ export default class Map3D extends React.Component {
   }
 
   renderHeaderRight = () => {
-    let itemWidth =
+    const itemWidth =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 100 : 65
-    let size =
+    const size =
       this.props.device.orientation.indexOf('LANDSCAPE') === 0 ? 40 : 50
 
     const currentMapModule = this.props.mapModules.modules[this.props.user.currentUser.userName].find(item => {
       return item.key === this.type
     })
-    let buttonInfos = (currentMapModule && currentMapModule.headerButtons) || [
+    const buttonInfos = (currentMapModule && currentMapModule.headerButtons) || [
       MapHeaderButton.Share,
       MapHeaderButton.Search,
     ]
-    let buttons = []
+    const buttons = []
     for (let i = 0; i < buttonInfos.length; i++) {
       let info
       if (typeof buttonInfos[i] === 'string') {

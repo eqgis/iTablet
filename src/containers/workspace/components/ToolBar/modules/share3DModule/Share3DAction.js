@@ -170,8 +170,8 @@ async function share3DMap(type, list = []) {
 }
 
 function show3DSaveDialog(type) {
-  SScene.getScenes().then(list => {
-    const data = [list[0].name]
+    if(!global.sceneName || global.sceneName === '') return
+    const data = [global.sceneName] //[list[0].name]
     ToolbarModule.getParams().map = {
       ...ToolbarModule.getParams().map,
       currentMap: { name: data },
@@ -198,13 +198,10 @@ function show3DSaveDialog(type) {
       placeholder: getLanguage(global.language).Prompt.ENTER_MAP_NAME,
       type: 'name',
       cb: async value => {
-        const list = await SScene.getScenes()
-        const data = [list[0].name]
         share3DMap(type, data, value)
         NavigationService.goBack()
       },
     })
-  })
 }
 
 export default {

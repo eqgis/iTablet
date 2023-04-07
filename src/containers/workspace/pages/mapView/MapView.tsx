@@ -152,6 +152,7 @@ import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interface
 import { addOutdoorStartEndGuideLine } from '../../components/NavigationView/NavigationView'
 import IndoorGPSCollector from '../../components/ToolBar/modules/toolModule/IndoorGPSCollector'
 import AimPointCollector from '@/components/AimPointCollector'
+import ScenePositionHelper from '../map3D/ScenePositionHelper'
 
 global.markerTag = 118082
 
@@ -1062,9 +1063,8 @@ export default class MapView extends React.Component {
               ) {
                 (async function () {
                   if (global.Type === ChunkType.MAP_3D) {
-                    await SScene.setHeading()
                     // 定位到当前位置
-                    await SScene.flyToCurrent()
+                    ScenePositionHelper.flyToCurrent()
                     // await SScene.resetCamera()
                     this.mapController.setCompass(0)
                   } else {

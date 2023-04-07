@@ -1,3 +1,4 @@
+import ScenePositionHelper from '@/containers/workspace/pages/map3D/ScenePositionHelper'
 import {
   SMap,
   SScene,
@@ -36,9 +37,8 @@ function analyst(content = '') {
     case keywords.LOCATION:
       (async function() {
         if (global.Type === ChunkType.MAP_3D) {
-          await SScene.setHeading()
           // 定位到当前位置
-          await SScene.flyToCurrent()
+          ScenePositionHelper.flyToCurrent()
           // await SScene.resetCamera()
           this.mapController.setCompass(0)
         } else {

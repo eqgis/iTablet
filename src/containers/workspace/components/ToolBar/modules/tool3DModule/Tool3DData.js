@@ -8,6 +8,7 @@ import ToolbarBtnType from '../../ToolbarBtnType'
 import Tool3DAction from './Tool3DAction'
 import { SelectList } from './CustomViews'
 import { getPublicAssets, getThemeAssets } from '../../../../../../assets'
+import { AppToolBar } from '@/utils'
 
 async function getData(type, params) {
   if (params) {
@@ -154,7 +155,10 @@ async function getData(type, params) {
           // '绕点飞行',
           action: () => {
             global.isCircleFlying = true
-            SScene.startCircleFly()
+            const p = AppToolBar.getData().scene_circleFly_point
+            if(p) {
+              SScene.flyCircle({x: p.x, y: p.y, z: p.z + 100}, 2)
+            }
           },
           size: 'large',
           image: getThemeAssets().mapTools.icon_tool_play,

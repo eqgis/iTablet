@@ -1243,7 +1243,7 @@ class AppRoot extends Component {
       if (global.openWorkspace) {
         // this.SaveDialog && this.SaveDialog.setDialogVisible(true)
         // await SScene.saveWorkspace()
-        await SScene.closeWorkspace()
+        await SScene.exitScene()
         this.container && this.container.setLoading(false)
         NavigationService.goBack()
       } else {

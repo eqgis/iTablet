@@ -5,6 +5,7 @@ import { ModuleList } from "../Toolbar/modules"
 import CameraRoll from "@react-native-community/cameraroll"
 import { GeometrySelectedEvent } from "imobile_for_reactnative/types/interface/mapping/SMap"
 import { AIRecognitionInfo, ARAttributeStyle } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
+import { Point3D } from "imobile_for_reactnative/NativeModule/interfaces/data/SData"
 let toolbarRef: ToolBarContainer<ModuleList>
 
 export const arLayerType:  {
@@ -160,6 +161,9 @@ interface ToolBarData {
     attribute3D?: attribute3DType
     /** 选中的对象是否拥有骨骼动画 true表示有骨骼动画， false表示没有骨骼动画 */
     ownModelAnimation?: boolean
+
+    /** 三维绕点飞行点 */
+    scene_circleFly_point?: Point3D
 }
 
 export interface attribute3DType {

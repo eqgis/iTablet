@@ -35,9 +35,9 @@ export default class AddOnlineScense extends Component {
       _server = 'http://' + _server
     }
 
-    let checkURL = dataUtil.isLegalURL(_server)
-    if (!checkURL.result) {
-      Toast.show(checkURL.error)
+    let checkURL = dataUtil.checkOnline3DServiceUrl(_server)
+    if (checkURL !== '') {
+      Toast.show(checkURL)
       return
     }
 

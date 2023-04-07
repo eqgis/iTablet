@@ -17,9 +17,14 @@ function measureDistance() {
     // '请打开场景')
     return
   }
-  SScene.setOperation('startMeasure')
   SScene.setAction(Action3D.MEASUREDISTANCE3D)
-  SScene.addMeasureLineListener(result => {
+  SScene.setTracking3DListener(event => {
+    const result = {
+      x: event.x,
+      y: event.y,
+      z: event.z,
+      length: event.totalLength
+    }
     if (!isClickMeasurePoint) {
       isClickMeasurePoint = true
       ToolbarModule.addData({ isFinished: true })
@@ -51,9 +56,14 @@ function measureArea() {
     // '请打开场景')
     return
   }
-  SScene.setOperation('startMeasure')
   SScene.setAction(Action3D.MEASUREAREA3D)
-  SScene.addMeasureAreaListener(result => {
+  SScene.setTracking3DListener(event => {
+    const result = {
+      x: event.x,
+      y: event.y,
+      z: event.z,
+      totalArea: event.totalArea
+    }
     if (!isClickMeasurePoint) {
       isClickMeasurePoint = true
       ToolbarModule.addData({ isFinished: true })
@@ -261,7 +271,12 @@ function undo() {
   newState.canUndo = pointArr.length > 0
   _params.setToolbarStatus(newState)
   ToolbarModule.addData({ pointArr, redoArr, isFinished: false })
-  SScene.displayDistanceOrArea(pointArr)
+  const point3Ds=[]
+  for(let i=0;i<pointArr.length;i++){
+    const point=JSON.parse(pointArr[i])
+    point3Ds.push(point)
+  }
+  SScene.updateMeasureGeometryPoints(point3Ds)
 }
 
 /** 量算功能 重做事件 * */
@@ -282,7 +297,12 @@ function redo() {
   Object.keys(newState).length > 0 && _params.setToolbarStatus(newState)
 
   ToolbarModule.addData({ pointArr, redoArr, isFinished: false })
-  SScene.displayDistanceOrArea(pointArr)
+  const point3Ds=[]
+  for(let i=0;i<pointArr.length;i++){
+    const point=JSON.parse(pointArr[i])
+    point3Ds.push(point)
+  }
+  SScene.updateMeasureGeometryPoints(point3Ds)
 }
 
 /** 清除三维量算 * */
@@ -352,7 +372,7 @@ async function close(type) {
     type === ConstToolType.SM_MAP3D_TOOL_DISTANCE_MEASURE ||
     type === ConstToolType.SM_MAP3D_TOOL_SURFACE_MEASURE
   ) {
-    SScene.removeMeasureListeners()
+    SScene.setTracking3DListener()
     SScene.setAction(Action3D.PANSELECT3D)
     _params.measureShow(false, '')
     _params.existFullMap && _params.existFullMap()
@@ -368,8 +388,8 @@ async function close(type) {
     _params.existFullMap && _params.existFullMap()
     _params.setToolbarVisible(false)
   } else if (type === ConstToolType.SM_MAP3D_TOOL_CIRCLE_FLY) {
-    SScene.stopCircleFly()
-    SScene.clearCircleFlyPoint()
+    await SScene.flyCircle({x:0, y:0, z:0}, 0)
+    await SScene.removeGeometryFromTrackingLayer('circlePoint')
     _params.existFullMap && _params.existFullMap()
     _params.setToolbarVisible(false)
   } else if (
@@ -382,13 +402,11 @@ async function close(type) {
     global.MapSurfaceView && global.MapSurfaceView.show(false)
     _params.setToolbarVisible(false)
   } else {
-    SScene.setOperation('startTouchAttribute')
     SScene.setAction(Action3D.PAN3D)
     global.action3d = Action3D.PAN3D
     ToolbarModule.setData()
     return false
   }
-  SScene.setOperation('startTouchAttribute')
   SScene.setAction(Action3D.PAN3D)
   global.action3d = Action3D.PAN3D
   ToolbarModule.setData()
@@ -398,7 +416,7 @@ function circleFly() {
   const _params = ToolbarModule.getParams()
   _params.showFullMap && _params.showFullMap(true)
   global.action3d = Action3D.PAN3D
-  SScene.stopCircleFly()
+  SScene.flyCircle({x:0, y:0, z:0}, 0)
   _params.setToolbarVisible(true, ConstToolType.SM_MAP3D_TOOL_CIRCLE_FLY, {
     containerType: ToolbarType.table,
     isFullScreen: false,

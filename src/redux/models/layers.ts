@@ -9,6 +9,7 @@ import { LayerInfo,  } from 'imobile_for_reactnative/NativeModule/interfaces/map
 import { Attributes } from '@/utils/LayerUtils'
 import { AttributeHistory } from '../types'
 import { FieldInfoValue } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
+import { Layer3DType, TLayer3DType } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SScene'
 // Constants
 // --------------------------------------------------
 export const SET_EDIT_LAYER = 'SET_EDIT_LAYER'
@@ -496,9 +497,48 @@ export const resetLayer3dList = () => async (dispatch) =>{
   }
 }
 
+
+function _getLayer3DTypeStr(type: TLayer3DType): string{
+  switch(type) {
+    case Layer3DType.IMAGEFILE:
+      return 'IMAGEFILE'
+    case Layer3DType.KML:
+      return 'KML'
+    case Layer3DType.VECTORFILE:
+      return 'VECTORFILE'
+    case Layer3DType.OSGBFILE:
+      return 'OSGBFILE'
+    case Layer3DType.WMS:
+      return 'WMS'
+    case Layer3DType.WMTS:
+      return 'WMTS'
+    case Layer3DType.DYNAMICMODEL:
+      return 'DYNAMICMODEL'
+    case Layer3DType.l3dBingMaps:
+      return 'l3dBingMaps'
+    case Layer3DType.l3dGoogleMaps:
+      return 'l3dGoogleMaps'
+    case Layer3DType.OPENSTREETMAPS:
+      return 'OPENSTREETMAPS'
+
+  }
+}
+
 export const refreshLayer3dList = (cb = () => {}) => async (dispatch, getState) => {
   let language = getState().setting.toJS().language
-  const result = await SScene.getLayers()
+  const result: {
+    name: string
+    visible: boolean
+    selectable: boolean
+    type: string // Layer3DType 的string todo 换成对应的int值
+  }[] = (await SScene.getLayers()).map(item => {
+    return {
+      name: item.name,
+      visible: item.isVisible,
+      selectable: item.isSelectable,
+      type: _getLayer3DTypeStr(item.type)
+    }
+  })
   const basemaplist = []
   const layerlist = []
   const lablelist = []
@@ -515,7 +555,21 @@ export const refreshLayer3dList = (cb = () => {}) => async (dispatch, getState) 
     }
   }
 
-  const Terrains = await SScene.getTerrainLayers()
+  const Terrains:{
+    name: string
+    visible: boolean
+    type: 'Terrain',
+    baseMap: false,
+    selectable: false
+  }[] = (await SScene.getTerrainLayers()).map(item => {
+    return {
+      name: item.name,
+      visible: item.isVisible,
+      type: 'Terrain',
+      baseMap: false,
+      selectable: false
+    }
+  })
   for (let index = 0; index < Terrains.length; index++) {
     const element = Terrains[index]
     const item = { ...element, isShow: true }

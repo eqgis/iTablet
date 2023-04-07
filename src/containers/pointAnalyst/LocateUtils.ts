@@ -2,6 +2,8 @@ import { SData, SMap } from 'imobile_for_reactnative'
 import NavigationService from '../NavigationService'
 import { Toast, LayerUtils } from '../../utils'
 import { getLanguage } from '../../language'
+import { POIInfoOnline } from '@/utils/OnlineServicesUtils'
+import { Point2D } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 
 /**
  * zhangxt 2020-10-12 搜索后跳转到mapview显示结果，仅2维地图
@@ -189,13 +191,28 @@ function compare(prop) {
   }
 }
 
+export interface SeachResult {
+  pointName: string,
+  x: number,
+  y: number,
+  address: string,
+  distance: number | string,
+}
+
 /**
  * zhangxt 2020-10-12
  * @param {*} params 搜索参数 {keyWords: 'abc', location: '{x:123, y:456}', radius: 5000 }
  * @param {*} location 当前位置 { x: 123, y: 456}
  * @param {*} cb 结果通过回调返回，可能为空 {resultList: Array, poiInfos: Array, radius?:Number}
  */
-function getSearchResult(params, location, cb = () => {}) {
+function getSearchResult(
+  params,
+  location?: Point2D,
+  cb?: (result: {
+    resultList: SeachResult[]
+    poiInfos: POIInfoOnline[]
+    radius?: number
+  }) => void) {
   let searchStr = ''
   const keys = Object.keys(params)
   keys.map(key => {
@@ -217,7 +234,7 @@ function getSearchResult(params, location, cb = () => {}) {
         Toast.show(getLanguage(global.language).Prompt.NO_SEARCH_RESULTS)
         cb && cb()
       } else {
-        let poiInfos = data.poiInfos
+        let poiInfos:POIInfoOnline[] = data.poiInfos
         if (poiInfos.length < 10 && url.indexOf('radius=5000') !== -1) {
           fetch(url.replace('radius=5000', 'radius=50000'))
             .then(response => response.json())

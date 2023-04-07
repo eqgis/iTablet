@@ -13,7 +13,8 @@ import { getLanguage } from '../../../../../../language'
 import ToolbarModule from '../ToolbarModule'
 import NavigationService from '../../../../../NavigationService'
 import { getThemeAssets } from '../../../../../../assets'
-import { Action3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SScene'
+import { Action3D, ImageFormatType, Layer3DType, SceneType } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SScene'
+import Scene3DLabelManager from '@/containers/workspace/pages/map3D/Scene3DLabelManager'
 
 let onlineScenceData = [
   // {
@@ -253,6 +254,13 @@ async function getSceneData() {
   })
 }
 
+async function addTianditu() {
+  SScene.addLayer('http://t0.tianditu.com/img_c/wmts', Layer3DType.l3dBingMaps, 'TianDitu', false, {
+    imageFormatType: ImageFormatType.JPG_PNG,
+    dpi: 96
+  })
+}
+
 function openScene(item) {
   const _params = ToolbarModule.getParams()
   if (item.name === global.sceneName && !item.isOnlineScence && global.offlineScene) {
@@ -263,18 +271,18 @@ function openScene(item) {
   _params.setCurSceneInfo(item)
   SScene.openScene(item.name).then(async () => {
     SScene.setNavigationControlVisible(false)
-    SScene.initGestureListener()
-    SScene.initAttributeListener()
-    SScene.initCircleFlyListener()
     SScene.setAction(Action3D.PAN3D)
     // 只有是球面场景时才添加底图 add jiakai
-    if(await SScene.isEarthScene()){
-      SScene.changeBaseLayer(1)
+    const sceneType = await SScene.getSceneType()
+    if(sceneType === SceneType.EARTH_SPHERICAL){
+      addTianditu()
     }
     global.action3d = Action3D.PAN3D
     global.openWorkspace = true
     global.sceneName = item.name
     global.offlineScene = true
+
+    await Scene3DLabelManager.addLabelLayer(item.name, false)
     
     // let MapInfo = {name:item.name,path:item.path},userName:_params.user.currentUser.userId,moduleName:"Map3D"}
     //保存三维打开的历史场景 add xiezhy
@@ -301,8 +309,8 @@ function openOnlineScene(item) {
       true,
       getLanguage(_params.language).Prompt.LOADING,
     )
-    SScene.openOnlineScene(item.server, item.name).then(async result => {
-      // SScene.openOnlineScene(name,server).then((result) => {
+    const url = item.server + '/scenes/' + item.name
+    SScene.openOnlineScene(url).then(async result => {
 
       _params.setCurSceneInfo(item)
 
@@ -313,16 +321,15 @@ function openOnlineScene(item) {
       }
   
       await SScene.setNavigationControlVisible(false)
-      await SScene.initGestureListener()
-      await SScene.initAttributeListener()
-      await SScene.initCircleFlyListener()
       await SScene.setAction(Action3D.PAN3D)
-      await SScene.changeBaseLayer(1)
+      await addTianditu()
       global.action3d = Action3D.PAN3D
       global.openWorkspace = true
       global.sceneName = item.name
       global.offlineScene = false
       _params.refreshLayer3dList && await _params.refreshLayer3dList()
+
+      await Scene3DLabelManager.addLabelLayer(item.name, true)
       global.OverlayView && global.OverlayView.setVisible(false)
   
       _params.changeLayerList && await _params.changeLayerList()

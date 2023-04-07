@@ -7,11 +7,12 @@ import {
   TextInput,
   Image,
   ScrollView,
+  ListRenderItemInfo,
 } from 'react-native'
 import { Container, SearchBar } from '../../components'
-import { SScene, SMap, SData } from 'imobile_for_reactnative'
+import { SScene, SMap, SData, GeoStyle } from 'imobile_for_reactnative'
 import NavigationService from '../NavigationService'
-import { scaleSize, screen, setSpText, Toast } from '../../utils'
+import { OnlineServicesUtils, scaleSize, screen, setSpText, Toast } from '../../utils'
 import styles from './styles'
 import { getLanguage } from '../../language/index'
 import PropTypes from 'prop-types'
@@ -19,16 +20,39 @@ import PoiData from './PoiData'
 import color from '../../styles/color'
 import { TouchType, ChunkType } from '../../constants'
 import { getThemeAssets } from '../../assets'
-import LocateUtils from './LocateUtils'
-import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
+import LocateUtils, { SeachResult } from './LocateUtils'
+import { RouteAnalyzeResult } from '@/utils/OnlineServicesUtils'
+import { AltitudeMode, GeoStyle3D } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SScene'
+import { GeometryType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
+import ScenePositionHelper from '../workspace/pages/map3D/ScenePositionHelper'
 
-export default class PointAnalyst extends Component {
-  props: {
-    navigation: Object,
-    mapSearchHistory: Array,
-    language: string,
-    setMapSearchHistory: () => {},
-  }
+interface Props {
+  navigation: Object,
+  mapSearchHistory: PointInfo[],
+  language: string,
+  setMapSearchHistory: () => {},
+}
+
+
+interface State {
+  searchValue: null | string,
+  searchData: (PointInfo & {distance?: string})[],
+  /** 3维分析数据结果列表 */
+  analystData: PointInfo[],
+  firstPoint: null,
+  secondPoint: null,
+  showList: boolean
+}
+
+
+interface PointInfo {
+  x: number,
+  y: number,
+  pointName: string,
+  address: string
+}
+
+export default class PointAnalyst extends Component<Props, State> {
 
   static propTypes = {
     mapNavigation: PropTypes.object,
@@ -37,7 +61,14 @@ export default class PointAnalyst extends Component {
     setNavigationChangeAR: PropTypes.func,
   }
 
-  constructor(props) {
+  onlineService = new OnlineServicesUtils('online')
+
+  /** 是否3维模块内 */
+  is3D: boolean
+
+  type: 'pointSearch' | 'pointAnalyst'
+
+  constructor(props: Props) {
     super(props)
     const { params } = this.props.route
     this.type = params.type
@@ -58,18 +89,22 @@ export default class PointAnalyst extends Component {
     this.orientation =global.getDevice().orientation
   }
 
-  componentDidMount() {
-    if (this.is3D) {
-      SScene.initPointSearch()
-      SScene.setPointSearchListener(result => {
-        if (this.type === 'pointAnalyst') {
-          this.setState({ analystData: result })
-        } else {
-          this.setState({ searchData: result })
-          this.setLoading(false)
-        }
-      },
-      )
+
+  search = async (text: string) => {
+    const results = await this.onlineService.searchPoi({'keywords': text, pageSizeNum: 10, pageNum: 0})
+    const data: PointInfo[] = results?.poiInfos.map(item => {
+      return {
+        pointName: item.name,
+        address: item.address,
+        x: item.location.x,
+        y: item.location.y,
+      }
+    }) || []
+    if (this.type === 'pointAnalyst') {
+      this.setState({ analystData: data })
+    } else {
+      this.setState({ searchData: data })
+      this.setLoading(false)
     }
   }
 
@@ -82,44 +117,12 @@ export default class PointAnalyst extends Component {
     )
   }
 
-  renderHeaderOfAnalyst = () => {
-    return (
-      <View>
-        <TextInput
-          onChangeText={text => {
-            if (text === null || text === '') {
-              this.setState({ firstPoint: text, analystData: [] })
-              return
-            }
-            SScene.pointSearch(text)
-            this.PointType = 'firstPoint'
-            this.setState({ firstPoint: text })
-          }}
-          value={this.state.firstPoint}
-          style={styles.analystInput}
-        />
-        <TextInput
-          onChangeText={text => {
-            if (text === null || text === '') {
-              this.setState({ secondPoint: text, analystData: [] })
-              return
-            }
-            SScene.pointSearch(text)
-            this.PointType = 'secondPoint'
-            this.setState({ secondPoint: text })
-          }}
-          value={this.state.secondPoint}
-          style={styles.analystInput}
-        />
-      </View>
-    )
-  }
 
   _keyExtractor = (item, index) => index
 
   onListItemPress = async (item, index) => {
     if (this.searchClickedInfo.isClicked) {
-      let title = this.searchClickedInfo.title
+      const title = this.searchClickedInfo.title
       if (
         title === getLanguage(global.language).Map_Main_Menu.SET_AS_START_POINT
       ) {
@@ -158,7 +161,7 @@ export default class PointAnalyst extends Component {
         showList: true,
       })
     } else {
-      let historyArr = this.props.mapSearchHistory
+      const historyArr = this.props.mapSearchHistory
       let hasAdded = false
       historyArr.map(v => {
         if (v.pointName === item.pointName) hasAdded = true
@@ -176,7 +179,7 @@ export default class PointAnalyst extends Component {
     }
   }
 
-  renderItem = ({ item, index }) => {
+  renderItem = ({ item, index }: ListRenderItemInfo<PointInfo | SeachResult>) => {
     return (
       <View>
         <TouchableOpacity
@@ -201,23 +204,63 @@ export default class PointAnalyst extends Component {
     )
   }
 
-  toLocationPoint = async ({ item, pointName, index }) => {
+  point1: PointInfo | null = null
+
+  startStyle: Partial<GeoStyle3D> = {
+    altitudeMode: AltitudeMode.ABSOLUTE,
+    markerScale: 2,
+    markerFile: 'APP://config/Resource/icon_start.png'
+  }
+
+  endStyle: Partial<GeoStyle3D> = {
+    altitudeMode: AltitudeMode.ABSOLUTE,
+    markerScale: 2,
+    markerFile: 'APP://config/Resource/icon_end.png'
+  }
+
+  addRouteOnScene = async (result: RouteAnalyzeResult) => {
+    const start = result.pathPoints[0]
+    const end = result.pathPoints[result.pathPoints.length - 1]
+
+    SScene.addGeometryToTrackingLayer({type: GeometryType.GEOPLACEMARK, point: {...start, z: 0}, text: '起点'}, 'start', this.startStyle)
+    SScene.addGeometryToTrackingLayer({type: GeometryType.GEOPLACEMARK, point: {...end, z: 0}, text: '终点'}, 'end', this.endStyle)
+
+    const line = result.pathPoints
+
+    const style = new GeoStyle()
+    style.setLineColor(255, 255, 0)
+    style.setLineWidth(4)
+
+    SScene.addGeometryToTrackingLayer({type: GeometryType.GEOLINE, points: [line]}, 'line', style)
+
+
+    const bounds = await SData.getGeometryBounds({type: GeometryType.GEOLINE, points: [line]})
+    bounds && SScene.ensureVisible(bounds)
+
+  }
+
+  toLocationPoint = async ({ item, pointName, index }: {item: PointInfo | SeachResult, pointName: string, index: number}) => {
     try {
       if (this.is3D) {
         if (this.PointType) {
           if (this.PointType === 'firstPoint') {
-            await SScene.savePoint(index, this.PointType)
+            this.point1 = item
             this.setState({ firstPoint: pointName, analystData: [] })
           } else {
-            await SScene.savePoint(index, this.PointType)
             this.container.setLoading(
               true,
               getLanguage(global.language).Prompt.ANALYSING,
             )
             //'路径分析中')
             this.setState({ secondPoint: pointName, analystData: [] })
-            let result = await SScene.navigationLine()
+
+            const result = await this.onlineService.routeAnalyze({
+              startPoint: {x: this.point1?.x, y: this.point1?.y},
+              endPoint: {x: item.x, y: item.y},
+              routeType: 'MINLENGTH'
+            })
             if (result) {
+              this.addRouteOnScene(result)
               this.container.setLoading(false)
               NavigationService.goBack()
             } else {
@@ -232,7 +275,8 @@ export default class PointAnalyst extends Component {
           )
           // '位置搜索中')
           this.setState({ searchValue: pointName, searchData: [] })
-          let result = await SScene.toLocationPoint(item)
+          ScenePositionHelper.flyToPlace(pointName, {longitude: item.x, latitude: item.y})
+          const result = true
           if (result) {
             this.container.setLoading(false)
             NavigationService.goBack()
@@ -246,9 +290,9 @@ export default class PointAnalyst extends Component {
           true,
           getLanguage(global.language).Prompt.SEARCHING,
         )
-        let x = item.x
-        let y = item.y
-        let address = item.address
+        const x = item.x
+        const y = item.y
+        const address = item.address
         this.setState({ searchValue: pointName, searchData: [] })
         if (global.Type === ChunkType.MAP_NAVIGATION) {
           await SMap.clearTrackingLayer()
@@ -257,7 +301,7 @@ export default class PointAnalyst extends Component {
             name: pointName,
           })
         }
-        let result = await SMap._toLocationPoint(item)
+        const result = await SMap._toLocationPoint(item)
         if (result) {
           global.PoiTopSearchBar.setVisible(true)
           global.PoiTopSearchBar.setState({ defaultValue: item.pointName })
@@ -306,7 +350,7 @@ export default class PointAnalyst extends Component {
                     this.setState({ firstPoint: text, analystData: [] })
                     return
                   }
-                  SScene.pointSearch(text)
+                  this.search(text)
                   this.PointType = 'firstPoint'
                   this.setState({ firstPoint: text })
                 }}
@@ -330,7 +374,7 @@ export default class PointAnalyst extends Component {
                     this.setState({ secondPoint: text, analystData: [] })
                     return
                   }
-                  SScene.pointSearch(text)
+                  this.search(text)
                   this.PointType = 'secondPoint'
                   this.setState({ secondPoint: text })
                 }}
@@ -362,26 +406,6 @@ export default class PointAnalyst extends Component {
   renderPointSearch = () => {
     return (
       <View>
-        {/* <View style={styles.pointSearchView}>
-          <TextInput
-            placeholder={'请输入需要搜索的位置'}
-            style={styles.PointSearch}
-            onChangeText={text => {
-              if (text === null || text === '') {
-                this.setState({ searchValue: text, searchData: [] })
-                return
-              }
-              SScene.pointSearch(text)
-              this.setState({ searchValue: text })
-            }}
-            value={this.state.searchValue}
-          />
-          <Image
-            resizeMode={'contain'}
-            source={require('../../assets/mapToolbar/icon_search_black.png')}
-            style={styles.search}
-          />
-        </View> */}
         <View>
           <FlatList
             data={this.state.searchData}
@@ -404,7 +428,7 @@ export default class PointAnalyst extends Component {
   getSearchResult = async key => {
     let location, currentLocation
     if (this.is3D) {
-      location = await SScene.getSceneCenter()
+      location = await SScene.getCameraLocation()
       currentLocation = location
     } else {
       location = (await SData.CoordSysTranslatorPrjToGPS(await SMap.getPrjCoordSys(),[await SMap.getMapCenter()]))[0]
@@ -424,7 +448,7 @@ export default class PointAnalyst extends Component {
         if (!res) return
         this.setState({
           searchData: res.resultList,
-          poiInfos: res.poiInfos,
+          // poiInfos: res.poiInfos,
           showList: false,
         })
         if (res && res.radius) {
@@ -458,11 +482,11 @@ export default class PointAnalyst extends Component {
   }
 
   renderIconItem = () => {
-    let orientation = global.getDevice().orientation
+    const orientation = global.getDevice().orientation
     this.orientation =  orientation
-    let maxHeight = screen.getScreenHeight(orientation)
-    let headerHeight = screen.getHeaderHeight(orientation)
-    let data = PoiData()
+    const maxHeight = screen.getScreenHeight(orientation)
+    const headerHeight = screen.getHeaderHeight(orientation)
+    const data = PoiData()
     return (
       <View
         style={{

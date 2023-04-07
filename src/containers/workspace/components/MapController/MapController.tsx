@@ -9,10 +9,12 @@ import { MTBtn } from '../../../../components'
 import { Const, ChunkType, TouchType } from '../../../../constants'
 import { scaleSize, Toast, screen } from '../../../../utils'
 import { getThemeAssets } from '../../../../assets'
-import { SMap, SNavigation, SScene } from 'imobile_for_reactnative'
+import { SLocation, SMap, SNavigation, SScene } from 'imobile_for_reactnative'
 import styles from './styles'
 import { getLanguage } from '../../../../language'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
+import ScenePositionHelper from '../../pages/map3D/ScenePositionHelper'
+import { SceneType } from 'imobile_for_reactnative/NativeModule/interfaces/scene/SScene'
 
 const DEFAULT_BOTTOM = scaleSize(135)
 const DEFAULT_BOTTOM_LAND = scaleSize(26)
@@ -60,7 +62,7 @@ export default class MapController extends React.Component {
         this.compassInterval = null
       }
       this.compassInterval = setInterval(async () => {
-        const deg = await SScene.getHeading()
+        const deg = await SScene.getCameraHeading()
         this.setCompass(deg)
       }, 600)
     } else {
@@ -277,18 +279,20 @@ export default class MapController extends React.Component {
       return
     }
     if (this.props.type === 'MAP_3D') {
+      const sceneType = await SScene.getSceneType()
+
       // 平面场景不进行当前点定位 add jiakai
-      if(!(await SScene.isEarthScene())){
+      if(sceneType === SceneType.NONEARTH){
         const layers = await SScene.getLayers()
-        const visibleLayer = layers.filter(layer => layer.visible)
+        const visibleLayer = layers.filter(layer => layer.isVisible)
         if(visibleLayer.length < 1) return
         //这里原来接口遍历到了最后一个可见图层，暂时不改这个逻辑
-        SScene.ensureVisibleByLayer(visibleLayer[visibleLayer.length - 1])
+        const bounds = await SScene.getLayerBounds(visibleLayer[visibleLayer.length - 1].name)
+        bounds && SScene.ensureVisible(bounds)
         return
       }
-      await SScene.setHeading()
       // 定位到当前位置
-      await SScene.flyToCurrent()
+      ScenePositionHelper.flyToCurrent()
       // await SScene.resetCamera()
       this.setCompass(0)
       return

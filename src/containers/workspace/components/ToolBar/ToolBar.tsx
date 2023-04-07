@@ -873,7 +873,6 @@ export default class ToolBar extends React.Component<Props & DefaultProps, State
       // TODO savePlotAnimationNode
       // this.contentView.savePlotAnimationNode()
     } else if (this.state.type === ConstToolType.SM_MAP3D_FLY_LIST) {
-      SScene.setOperation('startTouchAttribute')
       SScene.setAction(Action3D.PAN3D)
       global.action3d = Action3D.PAN3D
       this.setVisible(false)

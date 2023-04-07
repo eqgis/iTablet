@@ -147,6 +147,8 @@ export interface POISearchParamOnline {
    * 910111	四维、高德墨卡托
    */
   to?: 4326 | 3857 | 910113 | 910102 | 910112 | 910101 | 910111
+  pageSizeNum: number
+  pageNum: number
 }
 
 
@@ -1347,7 +1349,7 @@ export default class OnlineServicesUtils {
   // online 公共服务api
 
   /** poi 在线搜索 */
-  searchPoi = async (params: POISearchParamOnline): Promise<POISearchResultOnline | null> => {
+  searchPoi = async (params: Partial<POISearchParamOnline>): Promise<POISearchResultOnline | null> => {
     try {
       let url = 'https://www.supermapol.com/iserver/services/localsearch/rest/searchdatas/China/poiinfos.json?'
       url += this._obj2params(params) + '&key=fvV2osxwuZWlY0wJb8FEb2i5'

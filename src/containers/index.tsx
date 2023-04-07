@@ -186,7 +186,7 @@ import NavigationView2D from './workspace/components/ArNavigation/NavigationView
 import RoadNet from './workspace/components/ArNavigation/RoadNet'
 import Report from '../containers/tabs/Friend/Chat/Report'
 import WebView from '../components/WebView'
-import { UserInfo } from '@/types'
+import { MainStackParamList, UserInfo } from '@/types'
 import { Platform } from 'react-native'
 import MapSelectList from '../containers/workspace/components/ToolBar/modules/arDrawingModule/MapSelectList'
 import { DEVICE } from '@/redux/models/device'
@@ -206,7 +206,7 @@ import NtripServerType from './NtripServerType'
 import LocationLoadPoint from './LocationLoadPoint'
 import LocationInformation from './LocationInformation'
 
-const Stack = createNativeStackNavigator()
+const Stack = createNativeStackNavigator<MainStackParamList>()
 
 interface StackNavigatorProps {
   appConfig: any,

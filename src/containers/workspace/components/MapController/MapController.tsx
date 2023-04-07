@@ -283,7 +283,7 @@ export default class MapController extends React.Component {
         const visibleLayer = layers.filter(layer => layer.visible)
         if(visibleLayer.length < 1) return
         //这里原来接口遍历到了最后一个可见图层，暂时不改这个逻辑
-        SScene.ensureVisibleByLayer(visibleLayer[visibleLayer.length - 1])
+        SScene.ensureVisibleByLayer(visibleLayer[visibleLayer.length - 1].name)
         return
       }
       await SScene.setHeading()

@@ -30,7 +30,7 @@ import { ConstPath } from '../../constants'
 import ModalDropdown from 'react-native-modal-dropdown'
 import NavigationService from '../NavigationService'
 import ImageButton from '../../components/ImageButton'
-import { DatasetType, FieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
+import { DatasetType, EngineType, FieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
 export default class CreateNavDataPage extends Component {
   props: {
@@ -198,7 +198,31 @@ export default class CreateNavDataPage extends Component {
       'udb',
     )
     availableName = availableName.substring(0, availableName.lastIndexOf('.'))
-    const rel = await SNavigationInner.createNavDatasource(availableName)
+
+    const new_path = global.homePath +
+    ConstPath.UserPath +
+    this.props.currentUser.userName +
+    '/' +
+    ConstPath.RelativePath.Datasource+
+    availableName+".udb"
+
+    const new_datasource = await SData.createDatasource({alias:availableName,server:new_path,engineType:EngineType.UDB})
+    const fieldInfo = []
+    fieldInfo.push({
+      caption:"NetworkDataset",
+      name:"NetworkDataset",
+      type:FieldType.CHAR,
+    })
+    fieldInfo.push({
+      caption:"NetworkModelFile",
+      name:"NetworkModelFile",
+      type:FieldType.CHAR,
+    })
+    const rel = await SData.createDatasetWithParams({
+      datasourceName:new_datasource,
+      datasetName:"ModelFileLinkTable",
+      datasetType:DatasetType.TABULAR},fieldInfo)
+    // const rel = await SNavigationInner.createNavDatasource(availableName)
     if (rel) {
       this.getDatasource()
     } else {

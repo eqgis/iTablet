@@ -3,6 +3,7 @@ import { ChunkType } from "@/constants"
 import NavigationService from "@/containers/NavigationService"
 import { getLanguage } from "@/language"
 import { PointParamShowParam } from "@/redux/models/setting"
+import { AppEvent } from "@/utils"
 import { GGA, IRTKFixType, RTKFixType } from "imobile_for_reactnative/NativeModule/interfaces/SLocation"
 import React, {Component} from "react"
 import { Text, View, Image, TouchableOpacity } from 'react-native'
@@ -11,16 +12,31 @@ import styles from './style'
 interface Props {
   pointStateText: string,
   isPointParamShow: PointParamShowParam,
-  gga: GGA,
+  // gga: GGA,
 }
 
-export default class PositionStateView extends Component<Props> {
+interface State {
+  gga: GGA | null,
+}
+
+export default class PositionStateView extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
     this.state = {
-      text: this.props.pointStateText,
+      // text: this.props.pointStateText,
+      gga: null,
     }
+  }
+
+  componentDidMount = async () => {
+    AppEvent.addListener('positionGGAInfo', this.changeGGAInfo)
+  }
+
+  changeGGAInfo = (gga: GGA) => {
+    this.setState({
+      gga,
+    })
   }
 
 
@@ -67,7 +83,7 @@ export default class PositionStateView extends Component<Props> {
 
   render() {
     let imgState = getThemeAssets().publicAssets.icon_position_state_red
-    switch (this.props.gga?.fixType || -1) {
+    switch (this.state.gga?.fixType || -1) {
       case 4: // "RTK"
         imgState = getThemeAssets().publicAssets.icon_position_state_green
         break
@@ -106,7 +122,7 @@ export default class PositionStateView extends Component<Props> {
             source={imgState}
             style={[styles.image]}
           />
-          <Text style={[styles.text]}>{this.getPositionSatateText(this.props.gga ? this.props.gga.fixType : -1)}</Text>
+          <Text style={[styles.text]}>{this.getPositionSatateText(this.state.gga ? this.state.gga.fixType : -1)}</Text>
         </View>
 
         <View
@@ -116,7 +132,7 @@ export default class PositionStateView extends Component<Props> {
             source={getThemeAssets().publicAssets.icon_position_accuracy}
             style={[styles.image]}
           />
-          <Text style={[styles.text]}>{this.props?.gga?.HDOP?.toFixed(2) || getLanguage().UNKONW}</Text>
+          <Text style={[styles.text]}>{this.state.gga?.HDOP?.toFixed(2) || getLanguage().UNKONW}</Text>
         </View>
 
         <View
@@ -126,7 +142,7 @@ export default class PositionStateView extends Component<Props> {
             source={getThemeAssets().publicAssets.icon_gps}
             style={[styles.image]}
           />
-          <Text style={[styles.text]}>{this.props?.gga?.satNums || 0}</Text>
+          <Text style={[styles.text]}>{this.state.gga?.satNums || 0}</Text>
         </View>
 
       </TouchableOpacity>

@@ -511,7 +511,7 @@ class AppRoot extends Component {
 
   initLocation = async () => {
     await SLocation.openGPS()
-    this.props?.setPositionGGA(null)
+    // this.props?.setPositionGGA(null)
     // SLocation.addSlocationStateListener((type) => {
     //   let text = ''
     //   switch (type) {
@@ -560,9 +560,21 @@ class AppRoot extends Component {
     // })
 
     // 差分信息
+
+    // let count = 0
+    // let date: Date | null = null
     SLocation.setNMEAGGAListener((gga: SLocation.GGA) =>{
+
+      gga && AppEvent.emitEvent("positionGGAInfo", gga)
       // console.warn("gga: " + JSON.stringify(gga))
-      gga && this.props?.setPositionGGA(gga)
+
+      // const curDate = new Date()e56
+      // if(date && curDate.getTime() - date.getTime() > 0.3 * 1000) {
+      //   date = curDate
+      //   gga && this.props?.setPositionGGA(gga)
+      //   gga && count ++
+      //   console.warn(count)
+      // }
     })
   }
 

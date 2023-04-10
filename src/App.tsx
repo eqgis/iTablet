@@ -161,7 +161,7 @@ class AppRoot extends Component {
     language: PropTypes.string,
     autoLanguage: PropTypes.bool,
     configLangSet: PropTypes.bool,
-    peripheralDevice: PropTypes.string,
+    peripheralDevice: PropTypes.object,
     nav: PropTypes.object,
     backActions: PropTypes.object,
     user: PropTypes.object,

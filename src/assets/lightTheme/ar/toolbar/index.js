@@ -38,6 +38,11 @@ const sandtable_make  = require('./icon_tool_sandtable_make.png')
 const attribute_make = require('./icon_tool_attribute_make.png')
 const ar_pane_annimation  = require('./icon_tool_pane_annimation.png')
 const ar_layer = require('./icon_ar_layer.png')
+const icon_toolbar_transparent_0 = require('./icon_toolbar_transparent_0.png')
+const icon_toolbar_transparent_25 = require('./icon_toolbar_transparent_25.png')
+const icon_toolbar_transparent_50 = require('./icon_toolbar_transparent_50.png')
+const icon_toolbar_transparent_75 = require('./icon_toolbar_transparent_75.png')
+const icon_toolbar_transparent_100 = require('./icon_toolbar_transparent_100.png')
 
 export default {
   icon_save_line,
@@ -77,4 +82,9 @@ export default {
   attribute_make,
   ar_pane_annimation,
   ar_layer,
+  icon_toolbar_transparent_0,
+  icon_toolbar_transparent_25,
+  icon_toolbar_transparent_50,
+  icon_toolbar_transparent_75,
+  icon_toolbar_transparent_100,
 }

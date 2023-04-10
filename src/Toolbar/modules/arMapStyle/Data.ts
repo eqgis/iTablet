@@ -1,7 +1,7 @@
 import { ImagePicker } from "@/components"
 import DataHandler from "@/utils/DataHandler"
-import { FileTools, SARMap } from "imobile_for_reactnative"
-import { ARLayer, ARTextAlign, TARTextAlign } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
+import { FileTools, SARMap, SData } from "imobile_for_reactnative"
+import { ARLayer, ARLayerType, ARTextAlign, GeoStyle3D, TARTextAlign } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 import { ModuleList } from ".."
 import { getImage } from "../../../assets"
 import { getLanguage } from "../../../language"
@@ -33,6 +33,10 @@ export function getData(key: ModuleList['ARMAP_STYLE']): IToolbarOption {
     // 矢量符号线风格
     case 'AR_MAP_STYLE_MARKER_LINE_LAYER':
       styleMarkerLineOption(option)
+      break
+    /** 三维图层风格设置 */
+    case 'AR_MAP_STYLE_3D_LAYER':
+      style3D(option)
       break
   }
 
@@ -667,6 +671,306 @@ function getARMarkerLineImageList(): ToolBarListItem[]{
   return data
 
 
+}
+
+
+/** 三维图层风格设置 */
+function style3D(option: IToolbarOption) {
+  const { cur3DLayerStyle, currentLayerStyle } = AppToolBar.getData()
+  const selectARLayer = AppToolBar.getProps().arMapInfo?.currentLayer
+
+  // const ids: Array<number> = []
+  // const length = 20000
+  // if(length > 0) {
+  //   for(let i = 1; i <= length; i ++) {
+  //     ids.push(i)
+  //   }
+  // }
+
+  option.bottomData = [{
+    image: getImage().icon_toolbar_quit,
+    onPress: async () => {
+      // 点击了返回按钮，将设置的风格恢复初始风格
+      // const opacity = cur3DLayerStyle ? cur3DLayerStyle.fillForeColor?.a : 0
+      // const style: GeoStyle3D = {
+      //   // FillOpacity: opacity,
+      //   // LineOpacity: opacity,
+      //   // MarkerOpacity: opacity,
+      // }
+      cur3DLayerStyle && setAR3DLayerStyle(cur3DLayerStyle)
+
+      // const opacity = currentLayerStyle ? currentLayerStyle.opacity : 1
+      // currentLayerStyle && setAR3DLayerStyle01(opacity, [])
+
+      AppToolBar.goBack()
+    }
+  },{
+    image: getImage().icon_submit,
+    onPress: AppToolBar.goBack,
+  }]
+
+  // let lastDate: Date | null = null
+  // option.menuOption.data = [
+  //   {
+  //     title: getLanguage().OPACITY,
+  //     type: 'slide',
+  //     slideData: [
+  //       {
+  //         type: 'single',
+  //         left: {type: 'image', image: getImage().ar_opacity},
+  //         right: {type: 'indicator', unit: '%'},
+  //         range: [0,100],
+  //         onMove: async (loc: number) => {
+
+  //           // const style: GeoStyle3D = {
+  //           //   FillOpacity: loc / 100,
+  //           //   LineOpacity: loc / 100,
+  //           //   MarkerOpacity: loc / 100,
+  //           // }
+
+  //           if(selectARLayer) {
+  //             let layer3dStyle: GeoStyle3D | null = null
+  //             if(selectARLayer.type === ARLayerType.AR3D_LAYER) {
+  //             // 三维图层直接获取图层风格
+  //               layer3dStyle = await SARMap.getAR3DLayerStyle(selectARLayer.name)
+  //             } else if(selectARLayer.type === ARLayerType.AR_SCENE_LAYER) {
+  //               const layer3ds = selectARLayer.ar3DLayers
+  //               // 三维场景图层就获取这个三维场景图层组里的第一个三维图层的风格
+  //               if(layer3ds.length > 0) {
+  //                 layer3dStyle = await SARMap.getAR3DLayerStyle(layer3ds[0].name)
+  //               }
+  //             }
+  //             // console.warn("layer3dStyle 01: " + JSON.stringify(layer3dStyle))
+  //             if(layer3dStyle?.fillForeColor) {
+  //               layer3dStyle.fillForeColor.a = loc / 100
+  //             }
+
+  //             if(layer3dStyle?.lineColor){
+  //               layer3dStyle.lineColor.a = loc / 100
+  //             }
+
+  //             if(layer3dStyle?.markerColor){
+  //               layer3dStyle.markerColor.a = loc / 100
+  //             }
+  //             // console.warn("layer3dStyle 02: " + JSON.stringify(layer3dStyle))
+
+  //             layer3dStyle && setAR3DLayerStyle(layer3dStyle)
+  //           }
+
+
+  //           // console.warn("layer: " + JSON.stringify(selectARLayer))
+  //           // const nowDate = new Date()
+  //           // if(lastDate === null || (lastDate && (nowDate.getTime() - lastDate.getTime() > 1 * 1000)) ) {
+  //           //   lastDate = nowDate
+  //           //   console.log("loc: " + loc)
+  //           //   setAR3DLayerStyle01(loc / 100, [])
+  //           // }
+
+
+
+  //         },
+  //         defaultValue:  cur3DLayerStyle ? Math.round((cur3DLayerStyle?.fillForeColor?.a || 0) * 100) : 0,
+  //         // defaultValue:  currentLayerStyle ? Math.round((currentLayerStyle.opacity) * 100) : 0,
+  //       }
+  //     ]
+  //   },
+  // ]
+
+  option.menuOption.data = [
+    {
+      title: getLanguage().ARMap.OPACITY,
+      type: 'list',
+      data: getOpacityList(),
+      showSelect: true,
+      // onPress: async () => {
+      // },
+    },
+  ]
+}
+
+/** 透明度列表 */
+function getOpacityList(): ToolBarListItem[] {
+  return [
+    {
+      image: getImage().icon_toolbar_transparent_0,
+      text: "0%",
+      onPress: () => {
+        set3DLayerStylePrepare(0)
+      }
+    },
+    {
+      image: getImage().icon_toolbar_transparent_25,
+      text: "25%",
+      onPress: () => {
+        set3DLayerStylePrepare(25)
+      }
+    },
+    {
+      image: getImage().icon_toolbar_transparent_50,
+      text: "50%",
+      onPress: () => {
+        set3DLayerStylePrepare(50)
+      }
+    },
+    {
+      image: getImage().icon_toolbar_transparent_75,
+      text: "75%",
+      onPress: () => {
+        set3DLayerStylePrepare(75)
+      }
+    },
+    {
+      image: getImage().icon_toolbar_transparent_100,
+      text: "100%",
+      onPress: () => {
+        set3DLayerStylePrepare(100)
+      }
+    },
+  ]
+}
+
+/** 三维图层风格设置准备放方法 */
+async function set3DLayerStylePrepare(loc: number) {
+  const selectARLayer = AppToolBar.getProps().arMapInfo?.currentLayer
+  if(selectARLayer) {
+    let layer3dStyle: GeoStyle3D | null = null
+    if(selectARLayer.type === ARLayerType.AR3D_LAYER) {
+    // 三维图层直接获取图层风格
+      layer3dStyle = await SARMap.getAR3DLayerStyle(selectARLayer.name)
+    } else if(selectARLayer.type === ARLayerType.AR_SCENE_LAYER) {
+      const layer3ds = selectARLayer.ar3DLayers
+      // 三维场景图层就获取这个三维场景图层组里的第一个三维图层的风格
+      if(layer3ds.length > 0) {
+        layer3dStyle = await SARMap.getAR3DLayerStyle(layer3ds[0].name)
+      }
+    }
+    // console.warn("layer3dStyle 01: " + JSON.stringify(layer3dStyle))
+    if(layer3dStyle?.fillForeColor) {
+      layer3dStyle.fillForeColor.a = loc / 100
+    }
+
+    if(layer3dStyle?.lineColor){
+      layer3dStyle.lineColor.a = loc / 100
+    }
+
+    if(layer3dStyle?.markerColor){
+      layer3dStyle.markerColor.a = loc / 100
+    }
+    // console.warn("layer3dStyle 02: " + JSON.stringify(layer3dStyle))
+
+    layer3dStyle && setAR3DLayerStyle(layer3dStyle)
+  }
+}
+
+/**
+ * 设置三维图层和三维场景图层的风格
+ * @param styleParam 三维图层的风格对象
+ */
+async function setAR3DLayerStyle(styleParam: GeoStyle3D) {
+  const selectARLayer = AppToolBar.getProps().arMapInfo?.currentLayer
+  if(selectARLayer) {
+    if(selectARLayer.type === ARLayerType.AR3D_LAYER) {
+      // 三维图层直接设置风格
+      SARMap.setAR3DLayerStyle(selectARLayer.name, styleParam)
+
+    } else if(selectARLayer.type === ARLayerType.AR_SCENE_LAYER) {
+      // 三维场景图层，找到场景图层组里的三维图层，遍历设置风格
+      const layer3ds = selectARLayer.ar3DLayers
+      if(layer3ds.length > 0) {
+        for(let j = 0; j < layer3ds.length; j ++) {
+          const layer3d = layer3ds[j]
+          SARMap.setAR3DLayerStyle(layer3d.name, styleParam)
+
+        }
+      }
+    }
+  }
+}
+
+/**
+ * 设置三维图层和三维场景图层的风格 (设置图层对象版本)
+ * @param styleParam 三维图层的风格对象
+ */
+async function setAR3DLayerStyle01(opacity: number, ids: Array<number>) {
+  const selectARLayer = AppToolBar.getProps().arMapInfo?.currentLayer
+  if(selectARLayer) {
+    // 序号的数组（不等于SmId）  to do 获取三维图层的所有对象的 个数 或者是 序号数组
+
+    if(selectARLayer.type === ARLayerType.AR3D_LAYER) {
+      // console.warn("layer: " + JSON.stringify(selectARLayer))
+      const tempColor = {
+        r: opacity * 255,
+        g: opacity * 255,
+        b: opacity* 255,
+        a: opacity,
+      }
+      SARMap.set3DLayerObjectsColor(selectARLayer.name, ids, tempColor)
+
+      // const ids = await SARMap.get3DLayerObjectsIds(selectARLayer.name)
+      // console.warn("ids: " + JSON.stringify(ids))
+      // 当该图层的模型数量大于1时，修改各个模型的透明度
+      // if(ids && ids.length > 0) {
+      //   const tempColor = {
+      //     r: opacity * 255,
+      //     g: opacity * 255,
+      //     b: opacity* 255,
+      //     a: opacity,
+      //   }
+      //   SARMap.set3DLayerObjectsColor(selectARLayer.name, ids, tempColor)
+      //   // const colors =  SARMap.get3DLayerObjectsColor(selectARLayer.name, ids)
+      //   // if(colors && colors.length > 0) {
+      //   //   SARMap.set3DLayerObjectsColor(selectARLayer.name, ids, colors[0])
+      //   // }
+      // }
+    } else if(selectARLayer.type === ARLayerType.AR_SCENE_LAYER) {
+      // console.warn("selectARLayer: " + JSON.stringify(selectARLayer))
+      const layer3ds = selectARLayer.ar3DLayers
+      if(layer3ds.length > 0) {
+        for(let j = 0; j < layer3ds.length; j ++) {
+          const layer3d = layer3ds[j]
+          // console.warn("layer3d: " + JSON.stringify(layer3d))
+
+          // const ids = await SARMap.get3DLayerObjectsIds(layer3d.name)
+          const tempColor = {
+            r: opacity* 255,
+            g: opacity* 255,
+            b: opacity* 255,
+            a: opacity,
+          }
+          SARMap.set3DLayerObjectsColor(layer3d.name, ids, tempColor)
+
+          // if(ids && ids.length > 0) {
+          //   const tempColor = {
+          //     r: opacity* 255,
+          //     g: opacity* 255,
+          //     b: opacity* 255,
+          //     a: opacity,
+          //   }
+          //   SARMap.set3DLayerObjectsColor(layer3d.name, ids, tempColor)
+          //   // const colors = await SARMap.get3DLayerObjectsColor(layer3d.name, ids)
+          //   // if(colors && colors.length > 0) {
+          //   //   const tempColor = {
+          //   //     r: colors[0].r,
+          //   //     g: colors[0].g,
+          //   //     b: colors[0].b,
+          //   //     a: opacity,
+          //   //   }
+          //   //   SARMap.set3DLayerObjectsColor(layer3d.name, ids, tempColor)
+          //   // } else {
+          //   //   const tempColor = {
+          //   //     r: 255,
+          //   //     g: 255,
+          //   //     b: 255,
+          //   //     a: opacity,
+          //   //   }
+          //   //   SARMap.set3DLayerObjectsColor(layer3d.name, ids, tempColor)
+          //   // }
+          // }
+        }
+      }
+      // console.warn("设置透明度为: " + opacity)
+    }
+  }
 }
 
 

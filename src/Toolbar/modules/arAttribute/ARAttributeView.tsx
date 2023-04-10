@@ -34,20 +34,22 @@ class ARAttributeView extends React.Component<Props> {
     // if(Platform.OS === 'ios'){
     //   return
     // }
-    SARMap.setScene3DAttributeListener(async result => {
+    SARMap.setAR3DLayerSelectListener(async event => {
       try {
         // console.warn("callback enter")
         if(AppToolBar.getCurrentOption()?.key === 'AR_MAP_BROWSE_ELEMENT'){
           return
         }
+        const infos = await SARMap.getAR3DLayerFieldValueOfSelectedObject(event.layerName)
         // console.warn("result01: " + JSON.stringify(result))
         let arr: Array<PipeLineAttributeType> = []
         const smArr: Array<PipeLineAttributeType> = []
         let srcId = ''
-        Object.keys(result).forEach(key => {
+        infos.map(info => {
+          const key = info.name
           const item: PipeLineAttributeType = {
-            title: key,
-            value: result[key],
+            title: info.name,
+            value: info.value + '',
           }
 
 
@@ -75,7 +77,7 @@ class ARAttributeView extends React.Component<Props> {
           }
           // 记录点击管线的唯一id
           if(key === 'SmID'){
-            srcId =  result[key]
+            srcId = info.value + ''
           }
         })
 
@@ -112,6 +114,7 @@ class ARAttributeView extends React.Component<Props> {
         if(arr.length > 0) {
           // 若此次点击与上一次点击的是同一个管，就是隐藏，即将数据置为空数组
           if(preSrcId && preSrcId === srcId) {
+            SARMap.clearSelection()
             AppToolBar.getProps().setPipeLineAttribute([])
           } else {
             AppToolBar.getProps().setPipeLineAttribute(arr)

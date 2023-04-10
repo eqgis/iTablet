@@ -3,7 +3,7 @@ import { View, FlatList, TouchableOpacity, Text, Image ,Platform,StyleSheet} fro
 import { scaleSize, setSpText, Toast, LayerUtils ,DialogUtils} from '../../utils'
 import { color } from '../../styles'
 import NavigationService from '../NavigationService'
-import { SMap ,SData } from 'imobile_for_reactnative'
+import { SMap ,SData ,GeoStyle,SCollector} from 'imobile_for_reactnative'
 import PropTypes from 'prop-types'
 import { Container } from '../../components'
 import { getThemeAssets,getLayerWhiteIconByType ,getPublicAssets,getLayerIconByType} from '../../assets'
@@ -15,6 +15,8 @@ import { OverlayView } from '../workspace/components'
 import { FileTools } from '../../native'
 import { ConstPath } from '../../constants'
 import { SNavigationInner } from 'imobile_for_reactnative/NativeModule/interfaces/navigation/SNavigationInner'
+import { EngineType,FieldType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
+import { Action } from 'imobile_for_reactnative/NativeModule/interfaces/mapping/SMap'
 export default class ChooseNaviLayer extends React.Component {
   static propTypes = {
     user: PropTypes.object,
@@ -162,13 +164,73 @@ export default class ChooseNaviLayer extends React.Component {
     let regExp = /^[a-zA-Z0-9@#_]+$/
     let isValid = regExp.test(text)
     if (isValid) {
-      await SNavigationInner.createNaviDataset(text,global.INCREMENT_DATA.layerName).then(async returnData => {
-        if (returnData && returnData.datasetName) {
-          global.INCREMENT_DATA = returnData
-          this.setState({selectedItem:returnData})
-          this.getData()
-        }
+      const homePath = await FileTools.getHomeDirectory()
+      const availableName = "default_increment_datasource@" + this.props.user.currentUser.userName
+      let datasetName = text
+      const new_path = homePath +
+        ConstPath.UserPath +
+        this.props.user.currentUser.userName +
+        '/' +
+        ConstPath.RelativePath.Temp +
+        availableName + ".udb"
+
+      const new_datasource = await SData.createDatasource({ alias: availableName, server: new_path, engineType: EngineType.UDB })
+      const layerInfo = await SMap.getLayerInfo(global.INCREMENT_DATA.layerName)
+      if(layerInfo!==null && layerInfo.name){
+        await SMap.removeLayer(global.INCREMENT_DATA.layerName)
+      }
+
+      let num = 0
+      let datasetIfo = await SData.getDatasetInfo({datasourceName:availableName,datasetName:datasetName})
+      while(datasetIfo!==null && datasetIfo.datasetName){
+        datasetName = datasetName + num
+        datasetIfo = await SData.getDatasetInfo({datasourceName:availableName,datasetName:datasetName})
+        num++
+      }
+
+      let returnData
+      const fieldInfo = []
+      fieldInfo.push({
+        caption: "RoadName",
+        name: "RoadName",
+        type: FieldType.CHAR,
+        zeroLengthAllowed: true,
       })
+      fieldInfo.push({
+        caption: "Direction",
+        name: "Direction",
+        type: FieldType.BYTE,
+        defaultValue: "1",
+      })
+      await SData.createDatasetWithParams({
+        datasourceName: new_datasource,
+        datasetName: datasetName,
+        datasetType: DatasetType.LINE
+      }, fieldInfo)
+
+      const xml = await SData.prjCoordSysToXml({ type: 1 })//经纬度坐标
+      await SData.setDatasetPrjCoordSys({ datasourceName: new_datasource, datasetName: datasetName }, xml)
+      const layer = await SMap.addLayer({ datasource: new_datasource, dataset: datasetName }, true)
+      let geoStyle = null
+      geoStyle = new GeoStyle()
+      geoStyle.setLineWidth(1)
+      geoStyle.setLineColor(240, 0, 0)
+      await SCollector.setDataset({ datasourceName: new_datasource, datasetName: datasetName }, geoStyle)
+      returnData = { layerName: layer.name, datasourceName: new_datasource, datasetName: datasetName }
+
+      if (returnData && returnData.datasetName) {
+        global.INCREMENT_DATA = returnData
+        this.setState({selectedItem:returnData})
+        this.getData()
+      }
+
+      // await SNavigationInner.createNaviDataset(text,global.INCREMENT_DATA.layerName).then(async returnData => {
+      //   if (returnData && returnData.datasetName) {
+      //     global.INCREMENT_DATA = returnData
+      //     this.setState({selectedItem:returnData})
+      //     this.getData()
+      //   }
+      // })
     } else {
       Toast.show(getLanguage(global.language).Prompt.DATASET_RENAME_FAILED)
     }
@@ -244,7 +306,24 @@ export default class ChooseNaviLayer extends React.Component {
             datasourceName: this.item.datasourceName,
             datasetName: this.item.datasetName,
           }
-          await SNavigationInner.setCurrentDataset(params)
+          let preLayerName = global.INCREMENT_DATA.datasetName + "@" + this.item.datasourceName
+          const datasetInfo = await SData.getDatasetInfo({datasourceName: this.item.datasourceName,datasetName: this.item.datasetName})
+          if(datasetInfo!==null){
+            SMap.setAction(Action.PAN)
+            const layerInfo = await SMap.getLayerInfo(preLayerName)
+            if(layerInfo!==null){
+              await SMap.removeLayer(preLayerName)
+            }
+            await SMap.addLayer({ datasource: this.item.datasourceName, dataset: this.item.datasetName },true)
+            let geoStyle = null
+            geoStyle = new GeoStyle()
+            geoStyle.setLineWidth(1)
+            geoStyle.setLineColor(240, 0, 0)
+            await SCollector.setDataset({datasourceName: this.item.datasourceName,datasetName:this.item.datasetName},geoStyle)
+          }
+
+
+          // await SNavigationInner.setCurrentDataset(params)
           global.INCREMENT_DATA = this.item
         }.bind(this)())
       }
@@ -391,7 +470,24 @@ export default class ChooseNaviLayer extends React.Component {
               datasourceName: this.state.selectedItem.datasourceName,
               datasetName: this.state.selectedItem.datasetName,
             }
-            await SNavigationInner.setCurrentDataset(params)
+
+            let preLayerName = global.INCREMENT_DATA.datasetName + "@" + this.state.selectedItem.datasourceName
+            const datasetInfo = await SData.getDatasetInfo({datasourceName: this.state.selectedItem.datasourceName,datasetName: this.state.selectedItem.datasetName})
+            if(datasetInfo!==null){
+              SMap.setAction(Action.PAN)
+              const layerInfo = await SMap.getLayerInfo(preLayerName)
+              if(layerInfo!==null){
+                await SMap.removeLayer(preLayerName)
+              }
+              await SMap.addLayer({ datasource: this.state.selectedItem.datasourceName, dataset: this.state.selectedItem.datasetName },true)
+              let geoStyle = null
+              geoStyle = new GeoStyle()
+              geoStyle.setLineWidth(1)
+              geoStyle.setLineColor(240, 0, 0)
+              await SCollector.setDataset({datasourceName: this.state.selectedItem.datasourceName,datasetName:this.state.selectedItem.datasetName},geoStyle)
+            }
+
+            // await SNavigationInner.setCurrentDataset(params)
             global.INCREMENT_DATA = this.state.selectedItem
           }.bind(this)())
         }

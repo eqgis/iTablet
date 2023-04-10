@@ -12,7 +12,7 @@ import {
 } from '../../../../../../constants'
 import ToolbarModule from '../ToolbarModule'
 import { Toast, LayerUtils } from '../../../../../../utils'
-import {  SMap, SNavigation } from 'imobile_for_reactnative'
+import {  SMap, SNavigation ,SData} from 'imobile_for_reactnative'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { constants } from '../../../index'
 import TopoEditData from './TopoEditData'
@@ -146,9 +146,16 @@ function commit() {
   global.SimpleDialog.setVisible(true)
 }
 
-function dialogConfirm() {
+async function dialogConfirm() {
   const _params = ToolbarModule.getParams()
-  SNavigationInner.cancelIncrement(global.INCREMENT_DATA)
+  const datasets = await SData.getDatasetsByDatasource({alias:global.INCREMENT_DATA.datasourceName})
+  for(let i=0;i<datasets.length;i++){
+    if(datasets[i].datasetName === global.INCREMENT_DATA.datasetName){
+      const layername = global.INCREMENT_DATA.datasetName+"@"+global.INCREMENT_DATA.datasourceName
+      await SMap.removeLayer(layername)
+    }
+  }
+  // SNavigationInner.cancelIncrement(global.INCREMENT_DATA)
   SMap.setAction(Action.PAN)
   _params.setToolbarVisible(false)
   let layers = _params.layers.layers

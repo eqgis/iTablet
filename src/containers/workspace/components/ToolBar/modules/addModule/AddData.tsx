@@ -174,12 +174,8 @@ async function getDatasets(type, params = {}) {
         datasouce = datasources[i]
       }
     }
-    if(!datasouce.server){
-      let datasourceParams
-      datasourceParams.server = path
-      datasourceParams.engineType = EngineType.UDB
-      datasourceParams.alias = path.substring(path.lastIndexOf("."+1))
-      await SData.openDatasource(datasourceParams)
+    if( datasouce === undefined){
+      await SData.openDatasource({server:path,engineType:EngineType.UDB,alias:path.substring(path.lastIndexOf("."+1))})
 
       const datasources2 = await SData.getDatasources()
       for(let i=0;i<datasources2.length;i++){

@@ -146,12 +146,56 @@ export default class MergeDatasetView extends Component {
    * }]
    */
   mergeData = async selectedDatas => {
-    let result = await SNavigationInner.mergeDataset(
-      { ...this.props.sourceData },
-      selectedDatas,
-    )
-    if (result) {
-      if (result instanceof Array) {
+    // const datasourceName = this.props.sourceData.datasourceName
+    // const datasetName = this.props.sourceData.datasetName
+    let result = []
+    let final = false
+    for(let i=0;i<selectedDatas.length;i++){
+      const mergeDatasetName = selectedDatas[i].datasetName
+      const mergeDatasourceName = selectedDatas[i].datasourceName
+      let selectedFieldInfo
+      if(selectedDatas[i].selectedFieldInfo){
+        selectedFieldInfo = selectedDatas[i].selectedFieldInfo
+      }else{
+        selectedFieldInfo = "RoadName"
+      }
+      const xml = await SData.getDatasetPrjCoordSys({datasetName: mergeDatasetName, datasourceName: mergeDatasourceName})
+      const prj = await SData.prjCoordSysFromXml(xml)
+      if(prj.type === 0||prj.type === -1){
+        result.push({
+          datasourceName:mergeDatasourceName,
+          datasetName:mergeDatasetName,
+        })
+      }else{
+        final = await SData.mergeDataset(
+          { ...this.props.sourceData },
+          selectedDatas,
+        )
+        let has = false
+        const re = await SData.queryRecordset({datasetName: mergeDatasetName, datasourceName: mergeDatasourceName})
+        for(let j=0;j<re.length;j++){
+          let fieldInfos = re[j].fieldInfoValue
+          for(let x=0;x<fieldInfos.length;x++){
+            // let fieldInfo = fieldInfos[x].fieldInfo
+            if(fieldInfos[x].name === selectedFieldInfo){
+              has = true
+              SData.setRecordsetValue({datasetName: mergeDatasetName, datasourceName: mergeDatasourceName},[{name:"RoadName",value:fieldInfos[x].value}],{ index: j})
+            }
+          }
+          if(!has){
+            SData.setRecordsetValue({datasetName: mergeDatasetName, datasourceName: mergeDatasourceName},[{name:"RoadName",value:""}],{ index: j})
+          }
+        }
+      }
+    }
+
+
+    // let result = await SNavigationInner.mergeDataset(
+    //   { ...this.props.sourceData },
+    //   selectedDatas,
+    // )
+    if (final) {
+      if (result.length>0) {
         let str = result.reduce(
           (preValue, curValue) => (preValue!=='' ? preValue + '、' : '')+ curValue.datasetName,
           '',

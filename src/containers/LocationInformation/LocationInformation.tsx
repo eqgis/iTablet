@@ -4,7 +4,7 @@
 import React, { Component } from "react"
 import { Text, Image, TouchableOpacity, ScrollView, View, Switch } from 'react-native'
 import Container from '../../components/Container'
-import { dp, scaleSize} from '../../utils'
+import { AppEvent, dp, scaleSize} from '../../utils'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import { DeviceManufacturer, DeviceType } from '@/redux/models/location'
@@ -36,15 +36,28 @@ interface Props {
   setPointParamShow: (value: PointParamShowParam)=> void,
 }
 
+interface State {
+  gga: GGA | null,
+}
 
 
-class LocationInformation extends Component<Props> {
+class LocationInformation extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
     this.state = {
       // curDeviceManufacturer: this.props.deviceManufacturer || "other",
+      gga: null,
     }
+  }
+  componentDidMount = async () => {
+    AppEvent.addListener('positionGGAInfo', this.changeGGAInfo)
+  }
+
+  changeGGAInfo = (gga: GGA) => {
+    this.setState({
+      gga,
+    })
   }
 
   confirmAction = () => {
@@ -187,42 +200,42 @@ class LocationInformation extends Component<Props> {
 
         {this.renderRowItem({
           title: getLanguage().SLOCATION_STATE_CURRENT,
-          value: this.getPositionSatateText(this.props.gga ? this.props.gga.fixType : -1),
+          value: this.getPositionSatateText(this.state.gga ? this.state.gga.fixType : -1),
           isHiddenRightImage: true,
         })}
 
         {this.renderRowItem({
           title: getLanguage().SAT_NUMBER,
-          value: (this.props.gga?.satNums || 0) + "",
+          value: (this.state.gga?.satNums || 0) + "",
           isHiddenRightImage: true,
         })}
 
         {this.renderRowItem({
           title: getLanguage().HORIZONTAL_ACCURACY,
-          value: (this.props.gga?.HDOP || getLanguage().UNKONW) + "",
+          value: (this.state.gga?.HDOP || getLanguage().UNKONW) + "",
           isHiddenRightImage: true,
         })}
 
         {this.renderRowItem({
           title: getLanguage().MAP_AR_DATUM_LONGITUDE + '(B)',
-          value: (this.props.gga?.longitude || 0) + "",
+          value: (this.state.gga?.longitude || 0) + "",
           isHiddenRightImage: true,
         })}
 
         {this.renderRowItem({
           title:  getLanguage().MAP_AR_DATUM_LATITUDE + '(L)',
-          value: (this.props.gga?.latitude || 0) + "",
+          value: (this.state.gga?.latitude || 0) + "",
           isHiddenRightImage: true,
         })}
 
         {this.renderRowItem({
           title:  getLanguage().ELLIPSOID_HEIGHT + '(H)',
-          value: (this.props.gga?.altitude || 0) + "",
+          value: (this.state.gga?.altitude || 0) + "",
           isHiddenRightImage: true,
         })}
         {this.renderRowItem({
           title: getLanguage().NTRIP_TIMEOUT + '(S)',
-          value: (this.props.gga?.age?.toFixed(2) || 0) + "",
+          value: (this.state.gga?.age?.toFixed(2) || 0) + "",
           isHiddenRightImage: true,
           isHiddenBottomLine: true,
         })}

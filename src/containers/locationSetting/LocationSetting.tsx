@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator ,Switch,TextInput, Platform} from 'react-native'
 import { SLocation } from 'imobile_for_reactnative'
 import Container from '../../components/Container'
-import { dp, scaleSize ,Toast} from '../../utils'
+import { AppEvent, dp, scaleSize ,Toast} from '../../utils'
 import NavigationService from '../NavigationService'
 import { getLanguage } from '../../language'
 import color from '../../styles/color'
@@ -211,7 +211,8 @@ class LocationSetting extends React.Component<Props, State> {
         switch (tempDevice.type) {
           case "local":
             toastText = getLanguage().CHANGE_DEVICE_LOCAL
-            this.props.setPositionGGA(null)
+            // this.props.setPositionGGA(null)
+            AppEvent.emitEvent("positionGGAInfo", null)
             break
           case "external" :
             toastText = getLanguage().CHANGE_DEVICE_EXTERNAL

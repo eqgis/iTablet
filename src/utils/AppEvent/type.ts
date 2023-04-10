@@ -1,5 +1,6 @@
 import { NetInfoState } from "@react-native-community/netinfo"
 import { ARElement } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
+import { GGA } from "imobile_for_reactnative/NativeModule/interfaces/SLocation"
 
 
 
@@ -37,4 +38,6 @@ export interface Event {
   "collector_aim_point_add": number
   /** 打点的准星是否显示  */
   "collector_aim_point_show": boolean
+  /** 蓝牙定位的定位信息 */
+  "positionGGAInfo": GGA | null
 }

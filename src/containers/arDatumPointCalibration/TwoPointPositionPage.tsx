@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, StyleSheet, TouchableOpacity, Text, ScaledSize, TextInput, ImageRequireSource, Platform } from 'react-native'
+import { View, Image, StyleSheet, TouchableOpacity, Text, ScaledSize, TextInput, ImageRequireSource } from 'react-native'
 import { AppInfo, FileTools, SARMap, SMap } from "imobile_for_reactnative"
 import { AppStyle, dp, Toast } from '../../utils'
 import { getImage, getThemeAssets } from '../../assets'
@@ -112,11 +112,8 @@ class TwoPointPositionPage extends React.Component<Props, State> {
         p2y: position.latitude + '',
       })
     }
-    if(Platform.OS === 'android') {
-      await SARMap.setAction(ARAction.LineDot_CREATE_FOUCUS)
-    } else {
-      await SARMap.setAction(ARAction.FOCUS)
-    }
+
+    await SARMap.setAction(ARAction.LineDot_CREATE_FOUCUS)
 
     // 提示五秒后消失
     this.tipTimer = setTimeout(async () => {
@@ -134,11 +131,9 @@ class TwoPointPositionPage extends React.Component<Props, State> {
     if(this.state.showStatus !== prevState.showStatus) { // || this.state.isTipsShow !== prevState.isTipsShow
       if(this.state.showStatus === "main") { //  && !this.state.isTipsShow
         // await SARMap.setAction(ARAction.LineDot_CREATE_FOUCUS)
-        if(Platform.OS === "ios") {
-          await SARMap.setAction(ARAction.FOCUS)
-        }
-        SARMap.setDotLineFocusShow(true)
+        // SARMap.setDotLineFocusShow(true)
         if(this.state.anchorARPoint1 && !this.state.anchorARPoint2) {
+          await SARMap.setAction(ARAction.LineDot_CREATE_FOUCUS)
           await SARMap.addDotLinePoint(this.state.anchorARPoint1)
         }
 
@@ -149,15 +144,13 @@ class TwoPointPositionPage extends React.Component<Props, State> {
         //   await SARMap.addDotLinePoint(this.state.anchorARPoint2)
         // }
       } else {
-        if(Platform.OS === "ios") {
-          await SARMap.setAction(ARAction.NULL)
-        }
         // await SARMap.setAction(ARAction.NULL)
         // 当第一个点=存在，第二个点不存在时，将线隐藏
         if(this.state.anchorARPoint1 && !this.state.anchorARPoint2) {
-          await SARMap.removeLastDotLinePoint()
+          // await SARMap.removeLastDotLinePoint()
+          await SARMap.setAction(ARAction.NULL)
         }
-        SARMap.setDotLineFocusShow(false)
+        // SARMap.setDotLineFocusShow(false)
       }
     }
   }
@@ -1073,10 +1066,10 @@ class TwoPointPositionPage extends React.Component<Props, State> {
   }
 
   renderScanView = () => {
-    if(global.Type === ChunkType.MAP_AR_MAPPING){
-      // SARMap.setAction(ARAction.NULL)
-      SARMap.setDotLineFocusShow(false)
-    }
+    // if(global.Type === ChunkType.MAP_AR_MAPPING){
+    //   // SARMap.setAction(ARAction.NULL)
+    //    SARMap.setDotLineFocusShow(false)
+    // }
     return (
       <QRScan
         onBack={() => {

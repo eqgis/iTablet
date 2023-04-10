@@ -92,6 +92,7 @@ import BundleUtils from './utils/BundleUtils'
 import { addNetworkChangeEventListener } from '@/utils/NetworkHandler'
 import { RTKFixType } from 'imobile_for_reactnative/NativeModule/interfaces/SLocation'
 import { checkAllPermission } from './utils/PermissionAndroidUtils'
+import { RootState } from './redux/types'
 
 //字体不随系统字体变化
 Text.defaultProps = Object.assign({}, Text.defaultProps, { allowFontScaling: false })
@@ -174,6 +175,7 @@ class AppRoot extends Component {
     netInfo: PropTypes.object,
     appConfig: PropTypes.object,
     version: PropTypes.string,
+    positionAccuracy: PropTypes.number,
 
     setNav: PropTypes.func,
     setUser: PropTypes.func,
@@ -582,6 +584,8 @@ class AppRoot extends Component {
       //   console.warn(count)
       // }
     })
+    SLocation.setPositionAccuracy(this.props.positionAccuracy)
+    // positionAccuracy: state.location.toJS().positionAccuracy,
   }
 
   initLicense = async () => {
@@ -1531,7 +1535,7 @@ class AppRoot extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: RootState) => {
   return {
     language: state.setting.toJS().language,
     autoLanguage: state.setting.toJS().autoLanguage,
@@ -1550,6 +1554,7 @@ const mapStateToProps = state => {
     appConfig: state.appConfig.toJS(),
     version: state.home.toJS().version,
     baseMaps: state.map.toJS().baseMaps,
+    positionAccuracy: state.location.toJS().positionAccuracy,
   }
 }
 

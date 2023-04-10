@@ -203,6 +203,7 @@ class LocationSetting extends React.Component<Props, State> {
     // } else {
     //   tempDevice = this.props.peripheralDevice
     // }
+    SLocation.setPositionAccuracy(this.state.positionAccuracy)
     tempDevice && SLocation.changeLocationDevice(tempDevice).then(() => {
       if(tempDevice) {
         // 设置成功了，将redux里的数据也更新一下

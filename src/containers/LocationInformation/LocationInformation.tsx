@@ -54,7 +54,7 @@ class LocationInformation extends Component<Props, State> {
     AppEvent.addListener('positionGGAInfo', this.changeGGAInfo)
   }
 
-  changeGGAInfo = (gga: GGA) => {
+  changeGGAInfo = (gga: GGA | null) => {
     this.setState({
       gga,
     })
@@ -62,6 +62,10 @@ class LocationInformation extends Component<Props, State> {
 
   confirmAction = () => {
     NavigationService.goBack()
+  }
+
+  componentWillUnmount = async () => {
+    AppEvent.removeListener("positionGGAInfo")
   }
 
 

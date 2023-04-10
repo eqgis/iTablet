@@ -33,10 +33,14 @@ export default class PositionStateView extends Component<Props, State> {
     AppEvent.addListener('positionGGAInfo', this.changeGGAInfo)
   }
 
-  changeGGAInfo = (gga: GGA) => {
+  changeGGAInfo = (gga: GGA | null) => {
     this.setState({
       gga,
     })
+  }
+
+  componentWillUnmount = async () => {
+    AppEvent.removeListener("positionGGAInfo")
   }
 
 

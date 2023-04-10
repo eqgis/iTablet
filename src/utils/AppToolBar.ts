@@ -1,4 +1,4 @@
-import { ARElement, ARElementStyle, IAnimationParam, IARTransform, ARLayer, ARWidgetStyle } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
+import { ARElement, ARElementStyle, IAnimationParam, IARTransform, ARLayer, ARWidgetStyle, GeoStyle3D } from "imobile_for_reactnative/NativeModule/interfaces/ar/SARMap"
 import ToolBarContainer from "imobile_for_reactnative/components/ToolbarKit/ToolbarContainer"
 import { Props } from "../Toolbar"
 import { ModuleList } from "../Toolbar/modules"
@@ -160,6 +160,8 @@ interface ToolBarData {
     attribute3D?: attribute3DType
     /** 选中的对象是否拥有骨骼动画 true表示有骨骼动画， false表示没有骨骼动画 */
     ownModelAnimation?: boolean
+    /** 三维场景图层的风格记录 */
+    cur3DLayerStyle?: GeoStyle3D | null | undefined
 }
 
 export interface attribute3DType {

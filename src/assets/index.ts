@@ -7,6 +7,7 @@ import PublicTheme from './publicTheme'
 import * as Mine from './Mine'
 import { DatasetType } from 'imobile_for_reactnative/NativeModule/interfaces/data/SData'
 import { ARLayerType, TARLayerType } from 'imobile_for_reactnative/NativeModule/interfaces/ar/SARMap'
+import * as publicImage from './public'
 
 const image = {
   ...LightTheme.analyst,
@@ -48,6 +49,7 @@ const image = {
   ...publicTheme.theme.aggregationColorScheme,
   ...publicTheme.theme.graphColorScheme,
   ...Mine,
+  ...publicImage,
 }
 
 function getImage(): typeof image {

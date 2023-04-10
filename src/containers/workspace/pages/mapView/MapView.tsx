@@ -4771,11 +4771,11 @@ export default class MapView extends React.Component {
 
   ARMappingHeaderBack = () => {
     if(this.isMeasure) {
-      SARMeasure.setMeasureMode('NULL')//重构后必须先设置null再canel
+      SARMeasure.setMeasureMode('NULL')
       SARMeasure.cancel()
       SARMeasure.clear()
     } else {
-      SARCollector.setCollectMode('NULL')//重构后必须先设置null再canel
+      SARCollector.setCollectMode('NULL')
       SARCollector.cancel()
       SARCollector.clear()
     }

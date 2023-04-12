@@ -162,6 +162,9 @@ interface ToolBarData {
     /** 是否点击场景对象,可显示属性 */
     allowedShowAttribute?: boolean
     PipeLineAttribute?: (typeof React.Component) | unknown
+
+    /** 三维场景其它图层的显隐状态 */
+    otherScene3dLayerHide? : boolean
 }
 
 export interface attribute3DType {

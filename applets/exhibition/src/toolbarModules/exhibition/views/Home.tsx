@@ -375,8 +375,8 @@ class Home extends React.Component<Props, State> {
         desc: '建筑立体模型浏览、剖切，灯效显示',
         action: () => {
           AppEvent.emitEvent('show_ar_map', true)
-          // AppToolBar.show('EXHIBITION', 'EXHIBITION_SUPERMAP_BUILDING')
-          AppToolBar.show('EXHIBITION', 'EXHIBITION_SANDBOX')
+          AppToolBar.show('EXHIBITION', 'EXHIBITION_SUPERMAP_BUILDING')
+          // AppToolBar.show('EXHIBITION', 'EXHIBITION_SANDBOX')
         }
       },
       // {

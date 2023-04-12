@@ -1,3 +1,4 @@
+/* eslint-disable no-trailing-spaces */
 import { AppEvent, AppToolBar, Toast, DataHandler, AppPath, AppLog } from '@/utils'
 import { getImage } from '../../../assets'
 import { dp } from 'imobile_for_reactnative/utils/size'
@@ -18,6 +19,9 @@ import { shouldBuildingMapData, buildingImported } from '../Actions'
 import SideBar, { Item } from '../components/SideBar'
 import AnimationWrap from '../components/AnimationWrap'
 import ScanWrap from '../components/ScanWrap'
+import ARViewLoadHandler from '../components/ARViewLoadHandler'
+import TimeoutTrigger from '../components/TimeoutTrigger'
+import App from '@/App'
 
 const styles = StyleSheet.create({
   backBtn: {
@@ -184,6 +188,8 @@ interface State {
   showCover: boolean
   showSide: boolean
   toolType: ToolType | ''
+  /** 是否允许扫描界面进行扫描 true表示允许 fasle表示不允许 */
+  isScan: boolean
 }
 
 export interface AddOption {
@@ -209,6 +215,12 @@ class SuperMapBuilding extends React.Component<Props, State> {
   oraginLayerStatus: SceneLayerStatus | undefined // 图层原始大小比例
   lastLayerStatus: SceneLayerStatus | undefined // 图层上一次大小比例
   toolView: ToolView | undefined | null
+  /** 第一次显示扫描界面是否完成 */
+  scanFirstShow = false
+  listeners: {
+    addListener: EmitterSubscription | undefined,
+    infoListener: EmitterSubscription | undefined
+  } | null = null
 
   constructor(props: Props) {
     super(props)
@@ -217,6 +229,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
       showGuide: false,
       showSide: true,
       showScan: true,
+      isScan: false,
       showCover: false,
 
       toolType: '',
@@ -227,11 +240,112 @@ class SuperMapBuilding extends React.Component<Props, State> {
     })
   }
 
-  componentDidMount(): void {
-    SARMap.setAREnhancePosition()
+  // async componentDidMount(): void {
+  //   SARMap.setAREnhancePosition()
+  //   SARMap.setAction(ARAction.NULL)
+  //   const targetPxpPath = await this.importData()
+  //   console.warn('componentDidMount', targetPxpPath)
+  //   AppEvent.addListener('ar_image_tracking_result', async result => {
+  //     this.pose = result
+  //     console.warn('ar_image_tracking_result', result)
+  //     if (result) {
+  //       SARMap.stopAREnhancePosition()
+  //       this.setState({ showScan: false })
+  //       this.relativePositin = {
+  //         x: 0,
+  //         y: 0,
+  //         z: -1,
+  //       }
+  //       if (targetPxpPath) {
+  //         await this.addARSceneLayer(targetPxpPath, {
+  //           translation: {
+  //             x: 0,
+  //             y: 0,
+  //             z: -1,
+  //           },
+  //           pose: JSON.parse(JSON.stringify(result)),
+  //           scale: 0.01,
+  //         })
+  //       }
+  //     }
+  //   })
+  //   AppEvent.addListener('ar_single_click', this.onSingleClick)
+  // }
+
+  arViewDidMount = (): void => {
+    const scanShowTimer = setTimeout(() => {
+      if (!this.scanFirstShow) {
+        if (this.state.showScan && !this.state.isScan) {
+          // 启用增强定位
+          SARMap.setAREnhancePosition()
+        }
+        this.scanFirstShow = true
+        this.setState({
+          isScan: true,
+        })
+      }
+      clearTimeout(scanShowTimer)
+    }, 3000)
+
+    this.listeners = SARMap.addMeasureStatusListeners({
+      addListener: async result => {
+        if (result) {
+          if (this.state.showScan && !this.state.isScan) {
+            // 启用增强定位
+            SARMap.setAREnhancePosition()
+          }
+          this.scanFirstShow = true
+          this.setState({
+            isScan: true,
+          })
+        } else {
+          if (this.state.showScan && this.state.isScan) {
+            // 停止增强定位
+            SARMap.stopAREnhancePosition()
+          }
+
+          this.setState({
+            isScan: false,
+          })
+        }
+      },
+    })
+
     SARMap.setAction(ARAction.NULL)
+    // AppEvent.addListener('ar_image_tracking_result', async result => {
+    //   pose = result
+    //   if (result) {
+    //     // baseRotation = await SARMap.quaternionToAngle({
+    //     //   x: pose.qx,
+    //     //   y: pose.qy,
+    //     //   z: pose.qz,
+    //     //   w: pose.qw,
+    //     // })
+    //     this.timeoutTrigger?.onBackFromScan()
+    //     SARMap.stopAREnhancePosition()
+    //     this.setState({ showScan: false })
+    //     const targetPxpPath = await this.importData()
+    //     if (targetPxpPath) {
+    //       // 创建AR地图
+
+    //       // 创建AR数据源,数据集,图层
+    //       await this.addARLayer()
+
+    //       Toast.show(getLanguage().LOCATIONSUCCESS, {
+    //         backgroundColor: 'rgba(0,0,0,.5)',
+    //         textColor: '#fff',
+    //         position: dp(50),
+    //       })
+    //     }
+    //   }
+    // })
+    console.warn('ar_image_tracking_result')
     AppEvent.addListener('ar_image_tracking_result', async result => {
       this.pose = result
+      const targetPxpPath = await this.importData()
+      console.warn('componentDidMount', targetPxpPath)
+  
+      console.warn('ar_image_tracking_result', result)
       if (result) {
         SARMap.stopAREnhancePosition()
         this.setState({ showScan: false })
@@ -240,7 +354,6 @@ class SuperMapBuilding extends React.Component<Props, State> {
           y: 0,
           z: -1,
         }
-        const targetPxpPath = await this.importData()
         if (targetPxpPath) {
           await this.addARSceneLayer(targetPxpPath, {
             translation: {
@@ -266,6 +379,33 @@ class SuperMapBuilding extends React.Component<Props, State> {
       {
         image: getImage().tool_location,
         image_selected: getImage().tool_location_selected,
+        title: '部件',
+        action: () => {
+          if (!this.checkSenceAndToolType()) return
+          this.showAttribute(false)
+          
+          if(AppToolBar.getData().otherScene3dLayerHide){
+            AppToolBar.addData({
+              otherScene3dLayerHide:false
+            })
+
+            //显示其他图层
+            SARMap.setScene3dLayerVisible("楼1合并@楼层框架打散",true)
+          }else{
+
+            AppToolBar.addData({
+              otherScene3dLayerHide:true
+            })
+
+            //隐藏其它图层
+            //楼体外墙图层设置隐藏
+            SARMap.setScene3dLayerVisible("楼1合并@楼层框架打散",false)
+          }
+        }
+      },
+      {
+        image: getImage().tool_location,
+        image_selected: getImage().tool_location_selected,
         title: '调整',
         action: () => {
           if (!this.checkSenceAndToolType()) return
@@ -278,46 +418,46 @@ class SuperMapBuilding extends React.Component<Props, State> {
           })
         }
       },
-      // {
-      //   image: getImage().tool_sectioning,
-      //   image_selected: getImage().tool_sectioning_selected,
-      //   title: '剖切',
-      //   action: () => {
-      //     if (!this.checkSenceAndToolType()) return
-      //     this.showAttribute(false)
-      //     this.switchTool('sectioning')
-      //   }
-      // },
-      // {
-      //   image: getImage().tool_attribute,
-      //   image_selected: getImage().tool_attribute_selected,
-      //   title: '属性',
-      //   action: () => {
-      //     if (!this.checkSenceAndToolType()) return
-      //     this.switchTool('attribute', async () => {
-      //       await this.showAttribute(true)
-      //       const props = AppToolBar.getProps()
-      //       const mapInfo = props.arMapInfo
-      //       mapInfo?.currentLayer?.name && await SARMap.appointEditAR3DLayer(mapInfo.currentLayer.name)
-      //       console.warn(mapInfo?.currentLayer?.name)
-      //       const status = await SARMap.getSceneLayerStatus(mapInfo?.currentLayer?.name)
-      //       this.lastLayerStatus = {...status}
+      {
+        image: getImage().tool_sectioning,
+        image_selected: getImage().tool_sectioning_selected,
+        title: '剖切',
+        action: () => {
+          if (!this.checkSenceAndToolType()) return
+          this.showAttribute(false)
+          this.switchTool('sectioning')
+        }
+      },
+      {
+        image: getImage().tool_attribute,
+        image_selected: getImage().tool_attribute_selected,
+        title: '属性',
+        action: () => {
+          if (!this.checkSenceAndToolType()) return
+          this.switchTool('attribute', async () => {
+            await this.showAttribute(true)
+            const props = AppToolBar.getProps()
+            const mapInfo = props.arMapInfo
+            mapInfo?.currentLayer?.name && await SARMap.appointEditAR3DLayer(mapInfo.currentLayer.name)
+            console.warn(mapInfo?.currentLayer?.name)
+            const status = await SARMap.getSceneLayerStatus(mapInfo?.currentLayer?.name)
+            this.lastLayerStatus = {...status}
   
-      //       // status.rx = 0
-      //       // status.ry = 166.23
-      //       // status.rz = 0
-      //       status.sx = 0.06
-      //       status.sy = 0.06
-      //       status.sz = 0.06
-      //       status.x = status.x || 0
-      //       status.y = status.y || 0
-      //       status.z = (status.z || 0) - 1
+            // status.rx = 0
+            // status.ry = 166.23
+            // status.rz = 0
+            status.sx = 0.06
+            status.sy = 0.06
+            status.sz = 0.06
+            status.x = status.x || 0
+            status.y = status.y || 0
+            status.z = (status.z || 0) - 1
   
-      //       await SARMap.setSceneLayerStatus(mapInfo?.currentLayer?.name, status)
-      //     })
+            await SARMap.setSceneLayerStatus(mapInfo?.currentLayer?.name, status)
+          })
 
-      //   }
-      // },
+        }
+      },
       // {
       //   image: getImage().tool_lighting,
       //   image_selected: getImage().tool_lighting_selected,
@@ -365,25 +505,27 @@ class SuperMapBuilding extends React.Component<Props, State> {
   }
 
   arrowTricker = async (isOpen: boolean) => {
-    if (isOpen && this.pose && this.relativePositin) {
-      await SExhibition.setTrackingTarget({
-        pose: this.pose,
-        translation: this.relativePositin,
-      })
-      await SExhibition.startTrackingTarget()
-    } else {
-      await SExhibition.stopTrackingTarget()
-    }
+    // if (isOpen && this.pose && this.relativePositin) {
+    //   await SExhibition.setTrackingTarget({
+    //     pose: this.pose,
+    //     translation: this.relativePositin,
+    //   })
+    //   await SExhibition.startTrackingTarget()
+    // } else {
+    //   await SExhibition.stopTrackingTarget()
+    // }
   }
 
   importData = async () => {
     try {
       const home = await FileTools.getHomeDirectory()
-      const importPath = home + ConstPath.Common + 'Exhibition/AR超图大厦/ChengDuSuperMap'
-      const targetHomePath = home + ConstPath.CustomerPath + 'Data/Scene/ChengDuSuperMap/'
-      const targetPath = targetHomePath + 'ChengDuSuperMap.sxwu'
-      const targetPxpPath = home + ConstPath.CustomerPath + 'Data/Scene/ChengDuSuperMap.pxp'
+      // const importPath = home + ConstPath.Common + 'Exhibition/AR超图大厦/ChengDuSuperMap'
+      const importPath = home + ConstPath.Common + 'Exhibition/明珠湾加海面410缓存'
+      const targetHomePath = home + ConstPath.CustomerPath + 'Data/Scene/明珠湾加海面410缓存/'
+      const targetPath = targetHomePath + '明珠湾加海面410缓存.sxwu'
+      const targetPxpPath = home + ConstPath.CustomerPath + 'Data/Scene/明珠湾加海面410缓存.pxp'
 
+      console.warn('importData', importPath)
       const needToImport = await shouldBuildingMapData()
 
       if (needToImport && await FileTools.fileIsExist(targetHomePath)) {
@@ -406,6 +548,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
       // Toast.show('开始导入数据')
       const tempData = await DataHandler.getExternalData(importPath) || []
       const result = await DataHandler.importWorkspace3D(tempData[0])
+      console.warn('tempData', tempData)
       if (result) {
         buildingImported()
         // Toast.show('导入数据成功')
@@ -415,6 +558,7 @@ class SuperMapBuilding extends React.Component<Props, State> {
         return ''
       }
     } catch (error) {
+      console.warn('error', error)
       // Toast.show('导入数据失败')
       __DEV__ && console.warn(error)
     }
@@ -769,6 +913,16 @@ class SuperMapBuilding extends React.Component<Props, State> {
   render() {
     return (
       <>
+        <ARViewLoadHandler arViewDidMount={this.arViewDidMount} />
+        <TimeoutTrigger
+          ref={ref => this.timeoutTrigger = ref}
+          timeout={1500000}
+          trigger={() => {
+            this.setState({
+              showSide: false
+            })
+          }}
+        />
         {(!this.state.showScan && !this.state.showGuide) && this.renderSideBar()}
         {this.state.showCover && this.renderCover()}
         <ARArrow />
@@ -862,6 +1016,40 @@ class ToolView extends React.Component<ToolViewProps, unknown> {
           </TouchableOpacity>
         </View>
         <View style={styles.toolRow}>
+          <Text style={{textAlign: 'center', fontSize: dp(12)}}>打散</Text>
+          <SlideBar
+            ref={ref => this.scaleBar = ref}
+            style={styles.slideBar}
+            range={[0, 100]}
+            defaultMinValue={0}
+            barColor={'#FF6E51'}
+            onStart={()=>{
+              console.info("onStart")
+            }}
+            onEnd={()=>{
+              console.info("onEnd")
+            }}
+            onMove={offset => {
+              let count = 0
+              const sourceArr:IARTransform[] = []
+              //数据：图层组中2->21为楼层的OSGBLayer，是有序的
+              for (let i = 2;i < 22;i++) {
+                transformData = {
+                  ...transformData,
+                  positionX: 0,
+                  positionY: 0,
+                  positionZ: count * offset,
+                  id:i,
+                  type: 'position'
+                }
+                sourceArr.push(transformData)
+                count++
+              }
+              SARMap.setOSGBLayerOffset(sourceArr)
+            }}
+          />
+        </View>
+        <View style={styles.toolRow}>
           <Text style={{textAlign: 'center', fontSize: dp(12)}}>缩放</Text>
           <SlideBar
             ref={ref => this.scaleBar = ref}
@@ -877,6 +1065,9 @@ class ToolView extends React.Component<ToolViewProps, unknown> {
                 type: 'scale',
               }
               SARMap.setARElementTransform(transformData)
+              // const scale = 1.0 / loc
+              //设置所有OSGB图层的比例
+              // SARMap.setAllOSGBLayerScale(scale,scale,scale)
             }}
           />
         </View>
